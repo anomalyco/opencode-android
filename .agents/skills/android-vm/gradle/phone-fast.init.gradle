@@ -1,0 +1,14 @@
+// Builds :app's debug variant the way release is built (R8, not debuggable), so it installs over
+// the ai.opencode.mobilecode.debug app on a phone and keeps its data, but runs at release speed.
+// Used by `vm.sh build fast` and `vm.sh phone fast`.
+gradle.allprojects { project ->
+    project.pluginManager.withPlugin("com.android.application") {
+        project.androidComponents.finalizeDsl { ext ->
+            def debug = ext.buildTypes.getByName("debug")
+            debug.debuggable = false
+            debug.profileable = true
+            debug.minifyEnabled = true
+            debug.proguardFiles(ext.getDefaultProguardFile("proguard-android-optimize.txt"))
+        }
+    }
+}

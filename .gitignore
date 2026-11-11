@@ -22,3 +22,5 @@ secrets.properties
 .DS_Store
 .externalNativeBuild/
 .cxx/
+# Python caches from the agent skills
+__pycache__/

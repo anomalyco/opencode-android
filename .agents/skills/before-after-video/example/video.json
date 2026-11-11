@@ -1,0 +1,66 @@
+{
+  "left": "v0.3.8 release",
+  "right": "New (ui-brand-prototype)",
+  "segments": [
+    {
+      "name": "welcome",
+      "title": "Welcome screen",
+      "caption": "White page, squarer buttons and a squarer Paste key. Command chips sit in flat grey wells with a hairline, in IBM Plex Mono."
+    },
+    {
+      "name": "server",
+      "title": "New Server form",
+      "caption": "Labels sit above 48 dp fields with 8 dp corners and a 1 dp border; focus is a near-black ring. Sheets get 16 dp corners and a quiet handle."
+    },
+    {
+      "name": "story",
+      "title": "Welcome story",
+      "caption": "The illustration now shows an Android phone with Android wording. Get Started is a black button instead of periwinkle."
+    },
+    {
+      "name": "transcript",
+      "title": "Transcript",
+      "caption": "Tables size to fit, and the next column peeks under an edge fade to show it scrolls. Hairline code blocks; the title bar gets a hairline on scroll."
+    },
+    {
+      "name": "tools",
+      "title": "Tool groups",
+      "caption": "Icons and bold tool names; the failed edit uses a calmer red. Shell output sits in a white well with a hairline."
+    },
+    {
+      "name": "composer",
+      "title": "Composer and + menu",
+      "caption": "A white floating card with a hairline and shadow; Send is a black square. The + menu is the same popover as the session menu, with bare line icons."
+    },
+    {
+      "name": "model",
+      "title": "Model picker",
+      "caption": "The search field matches the forms: white, 8 dp corners, 1 dp border, instead of a grey pill. Black actions instead of blue."
+    },
+    {
+      "name": "drawer",
+      "title": "Drawer",
+      "caption": "Search, New Session and Settings are white floating buttons with a hairline and shadow. The unread dot and Catch Up stay blue."
+    },
+    {
+      "name": "settings",
+      "title": "Settings",
+      "caption": "Server card and groups share a hairline and 10 dp corners. The title collapses into a flat bar with a hairline. Switches: outlined off, black on."
+    },
+    {
+      "name": "prompts",
+      "title": "Permission and question cards",
+      "caption": "Crisp white cards with a hairline. Deny has 8 dp corners instead of a capsule; the question's close X is a plain glyph."
+    },
+    {
+      "name": "voice",
+      "title": "Voice call",
+      "caption": "The card steps off the page with a hairline and shadow; controls are rounded squares and End is the theme red. The orb is unchanged, as on iOS."
+    },
+    {
+      "name": "dark",
+      "title": "Dark theme",
+      "caption": "The same flat surfaces, hairlines and black-and-white actions carry over to dark."
+    }
+  ]
+}

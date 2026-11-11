@@ -1,0 +1,9 @@
+// Installs :app's debug variant as ai.opencode.mobilecode.live, so a build of another commit can
+// sit next to the .debug app. Used by `vm.sh build live` and `vm.sh phone live`.
+gradle.allprojects { project ->
+    project.pluginManager.withPlugin("com.android.application") {
+        project.androidComponents.finalizeDsl { ext ->
+            ext.buildTypes.getByName("debug").applicationIdSuffix = ".live"
+        }
+    }
+}
