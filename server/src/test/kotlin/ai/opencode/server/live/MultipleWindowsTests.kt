@@ -19,15 +19,16 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.produceIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -152,18 +153,22 @@ class MultipleWindowsTests {
     }
 
     @Test
-    fun theLastWindowLeavingCancelsTheUpstream() = runBlocking(Dispatchers.Default) {
+    fun theLastWindowLeavingCancelsTheUpstream() = runTest {
         val upstream = Upstream()
         val hub = SharedEventStreams { upstream.make() }
         val first = launch { hub.subscribe(server).collect {} }
         val second = launch { hub.subscribe(server).collect {} }
-        eventually { upstream.opened == 1 }
+        // Register both windows before cancelling either one.
+        testScheduler.runCurrent()
+        assertEquals(1, upstream.opened)
 
         first.cancel()
-        runCatching { eventually(timeout = 200.milliseconds) { hub.upstreamCount == 0 } }
+        testScheduler.runCurrent()
         assertEquals(1, hub.upstreamCount)
+        assertFalse(upstream.isTerminated)
+
         second.cancel()
-        eventually { hub.upstreamCount == 0 && upstream.isTerminated }
+        testScheduler.runCurrent()
         assertEquals(0, hub.upstreamCount)
         assertTrue(upstream.isTerminated)
     }
