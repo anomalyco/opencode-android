@@ -12,8 +12,8 @@ import org.xmlpull.v1.XmlPullParser
 import java.io.ByteArrayInputStream
 
 /**
- * Paint emitted by the V2 server's Icon Composer wrapper (PR #57671). Parsing and
- * rasterization are entirely local; SVG references never fetch resources.
+ * Paint emitted by the V2 server's Icon Composer wrapper. Parsing and rasterization are entirely
+ * local; SVG references never fetch resources.
  */
 object ProjectSVGPaint {
     /** `url(#id)` → `id`. */

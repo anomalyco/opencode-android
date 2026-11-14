@@ -11,9 +11,8 @@ import kotlin.math.max
 
 /**
  * Port of iOS `DrawerLiftedRowView` (`DrawerLiftedRow.swift`): the lifted row's grow and shadow.
- * iOS draws the lifted row as a window-level bitmap over the drawer; here the row itself rides the
- * finger in the list ([DrawerPinDrag]), and its raised surface casts this shadow
- * ([drawLiftedRowSurface]) instead of a Material elevation, so the drag reads as on iOS.
+ * The row itself rides the finger in the list ([DrawerPinDrag]), and its raised surface casts this
+ * shadow ([drawLiftedRowSurface]) instead of a Material elevation.
  */
 object DrawerLiftedRowView {
     /** How a row lifted [lift] (0 at rest in the list, 1 fully lifted) looks; dp for lengths. */

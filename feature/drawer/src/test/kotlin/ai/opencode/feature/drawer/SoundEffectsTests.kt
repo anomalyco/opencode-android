@@ -34,10 +34,9 @@ import java.util.Collections
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * iOS `SoundEffectsTests.swift` (Sound Effects, experimental), Home's and Catch Up's half: a
- * notice's sound beside its haptic, silence during a call and for the backlog before notices
- * settle, and Catch Up Done with the finish's success. The session's tests are
- * `:feature:session`'s `SoundEffectsTests`. iOS's parameterized tests run their rows in turn.
+ * iOS `SoundEffectsTests.swift`, Home's and Catch Up's half: a notice's sound beside its haptic,
+ * silence during a call and for the backlog before notices settle, and Catch Up Done with the
+ * finish's success. The session's tests are `:feature:session`'s.
  */
 class SoundEffectsTests {
     @get:Rule val isolation = TestIsolationRule()

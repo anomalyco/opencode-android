@@ -20,9 +20,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `ServerFlowTests` (Home's half; Server Flow, d8a311bd, graduated in iOS p217):
- * the note seen once with the drawer, the menu's and the pill's copy, and the ghost rows. The
- * switching, timeout and go-back tests drive `AppFeature` and belong to `:app`.
+ * Port of iOS `ServerFlowTests` (Home's half): the note seen once with the drawer, the menu's and
+ * the pill's copy, and the ghost rows. The switching, timeout and go-back tests drive `AppFeature`
+ * and belong to `:app`.
  */
 class ServerFlowTests {
     @get:Rule val isolation = TestIsolationRule()

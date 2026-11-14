@@ -512,7 +512,7 @@ class DrawerActivityTests {
 
     /**
      * A subagent's session reaches the drawer's state (a created event, a family refresh) but
-     * lists only under its parent, not in Recents (TestFlight build 682).
+     * lists only under its parent, not in Recents.
      */
     @Test
     fun recentsListOnlyRootSessions() {

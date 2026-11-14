@@ -14,13 +14,10 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 /**
- * iOS ff935bef (`DrawerListController.apply`'s `movesPins`): Pin, Unpin and Move Up/Down outside a
- * drag (the menu, TalkBack) move the row to its new place while the rows between make room, all
- * in one move on `MotionRole.Layout`; under Reduce Motion the rows that moved cross-fade in on
- * `MotionRole.Reduced`. UIKit animates the snapshot; here [begin] notes where each visible row shows
- * before the store's change lays the list out anew, and [apply] (from the list's placement, so
- * the first frame already draws them where they were) starts each one there and springs its
- * offset to zero, through the pin drag's translations. A drag lands its own moves.
+ * iOS `movesPins`: Pin, Unpin and Move Up/Down outside a drag (the menu, TalkBack) move the row to
+ * its new place while the rows between make room, on `MotionRole.Layout` (`Reduced` cross-fades).
+ * [begin] notes where each visible row shows before the store's change; [apply] starts each there
+ * and springs its offset to zero. A drag lands its own moves.
  */
 internal class DrawerPinMove(private val pinDrag: DrawerPinDrag) {
     private var from: Map<ItemKey, Float>? = null

@@ -13,10 +13,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `MultipleWindowsTests.aFurtherWindowKeepsItsOwnSidebar`. On Android Home owns the
- * sidebar toggle (`reducePreferences`, `State.isWindowLocal`), where iOS scopes
- * `HomeSettingsFeature` with an in-memory `Shared`. `SharedEventStreams`/`SharedReads` tests are
- * `:server`'s; scene, window-role and inbox tests are `:app`'s/`:feature:system`'s.
+ * Port of iOS `MultipleWindowsTests.aFurtherWindowKeepsItsOwnSidebar`: Home owns the sidebar toggle
+ * (`reducePreferences`, `State.isWindowLocal`). The rest of that file is `:server`'s, `:app`'s and
+ * `:feature:system`'s.
  */
 class MultipleWindowsTests {
     @get:Rule val isolation = TestIsolationRule()

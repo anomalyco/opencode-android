@@ -24,23 +24,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import kotlin.math.abs
 
 /**
- * Port of `OpenCode/Drawer/DirectionalPanGestureRecognizer.swift`: the session drawer's pan and
- * what it yields to, as a Compose pointer handler ([drawerDirectionalPan], wired to the card by
- * [drawerPan]).
- *
- * It watches every touch in the `Initial` pass (before the card's own scrollers and controls),
- * waits for 8 dp of travel ([BackSwipeRules.decisionDistance]), then picks once:
- * - vertical, or leftward on a shut drawer: fails, the touch stays with the content;
- * - rightward on the open drawer's list: reveals the rows' times instead of moving the card;
- * - rightward on content whose horizontal scroller can still scroll back, or on a control that
- *   claims sideways drags, fails, except from the leading 28 dp edge, which always opens it;
- * - a finger that rested 0.45 s first, or under which a hold already began, keeps its hold.
- * Once chosen it consumes the pointer so children cancel (iOS `cancelsTouchesInView`, `isolate`).
- *
- * UIKit's hit-test walk becomes [DrawerPanRegions]: the drawer, its list, the card, Catch Up's
- * drag card, horizontal scrollers and controls register their layout nodes with the modifiers
- * below, and the pan tests the touch against them (layer transforms included). The transcript's
- * selection handles register with `Modifier.drawerPanSelectionHandles`, iOS's selection handle test.
+ * Port of `OpenCode/Drawer/DirectionalPanGestureRecognizer.swift`: the session drawer's pan. It
+ * watches every touch in the `Initial` pass, waits for 8 dp of travel
+ * ([BackSwipeRules.decisionDistance]), then picks once: vertical or leftward on a shut drawer stays
+ * with the content; rightward on the open drawer's list reveals the rows' times; rightward on a
+ * scroller that can still scroll back, or a control that claims sideways drags, stays with it
+ * except from the leading 28 dp edge; a finger that rested 0.45 s keeps its hold. Once chosen it
+ * consumes the pointer. Touches are tested against the layout nodes registered in
+ * [DrawerPanRegions].
  */
 object DirectionalPan {
     enum class Decision {

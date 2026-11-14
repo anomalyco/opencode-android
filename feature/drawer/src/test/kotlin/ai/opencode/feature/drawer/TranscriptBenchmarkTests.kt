@@ -51,15 +51,11 @@ import java.time.Instant
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * The `HomeFeature` tests of iOS `OpenCodeTests/TranscriptBenchmarkTests.swift` (the
- * `ProjectionCache` pair is `:feature:session`'s; the env-gated CPU/scroll benchmarks aren't
- * ported).
- *
- * `backgroundStreamingIsolationAndScrollFastPathRegression` step 4 checked with
- * `withObservationTracking` that the session chrome registers no observation on `items`; Compose
- * has no such probe, so the step checks the chrome values themselves don't change on a streaming
- * delta. `appFeatureStoreBuildsReducerBodiesOncePerInstance` is deleted: it counts TCA `body`
- * builds through iOS's `bodyCache`, which Kotlin reducers don't have (built once per instance).
+ * The `HomeFeature` tests of iOS `TranscriptBenchmarkTests.swift` (the `ProjectionCache` pair is
+ * `:feature:session`'s; the env-gated benchmarks aren't ported). Compose has no observation probe,
+ * so step 4 of `backgroundStreamingIsolationAndScrollFastPathRegression` checks the chrome values
+ * don't change on a streaming delta. Not ported:
+ * `appFeatureStoreBuildsReducerBodiesOncePerInstance` (Kotlin reducers have no `body` cache).
  */
 class TranscriptBenchmarkTests {
     @get:Rule val isolation = TestIsolationRule()

@@ -59,17 +59,9 @@ import ai.opencode.feature.composer.restorePersistedPick
 
 /**
  * Port of iOS `HomeFeature` (`OpenCode/Drawer/HomeFeature.swift` and its `HomeFeature+*.swift`
- * extensions): one server's Home. The open session ([State.sessionDetail], a draft when none is
- * open) under the session drawer, pushed subagents, Catch Up, Settings, In-App Notices and the
- * server's live list (REST snapshots authoritative, SSE projecting).
- *
- * The reducer body is assembled in `HomeFeatureComposition.kt`; Home's own actions route through
- * `HomeFeatureCore.kt`. Child features (`HomeConnectionFeature`, `HomeNotificationsFeature`,
- * `HomeSettingsFeature`, `CatchUpFeature`) are scoped there.
- *
- * Session screens are `:feature:session`'s [SessionFeature]: the open one presented (`ifLet`) and
- * pushed subagents identified by their `navigationID` (`forEach`); Home matches their actions after
- * they've reduced, as iOS's `HomeFeature` does on `.sessionDetail(.presented(…))`.
+ * extensions): one server's Home. The body is assembled in `HomeFeatureComposition.kt`; Home's own
+ * actions route through `HomeFeatureCore.kt`. Home matches session screens' actions after they've
+ * reduced.
  */
 class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
     /**

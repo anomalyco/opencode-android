@@ -9,12 +9,12 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `DrawerTouchStateTests.swift` (p282): the drawer's card never keeps a pose nothing
- * will undo. The page stack's case lives in `:feature:session`'s `DrawerTouchStateTests`.
- * Not ported: `leavingCatchUpForTheSessionGivesEveryPageItsTouchesBack` (Android never takes the
- * card's pages' touches), `aShutCardLeftAjarWithNothingMovingItSettlesShut` and
- * `openInTheModelButDrawnShutAndStillIsReleasedShut` (Android's drawer has no touch net: its
- * card's pose is the motion's one offset, which every settle lands).
+ * Port of iOS `DrawerTouchStateTests.swift`: the drawer's card never keeps a pose nothing will
+ * undo. The page stack's case lives in `:feature:session`.
+ * Not ported: `leavingCatchUpForTheSessionGivesEveryPageItsTouchesBack`,
+ * `aShutCardLeftAjarWithNothingMovingItSettlesShut` and
+ * `openInTheModelButDrawnShutAndStillIsReleasedShut` (Android's card has no touch net; its pose is
+ * the motion's one offset, which every settle lands).
  */
 class DrawerTouchStateTests {
     @get:Rule val isolation = TestIsolationRule()

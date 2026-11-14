@@ -161,10 +161,10 @@ data class ProjectIconRequest(val server: OpenCodeServer, val projectID: String,
         }
 
     /**
-     * Scoped by server and the full resolved URL, so an updated `?v=<hash>` or override
-     * fetches a fresh entry while identical versioned URLs share one entry.
+     * Scoped by server and the full resolved URL, so an updated `?v=<hash>` or override fetches a
+     * fresh entry while identical versioned URLs share one. Worked out once per request: the tile
+     * asks for it on every pass.
      */
-    // Worked out once per request (iOS f5636460 stores it): the tile asks for it on every pass.
     val cacheKey: String by lazy {
         // The decoder version keeps old renders from surviving on disk.
         val raw = "svg-v2|${server.persistenceID}|$resolvedURLString"

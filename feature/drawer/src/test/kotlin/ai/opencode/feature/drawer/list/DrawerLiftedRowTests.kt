@@ -12,7 +12,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-/** iOS `DrawerLiftedRowTests` (OC-600): where a cancelled release still lands, and the lifted row's shadow. */
+/**
+ * iOS `DrawerLiftedRowTests`: where a cancelled release still lands, and the lifted row's shadow.
+ */
 class DrawerLiftedRowTests {
     @get:Rule val isolation = TestIsolationRule()
 

@@ -25,26 +25,12 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-/*
- * Port of iOS `DrawerPinDrag.swift`: continuous 60–120 Hz spring motion across Pinned and Recents
- * while a session row is dragged to pin, unpin, or reorder.
- *
- * Each visible section header and row tracks its visual top in the list's coordinates through a
- * [SpringSolver]. iOS writes each cell's `transform.ty`; here each row reads its entry of
- * [translations] in its own `graphicsLayer`, so a drag never recomposes the list. When the drop
- * lands, `completeDrop` mutates the store and has the list apply it in the same frame
- * ([DrawerPinDragHost.flushNow], iOS `flushNow`), publishing each row's translation against its
- * new place so no row or header jumps on zone entry, slot change, or drop commit.
- *
- * UIKit drag sessions become the row's long-press drag ([DrawerRowInteraction]): the lifted row
- * itself follows the finger (iOS hides it under the system's platter) and lands in its slot on
- * the same spring; a release more than 24 dp beside the list cancels, as iOS's drop proposal does.
- * The collection-wide `UIDropInteraction` is the row's own pointer stream on Android. Positions are
- * dp in the list's own coordinates (its top edge, content padding included). The drag consumes the
- * finger so the list only scrolls under it through [autoScroll], which shifts every spring and
- * cached edge by what the rows moved.
- * `DrawerPinDragTraceView` and the per-frame trace (XCUITest hooks) are not ported.
- */
+// Port of iOS `DrawerPinDrag.swift`: spring motion across Pinned and Recents while a session row is
+// dragged to pin, unpin, or reorder. Each visible header and row reads its entry of [translations]
+// in its own `graphicsLayer`, so a drag never recomposes the list. On drop, `completeDrop` mutates
+// the store and the list applies it in the same frame ([DrawerPinDragHost.flushNow]), so nothing
+// jumps. Positions are dp in the list's own coordinates (content padding included). The drag
+// consumes the finger, so the list only scrolls under it through [autoScroll].
 
 /** What [DrawerPinDrag] reads from and asks of the list it moves (iOS: the collection view itself). */
 interface DrawerPinDragHost {
@@ -122,10 +108,9 @@ class DrawerPinDrag {
         const val CANCEL_MARGIN = 24f
 
         /**
-         * Whether a release outside the list's body (iOS: a cancelled system drop, 62af58a3) still
-         * lands the row in its slot: over the header (above [headerBottom]) or the footer (below
-         * [footerTop]), within the list's column (± [CANCEL_MARGIN]) and the [window]. Anywhere
-         * else the row springs back. All in the same coordinates (dp).
+         * Whether a release outside the list's body still lands the row in its slot: over the
+         * header (above [headerBottom]) or the footer (below [footerTop]), within the list's column
+         * (± [CANCEL_MARGIN]) and the [window]. Anywhere else the row springs back. All in dp.
          */
         fun landsOnCancel(finger: Offset, list: Rect, headerBottom: Float, footerTop: Float, window: Rect): Boolean {
             if (!window.contains(finger) || finger.x < list.left - CANCEL_MARGIN || finger.x > list.right + CANCEL_MARGIN) return false
@@ -356,9 +341,9 @@ class DrawerPinDrag {
     }
 
     /**
-     * The finger lifted at [fingerX]/[fingerY]: over the list's body it drops (lands the row in
-     * its slot, then commits); elsewhere it is iOS's cancelled drop, which still lands over the
-     * header or footer ([landsOnCancel], 62af58a3) and springs back anywhere else.
+     * The finger lifted at [fingerX]/[fingerY]: over the list's body it drops (lands the row in its
+     * slot, then commits); elsewhere it lands over the header or footer ([landsOnCancel]) and
+     * springs back anywhere else.
      */
     fun endDrag(fingerX: Float, fingerY: Float) {
         if (activeSessionID == null || hasCommittedDrop) return
@@ -550,10 +535,8 @@ class DrawerPinDrag {
         val openZoneDelta = if (wasEmptyPins) emptyZoneSpring.value.toFloat() - (cachedHeaderHeight + rowStride) else 0f
 
         // Each row lands where its target was (the targets are its slot after the drop): after the
-        // store change this frame lays it out there, so its translation is what's left of its spring.
-        // The lifted row included: iOS snaps its hidden cell because the system's platter has
-        // already landed; here the row itself is still settling, so it keeps what's left too (a
-        // fallback commit just before it settles never jumps it).
+        // store change this frame lays it out there, so its translation is what's left of its
+        // spring, the lifted row included.
         val visible = host.visibleItems()
         for (item in visible) {
             val spring = cellSprings[item.key] ?: continue

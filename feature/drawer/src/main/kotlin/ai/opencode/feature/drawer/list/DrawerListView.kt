@@ -81,22 +81,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
-/*
- * Port of iOS `DrawerListController.swift` (+ its SwiftUI host `DrawerListView`): the drawer's
- * session list as a `LazyColumn` keyed by [DrawerListItem.key]. The title, search, New Session
- * and Settings lie around it in `HomeDrawer`.
- *
- * Home's state reaches the rows through one model build ([DrawerListModel.build]) in a derived
- * state; unchanged rows keep their instances, so only rows whose values changed recompose (iOS
- * reconfigures only those cells). iOS flushes observation on the layout pass so a pin drop's store
- * change is laid out before `DrawerPinDrag` reads the rows' new places; here the list reads Home's
- * state through its own snapshot value, which [DrawerPinDragHost.flushNow] sets at once, so the
- * drop recomposes and lays out in the frame that commits it.
- *
- * The time reveal: rows read the drawer's live [DrawerTimeReveal] while a drag moves them; it
- * lands on zero at release, so the list springs the rows back from where they were on iOS's
- * spring (0.4 s, bounce 0.2; Reduce Motion: the times fade over 0.2 s).
- */
+// Port of iOS `DrawerListController.swift` (+ its SwiftUI host `DrawerListView`): the drawer's
+// session list as a `LazyColumn` keyed by [DrawerListItem.key]. Home's state reaches the rows
+// through one model build ([DrawerListModel.build]); unchanged rows keep their instances, so only
+// changed rows recompose. [DrawerPinDragHost.flushNow] sets the list's snapshot at once, so a pin
+// drop lays out in the frame that commits it. The time reveal springs the rows back from where they
+// were at release (0.4 s, bounce 0.2; Reduce Motion fades over 0.2 s).
 
 /** What the list does that only `HomeDrawer` can (iOS `DrawerListActions`). */
 class DrawerListActions(
@@ -122,7 +112,7 @@ internal class DrawerListReveal(private val timeReveal: DrawerTimeReveal) : Draw
 
 /**
  * The last model built, so unchanged rows keep their instances; and the gate that keeps a hidden
- * drawer from building (iOS `DrawerListController`'s deferred builds, f5636460 and 34a02fc4).
+ * drawer from building.
  */
 internal class DrawerListModelHolder {
     var model = DrawerListModel()
@@ -252,7 +242,7 @@ fun DrawerListView(
         searchIsEmpty = model.search.isEmpty(),
         serverID = model.serverID,
         isSettingsShown = isSettingsShown,
-        // What changed while the drawer was hidden lands in place on reveal (iOS 34a02fc4).
+        // What changed while the drawer was hidden lands in place on reveal.
         isDrawerVisible = isDrawerVisible && !holder.isRevealing,
         reducedMotion = model.reducedMotion,
     )
@@ -382,10 +372,8 @@ fun DrawerListView(
     }
 
     // Leaving Catch Up: TalkBack lands on the Catch Up row, or on the highlighted session (iOS
-    // `focusCatchUpRow`, `DrawerListController.swift:652-664`), as VoiceOver goes back to the
-    // control that presented it. Accessibility focus only (QA AD-02): input focus on the row used
-    // to land on the drawer's scrim instead, and stayed in the window for Catch Up's next open to
-    // drop (AD-01). Once, as the leave happens: a row not laid out by then never takes it later.
+    // `focusCatchUpRow`). Accessibility focus only, not input focus. Once, as the leave happens: a
+    // row not laid out by then never takes it later.
     val answeredFocusRequests = remember { intArrayOf(catchUpFocusRequests) }
     var catchUpReturn by remember { mutableStateOf<Int?>(null) }
     LaunchedEffect(catchUpFocusRequests) {
@@ -464,9 +452,9 @@ fun DrawerListView(
         shownFirstKey[0] = firstKey
     }
 
-    // iOS ff935bef (`movesPins`): Pin, Unpin and Move Up/Down outside a drag (the menu, TalkBack)
-    // move the row to its new place as the rows between make room, in one move; not on another
-    // server's Home or a changed search, and a drag lands its own.
+    // iOS `movesPins`: Pin, Unpin and Move Up/Down outside a drag (the menu, TalkBack) move the row
+    // to its new place as the rows between make room, in one move; not on another server's Home or
+    // a changed search, and a drag lands its own.
     val shownPins = remember { arrayOfNulls<DrawerShownPins>(1) }
     val pins = DrawerShownPins(
         serverID = model.serverID,

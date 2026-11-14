@@ -42,18 +42,10 @@ import ai.opencode.server.OpenCodeLiveContentEvent
 import ai.opencode.server.OpenCodeServerEvent
 import java.util.UUID
 
-/*
- * Port of iOS `HomeFeature+Composition.swift`: how Home's reducers stack. Children settle after
- * Home's own coordination (`core`), the open session and pushed subagents run as presented and
- * identified children, and a chain of observers follows state Home derives (Catch Up's queue, the
- * selected transcript read, the pairing's drawer open, In-App Notices, the call's and the
- * recording's ongoing notifications, pages and recordings a gone screen leaves, the foreground
- * read settling, the What's New close).
- *
- * Fast streaming actions ([isFastStreamAction]) skip the observer chain and run only Home's own
- * reducer and the screens, as iOS does. iOS's `bodyCache` is a build-time optimisation with no
- * Kotlin counterpart: the body is built once per `HomeFeature` instance.
- */
+// Port of iOS `HomeFeature+Composition.swift`: how Home's reducers stack. Children settle after
+// Home's own coordination (`core`), session screens run as presented and identified children, and a
+// chain of observers follows state Home derives. Fast streaming actions ([isFastStreamAction]) skip
+// the observer chain.
 
 private object SessionDetailSlot
 private object SettingsSlot
@@ -490,12 +482,9 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
                 Reduced(state, Effect.send(Action.detail(SessionFeature.Action.voicePresented(VoiceFeature.Action.TargetChanged))))
             }
         }
-        // What the call's ongoing notification shows follows the call wherever it moves, changing
-        // only when what it shows changes, never per second. On Android the call's own microphone
-        // foreground service (`:feature:voice`'s `VoiceCallService`, started by the call) *is* that
-        // notification, with its Mute and End buttons, so Home keeps the content (AppFeature reads
-        // it: a call keeps Home through a server switch) without posting a second one through
-        // `VoiceLiveActivityClient`.
+        // What the call's ongoing notification shows follows the call, changing only when its
+        // content changes. The call's foreground service (`:feature:voice`'s `VoiceCallService`) is
+        // that notification, so Home only keeps the content and posts no second one.
         .onChange({ it.sessionDetail?.voice?.let(::liveActivityCall) }) { _, call, state ->
             val content = VoiceLiveActivity.content(call, state.voiceCallActivity, dependency(DateClient).now())
             if (content == state.voiceCallActivity) Reduced(state) else Reduced(state.copy(voiceCallActivity = content))

@@ -14,22 +14,14 @@ import kotlin.math.abs
 
 /**
  * Port of iOS `DrawerTitleFadeTests.swift`: a drawer title that overruns its row fades at its own
- * end and keeps its own start in view, in either layout direction (OC-527); while the time reveal
- * slides a row under the card, the whole row fades at the card's edge, growing in without a step
- * (R-174).
+ * end and keeps its start in view, in either layout direction; while the time reveal slides a row
+ * under the card, the whole row fades at the card's edge. Tested through the pure rules
+ * [DrawerListTitleView] and [DrawerListSessionCell] draw with ([DrawerListTitle.placement],
+ * [DrawerRevealFade]), in dp.
  *
- * iOS lays out UIKit views and reads their frames and `CAGradientLayer` masks; here the same
- * decisions are the pure rules [DrawerListTitleView] and [DrawerListSessionCell] draw with
- * ([DrawerListTitle.placement], [DrawerRevealFade]), in dp. A title's natural width (iOS measures
- * the label) is given: wider than the 200 dp row for a long title, narrower for a short one. The
- * card-edge mask is sampled with the reveal's ease-in (`MotionRole.Swap`) finished, as iOS samples it.
- *
- * Deleted:
- * - `aRelayoutMidRevealKeepsTheFadeAtTheEdge`: a UIKit cell laid out again keeps its mask layer;
- *   Compose computes the mask in the draw phase from the live reveal each frame, so there is no
- *   state a relayout could lose.
- * - `catchUpFocusFindsItsElement`: walks UIKit views for an accessibility element; Android moves
- *   TalkBack focus with a `FocusRequester` on the Catch Up row.
+ * Not ported: `aRelayoutMidRevealKeepsTheFadeAtTheEdge` (Compose computes the mask each frame, so a
+ * relayout has no state to lose) and `catchUpFocusFindsItsElement` (walks UIKit views; Android uses
+ * a `FocusRequester`).
  */
 class DrawerTitleFadeTests {
     @get:Rule val isolation = TestIsolationRule()

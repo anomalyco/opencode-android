@@ -63,18 +63,10 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `ComposerPersistenceTests.swift`'s Home tests (composer persistence as Home parks,
- * restores, cleans up and promotes drafts). The rest are `:feature:composer`'s.
- *
- * Adapted:
- * - `sessionDeletionServerDeletionAndStalenessCleanUpPersistedState`: the `AppFeature.serverDeleted`
- *   step is `:app`'s; the Home deletion and the relaunch's staleness pruning are here.
- * - `parkDraftFamilyDraftsAndCatchUpPreserveAttachmentsAndNeverDuplicateOrResurrectDrafts`: step 2's
- *   `SessionFeature` family switches assert the composer and persistence rather than iOS's exhaustive
- *   field list (the run, history and request bookkeeping are `:feature:session`'s tests); step 3's
- *   Catch Up actions assert the screen and composers non-exhaustively, and the
- *   `restorePersistedComposer` probe is dropped (internal to `:feature:session`; the card's empty
- *   composer after its `task` is asserted instead).
+ * Port of iOS `ComposerPersistenceTests.swift`'s Home tests: composer persistence as Home parks,
+ * restores, cleans up and promotes drafts. The rest are `:feature:composer`'s; the
+ * `AppFeature.serverDeleted` step is `:app`'s. Family switches and Catch Up steps assert the
+ * composer and persistence rather than every field.
  */
 class ComposerPersistenceTests {
     @get:Rule val isolation = TestIsolationRule()

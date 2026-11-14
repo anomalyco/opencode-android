@@ -410,12 +410,9 @@ private suspend fun PointerInputScope.catchUpPanGestures(
 private val FlyingShadowColor = Color.Black.copy(alpha = 0.16f)
 
 /**
- * Draws a Catch Up card surface through a [GraphicsContext] [GraphicsLayer] in the draw phase
- * rather than `Modifier.graphicsLayer`. `BlockGraphicsLayerModifier` implements
- * `SemanticsModifierNode` and dispatches `Owner.onLayoutChange` plus descendant
- * `onGloballyPositioned` callbacks on every positional frame (`translationX/Y`, `scaleX/Y`,
- * `rotationZ`), which re-laid out off-screen retained sheets inside hosted `SessionView`s and
- * flooded TalkBack with subtree change events on every card swipe or reveal.
+ * Draws a Catch Up card surface through a [GraphicsLayer] in the draw phase:
+ * `Modifier.graphicsLayer` dispatches layout-change and `onGloballyPositioned` callbacks on every
+ * positional frame, which re-lays out hosted `SessionView`s and floods TalkBack with change events.
  */
 private fun Modifier.catchUpCardSurface(
     layerState: CatchUpCardLayer,

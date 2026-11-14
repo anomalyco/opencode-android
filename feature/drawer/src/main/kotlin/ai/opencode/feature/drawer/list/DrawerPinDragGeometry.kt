@@ -8,14 +8,9 @@ import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
-/*
- * Port of iOS `DrawerPinDrag+Geometry.swift`: where the rows and headers are, which slot the
- * finger hovers, how far each item shifts for it, and the springs that carry them there. All in
- * dp, in the list's coordinates (see [DrawerPinDragHost]). iOS finds rows by scanning cells for
- * `DrawerRowView` / `DrawerSectionHeaderTag.MarkerView`; Android reads the `LazyColumn`'s keys.
- * The per-frame motion trace (`resetTrace`, `recordTraceFrame`, `updateTraceSummary`) is an
- * XCUITest hook and isn't ported.
- */
+// Port of iOS `DrawerPinDrag+Geometry.swift`: where the rows and headers are, which slot the finger
+// hovers, how far each item shifts for it, and the springs that carry them there. All in dp, in the
+// list's coordinates (see [DrawerPinDragHost]).
 
 internal fun DrawerPinDrag.visibleItems(): List<DrawerPinDragItem> = host?.visibleItems().orEmpty()
 

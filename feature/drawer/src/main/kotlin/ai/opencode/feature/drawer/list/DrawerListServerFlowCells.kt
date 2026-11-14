@@ -175,16 +175,10 @@ internal fun Modifier.serverSwapRow(motion: ServerSwapMotion?, serverID: String,
 
 /**
  * iOS `DrawerListController.leavingRows`: the pictures of the rows a server switch leaves, hanging
- * off their name as it goes. iOS snapshots each visible cell's content; a `LazyColumn` drops the
- * old server's items at once, so each row records what it draws into a layer of its own
- * ([serverSwapPicture]), and a switch takes the visible rows' layers for the leaving server, drawn
- * over the list ([drawLeaving]) on that server's row chain until its name has gone.
- *
- * A taken layer is the leaving server's alone, as iOS's snapshot views are: its row records itself
- * into a new one before it draws again, and again whenever it comes back from the list's reuse
- * pool. Otherwise a row the next server shows under the same key (a section header, or the same
- * session on both servers) kept drawing the taken picture, fading out with the old server and
- * blank once it was released.
+ * off their name as it goes. A `LazyColumn` drops the old server's items at once, so each row
+ * records what it draws into its own layer ([serverSwapPicture]), and a switch takes the visible
+ * rows' layers, drawn over the list ([drawLeaving]) until the name has gone. A taken layer belongs
+ * to the leaving server: its row records into a new one before it draws again.
  */
 internal class ServerSwapPictures(private val graphics: GraphicsContext) {
     private class Picture(val layer: GraphicsLayer, val top: Float)

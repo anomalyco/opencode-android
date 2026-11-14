@@ -36,38 +36,17 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 /**
- * Port of `OpenCode/Drawer/DrawerKeyboardHold.swift`: the composer keeps its focus while the
- * drawer moves (OC-244).
+ * Port of `OpenCode/Drawer/DrawerKeyboardHold.swift`: the composer keeps its focus while the drawer
+ * moves. Apps can't move the IME's window sideways, so [follow] drives its insets animation
+ * (`WindowInsetsController.controlWindowInsetsAnimation`), sliding the keys down as the card opens
+ * and back up as it closes ([ImeFollower]). Resting open they are down ([sendKeysAway]); where the
+ * insets can't be driven (TalkBack touch exploration, or the request refused) the keys stay put and
+ * step down at rest. Closing onto the same session gives the field back ([giveBack]); anything else
+ * lets it go ([letGo]). A card the keyboard is leaving, or drawer search, sets [excludesKeyboard].
  *
- * iOS slides the system keyboard's own window sideways with the card through a private UIKit
- * lookup (`follow`), so the card and its keys read as one card. The Android IME is another
- * process's window that apps can't move sideways, but an app can drive its insets animation
- * (`WindowInsetsController.controlWindowInsetsAnimation`): while the card moves, [follow] keeps
- * the keys with it by sliding them down out of the drawer's way as the card opens and back up
- * as it closes, frame for frame with the finger and the spring ([ImeFollower]); the card's
- * composer rides on them. Resting open they are down ([sendKeysAway]; the field keeps its
- * focus), and moving the card again brings them back with it. Where the insets can't be driven
- * (TalkBack touch exploration, as iOS keeps the keys still under VoiceOver; the request
- * refused), it's iOS's fallback: the keys stay put while the card moves and step down at rest.
- * Closing onto the same session gives the field back ([giveBack]); anything else (another
- * session, a new one, another field taking the keyboard) lets it go ([letGo]).
- *
- * A card the keyboard is leaving (another session or New Session chosen in the drawer,
- * [cardWillChange]) lays out without it from that moment ([excludesKeyboard]): the incoming
- * session's composer rests at the bottom from its first frame while the IME goes down.
- *
- * Drawer search's keyboard belongs to the drawer, never the peeking card: while search is open
- * or its keyboard is still leaving, [excludesKeyboard] is true too.
- *
- * Wiring (the drawer container): create with [rememberDrawerKeyboardHold], provide it as
- * [LocalDrawerKeyboardSignals] around the card (the composer marks its field with
- * `Modifier.drawerKeyboardField(key)`), report drawer fields through [drawerFieldFocusChanged],
- * and set [DrawerMotionState.keyboardHold] so the drag and settle drive it at iOS's points.
- *
- * Android mapping: the keys follow the card vertically, not sideways (no API moves the IME's
- * window across the screen), so iOS's `veil` (the scrim over keys beside the drawer) has
- * nothing to cover. Not ported: `DrawerKeyboardTrace` (iOS lab trace), `PrivateAPI` (no private
- * API lookups on Android).
+ * Wiring: create with [rememberDrawerKeyboardHold], provide it as [LocalDrawerKeyboardSignals]
+ * around the card, mark fields with `Modifier.drawerKeyboardField(key)`, report drawer fields
+ * through [drawerFieldFocusChanged], and set [DrawerMotionState.keyboardHold].
  */
 @Stable
 class DrawerKeyboardHold(
@@ -591,13 +570,9 @@ class ImeFollower(private val view: View) : DrawerKeyboardHold.Follower {
 
     /**
      * Compose moves `WindowInsets.imeAnimationSource` to the resting insets only when an animation
-     * with a duration ends, or on an insets dispatch outside any animation. A controlled animation
-     * has no duration (-1), and its last dispatch lands while it still runs, so after a hold the
-     * source kept the keys' height while the keys and the target were down: the composer's
-     * keyboard morph (`source != target`) saw the keyboard animating for good, kept its hidden
-     * model chips mounted over the field, and their touch gate swallowed every tap on it, until
-     * the IME's own next animation. A dispatch asked for now runs in the next frame's traversal,
-     * after the end is delivered; a second, a frame later, covers an end delivered late.
+     * with a duration ends, or on a dispatch outside any animation. A controlled animation has no
+     * duration, so after a hold this asks for a dispatch next frame, and a second a frame later for
+     * a late end.
      */
     private fun resyncInsets() {
         view.requestApplyInsets()

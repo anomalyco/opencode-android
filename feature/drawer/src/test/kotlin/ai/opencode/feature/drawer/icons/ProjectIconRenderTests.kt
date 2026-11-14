@@ -143,7 +143,7 @@ class ProjectIconRenderTests {
 
     @Test
     fun composerWrapperRendersItsLayerAndBackground() {
-        // Exact layer and wrapper shape emitted for opencode-ios by core PR #57671.
+        // Exact layer and wrapper shape the server emits.
         val layer = """<svg width="820" height="820" viewBox="46 46 420 420" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M320 224V352H192V224H320Z" fill="#5A5858"/><path fill-rule="evenodd" clip-rule="evenodd" d="M384 416H128V96H384V416ZM320 160H192V352H320V160Z" fill="white"/></svg>"""
         val source = "data:image/svg+xml;base64," + b64(layer.toByteArray())
         for (background in listOf(

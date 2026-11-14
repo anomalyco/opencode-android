@@ -190,11 +190,9 @@ class CatchUpPreviewStoresTests {
     }
 
     /**
-     * K-01: recreating the activity mid-stream (dark/light switch or font-scale change) must keep
-     * the live SSE connection on `HomeLifecycle` instead of re-sending `HomeFeature.Action.Task` or
-     * `RetryConnectionTapped` (which start a new socket epoch, fire `EventStreamConnected`, clear
-     * `SessionFeature.State.liveText`, and freeze the streaming reply until `TextEnded`). A real
-     * background-to-foreground return after recreation still reconnects.
+     * Recreating the activity mid-stream (dark mode, font scale) keeps the live SSE connection on
+     * `HomeLifecycle` instead of starting a new socket epoch. A real background-to-foreground
+     * return after recreation still reconnects.
      */
     @Test
     fun activityRecreationKeepsLiveStreamAndContinuesStreamingReply() {

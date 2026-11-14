@@ -20,19 +20,12 @@ import androidx.compose.runtime.setValue
 import kotlin.math.abs
 
 /**
- * Port of iOS `ServerSwapMotion` (Server Flow, d8a311bd), "Title Leads": the drawer's name rolls
- * to the server picked and its rows hang off it like a chain, each springing after the one above,
- * the first after the name. Every spring keeps its velocity, so picking again mid-swap turns
- * everything round from where it is.
- *
- * A plain motion object (AGENTS.md), stepped by [RunServerSwapMotion]'s frame loop: the title reads
- * [names], [width] and the underline; the list places its rows from [rows] in a graphics layer that
- * reads [frame]. Positions are in travel units: 0 at rest, ±1 a full travel.
- *
- * The springs are roles (iOS 03adf07a): the name arrives on `MotionRole.PanelOpen` (the person
- * picked it), the width, the rows and the underline's fill on `Layout`, everything leaving on
- * `Collapse`, and the underline fades on `Dim`. Only the chain's lag
- * ([ServerFlowTunables.chainLag]) is its own. Under Reduce Motion each runs on `Reduced`.
+ * Port of iOS `ServerSwapMotion` (Server Flow), "Title Leads": the drawer's name rolls to the
+ * server picked and its rows hang off it like a chain, each springing after the one above. Every
+ * spring keeps its velocity, so picking again mid-swap turns round from where it is. A plain motion
+ * object stepped by [RunServerSwapMotion]'s frame loop. Positions are in travel units: 0 at rest,
+ * ±1 a full travel. Only the chain's lag ([ServerFlowTunables.chainLag]) is its own; the rest run
+ * on motion roles (`Reduced` under Reduce Motion).
  */
 @Stable
 class ServerSwapMotion {

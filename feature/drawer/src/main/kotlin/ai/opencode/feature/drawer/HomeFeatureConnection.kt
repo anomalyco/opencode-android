@@ -433,11 +433,9 @@ internal fun HomeFeature.refreshSnapshot(state: State): HomeReduced {
 internal const val attentionDirectoryLimit = 8
 
 /**
- * Directories that can actually hold a pending request. Every location-scoped read makes the
- * server boot that directory's full service graph (MCP servers, watchers, plugins) and keep it for
- * an hour, so asking about all historical directories on each Home refresh once booted 152 graphs
- * and ~900 child processes. A request can only pend inside a booted graph, and a session blocked
- * on one is still running, so running roots, roots already flagged, and the open session cover it.
+ * Directories that can actually hold a pending request. Every location-scoped read makes the server
+ * boot that directory's full service graph (MCP servers, watchers, plugins) for an hour, so only
+ * running roots, roots already flagged and the open session are asked.
  */
 internal fun HomeFeature.Companion.attentionDirectories(state: State): List<String> {
     val busy = state.busySessionIDs

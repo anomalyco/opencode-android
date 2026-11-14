@@ -33,11 +33,8 @@ import org.junit.Test
 import ai.opencode.core.testing.TestIsolationRule
 
 /**
- * Port of iOS `FirstSendSurvivesNavigationTests` (`OpenCodeTests/HomeFeatureTests.swift`).
- *
- * Regression: a new session from the phone lost its first prompt when the screen changed while
- * the session was still being created (the create can take seconds while a new folder's location
- * boots). The effect was cancelled between create and send, leaving an empty session and no error.
+ * Port of iOS `FirstSendSurvivesNavigationTests`: a new session's first prompt is sent even when
+ * the screen changes while the session is still being created.
  */
 class FirstSendSurvivesNavigationTests {
     @get:Rule val isolation = TestIsolationRule()

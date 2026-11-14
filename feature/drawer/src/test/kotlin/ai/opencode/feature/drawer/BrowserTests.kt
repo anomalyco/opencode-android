@@ -301,10 +301,8 @@ class OpenLinksInAppsTests {
 }
 
 /**
- * Port of iOS `BrowserLifetimeTests`' Home tests. iOS also checks the `WKWebView` registry and
- * the hosting view's teardown (`BrowserWebViews`, `BrowserWebViewHost.dismantleUIView`), which are
- * WebKit/UIKit; on Android Home's guarantee is that the page leaves with its session
- * ([PageReaderClient.discard], which drops the `WebView`), asserted here.
+ * Port of iOS `BrowserLifetimeTests`' Home tests: the page leaves with its session
+ * ([PageReaderClient.discard], which drops the `WebView`).
  */
 class BrowserLifetimeTests {
     @get:Rule val isolation = TestIsolationRule()

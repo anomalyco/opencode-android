@@ -45,7 +45,7 @@ class TuningStoreTests {
 class DrawerSpacingTests {
     @get:Rule val isolation = TestIsolationRule()
 
-    /** What the drawer ships: D-66's Sidebar Grey spacing. */
+    /** What the drawer ships: Sidebar Grey spacing. */
     @Test
     fun defaultsAreWhatShipped() {
         // Android diverges from iOS on purpose: the drawer follows the OpenCode desktop sidebar
@@ -86,9 +86,8 @@ class DrawerSpacingTests {
         assertEquals(DrawerEdgeStyle.Soft, DrawerTunables.bottomEdge)
         assertEquals(DrawerBottomEdgeMode.System, DrawerTunables.bottomMode)
         assertEquals(DrawerTextStyle.Subheadline, DrawerTunables.rowFont)
-        // D-66 Sidebar Grey: headline secondary headers and a title-size title,
-        // with D-51's medium unread and waiting rows, read rows at 86% and a
-        // 15 pt Catch Up count.
+        // Sidebar Grey: headline secondary headers and a title-size title, medium unread and
+        // waiting rows, read rows at 86% and a 15 pt Catch Up count.
         assertEquals(DrawerTextStyle.Headline, DrawerTunables.sectionFont)
         assertEquals(DrawerTone.Secondary, DrawerTunables.sectionTone)
         assertEquals(DrawerFontWeight.Medium, DrawerTunables.unreadWeight)

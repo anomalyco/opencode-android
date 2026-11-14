@@ -393,7 +393,10 @@ class NewMessagesTests {
         assertNull(store.state.sessionDetail?.newMessages)
     }
 
-    /** Truth table #12: Catch Up Keep Unread preserves the divider even when the transcript first loaded inside Catch Up. */
+    /**
+     * Catch Up Keep Unread preserves the divider even when the transcript first loaded inside Catch
+     * Up.
+     */
     @Test fun catchUpKeepUnreadWithoutPriorCacheStillMarksDividerOnLaterOpen() = homeTest { h ->
         val older = timedSession("ses_older", updated = 10)
         val read = timedSession("ses_read", updated = 30, idle = 1_000)

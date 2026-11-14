@@ -113,17 +113,10 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 
 /**
- * Port of `OpenCode/Drawer/HomeView.swift`: one server's Home. The open session (or a draft) on
- * the session drawer's card ([SessionDrawerContainer]), its pushed subagents and in-app browser
- * pages (`:feature:session`'s [SessionPageStack], with predictive back), the call's floating
- * orb, Catch Up, Settings pushed over everything, the delete confirmation, and the
- * lifecycle that tells [HomeFeature] about the screen.
- *
- * A window at least [SidebarMetrics.minimumWindowWidth] wide lists the sessions in a sidebar
- * beside the session, shown or hidden with the header's button
- * ([HomeFeature.State.isSidebarShown]); anything narrower slides the phone's drawer under it.
- * Per-frame drawer motion never recomposes this view or the session: the container's plain
- * objects own it, and only settled open/shut reaches the reducer.
+ * Port of `OpenCode/Drawer/HomeView.swift`: one server's Home. A window at least
+ * [SidebarMetrics.minimumWindowWidth] wide lists the sessions in a sidebar beside the session;
+ * anything narrower slides the phone's drawer under it. Per-frame drawer motion never recomposes
+ * this view: the container's plain objects own it, and only settled open/shut reaches the reducer.
  */
 @Composable
 fun HomeView(
@@ -360,8 +353,7 @@ private sealed interface StackEntry {
 
 /**
  * What the session's stack shows, bottom first: each subagent pushed over the session, and a web
- * page over whichever screen opened it (iOS `stackPages`, D-40). Back (the back button, the back
- * gesture, TalkBack's escape) goes to the screen beneath.
+ * page over whichever screen opened it (iOS `stackPages`). Back goes to the screen beneath.
  */
 private fun stackEntries(state: HomeFeature.State): List<StackEntry> {
     val entries = ArrayList<StackEntry>()
@@ -547,7 +539,7 @@ private fun CatchUpPreviewCard(store: StoreOf<HomeFeature.State, HomeFeature.Act
     DisposableEffect(previews) { onDispose { previews.close() } }
     val preview = previews.store(session, home)
     SideEffect { previews.commit() }
-    // A picture of the next session: nothing in it moves TalkBack's focus (QA W-05).
+    // A picture of the next session: nothing in it moves TalkBack's focus.
     CompositionLocalProvider(LocalAccessibilityFocusMoves provides false) {
         SessionView(
             preview,
@@ -663,8 +655,7 @@ internal fun HomeLifecycle(store: StoreOf<HomeFeature.State, HomeFeature.Action>
 
     // Keyed by the server: a switch from the drawer swaps Home's state in place, and the new
     // server's Home starts here like a fresh one. Retained across activity recreation (dark mode,
-    // font size, locale) so the running event stream stays on its socket instead of reconnecting
-    // and clearing in-flight `liveText` accumulators (K-01), where iOS never rebuilds `HomeView`.
+    // font size, locale) so the running event stream stays on its socket.
     val startedServerID = retain { arrayOfNulls<String>(1) }
     LaunchedEffect(serverID) {
         if (startedServerID[0] == serverID) return@LaunchedEffect
@@ -714,10 +705,9 @@ internal fun HomeLifecycle(store: StoreOf<HomeFeature.State, HomeFeature.Action>
         val settings = dependency(InAppNoticeSettings)
         dependency(SessionNotificationsClient).setInAppNoticesProvider { settings.mode() != InAppNoticeMode.off }
     }
-    // iOS `scenePhase`: RESUMED is active, STARTED inactive, below that the background.
-    // A configuration change recreates the activity while the reader stays in the scene, as an iOS
-    // appearance or Dynamic Type change never moves `scenePhase`: neither the leaving activity's
-    // stop nor the recreated activity's first resume is a leave/return cycle (K-01).
+    // RESUMED is active, STARTED inactive, below that the background (iOS `scenePhase`). A
+    // configuration change's stop and the recreated activity's first resume aren't a leave/return
+    // cycle.
     val activity = LocalActivity.current
     val changingConfigurations = { activity?.isChangingConfigurations == true }
     val currentStore by rememberUpdatedState(store)

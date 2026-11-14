@@ -39,9 +39,8 @@ import kotlin.time.Duration.Companion.seconds
 
 /**
  * Port of iOS `EventStreamReconnectTests` (in `NetworkRetryTests.swift`): the event stream
- * reconnects on the shared backoff, at once on a network change, and resyncs from REST each time
- * it connects. iOS's `task.cancel()` on the effect `send` returned is the store's effect scope
- * being cancelled here.
+ * reconnects on the shared backoff, at once on a network change, and resyncs from REST each time it
+ * connects.
  */
 class EventStreamReconnectTests {
     @get:Rule val isolation = TestIsolationRule()

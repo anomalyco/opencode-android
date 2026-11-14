@@ -112,9 +112,8 @@ object DrawerListFonts {
 fun DrawerListActivityRing(isSpinning: Boolean, opaqueTail: Boolean, modifier: Modifier = Modifier) {
     val color = OpenCodeTheme.colors.secondaryText
     val tail = if (opaqueTail) color else color.copy(alpha = 0f)
-    // Half an ambient sweep per turn (iOS 03adf07a: `AmbientClock`, so every ring turns in step).
-    // A hidden drawer's ring holds still: no frame ticks for a drawer nobody sees; nor does it
-    // while TalkBack explores by touch (W-06).
+    // Half an ambient sweep per turn (`AmbientClock`, so every ring turns in step). Holds still
+    // while the drawer is hidden or TalkBack explores by touch.
     val hidden = LocalDrawerHidden.current.value
     val spins = isSpinning && !hidden && !rememberTouchExplorationEnabled()
     val rotation = remember { mutableFloatStateOf(0f) }
@@ -181,8 +180,8 @@ fun rememberProjectIcon(
 }
 
 /**
- * The project tile leading a drawer row (OC-419), loading its icon through
- * [ProjectIconClient], cached first. See the overload taking an icon.
+ * The project tile leading a drawer row, loading its icon through [ProjectIconClient], cached
+ * first. See the overload taking an icon.
  */
 @Composable
 fun DrawerListProjectTile(
@@ -209,12 +208,11 @@ fun DrawerListProjectTile(
 }
 
 /**
- * The [side]-square project tile leading a drawer row (iOS `DrawerListProjectTile`, OC-419):
- * the project's [icon] (full-bleed, or padded on a neutral backing) or its initial on its
- * palette colour, lit (iOS a0fc7375/d7aea740, OC-578): a highlight from the top, a 0.5 dp
- * white edge fading toward the bottom ([ProjectTileLighting]) and a soft contact shadow.
- * High contrast text swaps the edge for a solid 1 dp palette border. An arriving icon
- * cross-fades in over 0.18 s (cut under reduce motion). Decorative: hidden from TalkBack.
+ * The [side]-square project tile leading a drawer row (iOS `DrawerListProjectTile`): the project's
+ * [icon] (full-bleed, or padded on a neutral backing) or its initial on its palette colour, lit by
+ * [ProjectTileLighting] with a soft contact shadow. High contrast text swaps the edge for a solid 1
+ * dp palette border. An arriving icon cross-fades in over 0.18 s (cut under reduce motion).
+ * Decorative: hidden from TalkBack.
  */
 @Composable
 fun DrawerListProjectTile(

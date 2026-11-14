@@ -8,15 +8,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * Port of iOS `DrawerListPerfProbe.swift` (`PerformanceSmoothnessTests.testDrawerFling`): the
- * drawer list's first render and memory. The list notes when it was made ([mountStarted]) and
- * marks `drawer_list_first_frame` on the first frame that lays out four or more rows ([frame]),
- * then `drawer_list_footprint` once a second for 20 s, through [AppLog.perf] (iOS `LabMarks`).
- *
- * iOS runs it only in DEBUG/PERF builds launched with `OPENCODE_PERF_FRAMES=1`; Android apps get no
- * launch environment, so a lab harness (devtools, an instrumentation run) turns on [isEnabled]
- * before the drawer is built. Off, nothing runs. Footprint is the process's PSS
- * (`Debug.getPss()`, KB), the closest Android figure to iOS's physical footprint.
+ * Port of iOS `DrawerListPerfProbe.swift`: the drawer list's first render and memory. Marks
+ * `drawer_list_first_frame` on the first frame that lays out four or more rows ([frame]), then
+ * `drawer_list_footprint` once a second for 20 s, through [AppLog.perf]. A lab harness turns on
+ * [isEnabled] before the drawer is built; off, nothing runs. Footprint is the process's PSS
+ * (`Debug.getPss()`, KB).
  */
 object DrawerListPerfProbe {
     @Volatile

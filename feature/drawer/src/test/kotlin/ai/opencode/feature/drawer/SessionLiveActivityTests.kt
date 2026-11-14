@@ -47,10 +47,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of the Home half of iOS `SessionLiveActivityTests.swift` (f657969b): Home follows the run of
- * the session it sent in (`HomeFeature+SessionActivity`) and pushes its content to the
- * Session Live Activity. The mapping tests live in `:feature:system`
- * (`liveactivity/SessionLiveActivityTests.kt`); `leavingHomeEndsAFollowedRunsActivity` is `:app`'s.
+ * Port of the Home half of iOS `SessionLiveActivityTests.swift`: Home follows the run of the
+ * session it sent in and pushes its content to the Session Live Activity. The mapping tests live in
+ * `:feature:system`; `leavingHomeEndsAFollowedRunsActivity` is `:app`'s.
  */
 class SessionLiveActivityTests {
     @get:Rule val isolation = TestIsolationRule()

@@ -30,10 +30,9 @@ import ai.opencode.server.model.OpenCodeProject
 internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEvent): HomeReduced {
     when (event) {
         is OpenCodeServerEvent.SessionViewChanged -> {
-            // The event carries the watermark, so unread updates in place rather than refetching the
-            // list (which also cancelled the snapshot in flight). `OpenCodeClient` consumes the SSE
-            // echo of this device's own `POST /view`, so an event here means another client read the
-            // session.
+            // The event carries the watermark, so unread updates in place rather than refetching
+            // the list. `OpenCodeClient` consumes the SSE echo of this device's own `POST /view`,
+            // so an event here means another client read the session.
             var becameRead = true
             var s = state.updatingSession(event.sessionID) { session ->
                 val next = maxOf(session.viewedMilliseconds ?: 0, event.idle)

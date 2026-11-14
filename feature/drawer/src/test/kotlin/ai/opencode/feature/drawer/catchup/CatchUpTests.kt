@@ -551,7 +551,7 @@ class CatchUpTests {
 
     /**
      * A subagent's session never joins Catch Up, unread or not: it reaches the reader from its
-     * parent, as in Recents (TestFlight build 682).
+     * parent, as in Recents.
      */
     @Test fun subagentSessionsNeverJoinCatchUp() {
         val root = session("root", updated = 10)
