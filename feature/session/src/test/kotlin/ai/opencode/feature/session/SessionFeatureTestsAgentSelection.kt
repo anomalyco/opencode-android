@@ -49,10 +49,9 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 /**
- * Port of iOS `SessionFeatureTests+AgentSelection.swift`: Agent Selection (experimental, OC-511).
- * iOS's `resetAgentKeys()` has no counterpart: each test's shared keys live in its own in-memory
- * store. `Shared` values aren't compared by the store, so iOS's `$sessionAgents.withLock` asserts
- * are checked on the shared value after the step.
+ * Port of iOS `SessionFeatureTests+AgentSelection.swift`: Agent Selection (experimental). Each
+ * test's shared keys live in its own in-memory store. `Shared` values aren't compared by the store,
+ * so their asserts are checked on the shared value after the step.
  */
 class SessionFeatureTestsAgentSelection {
     private val agents = listOf(
@@ -191,7 +190,7 @@ class SessionFeatureTestsAgentSelection {
 
     /**
      * Moving a new session's draft to another project lists that project's
-     * agents, not the ones of the project it started in (TestFlight build 702).
+     * agents, not the ones of the project it started in.
      */
     @Test fun aDraftMovedToAnotherProjectListsThatProjectsAgents() = sessionTest { h ->
         val first = OpenCodeProject(id = "p1", name = "one", directory = "/srv/one")

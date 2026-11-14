@@ -8,15 +8,12 @@ import java.io.File
 import java.time.Instant
 
 /**
- * Port of iOS `SessionDirectory`: what app shortcuts, tiles, widgets and launcher quick
- * actions know about your sessions, so they can offer and resolve them without the network.
- * Home publishes it to app storage as the list changes. It holds titles and project names
- * only: never message text or credentials.
+ * Port of iOS `SessionDirectory`: what app shortcuts, tiles, widgets and launcher quick actions
+ * know about your sessions, so they can offer and resolve them without the network. Titles and
+ * project names only: never message text or credentials.
  *
- * iOS keeps a trimmed copy for its widgets extension, which has no App Group
- * ([forControls], [ControlDirectoryStore]). Android's widgets and tiles run in the app's own
- * process and read the same file; the controls' copy is kept so a change to what they show
- * (and only that) redraws them, as iOS reloads its controls.
+ * The controls' copy ([forControls], [ControlDirectoryStore]) is kept so a change to what they show
+ * (and only that) redraws them.
  */
 @Serializable
 data class SessionDirectory(
@@ -145,9 +142,8 @@ data class SessionDirectory(
 }
 
 /**
- * Port of iOS `ControlDirectoryStore`: the controls' copy of the directory. iOS keeps it in a
- * keychain group its widgets extension shares; Android's widgets run in-process, so this is a
- * plain app-private file used to tell when the controls need redrawing.
+ * Port of iOS `ControlDirectoryStore`: the controls' copy of the directory, an app-private file
+ * used to tell when the controls need redrawing.
  */
 class ControlDirectoryStore(
     val load: () -> SessionDirectory?,

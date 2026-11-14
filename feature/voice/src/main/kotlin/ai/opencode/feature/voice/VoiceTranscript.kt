@@ -860,12 +860,8 @@ $personalMessagesSection
     }
 
     /**
-     * Kit's call (Oct 19): words said over a result became "an unrelated note
-     * here about picking a gym", a child's "Bye, Keanu" got commentary and an
-     * offer to say bye, and the recap after his correction repeated it all.
-     * Kit's call (Oct 25): "Hi, baby" got "Hey! Still going?" and "Hi, you,
-     * boy" a laugh and "Hey.": "a word at most" and the greeting rules let it
-     * answer, so speech that isn't for it now gets nothing.
+     * Speech that isn't for the voice agent (a greeting to a child, an aside, background talk) gets
+     * no reply at all.
      */
     const val whatYouHearSection = """# What You Hear
 

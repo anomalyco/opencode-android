@@ -8,9 +8,8 @@ import ai.opencode.feature.composer.DictationFeature
 import ai.opencode.feature.composer.SharedComposerDraft
 import java.time.Instant
 
-// Port of iOS `SessionFeature+StateDictation.swift` (split out of `SessionFeature+State.swift`
-// in 67a3fb61): the composer's dictation, as computed properties and `fun State.x(): State`.
-// `raiseToTalkGrace` stays in `State`'s companion (`SessionFeature.kt`).
+// Port of iOS `SessionFeature+StateDictation.swift`: the composer's dictation. `raiseToTalkGrace`
+// stays in `State`'s companion (`SessionFeature.kt`).
 
 val State.isDictating: Boolean get() = dictation.isDictating
 val State.isPreparingDictation: Boolean get() = dictation.isPreparing

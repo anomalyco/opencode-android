@@ -31,14 +31,10 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `OnboardingPlaygroundFeatureTests.swift`: the Onboarding Playground (OC-351, D-72):
- * every phase, interruptions, the simulated server's failures and Replay, and that nothing in it
- * reaches a server, the saved servers or the keychain.
- *
- * iOS dismisses itself on Close through `@Dependency(\.dismiss)`; on Android the reducer cancels
- * its effects and the view's `onClose` dismisses, so the Close test checks that nothing keeps
- * running (`finish`) instead of counting dismissals. iOS's in-memory keychain is the test's
- * in-memory [SharedStore] (Android keeps secrets in shared keys).
+ * Port of iOS `OnboardingPlaygroundFeatureTests.swift`: every phase, interruptions, the simulated
+ * server's failures and Replay, and that nothing in it reaches a server, the saved servers or the
+ * keychain. The Close test checks that nothing keeps running (`finish`), since the view's `onClose`
+ * dismisses.
  */
 class OnboardingPlaygroundFeatureTests {
     @get:Rule val isolation = TestIsolationRule()

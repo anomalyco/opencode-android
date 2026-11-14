@@ -99,19 +99,12 @@ object MoveToBackground {
 }
 
 /**
- * Port of iOS `SessionFeature` (`OpenCode/Session/SessionFeature.swift`): one session screen (or a
- * new session's draft) — its transcript, composer, run, requests, call and sheets.
- *
- * Layout mirrors iOS: this file keeps [State]'s stored properties (and the nested types of
- * `+State` and `+ActionSupport`), [Action], dependencies and `reduce`; the body's composition is in
- * `SessionFeatureComposition.kt`; each area's reducer lives in `SessionFeature<Area>.kt` as
- * `internal fun SessionFeature.reduceX(state, action): Reduced?` (null: the action passes to the next step, iOS's `passes = true`). Helpers that mutate state and
- * return an effect (iOS `func x(_ state: inout State) -> Effect<Action>`) return
- * `Reduced<State, Action>`; pure state mutations (iOS `mutating func`) are
- * `fun State.x(): State` extensions in `SessionFeatureState*.kt`.
- *
- * Writes to [State.draft] go through [withDraft], which keeps iOS's `didSet` (an edit drops
- * [State.nonSendNewlineDraft]).
+ * Port of iOS `SessionFeature`: one session screen (or a new session's draft): its transcript,
+ * composer, run, requests, call and sheets. This file keeps [State], [Action], dependencies and
+ * `reduce`; composition is in `SessionFeatureComposition.kt`, each area's reducer in
+ * `SessionFeature<Area>.kt` (`reduceX` returning null passes the action on), and pure state changes
+ * in `SessionFeatureState*.kt`. Writes to [State.draft] go through [withDraft], which drops
+ * [State.nonSendNewlineDraft] on an edit.
  */
 class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
 

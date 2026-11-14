@@ -16,14 +16,14 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /*
- * Port of iOS `OpenCodeTests/InlineLinkIconsTests.swift` (Link Icons, OC-348 / D-68). iOS
+ * Port of iOS `OpenCodeTests/InlineLinkIconsTests.swift` (Link Icons). iOS
  * `InlineLinkText.decorate` is part of [MarkdownPresentation.present] on Android: a link's icon
  * slot is a word joiner carrying inline content (iOS: a `InlineLinkSlotKey` attribute on the
  * link's first character), so it is one more character in the presented text and an insertion
  * in [PresentedText.edits]. iOS `AttributedString(markdown:)` → [InlineMarkdownParser.parse].
  *
  * Not ported:
- * - `cleanAddressIsTheDefault`: Android bakes D-68's Clean Address (`LocalInlineLinkStyle`
+ * - `cleanAddressIsTheDefault`: Android bakes Clean Address (`LocalInlineLinkStyle`
  *   defaults to [InlineLinkStyle.Address]) and has no `InlineLinkTunables` presets to compare.
  * - Dropped (UIKit/SwiftUI): `holdingTheIconFindsItsLink`,
  *   `headingWithLinkCoversBothIconAndLinkTextInHitLayout`,

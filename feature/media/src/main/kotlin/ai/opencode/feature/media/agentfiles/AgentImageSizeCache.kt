@@ -14,15 +14,10 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
 
-// Port of iOS AgentImageSizeCache.swift.
-/**
- * Shapes of images read before, so a preview opens at its own shape before anything is read
- * again (iOS `AgentImageSizeCache`). Keyed by a hash of the server and path, at most [LIMIT]
- * entries, oldest out first, saved at most once a second off the main thread.
- *
- * The file is read once, off the main thread, when the cache is made: a composable asks [size]
- * while it draws, and that only ever reads memory.
- */
+// Port of iOS `AgentImageSizeCache`: shapes of images read before, so a preview opens at its own
+// shape. Keyed by a hash of the server and path, at most [LIMIT] entries, oldest out first, saved
+// at most once a second. The file is read once, off the main thread, when the cache is made; [size]
+// only reads memory.
 class AgentImageSizeCache(private val file: File?) {
     @Serializable
     private data class Stored(
@@ -158,10 +153,8 @@ class AgentImageSizeCache(private val file: File?) {
         private val saveScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
         /**
-         * `cacheDir/AgentImageSizes.json`; in memory where no context is installed. Lab runs that
-         * keep no transcript on disk keep no shapes either, so one run never opens with another's
-         * (iOS `LabTranscriptDiskCache.isDisabled`, `OPENCODE_LAB_DISABLE_TRANSCRIPT_DISK_CACHE=1`):
-         * `debug.opencode.lab_disable_transcript_disk_cache` = 1, debuggable builds only.
+         * `cacheDir/AgentImageSizes.json`; in memory where no context is installed, or in lab runs
+         * with `debug.opencode.lab_disable_transcript_disk_cache` = 1 (debuggable builds only).
          */
         val live: AgentImageSizeCache by lazy {
             val disabled = LabLaunch.property("debug.opencode.lab_disable_transcript_disk_cache") == "1"

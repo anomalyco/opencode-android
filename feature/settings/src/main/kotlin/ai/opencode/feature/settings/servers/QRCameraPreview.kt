@@ -106,9 +106,8 @@ private class QRCameraSession(private val once: Boolean, private val onScanned: 
         val mainExecutor = ContextCompat.getMainExecutor(context)
         val decoder = QRDecoder()
         val analysis = ImageAnalysis.Builder()
-            // iOS reads codes from its capture session's default `.high` preset (1080p). CameraX
-            // analyses 640x480 by default, where a code must fill over a quarter of the frame to
-            // read, so pairing worked only up close (QA FB-01). 1080 rows, 4:3 like the preview.
+            // CameraX's default 640x480 analysis only reads codes up close. 1080 rows, 4:3 like the
+            // preview.
             .setResolutionSelector(
                 ResolutionSelector.Builder()
                     .setResolutionStrategy(ResolutionStrategy(Size(1440, 1080), ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER))
@@ -152,13 +151,10 @@ private class QRCameraSession(private val once: Boolean, private val onScanned: 
 }
 
 /**
- * ZXing over a frame's luminance plane: QR codes only, as iOS's `metadataObjectTypes = [.qr]`, in
- * either polarity. AVFoundation also reads light-on-dark codes, which is how OpenCode Desktop draws
- * its pairing code in dark mode and how `opencode pair` looks in a light-theme terminal; ZXing
- * tries them only with `ALSO_INVERTED` (QA QR-01). That flips the binarized frame, so a dark
- * page's quiet zone, which the binarizer reads as white, turns black and small codes are missed.
- * A frame nothing was found in is read again with its luminance inverted before binarizing, which
- * keeps the quiet zone: dark Desktop codes then read from as far away as light ones.
+ * ZXing over a frame's luminance plane: QR codes only, in either polarity (Desktop draws its
+ * pairing code light-on-dark in dark mode). `ALSO_INVERTED` blackens a dark page's quiet zone and
+ * misses small codes, so a frame with no code is read again with its luminance inverted before
+ * binarizing.
  */
 private class QRDecoder {
     private val reader = MultiFormatReader().apply {

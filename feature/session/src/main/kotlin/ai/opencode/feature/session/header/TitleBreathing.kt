@@ -28,7 +28,7 @@ import kotlin.math.sin
 
 /**
  * How the session title animates while syncing or Auto Renaming (iOS `TitleLoadingStyle`). Only
- * [Breathing] ships; the others are Developer Mode tuning looks (D-54) that Android doesn't port.
+ * [Breathing] ships; iOS's Developer Mode looks aren't ported.
  */
 enum class TitleLoadingStyle { Breathing, Shimmer, Phosphor, Wave }
 
@@ -44,13 +44,10 @@ object TitleLoadingTunables {
 internal fun titleBreathNow(): Double = System.nanoTime() / 1e9
 
 /**
- * How a title looks while it loads (iOS `TitleBreath`, D-48 Breathing): its opacity breathes slowly
- * down to 45 % and back, starting from full, and eases back to full from wherever it is when the
- * loading ends. Under Reduce Motion it holds a steady dim that fades in and out.
- *
- * Every change of state carries on from what's on screen: the new curve starts at the old one's
- * opacity and speed, and the difference decays on a critically damped spring, so nothing jumps.
- * Times are seconds on any monotonic base ([titleBreathNow] in the app).
+ * How a title looks while it loads (iOS `TitleBreath`): its opacity breathes down to 45 % and back,
+ * and eases back to full when loading ends. Under Reduce Motion it holds a steady dim. Each change
+ * of state starts from the opacity and speed on screen, the difference decaying on a critically
+ * damped spring. Times are seconds on any monotonic base ([titleBreathNow] in the app).
  */
 data class TitleBreath(
     val isActive: Boolean = false,

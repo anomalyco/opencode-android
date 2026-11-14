@@ -18,15 +18,9 @@ import org.junit.Test
 
 /**
  * Port of iOS `ThemePaletteTests.swift`, the `:feature:settings` part (the rest is `:core`'s port).
- *
- * `appearanceSettingsActionsPersistViaSharedAndPlaySelectionHaptic` sends Home's `.settings(…)`
- * actions; on Android they are [HomeSettingsFeature]'s, which Home forwards, so it drives that
- * reducer. Its `TranscriptTunables.layoutSnapshot`/`MarkdownStyle` half is `:feature:transcript`'s,
- * and `ThemePalette.applyToWindows` is UIKit-only.
- *
- * Dropped: `appearanceTunablesRegisterSoftEdgeControls` drives the Developer Mode tuning store's
- * registration of `AppearanceTunables`, which isn't ported (the soft edge's 22/12 are baked in
- * `AppearanceSettingsView`'s `ThemesSoftEdgeBackdrop`).
+ * Home's `.settings(…)` actions are [HomeSettingsFeature]'s here, so that reducer is driven. The
+ * `TranscriptTunables` half is `:feature:transcript`'s; `ThemePalette.applyToWindows` is
+ * UIKit-only, and `appearanceTunablesRegisterSoftEdgeControls` needs the unported tuning store.
  */
 class ThemePaletteTests {
     @get:Rule val isolation = TestIsolationRule()

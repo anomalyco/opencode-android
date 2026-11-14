@@ -35,14 +35,15 @@ import org.junit.Test
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `NewSessionDraftTests.swift`.
+ * Port of iOS `NewSessionDraftTests.swift`. A new session's project: the recent projects above the
+ * composer, the Project sheet, and folders browsed on the server.
  *
- * A new session's project (D-34): the recent projects above the composer,
- * the Project sheet, and folders browsed on the server.
+ * Not ported here (:feature:drawer, `HomeFeature` / `AppFeature`):
+ * `aNewDraftVisitRestoresCurrentProjectRecency`, `aDraftTheVoiceAgentOpensInAFolderStartsThere`,
+ * `everyDraftFromADraftGetsAFreshTaskIdentityAndLoadsModels`,
+ * `switchingServersFromADraftAdvancesTaskIdentityAndLoadsTheNewServersModels`,
+ * `keepsIdentityMovesAdvanceVisitAndRunTask`.
  *
- * Not ported here (:feature:drawer, `HomeFeature` / `AppFeature`): `aNewDraftVisitRestoresCurrentProjectRecency`,
- * `aDraftTheVoiceAgentOpensInAFolderStartsThere`, `everyDraftFromADraftGetsAFreshTaskIdentityAndLoadsModels`,
- * `switchingServersFromADraftAdvancesTaskIdentityAndLoadsTheNewServersModels`, `keepsIdentityMovesAdvanceVisitAndRunTask`.
  * Not ported here (:server, `OpenCodeProject.folder` / `OpenCodeClient.directoryListing` alone):
  * `aFolderThatIsAKnownProjectChoosesThatProject`, `listedEntriesResolveAgainstTheServersLocation`.
  */
@@ -119,7 +120,7 @@ class NewSessionDraftTests {
 
     /**
      * The Project sheet lists a folder once even when the server has it
-     * under two projects (TestFlight build 640 showed `/` twice).
+     * under two projects.
      */
     @Test fun projectSheetListsEachFolderOnce() = draftTest { h ->
         val root = OpenCodeProject(id = "global", name = "/", directory = "/")

@@ -15,7 +15,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 /**
- * Port of iOS `System/Notifications/NotificationKeyStore.swift` (1ddd36b2): this phone's P-256
+ * Port of iOS `System/Notifications/NotificationKeyStore.swift`: this phone's P-256
  * key and the derived key for each notification ref. Unlike the keychain shared keys, every
  * unavailable read and failed write is an error: enrollment must not send a public key whose
  * private key wasn't saved.

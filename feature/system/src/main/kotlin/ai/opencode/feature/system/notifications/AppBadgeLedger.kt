@@ -7,14 +7,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /**
- * Port of iOS `AppBadgeLedger`: what the app icon's badge counts, left where the push handler
- * reads it. The app writes it whenever the count changes; a push arriving while the app isn't
- * live adds its session, so the count stays close to Catch Up until the app opens and counts
- * again. Session IDs, a hash of the server's identity, and its random notification `ref`
- * only: no titles, usernames, addresses, or credentials.
+ * Port of iOS `AppBadgeLedger`: what the app icon's badge counts, left in the app's preferences
+ * where the push handler reads it. A push arriving while the app isn't live adds its session, so
+ * the count stays close to Catch Up until the app opens and counts again.
  *
- * iOS keeps it in the App Group's defaults for its notification service extension; Android's
- * push handler runs in the app's process, so it lives in the app's own preferences.
+ * Session IDs, a hash of the server's identity and its random notification `ref` only: no titles,
+ * usernames, addresses or credentials.
  */
 @Serializable
 data class AppBadgeLedger(

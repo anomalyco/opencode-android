@@ -154,10 +154,8 @@ class SessionFeatureTestsInbox {
     }
 
     /**
-     * TestFlight 203: a subagent's completion waited in the parent's inbox
-     * (about 30 s on a live server) and showed as a bare “Agent finished” row
-     * under the reply. Like the desktop's compact timeline, it rides at the
-     * end of the turn it arrived in: in a quiet group of its own after a reply,
+     * A subagent's completion that waited in the parent's inbox rides at the end of the turn it
+     * arrived in, like the desktop's compact timeline: in a quiet group of its own after a reply,
      * inside the Used N group after tools, never as its own row.
      */
     @Test fun pendingCompletionNoticeFoldsIntoTheTurn() {

@@ -7,16 +7,12 @@ import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
 
 /**
- * Port of iOS `Settings/WhatsNew/WhatsNewFeature.swift`.
+ * Port of iOS `Settings/WhatsNew/WhatsNewFeature.swift`. What’s New: a drawer row while some
+ * feature is unseen, the page it pushes, and Settings’ switch for the row. Smaller changes never
+ * bring the row back. What’s new is seen once the page you read it on closes.
  *
- * What’s New: a drawer row while some feature is unseen, the page it pushes (like Settings), and
- * Settings’ switch for the row. Smaller changes never bring the row back. What’s new stays marked
- * while you read; it’s seen once the page you read it on closes.
- *
- * On Android the page lives on Settings' stack ([ai.opencode.feature.settings.SettingsFeature]
- * with `root = whatsNew` when the drawer's row opens it), and a Settings page an action opens is
- * pushed onto that stack, so iOS's `settingsPage` / `settingsPageClosed` fold into it.
- * The seen IDs and the row switch are shared keys, read live ([seenIDs], [isButtonEnabled]).
+ * The page lives on Settings' stack ([ai.opencode.feature.settings.SettingsFeature] with `root =
+ * whatsNew`). The seen IDs and the row switch are shared keys ([seenIDs], [isButtonEnabled]).
  */
 class WhatsNewFeature : Reducer<WhatsNewFeature.State, WhatsNewFeature.Action> {
     data class State(

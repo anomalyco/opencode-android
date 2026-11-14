@@ -236,9 +236,8 @@ class VoiceAudioStuckStopTests {
     private class Payload
 
     /**
-     * The discarded task used to retain its entire successful result forever
-     * while awaiting stop. Assert the session payload and activation both go,
-     * not merely that the prestart container can be deallocated.
+     * A discarded task doesn't keep its successful result while awaiting stop: the session payload
+     * and activation both go, not merely the prestart container.
      */
     @Test fun discardedSessionReleasesItsPayloadAndHolderWhileStopIsStuck() = engineTest {
         val owner = AudioSessionOwner(schedule = { _, _ -> })

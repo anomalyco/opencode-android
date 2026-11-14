@@ -164,10 +164,8 @@ class BrowserWebViews private constructor() {
     }
 
     /**
-     * The app's appearance changed: the open page's `prefers-color-scheme` follows without a
-     * reload, as a `WKWebView` follows its trait collection. Android's WebView reads the scheme
-     * from its context theme's `isLightTheme` whenever it refreshes its preferences, which a
-     * configuration change triggers.
+     * The app's appearance changed: the open page's `prefers-color-scheme` follows without a reload
+     * (see [BrowserThemeContext]).
      */
     fun setAppearance(id: UUID, isDark: Boolean) {
         val entry = entries[id] ?: return
@@ -513,11 +511,9 @@ class BrowserWebViews private constructor() {
         }
 
         /**
-         * Embedded frames' first loads (iOS judges every frame's navigations; Android's
-         * `shouldOverrideUrlLoading` skips a frame's initial load). A frame's document request is
-         * a navigation, the only kind that carries `Upgrade-Insecure-Requests` (Chromium adds it
-         * to every frame navigation), so images, scripts and fetches load as on iOS. What iOS
-         * cancels answers 204 No Content, which leaves the frame as it was. Runs off the main thread.
+         * Embedded frames' first loads, which `shouldOverrideUrlLoading` skips. Only frame
+         * navigations carry `Upgrade-Insecure-Requests`, so this judges just those; a blocked one
+         * answers 204, leaving the frame as it was. Runs off the main thread.
          */
         override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
             if (request.isForMainFrame || !isFrameNavigation(request)) return null
@@ -562,9 +558,9 @@ class BrowserWebViews private constructor() {
         }
 
         /**
-         * Links that ask for a new window open in this one, if they may load at all (iOS
-         * `createWebViewWith`). WebView names the new window's address only to the web view that
-         * takes it, so a throwaway one hears it and is let go.
+         * Links that ask for a new window open in this one, if they may load at all. WebView only
+         * tells the web view that takes the window its address, so a throwaway one hears it and is
+         * let go.
          */
         override fun onCreateWindow(view: WebView, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message): Boolean {
             val transport = resultMsg.obj as? WebView.WebViewTransport ?: return false
@@ -637,13 +633,9 @@ class BrowserWebViews private constructor() {
     }
 
     /**
-     * Gives the page its obscured insets: a document-start script for every page it goes to, and
-     * the open page now. iOS hands WebKit `obscuredContentInsets`; Android's WebView has no
-     * content insets (it ignores padding, and its `env(safe-area-inset-*)` comes only from the
-     * window's system bars, for `viewport-fit=cover` pages alone). So the page's root gets the
-     * insets as padding (border-box, so full-height layouts fit between the bars) and scroll
-     * padding: the page draws under the bars, and scrolled to either end its first and last
-     * pixels sit clear of them.
+     * Gives the page its obscured insets: a document-start script for every page, and the open page
+     * now. WebView has no content insets, so the page's root gets them as border-box padding and
+     * scroll padding.
      */
     private fun installInsets(webView: WebView, entry: Entry) {
         val metrics = webView.resources.displayMetrics
@@ -732,9 +724,9 @@ class BrowserWebViews private constructor() {
             "document.querySelectorAll('video,audio').forEach(function(m){try{m.pause()}catch(e){}});"
 
         /**
-         * Visible text (no form fields, hidden, or scripted content), the selection unless it's
-         * in a form field, and the scroll position. iOS runs it in its own content world; Android
-         * WebView has none, so it runs wrapped in a function and leaves no globals behind.
+         * Visible text (no form fields, hidden, or scripted content), the selection unless it's in
+         * a form field, and the scroll position. WebView has no isolated content world, so it runs
+         * in a function and leaves no globals behind.
          */
         val READER_SCRIPT = """
             const skip = 'input,textarea,select,option,button,script,style,noscript,template,svg,canvas,iframe,[contenteditable=""],[contenteditable="true"],[aria-hidden="true"],[type="password"]';
@@ -797,11 +789,9 @@ data class BrowserInsets(val top: Float = 0f, val left: Float = 0f, val bottom: 
 }
 
 /**
- * The browser's context theme, light or dark as the app is (a `WKWebView` follows its window's
- * interface style). Chromium reads `isLightTheme` from the web view's context theme each time it
- * refreshes the page's preferences, so switching [isDark] and sending the web view a configuration
- * change updates the page's `prefers-color-scheme` in place. The base stays the page's
- * [MutableContextWrapper], so dialogs and pickers still use the host's window.
+ * The browser's context theme, light or dark as the app is. Chromium rereads `isLightTheme` on a
+ * configuration change, so switching [isDark] updates `prefers-color-scheme` in place. The base
+ * stays the page's [MutableContextWrapper], so dialogs use the host's window.
  */
 class BrowserThemeContext(base: Context) : ContextThemeWrapper(base, 0) {
     var isDark = false

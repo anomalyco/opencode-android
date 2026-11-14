@@ -20,12 +20,9 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
 
-// Port of iOS ShareHandoff.swift. The share target sends what was shared itself
-// (`ShareSender`); what it can't send, or what you take on in the app (Continue in
-// OpenCode), it re-encodes and files in `filesDir/Shares`, and the app picks it up on its
-// next activation. Like iOS, the encoder, file staging and item loader live in their own files:
-// SharedImageEncoder.kt, `:core` `files/ComposerFileStaging.kt` (the composer needs it too) and
-// SharedItemLoader.kt; this file keeps the handoff models and their store.
+// Port of iOS ShareHandoff.swift. The share target sends what was shared itself (`ShareSender`);
+// what it can't send, or what you take on in the app (Continue in OpenCode), it re-encodes and
+// files in `filesDir/Shares`, and the app picks it up on its next activation.
 
 /**
  * Sessions the share sheet can offer, published by the app for its current server whenever it

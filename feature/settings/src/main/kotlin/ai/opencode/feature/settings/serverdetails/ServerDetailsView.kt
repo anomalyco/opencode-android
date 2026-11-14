@@ -92,10 +92,9 @@ import androidx.compose.ui.unit.sp
 internal typealias ServerDetailsStore = StoreOf<ServerDetailsFeature.State?, ServerDetailsFeature.Action>
 
 /**
- * Port of iOS `ServerDetailsView` (`Settings/ServerDetailsView.swift`, D-125 Overview Tiles):
- * problems as banners with their action, then three tiles (MCP servers, Accounts, Skills) that
- * each open a tray with the full list. Values on a 4 dp grid; radii 26 tiles, 22 banners.
- * Its row is the last one on Settings › Developer (`ai.opencode.devtools.DevToolsView`), with no switch.
+ * Port of iOS `ServerDetailsView` (`Settings/ServerDetailsView.swift`): problems as banners with
+ * their action, then three tiles (MCP servers, Accounts, Skills) that each open a tray with the
+ * full list. Values on a 4 dp grid; radii 26 tiles, 22 banners.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

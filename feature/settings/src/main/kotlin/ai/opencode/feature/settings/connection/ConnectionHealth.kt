@@ -10,16 +10,15 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Port of iOS `ConnectionHealth` (`Settings/ConnectionHealth.swift`): the Settings connection
- * card's model (`prototypes/settings-connection`, round 4, A · Monitor sweep): one beat per health
- * check, drawn like an EKG, and the status the card shows. The status follows the trace, not the
- * network, so it lags the link by a beat: a measured state lands on its beat's spike, Reconnecting
- * when the first unanswered check would have been answered, Unstable when a check goes
- * unanswered. Offline, Sign-in failed and Switching show at once.
+ * Port of iOS `ConnectionHealth`: the Settings connection card's model: one beat per health check,
+ * drawn like an EKG, and the status the card shows.
  *
- * Times are seconds on one monotonic clock (iOS `CACurrentMediaTime`; here the `Clock`
- * dependency, `System.nanoTime`). A plain mutable model owned by [ConnectionMonitor] on the main
- * thread (iOS mutates the struct in place).
+ * The status follows the trace, not the network, so it lags the link by a beat: a measured state
+ * lands on its beat's spike, Reconnecting when the first unanswered check would have been answered,
+ * Unstable when a check goes unanswered. Offline, Sign-in failed and Switching show at once.
+ *
+ * Times are seconds on the `Clock` dependency's monotonic clock. A plain mutable model owned by
+ * [ConnectionMonitor] on the main thread.
  */
 class ConnectionHealth(link: Link, at: Double, milliseconds: Int? = null) {
     /** The app's connection, as Home reports it. */
@@ -410,9 +409,8 @@ object ServerCardName {
     /**
      * The machine's name from a reverse lookup's answer: the first label of
      * `my-mac.tail1234.ts.net.`; null for an empty or numeric answer, or a label that only spells
-     * out an IPv4 address (`ip-10-0-2-2`, `ec2-3-89-50-194`, `c-73-12-34-56`, cloud and ISP PTR
-     * records), so the card falls back to the friendly name the list and drawer use. Android
-     * divergence: iOS keeps such labels (QA A-08).
+     * out an IPv4 address (`ip-10-0-2-2`, `ec2-3-89-50-194`), so the card falls back to the
+     * friendly name the list and drawer use.
      */
     fun machineName(fromReverse: String): String? {
         val trimmed = fromReverse.trim('.', ' ', '\n')

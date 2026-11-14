@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Consecutive user messages read as one block (iOS `UserMessageRun`, D-44 Grouped Corners):
+ * Consecutive user messages read as one block (iOS `UserMessageRun`):
  * steering messages waiting under Working under one Steering label, and delivered messages in a
  * row. Every surface in a run stacks [spacing] apart; where two bubbles meet, their trailing
  * corners tighten to [tightRadius]; attachments keep their own round shape.

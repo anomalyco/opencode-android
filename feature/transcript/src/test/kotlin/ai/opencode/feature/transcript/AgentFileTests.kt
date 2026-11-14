@@ -118,9 +118,8 @@ class ToolSummaryTests {
     }
 
     /**
-     * Kit, build 204: "Used 7 Patch, 7 Read, 11 Shell · Failed" while the
-     * agent carried on. Like the TUI's grouped rows, no tool call's failure
-     * reaches the collapsed row, recovered or not, final or not.
+     * Like the TUI's grouped rows, no tool call's failure reaches the collapsed row, recovered or
+     * not, final or not.
      */
     @Test fun toolCallFailuresNeverCueTheCollapsedRow() {
         val error = OpenCodeToolCall.Status.Error

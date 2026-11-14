@@ -143,9 +143,8 @@ object LinkPreviewPolicy {
 }
 
 /**
- * One attribute run of a Markdown block as link extraction reads it: its characters, its link,
- * and whether it is inline code. `OpenCodeMarkdownBlock` lives in `:feature:transcript`, above
- * media, so the transcript maps its `InlineRun`s into these.
+ * One attribute run of a Markdown block as link extraction reads it. `:feature:transcript` maps its
+ * `InlineRun`s into these.
  */
 data class LinkTextRun(val text: String, val link: String? = null, val isCode: Boolean = false)
 

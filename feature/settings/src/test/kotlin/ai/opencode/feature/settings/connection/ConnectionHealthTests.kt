@@ -28,12 +28,9 @@ import kotlin.math.max
 import kotlin.math.pow
 
 /**
- * Port of iOS `ConnectionHealthTests.swift`: the connection card's status machine and beat shapes
- * (`prototypes/settings-connection`, round 4): the status follows the trace, so each change lands
- * at its moment on it.
- *
- * Not here: `routesClassifyParsedAddressesNotSpellings` tests `ConnectionRoute`,
- * `OpenCodeServer.reachabilityRank` and `isLoopback`, which live in `:server` (its port).
+ * Port of iOS `ConnectionHealthTests.swift`: the connection card's status machine and beat shapes:
+ * the status follows the trace, so each change lands at its moment on it. Not here:
+ * `routesClassifyParsedAddressesNotSpellings` (`:server`'s port).
  */
 class ConnectionHealthTests {
     @get:Rule val isolation = TestIsolationRule()

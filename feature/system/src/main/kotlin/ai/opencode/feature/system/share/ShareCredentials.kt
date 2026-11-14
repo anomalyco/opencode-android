@@ -54,7 +54,7 @@ class ShareCredentialStore(
             )
         }
 
-        /** A v1 item keeps its server, not its callback (iOS 1ddd36b2); other versions read as none. */
+        /** A v1 item keeps its server, not its callback; other versions read as none. */
         private fun current(stored: ShareCredentials?): ShareCredentials? {
             val credentials = stored?.let {
                 if (it.version == 1) it.copy(version = ShareCredentials.CURRENT_VERSION, callbackURL = null) else it

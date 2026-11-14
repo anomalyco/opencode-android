@@ -482,9 +482,9 @@ object LinkPreviewFixtures {
             "example.org.ico" -> iconPNG(side = 16, letter = "D")
             "github.com.ico" -> iconPNG(side = 64, letter = "G", color = gray(0.14f))
             "youtube.com.ico" -> iconPNG(side = 64, letter = "Y", color = Color.argb(1f, 1f, 0f, 0.2f))
-            // Link Icons' lab reply (OC-348): a dark mark like the real one.
+            // Link Icons' lab reply: a dark mark like the real one.
             "vercel.com.ico" -> iconPNG(side = 64, letter = "▲", color = gray(0.06f))
-            // Linear issue links (OC-443): a round white mark with diagonal stripes on a dark square.
+            // Linear issue links: a round white mark with diagonal stripes on a dark square.
             "linear.app.ico" -> linearIconPNG(side = 48)
             else -> null
         }
@@ -631,10 +631,8 @@ object LinkPreviewFixtures {
 }
 
 /**
- * Lab launch switches, read only in debuggable builds. iOS passes launch arguments, user
- * defaults and environment variables (`-lab-link-previews`, `OPENCODE_LAB_SERVER_URL`); Android
- * has no equivalent for an installed app yet, so these are `debug.opencode.*` system properties
- * (`adb shell setprop debug.opencode.lab_link_previews 1`, then relaunch the app).
+ * Lab launch switches as `debug.opencode.*` system properties, read only in debuggable builds (`adb
+ * shell setprop debug.opencode.lab_link_previews 1`, then relaunch).
  */
 internal object LabLaunch {
     val isDebuggable: Boolean by lazy {
@@ -698,10 +696,8 @@ internal object LinkPreviewLab {
 }
 
 /**
- * A lab-only barrier so both comparison builds receive metadata at the marked frame,
- * independently of launch, navigation, and scheduling time (iOS `LinkPreviewLabGate`, released by
- * a Darwin notification; here by the `ai.opencode.lab-link-previews.release` broadcast:
- * `adb shell am broadcast -a ai.opencode.lab-link-previews.release`).
+ * A lab-only barrier so both comparison builds receive metadata at the marked frame. Released with
+ * `adb shell am broadcast -a ai.opencode.lab-link-previews.release`.
  */
 private object LinkPreviewLabGate {
     private const val RELEASE = "ai.opencode.lab-link-previews.release"

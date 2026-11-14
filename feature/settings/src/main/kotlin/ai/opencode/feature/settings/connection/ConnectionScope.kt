@@ -32,14 +32,13 @@ import kotlin.math.sqrt
 
 /**
  * Port of iOS `ConnectionScopeView` (`Settings/ConnectionScope.swift`): the connection card's EKG,
- * the call scope's LED dot matrix drawing one beat per health check as a monitor sweep, with an
- * erase gap ahead of the pen and older beats fading. Green while connected and orange while slow
- * or unstable (the system colours), pearl on dark or ink on light while reconnecting or switching,
- * and red only while offline. It stops drawing off screen and when the app isn't resumed; under
- * reduce motion it's a still trace that matches the status, redrawn only when the status changes.
+ * an LED dot matrix drawing one beat per health check as a monitor sweep, with an erase gap ahead
+ * of the pen and older beats fading. Green while connected, orange while slow or unstable, pearl or
+ * ink while reconnecting or switching, and red only while offline.
  *
- * iOS draws with Metal at 30 fps (`DotScopeMetalView`); here a Compose [Canvas] paints one AGSL
- * [RuntimeShader] rect ([ConnectionScopeShaders]) over the CPU-lit field, ticked at 30 fps.
+ * One AGSL [RuntimeShader] rect ([ConnectionScopeShaders]) over the CPU-lit field, ticked at 30
+ * fps. It stops drawing off screen and when the app isn't resumed; under reduce motion it's a still
+ * trace redrawn only when the status changes.
  */
 @Composable
 fun ConnectionScopeView(monitor: ConnectionMonitor, isHidden: Boolean, modifier: Modifier = Modifier) {

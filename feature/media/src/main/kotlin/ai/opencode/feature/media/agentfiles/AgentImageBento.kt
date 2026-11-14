@@ -39,16 +39,12 @@ data class BentoCorners(
 }
 
 /**
- * How a batch of a reply's images is arranged (Image Previews, round 3; iOS
- * `AgentImageBento`): one image full width up to `loneMaxHeight`; two side by side, or stacked
- * when both are wide; three as a hero beside (or above) the other two; four or more as a mixed
- * grid of justified rows. Each candidate arrangement is solved for the images' own shapes, and
- * the one that crops least and stands closest to a comfortable height wins, ties to the first.
- * Tiles that can't keep their shape crop gently ([crop]); a tap shows the whole image. The
- * arrangement depends only on the shapes and the width, so a batch, once decided
- * (`AgentImagePreviews.settleBento`), is laid out the same way every time.
- *
- * Units are points (dp), as on iOS.
+ * How a batch of a reply's images is arranged (iOS `AgentImageBento`): one full width up to
+ * `loneMaxHeight`; two side by side, or stacked when both are wide; three as a hero beside (or
+ * above) the other two; four or more as justified rows. The arrangement that crops least and stands
+ * closest to a comfortable height wins, ties to the first. It depends only on the shapes and the
+ * width, so a settled batch (`AgentImagePreviews.settleBento`) always lays out the same. Units are
+ * dp.
  */
 class AgentImageBento(
     aspects: List<Double>,
@@ -384,9 +380,8 @@ private class BentoCache {
 }
 
 /**
- * What Kit judges on a phone about Image Previews' bentos and their grow (iOS
- * `AgentImageTunables`): live tunables in the Tuning Panel, same keys, labels, defaults, ranges
- * and steps. The plain properties read the live value (the default while tuning is off).
+ * Image Previews' bento and grow tunables (iOS `AgentImageTunables`): live in the Tuning Panel; the
+ * plain properties read the default while tuning is off.
  */
 object AgentImageTunables {
     /** The Tuning Panel sections it registers (the key segment after the group), in order. */

@@ -28,12 +28,9 @@ import java.net.URI
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `ServerDetailsTests.swift` ("Server Details"): Settings › Developer › Server
- * Details (OC-513).
- *
- * Not here: `decodesEveryMCPStatus`, `decodesCredentialAndEnvironmentAccounts` and
- * `onlyMCPConnectIsRetriedWhenUnsent` exercise `:server`'s internal payload decoding and
- * `mcpConnectionIdempotency` (`:server`'s port).
+ * Port of iOS `ServerDetailsTests.swift`. Not here: `decodesEveryMCPStatus`,
+ * `decodesCredentialAndEnvironmentAccounts` and `onlyMCPConnectIsRetriedWhenUnsent` (`:server`'s
+ * port).
  */
 class ServerDetailsTests {
     @get:Rule val isolation = TestIsolationRule()

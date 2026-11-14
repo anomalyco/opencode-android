@@ -219,8 +219,7 @@ class LiveProtocolTests {
         assertEquals(1_500.milliseconds, userGate.delay(t0 + 6_500.milliseconds))
         assertNull(userGate.delay(t0 + 8_000.milliseconds))
 
-        // 3. Kit's Oct 30 dictation: transcript fragments 1.2 s apart for 20 s
-        // never release a held update (a 5 s cap used to, 1.5 s into a pause).
+        // 3. A dictation's transcript fragments 1.2 s apart for 20 s never release a held update.
         var dictation = VoiceCallTiming.live.quietGate
         dictation = dictation.noteUserSpoke(t0)
         dictation = dictation.noteHeld(t0)

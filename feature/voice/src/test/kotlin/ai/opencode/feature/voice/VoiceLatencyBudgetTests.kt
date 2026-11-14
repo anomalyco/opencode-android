@@ -381,7 +381,7 @@ class VoiceLatencyBudgetTests {
         assertEquals(2, prompts.value)
     }
 
-    // MARK: Riding out a drop (OC-236)
+    // MARK: Riding out a drop
 
     /** The tool under the shared policy, on a scripted clock with fixed jitter. */
     private suspend fun riding(tools: VoiceDelegatorWorkspace, fixture: WireFixture, name: String, arguments: String, clock: ScriptedClock = ScriptedClock()): String =

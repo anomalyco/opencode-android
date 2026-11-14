@@ -346,9 +346,8 @@ class SessionFeatureTestsSending {
     }
 
     /**
-     * The view's `onChange` ran after `body`, so the first frame after a run's
-     * end dropped Working and showed the reply's end, then swapped back for
-     * the finale. The reducer records both in the action that flips the run.
+     * The first frame after a run's end keeps Working until the finale: the reducer records both in
+     * the action that flips the run.
      */
     @Test
     fun aRunsStartAndEndReachTheWorkingLineInTheSameAction() {

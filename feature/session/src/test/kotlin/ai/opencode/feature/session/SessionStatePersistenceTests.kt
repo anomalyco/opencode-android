@@ -18,8 +18,8 @@ import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * iOS `SessionStatePersistenceTests.swift` (3b235f1d), the session half: arriving requests take
- * back the answers saved for them. The storage half is `:feature:composer`'s and the Home half
+ * iOS `SessionStatePersistenceTests.swift`, the session half: arriving requests take back the
+ * answers saved for them. The storage half is `:feature:composer`'s and the Home half
  * `:feature:drawer`'s `SessionStatePersistenceTests`.
  */
 class SessionStatePersistenceTests {

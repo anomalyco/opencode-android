@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.dp
  * that's wider than the block, the columns shrink to fit it, as the desktop's (browser) table
  * layout does, but never below a readable floor (112, or the column's natural width if smaller,
  * and never below its longest word). A table that still doesn't fit scrolls, with the next column
- * peeking in under the edge fade. Unshrunk, a three-column table hid its last column entirely
- * past the block's edge.
+ * peeking in under the edge fade.
  * Rules under the header and between rows run the block's full width and stay put while the
  * columns scroll.
  *

@@ -82,7 +82,7 @@ class NotificationPermissionClient(
 }
 
 /**
- * Port of iOS `NotificationKeysClient` (1ddd36b2): this phone's notification keys, off the
+ * Port of iOS `NotificationKeysClient`: this phone's notification keys, off the
  * main thread. The live value is [NotificationKeyStore.live]; the test value has no keys.
  */
 class NotificationKeysClient(
@@ -184,7 +184,7 @@ enum class NotificationPresentation { None, Banner, ListOnly }
  * the token and the relay keeps nothing. The `ref` exists only so a tap can find the saved
  * server; it is random, never derived from the server's address or credentials.
  *
- * Previews are encrypted (iOS 1ddd36b2): for each ref this phone makes a P-256 key and swaps
+ * Previews are encrypted: for each ref this phone makes a P-256 key and swaps
  * public keys with the saved server over HTTPS ([OpenCodeClient.pairNotificationPreview]); the
  * server seals each push's text with the derived key, so the relay and FCM only carry a
  * `v2` envelope. Only `/v2/notify/` callbacks on the relay are minted or reused
@@ -252,7 +252,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         @Serializable(with = InstantSerializer::class) val expiresAt: Instant,
         val token: String,
         val environment: String,
-        /** The device public key this callback was paired with (iOS 1ddd36b2). */
+        /** The device public key this callback was paired with. */
         val phonePublicKey: String? = null,
     ) {
         fun isReusable(token: String, environment: String, publicKey: String?, relay: HttpUrl?, now: Instant): Boolean =

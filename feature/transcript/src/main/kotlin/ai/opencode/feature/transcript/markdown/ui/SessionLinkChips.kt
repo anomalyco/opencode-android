@@ -33,7 +33,7 @@ object SessionLinkTunables {
     val rise = Tunable("transcript.sessionLink.rise", "Chip centre above baseline (em)", default = 0.31f, range = 0.2..0.45, step = 0.005)
     val fill = Tunable("transcript.sessionLink.fill", "Chip fill opacity", default = 0.08, range = 0.02..0.25, step = 0.005)
 
-    /** The radius options on the decision after D-131, at body size. */
+    /** The radius options, at body size. */
     val options: TuningPresets by lazy {
         TuningPresets(
             "transcript.sessionLink", "Session Links",

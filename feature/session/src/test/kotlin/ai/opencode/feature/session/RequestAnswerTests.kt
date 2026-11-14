@@ -48,19 +48,20 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Port of iOS `RequestAnswerTests.swift`.
+ * Port of iOS `RequestAnswerTests.swift`. A pending request's panel grows out of the composer, and
+ * the composer's row is your own answer.
  *
- * D-31 B: a pending request's panel grows out of the composer, and the
- * composer's row is your own answer.
- *
- * Not ported here (:feature:drawer, `HomeFeature`): `switchingIntoASnapshotDuringACallEndsTheRestoredAnswer`,
+ * Not ported here (:feature:drawer, `HomeFeature`):
+ * `switchingIntoASnapshotDuringACallEndsTheRestoredAnswer`,
  * `aSubagentsFoldedQuestionStaysFoldedWhenOpened`.
+ *
  * Not ported here (:feature:composer, `RequestDockFeature` and the fold's pure rules alone):
  * `requestDockFeatureReducesSelectionPagingAndAnswerEditsExhaustively`,
  * `aDockedQuestionFoldsToItsBarAndBackExhaustively`, `aFailedSendsReasonFitsItsOneLine`,
  * `thePanelGestureResets`, `theFoldFollowsTheFingerAndSettlesPastItsThreshold`.
- * UIKit-only probes (text view layout and scroll offsets, `UIColor` trait resolution, a frame-by-frame
- * hosting-controller trace): `inlineRequestBarMultilineDictationKeepsTopAscendersAndPinsToTheEndWithoutStep`,
+ *
+ * UIKit-only probes:
+ * `inlineRequestBarMultilineDictationKeepsTopAscendersAndPinsToTheEndWithoutStep`,
  * `disabledQuestionBarTrailingControlHasReadableLightContrast`,
  * `requestBarDictationFoldAndUnfoldTraceHasNoStepOrOpaqueControlCollision`.
  */

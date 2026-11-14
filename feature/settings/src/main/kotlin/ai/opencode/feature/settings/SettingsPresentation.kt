@@ -45,13 +45,9 @@ import kotlinx.coroutines.launch
  * underneath, never replaced by a navigation push, so a session's work never restarts on the way
  * back.
  *
- * Android divergence: Settings comes and goes on Material's shared axis ([PageTransitions]: a
- * 30 dp slide with the screens fading through, 300 ms) instead of iOS's full-width push over a
- * parallaxing, dimmed Home. The system back gesture at Settings' root previews closing the
- * Android way: Settings shrinks toward 90 %, rounds its corners and leans with the finger while
- * Home shows behind it; releasing closes it, a cancelled swipe springs back. On a pushed page the
- * stack's own back pops it first ([SettingsView]'s `NavDisplay`). Under reduce motion it
- * cross-fades in place.
+ * Settings comes and goes on Material's shared axis ([PageTransitions]), and back at its root is
+ * Android's predictive back preview. On a pushed page the stack's own back pops it first
+ * ([SettingsView]'s `NavDisplay`). Under reduce motion it cross-fades in place.
  *
  * Home (`:feature:drawer`) wraps its content with this and passes Settings' content.
  *

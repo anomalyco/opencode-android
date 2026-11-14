@@ -156,7 +156,7 @@ class HapticsAuditTests {
         h.skipInFlightEffects()
     }
 
-    /** Eight photos at most (Kit: “a limit of eight or something”); a tap past it warns instead of silently doing nothing. */
+    /** Eight photos at most; a tap past it warns instead of silently doing nothing. */
     @Test fun pickingPastTheLimitWarns() {
         val log = HapticsRecorder()
         val library = plusPhotoLibrary(log)

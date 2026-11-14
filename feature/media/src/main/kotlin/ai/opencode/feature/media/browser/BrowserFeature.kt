@@ -12,11 +12,10 @@ import java.util.UUID
 
 /**
  * The in-app browser (Experimental → In-App Browser): a web page pushed onto the session's stack
- * like a detail screen (D-40, Push In). Its bar goes back and forward through the page's
- * history, shares it, opens it in the browser, and asks about it: the question goes to the
- * session with the page attached, and a capsule says when the reply is ready. Going back from
- * the first page (the back button, the back gesture, TalkBack's back) closes it. The web view
- * itself lives in [BrowserWebViews], keyed by `pageID`. Port of iOS `BrowserFeature`.
+ * like a detail screen. Its bar goes back and forward, shares, opens in the browser, and asks about
+ * the page: the question goes to the session with the page attached. Going back from the first page
+ * closes it. The web view lives in [BrowserWebViews], keyed by `pageID`. Port of iOS
+ * `BrowserFeature`.
  */
 class BrowserFeature : Reducer<BrowserFeature.State, BrowserFeature.Action> {
     data class State(

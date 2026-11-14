@@ -19,13 +19,9 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * Port of iOS `Settings/Onboarding/OnboardingCamera.swift`.
- *
- * iOS's `OnboardingCameraPreview` (the playground's real camera, used only when the app already
- * has access, reading QR codes like the pairing scanner) is the shared
- * [ai.opencode.feature.settings.servers.QRCameraPreview] with `once = false`; the playground
- * only checks whether a code is a pairing code ([OnboardingPlaygroundFeature.Action.CodeScanned]).
- * Without access the playground shows [SimulatedCameraFeed].
+ * Port of iOS `Settings/Onboarding/OnboardingCamera.swift`. The playground's real camera is the
+ * shared [ai.opencode.feature.settings.servers.QRCameraPreview] with `once = false`; without access
+ * it shows [SimulatedCameraFeed].
  */
 
 /** One frame interval of iOS's `TimelineView(.animation(minimumInterval: 1 / 30))`. */

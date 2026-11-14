@@ -807,9 +807,8 @@ class VoiceSuppressionTests {
         assertEquals(true, answered.value.firstOrNull()?.first?.contains("Item 40"))
     }
 
-    // MARK: Kit's call (TestFlight 301): the delegator read GAME ENGINE's
-    // design cut at 400 characters ("| The 1…") and told him the reply it
-    // could see was cut off, so it didn't want to invent the rules.
+    // MARK: The delegator read a design cut at 400 characters ("| The 1…") and said the reply it
+    // could see was cut off, so it wouldn't invent the rules.
 
     private val gameEngine = OpenCodeSession(id = "ses_game", serverTitle = "GAME ENGINE", projectID = "p", directory = "/Users/kit/game", updatedAt = distantPast)
 

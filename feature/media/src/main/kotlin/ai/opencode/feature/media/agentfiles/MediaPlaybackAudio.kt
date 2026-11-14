@@ -12,14 +12,9 @@ import java.util.concurrent.Executors
 
 /**
  * File playback's OS operations, injectable without touching audio hardware (iOS
- * `MediaPlaybackAudio`).
- *
- * iOS activates `AVAudioSession` through `AudioSessionOwner` (the last holder deactivates).
- * That owner lives in `:feature:voice`, which media can't depend on, so Android counts its own
- * holders here and asks for audio focus (`AudioManager.requestAudioFocus`) for the first one,
- * abandoning it after the last. A call or dictation already holding audio
- * ([isShared]: the phone is in a call or communication mode) is joined rather than
- * interrupted: no focus request, as iOS keeps their play-and-record category.
+ * `MediaPlaybackAudio`). Media can't see `:feature:voice`'s `AudioSessionOwner`, so it counts its
+ * own holders and holds audio focus from the first to the last. A call or dictation already holding
+ * audio ([isShared]) is joined, not interrupted.
  */
 class MediaPlaybackAudio(
     /**

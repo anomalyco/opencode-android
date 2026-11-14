@@ -3,9 +3,7 @@ package ai.opencode.feature.voice
 /**
  * A short reply in which the voice agent says it's acting now ("Opening.",
  * "Checking.", "Let me look into that."), which only a delegation makes
- * true. In Kit's call GPT-Live said "Opening." to "Open code iOS" and
- * "Checking." to "It didn't work" without delegating either, and nothing
- * happened for 40 s.
+ * true.
  */
 object VoiceActionClaim {
     /** Acknowledgements are a few words; anything longer is an answer. */

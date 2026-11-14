@@ -180,13 +180,12 @@ class CallAudioLeakWindow {
 }
 
 /**
- * The call's music player. `VoiceAudioEngine` attaches it when a call's audio starts and
- * detaches it when the call stops; the reducer reaches it only through [CallAudioClient].
+ * The call's music player. `VoiceAudioEngine` attaches it when a call's audio starts and detaches
+ * it when the call stops; the reducer reaches it only through [CallAudioClient].
  *
- * Android divergence: iOS schedules the file on an `AVAudioPlayerNode` in the call's own
- * engine. Here a Media3 `ExoPlayer` plays it as voice communication (the call's route, inside
- * the platform echo canceller's reference) without taking audio focus from the call. It runs on
- * its own looper thread, which also steps the ducker.
+ * A Media3 `ExoPlayer` plays it as voice communication (the call's route, inside the platform echo
+ * canceller's reference) without taking audio focus from the call. It runs on its own looper
+ * thread, which also steps the ducker.
  */
 class CallAudioPlayer private constructor() {
     private val thread = HandlerThread("call-audio").apply { start() }

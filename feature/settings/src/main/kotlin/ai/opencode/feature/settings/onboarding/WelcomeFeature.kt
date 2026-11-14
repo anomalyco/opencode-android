@@ -8,15 +8,12 @@ import ai.opencode.feature.settings.serverdetails.OpenURLClient
 import java.net.URI
 
 /**
- * The first-run welcome (experimental Welcome Preview, iOS `WelcomeFeature`, t485): the laptop
- * and phone scene with Get Started, then one pairing step with Scan Pairing Code and the rest
- * behind Other Ways to Connect. It pairs nothing itself: its requests go to `AppFeature`, which
- * runs the same pairing as the classic screen. Settings › Experimental › Show Welcome opens it
- * over a paired app ([State.isPreview]), and Close returns there with the server untouched.
+ * The first-run welcome (experimental Welcome Preview, iOS `WelcomeFeature`): the laptop and phone
+ * scene with Get Started, then one pairing step with Scan Pairing Code and the rest behind Other
+ * Ways to Connect. It pairs nothing itself: its requests go to `AppFeature`.
  *
- * iOS dismisses itself on Close through `@Dependency(\.dismiss)`; here [Action.CloseTapped] does
- * nothing in the reducer and the presenting view's `onClose` dismisses it, as
- * `OnboardingPlaygroundFeature` does.
+ * Settings › Experimental › Show Welcome opens it over a paired app ([State.isPreview]).
+ * [Action.CloseTapped] does nothing in the reducer; the presenting view's `onClose` dismisses it.
  */
 class WelcomeFeature : Reducer<WelcomeFeature.State, WelcomeFeature.Action> {
     data class State(

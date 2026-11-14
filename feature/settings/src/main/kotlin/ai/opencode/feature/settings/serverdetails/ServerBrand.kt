@@ -40,9 +40,8 @@ import java.util.Locale
 /**
  * Port of iOS `ServerBrand` (`Settings/ServerBrand.swift`): how an MCP server or provider account
  * looks in Server Details: its brand mark on its brand colour, or a monogram tile when the app
- * doesn't know it. The server sends no logos; iOS maps known names to marks bundled in
- * `ProviderIcons.xcassets` (`mcp-*` from simple-icons, `provider-*`); Android bundles the same
- * SVGs in `:core` assets ([BrandAssets]), and [asset] is their iOS asset name.
+ * doesn't know it. The marks are bundled SVGs in `:core` assets ([BrandAssets]); [asset] is their
+ * iOS asset name.
  */
 data class ServerBrand(
     val name: String,

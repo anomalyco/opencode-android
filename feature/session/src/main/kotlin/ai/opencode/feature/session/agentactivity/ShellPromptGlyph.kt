@@ -9,18 +9,15 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-// Port of iOS `Session/AgentActivity/ShellPromptGlyph.swift`: the shell glyph's engine, ported
-// there from `prototypes/shell-glyph/rate.js` (round 3, Kit's pick: R1 Glide). The tuning lives
-// in one place, `ShellGlyphTuning.glide`.
+// Port of iOS `Session/AgentActivity/ShellPromptGlyph.swift`, the shell glyph's engine; the tuning
+// lives in `ShellGlyphTuning.glide`.
 //
-// A `>` prompt on the orb's 7-wide LED disc. The `>` is a body on a 7-cell torus: output chunks
-// are impulses that fill a push reservoir, which drains into its speed over a fraction of a
-// second; friction (linear drag plus a little quadratic, which caps the top speed) slows it. It
-// laps only while the flow (a leaky count of chunks per second) is above `enter`, and keeps
-// lapping until it falls below `exit`. Below that it rests on the prompt and each chunk nudges it
-// on a spring. Coming out of a lap it coasts on friction, then brakes forward into the next home
-// position, never backwards. It sits centred in the disc, like the subagent orb beside it, with no
-// cursor (Kit, Oct 19: "get rid of that flashing bit … so they're both circles").
+// A `>` prompt on the orb's 7-wide LED disc, moving as a body on a 7-cell torus: output chunks fill
+// a push reservoir that drains into its speed, and friction (linear plus a little quadratic,
+// capping the top speed) slows it. It laps while the flow (a leaky count of chunks per second) is
+// above `enter` and until it falls below `exit`; below that it rests on the prompt and each chunk
+// nudges it on a spring. Out of a lap it coasts, then brakes forward into the next home position,
+// never backwards.
 
 /**
  * R1 Glide's constants, named as the prototype names them. impulse: speed one chunk adds

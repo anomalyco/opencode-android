@@ -23,17 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
- * Spacing and type for long-form Markdown (iOS `MarkdownStyle`, D-52, Refined Standard):
- * headings open sections with a distinct 18 pt bold H3 step, prose sits at 92% so bold lead-ins
- * pop at 100%, list items sit together, and code stands apart with 3 pt line spacing.
+ * Spacing and type for long-form Markdown (iOS `MarkdownStyle`). Sizes are sp, so they follow the
+ * system font scale; iOS `lineSpacing` becomes the line height plus that spacing, trimmed above the
+ * first line and below the last.
  *
- * Sizes are sp, so they follow the system font scale as iOS's follow Dynamic Type (iOS
- * `scaledPointSize`/`scaledMetric`); iOS `lineSpacing` becomes the line height plus that
- * spacing, trimmed above the first line and below the last so only the gaps between lines grow.
- *
- * Every transcript text uses greedy line breaking ([LineBreak.Simple], no hyphens): appending
- * text never moves a word already laid out, which is what iOS's `ArrivingText.lineHold` buys
- * from SwiftUI's balanced last lines, so streamed text keeps its lines without the hold.
+ * Every transcript text uses greedy line breaking ([LineBreak.Simple], no hyphens): appending text
+ * never moves a word already laid out, so streamed text keeps its lines.
  */
 @Immutable
 class MarkdownStyle(

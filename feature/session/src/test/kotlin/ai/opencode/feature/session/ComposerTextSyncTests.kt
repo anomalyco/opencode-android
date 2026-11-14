@@ -24,11 +24,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Port of iOS `OpenCodeTests/ComposerTextSyncTests.swift` (02e85073, 6b8772f3). iOS drives a
- * `UITextView` through `ComposerTextInput.configure`; here a [TextFieldState] stands in for the
- * field and [ComposerTextInputController.syncText] for `updateUIView`'s sync. [Field.type] is
- * the reader typing: it replaces the selection, then publishes like the field's edit collector.
- * iOS's lagging `measureSize` snapshot is a sync that still carries the older [Field.presented].
+ * Port of iOS `OpenCodeTests/ComposerTextSyncTests.swift`. A [TextFieldState] stands in for the
+ * field and [ComposerTextInputController.syncText] for `updateUIView`'s sync. [Field.type] is the
+ * reader typing: it replaces the selection, then publishes like the field's edit collector.
  */
 class ComposerTextSyncTests {
     private class Field(

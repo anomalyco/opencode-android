@@ -31,13 +31,11 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `Settings/ServerDetails.swift`: Settings › Developer › Server Details (OC-513,
- * D-125 Overview Tiles): the server's MCP servers, provider sign-ins and
- * skills as three tiles that open into trays, with problems as banners on top. One read of each,
- * for the server's own folder; actions use the routes the server has.
- *
- * Its effects are keyed by the server, and [Action.Disappeared] cancels them. SettingsFeature's
- * `ifLet` also cancels them on removal/replacement, keeping server-side sign-in cleanup alive.
+ * Port of iOS `Settings/ServerDetails.swift`: Settings › Developer › Server Details: the server's
+ * MCP servers, provider sign-ins and skills as three tiles that open into trays, with problems as
+ * banners on top. One read of each, for the server's own folder. Effects are keyed by the server
+ * and cancelled by [Action.Disappeared] and by SettingsFeature's `ifLet`, which keeps server-side
+ * sign-in cleanup alive.
  */
 class ServerDetailsFeature : Reducer<ServerDetailsFeature.State, ServerDetailsFeature.Action> {
     /** What a tray shows: a tile's full list, or one MCP server. */

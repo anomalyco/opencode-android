@@ -17,9 +17,8 @@ import kotlin.math.min
 // velocities in dp/s.
 
 /**
- * Where the background-work surface is. On iOS the capsule and the panel are one piece of Liquid
- * Glass morphing between them; on Android one M3 surface animates its bounds between the
- * capsule's and the panel's.
+ * Where the background-work surface is: one surface animates its bounds between the capsule's and
+ * the panel's.
  */
 enum class BackgroundWorkStage {
     /** The capsule's surface, at rest. */
@@ -47,7 +46,10 @@ object BackgroundWorkTunables {
     /** Upward rubber band (dp). */
     const val upwardRubberBand: Float = 28f
 
-    /** The capsule's glyph frame from its leading edge, and its count lowered so the digits' caps sit centred (OC-477). */
+    /**
+     * The capsule's glyph frame from its leading edge, and its count lowered so the digits' caps
+     * sit centred.
+     */
     const val glyphLeading: Float = 8.25f
     const val countNudge: Float = 1f / 3f
 
@@ -277,9 +279,8 @@ data class BackgroundWorkDrag(
 
 /**
  * Drives interactive dragging, the frame-clock [SpringSolver] return-to-open, threshold haptics,
- * and mid-return regrab. A plain object (iOS `@Observable` class): the view reads [offset] (a
- * Compose state, so only the reading layout/draw phase updates) and steps [stepReturn] from a
- * `motionFrameLoop` while [isReturning].
+ * and mid-return regrab. The view reads [offset] in its layout/draw phase and steps [stepReturn]
+ * from a `motionFrameLoop` while [isReturning].
  */
 class BackgroundWorkDragController(private val haptics: HapticsClient) {
     var drag: BackgroundWorkDrag = BackgroundWorkDrag()

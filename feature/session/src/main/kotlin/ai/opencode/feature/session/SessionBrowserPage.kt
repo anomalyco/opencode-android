@@ -13,8 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import java.util.UUID
 
-// The session's glue for :feature:media's in-app browser (Experimental; iOS `BrowserPage(store:)`
-// over `SessionFeature`, pushed by `HomeView.stackPages` over whichever screen opened it, D-40).
+// The session's glue for :feature:media's in-app browser (Experimental; iOS `BrowserPage(store:)`).
 // The drawer area's stack pushes [sessionBrowserStackPage] and draws [SessionBrowserPage] for it.
 
 /**

@@ -28,10 +28,8 @@ import kotlin.time.Duration.Companion.seconds
 // sheet's folders.
 
 /**
- * iOS `BindableAction`: the view's two-way bindings, as explicit setter actions. The view sends
- * `Action.Binding(BindingAction.Draft(text))` (iOS `$store.draft`); [bindingReducer] writes the
- * field first (TCA's `BindingReducer`), then the core chain reacts (`reduceCallAndBindings`
- * handles `.binding(\.draft)`). Only the fields iOS binds are bindable.
+ * iOS `BindableAction`: the view's two-way bindings, as explicit setter actions. [bindingReducer]
+ * writes the field first, then the core chain reacts. Only the fields iOS binds are bindable.
  */
 sealed interface BindingAction {
     /** `$store.draft`: the composer's text. Written through [withDraft] (iOS `didSet`). */

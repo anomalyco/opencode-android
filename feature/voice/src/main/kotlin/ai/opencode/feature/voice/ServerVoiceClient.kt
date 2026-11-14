@@ -144,7 +144,7 @@ object ServerVoiceModels {
     /**
      * Whether a server listing `models` can broker a call: it holds a key for
      * GPT-Live, Realtime or Gemini Live. Grok never counts, since a Grok call
-     * always uses the phone's xAI key (`VoiceRoute.resolve`). iOS dropped it (89231d5f) with
+     * always uses the phone's xAI key (`VoiceRoute.resolve`). iOS dropped it with
      * its Voice Server picker; kept until Settings' picker moves to the Voice Provider page.
      */
     fun offersVoice(models: List<ServerVoiceModel>): Boolean = models.any { it.available && brokered(it.model) != null }

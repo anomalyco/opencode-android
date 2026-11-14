@@ -16,7 +16,7 @@ data class SessionLinkContext(val targets: Map<String, SessionLinkTarget> = empt
 
 val LocalSessionLinks = staticCompositionLocalOf { SessionLinkContext() }
 
-/** Link Icons (iOS `InlineLinkStyle`, OC-348): how a web link in a reply's text shows. */
+/** Link Icons (iOS `InlineLinkStyle`): how a web link in a reply's text shows. */
 enum class InlineLinkStyle {
     /** The link's text alone, as shipped (other Markdown surfaces). */
     Today,

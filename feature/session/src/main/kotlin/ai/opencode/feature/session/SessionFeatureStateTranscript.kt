@@ -31,7 +31,7 @@ val State.firstVisibleItemID: String?
         return items.getOrNull(start)?.id
     }
 
-/** Once drawn, keeps the window starting at the row it started at before an update (OC-375/386). */
+/** Once drawn, keeps the window starting at the row it started at before an update. */
 fun State.retainRenderedWindowStart(previousFirstID: String?): State {
     if (!hasRenderedFirstContentFrame || previousFirstID == null) return this
     val index = if (items.firstOrNull()?.id == previousFirstID) {

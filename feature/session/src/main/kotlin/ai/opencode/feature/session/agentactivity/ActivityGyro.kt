@@ -14,20 +14,17 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-// Port of iOS `Session/AgentActivity/ActivityGyro.swift`: the activity glyph's engine, ported
-// there from `prototypes/activity-glyph/gyro.js` (round 3, Kit's set in `kit-set.json`). Keep it
-// in step with the Swift: the per-state designs live in one table, `ActivityGyro.designs`.
+// Port of iOS `Session/AgentActivity/ActivityGyro.swift`, the activity glyph's engine; keep it in
+// step with the Swift. The per-state designs live in one table, `ActivityGyro.designs`.
 //
-// A glyph is up to four strokes on an LED dot sphere. A stroke is the set of dots where
-// dot(p, n) ≈ s: a great circle (s = 0), a smaller circle, or, seen edge-on, a straight line.
-// Windows along it make dashes; a pitch term tilts it into a spiral stripe. Every design is a
-// pose of these same numbers, so a change of state morphs the dots rather than cross-fading them.
+// A glyph is up to four strokes on an LED dot sphere. A stroke is the set of dots where dot(p, n) ≈
+// s: a great circle (s = 0), a smaller circle, or, seen edge-on, a straight line. Windows along it
+// make dashes; a pitch term tilts it into a spiral stripe. Every design is a pose of these same
+// numbers, so a change of state morphs the dots rather than cross-fading them.
 //
-// Angles never double back. Each is unwrapped: it either spins (its speed a spring) or holds a
-// pose. Holding a new pose while moving picks the next equivalent angle ahead, far enough that a
-// critically damped spring decelerates into it without overshooting.
-//
-// `AgentActivity` itself lives in the root package (`AgentActivitySource.kt`), with the models.
+// Angles never double back: each either spins (its speed a spring) or holds a pose, and a new pose
+// picks the next equivalent angle ahead, far enough for a critically damped spring to decelerate
+// into it without overshooting.
 
 enum class ActivityAccent { orange, red, green, blue }
 

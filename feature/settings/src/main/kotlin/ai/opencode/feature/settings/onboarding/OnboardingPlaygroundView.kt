@@ -117,13 +117,10 @@ import kotlin.math.roundToInt
 private typealias PlaygroundStore = StoreOf<OnboardingPlaygroundFeature.State, Action>
 
 /**
- * Port of iOS `Settings/Onboarding/OnboardingPlaygroundView.swift`.
- *
- * The Onboarding Playground: the onboarding's pages over the dot field, with a hideable control
- * bar for the variant, every phase, the simulated server's latency and failures, and Replay.
- * Shown full screen from Settings › Developer › Playgrounds › Onboarding. It is a
- * sandbox only; iOS has no first-run entry to it (the real first run is `:app`'s connection
- * screen), so there is none here either.
+ * Port of iOS `Settings/Onboarding/OnboardingPlaygroundView.swift`. The Onboarding Playground: the
+ * onboarding's pages over the dot field, with a hideable control bar for the variant, every phase,
+ * the simulated server's latency and failures, and Replay. A sandbox only, shown from Settings ›
+ * Developer › Playgrounds › Onboarding.
  */
 @Composable
 fun OnboardingPlaygroundView(

@@ -7,9 +7,8 @@ import ai.opencode.server.model.OpenCodeFormRequest
 import ai.opencode.server.model.OpenCodeFormValue
 import ai.opencode.server.model.OpenCodePermissionRequest
 
-// Port of iOS `SessionFeature+StateRequests.swift` (split out of `SessionFeature+State.swift` in
-// 67a3fb61): the request dock's state, forwarded from `requestDock`. Each iOS get/set pair is a
-// getter plus a `withX(value)` setter.
+// Port of iOS `SessionFeature+StateRequests.swift`: the request dock's state, forwarded from
+// `requestDock`. Each iOS get/set pair is a getter plus a `withX(value)` setter.
 
 val State.permissionRequests: List<OpenCodePermissionRequest> get() = requestDock.permissionRequests
 fun State.withPermissionRequests(value: List<OpenCodePermissionRequest>): State = updateRequestDock { it.copy(permissionRequests = value) }

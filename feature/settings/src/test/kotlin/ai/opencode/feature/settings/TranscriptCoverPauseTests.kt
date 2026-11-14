@@ -8,9 +8,9 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of the Settings half of iOS `OpenCodeTests/TranscriptCoverPauseTests.swift` (ce3fd729):
- * [SettingsCover] follows the presentation, not the shown flag. The list pause and drawer stack
- * tests belong to `:feature:transcript` and `:feature:drawer`.
+ * Port of the Settings half of iOS `OpenCodeTests/TranscriptCoverPauseTests.swift`: [SettingsCover]
+ * follows the presentation, not the shown flag. The list pause and drawer stack tests belong to
+ * `:feature:transcript` and `:feature:drawer`.
  */
 class TranscriptCoverPauseTests {
     @get:Rule val isolation = TestIsolationRule()

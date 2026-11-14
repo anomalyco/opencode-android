@@ -247,12 +247,9 @@ private fun LiveCallCoordinator.unbackedOutcomeTimedOut(claim: String, userWords
     emit(VoiceCallEvent.FunctionCall(id, "delegate", RealtimeJSONs.obj("text" to RealtimeJSONs.string(prompt))))
 }
 /**
- * One capture chunk's level. Transcript fragments arrive in bursts, a
- * second or more apart while the user talks on, so the microphone tells
- * the quiet gate they're still talking: in Kit's Oct 30 call an update
- * went out 1.5 s after a fragment, mid-dictation, and the voice agent
- * talked over him for 9 s. It counts only while their words were
- * transcribed recently, so a noise with no words holds nothing.
+ * One capture chunk's level. Transcript fragments arrive in bursts, a second or more apart while
+ * the user talks on, so the microphone tells the quiet gate they're still talking. It counts only
+ * while their words were transcribed recently, so a noise with no words holds nothing.
  */
 internal suspend fun LiveCallCoordinator.noteMicLevel(level: Float) {
     val now = clock.now()
@@ -276,8 +273,7 @@ internal suspend fun LiveCallCoordinator.noteMicLevel(level: Float) {
 /**
  * The user has been talking over the voice agent for `liveBargeIn`, on
  * the microphone, with words transcribed since its speech began: its
- * audio stops. GPT-Live doesn't always stop on its own (in Kit's Oct 30
- * call it spoke an update over him for 9 s).
+ * audio stops. GPT-Live doesn't always stop on its own.
  */
 internal suspend fun LiveCallCoordinator.yieldIfUserTalksOver(now: Duration) {
     if (timing.liveBargeIn <= Duration.ZERO || !assistantAudioPlaying || droppingAssistantSpeech) return

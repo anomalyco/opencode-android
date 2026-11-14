@@ -194,11 +194,9 @@ internal fun ArrivingText(
         modifier = modifier,
         trailingActions = if (quoteOnLinkMenu) listOfNotNull(quoteAction) else emptyList(),
     ) {
-        // Compose widens each link's own clickable node to a 48 dp touch target, past the
-        // link's glyphs and even past this text's box (M-02: a tap in the gap above a line
-        // opened its link). Links take touches only on their glyphs, as on iOS, so the link
-        // nodes get no minimum target: they stay inside the text, where the gesture below
-        // keeps every touch that misses the glyphs from them.
+        // Compose widens each link's clickable node to a 48 dp touch target, past the link's glyphs
+        // and this text's box. Links take touches only on their glyphs, so the link nodes get no
+        // minimum target; the gesture below keeps touches that miss the glyphs from them.
         CompositionLocalProvider(LocalViewConfiguration provides touchTargets) {
             Text(
                 text = presented.text,

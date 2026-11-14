@@ -27,7 +27,7 @@ import kotlin.math.pow
 
 /**
  * A message an agent sent (Voice, the delegator, another session, a parent spawning a subagent)
- * arriving bright and settling (K4 Inner glow): the bubble fades in while a luminous edge inside
+ * arriving bright and settling: the bubble fades in while a luminous edge inside
  * it and a slight lift of its fill rise in 70 ms, then decay like phosphor, fast and then a
  * slower tail, to exactly the plain bubble. Under Reduce Motion it only fades in. Messages typed
  * or dictated on this phone never reveal (iOS `AgentMessageReveal`).

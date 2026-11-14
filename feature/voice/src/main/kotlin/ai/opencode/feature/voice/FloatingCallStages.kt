@@ -30,13 +30,11 @@ import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 
-// One Shape (D-138 option 2, OC-577; iOS `FloatingCallStages.swift`): the orb's own surface and
-// dot field grow into a card above the composer, then into a sheet the height of the screen, on
-// one vertical drag. One progress value runs 0 (orb), 1 (card) and 2 (full); the finger holds the
-// shape's top edge, so every stage is scrubbable, and a release carries the finger's speed into
-// the spring. Hanging up from any stage flies the shape into the composer's call button. Lengths
-// in dp (iOS points), times in seconds. The lab's `-lab-stage-trace` (`FloatingCallStageTrace`)
-// is a debug-only iOS recorder and isn't ported.
+// One Shape (iOS `FloatingCallStages.swift`): the orb's own surface and dot field grow into a card
+// above the composer, then into a sheet the height of the screen, on one vertical drag. One
+// progress value runs 0 (orb), 1 (card) and 2 (full); the finger holds the shape's top edge, so
+// every stage is scrubbable, and a release carries the finger's speed into the spring. Hanging up
+// from any stage flies the shape into the composer's call button. Lengths in dp, times in seconds.
 
 /** One Shape's tunables (iOS `FloatingCallStageTunables`). */
 object FloatingCallStageTunables {
@@ -45,7 +43,7 @@ object FloatingCallStageTunables {
     val fullTop = Tunable("call.stage.fullTop", "Full sheet top", default = 70.0, range = 44.0..160.0, step = 1.0)
     val margin = Tunable("call.stage.margin", "Card side margin", default = 12.0, range = 0.0..32.0, step = 1.0)
 
-    /** The card takes over the screen's foot, the composer and its pills hidden under it, instead of standing above them (Kit, Nov 1). */
+    /** The card takes over the screen's foot, the composer and its pills hidden under it, instead of standing above them. */
     val covers = Tunable("call.stage.covers", "Card covers the composer", default = true)
     val coverHeight = Tunable("call.stage.coverHeight", "Covering card height", default = 560.0, range = 300.0..720.0, step = 2.0)
     val coverInset = Tunable("call.stage.coverInset", "Covering card bottom margin", default = 12.0, range = 0.0..40.0, step = 1.0)
@@ -73,7 +71,7 @@ object FloatingCallStageTunables {
 }
 
 /**
- * Lift and Spin Up (D-144; iOS `FloatingCallConnectTunables`): the composer's call button is where
+ * Lift and Spin Up (iOS `FloatingCallConnectTunables`): the composer's call button is where
  * the orb starts. Pressed, it dips and its phone glyph starts to spin; it lifts on a spring that
  * starts moving up, turning into the dark Rim Spinner as it grows, the spin speeding up until the
  * call connects.

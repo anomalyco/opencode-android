@@ -258,10 +258,9 @@ class SendOutboxTests {
     }
 
     /**
-     * The actual TestFlight 341 error: an immediate ATS -1022 from an HTTP
-     * origin that answered other requests, then success on manual Retry.
-     * Drive the live client's error translation under the outbox's `.once`
-     * scope, so this pins quiet recovery and one owner of the retry together.
+     * An immediate ATS -1022 from an HTTP origin that answered other requests, then success on
+     * manual Retry. Drives the live client's error translation under the outbox's `.once` scope,
+     * pinning quiet recovery and one owner of the retry together.
      */
     @Test fun anATSFailureOnAWorkingHTTPOriginRetriesSilentlyThroughTheLiveClient() = outboxTest { h ->
         val admissions = LockIsolated(listOf<String>())
@@ -1038,9 +1037,8 @@ class SendOutboxTests {
     // region Riding out an outage (OC-231)
 
     /**
-     * A server down for two minutes (a Mac waking, a restart, a tunnel
-     * finding its way back) no longer turns the send into a failed send: it
-     * keeps trying past the old five attempts and goes once the server answers.
+     * A server down for two minutes (a Mac waking, a restart, a tunnel finding its way back)
+     * doesn't fail the send: it keeps trying and goes once the server answers.
      */
     @Test fun aSendOutlastsAnOutageLongerThanTheOldBudget() = outboxTest { h ->
         val posts = Posts()

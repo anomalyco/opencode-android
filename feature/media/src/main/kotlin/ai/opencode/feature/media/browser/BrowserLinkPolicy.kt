@@ -31,9 +31,8 @@ object BrowserLinkPolicy {
     }
 
     /**
-     * Loopback pages the session lab serves count as public in debug lab runs (iOS reads
-     * `OPENCODE_LAB_BROWSER_LOOPBACK=1`; Android reads the same name as a system property set by
-     * the lab, `debug.opencode.lab_browser_loopback`, in debuggable builds only).
+     * Loopback pages the session lab serves count as public in debug lab runs
+     * (`debug.opencode.lab_browser_loopback`, debuggable builds only).
      */
     val allowsLoopbackForLab: Boolean by lazy {
         if (!isDebuggable) return@lazy false

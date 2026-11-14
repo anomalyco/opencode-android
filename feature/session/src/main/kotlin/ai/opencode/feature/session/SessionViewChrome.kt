@@ -16,10 +16,8 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-// Port of iOS `Session/SessionView+Chrome.swift` (split out of `SessionView.swift` in 9972785b):
-// the small pieces of the screen's chrome: the drawer glyph and the composer's and request bar's
-// swap transitions. `ModelProviderGroup` lives in :server (`model/Project.kt`), `RequestPanelReveal`
-// in :feature:composer (`RequestDockView.kt`) and `ProviderIcon` in :core (`ui/ProviderIcon.kt`).
+// Port of iOS `Session/SessionView+Chrome.swift`: the drawer glyph and the composer's and request
+// bar's swap transitions.
 
 /**
  * The drawer button's glyph: a long stroke over a short one, drawn at whole pixels so it reads at

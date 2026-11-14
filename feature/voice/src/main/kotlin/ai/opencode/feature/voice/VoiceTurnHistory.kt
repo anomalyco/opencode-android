@@ -18,8 +18,7 @@ data class VoiceTurnHistory(
         val text: String,
         /**
          * A reply the connection (or an interruption) stopped mid-way. Seeded
-         * as it is, GPT-Live finishes it on the next session: in Kit's call
-         * (Oct 19) "…it'll lock" came back as "that down. Anyway, …".
+         * as it is, GPT-Live finishes it on the next session.
          */
         val cutOff: Boolean = false,
     ) {
@@ -90,7 +89,7 @@ data class VoiceTurnHistory(
  * The results the voice agent was actually given this call, as short lines.
  * A replacement session only knows what it is seeded with; without these a
  * recap is built from the voice agent's own earlier replies, embellishments
- * included (Kit's call, Oct 19: "kids say stuff…" came back word for word).
+ * included.
  */
 data class VoiceResultRecord(val entries: List<String> = emptyList()) {
     fun record(content: String): VoiceResultRecord {

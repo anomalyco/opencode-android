@@ -26,7 +26,7 @@ import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * Port of iOS `System/Notifications/NotificationCrypto.swift` (1ddd36b2): the v2 wire format.
+ * Port of iOS `System/Notifications/NotificationCrypto.swift`: the v2 wire format.
  * Neither the relay nor FCM receives these fields in clear.
  *
  * P-256 ECDH, HKDF-SHA256 (salt: the ref, info: [CONTEXT], 32 bytes) and AES-256-GCM over

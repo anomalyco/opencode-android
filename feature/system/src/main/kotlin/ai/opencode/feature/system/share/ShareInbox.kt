@@ -16,10 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Port of iOS `ShareInboxClient`: the app's side of the share target handoff
- * (ShareHandoff.kt). iOS's `SharedComposerDraft`, `SharedDraftTarget` and
- * `SessionFeature.State.absorb` use composer and session types above this module, so they live
- * with the session area; [ShareTargetsPublication] is built by the drawer (`HomeFeature`).
+ * Port of iOS `ShareInboxClient`: the app's side of the share target handoff (ShareHandoff.kt).
+ * [ShareTargetsPublication] is built by the drawer (`HomeFeature`).
  */
 class ShareInboxClient(
     /** Removes and returns every pending share, oldest first. */

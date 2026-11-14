@@ -16,10 +16,9 @@ import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
 
-// Floaty (D-147 option 3; iOS `FloatingCallFloat.swift`): the resting orb's place, what a touch on
-// it was, the space it may rest in, and its drift after a throw. Lengths in dp (iOS points),
-// speeds in dp a second, times in seconds. Plain values and objects: no Compose but observed
-// state, so the physics runs in JVM tests.
+// Floaty (iOS `FloatingCallFloat.swift`): the resting orb's place, what a touch on it was, the
+// space it may rest in, and its drift after a throw. Lengths in dp, speeds in dp a second, times in
+// seconds. Plain values and objects, so the physics runs in JVM tests.
 
 /** Where the orb's centre rests: null [x] is the trailing side, null [y] just above the composer, following it as the keyboard raises it. */
 data class FloatingCallPlace(val x: Float? = null, val y: Float? = null)
@@ -137,7 +136,7 @@ enum class FloatingCallTouch {
 }
 
 /**
- * Floaty (D-147 option 3; iOS `FloatingCallDrift`): the orb glides on with a throw's speed and
+ * Floaty (iOS `FloatingCallDrift`): the orb glides on with a throw's speed and
  * slows with friction; outside `bounds` (where its centre may rest) a soft spring eases it back
  * in, carrying the speed it has rather than stopping hard. It rests where it slows. A hard throw
  * runs on past the keep-out no further than `reach` (the screen's edge): heading out, it's held

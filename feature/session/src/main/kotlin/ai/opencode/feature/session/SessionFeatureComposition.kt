@@ -21,9 +21,9 @@ import ai.opencode.feature.session.SessionFeature.State
 import ai.opencode.feature.voice.VoiceFeature
 import kotlin.time.Duration.Companion.milliseconds
 
-// Port of iOS `SessionFeature+Composition.swift` (split out of `SessionFeature.swift` in 9251ae06):
-// how the session's reducers compose: the core steps, the child features, and the `onChange` hooks
-// around them. `CancelID` and the companion's `coreSteps` stay nested in `SessionFeature.kt`.
+// Port of iOS `SessionFeature+Composition.swift`: how the session's reducers compose: the core
+// steps, the child features, and the `onChange` hooks around them. `CancelID` and `coreSteps` stay
+// in `SessionFeature.kt`.
 
 /** iOS `reduceCore`: the ordered core steps; the first that takes the action wins. */
 internal fun SessionFeature.reduceCore(state: State, action: Action): Reduced<State, Action> {
@@ -176,8 +176,8 @@ internal fun SessionFeature.composedBody(): Reducer<State, Action> {
 
     val fullBody: Reducer<State, Action> = run {
         sessionReducers
-            // A pending request takes the composer as its answer and gives it back as it was
-            // (D-31 B); paging or switching requests moves the bar's words.
+            // A pending request takes the composer as its answer and gives it back as it was;
+            // paging or switching requests moves the bar's words.
             .onChange({ it.answerContext }) { old, _, state -> reconcileAnswering(old, state) }
             .onChange({ it.composingRetiresStarterPrompts }) { _, _, state ->
                 Reduced(if (state.composingRetiresStarterPrompts) state.copy(starterPrompts = emptyList()) else state)

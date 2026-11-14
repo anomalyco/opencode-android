@@ -28,12 +28,10 @@ import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `SessionFeatureTests+QuietPolling.swift`. Timed reads (the pending-work polls and
- * the watchdog) go quiet while the server isn't answering and while the app is in the
- * background: traffic into a dead route can stall a whole VPN tunnel (tailscale/tailscale#21773).
- * A reconnect and the return start them again at once. The tests that build Home's state
- * (`aSessionSwappedInWhileAwayStartsItsTimersOnTheReturn`, `aDraftPromotedAfterAReconnectPolls`,
- * `aSessionOpenedWhileOfflineStartsWithoutTimedReads`) are `:feature:drawer`'s.
+ * Port of iOS `SessionFeatureTests+QuietPolling.swift`. Timed reads (the pending-work polls and the
+ * watchdog) go quiet while the server isn't answering and while the app is in the background, since
+ * traffic into a dead route can stall a whole VPN tunnel. A reconnect and the return start them
+ * again at once. The tests that build Home's state are `:feature:drawer`'s.
  */
 class SessionFeatureTestsQuietPolling {
     /**
@@ -68,9 +66,8 @@ class SessionFeatureTestsQuietPolling {
     }
 
     /**
-     * A running session whose stream drops used to re-read the server every 3 s on top of Home's
-     * reconnects. Now nothing asks until Home hears from the server again; then the polls and the
-     * 3 s watchdog start at once.
+     * A running session whose stream drops asks nothing until Home hears from the server again;
+     * then the polls and the 3 s watchdog start at once.
      */
     @Test fun aServerThatStopsAnsweringGetsNoTimedReadsUntilItAnswersAgain() = sessionTest { h ->
         val session = testSession(id = "ses_quiet", title = "Quiet")

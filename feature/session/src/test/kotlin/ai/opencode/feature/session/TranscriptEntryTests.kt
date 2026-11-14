@@ -67,8 +67,8 @@ class TranscriptEntryTests {
     }
 
     /**
-     * OC-375/386: once drawn, rows arriving at the end keep the window's first
-     * row, and that row is a whole group's first.
+     * Once drawn, rows arriving at the end keep the window's first row, and that row is a whole
+     * group's first.
      */
     @Test fun retainingTheRenderedStartKeepsTheGroupWhole() {
         val tools = (0 until 10).map { tool("t$it") }

@@ -43,7 +43,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
-// Ports of iOS `ShareComposerTests.swift`: the share sheet's composer (OC-218): the credentials
+// Ports of iOS `ShareComposerTests.swift`: the share sheet's composer: the credentials
 // the app shares with it, its sends, what it hands the app. `ShareComposerAppTests` (the app
 // taking a share over) is `HomeFeature`'s, in `:feature:drawer`.
 

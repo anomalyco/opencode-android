@@ -542,7 +542,7 @@ class MarkdownBlockTests {
 
     @Test fun accessibilityDynamicTypeScalesH3MarkersAndLeading() {
         // Dynamic Type scaling itself is the system font scale on sp sizes. What's left: tuned
-        // marker sizes keep tabular digits, and zero code leading (Before D-52) stays zero.
+        // marker sizes keep tabular digits, and zero code leading stays zero.
         val tuned = MarkdownStyle(TranscriptLayoutTuning(listNumSize = 14f, codeLeading = 0f), standardColors)
         assertEquals(14.sp, tuned.listNumberStyle.fontSize)
         assertEquals("tnum", tuned.listNumberStyle.fontFeatureSettings)
@@ -728,7 +728,7 @@ class TranscriptTextRevealTests {
     }
 }
 
-/** D-53 / D-54: the growing tail is "streamed" (iOS holds its lines); a reply that stops growing lets go. */
+/** The growing tail is "streamed" (iOS holds its lines); a reply that stops growing lets go. */
 class LineHoldTests {
     @get:Rule val isolation = TestIsolationRule()
 
@@ -823,7 +823,7 @@ class TextRevealTuningTests {
     }
 }
 
-/** D-53 flashing: a sweep only ever brightens a glyph, in reading order. */
+/** No flashing: a sweep only ever brightens a glyph, in reading order. */
 class StreamRevealNoFlashTests {
     @Test fun aSweepNeverDimsAGlyphItAlreadyShowed() {
         for (feather in listOf(0.25, 1.0, 3.0)) {

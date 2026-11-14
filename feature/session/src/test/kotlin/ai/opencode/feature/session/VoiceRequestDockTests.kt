@@ -23,10 +23,8 @@ import org.junit.Test
 import java.time.Instant
 
 /**
- * iOS `VoiceRequestDockTests.swift` (d7e9bb71, 1b22b2f3): from Kit's Oct 24 call, HOME waited on
- * a cleanup form while the call floated over the screen. The status read “Needs your input”, but
- * the form never showed (a call kept every request out of the composer), and the voice agent's
- * steered approvals left it unanswered. The session's two tests are here; iOS's third,
+ * iOS `VoiceRequestDockTests.swift`: a request raised during a call shows its form while the call
+ * floats over the screen, and the voice agent's steered approvals answer it. iOS's third test,
  * `theDelegatorsAnswerRereadsTheRequests`, drives `VoiceFeature` alone and is the voice area's.
  */
 class VoiceRequestDockTests {

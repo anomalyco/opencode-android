@@ -335,10 +335,9 @@ class SessionSheetTests {
             assertEquals(3, contextReads.size)
             assertTrue(contextReads.last().query?.contains("limit=8") == true)
 
-            // 4. Only the first 8 messages are inspected for context usage (matching the
-            // old `limit=8` query): 8 user messages followed by an assistant message with
-            // usage at position 9 yields `.inconclusive`, ignoring position 9 (9,999 tokens)
-            // and keeping the 7,500-token reading.
+            // 4. Only the first 8 messages are inspected for context usage: 8 user messages
+            // followed by an assistant message with usage at position 9 yields `.inconclusive`,
+            // ignoring position 9 (9,999 tokens) and keeping the 7,500-token reading.
             store.send(Action.RefreshRequested(RefreshReason.RunState)) {
                 it.copy(nextRefreshID = 4, refresh = State.Refresh(id = 4, reason = RefreshReason.RunState))
             }

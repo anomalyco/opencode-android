@@ -34,8 +34,7 @@ import kotlin.math.roundToInt
 
 /**
  * Port of iOS `OnboardingTunables` (`Settings/Onboarding/SignalField.swift`): the onboarding's
- * values to judge on a phone (OC-351, D-72). iOS reads them live from the Mac's tune page; here
- * they are the baked defaults.
+ * tuning values, baked to their defaults.
  */
 internal object OnboardingTunables {
     /** Ripple speed (pt/s). */
@@ -106,10 +105,10 @@ internal data class SignalFieldScene(
 )
 
 /**
- * The full-screen LED field behind the onboarding (D-67 option 5): a fixed grid of dots, the
- * EKG trace, scan ripples, the server's answering ripple and the heartbeat wipe, in one AGSL
- * pass. Text and controls stay Compose above it. Still under Reduce Motion: drawn only when
- * the scene changes. Paused while the screen isn't resumed (iOS `scenePhase != .active`).
+ * The full-screen LED field behind the onboarding: a fixed grid of dots, the EKG trace, scan
+ * ripples, the server's answering ripple and the heartbeat wipe, in one AGSL pass. Text and
+ * controls stay Compose above it. Still under Reduce Motion: drawn only when the scene changes.
+ * Paused while the screen isn't resumed.
  */
 @Composable
 internal fun SignalFieldView(scene: SignalFieldScene, modifier: Modifier = Modifier) {

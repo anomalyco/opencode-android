@@ -7,13 +7,8 @@ import ai.opencode.core.store.ifLet
 
 /**
  * The media area's root reducer: hosts the full-screen transcript image viewer
- * ([TranscriptImageViewerFeature]) as a presentation, the way iOS `SessionView.presentImage`
- * hands a [TranscriptImagePreview] to `MediaPresenter`. One viewer at a time: a request while
- * one is up is ignored. The viewer's effects (a photo save, a share) are cancelled with it.
- *
- * [MediaView] draws it above the content it hosts and provides [LocalMediaPresenter], through
- * which transcript thumbnails ask for it ([MediaPresenter.presentImage]) and documents present
- * their own viewers.
+ * ([TranscriptImageViewerFeature]) as a presentation, one at a time; a request while one is up is
+ * ignored. [MediaView] provides [LocalMediaPresenter], through which thumbnails ask for it.
  */
 class MediaFeature : Reducer<MediaFeature.State, MediaFeature.Action> {
     data class State(
@@ -25,7 +20,7 @@ class MediaFeature : Reducer<MediaFeature.State, MediaFeature.Action> {
         /** The view appeared (TCA `.task`). */
         data object Task : Action
 
-        /** A thumbnail was tapped: open its images full screen. */
+        /** Open a thumbnail's images full screen. */
         data class PresentImage(val preview: TranscriptImagePreview) : Action
 
         /** The viewer's actions; [PresentationAction.Dismiss] once its flight home has landed. */

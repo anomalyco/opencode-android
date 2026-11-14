@@ -52,13 +52,10 @@ fun ReplyWatch.QuietGate.delay(now: Duration): Duration? {
 }
 
 /**
- * A delegation's own answer is the reply the user is owed, so it never
- * waits for a reply to start: only for speech in progress and the brief
- * pauses after it. Held, the voice agent fills the gap from older
- * results (a call answered "it was cut off" while the full answer sat
- * here for 23 s). Once the user has asked again ([pressed]), the voice
- * agent talking without the answer holds it at most [pressedHold] (zero:
- * no limit) of that talk; the user's own words always hold it.
+ * A delegation's own answer is the reply the user is owed, so it never waits for a reply to start:
+ * only for speech in progress and the brief pauses after it. Once the user has asked again
+ * ([pressed]), the voice agent talking without the answer holds it at most [pressedHold] (zero: no
+ * limit) of that talk; the user's own words always hold it.
  */
 fun ReplyWatch.QuietGate.answerDelay(
     now: Duration,

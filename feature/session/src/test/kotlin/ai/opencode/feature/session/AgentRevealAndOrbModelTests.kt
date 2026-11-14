@@ -342,7 +342,7 @@ class AgentRevealAndOrbModelTests {
         assertEquals(AgentActivity.longWork, subagent.activity(now + 15))
     }
 
-    /** D-25 A: a 0.55 s Done or Failed flash, then 0.34 s into the copy button. */
+    /** A 0.55 s Done or Failed flash, then 0.34 s into the copy button. */
     @Test fun workingFinaleIsShortThenHandsOffToTheCopyButton() {
         assertTrue(abs(WorkingRun.Finale(id = 1, kind = WorkingRun.Finale.Kind.done, turn = null).duration - 0.89) < 1e-9)
         assertEquals(WorkingRun.SETTLE, WorkingRun.Finale(id = 1, kind = WorkingRun.Finale.Kind.pending, turn = null).duration, 0.0)

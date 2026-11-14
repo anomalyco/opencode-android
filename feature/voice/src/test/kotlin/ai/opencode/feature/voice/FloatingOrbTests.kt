@@ -43,7 +43,7 @@ class FloatingOrbTests {
     }
 
     /**
-     * Floaty (D-147): only a tap expands. Anything that moved past the slop, or was held past the
+     * Floaty: only a tap expands. Anything that moved past the slop, or was held past the
      * tap's time, is a drag however it went, and a tap on a drifting orb only catches it.
      */
     @Test fun onlyATapExpandsTheOrb() {

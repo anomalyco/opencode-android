@@ -15,20 +15,17 @@ import kotlinx.serialization.json.jsonObject
 
 /**
  * Port of `OpenCodeNotifications/NotificationService.swift` plus the app delegate's
- * presentation: turns a session push into a notification. iOS's service extension rewrites
- * the alert; on Android the app posts the notification itself, so this also decides how it
- * shows in the foreground and where a tap leads.
+ * presentation: turns a session push into a notification, and decides how it shows in the
+ * foreground and where a tap leads.
  *
- * A push carries only the encrypted `v2` envelope under `opencode` (iOS 1ddd36b2). Its title,
+ * A push carries only the encrypted `v2` envelope under `opencode`. Its title,
  * body, session and status show only once [NotificationContent.verifiedPayload] opens the box
  * with this phone's key for its ref; anything else ("no key yet", a tampered box, a v1 push)
  * shows the generic "OpenCode" / "New activity" notification, never clear text from the
  * transport. The badge counts verified pushes only.
  *
  * Taps: the content intent is built from the verified payload and targets the unexported
- * [SystemActionActivity], so only this app can send it; iOS authenticates the envelope again
- * on tap because its alert carries nothing else. FCM gives `onMessageReceived` its own time,
- * so iOS's extension timeout (fall back to the placeholder) has no counterpart.
+ * [SystemActionActivity], so only this app can send it.
  *
  * The transport (FCM's `onMessageReceived`) calls [handle]; nothing calls it until a push
  * channel exists (see [SessionNotifications]).
@@ -154,10 +151,9 @@ object SessionPushNotifications {
             ?.takeIf { "v" in it }
 
     /**
-     * The app icon's count (iOS `setBadgeCount`): Android launchers count from the shown
-     * notifications' `number`, so the session notifications still in the shade are posted
-     * again with the ledger's count, silently. With none showing the launcher shows nothing,
-     * as an app can't badge its icon by itself.
+     * The app icon's count (iOS `setBadgeCount`): launchers count from the shown notifications'
+     * `number`, so the session notifications still in the shade are reposted silently with the
+     * ledger's count.
      */
     @SuppressLint("MissingPermission")
     fun applyBadge(context: Context, count: Int) {

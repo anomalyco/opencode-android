@@ -56,7 +56,7 @@ class ModelPickerTests {
         OpenCodeModel(modelID = "vendor/cirrus-4", providerID = "openrouter", name = "Cirrus 4", variants = listOf("low", "medium", "high", "max"))
     private val basalt = OpenCodeModel(modelID = "basalt-pro", providerID = "halcyon", name = "Basalt Pro")
 
-    // MARK: Search (OC-331)
+    // MARK: Search
 
     private val sonnet45 = OpenCodeModel(modelID = "claude-sonnet-4-5-20250929", providerID = "anthropic", name = "Claude Sonnet 4.5")
     private val sonnet4 = OpenCodeModel(modelID = "claude-sonnet-4-20250514", providerID = "anthropic", name = "Claude Sonnet 4")
@@ -257,7 +257,7 @@ class ModelPickerTests {
         store.state.assertRemembersModelNames(listOf(cirrusZen))
     }
 
-    // MARK: - Fused + Stack Model Picker (OC-397)
+    // MARK: - Fused + Stack Model Picker
 
     private val opus55 = OpenCodeModel(modelID = "claude-opus-5-5", providerID = "anthropic", name = "Claude Opus 5.5", variants = listOf("low", "medium", "high", "max"))
     private val sonnet55Anthropic =

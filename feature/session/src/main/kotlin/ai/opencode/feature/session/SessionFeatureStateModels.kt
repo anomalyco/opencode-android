@@ -8,9 +8,8 @@ import ai.opencode.server.model.ModelVisibility
 import ai.opencode.server.model.OpenCodeModel
 import ai.opencode.server.model.OpenCodeProject
 
-// Port of iOS `SessionFeature+StateModels.swift` (split out of `SessionFeature+State.swift` in
-// 67a3fb61): the model and project pickers' lists. `recentProjectLimit` stays in `State`'s
-// companion (`SessionFeature.kt`).
+// Port of iOS `SessionFeature+StateModels.swift`: the model and project pickers' lists.
+// `recentProjectLimit` stays in `State`'s companion (`SessionFeature.kt`).
 
 val State.filteredModels: List<OpenCodeModel> get() = ModelSearch.rank(pickerModels, modelFilter, favoriteModelIDs.value)
 

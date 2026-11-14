@@ -57,12 +57,9 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `RunErrorTests.swift`.
- *
- * A failed run's line (D-41 2): what it offers, Edit's undo through V2's
- * revert, Redo, and how prompting again leaves only the quiet record.
- *
- * Not ported here (:server, `OpenCodeRunError` alone): `eachKindNamesItsWayForward`.
+ * Port of iOS `RunErrorTests.swift`. A failed run's line: what it offers, Edit's undo through V2's
+ * revert, Redo, and how prompting again leaves only the quiet record. Not ported here (:server,
+ * `OpenCodeRunError` alone): `eachKindNamesItsWayForward`.
  */
 class RunErrorTests {
     private val server = OpenCodeServer(url = "http://127.0.0.1:9", username = "opencode", password = "pw")

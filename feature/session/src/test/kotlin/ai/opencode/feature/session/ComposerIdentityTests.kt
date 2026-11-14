@@ -97,10 +97,9 @@ class ComposerIdentityTests {
     }
 
     /**
-     * K-01: recreating the activity for a theme or font-scale change keeps the retained store, so
-     * `SessionLifecycle` must neither re-send `Action.Task` (which reloads the transcript as
-     * `.open` and discards pending dictation) nor treat the recreated activity's `ON_START` as the
-     * screen leaving.
+     * Recreating the activity for a theme or font-scale change keeps the retained store, so
+     * `SessionLifecycle` must neither re-send `Action.Task` nor treat the recreated activity's
+     * `ON_START` as the screen leaving.
      */
     @Test fun activityRecreationDoesNotRestartSessionTaskOrDropVisibility() {
         val recorded = mutableListOf<SessionFeature.Action>()

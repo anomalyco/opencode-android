@@ -4,7 +4,7 @@ import ai.opencode.core.dependencies.DependencyKey
 
 /**
  * Port of iOS `SessionWindowTarget` (`App/SceneWindows.swift`): what a further window shows, a
- * saved server and one of its sessions. Multiple Windows (iPad, OC-512) map to Android's
+ * saved server and one of its sessions. Multiple Windows map to Android's
  * multi-instance windows on a tablet: each window is a task of its own. The first window's target
  * stays null; it restores as the app always has (`lastViewedSessionIDs`).
  */

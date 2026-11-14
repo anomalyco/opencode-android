@@ -92,30 +92,23 @@ class SessionStackPage(
 
 /**
  * Subagent (and browser) screens pushed over the session, like a navigation stack (iOS
- * `SessionPageStack`). Android divergence: pushes and pops are Material's shared axis X
- * ([PageTransitions]: a 30 dp slide with a fade through, 0.3 s) instead of iOS's full-width slide
- * over a parallaxing, dimmed parent; going back (an in-app rightward pan from anywhere under
- * [BackSwipeRules], or the system's predictive back) is Android's back preview: the page shrinks,
- * leans toward the swipe and rounds its corners over the screen beneath, then fades away on commit
- * or springs back on cancel ([Motion.drawerSlide]).
+ * `SessionPageStack`). Pushes and pops use Material's shared axis X ([PageTransitions]); going back
+ * (a rightward pan under [BackSwipeRules], or predictive back) is Android's back preview, springing
+ * back on cancel ([Motion.drawerSlide]). Under Reduce Motion they cross-fade.
  *
- * Covered screens stay composed (each under its own [androidx.compose.runtime.saveable.SaveableStateHolder]
- * entry), only invisible once a transition lands, so their transcript keeps its scroll position and
- * their effects never end and restart: going back is instant. Covered screens are hidden from
- * TalkBack and their own back handlers are parked on an inert dispatcher, so only the top screen
- * handles system back.
- *
- * Under Reduce Motion pushes and pops cross-fade (`Motion.reduced`) instead of sliding.
+ * Covered screens stay composed (each in its own
+ * [androidx.compose.runtime.saveable.SaveableStateHolder] entry), so their scroll position and
+ * effects survive and going back is instant. They're hidden from TalkBack and their back handlers
+ * parked, so only the top screen handles system back.
  *
  * @param pages the screens over the root, bottom first. New ids push (the last with the push
- *   motion), missing ids pop (the top with the pop motion), and pages that stay take the new
- *   value. A page removed while it animates out is still drawn through [content] until it has
- *   left, so the host must be able to draw a page that's no longer in its list.
- * @param onPop the reader went back (back gesture or system back) until `depth` pages remain; the
- *   host removes the pages above `depth` from its state. The page is already animating out.
+ * motion), missing ids pop (the top with the pop motion), and pages that stay take the new value. A
+ * page removed while it animates out is still drawn through [content] until it has left, so the
+ * host must be able to draw a page that's no longer in its list.
+ * @param onPop the reader went back until `depth` pages remain; the host removes the pages above
+ * `depth` from its state. The page is already animating out.
  * @param modifier the stack's frame (the session card); pages fill it and are clipped to it.
- * @param enabled whether the back gestures may run (iOS `isEnabled`: not under the open drawer or
- *   Catch Up).
+ * @param enabled whether the back gestures may run (not under the open drawer or Catch Up).
  * @param rootPaneTitle what TalkBack announces when the stack comes back to rest on the root.
  * @param onTopChanged a push or pop moved the screen on top.
  * @param root the screen at the bottom (the session), always composed.
@@ -416,10 +409,9 @@ private suspend fun androidx.compose.ui.input.pointer.PointerInputScope.backPan(
 }
 
 /**
- * The plain object behind [SessionPageStack] (iOS `SessionPageStack`'s UIKit controller): which
- * pages are composed, the top page's offset (dp; 0 in place, the width off screen), and the
- * transitions and back drag that move it. Per-frame motion runs here on Compose's frame clock;
- * the host only sees [onPopped].
+ * The plain object behind [SessionPageStack]: which pages are composed, the top page's offset (dp;
+ * 0 in place, the width off screen), and the transitions and back drag that move it, on Compose's
+ * frame clock. The host only sees [onPopped].
  */
 @Stable
 internal class SessionPageStackMotion(

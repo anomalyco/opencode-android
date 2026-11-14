@@ -113,7 +113,7 @@ fun State.restoredPrompt(messageID: String, uuid: UuidClient = dependency(UuidCl
     }
     if (!matched || source != null || VoiceHandoff.parse(text) != null) return null
     // A `media:<hash>` image or file restores from the memory cache, or empty with its hash for
-    // `stageRevert` to load (iOS 7f5ac4c5); one the server no longer has can't come back.
+    // `stageRevert` to load; one the server no longer has can't come back.
     val mediaReferences = dependency(MediaReferenceClient)
     val attachments = ArrayList<OpenCodeOutgoingAttachment>()
     for (image in images) {

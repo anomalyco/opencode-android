@@ -26,7 +26,7 @@ import androidx.compose.ui.node.currentValueOf
 import androidx.compose.ui.platform.LocalGraphicsContext
 
 /**
- * How streamed assistant text reveals as chunks arrive (iOS `StreamTextRevealStyle`, D-53),
+ * How streamed assistant text reveals as chunks arrive (iOS `StreamTextRevealStyle`),
  * picked live in the Tuning Panel (`transcript.textReveal.style`; [TextRevealTunables]).
  */
 enum class StreamTextRevealStyle(override val rawValue: String) : TunableChoice {
@@ -68,7 +68,7 @@ enum class StreamTextRevealStyle(override val rawValue: String) : TunableChoice 
 }
 
 /**
- * D-53 (Developer Mode → Tuning → Transcript → Text Reveal; iOS `TextRevealTunables`). Each
+ * Tunables (Developer Mode → Tuning → Transcript → Text Reveal; iOS `TextRevealTunables`). Each
  * chunk reads them as it arrives, so a change shows on the next chunk without a relaunch.
  */
 object TextRevealTunables {
@@ -81,7 +81,7 @@ object TextRevealTunables {
     val phosphorLift = Tunable("transcript.textReveal.phosphorLift", "Phosphor lift", default = 0.09, range = 0.0..0.4, step = 0.01)
     val stagger = Tunable("transcript.textReveal.stagger", "Per-chunk stagger (s)", default = 0.0, range = 0.0..0.2, step = 0.005)
 
-    /** 1 Today · 2 Soft Frontier Sweep · 3 Focus Frontier, as recorded for D-53. */
+    /** 1 Today · 2 Soft Frontier Sweep · 3 Focus Frontier. */
     val options: TuningPresets by lazy {
         TuningPresets(
             "transcript.textReveal", "Text Reveal",

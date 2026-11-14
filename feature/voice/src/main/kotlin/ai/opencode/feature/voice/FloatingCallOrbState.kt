@@ -7,7 +7,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sqrt
 
-/** What the call is doing, as the orb shows it (iOS `FloatingCallOrbState.swift`, e4aeb212). */
+/** What the call is doing, as the orb shows it (iOS `FloatingCallOrbState.swift`). */
 enum class FloatingCallMood { connecting, live, thinking, needsInput, ended }
 
 /** Playground scenes: they stand in for the call's voices and state. */

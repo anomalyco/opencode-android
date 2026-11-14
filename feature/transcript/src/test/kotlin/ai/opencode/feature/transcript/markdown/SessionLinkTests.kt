@@ -173,7 +173,7 @@ class SessionLinkTests {
 
     // endregion
 
-    // region Hot paths (OC-486)
+    // region Hot paths
 
     @Test fun aStreamedDeltaLeavesTheRowsLinkContextEqual() {
         val targets = mapOf<String, SessionLinkTarget>(ID to SessionLinkTarget.Session("HOME", null))

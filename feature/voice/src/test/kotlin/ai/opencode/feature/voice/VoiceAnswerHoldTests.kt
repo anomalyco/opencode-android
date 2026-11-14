@@ -316,11 +316,8 @@ class VoiceAnswerHoldTests {
     }
 
     /**
-     * Kit's call (TestFlight 301, 170–203 s): he asked for the rules, then
-     * "Wait, don't you have them?" while the delegator read them. Its answer
-     * was ready 1.4 s after he stopped, held for the voice agent's reply; the
-     * voice agent answered from an older result ("I don't have them, what I
-     * got back was cut off"), and the rules went out 23 s later.
+     * The user asks for the rules, then "Wait, don't you have them?" while the delegator reads
+     * them: its answer is ready 1.4 s after they stop, held for the voice agent's reply.
      */
     private suspend fun kotlinx.coroutines.test.TestScope.pressedCall(pressedHold: Duration): VoiceClockedCall = clockedCall(
         VoiceCallTiming(

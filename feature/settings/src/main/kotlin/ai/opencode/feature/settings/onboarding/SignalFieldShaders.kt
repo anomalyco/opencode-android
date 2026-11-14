@@ -1,15 +1,11 @@
 package ai.opencode.feature.settings.onboarding
 
 /**
- * Port of iOS `Settings/Onboarding/SignalFieldShaders.metal` to AGSL (`RuntimeShader`).
+ * Port of iOS `Settings/Onboarding/SignalFieldShaders.metal` to AGSL (`RuntimeShader`): the
+ * onboarding's full-screen LED field on a fixed 7 dp grid. [SignalFieldRenderer] springs every
+ * input; this only draws, premultiplied over the page's background.
  *
- * The onboarding's full-screen LED field (OC-351, D-72 Signal Handshake): a fixed 7 pt grid
- * whose dots light for the EKG trace, the scan rings around the camera aperture, the
- * code-found and server-reply ripples and the heartbeat wipe. [SignalFieldRenderer] springs
- * every input; this only draws. Premultiplied output over the page's background.
- *
- * Points are dp here and `grid.y` is the density (px per dp), exactly as Metal's points and
- * `contentScaleFactor`; `fragCoord` is in the layer's pixels like Metal's `[[position]]`.
+ * Points are dp and `grid.y` is the density (px per dp); `fragCoord` is in the layer's pixels.
  */
 internal const val SignalFieldShaderSource: String = """
 uniform float4 grid;      // pitch (px), scale (px per pt), width, height (pt)

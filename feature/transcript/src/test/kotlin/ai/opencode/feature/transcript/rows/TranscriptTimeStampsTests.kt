@@ -22,7 +22,7 @@ import kotlin.math.abs
 
 /**
  * Port of iOS `OpenCodeTests/TranscriptTimeStampsTests.swift`: day and time stamps over the
- * messages that open a day or resume after a pause (D-45).
+ * messages that open a day or resume after a pause.
  *
  * The stamp text comes from `android.icu` (`DateFormat` skeletons, `RelativeDateTimeFormatter`),
  * which is a stub in plain JVM tests, so the class runs under Robolectric. Where an iOS test

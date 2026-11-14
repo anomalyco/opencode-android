@@ -10,18 +10,12 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * What sits behind the session header (iOS `SessionHeaderStyle`, `Session/SessionHeaderStyle.swift`).
- * Legibility comes from our own background-coloured wash (and optional tonal surface) under the
- * controls.
- *
- * iOS draws a blur here (UIKit's soft scroll-edge effect on iOS 27, its own `variableBlur` before).
- * Android has no blur imitation (AGENTS.md): both blur paths resolve exactly as on iOS, and
- * [SessionHeaderBackdrop] draws them as an M3 tonal scrim band that fades in as content scrolls
- * under the header. Android has no system scroll-edge effect, so [Environment] defaults to the
- * app-drawn path (iOS 26's), where the app sizes the band itself.
- *
- * Distances are dp (iOS points) relative to the header's bottom edge (the controls row, 52 below
- * the safe area at the default font scale; it grows with font scale). Negative is above it.
+ * What sits behind the session header (iOS `SessionHeaderStyle`): a background-coloured wash (and
+ * optional tonal surface) under the controls. Where iOS blurs, [SessionHeaderBackdrop] draws a
+ * tonal scrim band that fades in as content scrolls under the header; with no system scroll-edge
+ * effect, [Environment] defaults to the app-drawn band. Distances are dp relative to the header's
+ * bottom edge (the controls row, 52 below the safe area at the default font scale); negative is
+ * above it.
  */
 @Immutable
 data class SessionHeaderStyle(
@@ -118,9 +112,9 @@ data class SessionHeaderStyle(
         data class SystemEdge(val pocket: Float, val isHard: Boolean)
 
         /**
-         * The app's progressive band: full down to [fadeStart], gone at [fadeEnd], shown as
-         * content scrolls [fadeIn] under the header. [radius] is iOS's blur radius; Android draws
-         * a scrim, so it only gates whether the band draws (radius > 0).
+         * The app's progressive band: full down to [fadeStart], gone at [fadeEnd], shown as content
+         * scrolls [fadeIn] under the header. [radius] only gates whether the band draws (radius >
+         * 0).
          */
         data class AppBlur(
             val fadeStart: Float,
@@ -226,9 +220,8 @@ enum class HeaderTextStyle(val textStyle: TextStyle) {
 }
 
 /**
- * The session header's top band, wash and layout (iOS `HeaderBlurTunables`). iOS backs these with
- * Developer Mode tunables and presets; Android bakes the shipped defaults (tuning UI, lab bridge
- * and presets are not ported).
+ * The session header's top band, wash and layout (iOS `HeaderBlurTunables`), at the shipped
+ * defaults.
  */
 object HeaderBlurTunables {
     val MODE = HeaderBlurMode.SystemEdge

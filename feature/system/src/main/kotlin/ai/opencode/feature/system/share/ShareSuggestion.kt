@@ -6,10 +6,9 @@ import android.content.Context
 import androidx.core.content.pm.ShortcutManagerCompat
 
 /**
- * iOS donates outgoing INSendMessageIntents. Android's sharesheet and launcher read the same
- * shortcuts: [SystemQuickAction] publishes each recent session once, with a share category for
- * the chooser and a session-opening intent for the launcher. An open/send reports usage without
- * inserting, reranking or changing the appearance of the launcher's items.
+ * [SystemQuickAction] publishes each recent session once, with a share category for the chooser and
+ * a session-opening intent for the launcher. An open/send reports usage without inserting,
+ * reranking or changing the launcher's items.
  */
 object ShareSuggestion {
     const val CATEGORY = "ai.opencode.mobilecode.category.SHARE_SESSION"

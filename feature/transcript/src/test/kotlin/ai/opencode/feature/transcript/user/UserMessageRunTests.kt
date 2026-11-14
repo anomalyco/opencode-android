@@ -5,8 +5,7 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 /**
- * Port of iOS `OpenCodeTests/UserMessageRunTests.swift`. Runs of user messages (D-44, Grouped
- * Corners): adjacent messages of one kind join, anything between them or a line under one ends
+ * Port of iOS `OpenCodeTests/UserMessageRunTests.swift`. Runs of user messages: adjacent messages of one kind join, anything between them or a line under one ends
  * the run, and a bubble's trailing corners tighten where it meets another bubble; attachments
  * keep their own round shape.
  */

@@ -369,7 +369,7 @@ class FloatingCallWindowTests {
     // shape (and the full screen only while the sheet is up), which needs Compose UI to test.
 }
 
-/** Lift and Spin Up (D-144): out of the call button into the orb, and the hang-up back into it, frame by frame (iOS `FloatingCallConnectTests`). */
+/** Lift and Spin Up: out of the call button into the orb, and the hang-up back into it, frame by frame (iOS `FloatingCallConnectTests`). */
 class FloatingCallConnectTests {
     @get:Rule val isolation = TestIsolationRule()
 

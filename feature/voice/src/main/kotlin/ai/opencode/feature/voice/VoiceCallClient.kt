@@ -294,9 +294,7 @@ data class VoiceCallTiming(
                     liveAppendQuiet = 900.milliseconds,
                     liveAppendReplyWait = 1_500.milliseconds,
                     liveContextReplyHold = 8.seconds,
-                    // No caps: an update waits for a real quiet moment however long that
-                    // takes (Kit's Oct 30 call: a 5 s cap sent one 1.5 s into a pause in his
-                    // dictation, and the voice agent talked over him for 9 s).
+                    // No caps: an update waits for a real quiet moment however long that takes.
                     liveAppendMaxHold = Duration.ZERO,
                     liveUserQuietGap = Math.round(VoiceTurnTunables.userQuietGap.value * 1_000).milliseconds,
                     liveMicVoiceLevel = VoiceTurnTunables.micVoiceLevel.value.toFloat(),

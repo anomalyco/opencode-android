@@ -4,14 +4,12 @@ import java.time.Duration
 import java.time.Instant
 
 /**
- * Notices when the call's audio can't get out: a microphone chunk's send
- * that takes over a second means the connection is backing up, and the
- * capture stream starts dropping speech (Kit's call: sends of 1–11 s, ~90%
- * of chunks dropped, while the call looked fine). Poor until sends have
- * been quick again for a few seconds, so it doesn't flicker.
+ * Notices when the call's audio can't get out: a microphone chunk's send that takes over a second
+ * means the connection is backing up, and the capture stream starts dropping speech. Poor until
+ * sends have been quick again for a few seconds, so it doesn't flicker.
  *
- * Immutable (a Swift value type): the iOS `mutating` methods return the updated watch,
- * paired with the change of state when they report one.
+ * Immutable (a Swift value type): the iOS `mutating` methods return the updated watch, paired with
+ * the change of state when they report one.
  */
 data class VoiceUplinkWatch(
     val isPoor: Boolean = false,
