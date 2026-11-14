@@ -41,13 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Every design-system primitive on one scrolling page: theme picker and swatches, the
- * semantic colours, the iOS type scale, buttons, icon buttons and tap targets, every
- * mapped SF Symbol, RollingNumber and the motion constants. Hosted by `:devtools`.
- *
- * @param initialTheme theme the page opens in; the chips switch theme and appearance live.
- */
+/** Every design-system primitive on one scrolling page, hosted by `:devtools`. */
 @Composable
 fun DesignSystemGallery(
     modifier: Modifier = Modifier,

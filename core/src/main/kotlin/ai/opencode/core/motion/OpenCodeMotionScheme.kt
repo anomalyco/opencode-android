@@ -6,12 +6,8 @@ import androidx.compose.material3.MotionScheme
 import androidx.compose.runtime.Immutable
 
 /**
- * The [MotionScheme] Material components (sheets, buttons, menus, switches, FAB menus) move
- * with: Material 3 Expressive's own springs ([MotionScheme.expressive]), so they feel like the
- * rest of Android. Android divergence: iOS has no such scheme; its custom views keep their iOS
- * springs through [Motion].
- *
- * Under Reduce Motion every spec becomes iOS's 0.2 s ease-in-out cross-fade.
+ * The [MotionScheme] Material components move with: M3 Expressive's own springs, or a 0.2 s
+ * cross-fade under Reduce Motion.
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Immutable

@@ -18,14 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 
 /**
- * The OpenCode desktop's floating surfaces (`packages/ui` popover, dialog, dock:
- * `--surface-raised-stronger-non-alpha`): a flat fill a step off the canvas, a hairline ring and,
- * for things that float over content, a small shadow. No tonal elevation.
- *
- * Material components pick most of this up from the theme ([toColorScheme] maps
- * `surfaceContainerLow`/`surfaceContainer` here for the curated themes, so bottom sheets, menus
- * and tooltips are floating surfaces); call sites use these for what Material can't express
- * (borders, the dialog's fill).
+ * The OpenCode desktop's floating surfaces: a flat fill a step off the canvas, a hairline ring and
+ * a small shadow. No tonal elevation. For what Material's theme can't express.
  */
 object OpenCodeSurfaces {
     /** Dialogs and popovers (desktop dialog ~10–12 px). */
@@ -47,19 +41,11 @@ object OpenCodeSurfaces {
     val color: Color
         @Composable @ReadOnlyComposable get() = OpenCodeTheme.colors.floating
 
-    /**
-     * Neutral and secondary buttons' fill: a light grey that reads as a button on the canvas in
-     * both modes (`surfaceContainerHighest`, the brand's `surfaceStrong` `#EEEEEE` / `#3A3A3A`;
-     * labels 15.6:1 / 9.9:1). Worn with the hairline.
-     */
+    /** Neutral and secondary buttons' fill (`surfaceContainerHighest`). Worn with the hairline. */
     val neutralFill: Color
         @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme.surfaceContainerHighest
 
-    /**
-     * Copy-command and terminal boxes, clearly set off from the canvas: the desktop's
-     * `--v2-background-bg-layer-03` in light (`#EEEEEE`) and its shell block's `bg-layer-02` in
-     * dark (`#2E2E2E`). Text on it is 15.6:1 / 11.6:1.
-     */
+    /** Copy-command and terminal boxes, clearly set off from the canvas. */
     val commandFill: Color
         @Composable @ReadOnlyComposable get() = OpenCodeTheme.colors.let { if (it.isDark) it.userBubble else it.variant.surfaceStrong.color }
 
@@ -80,9 +66,8 @@ val OpenCodeColors.floating: Color
     }
 
 /**
- * Dark floating fill: the code band lifted about a third of the way to the user bubble (brand
- * `#1C1C1C` → `#222222` on the `#161616` canvas), so the composer, request cards, menus and
- * panels read as raised, as the desktop's `#1C1C1C` does over its `#101010` background.
+ * Dark floating fill: the code band lifted about a third of the way to the user bubble, so floating
+ * panels read as raised.
  */
 internal fun ThemeVariant.darkFloatingFill(): ThemeRGBA =
     codeBand.composited(canvas).mixedInOklab(userBubble.composited(canvas), 0.35)
@@ -93,9 +78,8 @@ fun Modifier.openCodeHairline(shape: Shape): Modifier =
     border(OpenCodeSurfaces.hairline, OpenCodeTheme.colors.border, shape)
 
 /**
- * Material's [AlertDialog] as the desktop's dialog: floating fill, hairline ring, 12 dp corners,
- * no tonal elevation, a 16 sp medium title and 14 sp body. Semantics, buttons and dismissal are
- * Material's, unchanged.
+ * Material's [AlertDialog] as the desktop's dialog: floating fill, hairline ring, 12 dp corners.
+ * Semantics, buttons and dismissal are Material's.
  */
 @Composable
 fun OpenCodeAlertDialog(
@@ -125,10 +109,8 @@ fun OpenCodeAlertDialog(
 }
 
 /**
- * Switch colours for the curated themes. Material draws an off switch's border and thumb in
- * `outline` (the desktop's `border-strong`, under 2:1 on cards); here they are [OpenCodeColors.tertiaryText],
- * at least 3:1 against every surface a switch sits on and its own track (WCAG 1.4.11): light
- * `#6E6E6E` 4.4–5.1:1, dark `#8A8A8A` 3.3–5.2:1. The System theme keeps Material's colours.
+ * Switch colours for the curated themes: off border and thumb in [OpenCodeColors.tertiaryText] for
+ * 3:1 against every surface (WCAG 1.4.11).
  */
 object OpenCodeSwitchDefaults {
     @Composable

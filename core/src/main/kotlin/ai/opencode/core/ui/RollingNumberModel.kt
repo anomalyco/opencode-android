@@ -15,11 +15,7 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-/**
- * Motion parameters for [RollingNumber] (iOS `RollingNumberStyle`): a roll runs on
- * `Motion.layout`, its places `Motion.staggerStep` apart; the reel's look defaults to iOS's
- * `RollingNumberTunables` (D-50 option 3 "Metal Reel + Vertical Smear").
- */
+/** Motion parameters for [RollingNumber] (iOS `RollingNumberStyle`). */
 data class RollingNumberStyle(
     /** Perceptual roll duration in seconds (`stiffness = (2π / d)²`). */
     val duration: Double = MotionTunables.layoutSpring.duration.defaultValue,
@@ -93,9 +89,7 @@ class RollingNumberFrame(
 
 /**
  * The per-place spring model behind [RollingNumber], ported line for line from iOS
- * `RollingNumberModel` (`RollingNumber.swift`): each digit place rolls on its own spring,
- * new places stagger in right to left, separators cross-fade, and a number's direction of
- * change picks the roll direction.
+ * `RollingNumberModel`.
  */
 class RollingNumberModel {
     /** Stable identity per token across one or more numeric runs in the string. */
@@ -161,9 +155,8 @@ class RollingNumberModel {
         private set
 
     /**
-     * Brings the model to [text]. Animated changes roll from the current pose; otherwise
-     * it snaps. [nowSeconds] is on the same clock as the frame times passed to [frame]
-     * (`System.nanoTime() / 1e9`, Compose's frame clock).
+     * Brings the model to [text], rolling when [animated], else snapping. [nowSeconds] is on the
+     * frame clock passed to [frame].
      */
     fun sync(text: String, locale: Locale, animated: Boolean, style: RollingNumberStyle, nowSeconds: Double) {
         if (text == shownText && !(!animated && isMoving)) return
@@ -380,7 +373,7 @@ class RollingNumberModel {
     class Parsed(val tokens: List<Pair<Key, String>>, val magnitudes: List<Double>)
 
     companion object {
-        /** Width of [text] at rest, rounded up to the pixel grid (avoids truncation, OC-355). */
+        /** Width of [text] at rest, rounded up to the pixel grid to avoid truncation. */
         fun targetWidth(text: String, metrics: RollingNumberMetrics, locale: Locale): Float {
             val width = parse(text, locale).tokens.sumOf { metrics.advance(it.second).toDouble() }
             return ceil(width - 0.001).toFloat()

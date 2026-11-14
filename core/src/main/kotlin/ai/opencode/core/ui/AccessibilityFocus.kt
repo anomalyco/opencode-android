@@ -25,21 +25,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-/*
- * Moving TalkBack's focus from Compose, where VoiceOver moves by itself (a modal appearing or
- * ending, a navigation pop). Compose has no API for it: `FocusRequester` moves input focus (and
- * with it the keyboard), not accessibility focus. So the element marks its semantics node, finds
- * it in its view's semantics tree and asks the view's accessibility node provider to perform
- * `ACTION_ACCESSIBILITY_FOCUS` on it, as TalkBack does ([moveAccessibilityFocus]). The marker is
- * semantics, so it goes ahead of any `clearAndSetSemantics` on the same element.
- */
+// Moving TalkBack's focus from Compose, which has no API for it (`FocusRequester` moves input
+// focus): asks the view's node provider for `ACTION_ACCESSIBILITY_FOCUS`.
 
 /**
- * One event that moves TalkBack's focus (a menu closing, a sheet's content arriving): make a new
- * one for each event. It's spent by its first move, so the element it's on never moves the focus
- * for it again: not when it recomposes, nor when it's laid out again elsewhere (a session moved
- * into Catch Up's stack keeps its nodes, and its + used to take the focus back from Leave Catch Up
- * with the menu's old close, QA W-05), nor when it's composed again from saved state.
+ * One event that moves TalkBack's focus: make a new one per event. Spent by its first move, so
+ * recomposing, relayout or restoring never moves focus again.
  */
 @Stable
 class AccessibilityFocusRequest {
@@ -47,27 +38,19 @@ class AccessibilityFocusRequest {
 }
 
 /**
- * Moves TalkBack's focus onto this element for [request] (once, see [AccessibilityFocusRequest]),
- * once its semantics are published. If another window is on top (a system picker), it waits for
- * this window to get its focus back: a move made meanwhile is lost, and TalkBack then falls back
- * to the first content. Nothing happens while touch exploration is off; the request is spent all
- * the same.
+ * Moves TalkBack's focus here for [request], once its semantics are published and this window has
+ * focus. Spent even while touch exploration is off.
  */
 fun Modifier.accessibilityFocusRequest(request: AccessibilityFocusRequest?): Modifier = this then AccessibilityFocusRequestElement(request)
 
-/**
- * A new [AccessibilityFocusRequest] each time [event] becomes a new non-null value (a counter of
- * closes, a generation), kept while it stays the same: the one-shot form of "each new non-null
- * value moves the focus".
- */
+/** A new [AccessibilityFocusRequest] each time [event] becomes a new non-null value. */
 @Composable
 fun rememberAccessibilityFocusRequest(event: Any?): AccessibilityFocusRequest? =
     remember(event) { event?.let { AccessibilityFocusRequest() } }
 
 /**
- * False under a composition that only shows a picture of a screen (Catch Up's inert preview card):
- * nothing in it moves TalkBack's focus, neither [accessibilityFocusRequest]s nor
- * [AccessibilityFocusTarget]s.
+ * False under a composition that only shows a picture of a screen: nothing in it moves TalkBack's
+ * focus.
  */
 val LocalAccessibilityFocusMoves = staticCompositionLocalOf { true }
 

@@ -19,27 +19,9 @@ import kotlin.math.max
 val OpenCodeMinTapTarget: Dp = 48.dp
 
 /**
- * The one owner of a control's hit shape (iOS `openCodeTapTarget(minSize:accessibility:)`,
- * `TapTarget.swift`): makes the element at least [minSize] (never below 48 dp) in both
- * directions with its content centred, so what lights up, what takes the tap and what
- * TalkBack outlines are one rectangle.
- *
- * Put it **after** `clickable`/`toggleable` in the chain (inner), so the clickable node
- * measures the enlarged rectangle:
- *
- * ```kotlin
- * Box(Modifier.clickable(onClickLabel = "Close", role = Role.Button) { … }.openCodeTapTarget()) {
- *     OpenCodeIcon(SFSymbol.Xmark, contentDescription = null, size = 18.dp)
- * }
- * ```
- *
- * It only sets a minimum: size the visible face yourself (`Modifier.size`) before it. Align
- * visible glyphs, not hit frames. A view faded to 0 must also stop taking touches and leave
- * the accessibility tree.
- *
- * @param accessibility `true` merges the content into one TalkBack node covering the whole
- *   target. Pass `false` when an enclosing control already pins its own accessibility node
- *   (iOS passes `false` for the composer's shared trailing control).
+ * The one owner of a control's hit shape (iOS `openCodeTapTarget`): at least [minSize] both ways,
+ * content centred. Put it after `clickable`. [accessibility] merges the content into one TalkBack
+ * node.
  */
 fun Modifier.openCodeTapTarget(minSize: Dp = OpenCodeMinTapTarget, accessibility: Boolean = true): Modifier {
     val minimum = max(OpenCodeMinTapTarget.value, minSize.value).dp
@@ -57,29 +39,17 @@ fun Modifier.openCodeTapTarget(minSize: Dp = OpenCodeMinTapTarget, accessibility
 
 private fun constrainMax(max: Int) = if (max == Constraints.Infinity) Int.MAX_VALUE else max
 
-/** Visual style of [OpenCodeIconButton]. */
 enum class OpenCodeIconButtonStyle {
     /** Bare glyph (toolbar icons; iOS plain buttons inside a shared glass bar). */
     Standard,
 
-    /**
-     * A standalone control (iOS `openCodeGlassCircle`). On this branch it is the desktop's
-     * neutral icon button: a rounded square on the base surface with a hairline ring, or a
-     * filled rounded square when tinted. The name is kept so call sites match iOS.
-     */
+    /** A standalone control (iOS `openCodeGlassCircle`): the desktop's neutral icon button. */
     Circle,
 }
 
 /**
- * An icon control with the 48 dp target built in: iOS `openCodeGlassCircle(_:tint:)` and the
- * plain icon buttons around it. Liquid Glass maps to a Material tonal surface; there is no
- * blur or glass imitation.
- *
- * @param contentDescription the control's name (“Close”, “Choose model”); state goes in
- *   semantics, not the label.
- * @param size the visible face (iOS default 44 → 48 dp); the target is never smaller than 48 dp.
- * @param tint container colour for [OpenCodeIconButtonStyle.Circle] (iOS glass tint); the
- *   glyph colour follows it.
+ * An icon control with the 48 dp target built in (iOS `openCodeGlassCircle(_:tint:)`). [size] is
+ * the visible face; [tint] fills [OpenCodeIconButtonStyle.Circle].
  */
 @Composable
 fun OpenCodeIconButton(

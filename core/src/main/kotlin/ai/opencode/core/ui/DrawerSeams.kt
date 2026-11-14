@@ -14,24 +14,19 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
 
 /**
- * Seams between the session drawer (`:feature:drawer`) and the screens on its card
- * (`:feature:session`, `:feature:composer`, `:feature:transcript`), which sit below the drawer
- * in the module graph. iOS reads `DrawerKeyboardHold`'s statics and `DrawerPanExclusionSpace`
- * directly from those files; here the drawer provides these locals and the card's screens read
- * them. Both default to `null` (no drawer: nothing to do).
+ * Seams between the session drawer and the screens on its card, which sit below it in the module
+ * graph. The drawer provides these locals; both default to `null`.
  */
 interface DrawerKeyboardSignals {
     /**
-     * The card is laying out without the keyboard (iOS `DrawerKeyboardHold.excludesKeyboard`):
-     * a card the keyboard is leaving, or drawer search owning the keyboard. The session and its
-     * transcript leave `WindowInsets.ime` out of their insets while this is true.
+     * The card lays out without the keyboard (iOS `DrawerKeyboardHold.excludesKeyboard`): the
+     * session leaves `WindowInsets.ime` out while true.
      */
     val excludesKeyboard: Boolean
 
     /**
-     * Whether the field named [key] is held while the drawer moves or rests open
-     * (iOS `DrawerKeyboardHold.isHeld`): typing, hardware Return and paste must not reach a
-     * composer the drawer is taking away.
+     * Whether the field named [key] is held while the drawer moves or rests open (iOS
+     * `DrawerKeyboardHold.isHeld`), so input can't reach it.
      */
     fun isHeld(key: Any): Boolean
 
@@ -45,17 +40,14 @@ interface DrawerKeyboardSignals {
     fun cardFieldFocusChanged(key: Any, focused: Boolean, clearFocus: () -> Unit)
 
     /**
-     * Where the text field named [key] is laid out ([coordinates] `null` once it leaves): the
-     * session switcher's strip never takes a touch that starts on it (iOS's `UITextView` ancestor
-     * test), so the field keeps its own editing gestures.
+     * Where the text field named [key] is laid out (`null` once it leaves): the switcher's strip
+     * never takes a touch that starts on it.
      */
     fun cardFieldPlaced(key: Any, coordinates: LayoutCoordinates?) {}
 
     /**
-     * Takes input focus off the card without dropping the window's own focus, by moving it to a
-     * target of the drawer's (QA AD-01, AF-02): `clearFocus` drops the view's focus too, and out
-     * of touch mode the window hands it straight back, an input-focus event TalkBack follows to
-     * the screen's first element. False if the focus couldn't move; then clear it.
+     * Moves input focus off the card to a target of the drawer's, keeping the window's focus:
+     * `clearFocus` would bounce it back and TalkBack would follow. False if it couldn't move.
      */
     fun releaseFocus(): Boolean = false
 }
@@ -88,19 +80,16 @@ fun Modifier.drawerKeyboardField(key: Any): Modifier = composed {
 }
 
 /**
- * Where the session drawer's pan never starts (iOS `DrawerPanExclusionSpace`): controls on the
- * card that own a sideways drag (the + menu, the held mic). Regions are layout nodes, so hit
- * tests follow the card's translation.
+ * Where the session drawer's pan never starts (iOS `DrawerPanExclusionSpace`). Regions are layout
+ * nodes, so hit tests follow the card.
  */
 interface DrawerPanExclusion {
     /** Records ([coordinates] non-null) or clears the excluded region named [id]. */
     fun updateExclusion(id: Any, coordinates: LayoutCoordinates?)
 
     /**
-     * Records ([coordinates] non-null) or clears the horizontal scroller named [id] (code, tables,
-     * attachments). iOS's drawer pan yields a rightward drag on the shut card to a scroller that
-     * can still scroll back toward its start, and Catch Up's swipe yields either way while the
-     * scroller can move that way.
+     * Records ([coordinates] non-null) or clears the horizontal scroller named [id]; the drawer and
+     * Catch Up yield it drags it can still scroll.
      */
     fun updateHorizontalScroller(
         id: Any,
@@ -111,8 +100,7 @@ interface DrawerPanExclusion {
 
     /**
      * Records ([coordinates] non-null) or clears the text selection named [id]; [handleClaims]
-     * says whether a touch (px in [coordinates]) lands on one of its handles. The drawer's pan
-     * never starts from a handle on the shut card (iOS `BackSwipeRules.selectionHandleClaims`).
+     * takes px in [coordinates].
      */
     fun updateSelectionHandles(id: Any, coordinates: LayoutCoordinates?, handleClaims: (Offset) -> Boolean) {}
 }
@@ -121,9 +109,8 @@ interface DrawerPanExclusion {
 val LocalDrawerPanExclusion = staticCompositionLocalOf<DrawerPanExclusion?> { null }
 
 /**
- * This element scrolls sideways with [state] (`Modifier.horizontalScroll(state)`): the session
- * drawer's pan and Catch Up's swipe leave it the drags it can still scroll
- * (iOS `DirectionalPanGestureRecognizer`'s horizontal scroll view test).
+ * This element scrolls sideways with [state]: the drawer's pan and Catch Up's swipe leave it the
+ * drags it can still scroll.
  */
 fun Modifier.drawerPanHorizontalScroller(state: ScrollState): Modifier =
     drawerPanHorizontalScroller({ state.canScrollBackward }, { state.canScrollForward })
@@ -145,9 +132,8 @@ fun Modifier.drawerPanHorizontalScroller(canScrollBackward: () -> Boolean, canSc
 }
 
 /**
- * This element draws a text selection's handles: a touch [handleClaims] (px in this element)
- * drags the handle, even at the leading edge, and never opens the session drawer
- * (iOS `BackSwipeRules.selectionHandleClaims`).
+ * This element draws selection handles: a touch [handleClaims] (px here) drags the handle and never
+ * opens the drawer.
  */
 fun Modifier.drawerPanSelectionHandles(handleClaims: (Offset) -> Boolean): Modifier = composed {
     val exclusion = LocalDrawerPanExclusion.current
@@ -164,9 +150,8 @@ fun Modifier.drawerPanSelectionHandles(handleClaims: (Offset) -> Boolean): Modif
 }
 
 /**
- * The session drawer's pan never starts on this element while [isEnabled]
- * (iOS `excludedFromDrawerPan(isEnabled:)`). Pass `false` while the control is hidden or
- * doesn't take the touch.
+ * The drawer's pan never starts on this element while [isEnabled] (iOS
+ * `excludedFromDrawerPan(isEnabled:)`).
  */
 fun Modifier.excludedFromDrawerPan(isEnabled: Boolean = true): Modifier = composed {
     val exclusion = LocalDrawerPanExclusion.current

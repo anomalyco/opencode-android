@@ -1,21 +1,9 @@
 package ai.opencode.core.ui
 
 /**
- * The OpenCode desktop/web palette (`packages/ui` theme `oc-2`, its `--v2-*` tokens), used for
- * [AppTheme.OpenCode] instead of the iOS-generated palette. Neutral and monochrome like the
- * desktop app: the accent is the desktop's contrast fill (`--v2-background-bg-contrast` /
- * `--v2-background-bg-icon-button-contrast`), blue is kept for links.
- *
- * Desktop token → field:
- * canvas `bg-base`, canvasWeak `bg-deep` (sidebar), codeBand `bg-layer-01`, userBubble
- * `bg-layer-02`, surfaceStrong `bg-layer-03`, text/strong `text-base`, textWeak `text-muted`,
- * textTertiary `text-faint`, border `border-base` (flattened), borderStrong `border-strong`,
- * link `text-accent`, syntax `--syntax-*`, diff `--v2-state-*-success/danger`.
- *
- * Light-mode divergences from the desktop, each darkened just enough for WCAG AA (4.5:1) on the
- * fills it sits on (white, `#FAFAFA` code/drawer, `#EEEEEE` inline code): textTertiary `#808080`
- * → `#6E6E6E`, link `#3B5CF6` → `#3A5BF6`, syntax keyword `#C83D8B` → `#C83B8A`, syntax string
- * `#198B43` → `#188540`, diff-added text `#198B43` → `#17813E`. Dark mode is the desktop's.
+ * The OpenCode desktop palette (`packages/ui` theme `oc-2`, `--v2-*` tokens) for
+ * [AppTheme.OpenCode]. In light mode a few colours are darkened just enough for WCAG AA (4.5:1) on
+ * their fills; dark mode is the desktop's.
  */
 internal object BrandPalette {
     private fun hex(value: String, alpha: Double = 1.0): ThemeRGBA {

@@ -59,20 +59,9 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
- * A number whose digits roll on independent per-place springs with a vertical motion smear
- * (iOS `RollingNumber`, D-50 option 3). Use for live counts (background-work capsule,
- * badges, context gauge).
- *
- * Falls back to plain text (cross-faded) under Reduce Motion, right-to-left layouts, text
- * without ASCII digits, a stopped/backgrounded screen, or when the width doesn't fit
- * (iOS `ViewThatFits`).
- *
- * Rendering is Android-native: glyphs are drawn on a [Canvas]; the iOS Metal vertical blur
- * is reproduced by additively compositing a 9-tap Gaussian of vertically offset glyph
- * copies in an offscreen layer (no shader).
- *
- * @param style text style; defaults to iOS's `.subheadline` medium with tabular digits.
- * @param monospacedDigits tabular figures (`tnum`), iOS's default.
+ * A number whose digits roll on per-place springs with a vertical smear (iOS `RollingNumber`),
+ * drawn on a [Canvas]. Plain cross-faded text under Reduce Motion, RTL, no ASCII digits, a stopped
+ * screen, or no room.
  */
 @Composable
 fun RollingNumber(
@@ -172,10 +161,8 @@ private fun Modifier.baselineAt(ascender: Float): Modifier = layout { measurable
 }
 
 /**
- * Glyph metrics shared by every [RollingNumber] with the same style. A row that scrolls in
- * (a "Used 25 tools" header, say) reuses its digits' text layouts instead of measuring each
- * glyph again, which cost about a millisecond per row. Colour isn't part of the key: the
- * glyphs are drawn with the number's colour. Keeps the few most recent styles.
+ * Glyph metrics shared by every [RollingNumber] with the same style, so rows scrolling in don't
+ * measure glyphs again. Keeps the few most recent styles.
  */
 private object SharedRollingMetrics {
     private const val MAX_STYLES = 8

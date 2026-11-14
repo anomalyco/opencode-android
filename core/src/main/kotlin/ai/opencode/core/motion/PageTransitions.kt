@@ -15,18 +15,9 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.ui.unit.dp
 
 /**
- * Android divergence: moving between full screens (Settings and its pages) uses Material's
- * shared-axis X transition instead of iOS's navigation push (a full-width slide over a
- * parallaxing, dimmed parent with an edge shadow).
- *
- * Going forward, the new screen slides [SlideDistance] in from the end while fading in, and the
- * old one slides the same distance toward the start while fading out first. Going back mirrors
- * it. Timings follow Material's spec: 300 ms, the old screen gone in the first 90 ms. The system
- * back gesture previews going back the Android way: the screen shrinks toward [BACK_PREVIEW_SCALE]
- * and the one beneath shows behind it.
- *
- * Under reduce motion every transition is a short cross-fade in place. Durations follow Developer
- * Mode slow motion.
+ * Moving between full screens uses Material's shared-axis X transition (300 ms; the old screen gone
+ * in the first 90 ms). Predictive back shrinks toward [BACK_PREVIEW_SCALE]; Reduce Motion
+ * cross-fades.
  */
 object PageTransitions {
     /** How far each screen moves (Material's shared-axis slide distance). */
@@ -89,9 +80,8 @@ object PageTransitions {
     }
 
     /**
-     * Material's fade-through, for one screen replacing another that isn't above or beneath it
-     * (Settings' root switching between Settings and What’s New): the old screen fades out first,
-     * then the new one fades in while growing from 92 %.
+     * Material's fade-through, for one screen replacing a sibling: the old fades out, then the new
+     * fades in growing from 92 %.
      */
     fun fadeThrough(reduceMotion: Boolean): ContentTransform {
         if (reduceMotion) return crossFade()

@@ -7,9 +7,8 @@ import kotlin.math.min
 import kotlin.math.pow
 
 /**
- * The release rule (iOS `MotionRelease`, `Core/Motion/MotionRelease.swift`): a dragged surface
- * commits on a flick toward its target, never on a flick away from it, and otherwise on whether
- * it passed halfway. Velocities are dp per second (iOS points per second).
+ * The release rule (iOS `MotionRelease`): commits on a flick toward the target, never away, else on
+ * passing halfway. Velocities in dp/s.
  */
 object MotionRelease {
     const val commitProgress: Double = 0.5
@@ -32,9 +31,8 @@ object MotionRelease {
 }
 
 /**
- * An overscroll band with an exact inverse (iOS `MotionRubberBand`): `stretch` maps how far a
- * drag went past the edge to how far the content follows, and `excess(forStretch:)` maps back,
- * so a grab mid-band resumes without a jump.
+ * An overscroll band with an exact inverse (iOS `MotionRubberBand`), so a grab mid-band resumes
+ * without a jump.
  */
 class MotionRubberBand(dimension: Double, coefficient: Double = 0.55) {
     val dimension: Double = max(dimension, 1.0)

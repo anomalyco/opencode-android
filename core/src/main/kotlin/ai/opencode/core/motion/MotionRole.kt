@@ -37,12 +37,8 @@ sealed interface MotionCurve {
 }
 
 /**
- * One of the fourteen motion roles (iOS `MotionRole`, `Core/Motion/MotionRole.swift`): every
- * animated change names the role it plays, and the role picks the curve for each phase. Under
- * Reduce Motion every role becomes [Reduced]'s cross-fade, with no delay and no velocity.
- *
- * iOS names: `Motion.press` … `Motion.reduced` (see [Motion]); Kotlin enum cases are UpperCamel.
- * The UIKit and Core Animation variants are n/a on Android.
+ * One of the fourteen motion roles (iOS `MotionRole`): the role picks the curve for each phase.
+ * Under Reduce Motion every role is [Reduced]'s cross-fade.
  */
 enum class MotionRole {
     Press, MicroIn, MicroOut, Swap, Layout, Collapse, PanelOpen, PanelClose, Surface, Release, Flight, Keyboard, Dim, Reduced;
@@ -100,9 +96,8 @@ enum class MotionRole {
     ): FiniteAnimationSpec<T> = animation(phase, reduceMotion, staggerDelay(index), visibilityThreshold)
 
     /**
-     * iOS `animation(_:initialVelocity:reduceMotion:)`: Compose takes the velocity on
-     * `Animatable.animateTo(initialVelocity =)`, so this returns the velocity to hand it, zero
-     * under Reduce Motion (the cross-fade never inherits a gesture's speed).
+     * iOS `animation(_:initialVelocity:reduceMotion:)`: the velocity to hand
+     * `Animatable.animateTo`, zero under Reduce Motion.
      */
     fun initialVelocity(velocity: Float, reduceMotion: Boolean): Float = if (reduceMotion) 0f else velocity
 

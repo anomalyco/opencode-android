@@ -34,18 +34,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 
 /**
- * The desktop's switch (`packages/ui` `forms/switch`): a rounded-square track with a square
- * thumb, no checkmark, 150 ms slides, half opacity when disabled; pressing widens the thumb
- * toward the middle like the desktop's hover. Sized up for touch: a 40 × 24 dp track and an
- * 18 dp thumb with concentric corners (7 and 4 dp, 3 dp apart), inside a 48 dp target when it
- * toggles itself.
- *
- * Off is light, as on the desktop: a quiet track fill and a light thumb, with the track's
- * outline carrying the 3:1 contrast against the row (not a dark thumb). On is the accent with
- * its foreground thumb. The System theme takes the same roles from Material You.
- *
- * A drop-in for Material's `Switch`: the same [checked] / [onCheckedChange] contract (null when
- * a parent row is the toggleable, as Material's) and `Role.Switch` semantics.
+ * The desktop's switch (`packages/ui` `forms/switch`) at touch size: a 40 × 24 dp track and 18 dp
+ * thumb inside a 48 dp target. The off track's outline carries the 3:1 contrast. A drop-in for
+ * Material's `Switch`.
  */
 @Composable
 fun OpenCodeSwitch(
@@ -164,10 +155,8 @@ private fun switchColors(): SwitchColors {
 }
 
 /**
- * A bottom sheet's drag handle as the desktop's resize handle (`components/resize-handle`): a
- * 40 × 4 dp pill in the muted icon colour ([OpenCodeColors.tertiaryText], 3:1 or more on the
- * sheet). Material's `DragHandle` underneath, so the sheet keeps its band, its "Drag handle"
- * label and its expand / collapse / dismiss actions.
+ * A sheet's drag handle as the desktop's resize handle: a 40 × 4 dp pill over Material's
+ * `DragHandle`, which keeps its label and actions.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

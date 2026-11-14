@@ -4,11 +4,7 @@ import ai.opencode.core.motion.MotionTunables
 import ai.opencode.core.tuning.Tunable
 import ai.opencode.core.tuning.TuningStore
 
-/**
- * iOS `RollingNumberTunables` (`Core/RollingNumber/RollingNumber.swift`): the rolling number's
- * look as live tunables (group `numbers`). A roll runs on `Motion.layout`, its places
- * `Motion.staggerStep` apart; only the reel's look (its smear and edge fade) is its own.
- */
+/** iOS `RollingNumberTunables`: the rolling number's look as live tunables (group `numbers`). */
 object RollingNumberTunables {
     val blurAmount = Tunable("numbers.blur", "Vertical smear", default = 1.0, range = 0.0..2.0, step = 0.05)
     val edgeFade = Tunable("numbers.edgeFade", "Reel edge fade", default = 0.18f, range = 0.0..0.35, step = 0.01)

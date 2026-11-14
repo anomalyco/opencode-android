@@ -7,9 +7,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 
 /**
- * The one Reduce Motion translation (iOS `MotionReduce`, `Core/Motion/MotionReduce.swift`):
- * under Reduce Motion movement, scale, blur and rotation go neutral and only opacity changes.
- * iOS `isEnabled` is [rememberReduceMotion] on Android (a composable read of Remove animations).
+ * The one Reduce Motion translation (iOS `MotionReduce`): movement, scale, blur and rotation go
+ * neutral and only opacity changes.
  */
 object MotionReduce {
     fun offset(value: Dp, reduceMotion: Boolean): Dp = if (reduceMotion) 0.dp else value

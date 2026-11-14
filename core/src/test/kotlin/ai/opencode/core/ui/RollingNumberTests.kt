@@ -235,7 +235,7 @@ class RollingNumberTests {
         assertTrue(abs((lastSlot.x + lastSlot.width) - targetW) < 0.01f)
     }
 
-    // Measured width (OC-355)
+    // Measured width
 
     private val titles = listOf("1 queued", "2 queued", "10 queued", "1 subagent · 2 shells", "64% of 400K")
 

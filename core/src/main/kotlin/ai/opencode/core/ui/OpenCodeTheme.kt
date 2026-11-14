@@ -36,18 +36,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 
 /**
- * The app's theme: wraps [MaterialExpressiveTheme] with a [ColorScheme] built from the iOS
- * theme ([OpenCodeColors.toColorScheme]), iOS-scaled [OpenCodeTypography], [OpenCodeShapes]
- * and the Material 3 Expressive [OpenCodeMotionScheme], and provides [OpenCodeColors] for the colours
- * Material has no role for. The System theme uses the wallpaper's dynamic colour instead
- * ([DynamicSystemTheme]); the curated themes keep their fixed palettes.
- *
- * At the app root, use [OpenCodeAppTheme], which reads the persisted Settings → Appearance
- * choice. Previews and the design-system gallery pass a theme explicitly.
- *
- * @param theme the curated theme (iOS `AppTheme`).
- * @param appearance System / Light / Dark override.
- * @param highContrast iOS Increase Contrast; defaults to the system contrast setting.
+ * The app's theme: [MaterialExpressiveTheme] plus [OpenCodeColors] for colours Material has no role
+ * for. At the app root use [OpenCodeAppTheme].
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -87,10 +77,8 @@ fun OpenCodeTheme(
 }
 
 /**
- * [OpenCodeTheme] driven by the persisted [ThemeSharedKeys] (iOS `applyAppAppearance()`).
- * Use once at the root of each window/activity. Like iOS's window
- * `overrideUserInterfaceStyle`, the window's status and navigation bars follow the app's
- * effective appearance rather than the system's night mode.
+ * [OpenCodeTheme] from the persisted [ThemeSharedKeys]. Once per window root; the system bars
+ * follow the app's appearance, not night mode.
  */
 @Composable
 fun OpenCodeAppTheme(content: @Composable () -> Unit) {
@@ -100,9 +88,8 @@ fun OpenCodeAppTheme(content: @Composable () -> Unit) {
 }
 
 /**
- * Light or dark status and navigation bar content for the hosting activity's window. Applied
- * when the appearance changes (not on every recomposition), so a screen that restyles the bars
- * for itself, such as the media viewer, keeps its style.
+ * Light or dark system bar content, applied only when the appearance changes so a screen that
+ * restyles the bars keeps its style.
  */
 @Composable
 private fun SystemBarAppearance(isDark: Boolean) {
@@ -140,9 +127,8 @@ fun rememberAppAppearance(): AppAppearance {
 }
 
 /**
- * Android's counterpart of iOS Increase Contrast: the system contrast level
- * (`UiModeManager.getContrast()`, Android 14+) at medium or high. Live-updating. Android 13
- * has no contrast level, so it reads as standard there.
+ * Android's Increase Contrast: the system contrast level (Android 14+) at medium or high. Live.
+ * Standard on Android 13.
  */
 @Composable
 fun rememberHighContrast(): Boolean {

@@ -4,18 +4,9 @@ import ai.opencode.core.R
 import androidx.annotation.DrawableRes
 
 /**
- * Every SF Symbol the iOS app uses (app, share extension, widgets, notifications), mapped to
- * its Material Symbols Rounded drawable (`core/src/main/res/drawable/ms_*.xml`). iOS `.fill`
- * symbols map to the filled (`FILL 1`) variant. The full table with the iOS call sites is in
- * docs/parity/core-ui.md.
- *
- * Use the typed entries in Kotlin (`SFSymbol.ArrowUpCircleFill`) and [sfSymbol] for names that
- * arrive as strings (ported switch statements returning symbol names, What's New entries).
- * Draw with [OpenCodeIcon].
- *
- * Adding an icon: add its Material name to `scripts/material-symbols.txt`, run
- * `python3 scripts/fetch-material-symbols.py`, add the entry here, and add its row to the
- * parity table.
+ * Every SF Symbol the iOS app uses, mapped to its Material Symbols Rounded drawable; the table is
+ * in docs/parity/core-ui.md. To add one: `scripts/material-symbols.txt`,
+ * `scripts/fetch-material-symbols.py`, an entry here and a parity row.
  */
 enum class SFSymbol(val sfName: String, @DrawableRes val drawable: Int) {
     AntennaRadiowavesLeftAndRight("antenna.radiowaves.left.and.right", R.drawable.ms_cell_tower),

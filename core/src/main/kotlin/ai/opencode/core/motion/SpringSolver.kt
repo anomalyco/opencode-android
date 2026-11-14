@@ -9,16 +9,8 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 /**
- * One axis of an analytical spring, stepped in closed form for any frame interval `dt`
- * without numerical drift (iOS `SpringSolver`, `OpenCode/Core/Motion/SpringSolver.swift`).
- *
- * Parameterized in SwiftUI's `(duration, bounce)` ([MotionSpring]) or directly in
- * `(omega, zeta)`. [retarget] keeps position and velocity continuous across mid-flight
- * reversals. Use it for custom gesture-driven drivers (drawer, back swipe, flights) stepped
- * from [motionFrameLoop]; for ordinary property animation use `Animatable` with
- * [MotionSpring.spec], which is the same curve.
- *
- * Mutable like the Swift value type it ports; [copy] gives an independent value.
+ * One axis of an analytical spring, stepped in closed form for any `dt` (iOS `SpringSolver`).
+ * [retarget] keeps position and velocity continuous. Mutable; [copy] gives an independent value.
  */
 class SpringSolver(
     var value: Double = 0.0,

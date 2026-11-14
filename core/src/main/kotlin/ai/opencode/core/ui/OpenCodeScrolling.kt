@@ -13,11 +13,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 
-/*
- * A page whose content fits on screen doesn't move when dragged, as Android's views do
- * (`OVER_SCROLL_IF_CONTENT_SCROLLS`): no large title collapsing, no stretch. Compose's lists
- * otherwise stretch, and pass the drag on to the title bar, even with nothing to scroll.
- */
+// A page whose content fits doesn't move when dragged (Android's `OVER_SCROLL_IF_CONTENT_SCROLLS`):
+// no title collapse, no stretch.
 
 /** Whether [state]'s content is taller than its viewport, so a drag has something to scroll. */
 @Composable
@@ -37,9 +34,8 @@ fun rememberOverscrollIfContentScrolls(state: ScrollableState): OverscrollEffect
 }
 
 /**
- * [OpenCodeLargeTopBar]'s scroll behaviour: Material's exit-until-collapsed, only while the
- * page's content ([state]) can scroll, so a page that fits keeps its large title. A collapsed
- * bar can always expand again, even if the page fits once the title is gone.
+ * [OpenCodeLargeTopBar]'s scroll behaviour: exit-until-collapsed only while [state] can scroll. A
+ * collapsed bar can always expand again.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

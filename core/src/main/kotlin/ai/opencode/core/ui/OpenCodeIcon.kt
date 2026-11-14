@@ -23,10 +23,8 @@ object OpenCodeIconSize {
 }
 
 /**
- * Draws an iOS SF Symbol as its Material Symbols Rounded counterpart.
- *
- * @param contentDescription what it means, or `null` when decorative (iOS
- *   `.accessibilityHidden(true)`); controls label the control, not the glyph.
+ * Draws an iOS SF Symbol as its Material Symbols Rounded counterpart. [contentDescription] is
+ * `null` when decorative.
  */
 @Composable
 fun OpenCodeIcon(

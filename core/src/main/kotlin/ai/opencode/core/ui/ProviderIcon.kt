@@ -15,12 +15,8 @@ import coil3.request.ImageRequest
 import coil3.svg.SvgDecoder
 
 /**
- * A provider's logo from OpenCode's provider icon set, tinted like text (iOS `ProviderIcon`,
- * `Session/SessionView.swift`: template images from `ProviderIcons.xcassets`). Decorative: the row
- * it sits in names the provider.
- *
- * @param canonical the provider this one stands for, when its own ID has no icon.
- * @param tint the template colour; unspecified draws in [LocalContentColor] (SwiftUI's foreground style).
+ * A provider's logo, tinted like text (iOS `ProviderIcon`). Decorative. [canonical] stands in when
+ * its own ID has no icon.
  */
 @Composable
 fun ProviderIcon(providerID: String, modifier: Modifier = Modifier, canonical: String? = null, tint: Color = Color.Unspecified) {
@@ -30,9 +26,8 @@ fun ProviderIcon(providerID: String, modifier: Modifier = Modifier, canonical: S
 
 object ProviderIcon {
     /**
-     * Like desktop: the provider's own icon, else its canonical provider's, else a Console
-     * connection's upstream, else the neutral placeholder. Returns the iOS asset name
-     * (`provider-<id>`).
+     * The provider's icon, else its canonical's, else a Console connection's upstream, else the
+     * placeholder. Returns `provider-<id>`.
      */
     fun assetName(providerID: String, canonical: String?): String {
         val candidates = listOfNotNull(providerID, canonical, if (providerID.startsWith("console-")) providerID.drop(8) else null)
@@ -56,9 +51,8 @@ object ProviderIcon {
 }
 
 /**
- * The artwork iOS bundles in `ProviderIcons.xcassets`, by its iOS asset name: `provider-<id>` in
- * `assets/provider-icons/<id>.svg` and `mcp-<name>` (simple-icons marks) in
- * `assets/mcp-icons/<name>.svg`. iOS's `UIImage(named:) != nil` is [exists].
+ * The artwork iOS bundles in `ProviderIcons.xcassets`, by its iOS asset name, under
+ * `assets/provider-icons` and `assets/mcp-icons`.
  */
 object BrandAssets {
     /** The `mcp-*` marks in `assets/mcp-icons`. */

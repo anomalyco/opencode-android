@@ -12,9 +12,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 /**
- * Font families. This branch uses the OpenCode desktop's fonts: Inter (variable) for UI text and
- * IBM Plex Mono for code and tool output (`packages/ui` `--font-family-sans` / `-mono`). Both are
- * OFL-1.1 (`docs/licenses/`).
+ * Inter (variable) for UI text and IBM Plex Mono for code, as the desktop. Both OFL-1.1
+ * (`docs/licenses/`).
  */
 object OpenCodeFonts {
     /**
@@ -63,13 +62,7 @@ object OpenCodeFonts {
     )
 }
 
-/**
- * The text styles under iOS's Dynamic Type names (so ported views still say `.footnote`), sized
- * to the OpenCode desktop scale. sp follows the system font scale like Dynamic Type.
- *
- * Use these by name when porting a view that says `.font(.footnote)`; Material components
- * pick them up through [OpenCodeTypography]'s role mapping.
- */
+/** The text styles under iOS's Dynamic Type names, sized to the desktop scale. */
 object OpenCodeTextStyles {
     private fun style(size: Int, lineHeight: Int, weight: FontWeight = FontWeight.Normal, tracking: Double = 0.0) = TextStyle(
         fontFamily = OpenCodeFonts.system,
@@ -107,24 +100,7 @@ object OpenCodeTextStyles {
     val caption2 = style(11, 13)
 }
 
-/**
- * Material 3 type roles mapped onto iOS text styles:
- *
- * | M3 role | iOS style | Typical use |
- * | --- | --- | --- |
- * | displayLarge, displayMedium | largeTitle 34 | large screen titles |
- * | displaySmall, headlineLarge | title1 28 | |
- * | headlineMedium, titleLarge* | title2 22 / title3 20 | *titleLarge = title3: top app bar titles |
- * | headlineSmall | title3 20 | section and sheet titles |
- * | titleMedium | headline 17 semibold | inline nav titles, list row titles that are emphasised |
- * | titleSmall | subheadline 15 semibold | small group headers |
- * | bodyLarge | body 17 | primary text, transcript prose, list row titles |
- * | bodyMedium | subheadline 15 | secondary text, list supporting text, RollingNumber default |
- * | bodySmall | footnote 13 | footers, timestamps |
- * | labelLarge | body 17 semibold | buttons (iOS `.controlSize(.large)` label) |
- * | labelMedium | caption1 12 medium | chips, badges |
- * | labelSmall | caption2 11 medium | tiny badges |
- */
+/** Material 3 type roles mapped onto the iOS text styles. */
 val OpenCodeTypography: Typography = with(OpenCodeTextStyles) {
     Typography(
         displayLarge = largeTitle,

@@ -24,20 +24,9 @@ import kotlin.math.min
 import kotlin.math.pow
 
 /**
- * Port of iOS `TouchRecovery` (`OpenCode/Core/TouchRecovery.swift`): the last-resort net for a
- * session that stops taking touches. Each owner of something that can sit over the session audits
- * only the interaction it controls. A fault held for more than one second of animation time (and
- * never more than four real seconds, however slow lab motion runs) is released by that owner and
- * logged content-free as `transcript_touch_recovered owner=… reason=…`.
- *
- * [inspect] returns `null` when healthy or legitimately blocking (an open menu, a drag in flight);
- * `null` resets the grace period. Never infer dismissal from a transparent surface alone. A drag
- * that didn't scroll can [expedite] a fault that was already there.
- *
- * Android: Compose has no view hierarchy to disable, so only owners whose own state can leave a
- * surface taking touches after it's done use a watch (the Plus menu, the media viewer, the page
- * stack, the floating call, the transcript's mark hand-off). See `docs/parity/core.md` for the
- * owners that don't.
+ * Port of iOS `TouchRecovery`: releases a surface that keeps taking touches. A fault held over one
+ * animation second (at most four real seconds) is released and logged as
+ * `transcript_touch_recovered`. [inspect] returns null when healthy.
  */
 class TouchRecovery(
     val owner: Owner,
@@ -67,10 +56,8 @@ class TouchRecovery(
     }
 
     /**
-     * What holds the touches, and why. Equal when the reason, the holder (by identity), the grace
-     * and the start match. [startedAt] is when the fault really began (real seconds, the
-     * live `Clock` domain), if its holder knows: the grace then runs from there, not from
-     * the first sample that saw it.
+     * What holds the touches, and why. [startedAt] (real seconds), if known, starts the grace
+     * there.
      */
     class Fault(
         val reason: Reason,
@@ -145,9 +132,8 @@ class TouchRecovery(
     }
 
     /**
-     * A drag that began at [touchBegan] (real time) found nothing scrolled: a fault already
-     * standing when the finger came down is released without waiting out the rest of its
-     * animation grace. Hard deadlines still hold.
+     * A drag at [touchBegan] scrolled nothing: a fault already standing then is released without
+     * waiting out its grace.
      */
     fun expedite(touchBegan: Double, now: Double, wall: Double): Boolean {
         val next = observe(now, wall) ?: return false
@@ -228,12 +214,8 @@ class TouchRecovery(
 }
 
 /**
- * Port of iOS `TouchRecoveryClient`: every live [TouchRecovery] is sampled by the process-wide
- * [TouchRecoverySampler], only in armed windows (0 Hz at rest). [watch] adds a recovery while the
- * call is suspended; [touched] (a finger came down: `MainActivity.dispatchTouchEvent`) and [arm]
- * (a transition) open a sampling window; [expedite] passes on a dead drag, though nothing on
- * Android detects one yet (see `docs/parity/devtools.md`). Tests get an inert client and drive
- * [TouchRecovery.sample] or a [TouchRecoverySampler] themselves.
+ * Port of iOS `TouchRecoveryClient`: live recoveries are sampled only in armed windows (0 Hz at
+ * rest). Tests get an inert client.
  */
 fun interface TouchRecoveryClient {
     suspend fun watch(recovery: TouchRecovery)
@@ -247,7 +229,7 @@ fun interface TouchRecoveryClient {
     companion object Key : DependencyKey<TouchRecoveryClient> {
         override val liveValue: TouchRecoveryClient = object : TouchRecoveryClient {
             override suspend fun watch(recovery: TouchRecovery) {
-                // The sampler is confined to the main thread, as iOS's is to the main actor.
+                // Main thread only.
                 withContext(Dispatchers.Main.immediate) {
                     TouchRecoverySampler.shared.add(recovery)
                     try {
@@ -269,17 +251,8 @@ fun interface TouchRecoveryClient {
 }
 
 /**
- * Port of iOS `TouchRecoverySampler`: samples every live [TouchRecovery] four times a second in
- * animation time (slowed-down lab motion stretches the grace period with it, up to
- * [TouchRecovery.WALL_GRACE]) and real time, but only in windows: [arm] keeps it sampling for
- * [WINDOW] real seconds, and it stops once that has passed with no watch holding a fault or
- * backing off (0 Hz at rest). A finger coming down arms it ([touched], which also samples at once
- * when it was idle, so a fault standing when the finger came down counts as standing before it),
- * as do a new watch, the app returning to the foreground (each watch is added again) and an
- * owner's composition changing ([rememberTouchRecovery]). Main thread only.
- *
- * Android: iOS's window, keyboard and transcript-page notifications have no single equivalent;
- * an owner recomposing is the transition that can leave its fault behind.
+ * Port of iOS `TouchRecoverySampler`: samples every live recovery four times a second, only for
+ * [WINDOW] seconds after [arm] or [touched] (0 Hz at rest). Main thread only.
  */
 class TouchRecoverySampler(
     private val clock: () -> Time = ::liveClock,
@@ -392,10 +365,8 @@ class TouchRecoverySampler(
 }
 
 /**
- * A [TouchRecovery] watched while this composable is in the composition and the app is in the
- * foreground (iOS `TouchRecoverySampler`). Leaving or returning to the foreground starts every
- * grace period over (iOS resets on scene activation changes), and returning arms the sampler.
- * Every recomposition of the owner arms it too: its state changed, so a fault may be on its way.
+ * A [TouchRecovery] watched while composed and in the foreground. Returning to the foreground
+ * resets its grace; every recomposition arms the sampler.
  */
 @Composable
 fun rememberTouchRecovery(

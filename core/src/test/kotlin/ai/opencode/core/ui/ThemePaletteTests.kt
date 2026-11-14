@@ -85,9 +85,8 @@ class ThemePaletteTests {
             val def = ThemePalette.definition(theme)
 
             if (theme == AppTheme.OpenCode) {
-                // Android diverges from iOS on purpose here: the OpenCode theme is the desktop's
-                // palette (BrandPalette), whose accent is the monochrome contrast fill, so its
-                // swatch dot is near-black in light and near-white in dark.
+                // The OpenCode theme's accent is the desktop's monochrome contrast fill: near-black
+                // in light, near-white in dark.
                 assertTrue("${theme.title} dark swatchAccent L=${def.dark.swatchAccent.oklch.first}", def.dark.swatchAccent.oklch.first > 0.85)
                 assertTrue("${theme.title} light swatchAccent L=${def.light.swatchAccent.oklch.first}", def.light.swatchAccent.oklch.first < 0.35)
             } else {

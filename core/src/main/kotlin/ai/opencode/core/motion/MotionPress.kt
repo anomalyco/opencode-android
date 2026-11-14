@@ -9,14 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 
 /**
- * The press role's shared feedback (iOS `MotionPress`, `Core/Motion/MotionPress.swift`): a
- * pressed control scales to [MotionTunables.pressScale] on the press role's quick ease-out and
- * springs back on micro in; under Reduce Motion it dims to [reducedOpacity] instead.
- *
- * Android: Material components already draw their own ripple and state layer, so this is for
- * custom tappable surfaces that want the iOS press scale. iOS `MotionPressButtonStyle`
- * (`openCodePressStyle()`) maps to [motionPress] with the control's `InteractionSource`; the
- * UIKit `apply(isPressed:to:reduceMotion:)` is n/a.
+ * The press role's feedback (iOS `MotionPress`): scales to [MotionTunables.pressScale], or dims
+ * under Reduce Motion. For custom surfaces; Material components draw their own ripple.
  */
 object MotionPress {
     const val reducedOpacity: Float = 0.72f

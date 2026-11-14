@@ -22,35 +22,14 @@ import kotlin.math.min
 enum class MotionFrameAction { Continue, Stop }
 
 /**
- * One frame of a [motionFrameLoop] (iOS `MotionDisplayLink.Tick`).
- *
- * @property dt seconds to advance this frame, already capped at `maxFrames` frame durations
- *   (so a hitch never teleports a spring) and multiplied by the time scale.
- * @property now the loop's virtual clock in seconds (scaled).
- * @property rawFrameDuration the display's frame duration in seconds.
- * @property scale the time scale (1 = real time; Developer Mode slow motion would lower it).
+ * One frame of a [motionFrameLoop] (iOS `MotionDisplayLink.Tick`), in seconds. [dt] is capped at
+ * `maxFrames` frames, so a hitch never teleports a spring, and scaled.
  */
 data class MotionTick(val dt: Double, val now: Double, val rawFrameDuration: Double, val scale: Double)
 
 /**
- * Port of iOS `MotionDisplayLink`: a per-frame loop for custom motion (springs stepped by
- * [SpringSolver], gesture followers) on Compose's frame clock (`withFrameNanos`), which runs
- * at the display's refresh rate (up to 120 Hz on capable phones). Suspends until [onTick]
- * returns [MotionFrameAction.Stop] or the calling coroutine is cancelled (leaving
- * composition stops it, like iOS's weak target).
- *
- * Mirrors `AnimationTimeScale.sample`: `dt = min(frameDelta, maxFrames × frameDuration) × scale`;
- * the first frame advances one frame duration. Never read wall-clock time inside a step.
- *
- * ```kotlin
- * LaunchedEffect(target) {
- *     val spring = SpringSolver(Motion.drawerSlide, value = offset, target = target)
- *     motionFrameLoop(frameDurationSeconds = frameDuration) { tick ->
- *         offset = spring.step(tick.dt).value
- *         if (spring.isSettled) MotionFrameAction.Stop else MotionFrameAction.Continue
- *     }
- * }
- * ```
+ * Port of iOS `MotionDisplayLink`: a per-frame loop on Compose's frame clock until [onTick] returns
+ * [MotionFrameAction.Stop] or the coroutine is cancelled. Never read wall-clock time inside a step.
  */
 suspend fun motionFrameLoop(
     frameDurationSeconds: Double = 1.0 / 60.0,
@@ -83,11 +62,7 @@ fun rememberFrameDurationSeconds(): Double {
     return remember(rate) { 1.0 / rate }
 }
 
-/**
- * Android's Reduce Motion: Settings → Accessibility → Remove animations (which sets the
- * animator duration scale to 0). Live-updating. iOS reads `accessibilityReduceMotion`.
- * Pass it to [MotionSpring.animation] / [Motion.easeOut] so springs become the 0.2 s fade.
- */
+/** Android's Reduce Motion: Remove animations (animator duration scale 0). Live-updating. */
 @Composable
 fun rememberReduceMotion(): Boolean {
     val context = LocalContext.current
@@ -96,10 +71,8 @@ fun rememberReduceMotion(): Boolean {
 }
 
 /**
- * The Remove animations setting for the whole app, read once and kept current by one observer.
- * Rows call [rememberReduceMotion] as they scroll in; an observer of their own would cost two
- * calls into the system's settings service per row (register, then unregister on the way out).
- * Main thread only, like composition.
+ * Remove animations for the whole app, kept current by one observer so rows don't each register
+ * one. Main thread only.
  */
 private object ReduceMotionSetting {
     private var resolver: ContentResolver? = null

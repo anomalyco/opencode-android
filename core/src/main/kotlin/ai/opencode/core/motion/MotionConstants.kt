@@ -17,15 +17,9 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 /**
- * A spring in SwiftUI's `(duration, bounce)` vocabulary (iOS `TunableSpring` defaults).
- *
- * SwiftUI's mapping (`Spring(duration:bounce:)`, ported in [SpringSolver.parameters]):
- * ω = 2π / duration, ζ = 1 − bounce (or 1 / (1 + bounce) for negative bounce). A Compose
- * spring with mass 1 has ω = √stiffness, so the exact equivalent is
- * `spring(dampingRatio = ζ, stiffness = ω²)`: [spec].
- *
- * Legacy iOS `.spring(response:dampingFraction:)` is the same curve with
- * `response = duration`, `dampingFraction = ζ`: use [fromResponse].
+ * A spring in SwiftUI's `(duration, bounce)` terms: ω = 2π / duration, ζ = 1 − bounce, so [spec] is
+ * `spring(dampingRatio = ζ, stiffness = ω²)`. [fromResponse] takes the legacy
+ * `response:dampingFraction:` form.
  */
 data class MotionSpring(val duration: Double, val bounce: Double = 0.0) {
     /** Angular frequency ω (rad/s). */
@@ -46,8 +40,7 @@ data class MotionSpring(val duration: Double, val bounce: Double = 0.0) {
 
     /**
      * iOS `TunableSpring.animation(reduceMotion:delay:)`: the spring, or [Motion.reducedFadeSpec]
-     * under Reduce Motion (Android: animations removed / animator duration scale 0), optionally
-     * delayed by [delaySeconds].
+     * under Reduce Motion.
      */
     fun <T> animation(reduceMotion: Boolean, delaySeconds: Double = 0.0, visibilityThreshold: T? = null): FiniteAnimationSpec<T> {
         if (reduceMotion) return Motion.reducedFadeSpec(delaySeconds)
@@ -63,15 +56,8 @@ data class MotionSpring(val duration: Double, val bounce: Double = 0.0) {
 }
 
 /**
- * The app's motion vocabulary (iOS `Motion`, `OpenCode/Core/Motion/MotionConstants.swift`,
- * docs/motion.md): fourteen roles, each a [MotionRole] (`Motion.panelOpen`, `Motion.release`,
- * …) that Compose specs and [SpringSolver] both read, plus the shared geometry, stagger and
- * ambient values the roles use.
- *
- * Backed by live [MotionTunables] (iOS `Tunable`s, same keys and defaults): the Tuning Panel
- * (Developer Mode) lists them as the global Motion group (Springs, Fades, Geometry, Ambient)
- * on every screen; off, each read is the default. Springs and tweens built here also follow
- * Developer Mode slow motion ([AnimationTimeScale]).
+ * The app's motion vocabulary (iOS `Motion`): fourteen [MotionRole]s plus shared geometry, stagger
+ * and ambient values, backed by live [MotionTunables].
  */
 object Motion {
     /** iOS `Motion.sectionTitles`: the Motion group's sections, in order. */
@@ -132,9 +118,7 @@ object Motion {
         "foldHandoverRatio", "blurSubtle", "blurPanel", "blurSheet", "blurBackdrop", "entranceRise", "panelRise",
     )
 
-    // Deprecated: today's call sites keep their numbers until they move to a role (iOS keeps the
-    // same aliases). iOS points microPop, morphClose and disclosureOpen at their roles because no
-    // iOS call site used them; Android's still do, so these stay fixed at today's numbers.
+    // Deprecated: fixed at today's numbers until their call sites move to a role.
 
     /** Today's 0.34 s / 0.12 panel spring, fixed for the screens that haven't moved to [Motion.panelOpen]. */
     @Deprecated("Use Motion.panelOpen")
@@ -227,10 +211,8 @@ private class DelayedVectorizedSpec<V : AnimationVector>(
 }
 
 /**
- * The [Motion] vocabulary as live tunables: iOS `Motion`'s tunables in
- * `Core/Motion/MotionConstants.swift`, same keys, labels, defaults, ranges and steps (group
- * `motion`, sections Springs, Fades, Geometry and Ambient). Keep each declaration on one line:
- * `scripts/tune.py bake` rewrites its default.
+ * The [Motion] vocabulary as live tunables, same keys and defaults as iOS. Keep each declaration on
+ * one line: `scripts/tune.py bake` rewrites its default.
  */
 object MotionTunables {
     // Springs (duration s, bounce)
