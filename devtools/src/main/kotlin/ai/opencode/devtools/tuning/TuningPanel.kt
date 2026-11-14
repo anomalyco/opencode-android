@@ -154,15 +154,9 @@ private class ThrowHandler(
 )
 
 /**
- * The floating Tuning Panel (iOS `TuningOverlayView` + `TuningPanel`): a small M3 surface over
- * the app that takes touches only inside itself and floats like picture-in-picture. Drag it by
- * its header and throw it: it settles against the side the throw carries it to (into a corner
- * near the top or bottom), at [TuningPlacementLayout]'s landing, with a spring that starts at the
- * release speed. Thrown past an edge, it tucks into a tab there; tap or pull the tab to bring it
- * back. Collapse folds it into a pill naming the screen and how many values are changed. Where
- * it sits ([TuningPlacement], `tuning-placement`) and whether it's folded are kept across launches.
- * Rows: label, slider/switch/menu, and value (orange once changed; tap it to reset). Presets show
- * as numbered chips at the top of their group.
+ * The floating Tuning Panel (iOS `TuningOverlayView` + `TuningPanel`). Drag and throw it to a side,
+ * past an edge to tuck it into a tab, or collapse it into a pill. Tap a changed (orange) value to
+ * reset it.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -299,8 +293,8 @@ fun TuningPanel(store: StoreOf<TuningFeature.State, TuningFeature.Action>, modif
                     )
                 fun measured(update: (Size) -> Unit, current: Size): Modifier = Modifier.onSizeChanged {
                     val next = Size(it.width / density.density, it.height / density.density)
-                    // Only the panel's very first size (as it appears) lands in place; a form measured later
-                    // (the pill on Collapse) moves on the settle spring, or it would jump in one frame.
+                    // Only the panel's first size lands in place; a form measured later moves on
+                    // the settle spring, or it would jump in one frame.
                     val first = pending.measured.isEmpty()
                     pending.measured.add(shown)
                     if (next != current) {
@@ -340,9 +334,8 @@ fun TuningPanel(store: StoreOf<TuningFeature.State, TuningFeature.Action>, modif
 }
 
 /**
- * A SwiftUI `DragGesture` in the global space: starts once the finger has moved
- * [minimumDistance] (at once for zero), reports the translation since touch-down, and the
- * release velocity from a [VelocityTracker]. Both in dp (px ÷ density).
+ * A SwiftUI `DragGesture` in global space: starts after [minimumDistance], reports translation
+ * since touch-down and release velocity, in dp.
  */
 private fun Modifier.throwGesture(minimumDistance: Dp, handler: State<ThrowHandler>): Modifier =
     this.then(
@@ -539,9 +532,8 @@ private fun TuningPill(state: TuningFeature.State, expand: () -> Unit, modifier:
 }
 
 /**
- * iOS `TuningTab`: the panel tucked against an edge, a slim tab to pull it back out. The whole
- * 44×72 dp is on screen (Compose extends its touch area to 48 dp), with the slim
- * [TuningPlacementLayout.TAB_GLASS_WIDTH] face against the same edge and a chevron pointing inward.
+ * iOS `TuningTab`: the panel tucked against an edge, a slim tab with a chevron pointing inward to
+ * pull it back out.
  */
 @Composable
 private fun TuningTab(side: TuningPlacement.Side, pullOut: () -> Unit, modifier: Modifier = Modifier) {

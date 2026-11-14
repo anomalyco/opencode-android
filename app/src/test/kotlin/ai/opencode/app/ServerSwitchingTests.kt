@@ -23,13 +23,8 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `ServerSwitchingTests.swift`, the `AppFeature` part: renaming, re-pairing,
- * switching from Home and Settings, the server form and scanner over Home, removal from the
- * drawer, and the form's headers. Names, decoding and headers on requests are `:server`'s; Home's
- * own tests `:feature:drawer`'s. (iOS c75d4a1e removed the Title Is the Switch sheet's tests.)
- *
- * iOS asserts shared values inside state closures; a `Shared` here is a reference (equal across
- * states), so those values are checked after the step.
+ * Port of iOS `ServerSwitchingTests.swift`, the `AppFeature` part. A `Shared` here is a reference,
+ * so shared values are checked after the step.
  */
 class ServerSwitchingTests {
     @get:Rule val isolation = TestIsolationRule()

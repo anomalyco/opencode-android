@@ -21,10 +21,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * Port of iOS `VoiceLiveActivityTests.swift`, the `AppFeature` part (Leaving Home): leaving Home
- * cancels a call without Home seeing it end, so AppFeature ends its ongoing notification. Android
- * keys the call's foreground service by `callPresenceID`, set beside `voiceCallActivity` when a
- * call starts. Home's tests are `:feature:drawer`'s, the activity's `:feature:system`'s.
+ * Port of iOS `VoiceLiveActivityTests.swift`, the `AppFeature` part: leaving Home mid-call ends its
+ * ongoing notification.
  */
 class VoiceLiveActivityTests {
     @get:Rule val isolation = TestIsolationRule()

@@ -252,10 +252,8 @@ class RetryPolicyTests {
     }
 
     /**
-     * A request the system tore down while the app was suspended can come back as a bare
-     * socket error. It used to be a permanent failure, so a send made just before leaving the
-     * app failed for good on return. On the JVM the POSIX errors arrive as `java.net`
-     * exceptions; iOS's CFNetwork / `Network.NWError` wrapping has no JVM counterpart.
+     * A request the system tore down while the app was suspended can come back as a bare socket
+     * error. On the JVM the POSIX errors arrive as `java.net` exceptions.
      */
     @Test
     fun mapsSocketErrorsLikeTheConnectionFailuresTheyAre() {

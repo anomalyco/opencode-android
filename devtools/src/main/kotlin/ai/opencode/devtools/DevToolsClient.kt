@@ -40,11 +40,7 @@ data class LabState(
     data class Checkpoint(val id: String, val title: String, val description: String = "")
 }
 
-/**
- * The developer tools' side effects, for [DevToolsFeature] (iOS reaches these from views; here
- * reducers call them in effects): the app log, the share sheet, relaunching, the session-lab
- * control API, and writing a diagnostics bundle. Test value is inert.
- */
+/** The developer tools' side effects, for [DevToolsFeature]. Test value is inert. */
 class DevToolsClient(
     /** Recent `AppLog` lines from this process, oldest first. */
     val appLog: () -> List<String> = { emptyList() },
@@ -153,9 +149,8 @@ class DevToolsClient(
 }
 
 /**
- * iOS `DiagnosticsClient.developerModeChanged(true)`: turning Developer Mode on uploads every voice
- * call log saved on this phone (`DeveloperMode.upload(log)`, detached at utility priority). Voice
- * sits beside `:devtools`, so `:app` installs the live value; the default does nothing.
+ * iOS `DiagnosticsClient.developerModeChanged(true)`: uploads every saved voice call log. `:app`
+ * installs the live value; the default does nothing.
  */
 class SavedVoiceLogUploads(
     /** Starts the uploads and returns at once; they outlive the screen that asked. */

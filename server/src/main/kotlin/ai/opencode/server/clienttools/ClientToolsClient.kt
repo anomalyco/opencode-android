@@ -44,12 +44,9 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * Where the phone offers its tools: one server's location (iOS `ClientToolsTarget`). The server
- * lists them only to sessions in [directory], as `android_<tool>`. A change of [tools] reconnects,
- * so the server lists the new set.
- *
- * Equal when the connection is made of the same parts, so a renamed server or a refreshed snapshot
- * never reconnects it.
+ * Where the phone offers its tools: one server's location (iOS `ClientToolsTarget`), listed to
+ * sessions in [directory] as `android_<tool>`. Equal when made of the same parts, so only a real
+ * change reconnects.
  */
 class ClientToolsTarget(
     val server: OpenCodeServer,
@@ -181,9 +178,8 @@ enum class ClientTool(val rawValue: String) {
 
     companion object {
         /**
-         * The client MCP server's name: agents see `android_voice_request_screen`. Android
-         * divergence: iOS names its server `ios`; a distinct name keeps an iPhone and an Android
-         * phone on the same server from replacing each other's tools.
+         * The client MCP server's name, so agents see `android_voice_request_screen`. Distinct from
+         * iOS's `ios` so both phones' tools coexist on one server.
          */
         const val SERVER_NAME = "android"
 

@@ -32,11 +32,9 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 /**
- * Port of iOS `DeveloperMode` (`Diagnostics/Traces/DeveloperMode.swift`): with Developer Mode on,
- * finished voice calls and explicit problem reports go to the log server under this phone's
- * random owner key. Anyone with [webURL] can view them; they expire after 30 days. The gate itself
- * is `ai.opencode.core.tuning.DeveloperMode.isEnabled`. Lives in `:server` because uploads go
- * through [NetworkRetry]; Report a Problem (session) and the voice call log call it.
+ * Port of iOS `DeveloperMode`: with Developer Mode on, finished voice calls and problem reports go
+ * to the log server under this phone's random owner key. Anyone with [webURL] can view them; they
+ * expire after 30 days.
  */
 object DeveloperModeUploads {
     const val BASE = "https://opencode-voice-logs.anomalyco.workers.dev"

@@ -347,10 +347,9 @@ data class OpenCodeClient(
         )
 
         /**
-         * Inert: endpoints a test doesn't override throw `AssertionError("Unimplemented: OpenCodeClient.<name>")`.
-         * The ones iOS stubs for every test (context reads, capabilities, autocomplete, background
-         * moves, Markdown images on a per-test cache) are inert defaults, so routine refreshes
-         * don't fail tests that don't care about them.
+         * Inert: endpoints a test doesn't override throw `AssertionError`, except routine reads
+         * (context, capabilities, autocomplete, background moves, Markdown images), which default
+         * to inert values.
          */
         override val testValue: OpenCodeClient
             get() {

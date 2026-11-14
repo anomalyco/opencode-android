@@ -25,20 +25,13 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import java.lang.ref.WeakReference
 
-/*
- * Port of iOS `App/SceneWindows.swift` and `App/AppFeature+Windows.swift`: Multiple Windows
- * (iPad, OC-512) as Android multi-instance windows on a tablet. Each window is a task of its own
- * running `MainActivity` (`singleInstancePerTask`), with its own [RootStore] (iOS `WindowStore`)
- * and so its own `AppFeature` store. Server access, caches, the event stream and the session-list
- * reads are process-wide and shared; navigation, the drawer, the sidebar, the composer and the
- * transcript are the window's own. A phone has one window and none of this changes it: every
- * multi-window path checks [SceneWindows.isSupported].
- */
+// Port of iOS `App/SceneWindows.swift` and `App/AppFeature+Windows.swift`: Multiple Windows on a
+// tablet, each a task running `MainActivity` (`singleInstancePerTask`) with its own [RootStore]. A
+// phone has one window: every multi-window path checks [SceneWindows.isSupported].
 
 /**
- * iOS `AppFeature.State.init(window:)`: a further window's state, the saved server's Home
- * restored on [target] (or, without one, the session the first window would restore). Its
- * last-viewed session and sidebar live in memory ([HomeFeature.State.isWindowLocal]).
+ * iOS `AppFeature.State.init(window:)`: a further window's state, the saved server's Home restored
+ * on [target].
  */
 fun AppFeature.State.Companion.window(target: SessionWindowTarget?): AppFeature.State {
     val state = initial()
@@ -57,9 +50,8 @@ val AppFeature.State.hasLiveCall: Boolean
     get() = home?.sessionDetail?.voice?.phase?.isTerminal == false
 
 /**
- * iOS `AppFeature.Action.isAppWide`: work that belongs to the app rather than a window, which only
- * the window [WindowRoster] gives it to does: draining the system action inbox (quick actions,
- * tiles, App Actions, notification taps), consuming shares, and publishing quick actions and widgets.
+ * iOS `AppFeature.Action.isAppWide`: work that belongs to the app rather than a window, run only by
+ * the window [WindowRoster] gives it to.
  */
 val AppFeature.Action.isAppWide: Boolean
     get() = this == AppFeature.Action.SystemActionsTask ||
@@ -68,10 +60,7 @@ val AppFeature.Action.isAppWide: Boolean
 
 /**
  * iOS `WindowAppFeature`: the root reducer of every window's store. App-wide work runs only in the
- * window that owns it ([SceneWindows.ownsAppWideWork]), which with one window is always that
- * window, so it is exactly [base]. On a tablet a call starts in only one window at a time: an
- * action that would start a second call while another window has one is undone, with a warning
- * haptic, before any of its effects run.
+ * owning window, and only one window may have a call.
  */
 class WindowAppFeature(
     private val base: Reducer<AppFeature.State, AppFeature.Action>,
@@ -148,9 +137,8 @@ object SceneWindows {
     }
 
     /**
-     * Where a notification tap goes: the connected window already showing that session, else the
-     * connected window in use if it is on that server, else the window doing the app-wide work
-     * (with one window, always the first). A closed window's kept state never gets it.
+     * Where a notification tap goes: the window showing that session, else the one in use on that
+     * server, else the one doing the app-wide work.
      */
     fun window(destination: NotificationDestination, receiving: RootStore): RootStore =
         window(destination, roster, appWideWork, active?.get()) ?: receiving
@@ -217,10 +205,7 @@ object SceneWindows {
 
 /**
  * One window's part (iOS `WindowStore`), retained across configuration changes: its role
- * ([WindowRoster]) and its store. The primary restores as the app always has; a secondary
- * (tablet) starts from [AppFeature.State.window]. Resolved once, on the first `onCreate`.
- * [roster], [appWideWork] and [makeStore] are the process-wide ones and a secondary's store
- * unless a test hands in its own (iOS `WindowStore(roster:appWideWork:makeStore:)`).
+ * ([WindowRoster]) and its store, resolved on the first `onCreate`.
  */
 class RootStore(
     internal val roster: WindowRoster = SceneWindows.roster,
@@ -245,7 +230,7 @@ class RootStore(
     /** The store exists (it is made on the first `onCreate`). */
     val isResolved: Boolean get() = ::store.isInitialized && !isClosed
 
-    /** iOS: a tablet's window follows the session it shows. A phone's one window is the app exactly as it was. */
+    /** A tablet's window follows the session it shows; a phone's one window doesn't. */
     val follows: Boolean get() = roster.multipleWindows
 
     /** The session shown, as the window's restorable value (iOS `SessionWindowFollow.shown`). */
@@ -342,10 +327,8 @@ class RootStore(
 }
 
 /**
- * iOS `AppWideWork`: runs the app-wide tasks (draining the system action inbox, consuming waiting
- * shares) in the store of the window that owns them, the one place that starts them. It moves at
- * once, inside every roster change, so while any window is connected the owner's store is
- * listening. With no owner (the only window went) the work stays where it is.
+ * iOS `AppWideWork`: runs the app-wide tasks in the owning window's store. It moves inside every
+ * roster change; with no owner it stays where it is.
  */
 class AppWideWork(private val roster: WindowRoster) {
     /** The window whose store listens to the inbox. */
@@ -363,7 +346,7 @@ class AppWideWork(private val roster: WindowRoster) {
         val owner = roster.appWideOwner as? RootStore ?: return
         if (owner.role == null || owner === window) return
         val before = window
-        // It follows the store, not the window (iOS): an owner showing the same store carries on.
+        // It follows the store, not the window: an owner showing the same store carries on.
         if (before != null && !before.isClosed && before.store === owner.store) {
             window = owner
             return

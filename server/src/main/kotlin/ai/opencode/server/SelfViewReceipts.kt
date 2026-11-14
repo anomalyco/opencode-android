@@ -8,15 +8,9 @@ import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `SelfViewReceipts`: the read receipts (`POST /view`) this client has in flight or
- * just sent, so the event stream can drop their `session.viewed` echo: only another client's read
- * clears New on the phone.
- *
- * The server's echo carries only the session and idle (`session.viewed` has no request ID, and
- * `/view` takes only `idle`), so a receipt matches by server, session and idle. A receipt that
- * can't echo any more goes at once, so it never swallows a desktop read at the same idle: one
- * whose POST failed, or one already answered when the stream (re)connects, since its echo went
- * out on the stream that dropped.
+ * Port of iOS `SelfViewReceipts`: read receipts in flight or just sent, so the stream can drop
+ * their `session.viewed` echo. Echoes carry no request ID, so a receipt matches by server, session
+ * and idle, and goes at once when it can no longer echo.
  */
 class SelfViewReceipts(private val now: () -> Duration = { System.nanoTime().nanoseconds }) {
     private data class Receipt(

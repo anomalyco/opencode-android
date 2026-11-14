@@ -22,21 +22,16 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * Port of iOS `WindowSnapshot` (`TraceTriggers.swift`): the app's window as it looks now, as a JPEG
- * within the report's budget. `drawHierarchy` → `PixelCopy` of the resumed activity's window.
- *
- * Never in the background (no resumed activity), never while a credential surface is composed
- * ([CredentialSurface], iOS's Settings), and never from a `FLAG_SECURE` window. iOS also skips
- * while a secure text field is first responder; Compose has no responder chain to ask, and the
- * app's password fields all live inside Settings, which is a credential surface.
+ * Port of iOS `WindowSnapshot`: the window as a JPEG within the report's budget, via `PixelCopy`.
+ * Never in the background, over a [CredentialSurface], or from a `FLAG_SECURE` window.
  */
 object WindowSnapshot {
     /** Resumed activities, last resumed last (several in multi-window). Main thread only. */
     private val resumed = ArrayList<WeakReference<Activity>>()
 
     /**
-     * The window in use (iOS `keyWindow` through `ActiveScene.window`): with several windows, the
-     * one with window focus, the one last touched; otherwise the last resumed activity.
+     * The window in use: with several windows, the one with window focus, the one last touched;
+     * else the last resumed activity.
      */
     val keyWindow: Activity?
         get() {

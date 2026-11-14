@@ -7,17 +7,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-/**
- * Port of iOS `TuningMotionGroupTests` (`OpenCodeTests/TuningMotionGroupTests.swift`).
- *
- * Not here:
- * - `theMotionPlaygroundIsListedAndOpensByName`: iOS `TuningPlayground` (the playground enum and
- *   its launch argument) has no Android counterpart; Android's Motion playground is a Developer
- *   page, and [TuningContext.motionPlayground] is checked below.
- * - `theMacPageHighlightsTheMotionGroupToo`: the Mac tune page (`TuningPhoneMessage`,
- *   `withGlobalGroups`); Android has no Mac remote.
- * - The context list drops iOS `onboardingPlayground`, which Android doesn't declare.
- */
+/** Port of iOS `TuningMotionGroupTests`, without the playground-enum and Mac tune page tests. */
 class TuningMotionGroupTests {
     @get:Rule val isolation = TestIsolationRule()
 

@@ -42,9 +42,8 @@ import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `VoiceOpenSessionRaceTests.swift`. These app-level races assert navigation and
- * transport outcomes, not the unrelated Home/voice bookkeeping (non-exhaustive, as iOS); the
- * coordinator has exhaustive tests in `:feature:voice`.
+ * Port of iOS `VoiceOpenSessionRaceTests.swift`. Non-exhaustive: these assert navigation and
+ * transport outcomes only.
  */
 class VoiceOpenSessionRaceTests {
     @get:Rule val isolation = TestIsolationRule()

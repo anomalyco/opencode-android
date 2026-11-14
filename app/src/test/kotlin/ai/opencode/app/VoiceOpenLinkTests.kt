@@ -218,7 +218,7 @@ class VoiceOpenLinkTests {
         store.receive(AppFeature.Action.ClientTools(ClientToolsFeature.Action.Delegate(ClientToolsFeature.DelegateAction.ToolCalled(bad))))
         store.receive(AppFeature.Action.ClientTools(ClientToolsFeature.Action.Refuse(bad, VoiceOpenLinkFeature.Refusal.scheme("tel"))))
 
-        // Locked or backgrounded: Android opens nothing from the background either, so it's refused now.
+        // Locked or backgrounded: refused.
         store.send(AppFeature.Action.ForegroundChanged(false)) { it.copy(isInForeground = false) }
         val background = call.copy(id = JsonRpcID.Number(2))
         events.send(ClientToolsEvent.Call(background))

@@ -30,10 +30,8 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.merge
 
 /**
- * Settings › Developer, Android-native (iOS `DiagnosticsView` + `DeveloperMode`): the
- * Developer Mode switch with iOS's gating and copy, Record Diagnostics, and the tools — Tuning
- * Panel, slow motion, perf HUD, layout bounds, Troubleshooting (timeline), Logs, Network,
- * Session Lab and a diagnostics bundle export. Keep the public names stable: `:app` wires them.
+ * Settings › Developer (iOS `DiagnosticsView` + `DeveloperMode`). Keep the public names stable:
+ * `:app` wires them.
  */
 class DevToolsFeature : Reducer<DevToolsFeature.State, DevToolsFeature.Action> {
     enum class Route { Main, Troubleshooting, Logs, Network, Lab }

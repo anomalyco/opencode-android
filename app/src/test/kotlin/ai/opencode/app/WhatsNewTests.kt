@@ -18,11 +18,8 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `WhatsNewTests.swift` › `WhatsNewTryItTests`, the `AppFeature` part:
- * `whatsNewSurvivesAHomeReplacement` ([WhatsNewAcrossHomes]). What's New is Settings' page on
- * Android (`home.settings.whatsNew`), so iOS's `isSettingsShown` is `settings != null`, and a page
- * taken away with Settings has no `whatsNew` left to read (iOS `isPresented == false`). The page
- * is `:feature:settings`', the drawer's row and Try It `:feature:drawer`'s.
+ * Port of iOS `WhatsNewTests.swift` › `WhatsNewTryItTests`, the `AppFeature` part. What's New is
+ * Settings' page on Android, so `isSettingsShown` is `settings != null`.
  */
 class WhatsNewTryItTests {
     @get:Rule val isolation = TestIsolationRule()

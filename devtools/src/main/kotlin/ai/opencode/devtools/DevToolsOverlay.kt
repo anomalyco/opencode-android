@@ -52,13 +52,8 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 
 /**
- * Wraps the app's root content with the developer tools (iOS `TuningOverlay`'s window and
- * `TuningGestures`): the summon gesture, the floating Tuning Panel, the perf HUD and the layout
- * bounds overlay. Outside debug builds with Developer Mode off it is just [content].
- *
- * The summon gesture is a three-finger double tap or four fingers held for 0.45 s, anywhere; it
- * observes touches in the Initial pass without consuming them, so ordinary use can't tell it's
- * there.
+ * Wraps the app's root content with the developer tools (iOS `TuningOverlay`). Outside debug builds
+ * with Developer Mode off it is just [content].
  */
 @Composable
 fun DevToolsOverlay(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
@@ -105,9 +100,8 @@ fun DevToolsOverlay(modifier: Modifier = Modifier, content: @Composable () -> Un
 }
 
 /**
- * Slow Motion is on (iOS `SlowMotionBadge`): a small orange speed tag at the top of the screen,
- * just under the status bar's middle, that never takes a touch, so a recording shows the speed
- * it was made at.
+ * Slow Motion is on (iOS `SlowMotionBadge`): a speed tag under the status bar that never takes a
+ * touch, so a recording shows its speed.
  */
 @Composable
 private fun SlowMotionBadge(scale: Double) {
@@ -133,9 +127,7 @@ private fun SlowMotionBadge(scale: Double) {
 
 /**
  * iOS `TuningGestures`: three-finger double tap, or four fingers held for 0.45 s, summons; a
- * two-finger triple tap toggles Slow Motion without the panel, so it can be flipped mid screen
- * recording (exactly two fingers, so the three- and four-finger gestures never trip it). Never
- * consumes.
+ * two-finger triple tap toggles Slow Motion. Observes in the Initial pass and never consumes.
  */
 fun Modifier.summonGesture(onSummon: () -> Unit, onToggleSlowMotion: () -> Unit = {}): Modifier = this.then(
     Modifier.pointerInput(Unit) {

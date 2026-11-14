@@ -98,8 +98,7 @@ class ServerLinkTests {
         assertEquals(lan, store.probe(saved).url)
     }
 
-    // Preferred addresses (#62901: a code from `opencode pair --url` kept connecting over the
-    // OpenTunnel address the server reported). Android only until iOS makes the same change.
+    // Preferred addresses
 
     /** Paired from `opencode pair --url <tailnet>`: the server also reported its LAN and tunnel addresses. */
     private val tunnel = "https://k7f3m2qz9x.opentunnel.dev"

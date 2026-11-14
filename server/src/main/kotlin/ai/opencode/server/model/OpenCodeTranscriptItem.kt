@@ -148,11 +148,8 @@ sealed interface OpenCodePromptSource {
 }
 
 /**
- * One transcript row's content, as decoded from REST and kept in the transcript cache.
- *
- * Deviation from iOS: [AssistantMarkdown] and [OpenCodeCompaction.summary] carry the raw
- * Markdown text; iOS parses `[OpenCodeMarkdownBlock]` at decode. The Markdown model lives
- * with the transcript renderer (`:feature:transcript`), which parses (and caches) it.
+ * One transcript row's content, as decoded from REST and cached. Markdown stays raw text;
+ * `:feature:transcript` parses and caches it.
  */
 @Serializable
 sealed interface OpenCodeTranscriptItem {

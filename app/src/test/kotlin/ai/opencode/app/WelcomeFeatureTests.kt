@@ -16,14 +16,8 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `WelcomeFeatureTests.swift` (7f411b1c): the welcome's requests run the classic
- * screen's pairing, from the first run or from Show Welcome over Home (`HomeFeature.welcome`).
- * iOS's welcome dismisses itself on Close (`@Dependency(\.dismiss)`); here the presenting view's
- * `onClose` sends the dismissal, so `showWelcomeThenCloseLeavesThePairedServerAlone` sends it.
- *
- * Skipped: `storyTimeWaitsThenLoops`, `storyDictatesThenShowsTheScreenshotThenShipsIt`,
- * `metaSiteScreenshotIsDarkAndCarrierProgressIsMonotonic` and
- * `storyVoiceNeverTouchesTheLiveDictationMeter` (the animated story isn't ported yet).
+ * Port of iOS `WelcomeFeatureTests.swift`. Here the presenting view's `onClose` sends the
+ * dismissal. The animated story's tests aren't ported yet.
  */
 class WelcomeFeatureTests {
     @get:Rule val isolation = TestIsolationRule()

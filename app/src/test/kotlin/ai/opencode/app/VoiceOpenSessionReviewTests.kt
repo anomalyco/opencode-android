@@ -42,10 +42,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * Port of iOS `VoiceOpenSessionReviewTests.swift` (the app-level parts). The shared coordinator is
- * tested exhaustively in `:feature:voice`; here the whole app proves the covering sheets, the dock
- * and the transport integration. Deviation: the root's pending request here is a permission, not a
- * question form (iOS decodes a form fixture; either docks the same way).
+ * Port of iOS `VoiceOpenSessionReviewTests.swift` (the app-level parts). The root's pending request
+ * here is a permission, not a question form.
  */
 class VoiceOpenSessionReviewTests {
     @get:Rule val isolation = TestIsolationRule()

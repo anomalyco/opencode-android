@@ -51,11 +51,7 @@ private fun opened(destination: SystemAction.Destination, startsCall: Boolean = 
 
 private fun tapped(id: String) = AppFeature.Action.Home(HomeFeature.Action.SessionTapped(id))
 
-/**
- * Port of iOS `SystemIntegrationTests.swift`' `SystemRoutingTests` AppFeature section: actions
- * from shortcuts, widgets, intents and links reach the right server's Home. Home's own routing
- * tests are `:feature:drawer`'s; the directory, entities, controls and publisher `:feature:system`'s.
- */
+/** Port of iOS `SystemIntegrationTests.swift`' `SystemRoutingTests` AppFeature section. */
 class SystemRoutingTests {
     @get:Rule val isolation = TestIsolationRule()
 
@@ -204,11 +200,7 @@ class SystemRoutingTests {
     }
 }
 
-/**
- * Port of iOS `SystemIntegrationTests.swift`' `SystemColdLaunchTests` AppFeature tests: an action
- * on a cold launch waits for Home's first snapshot, and a remembered session the list doesn't have
- * is fetched, or falls back to the newest. The Home-only tests are `:feature:drawer`'s.
- */
+/** Port of iOS `SystemIntegrationTests.swift`' `SystemColdLaunchTests` AppFeature tests. */
 class SystemColdLaunchTests {
     @get:Rule val isolation = TestIsolationRule()
 

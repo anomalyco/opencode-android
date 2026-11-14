@@ -65,11 +65,8 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.launch
 
 /**
- * Android counterpart of iOS `MotionPlaygroundView` + `MotionPlaygroundStages`
- * (`Tuning/Playgrounds/`): one example per motion role, with a Reduce Motion switch that starts at
- * the system setting. While it's on screen the tuning panel shows the Motion group
- * ([TuningContext.motionPlayground]). The desktop's floating surfaces instead of iOS's grouped backgrounds; the
- * Mac page's playground status has no Android counterpart.
+ * Android counterpart of iOS `MotionPlaygroundView` + `MotionPlaygroundStages`: one example per
+ * motion role, with a Reduce Motion switch.
  */
 @Composable
 fun MotionPlaygroundView(modifier: Modifier = Modifier) {

@@ -70,13 +70,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import java.util.Locale
 
-/**
- * Settings › Developer (iOS `DiagnosticsView`), with Android's developer tools. Pass
- * [onClose] to show a back arrow on the main page (the settings stack owns navigation into it),
- * [onOpenPlaygrounds] to list Settings' Playgrounds under Tuning, as iOS does, and
- * [onOpenServerDetails] to end the page with Settings' Server Details row (iOS
- * `ServerDetailsSettingsSection`, shown while there is a server).
- */
+/** Settings › Developer (iOS `DiagnosticsView`). [onClose] shows a back arrow on the main page. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DevToolsView(
@@ -300,8 +294,8 @@ private fun SwitchRow(
     Row(
         modifier.fillMaxWidth()
             .clickable(enabled = enabled, role = Role.Switch, onClickLabel = hint) { onChange(!checked) }
-            // The row is the switch (iOS `Toggle`). Its On/Off is spelled out so a change goes out as a
-            // state description, which TalkBack speaks on the focused row.
+            // On/Off is spelled out so a change goes out as a state description, which TalkBack
+            // speaks.
             .semantics {
                 toggleableState = ToggleableState(checked)
                 stateDescription = if (checked) "On" else "Off"
@@ -421,7 +415,7 @@ private fun SummaryCard(events: List<DiagnosticsEvent>, motionJumps: Int? = null
     Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         for ((label, value) in summary) {
             Row(Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}) {
-                // Two columns that each wrap (iOS LabeledContent): a long value never squeezes its label.
+                // Two columns that each wrap: a long value never squeezes its label.
                 Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                 Text(
                     value,

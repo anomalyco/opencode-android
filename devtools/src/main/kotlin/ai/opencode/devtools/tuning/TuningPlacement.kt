@@ -10,12 +10,8 @@ import kotlin.math.abs
 import kotlin.math.max
 
 /**
- * iOS `TuningPlacement` (`OpenCode/Tuning/TuningPlacement.swift`): where the tuning panel floats,
- * picture-in-picture style: against one side, at a height, or tucked into a tab at that side.
- * Kept across launches. The height is a share of the free band (the safe area above the
- * keyboard), so it survives rotation and the keyboard coming up.
- *
- * Sides are physical, as iOS resolves them in screen coordinates: leading is the left edge.
+ * iOS `TuningPlacement`: where the tuning panel floats. The height is a share of the free band
+ * above the keyboard, so it survives rotation; sides are physical.
  */
 data class TuningPlacement(
     val side: Side = Side.Trailing,
@@ -75,9 +71,8 @@ data class TuningPlacementLayout(
     }
 
     /**
-     * Where something [size] lands when let go at [center] moving at [velocity] (dp a second):
-     * the side its throw carries it toward, at the height it carries it to (into a corner near
-     * the top or bottom), tucked if the throw carries a good share of it past the edge.
+     * Where something [size] lands when let go at [releasedAt] moving at [velocity] (dp/s): the
+     * side and height its throw carries it to, tucked if it carries far past the edge.
      */
     fun placement(releasedAt: Offset, velocity: Offset, size: Size): TuningPlacement {
         val projected = Offset(releasedAt.x + velocity.x * PROJECTION, releasedAt.y + velocity.y * PROJECTION)

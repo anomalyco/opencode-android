@@ -11,12 +11,8 @@ import ai.opencode.feature.settings.whatsnew.WhatsNewFeature
  */
 
 /**
- * What’s New on screen, or read, as one Home replaces another (a server switched or added from
- * its server page, a reconnect, leaving Home): a new Home that keeps the page up keeps it as it
- * was, and otherwise what was read is marked seen, as closing the page would have.
- *
- * On Android What’s New lives on Settings' stack (`home.settings.whatsNew`), so the page is up
- * while Home shows Settings.
+ * What’s New stays as it was, or what was read is marked seen, as one Home replaces another. On
+ * Android it lives on Settings' stack.
  */
 internal class WhatsNewAcrossHomes(
     private val base: Reducer<AppFeature.State, AppFeature.Action>,
@@ -25,9 +21,8 @@ internal class WhatsNewAcrossHomes(
         val before = state.home?.settings?.whatsNew
         val reduced = base.reduce(state, action)
         if (before == null || !(before.isPresented || before.wasViewed)) return reduced
-        // Closing the page settles it itself (iOS `.home(.whatsNew(.closed))`). On Android Home
-        // settles What’s New on every change of its own (Settings closing or popping marks what
-        // was read), so only what AppFeature does to Home in its delegates and responses counts.
+        // Home settles What’s New on its own changes, so only what AppFeature does to Home in its
+        // delegates and responses counts.
         if (action is AppFeature.Action.Home && action.action !is HomeFeature.Action.Delegate) return reduced
         val home = reduced.state.home
         val after = home?.settings?.whatsNew
@@ -45,6 +40,5 @@ internal class WhatsNewAcrossHomes(
     }
 }
 
-/** See [WhatsNewAcrossHomes]. */
 internal fun Reducer<AppFeature.State, AppFeature.Action>.keepingWhatsNewAcrossHomes(): Reducer<AppFeature.State, AppFeature.Action> =
     WhatsNewAcrossHomes(this)

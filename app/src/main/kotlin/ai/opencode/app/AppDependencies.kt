@@ -32,10 +32,7 @@ import android.os.Bundle
 import java.util.Locale
 
 /**
- * The cross-module services iOS reaches directly (it's one module) and Android installs at the
- * root because they live above the module that calls them: Voice's admitted sends go into the
- * composer's outbox, its logs to Developer Mode's uploader, its marks to the diagnostics
- * recorder, and its screen hold to the resumed activity.
+ * Cross-module services installed at the root because they live above the module that calls them.
  */
 internal object AppDependencies {
     /** Detached uploads (iOS `Task.detached(priority: .utility)`). */
@@ -45,8 +42,7 @@ internal object AppDependencies {
         val registry = VoiceScreenActivityRegistry()
         DependencyValues.installRoot {
             // Sound Effects borrow the idle audio session through voice's owner (iOS
-            // `SoundEffectsPlayback` takes `AudioSessionOwner.shared`): a call, dictation or
-            // media holder stops a sound before it activates, and none plays while one is held.
+            // `SoundEffectsPlayback`): none plays while a call, dictation or media holds it.
             this[AudioSessionIdleState] = object : AudioSessionIdleState {
                 override fun <T> withIdleState(body: (isIdle: Boolean) -> T): T =
                     dependency(AudioSessionOwner).withIdleState(body)
@@ -54,8 +50,7 @@ internal object AppDependencies {
                 override fun onHolderActivating(stop: () -> Unit) =
                     dependency(AudioSessionOwner).onHolderActivating(stop)
             }
-            // iOS `LiveScreenCaptureFeedback.playShutterSound`: the call's engine plays the shutter
-            // during a call, a held audio session keeps it quiet, else voice's `ShutterSystemSound`.
+            // iOS `LiveScreenCaptureFeedback.playShutterSound`.
             this[ScreenCaptureShutterSound] = ShutterSystemSound.live()
             // iOS `VoiceFeature+Admission`: `PromptOutbox.recordAdmitted` with the send voice made.
             this[VoiceAdmissionRecorder] = VoiceAdmissionRecorder { prompt, sessionID, serverKey ->

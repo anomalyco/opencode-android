@@ -26,10 +26,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * Port of iOS `VoiceCallLogLiveTests.swift`, the `AppFeature` part: leaving Home mid-call (a
- * server switch, pairing) saves the call's log, which no terminal phase will. The recorder's
- * tests are `:feature:voice`'s. As in [VoiceLiveActivityTests], an unreadable pairing code
- * leaves Home here (iOS swaps in a base reducer that drops it).
+ * Port of iOS `VoiceCallLogLiveTests.swift`, the `AppFeature` part: leaving Home mid-call saves the
+ * call's log.
  */
 class VoiceCallLogLiveTests {
     @get:Rule val isolation = TestIsolationRule()

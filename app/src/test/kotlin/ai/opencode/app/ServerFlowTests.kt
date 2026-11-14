@@ -27,12 +27,8 @@ import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of iOS `ServerFlowTests.swift`, the `AppFeature` part (d8a311bd): switching servers from
- * the drawer at once and going back on its own (Server Flow, graduated in iOS p217). The note, menu, pill
- * and ghost-row tests are Home's (`:feature:drawer` `ServerFlowTests`).
- *
- * iOS asserts shared values inside state closures; a `Shared` here is a reference (equal across
- * states), so those values are checked after the step.
+ * Port of iOS `ServerFlowTests.swift`, the `AppFeature` part. A `Shared` here is a reference, so
+ * shared values are checked after the step.
  */
 class ServerFlowTests {
     @get:Rule val isolation = TestIsolationRule()

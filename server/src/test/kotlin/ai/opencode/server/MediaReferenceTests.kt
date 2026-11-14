@@ -297,9 +297,8 @@ class MediaReferenceTests {
     }
 
     /**
-     * iOS also asserts the session's `urlCache == nil` and each request's
-     * `.reloadIgnoringLocalCacheData`: OkHttp has no per-request cache policy, so the `media`
-     * pool having no cache is the whole of it (`WireFixture` records no `cachePolicy`).
+     * OkHttp has no per-request cache policy, so the `media` pool having no cache is the whole
+     * check.
      */
     @Test
     fun liveFetchUsesUncachedMediaSessionAndReloadIgnoringLocalCacheData() = runTest {

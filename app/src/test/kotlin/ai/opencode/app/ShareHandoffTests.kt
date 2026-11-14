@@ -25,11 +25,7 @@ import org.junit.Test
 import java.time.Instant
 import java.util.UUID
 
-/**
- * Port of iOS `ShareHandoffTests.swift`, the `AppFeature` part: shares taken when the app becomes
- * active go to the open server's Home, and a share for a forgotten server says so. Home's share
- * tests are `:feature:drawer`'s, the store, encoder and loader `:feature:system`'s.
- */
+/** Port of iOS `ShareHandoffTests.swift`, the `AppFeature` part. */
 class ShareHandoffTests {
     @get:Rule val isolation = TestIsolationRule()
 

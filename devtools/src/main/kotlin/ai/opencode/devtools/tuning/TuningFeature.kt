@@ -19,9 +19,8 @@ import ai.opencode.core.tuning.TuningStore
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * The phone's slow-motion choice (iOS `SlowMotion`): the speed now, and the slow speed the quick
- * toggle (`summonGesture`'s two-finger triple tap) returns to. Lives only in memory, so every
- * launch starts at `1×`.
+ * The slow-motion choice (iOS `SlowMotion`): the speed now, and the slow speed the quick toggle
+ * returns to. In memory only.
  */
 data class SlowMotion(val scale: Double = 1.0, val lastSlowScale: Double = DEFAULT_SLOW_SCALE) {
     val isSlowed: Boolean get() = scale != 1.0
@@ -45,9 +44,8 @@ data class SlowMotion(val scale: Double = 1.0, val lastSlowScale: Double = DEFAU
 }
 
 /**
- * Android counterpart of iOS `TuningFeature` (`OpenCode/Tuning/TuningFeature.swift`): the floating
- * Tuning Panel's state and actions. The panel edits [TuningStore] live; the Mac tune page link
- * (`TuningRemote`) and the playground controls are not ported (see docs/parity/devtools.md).
+ * Android counterpart of iOS `TuningFeature`: the floating Tuning Panel's state and actions. The
+ * panel edits [TuningStore] live.
  */
 class TuningFeature : Reducer<TuningFeature.State, TuningFeature.Action> {
     data class State(
@@ -194,7 +192,7 @@ class TuningFeature : Reducer<TuningFeature.State, TuningFeature.Action> {
         )
     }
 
-    /** Slows the app's clock (iOS `applySlowMotion`; there's no Mac page or playground to tell). */
+    /** Slows the app's clock (iOS `applySlowMotion`). */
     private fun applySlowMotion(next: SlowMotion, state: State): Reduced<State, Action> {
         dependency(HapticsClient).play(Haptic.selection)
         AnimationTimeScale.shared.setScale(next.scale)

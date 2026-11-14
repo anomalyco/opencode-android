@@ -11,13 +11,8 @@ import ai.opencode.core.store.Reducer
 import ai.opencode.feature.drawer.HomeFeature
 import ai.opencode.feature.settings.onboarding.WelcomeFeature
 
-/*
- * Port of iOS `AppFeature+Welcome.swift`.
- *
- * The welcome's pairing requests (Welcome Preview): from the first run, with no saved server, or
- * from Show Welcome over Home (`home(.welcome(.presented(.delegate)))`), which stays until a
- * pairing replaces it. Both run the classic screen's pairing.
- */
+// Port of iOS `AppFeature+Welcome.swift`: the welcome's pairing requests, from the first run or
+// from Show Welcome over Home.
 internal val welcomeRequests = Reducer<AppFeature.State, AppFeature.Action> { state, action ->
     when (action) {
         is AppFeature.Action.Welcome ->

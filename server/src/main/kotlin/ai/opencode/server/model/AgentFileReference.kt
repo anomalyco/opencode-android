@@ -4,15 +4,9 @@ import ai.opencode.core.files.AttachmentFileType
 import kotlinx.serialization.Serializable
 
 /**
- * A file the agent named in its reply, a tool row, or a sent attachment: the phone opens it
- * through the server's file reader (iOS `Media/AgentFiles/AgentFileReference.swift`). Mirrors
- * desktop's local-link handling (session-ui `markdown-image.ts` `localLinkPath`,
- * `markdown-inline-code-kind.ts` `inlineCodeKind`, gui-extensions file `renderer.tsx`
- * LinkHandler), which also strips a `:line:col` suffix.
- *
- * Moved down to `:server` because the transcript's Markdown parser (`:feature:transcript`) and
- * the media viewer (`:feature:media`) both need it. Pure Kotlin (no `android.*`): iOS's
- * `UTType` fallbacks are replaced by extension sets and a small MIME table below.
+ * A file the agent named in its reply, a tool row, or a sent attachment, opened through the
+ * server's file reader (iOS `AgentFileReference`). Follows desktop's local-link handling, which
+ * also strips a `:line:col` suffix.
  */
 @Serializable
 data class AgentFileReference(

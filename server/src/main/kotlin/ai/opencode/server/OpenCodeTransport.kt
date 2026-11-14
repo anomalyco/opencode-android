@@ -14,11 +14,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * The OkHttp client pools behind the live client (iOS `URLSession`s). Under tests every pool
- * runs behind [TestNetworkBlock] (fixtures register hosts; unmocked network fails).
- * Per-request timeouts are applied on top with `newBuilder()`, sharing these pools.
- * Read a pool where the call is made (`transport.request.newCall(…)`), never keep one: [reset]
- * swaps in fresh ones.
+ * The OkHttp client pools behind the live client (iOS `URLSession`s). Read a pool where the call is
+ * made, never keep one: [reset] swaps in fresh ones.
  */
 class OpenCodeTransport private constructor(
     private val current: () -> Pools,
@@ -69,8 +66,7 @@ class OpenCodeTransport private constructor(
          */
         internal fun pools(guard: okhttp3.Interceptor?): Pools {
             // OkHttp caps calls per host at 5 by default; the event stream and a `/wait` long poll
-            // would hold two of them, and family/ancestry fan-out (six lookups plus active status)
-            // needs more. iOS's URLSession has no such cap on in-flight requests.
+            // hold two, and family fan-out needs more.
             val dispatcher = Dispatcher().apply { maxRequestsPerHost = maxRequests }
             val base = OkHttpClient.Builder().dispatcher(dispatcher).apply {
                 // Before connecting, and again for every redirect hop.
@@ -119,11 +115,8 @@ class OpenCodeTransport private constructor(
 }
 
 /**
- * The live pools, swapped on [reset]. A retired pool is shut down a moment later without
- * cancelling its calls (iOS `finishTasksAndInvalidate`, never `invalidateAndCancel`): a cancelled
- * POST reads as cancellation, which nothing retries or reconciles, so a send or a form reply in
- * flight must finish (or time out) on its own. Its idle connections are closed and its
- * dispatcher takes no new calls.
+ * The live pools, swapped on [reset]. A retired pool lets its calls finish: a cancelled POST is
+ * never retried or reconciled.
  */
 class RotatingPools(private val make: () -> OpenCodeTransport.Pools) {
     private val lock = Any()
@@ -140,10 +133,8 @@ class RotatingPools(private val make: () -> OpenCodeTransport.Pools) {
         }
         retirement.launch {
             delay(retireDelay)
-            // Closes the retired pools' idle sockets (the possibly wedged ones); calls still in
-            // flight finish on theirs. Unlike iOS's invalidated sessions, the retired clients stay
-            // usable, since a few holders (a call's WebRTC signalling client) keep one for their
-            // lifetime; their dispatchers' idle threads end on their own.
+            // Closes the retired pools' idle sockets; calls in flight finish. Retired clients stay
+            // usable, since a call's WebRTC signalling client keeps one for its lifetime.
             val clients = listOf(retired.request, retired.measuredRequest, retired.longPoll, retired.eventStream, retired.media)
             for (client in clients) client.connectionPool.evictAll()
         }

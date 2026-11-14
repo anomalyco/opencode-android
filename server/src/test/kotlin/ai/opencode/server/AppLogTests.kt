@@ -48,11 +48,7 @@ class AppLogTests {
         assertFalse(description.contains("example.ts.net"))
     }
 
-    /**
-     * The message is a lambda: built at most once, and only while its level is collected.
-     * (Android's `AppLog` has no public constructor; the shared categories stand in for
-     * iOS's `AppLog("tests")`.)
-     */
+    /** The message is a lambda: built at most once, and only while its level is collected. */
     @Test
     fun messagesAreBuiltAtMostOnce() {
         var built = 0

@@ -34,12 +34,8 @@ import org.robolectric.annotation.Config
 import java.time.Instant
 
 /**
- * Port of the `:app` half of iOS `MultipleWindowsTests.swift` (window roster, app-wide work,
- * call ownership). `SharedEventStreams`/`SharedReads` tests are `:server`'s
- * `live/MultipleWindowsTests`; `aFurtherWindowKeepsItsOwnSidebar` is `HomeSettingsFeature`
- * (`:feature:drawer`). `windowTargetRoundTripsThroughItsActivity` is `MultipleWindowsFrameworkTests`.
- * `AppWideWorkTests` is below (Robolectric). Dropped: `oneWindowIsAlwaysTheFrontWindow` (UIKit
- * `ActiveScene` touch tracking), `activityTypeIsDeclaredInInfoPlist` (Info.plist).
+ * Port of the `:app` half of iOS `MultipleWindowsTests.swift` (window roster, app-wide work, call
+ * ownership).
  */
 class MultipleWindowsTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -190,8 +186,8 @@ class WindowRosterTests {
         val second = Member()
         first.join(roster)
         second.join(roster)
-        // iOS purges the released member on `left()`; Android removes it explicitly (a ViewModel
-        // isn't released at `onCleared`).
+        // Android removes the released member explicitly: a ViewModel isn't released at
+        // `onCleared`.
         roster.left(first)
         assertEquals(WindowRoster.Role.Secondary, second.role)
         assertTrue(second.ownsAppWide)
@@ -221,14 +217,8 @@ class MultipleWindowsFrameworkTests {
 }
 
 /**
- * iOS `AppWideWorkTests`: [AppWideWork] with real window stores ([RootStore] on a test roster): the
- * system action inbox is drained in the store doing the app-wide work, wherever that goes. Under
- * Robolectric because a [Store] sends on Android's main looper.
- *
- * Android differences: a window's store is its own (`RootStore` makes it on the first `onCreate`);
- * the test hands every primary the same `primary` store as iOS's `OpenCodeApp.store`. A reload is
- * a configuration change, which keeps the window's retained `RootStore` and resolves it again
- * (iOS builds new window state for the same scene).
+ * iOS `AppWideWorkTests`: [AppWideWork] with real window stores. Robolectric, because a [Store]
+ * sends on Android's main looper.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35], application = Application::class)

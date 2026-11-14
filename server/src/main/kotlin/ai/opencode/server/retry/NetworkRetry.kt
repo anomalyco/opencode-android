@@ -89,9 +89,8 @@ enum class TransportFailure(val rawValue: String) {
         }
 
         /**
-         * iOS OC-306: a refusal by transport security (iOS ATS -1022; Android's cleartext
-         * policy) is permanent, unless this exact HTTP origin already answered in this
-         * process, when it's ambiguous (`interrupted`).
+         * A transport-security refusal (cleartext policy) is permanent, unless this exact HTTP
+         * origin already answered in this process, when it's `interrupted`.
          */
         fun of(error: Throwable, requestUrl: HttpUrl, contact: ServerContact): TransportFailure? {
             of(error)?.let { return it }
@@ -156,12 +155,9 @@ data class RetryPolicy(
         val once = RetryPolicy(maxAttempts = 1, baseDelay = Duration.ZERO, maxDelay = Duration.ZERO, retryWindow = null, waitsForNetwork = false)
 
         /**
-         * The event stream is also the recovery probe when no requests are in flight. Its waits
-         * stay within 2 s for the first 15 s, which covers a tunnel or Wi-Fi handoff, then double
-         * (4, 8, 16 … s) to five minutes, so a host that stays unreachable isn't sent a packet
-         * every second or two: some VPN clients stall the whole tunnel while packets to a dead
-         * peer queue. The stream's owner starts over at once when the route changes, the server
-         * answers, the app comes back, or the person taps Try Again.
+         * The event stream doubles as the recovery probe. Waits stay within 2 s for the first 15 s
+         * (a tunnel or Wi-Fi handoff), then double to five minutes: some VPN clients stall the
+         * whole tunnel while packets to a dead peer queue.
          */
         val stream = RetryPolicy(maxAttempts = null, baseDelay = 1.seconds, maxDelay = 300.seconds, retryWindow = null, fastWindow = 15.seconds)
 

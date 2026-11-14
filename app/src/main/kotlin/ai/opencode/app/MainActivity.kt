@@ -44,14 +44,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
- * The app's window (iOS's scene). The window's [Store] lives in a retained [RootStore] (iOS
- * `WindowStore`) so configuration changes, split screen and freeform resizes keep state and
- * in-flight effects; [AppFeature] holds navigation (connection vs Home) as state, like iOS
- * `AppView`. On a tablet each further window is a task of its own (`singleInstancePerTask`,
- * [SceneWindows]); a phone has one.
- *
- * Intents are iOS's `onOpenURL` and notification taps: [route] turns each into an
- * [AppFeature.Action]. Later ones reach [onNewIntent].
+ * The app's window (iOS's scene). Its [Store] lives in a retained [RootStore] (iOS `WindowStore`)
+ * so configuration changes keep state and in-flight effects. [route] turns intents into
+ * [AppFeature.Action]s.
  */
 class MainActivity : ComponentActivity() {
     private val root: RootStore by viewModels()
@@ -80,13 +75,9 @@ class MainActivity : ComponentActivity() {
     private var touchModeLeft: TouchModeExit? = null
 
     /**
-     * A typed key with nothing focused leaves touch mode, and the framework then gives key focus to
-     * the first focusable control (Home's ☰), so a space or Return pressed it and opened the drawer
-     * (QA T-02). iOS gives buttons no key focus, so typing with no field focused does nothing:
-     * the key that left touch mode takes that focus back and goes nowhere. Tab and the arrows
-     * still move focus, as do later keys. The framework counts Space and Return as navigation
-     * keys too and consumes their press to leave touch mode before it gets here, so for those
-     * the release (pressed before touch mode was left) takes the focus back (QA F-70).
+     * A typed key with nothing focused would give key focus to the first control (Home's ☰), so the
+     * key that leaves touch mode takes that focus back. Space and Return are consumed on press to
+     * leave touch mode, so for those the release does.
      */
     private fun dropsTypedFocus(event: KeyEvent): Boolean {
         val exit = touchModeLeft ?: return false
@@ -104,7 +95,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Debug lab hooks run before anything reads the store (iOS runs them before `OpenCodeApp.store`).
+        // Debug lab hooks run before anything reads the store.
         if (savedInstanceState == null) LabLaunch.apply(intent)
         // The window's store: the first window's, or a further window's on its own session.
         root.resolve(this, RootStore.target(intent, savedInstanceState))
@@ -135,7 +126,6 @@ class MainActivity : ComponentActivity() {
         // Developer tools (summon gesture, Tuning Panel, perf HUD): inert outside debug builds unless Developer Mode is on.
         if (savedInstanceState == null) {
             DevTools.handleLaunchIntent(intent)
-            // iOS starts these as it makes the app's store, once the lab's launch switches are read.
             PerfTimeline.appLaunched()
             PerfFrameSampler.startIfRequested()
         }
@@ -154,10 +144,8 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Back out of the app with a call live puts the window behind the others instead of closing
-     * it, as Home does, so the call (and its orb or card) is there on coming back; closing it
-     * would leave the call running with nothing in the app to show or end it. Added before
-     * the content, so every back the app handles itself comes first.
+     * Back with a call live puts the window behind the others instead of closing it, so the call is
+     * still there on coming back. Added before the content, so it runs first.
      */
     private fun keepCallOnBack() {
         val callback = object : OnBackPressedCallback(false) {
@@ -172,9 +160,8 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Calls and dictation ask for the microphone as they start, as iOS's
-     * `requestRecordPermission()` does. A call's first ask also asks for notifications (once), so
-     * its ongoing notification (iOS's Live Activity, which needs no permission) can show.
+     * Calls and dictation ask for the microphone as they start; a call's first ask also asks for
+     * notifications, for its ongoing notification.
      */
     private fun registerPermissionRequesters() {
         removeRequesters.forEach { it() }
@@ -209,8 +196,7 @@ class MainActivity : ComponentActivity() {
 
     /**
      * iOS `SessionWindowFollow`: on a tablet the window's restorable value follows the session it
-     * shows (saved in [onSaveInstanceState]), and a session the cached list didn't have opens
-     * once Home is up.
+     * shows.
      */
     private fun followShownSession() {
         lifecycleScope.launch {
@@ -278,9 +264,8 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         /**
-         * iOS `AppView.onOpenURL` and `SessionNotifications.onOpen`: a session notification's tap,
-         * an `opencode://` system action link, or a pairing link opened from the camera, a
-         * browser, a chat or an `opencode://pair` / `opencode-ios://pair` deep link.
+         * iOS `AppView.onOpenURL` and `SessionNotifications.onOpen`: a notification tap, an
+         * `opencode://` system action link, or a pairing link.
          */
         fun route(intent: Intent?): AppFeature.Action? {
             intent ?: return null
@@ -291,7 +276,6 @@ class MainActivity : ComponentActivity() {
             }
             if (intent.action != Intent.ACTION_VIEW) return null
             val url = intent.dataString ?: return null
-            // ScrawlKit's setup links (iOS `.scrawl()`) aren't part of the Android app.
             val host = intent.data?.host?.lowercase()
             if (host == "scrawl" || host == "tether") return null
             // Continue in OpenCode: the share waiting in Shares/ says where to go.

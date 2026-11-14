@@ -7,20 +7,10 @@ import java.io.IOException
 import java.net.ConnectException
 
 /**
- * Port of the network half of iOS's test isolation (`TestNetworkBlock` and
- * `NetworkBlockURLProtocol` in `OpenCodeTests/TestIsolationGuard.swift`): under unit tests
- * every request through [OpenCodeTransport.testValue] passes [interceptor], which
- *
- * - answers requests to a host a fixture registered ([registerMock], iOS `WireURLProtocol`),
- *   following its redirects when the client does;
- * - lets loopback through (a `MockWebServer` or an opt-in local fixture server);
- * - lets everything through inside [withRealNetworkAllowed];
- * - fails anything else as an unreachable host (`ConnectException`, iOS
- *   `URLError(.cannotConnectToHost)`) and reports it to [onBlocked] (method, scheme and host
- *   only: never the path, query or credentials), which the test isolation guard turns into a
- *   failure of the test that made it.
- *
- * Inert in the app: only [OpenCodeTransport.testValue] installs it.
+ * Port of the network half of iOS's test isolation: under tests every request through
+ * [OpenCodeTransport.testValue] passes [interceptor]. It answers registered fixture hosts, lets
+ * loopback through (and everything inside [withRealNetworkAllowed]), and fails the rest as
+ * unreachable, reporting method, scheme and host to [onBlocked].
  */
 object TestNetworkBlock {
     private val lock = Any()

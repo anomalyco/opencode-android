@@ -215,9 +215,8 @@ data class CachedTranscriptSnapshots(
 }
 
 /**
- * Where the transcript cache lives. Live: `filesDir/support/transcript-snapshots.json`,
- * written at most every 500 ms (Android has no locked-device file protection, so iOS's
- * protected-data blocking is dropped; throttling and [flush] remain). Test: in memory.
+ * Where the transcript cache lives. Live: `filesDir/support/transcript-snapshots.json`, written at
+ * most every 500 ms. Test: in memory.
  */
 class TranscriptCachePersistence(
     val identity: String,
@@ -344,8 +343,8 @@ private class TranscriptCacheWriter(private val storage: TranscriptCachePersiste
         snapshot ?: return
         val data = snapshot.encodedForPersistence() ?: return storage.remove()
         if (storage.set(data)) return
-        // Refused (iOS: a locked phone): keep it pending unless a newer one replaced it, so
-        // the next schedule or flush writes it instead of losing it.
+        // Refused: keep it pending unless a newer one replaced it, so the next schedule or flush
+        // writes it.
         synchronized(lock) { if (pending == null) pending = snapshot }
     }
 }
@@ -404,13 +403,9 @@ object ServerSharedKeys {
 }
 
 /**
- * Saves this as the last-used server at the top of the list, and marks the install as having
- * paired ([InstallHistory.paired], kept when servers are removed). Unchanged values are not
- * rewritten. An edited address no longer shares an ID with its old entry: replace that entry
- * explicitly ([original]) after the new connection has loaded. An entry already saved under the
- * same addresses keeps its address order: the address that answered this time is
- * [ServerLinkClient]'s, in memory, so a LAN address that won at home is never saved as the one to
- * try first.
+ * Saves this as the last-used server at the top of the list and marks the install as paired. An
+ * edited address gets a new ID: replace the old entry ([original]) after the new connection loads.
+ * A saved entry keeps its address order.
  */
 fun OpenCodeServer.remember(original: OpenCodeServer? = null) {
     val savedServer = shared(ServerSharedKeys.savedServer)

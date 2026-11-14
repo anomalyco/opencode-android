@@ -17,9 +17,8 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `SlowMotionTests`. `theMacsSpeedShowsInThePanel` is n/a: Android has no Mac tune
- * page sending `slowmo` (devtools.md). Slow motion needs tuning access, so the store runs with
- * Developer Mode on (JVM tests aren't a debuggable build).
+ * Port of iOS `SlowMotionTests`. Slow motion needs tuning access, so the store runs with Developer
+ * Mode on (JVM tests aren't a debuggable build).
  */
 class SlowMotionTests {
     @get:Rule val isolation = TestIsolationRule()

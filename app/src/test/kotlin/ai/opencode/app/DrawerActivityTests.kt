@@ -25,9 +25,7 @@ import java.time.Instant
 
 /**
  * Port of iOS `DrawerActivityTests.swift`, the `AppFeature` part: a relaunch restores the cached
- * Home's running state only while it is fresh. The drawer's indicator tests are `:feature:drawer`'s.
- * `theSingleCacheOfEarlierBuildsMovesIntoPerServerCaches` isn't ported: it migrates the single
- * Home cache of earlier iOS builds, and Android has no earlier builds (the legacy migration is n/a).
+ * Home's running state only while it is fresh.
  */
 class DrawerActivityTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -69,10 +67,7 @@ class DrawerActivityTests {
     }
 }
 
-/**
- * Port of iOS `DrawerActivityTests.swift` › `DrawerDotTests`, the `AppFeature` test: a restored
- * Home already showing the dot has it at once. The rest of `DrawerDotTests` is `:feature:drawer`'s.
- */
+/** Port of iOS `DrawerActivityTests.swift` › `DrawerDotTests`, the `AppFeature` test. */
 class DrawerDotTests {
     @get:Rule val isolation = TestIsolationRule()
 

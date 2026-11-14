@@ -39,9 +39,8 @@ import androidx.compose.ui.unit.dp
 private data class BoundsBox(val rect: Rect, val clickable: Boolean, val tooSmall: Boolean)
 
 /**
- * Layout bounds (Android's "Show layout bounds", in-app): outlines every semantics node of this
- * window's composition, and fills touch targets under 48 dp red, the same audit iOS's
- * `LabTapAudit`/`TapTarget` rules enforce at 44 pt. Draw-only: touches pass through.
+ * In-app "Show layout bounds": outlines every semantics node and fills touch targets under 48 dp
+ * red. Draw-only: touches pass through.
  */
 @Composable
 fun LayoutBoundsOverlay(modifier: Modifier = Modifier) {

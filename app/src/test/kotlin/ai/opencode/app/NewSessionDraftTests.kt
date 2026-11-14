@@ -30,8 +30,6 @@ import java.time.Instant
 
 /**
  * Port of iOS `NewSessionDraftTests.swift`, the `AppFeature` part: switching servers from a draft.
- * The draft screen's tests are `:feature:session`'s, Home's `:feature:drawer`'s, and
- * `OpenCodeProject.folder`/`directoryListing` `:server`'s.
  */
 class NewSessionDraftTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -52,9 +50,8 @@ class NewSessionDraftTests {
     private fun detailAction(action: SessionFeature.Action) = AppFeature.Action.Home(HomeFeature.Action.detail(action))
 
     /**
-     * Switching servers from the drawer while both servers start on an initial draft
-     * (`visit == 1, session == null`) still changes `taskIdentity` via `server.persistenceID`, so
-     * the new server's draft loads its model catalog.
+     * Two initial drafts still differ in `taskIdentity` by `server.persistenceID`, so the new
+     * server's draft loads its catalog.
      */
     @Test
     fun switchingServersFromADraftAdvancesTaskIdentityAndLoadsTheNewServersModels() = runTest {

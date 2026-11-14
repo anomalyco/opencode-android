@@ -83,9 +83,8 @@ import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 
 /**
- * iOS `.traceUploads(store)` (`TraceTriggers.swift`, `TraceUploadsModifier`): Home's host for the
- * Report a Problem sheet and its “Sent to session” toast, and the launch-time crash-marker check
- * (`.task`). Compose it once over Home, after Home's content.
+ * iOS `.traceUploads(store)`: Home's host for the Report a Problem sheet, its toast and the
+ * launch-time crash-marker check. Compose it once over Home, after Home's content.
  */
 @Composable
 fun TraceUploadsHost(store: StoreOf<State, Action>) {
@@ -110,7 +109,7 @@ private fun ProblemReportSheet(store: StoreOf<State, Action>, toast: State.Toast
         onDismissRequest = { store.send(Action.Dismissed) },
         sheetState = sheetState,
         containerColor = OpenCodeTheme.colors.groupedCanvas,
-        // The canvas isn't a scheme colour, so contentColorFor would fall back to a dimmed default.
+        // The canvas isn't a scheme colour, so contentColorFor would give a dimmed default.
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.testTag("problem-report-sheet"),
     ) {

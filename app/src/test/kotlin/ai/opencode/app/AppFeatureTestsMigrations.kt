@@ -18,10 +18,8 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Port of iOS `AppFeatureTests+Migrations.swift`: preferences earlier builds saved, moved once as
- * the app starts (`AppFeatureMigrations.kt`). `theOldConsoleSignInLeavesTheKeychainOnce` is
- * dropped: no Android build kept an OpenCode Console sign-in. Each test's in-memory
- * `SharedStore` stands in for iOS's throwaway `UserDefaults` suite.
+ * Port of iOS `AppFeatureTests+Migrations.swift`. Each test's in-memory `SharedStore` stands in for
+ * iOS's throwaway `UserDefaults` suite.
  */
 class AppFeatureTestsMigrations {
     @get:Rule val isolation = TestIsolationRule()
@@ -41,10 +39,8 @@ class AppFeatureTestsMigrations {
     }
 
     /**
-     * With the divider off, earlier builds stopped saving seen watermarks. The first launch of this
-     * build clears them before restoring the last session, so a reply read since then doesn't come
-     * back under New; with the divider on they're current, and stay. (iOS runs it once per
-     * argument; each pass here gets its own store.)
+     * The first launch of this build clears the stale seen watermarks before restoring the last
+     * session; with the divider on they're current, and stay.
      */
     @Test
     fun retiringTheDividerClearsWatermarksSavedWithItOff() {

@@ -51,8 +51,7 @@ class OpenCodeClientFamilyTests {
         try {
             val load = async { OpenCodeClient.liveValue.sessionFamily(fixture.server, fixture.root) }
             try {
-                // Neither request is allowed to finish until both have started. This is the
-                // regression gate: the old serial traversal cannot get past it.
+                // Neither request may finish until both have started.
                 fixture.waitForStarts(listOf("root", "active"))
                 fixture.release(listOf("root"))
                 for (start in 0 until 30 step 6) {

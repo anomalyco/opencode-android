@@ -42,19 +42,9 @@ import org.junit.Test
 import java.time.Instant
 
 /**
- * Port of iOS `FirstComputerPairingTests.swift` (t485), the halves that are `AppFeature`'s:
- * every pairing that lands plays `success`, a computer after the first opens the drawer, and a
- * fresh install starts with What’s New read. Both read `InstallHistory`, which removing
- * computers never resets.
- *
- * The first computer's ready session is Home's `firstComputerPaired`. iOS re-derives the draft
- * in its expectation; `makeDraft` draws a new session ID from the store's clients, so
- * `theFirstComputerOpensAReadySessionInItsLatestProject` receives it non-exhaustively and checks
- * the draft's project, starter prompts and closed drawer instead.
- *
- * Elsewhere: `homeFoldersAreNotProjects` (:server's `OpenCodeProject.isHomeFolder`),
- * `aStarterPromptIsTypedInForThePersonToSend` and `typingRetiresTheStarterPromptsForGood`
- * (`:feature:session`'s `FirstComputerPairingTests`).
+ * Port of iOS `FirstComputerPairingTests.swift`, the `AppFeature` halves. `makeDraft` draws a new
+ * session ID, so `theFirstComputerOpensAReadySessionInItsLatestProject` receives it
+ * non-exhaustively.
  */
 class FirstComputerPairingTests {
     @get:Rule val isolation = TestIsolationRule()

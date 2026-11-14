@@ -14,13 +14,8 @@ import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.friendlyName
 import kotlin.time.Duration.Companion.seconds
 
-/*
- * Port of iOS `AppFeature+ServerFlow.swift` (d8a311bd).
- *
- * Server Flow (graduated in iOS p217, 569e6f30): a switch from the drawer keeps the Home it left,
- * and goes back to it on its own when the server fails or doesn't answer in
- * [ServerFlowTunables.timeout], leaving a note.
- */
+// Port of iOS `AppFeature+ServerFlow.swift`: a switch from the drawer keeps the Home it left, and
+// goes back to it if the server fails or doesn't answer in [ServerFlowTunables.timeout].
 
 internal fun AppFeature.switchServer(server: OpenCodeServer, state: AppFeature.State): Reduced<AppFeature.State, AppFeature.Action> {
     val home = state.home ?: return Reduced(state)

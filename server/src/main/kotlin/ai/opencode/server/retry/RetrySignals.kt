@@ -17,11 +17,9 @@ import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
 
 /**
- * What a long-lived retry loop (a send) watches while it lives, counted so a signal that
- * comes while an attempt is out isn't missed: the server answering or the route changing
- * (a reconnect), and the app moving between the background and the foreground.
- *
- * [context] carries the caller's dependencies into the watchers (iOS tasks inherit them).
+ * What a long-lived retry loop watches, counted so a signal during an attempt isn't missed: the
+ * server answering, the route changing, and app phase changes. [context] carries the caller's
+ * dependencies into the watchers.
  */
 class RetrySignals(networkPath: NetworkPathClient, server: String, context: CoroutineContext = EmptyCoroutineContext) {
     data class Counts(

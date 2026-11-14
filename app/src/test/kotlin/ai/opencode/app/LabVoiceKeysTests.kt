@@ -14,9 +14,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * Port of iOS `LabVoiceKeysTests` (Debug only, as `LabLaunch` is): the lab's launch extras
- * (`lab-openai-key`/`lab-xai-key`, iOS `OPENCODE_LAB_*_KEY`) seed the voice keys, `NONE` clears
- * one, and a launch without them leaves them. Robolectric: the extras ride an `Intent`.
+ * Port of iOS `LabVoiceKeysTests`: the lab's launch extras seed the voice keys, and `NONE` clears
+ * one.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35], application = Application::class)

@@ -35,7 +35,7 @@ class PairingPasteTests {
         effects.skipInFlightEffects()
     }
 
-    /** QA FB-02 (Android only): the link as a terminal wraps it, or inside the command's whole output, pastes. */
+    /** The link as a terminal wraps it, or inside the command's whole output, pastes. */
     @Test
     fun copiedPairingLinkPastes() {
         val link = "https://abc.opentunnel.xyz/auth/connect/Ab3_x-9QAb3_x-9QAb3_x-"

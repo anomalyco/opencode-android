@@ -100,8 +100,8 @@ class AgentFileReferenceTests {
     }
 
     /**
-     * A Windows server reports `C:\…` directories (opencode-ios #62): files inside the session
-     * read from its location as the server spelled it.
+     * A Windows server reports `C:\…` directories: files inside the session read from its location
+     * as the server spelled it.
      */
     @Test
     fun windowsServersResolveDriveAndBackslashPaths() {

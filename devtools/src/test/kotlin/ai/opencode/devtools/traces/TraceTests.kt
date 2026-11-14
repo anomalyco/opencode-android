@@ -64,11 +64,8 @@ import java.time.Instant
 import java.util.Base64
 import java.util.UUID
 
-/*
- * Ports of the `:devtools` suites in iOS `TraceTests.swift`: `TraceUploadsTests` and the
- * `WindowSnapshot`/metrics halves of `DiagnosticsPrivacyTests`. The `:core` suites are in
- * `core/src/test/.../diagnostics/TraceTests.kt`.
- */
+// Ports of the `:devtools` suites in iOS `TraceTests.swift`; the `:core` suites are in
+// `core/src/test/.../diagnostics/TraceTests.kt`.
 
 private fun event(
     name: String,
@@ -96,15 +93,8 @@ private class Gate {
 }
 
 /**
- * Port of iOS `TraceUploadsTests`. iOS's `diagnostics.timeline`/`previousRunEvents` are a real
- * `DiagnosticsRecorder` (and journal) here; `diagnostics.appLog` is `DevToolsClient.appLog`.
- *
- * - `nothingOpensOrUploadsWithDeveloperModeOff`: iOS stubs `takeUnexpectedEnd` to true and its
- *   Debug test build ignores it (`reportsCrashes`). Android's JVM tests can't read the app's
- *   debuggable flag, so the recorder's own (false) answer stands in.
- * - `theReportGoesToItsSessionElseTheMostRecentOne` and the `HomeFeature.problemReportContext`
- *   half of `noReportOutputCarriesTheServerAddressOrUsername` belong to `:feature:drawer`.
- * - Copy reads “OpenCode Android” where iOS's reads “OpenCode iOS”.
+ * Port of iOS `TraceUploadsTests`. JVM tests can't read the app's debuggable flag, so the
+ * recorder's own (false) answer stands in for iOS's Debug build.
  */
 class TraceUploadsTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -580,8 +570,8 @@ class DiagnosticsPrivacyTests {
     @get:Rule val isolation = TestIsolationRule()
 
     /**
-     * iOS's application state → whether an activity is resumed; its secure first responder → a
-     * `FLAG_SECURE` window (Compose has no responder chain; see `WindowSnapshot`).
+     * Application state is whether an activity is resumed; a secure first responder is a
+     * `FLAG_SECURE` window.
      */
     @Test
     fun screenshotsOnlyInTheForegroundAndAwayFromCredentials() {

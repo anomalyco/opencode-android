@@ -17,9 +17,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * The process-wide `@Shared` storage iOS tests write through `state.$savedServers.withLock`: one
- * in-memory [SharedStore] per test, installed both where a test builds `AppFeature.State()` and in
- * the store, so the state's `Shared` references and the reducer's `shared(...)` reads agree.
+ * One in-memory [SharedStore] per test, installed both where a test builds `AppFeature.State()` and
+ * in the store, so their `Shared` references agree.
  */
 class AppTestShared {
     val store: SharedStore = SharedStore.inMemory()
@@ -44,8 +43,8 @@ fun AppTestShared.appStore(
     }
 
 /**
- * Effects launch here instead of the test's own scope, so a test that ends with work still in
- * flight cancels it (TCA's `skipInFlightEffects`) rather than the runner waiting on it.
+ * Effects launch here instead of the test's own scope, so work still in flight when a test ends is
+ * cancelled (TCA's `skipInFlightEffects`).
  */
 fun detachedScope(context: CoroutineContext): CoroutineScope = CoroutineScope(context + Job())
 

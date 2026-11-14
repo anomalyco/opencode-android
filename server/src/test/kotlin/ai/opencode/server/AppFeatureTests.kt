@@ -51,8 +51,7 @@ class AppFeatureTests {
             cache,
         )
 
-        // A session cached before Always Notify has no `alwaysNotify`. (Android writes ISO dates; iOS's
-        // reference-date seconds were never written here.)
+        // A session cached before Always Notify has no `alwaysNotify`.
         val beforeAlwaysNotify = """{"serverID":"kit|https://saved.example","snapshot":{"projects":[],"sessions":[{"id":"ses_1","title":"Release","projectID":"global","directory":"/tmp","updatedAt":"2026-05-09T01:46:40Z","cost":0.5}],"activeSessionIDs":[]}}"""
         val session = json.decodeFromString(CachedHomeSnapshot.serializer(), beforeAlwaysNotify).snapshot.sessions.first()
         assertEquals(
@@ -75,7 +74,7 @@ class AppFeatureTests {
         assertEquals(true, OpenCodePairingLink.decode("http://127.0.0.1:4096/auth/connect/code")?.isLoopback)
     }
 
-    /** QA FB-02 (Android only; iOS decodes the trimmed text): pairing links as people copy them. */
+    /** Pairing links as people copy them. */
     @Test
     fun copiedPairingLinksDecode() {
         val link = "https://abcdefghijklmnop.qrstuvwxyz12.opentunnel.xyz/auth/connect/Ab3_x-9QAb3_x-9QAb3_x-"

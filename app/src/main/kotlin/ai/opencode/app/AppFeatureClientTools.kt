@@ -26,19 +26,13 @@ import ai.opencode.server.clienttools.ClientToolCall
 import ai.opencode.server.clienttools.ClientToolsTarget
 import kotlin.coroutines.cancellation.CancellationException
 
-/*
- * Port of iOS `AppFeature+ClientTools.swift`: the phone's client tools (opening sessions during
- * a session-delegator call, links and audio, and the Share Screen with Agents experiment), all for
- * a live call, around Home.
- */
+// Port of iOS `AppFeature+ClientTools.swift`: the phone's client tools, all for a live call.
 
 /** The directory a call's delegator session lives in, read from the server. */
 data class ClientToolsLocation(val sessionID: String, val directory: String)
 
 /**
- * The phone's tools' socket: Home's server, in the call's directory, from the call's start until it
- * ends, foreground or not. Every tool refuses outside a live call, so an open session alone gets
- * none.
+ * The phone's tools' socket: Home's server, in the call's directory, for the length of the call.
  */
 internal val AppFeature.State.clientToolsTarget: ClientToolsTarget?
     get() {
@@ -172,8 +166,7 @@ private fun AppFeature.State.clientToolScreenBlock(includingRequestDock: Boolean
         val voice = detail.voice ?: return ClientToolCardBlock.NoCall
         if (voice.phase != VoiceFeature.State.Phase.Live) return ClientToolCardBlock.NoCall
         if (!isInForeground) return ClientToolCardBlock.Background
-        // Not `presentsOverHome`: a pushed subagent shows the call's card too. What's New and
-        // the onboarding playground are Settings pages on Android.
+        // Not `presentsOverHome`: a pushed subagent shows the call's card too.
         val coversHome = home.catchUp != null || home.isSettingsShown ||
             home.welcome != null || home.pendingDeletion != null || home.isDrawerOpen
         // Not `presentsOverSession`: the call itself counts there.
@@ -190,9 +183,8 @@ private fun AppFeature.State.clientToolScreenBlock(includingRequestDock: Boolean
 private enum class ClientToolsLocateID { Locate }
 
 /**
- * iOS `sharingScreenWithAgents(_:)`: the socket follows [clientToolsTarget], a second follows
- * [delegatorClientToolsTarget], and a tool call on either goes to the call on screen, or is
- * refused when there's none.
+ * iOS `sharingScreenWithAgents(_:)`: one socket follows [clientToolsTarget], another
+ * [delegatorClientToolsTarget].
  */
 internal fun sharingScreenWithAgents(base: Reducer<AppFeature.State, AppFeature.Action>): Reducer<AppFeature.State, AppFeature.Action> {
     val sockets = combine(

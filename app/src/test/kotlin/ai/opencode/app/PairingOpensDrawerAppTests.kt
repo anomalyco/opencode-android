@@ -39,14 +39,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * Port of iOS `PairingOpensDrawerAppTests.swift`: pairing a computer for the first time opens
- * the drawer on its sessions once its list loads (the install's very first computer opens a
- * ready session instead: `FirstComputerPairingTests`); anything else keeps today's landing.
- * `aComputerSharingAnAddressWithASavedOneIsNotNew` (`OpenCodeServer.isNewComputer`) is
- * `:server`'s `PairingOpensDrawerAppTests`. In `pickingASessionBeforeTheDrawerOpensDropsIt`
- * Home's own bookkeeping on the tap (read dates, transcript publishing) is asserted by the
- * drawer's tests; here the store is non-exhaustive past the tap and checks the drawer request,
- * the open session and that late answers move nothing.
+ * Port of iOS `PairingOpensDrawerAppTests.swift`: pairing a new computer opens the drawer on its
+ * sessions once its list loads.
  */
 class PairingOpensDrawerAppTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -240,9 +234,8 @@ class PairingOpensDrawerAppTests {
     }
 
     /**
-     * The person picks a session after the pairing asked for the drawer but before the view
-     * opened it: the request is dropped with the tap, so the drawer never opens over their
-     * session. A late list answer, or a late open, then doesn't rebuild Home, ask again, or move them.
+     * A session picked after the pairing asked for the drawer, but before it opened, drops the
+     * request; late answers then move nothing.
      */
     @Test
     fun pickingASessionBeforeTheDrawerOpensDropsIt() = runTest {

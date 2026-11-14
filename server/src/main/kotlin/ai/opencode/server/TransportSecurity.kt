@@ -4,14 +4,9 @@ import okhttp3.Interceptor
 import java.net.UnknownServiceException
 
 /**
- * Plain HTTP only to private networks, where `opencode serve` usually runs (iOS App Transport
- * Security in `OpenCode/Info.plist`: `NSAllowsLocalNetworking` plus the overlay
- * `NSExceptionDomains`, verified there by `transportSecurityAllowsPrivateOverlays`). Android's
- * network security config can't name address ranges, so the manifest permits cleartext and the
- * live transport refuses the rest here, the way the platform refuses it: an
- * [UnknownServiceException] reading "CLEARTEXT communication to <host> not permitted", which
- * `TransportFailure` and `ConnectionFailureDetail` already map to iOS's ATS `-1022`.
- * Public hosts still need HTTPS.
+ * Plain HTTP only to private networks (iOS App Transport Security). Android's network security
+ * config can't name address ranges, so the manifest permits cleartext and this refuses the rest
+ * with the platform's own [UnknownServiceException].
  */
 object TransportSecurity {
     /** Overlay and private-use names ATS's local networking misses (iOS `NSExceptionDomains`, with subdomains). */

@@ -22,10 +22,8 @@ import org.junit.Test
 import java.time.Instant
 
 /**
- * Port of iOS `SessionLiveActivityTests.swift`, the `AppFeature` part (Leaving Home): a followed
- * run's activity can't update once its Home is gone, so AppFeature ends it
- * (`endingLiveActivitiesWithHome`, here `liveBody`'s `onChange` of the Home ID). Home's tests are
- * `:feature:drawer`'s, the mapping tests `:feature:system`'s.
+ * Port of iOS `SessionLiveActivityTests.swift`, the `AppFeature` part: AppFeature ends a followed
+ * run's activity when its Home goes.
  */
 class SessionLiveActivityTests {
     @get:Rule val isolation = TestIsolationRule()
