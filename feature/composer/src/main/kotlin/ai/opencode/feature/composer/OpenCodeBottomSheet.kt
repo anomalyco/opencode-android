@@ -84,10 +84,8 @@ fun OpenCodeSheetHost(content: @Composable () -> Unit) {
 
 /**
  * What a covered screen doesn't see of [ime]: the keys above the lowest they've been since the
- * sheet came up. A keyboard leaving as the sheet opens is still seen to its end, so a composer
- * docked on it rides down with it (iOS: the keyboard and the composer leave together, the sheet
- * rises over them) instead of dropping behind the keys at once; a keyboard the sheet's own field
- * raises is never seen, as a Dialog's window wouldn't let it be.
+ * sheet came up. A keyboard leaving as the sheet opens is seen to its end, so a docked composer
+ * rides down with it; a keyboard the sheet's own field raises is never seen.
  */
 private class KeyboardLeavingInsets(private val ime: WindowInsets) : WindowInsets {
     private var lowest = Int.MAX_VALUE
@@ -151,8 +149,8 @@ private fun InWindowSheet(
 ) {
     val scope = rememberCoroutineScope()
     val dismiss by rememberUpdatedState(onDismissRequest)
-    // M3 enables predictive Back only once currentValue leaves Hidden. A Dialog used to
-    // consume Back during this entrance gap; keep it from reaching the Activity instead.
+    // M3 enables predictive Back only once currentValue leaves Hidden; until then keep Back from
+    // reaching the Activity.
     BackHandler(enabled = !sheetState.isVisible) {
         scope.launch { sheetState.hide(); if (!sheetState.isVisible) dismiss() }
     }
@@ -204,10 +202,9 @@ private class EscapeHandlers(val original: Window.Callback) {
 private val escapeHandlers = WeakHashMap<Window, EscapeHandlers>()
 
 /**
- * A hardware Escape calls [onEscape] while [enabled], as iOS dismisses menus and sheets on Esc;
- * the newest handler takes it. Compose sends keys only to the focused node, and the sheet host
- * clears focus while a non-focusable popup (the session ⋮ menu) never gets keys, so the window
- * sees Escape first, ahead of its views. With no handler Escape goes on as before.
+ * A hardware Escape calls [onEscape] while [enabled]; the newest handler takes it. Read at the
+ * window, ahead of its views, because Compose sends keys only to the focused node and focus may be
+ * cleared or in a non-focusable popup.
  */
 @Composable
 fun EscapeHandler(enabled: Boolean = true, onEscape: () -> Unit) {

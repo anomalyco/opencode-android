@@ -94,9 +94,9 @@ fun interface PhotoPermissionRequester {
 }
 
 /**
- * The photo library for the New Plus Menu's grid and recent strip (OC-354): access, the
- * newest photos, thumbnails, and the full image to attach. The grid and strip read it;
- * nothing else touches MediaStore. iOS `PhotoLibraryClient`.
+ * The photo library for the New Plus Menu's grid and recent strip: access, the newest photos,
+ * thumbnails, and the full image to attach (iOS `PhotoLibraryClient`). Nothing else touches
+ * MediaStore.
  */
 class PhotoLibraryClient(
     val access: () -> PhotoLibraryAccess,
@@ -105,9 +105,8 @@ class PhotoLibraryClient(
     /** The newest photos, newest first. */
     val recent: suspend (limit: Int) -> List<LibraryPhoto>,
     /**
-     * A thumbnail at least `side` dp square at `scale` px/dp, or null. `onDegraded` receives
-     * any low-resolution preview before the full thumbnail lands (MediaStore has none, so the
-     * live client never calls it; the seam stays for parity).
+     * A thumbnail at least `side` dp square at `scale` px/dp, or null. `onDegraded` receives any
+     * low-resolution preview first (MediaStore has none).
      */
     val thumbnail: suspend (id: String, side: Float, scale: Float, onDegraded: ((ImageBitmap) -> Unit)?) -> ImageBitmap?,
     /** Stops any thumbnail preheating and drops cached assets. */
@@ -125,9 +124,9 @@ class PhotoLibraryClient(
 ) {
     companion object Key : DependencyKey<PhotoLibraryClient> {
         /**
-         * The live library: none. Google Play allows `READ_MEDIA_IMAGES`/`READ_MEDIA_VIDEO` only
-         * to apps whose core purpose is photos, so the app declares no photo permission and the
-         * + menu's Photos opens the system photo picker instead (Android-only exception to iOS).
+         * The live library: none. Google Play allows `READ_MEDIA_IMAGES`/`READ_MEDIA_VIDEO` only to
+         * apps whose core purpose is photos, so the + menu's Photos opens the system photo picker
+         * instead.
          */
         override val liveValue: PhotoLibraryClient = PhotoLibraryClient(
             access = { PhotoLibraryAccess.Unavailable },
@@ -257,11 +256,9 @@ internal fun Context.findActivity(): Activity? {
 }
 
 /**
- * Requests [permissions] from [activity] and returns once the system answered: the
- * permission screen pauses the activity and resumes it when it closes; an answer the system
- * gives without a screen (asked too often) resumes after [IMMEDIATE_ANSWER_MS].
- * `androidx.activity`'s result registry isn't on this module's classpath, so this uses the
- * framework call and the activity's lifecycle.
+ * Requests [permissions] from [activity] and returns once the system answered (on resume, or after
+ * [IMMEDIATE_ANSWER_MS] when it answers without a screen). Uses the framework call because
+ * `androidx.activity`'s result registry isn't on this module's classpath.
  */
 internal suspend fun requestPermissionsAndAwait(activity: Activity, lifecycle: Lifecycle, permissions: Array<String>) {
     withContext(Dispatchers.Main) {

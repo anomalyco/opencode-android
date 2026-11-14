@@ -77,7 +77,7 @@ class ModelPickerTests {
         assertTrue(ModelPickerSection.sections(models, emptySet(), filter = "zzz").isEmpty())
     }
 
-    // MARK: Search (OC-331)
+    // MARK: Search
 
     private val sonnet45 = model("claude-sonnet-4-5-20250929", "anthropic", "Claude Sonnet 4.5")
     private val sonnet4 = model("claude-sonnet-4-20250514", "anthropic", "Claude Sonnet 4")
@@ -259,13 +259,7 @@ class ModelPickerTests {
         assertEquals(listOf("second"), runs)
     }
 
-    /**
-     * D-65 option 3: level j of n fills j/n of the arc, so the lowest is never empty and the
-     * highest always full, at any count; Default fills to the middle, dimmed. iOS checks the
-     * `Shape`'s path (empty at fill 0, centred in its box); Android draws the arc straight into a
-     * `DrawScope` ([LevelArc.draw]), so the check reads the drawn pixels' bounds instead.
-     */
-    /** The pixel bounds [LevelArc.draw] covers in a 20×20 box (a 1 px stroke, close to the iOS path), or null when nothing is drawn. */
+    /** The pixel bounds [LevelArc.draw] covers in a 20×20 box (a 1 px stroke), or null when nothing is drawn. */
     private fun drawnBounds(fill: Double): androidx.compose.ui.geometry.Rect? {
         val image = androidx.compose.ui.graphics.ImageBitmap(20, 20)
         androidx.compose.ui.graphics.drawscope.CanvasDrawScope().draw(
@@ -309,7 +303,7 @@ class ModelPickerTests {
         assertEquals(1.0, band[28], 0.0)
     }
 
-    // MARK: - Model names and levels (OC-397)
+    // MARK: - Model names and levels
 
     private val opus55 = model("claude-opus-5-5", "anthropic", "Claude Opus 5.5", listOf("low", "medium", "high", "max"))
     private val sonnet55Anthropic = model("claude-sonnet-5-5", "anthropic", "Claude Sonnet 5.5", listOf("low", "medium", "high"))
@@ -336,8 +330,8 @@ class ModelPickerTests {
     }
 
     /**
-     * New Model Picker (OC-469): Recent sits between Favorites and the providers, most recent
-     * first, without favorites, up to its limit, and goes while searching, as Favorites does.
+     * Recent sits between Favorites and the providers, most recent first, without favorites, up to
+     * its limit, and goes while searching, as Favorites does.
      */
     @Test fun theSheetsRecentSitsAfterFavoritesWithoutThemUpToItsLimit() {
         val models = listOf(opus55, sonnet55Anthropic, argon, astra, haiku)

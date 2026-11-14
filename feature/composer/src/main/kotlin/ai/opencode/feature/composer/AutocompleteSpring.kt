@@ -7,12 +7,9 @@ import kotlin.math.abs
 import kotlin.math.max
 
 /**
- * Second-order spring ported from the Round 2 web study (`model.js`), iOS
- * `AutocompleteSpring`. Keeps position and velocity across retargets so interrupted opens,
- * filter updates and closes never jump. Stepped in closed form with
- * [SpringSolver.evaluate]; `lead` divides the duration so one axis can lead another.
- *
- * Mutable like the Swift value type; [copy] gives an independent value.
+ * Second-order spring (iOS `AutocompleteSpring`) that keeps position and velocity across retargets,
+ * so interrupted motion never jumps. `lead` divides the duration so one axis can lead another;
+ * [copy] gives an independent value.
  */
 data class AutocompleteSpring(
     var x: Double = 0.0,

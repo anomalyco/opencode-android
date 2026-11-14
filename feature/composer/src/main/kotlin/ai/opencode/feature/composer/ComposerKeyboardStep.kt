@@ -34,11 +34,9 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
- * iOS `DockedKeyboard.unanimatedStep(from:to:over:screenMaxY:)` (declared in
- * `TranscriptKeyboardMotion.swift`, whose live half is n/a on Android): what a docked keyboard
- * covers of `window` before, less what it covers after, all in one space. Null for a floating
- * keyboard, a show or a hide, a window the keyboard doesn't cover, and steps under half a point
- * or over 80.
+ * iOS `DockedKeyboard.unanimatedStep(from:to:over:screenMaxY:)`: what a docked keyboard covers of
+ * `window` before, less what it covers after. Null for a floating keyboard, a show or a hide, a
+ * window the keyboard doesn't cover, and steps under half a point or over 80.
  */
 object DockedKeyboard {
     fun unanimatedStep(begin: Rect, end: Rect, window: Rect, screenMaxY: Float): Float? {
@@ -95,10 +93,8 @@ class ComposerKeyboardStep {
 }
 
 /**
- * iOS `ComposerKeyboardStepHold`: pads the composer's bottom by [ComposerKeyboardStep.hold] through an
- * unanimated IME height change. Android's app window always sits under the IME, so the window
- * is the root view's bounds; a change counts as unanimated when no IME animation is running
- * (`imeAnimationSource == imeAnimationTarget`). None under Reduce Motion.
+ * iOS `ComposerKeyboardStepHold`: pads the composer's bottom by [ComposerKeyboardStep.hold] through
+ * an unanimated IME height change (no IME animation running). None under Reduce Motion.
  */
 @OptIn(ExperimentalLayoutApi::class)
 fun Modifier.composerKeyboardStepHold(): Modifier = composed {
@@ -107,8 +103,8 @@ fun Modifier.composerKeyboardStepHold(): Modifier = composed {
     val density = LocalDensity.current
     val view = LocalView.current
     val reduceMotion = rememberReduceMotion()
-    // The insets are read in a snapshot flow, not in composition: reading them here would
-    // recompose the whole composer column on every frame of the keyboard's animation.
+    // Read in a snapshot flow so the keyboard's animation doesn't recompose the whole composer
+    // column.
     val ime = WindowInsets.ime
     val imeSource = WindowInsets.imeAnimationSource
     val imeTarget = WindowInsets.imeAnimationTarget

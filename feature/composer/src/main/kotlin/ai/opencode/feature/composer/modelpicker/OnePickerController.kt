@@ -26,22 +26,10 @@ class OnePickerMotion(pose: OnePickerSimulation.FramePose) {
 }
 
 /**
- * Port of iOS `OnePickerController`: drives [OnePickerSimulation] one frame at a time and owns
- * what One Picker remembers across open and close (the recents captured at open, frozen rows,
- * the composer it opened from and the one resting at the bottom, the keyboard hand-back).
- *
- * Android adaptations:
- * - iOS's `MotionDisplayLink` is [wantsFrames] plus [OnePickerFrameDriver], which steps
- *   [stepFrame] on Compose's frame clock until it answers [FrameAction.Stop].
- * - UIKit's `keyboardWillChangeFrame` observer becomes the surface calling
- *   [handleKeyboardFrameChange] with the IME's target frame; Android has no keyboard curve to
- *   probe, so the keyboard ride is iOS's fallback spring (`Motion.keyboard`).
- * - Presentation-layer probes (composer, docked keyboard) are the injected [composerRectSource]
- *   and [keyboardFrameSource].
- * - n/a: `OnePickerPerfProbe`, the `-lab-glass-trace` integrity monitor (`OnePickerIntegrityMonitor`,
- *   a UIKit view-hierarchy scanner), Motion X-Ray recording, `traceGeneration`,
- *   `transcriptVisualOffset` and `flushPoseLayout` (a UIKit layout pass inside the keyboard's
- *   animation block); all DEBUG or UIKit tooling.
+ * Port of iOS `OnePickerController`: drives [OnePickerSimulation] one frame at a time and owns what
+ * One Picker remembers across open and close. [OnePickerFrameDriver] steps [stepFrame] on Compose's
+ * frame clock until it answers [FrameAction.Stop]; the surface reports the IME's target frame
+ * through [handleKeyboardFrameChange].
  */
 @Stable
 class OnePickerController {

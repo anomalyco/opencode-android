@@ -5,11 +5,8 @@ import ai.opencode.server.model.OpenCodeFileReference
 import java.util.UUID
 
 /**
- * One composer file chip (iOS `ComposerFileAttachment`, `Composer/ComposerFileAttachment.swift`).
- * Images keep their inline path; everything else uploads to the server and is sent as a
- * path reference once it lands. The wire types from the same Swift file
- * (`OpenCodeFileReference`, `OpenCodePromptPresentation`, `OpenCodeTranscriptFile`,
- * `OpenCodeUploadEvent`) live in `:server` (`model/Composer.kt`); the reducer is
+ * One composer file chip (iOS `ComposerFileAttachment`). Images keep their inline path; everything
+ * else uploads and is sent as a path reference once it lands. The reducer is
  * [ComposerAttachmentsFeature].
  */
 data class ComposerFileAttachment(

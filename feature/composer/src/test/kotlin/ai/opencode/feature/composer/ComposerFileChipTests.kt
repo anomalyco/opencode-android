@@ -18,10 +18,9 @@ import org.robolectric.annotation.Config
 import java.util.UUID
 
 /**
- * iOS `ComposerFileChipTests`: the composer's file chip keeps 76 dp as its least height and grows
- * with the font scale, so its name, upload progress and errors never clip at the largest size.
- * iOS sizes a SwiftUI host at AX5 (about 3× body) and wants 20 pt of growth; Android's largest
- * font scale is 2×, so the chip measures at 2× in a real `ComposeView` and wants half that.
+ * iOS `ComposerFileChipTests`: the file chip keeps 76 dp as its least height and grows with the
+ * font scale. Android's largest font scale is 2× (iOS AX5 is about 3×), so it wants half iOS's 20
+ * pt of growth.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])

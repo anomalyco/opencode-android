@@ -87,10 +87,7 @@ enum class AttachmentMenuPhase {
     Photos,
 }
 
-/**
- * The menu's curves (iOS `AttachmentMenuMotion`). iOS's `AnimationTimeScale` debug slow-down is
- * n/a: Android's animator duration scale applies system-wide.
- */
+/** The menu's curves (iOS `AttachmentMenuMotion`). */
 object AttachmentMenuMotion {
     /** The surface grows up out of + while the + turns into a ×. */
     fun <T> open(reduceMotion: Boolean): FiniteAnimationSpec<T> = Motion.panelOpen.animation(reduceMotion = reduceMotion)
@@ -114,8 +111,7 @@ object AttachmentMenuMetrics {
 }
 
 /**
- * The New Plus Menu's values (OC-354), iOS `PlusMenuTunables` with the same names and defaults.
- * iOS backs them with live Tunables; here they are the baked defaults. Seconds and points.
+ * The New Plus Menu's values (iOS `PlusMenuTunables`, baked to their defaults). Seconds and points.
  */
 object PlusMenuTunables {
     const val MENU_BLUR = 3.5f
@@ -150,11 +146,8 @@ object PlusMenuTunables {
     /** The menu's leading edge in from the composer's. */
     const val MENU_INSET = 0f
 
-    // iOS declares these in `PlusMenuGlassSurface.swift` (an extension of `PlusMenuTunables`).
-    // The fold measured from ChatGPT's iOS + menu at 60 fps: its glass shrinks to a +-sized disc
-    // on a critically damped curve, the disc leaves as it arrives, and its + fades in from inside
-    // the disc. The fold itself is `Motion.panelClose`; the disc leaves on `Motion.microOut`.
-    /** The collapsing glass's size where it leaves, as a fraction of the + frame (1 leaves a +-sized disc, which reads as a pop). */
+    // iOS `PlusMenuGlassSurface.swift`. The collapsing glass's size where it leaves, as a fraction
+    // of the + frame (1 leaves a +-sized disc, which reads as a pop).
     const val COLLAPSE_END = 0.25f
     /** The scale the + pops back from as the glass arrives (1 is a fade only). */
     const val PLUS_POP = 0.8
@@ -167,10 +160,7 @@ object PlusMenuTunables {
 /**
  * The menu's rows (iOS `AttachmentMenuRows`). A hidden measuring copy reports where each row
  * rests ([onRowFrame], root coordinates), so choosing by a slide from + never depends on the
- * surface mid-flight.
- *
- * Paste is a plain row here: Android reads the clipboard without iOS's paste alert (it shows
- * its own toast), so no system paste control is needed; [onPaste] asks the session to read it.
+ * surface mid-flight. [onPaste] asks the session to read the clipboard.
  *
  * @param buttonCenterX where the + glyph's center sits from the panel's leading edge (dp); the
  *   rows' icons line up under it.
@@ -317,12 +307,9 @@ fun Modifier.menuRowEntranceReveal(progress: Float, bottomIndex: Int, totalCount
 // region Menu
 
 /**
- * Measures where the + menu stands: the seed the surface grows from and the menu's frame, and
- * where each row rests, so choosing by a slide from + never depends on the surface mid-flight
- * (iOS `AttachmentMenuMeasure`). Draws nothing: the menu itself is
- * [ai.opencode.feature.composer.plusmenu.PlusMenuGlassSurface]'s, over the composer.
- *
- * Put this in a full-screen box over the session; it positions itself from [anchors].
+ * Measures where the + menu stands: the seed the surface grows from, the menu's frame and where
+ * each row rests (iOS `AttachmentMenuMeasure`). Draws nothing; put it in a full-screen box over the
+ * session.
  */
 @Composable
 fun AttachmentMenuMeasure(

@@ -208,8 +208,7 @@ sealed interface ComposerAutocompleteAction {
 
     /**
      * A keystroke in the field: the new draft, and the caret when the edit left it somewhere the
-     * draft's change doesn't account for. One action, where a binding and [CaretChanged] were two
-     * passes (handled with the draft binding in `SessionFeatureBindings`).
+     * draft's change doesn't account for.
      */
     data class TextEdited(val text: String, val caret: CaretUpdate) : ComposerAutocompleteAction
     data class MoveHighlight(val delta: Int) : ComposerAutocompleteAction

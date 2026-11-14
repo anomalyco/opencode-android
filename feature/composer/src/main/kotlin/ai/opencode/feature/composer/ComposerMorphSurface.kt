@@ -65,34 +65,10 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * Port of iOS `ComposerMorphSurface`: the morph on screen, the backdrop, the glass and its
- * content. Always mounted (it draws nothing closed), so opening grows it from the source instead
- * of arriving open. Everything is placed from the morph's progress, so opening and closing in
- * any order only retargets its springs.
- *
- * - **Backdrop**: everything above the sheet dims as it grows (a Material scrim: iOS's dark 0.3 /
- *   light 0.12 at its no-blur strength, ×1.6), and a tap closes it. iOS also blurs the content
- *   behind (`ProgressiveBlur`, 18); Android never blurs what's behind a sheet, so it doesn't.
- * - **Glass**: one M3 tonal surface (Liquid Glass → `surfaceContainerHigh`) on one rect from the
- *   source to the rest, the width leading, its corners interpolating, drawn down (or, with
- *   [stretchesUpward], its top stretched) by the morph's drag, cross-fading with the source over
- *   the first tenth ([ComposerMorphGeometry.glassFade]).
- * - **Content**: laid out once where it rests and revealed by the glass's shape, arriving out of
- *   a real blur (14) and leaving into one (10) on its own clock ([ComposerMorph.content]).
- * - **Outgoing**: what it grows out of, drawn in the glass at the source's frame, dissolving
- *   into a blur (10) and growing 12 % as the content arrives; folding back with
- *   [outgoingReturns], it returns as the content leaves.
- * - **Downward dismissal** ([dismissesDown]): the photo sheet folds straight into [seed] (or
- *   [landsOn]), its content scaled with the glass and its glass gone below
- *   [ComposerMorphTunables.photoGlassOut]; a clear layer takes the dismissing tap (the + menu's
- *   own surface is `PlusMenuGlassSurface` now).
- * - **Foot**: controls riding the glass's bottom edge outside its mask (`MorphFootPlacement`).
- * - **Keyboard**: with [contentHasKeyboard], the rest stands on the IME, read from
- *   `WindowInsets.ime` every frame so it rides the IME's own animation; switching on or off
- *   without the IME moving rides iOS's keyboard spring.
- *
- * Under Reduce Motion it doesn't travel; it cross-fades in place. Frames are root px; radii dp.
- * [target] receives the surface's frame and the keyboard's top (or null), root px.
+ * Port of iOS `ComposerMorphSurface`: the morph on screen, with its backdrop, glass and content.
+ * Always mounted (it draws nothing closed), so opening grows it from the source; under Reduce
+ * Motion it cross-fades in place. Frames are root px, radii dp. [target] receives the surface's
+ * frame and the keyboard's top (or null), root px.
  */
 @Composable
 fun ComposerMorphSurface(
@@ -113,8 +89,7 @@ fun ComposerMorphSurface(
     contentHasKeyboard: Boolean = false,
     /**
      * The keyboard stays as it folds (the photo sheet's, which never took it): its rest stays on
-     * the keyboard. Measured from the floor instead, its bottom dropped behind the keys in the
-     * fold's first frame and hadn't landed when the menu took its glass back.
+     * the keyboard.
      */
     keyboardStaysAsItFolds: Boolean = false,
     /** The photo sheet stretches its top toward the expanded detent, its bottom anchored. */
@@ -137,10 +112,8 @@ fun ComposerMorphSurface(
     /** Dismissing slides it down and fades it out while the composer rises back from behind it. */
     dismissesDown: Boolean = false,
     /**
-     * Keep [content] composed while closed (warmed once the surface has been up a moment), so
-     * opening doesn't rebuild it. Closed, it stands off screen, transparent and outside
-     * semantics, so it takes no touches and TalkBack can't reach it; it reads
-     * [LocalComposerMorphContentActive] false meanwhile and should start nothing then.
+     * Keep [content] composed while closed so opening doesn't rebuild it. Closed, it's off screen,
+     * transparent and outside semantics, and reads [LocalComposerMorphContentActive] false.
      */
     retainsContent: Boolean = false,
     content: @Composable () -> Unit,
@@ -217,8 +190,8 @@ fun ComposerMorphSurface(
         Box(
             Modifier
                 .fillMaxSize()
-                // iOS `accessibilityHidden(true)`. Ahead of the clickable: after it, the clearing
-                // would leave the click's own semantics, a full-screen "Unlabelled" button.
+                // Before the clickable, or its semantics would stay as a full-screen "Unlabelled"
+                // button.
                 .clearAndSetSemantics {}
                 .then(
                     if (morph.isOpen) {

@@ -25,14 +25,9 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
- * The downscale and re-encode applied to every imported image (iOS `SharedImageEncoder`,
- * `System/Share/ShareHandoff.swift`): long edge at most [MAX_PIXEL_SIZE], JPEG at
- * [COMPRESSION_QUALITY]. Rendering a fresh JPEG from decoded pixels drops EXIF, GPS and other
- * metadata (`Bitmap.compress` writes none), and `ImageDecoder` applies the EXIF orientation
- * first, like `kCGImageSourceCreateThumbnailWithTransform`.
- *
- * Local to the composer until it moves down to `:server` or `:core` for the share sheet
- * (`:feature:system`), which must encode identically.
+ * The downscale and re-encode applied to every imported image (iOS `SharedImageEncoder`): long edge
+ * at most [MAX_PIXEL_SIZE], JPEG at [COMPRESSION_QUALITY]. Re-encoding drops EXIF and GPS metadata;
+ * `ImageDecoder` applies the EXIF orientation first.
  */
 object SharedImageEncoder {
     const val MAX_SOURCE_BYTES = 20_000_000
@@ -97,9 +92,8 @@ object ImageAttachmentImporter {
 }
 
 /**
- * Loads a picked, dropped or pasted image's bytes (iOS `ComposerItemProviderLoader`). An image
- * reads as is; a movie becomes its first frame (long edge ≤ 1600, JPEG 0.85), as iOS does for
- * a video dropped where an image is expected; anything else reads its bytes and lets the
+ * Loads a picked, dropped or pasted image's bytes (iOS `ComposerItemProviderLoader`). A movie
+ * becomes its first frame (long edge ≤ 1600, JPEG 0.85); anything else reads its bytes and lets the
  * encoder decide.
  */
 object ComposerItemProviderLoader {

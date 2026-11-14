@@ -36,19 +36,10 @@ import kotlinx.coroutines.launch
 import kotlin.math.max
 
 /**
- * The New Plus Menu's photo sheet hosted in the composer's morph, as iOS's
- * `SessionView+PhotoSheet` hosts [PlusPhotoSheetContent] in [ComposerMorphSurface]
- * (`photoSheetSurface`, `openPhotoSheet`, `dragPhotoSheet`, `settlePhotoSheet`,
- * `togglePhotoSheetExpand`, `backFromPhotoSheet`, `closePhotoSheet`, `resetPhotoSheet`): the
- * + menu's surface grows into a sheet over the keyboard's place (compact) that a drag or the
- * grabber raises to [ceiling] (expanded), the camera first, Back and All Photos / Add along its
- * foot. Back folds it onto the menu; Add, a capture, a tap outside, a drag down or system Back
- * slide it down and fade it out while the composer rises back from behind it.
- *
- * Keep it composed for the session's lifetime (it draws nothing closed) and drive it with
- * [isPresented]; it opens from [AttachmentMenuAnchors.menu]. The + menu overlay stays the
- * menu (pass it `handedOff = isPresented`, which dissolves its rows as the sheet grows);
- * this surface doesn't take the menu phase over (`menuRows`), so the two never draw rows twice.
+ * The New Plus Menu's photo sheet in the composer's morph (iOS `SessionView+PhotoSheet`): the
+ * + menu's surface grows into a sheet over the keyboard's place that a drag or the grabber
+ * raises to [ceiling]. Keep it composed for the session's lifetime and drive it with
+ * [isPresented]; pass the + menu overlay `handedOff = isPresented`.
  *
  * @param isPresented Photos was chosen in the menu; false folds the sheet away.
  * @param menuOpen the menu is still up: going away, the sheet folds back onto it (Back);

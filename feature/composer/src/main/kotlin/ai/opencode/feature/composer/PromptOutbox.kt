@@ -29,9 +29,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * How one delivery ended (iOS `SessionFeature.DeliveryOutcome`, `Session/SessionFeature+Delivery.swift`).
- * Moved down from the session area because [PromptOutbox] reports it; the session area's
- * delivery job returns it.
+ * How one delivery ended (iOS `SessionFeature.DeliveryOutcome`). Lives here because [PromptOutbox]
+ * reports it.
  */
 sealed interface DeliveryOutcome {
     /** [appliedModel] / [appliedAgent]: the model and agent this delivery applied before its prompt. */
@@ -59,25 +58,12 @@ sealed interface DeliveryOutcome {
 }
 
 /**
- * Sends from this phone waiting for the server, in the order they were made (iOS
- * `PromptOutbox`). Each session (or draft, until its session exists) is one lane that
- * delivers one message at a time, so the server admits them in order, while the screen
- * shows every send at once and never waits for it.
- *
- * It lives for the app's lifetime, outside any screen: leaving a session, switching sessions,
- * or backgrounding the app doesn't stop a lane (its work runs in the outbox's own coroutine
- * scope, under a [BackgroundTaskClient] assertion while a lane works), and a screen that opens
- * on the session shows what's still on its way. What the reader asks of a send (Delete, Move
- * to Queue, Send Now) is kept on the send itself, so it holds wherever the reader goes: a
- * send still waiting changes before it's posted, and one already being posted changes on
- * the server once it's admitted. A send that fails for good, or that Stop holds back, is
- * held: sends behind a held one wait until it's retried (in its place) or deleted. Every
- * send ends delivered or held as a failed send the screen shows with Retry and Delete; none
- * is ever left without a way on.
- *
- * The retry loop itself (`RetryPolicy.send`, silent retries under the same message ID, model
- * and agent applied just before the prompt) is the session area's delivery job
- * (`SessionFeature.deliveryJob`); this class only orders, holds and reports.
+ * Sends from this phone waiting for the server, in the order they were made (iOS `PromptOutbox`).
+ * Each session (or draft) is one lane that delivers one message at a time, so the server admits
+ * them in order. It lives for the app's lifetime in its own scope, so leaving a session or the app
+ * doesn't stop a lane. A send that fails for good, or that Stop holds back, holds the sends behind
+ * it until it's retried or deleted. The retry loop itself is the session's delivery job; this class
+ * only orders, holds and reports.
  */
 class PromptOutbox(
     /**

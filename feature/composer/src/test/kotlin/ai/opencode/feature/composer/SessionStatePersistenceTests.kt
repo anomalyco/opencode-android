@@ -14,10 +14,9 @@ import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * iOS `SessionStatePersistenceTests.swift` (3b235f1d), the storage half: a session's model pick
- * and its requests' answers in progress outlive a relaunch (`SessionStatePersistence.kt`). The
- * request and Home halves are `:feature:session`'s and `:feature:drawer`'s
- * `SessionStatePersistenceTests`.
+ * iOS `SessionStatePersistenceTests.swift`, the storage half: a session's model pick and its
+ * requests' answers in progress outlive a relaunch. The request and Home halves are
+ * `:feature:session`'s and `:feature:drawer`'s.
  */
 class SessionStatePersistenceTests {
     private val server = OpenCodeServer(url = "https://state.example", username = "", password = "")

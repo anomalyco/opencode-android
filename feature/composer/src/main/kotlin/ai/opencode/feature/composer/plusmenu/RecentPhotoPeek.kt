@@ -51,13 +51,11 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * Holding + with the New Plus Menu on (OC-354): a strip of the newest photos stands over
- * the composer with the bottom of the screen dimmed; sliding along it picks one (a selection
- * tick at each), and letting go adds it. Letting go off the strip adds nothing. Only shown
- * when the library is already readable, so a hold never raises the access dialog. Hold for
- * [PlusMenuTunables.HOLD_DURATION] before calling [show]. iOS `RecentPhotoPeek`.
- *
- * Geometry is in screen pixels; set [density] (the overlay does).
+ * Holding + with the New Plus Menu on: a strip of the newest photos stands over the composer;
+ * sliding along it picks one and letting go adds it (iOS `RecentPhotoPeek`). Only shown when the
+ * library is already readable, so a hold never raises the access dialog. Hold for
+ * [PlusMenuTunables.HOLD_DURATION] before calling [show]. Geometry is in screen pixels; set
+ * [density].
  */
 class RecentPhotoPeek(private val haptics: HapticsClient = dependency(HapticsClient)) : AttachmentPlusPeek {
     override var isShown: Boolean by mutableStateOf(false)
@@ -142,9 +140,8 @@ class RecentPhotoPeek(private val haptics: HapticsClient = dependency(HapticsCli
 }
 
 /**
- * The bottom band's scrim. iOS blurs the content under the strip (`RecentPhotoPeekBackdrop`'s
- * `ProgressiveBlur`, no dim by default); Android never blurs what's behind an overlay, so it dims
- * that band with a Material scrim instead.
+ * The bottom band's scrim: Android never blurs behind an overlay, so it dims with a Material scrim
+ * where iOS blurs.
  */
 private const val PEEK_SCRIM_DIM = 0.32f
 private const val PEEK_RADIUS = 14f
@@ -153,10 +150,8 @@ private const val PEEK_RISE = 6f
 
 /**
  * The strip (iOS `RecentPhotoPeekOverlay` + `RecentPhotoPeekBackdrop`). Mount it full-screen over
- * the session; it takes no touches (the + button's gesture drives [RecentPhotoPeek]) and is
- * hidden from TalkBack. Tiles arrive out of + one after another, out of a blur, and leave the
- * same way; Reduce Motion fades them in place.
- * The bottom band dims with a scrim ([PEEK_SCRIM_DIM]) where iOS blurs it.
+ * the session; it takes no touches and is hidden from TalkBack. Tiles arrive out of + one after
+ * another, out of a blur, and leave the same way; Reduce Motion fades them in place.
  */
 @Composable
 fun RecentPhotoPeekOverlay(

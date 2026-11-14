@@ -9,15 +9,10 @@ import kotlin.math.abs
 import kotlin.math.min
 
 /**
- * Port of iOS `RequestPanelFitTests.swift`. OC-471: the request panel fits under the header
- * as a pure function of the room, laid out (`requestPanelCap`), so nothing feeds back, winds
- * up or needs resetting.
- *
- * iOS lays SwiftUI views out in a window; Android's `RequestPanelFallback`/`RequestPanelStack`
- * layouts run their arithmetic through [RequestPanelFit.stack], so [layOut] composes it the
- * way those layouts do: the cap proposes the room, the pinned footer takes its height first,
- * the column (a 50-tall fixed header over the parts) gets the rest, and the panel is the
- * column plus the footer, at most the cap.
+ * Port of iOS `RequestPanelFitTests.swift`: the request panel fits under the header as a pure
+ * function of the room (`requestPanelCap`). [layOut] composes [RequestPanelFit.stack] the way
+ * `RequestPanelFallback`/`RequestPanelStack` do: the pinned footer takes its height first, the
+ * column (a 50-tall header over the parts) gets the rest, and the panel is at most the cap.
  */
 class RequestPanelFitTests {
     private data class PartSpec(val id: String, val natural: Int, val floor: Int, val priority: Double)

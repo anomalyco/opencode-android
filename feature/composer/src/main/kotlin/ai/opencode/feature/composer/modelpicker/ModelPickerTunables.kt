@@ -4,13 +4,8 @@ import ai.opencode.core.motion.Motion
 import ai.opencode.core.motion.MotionPhase
 import androidx.compose.animation.core.FiniteAnimationSpec
 
-// Port of iOS `Composer/ModelPicker/ModelPickerTunables.swift` (split out of ModelPickerOverlays in 17a991b1).
-//
-// iOS backs every `Tunable` with the Developer Mode Tuning Panel; Android has no tuning store
-// (`:devtools` is not a port), so these are the baked defaults with iOS's names and values
-// (lengths in dp, times in seconds). `register`/`unregister`, `sectionTitles` and `TuningPresets`: n/a.
-// iOS 0fbb99f8 deleted `FusedModelPickerTunables`, `ModelListStyle` and the Sheet and Grow from
-// Composer knobs with those pickers.
+// Port of iOS `Composer/ModelPicker/ModelPickerTunables.swift`, baked to iOS's names and defaults
+// (lengths in dp, times in seconds).
 
 /**
  * iOS `ModelPickerTunables` (`modelPicker.*`): the model list's rests and glass, which One

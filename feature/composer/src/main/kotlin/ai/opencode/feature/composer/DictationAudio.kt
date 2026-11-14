@@ -143,15 +143,10 @@ object DictationHoldPolicy {
 }
 
 /**
- * What dictation needs of the platform's audio: iOS `AVAudioSession` mapped to
- * Android. Android has no app-wide audio session, so:
- * - Category and mode: nothing to set. Dictation never requests audio focus
- *   (iOS `.mixWithOthers`: whatever plays keeps playing, unducked) and never sets
- *   `MODE_IN_COMMUNICATION` or starts Bluetooth SCO (iOS never `.allowBluetoothHFP`).
- * - Activation is dictation's claim on the shared audio ([AudioSessionOwner]).
- * - Preferred sample rate and I/O buffer move no hardware here; they are kept so
- *   the hold's bookkeeping and logs read like iOS.
- * - The preferred input is applied to the recording (`AudioRecord.setPreferredDevice`).
+ * What dictation needs of the platform's audio (iOS `AVAudioSession`). Dictation never requests
+ * audio focus, sets `MODE_IN_COMMUNICATION` or starts Bluetooth SCO. Activation is its claim on the
+ * shared audio ([AudioSessionOwner]); the preferred input goes to `AudioRecord.setPreferredDevice`.
+ * Sample rate and buffer preferences move no hardware.
  */
 interface DictationAudioSessionControlling {
     val isOtherAudioPlaying: Boolean

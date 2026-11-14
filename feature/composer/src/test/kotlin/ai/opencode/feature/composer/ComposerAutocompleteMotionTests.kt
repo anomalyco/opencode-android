@@ -12,9 +12,9 @@ import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 /**
- * Port of iOS `ComposerAutocompleteMotionTests.swift` (OC-474): search results swap
- * near-instantly and retarget instead of queueing; a drag through the list scrolls and never
- * picks a row. Lengths in dp (iOS points).
+ * Port of iOS `ComposerAutocompleteMotionTests.swift`: search results swap near-instantly and
+ * retarget instead of queueing; a drag through the list scrolls and never picks a row. Lengths in
+ * dp (iOS points).
  */
 class ComposerAutocompleteMotionTests {
     private val width = 360.0

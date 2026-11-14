@@ -42,16 +42,12 @@ import kotlin.math.sin
 import kotlin.math.tan
 
 /**
- * Still maps of a shared location, rendered once per place, size and appearance and cached
- * (iOS `SharedLocationSnapshots` over `MKMapSnapshotter`). Android has no MapKit, so the map is
- * composed from OpenStreetMap's standard raster tiles: the same 600 m × 600 m region centred
- * on the spot, fitted into the requested size as MapKit fits a region, drawn at the display's
- * scale. Dark snapshots are the tiles inverted and hue-turned back, like a dark map style.
- *
- * Tile policy (operations.osmfoundation.org/policies/tiles): a User-Agent naming the app, HTTP
- * caching honoured (OkHttp's disk cache in `cacheDir`), a handful of tiles per card and never
- * bulk; the card credits “© OpenStreetMap contributors”. Logs carry counts, zoom and timing,
- * never coordinates or tile URLs (which encode the place).
+ * Still maps of a shared location, rendered once per place, size and appearance and cached (iOS
+ * `SharedLocationSnapshots`). Composed from OpenStreetMap raster tiles over a 600 m region; dark
+ * snapshots are inverted and hue-turned tiles. Tile policy
+ * (operations.osmfoundation.org/policies/tiles): a User-Agent naming the app, HTTP caching
+ * honoured, a handful of tiles per card, and the card credits “© OpenStreetMap contributors”. Never
+ * log coordinates or tile URLs.
  */
 internal class SharedLocationSnapshots(private val context: Context) {
     private val memory = object : LruCache<String, ImageBitmap>(MEMORY_BYTES) {

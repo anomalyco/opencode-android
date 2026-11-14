@@ -35,9 +35,9 @@ data class AutocompleteRect(val x: Double, val y: Double, val width: Double, val
 }
 
 /**
- * Pure, frame-by-frame simulation of the Round 2 Composer Grows autocomplete popover, row
- * slot collapse, concentric highlight, edge fades and chip flights (iOS
- * `AutocompleteSimulation`). All lengths are dp; `displayScale` is the density (px per dp).
+ * Pure, frame-by-frame simulation of the autocomplete popover, row slot collapse, concentric
+ * highlight, edge fades and chip flights (iOS `AutocompleteSimulation`). Lengths are dp;
+ * `displayScale` is px per dp.
  */
 class AutocompleteSimulation(var params: AutocompleteParameters = AutocompleteParameters()) {
     data class FrozenRow(val rect: AutocompleteRect, val fullSize: AutocompleteSize, val offsetFromAnchor: AutocompletePoint)

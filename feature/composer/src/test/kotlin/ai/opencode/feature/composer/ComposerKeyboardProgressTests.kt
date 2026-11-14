@@ -35,10 +35,8 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 /**
- * Android-only: [ComposerKeyboardProgress] reads Compose's IME insets. After an animation the app
- * controlled (the drawer's keyboard hold giving the keys back) Compose can keep
- * `imeAnimationSource` at the keys' old height while the keys and the target are down; read as
- * an animation, it kept the row's hidden controls mounted over the field, swallowing its taps.
+ * Android-only: after an app-controlled IME animation, Compose can keep `imeAnimationSource` at the
+ * keys' old height while the keys and the target are down; that must not read as an animation.
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])

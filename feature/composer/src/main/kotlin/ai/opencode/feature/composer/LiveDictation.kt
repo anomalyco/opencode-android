@@ -21,14 +21,9 @@ import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Recording, one press at a time. The mic goes live first, so a press feels
- * immediate and its first words are never clipped; the model loads alongside
- * (usually already loaded: one is kept warm for the next press) and takes the
- * audio heard meanwhile from [DictationInput].
- *
- * iOS's `actor` is a single-threaded dispatcher here: every member runs on it,
- * and like an actor it interleaves at suspension points (a cancel lands while a
- * stop is still finalizing).
+ * Recording, one press at a time. The mic goes live first, so its first words are never clipped;
+ * the model loads alongside and takes the audio heard meanwhile from [DictationInput]. Every member
+ * runs on one single-threaded dispatcher and, like an actor, interleaves at suspension points.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class LiveDictation(
@@ -220,12 +215,9 @@ class LiveDictation(
             }
         } catch (cancellation: CancellationException) {
             if (!currentCoroutineContext().isActive) {
-                // iOS cancels the recording the moment the press is cancelled (even before
-                // `start` runs) and still awaits it. Here `withContext` can give up before its
-                // block runs and `await` returns at once, so a recording past its checks (the
-                // mic prompt answered as the press was cancelled) could still reach the mic with
-                // nobody to stop it. Cancel it, wait for it to settle, then end the press, so the
-                // mic never outlives it.
+                // `withContext` can give up before its block runs, so a recording could still reach
+                // the mic with nobody to stop it: cancel it, wait for it to settle, then end the
+                // press.
                 task.cancel()
                 withContext(NonCancellable) {
                     task.join()

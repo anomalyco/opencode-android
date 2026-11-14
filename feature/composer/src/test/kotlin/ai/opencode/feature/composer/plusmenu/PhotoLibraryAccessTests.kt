@@ -42,9 +42,8 @@ class PhotoLibraryAccessTests {
     }
 
     /**
-     * Kit: the photo picker "opens behind" or "doesn't even open". Watching the library for
-     * changes before access was ever asked raises the system's access alert on iOS as the session
-     * screen appears; it must wait for the sheet to ask (`load`).
+     * Watching the library for changes before access was asked raises the system's access alert, so
+     * it waits for the sheet to ask (`load`).
      */
     @Test fun photoLibraryNeverTouchesPhotoKitBeforeTheSheetAsks() = runTest(main) {
         var currentAccess = PhotoLibraryAccess.NotDetermined

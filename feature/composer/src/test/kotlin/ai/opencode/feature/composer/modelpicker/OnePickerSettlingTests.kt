@@ -140,9 +140,8 @@ class OnePickerSettlingTests {
 
     /**
      * Closing with no keyboard, the controller pins the bottom edge to the live composer every
-     * frame. A composer resting off the destination (the keyboard came back after the session
-     * sheet) used to hold Closing and the frame loop forever; landing only the bottom left `top`
-     * at the old destination, a tall strip of empty glass that then popped out.
+     * frame. A composer resting off the destination moves the destination onto it, so Closing ends
+     * and `top` lands with it.
      */
     @Test
     fun cancelledPullDownSettlesThroughTheLatestCallbacks() {
@@ -250,8 +249,7 @@ class OnePickerSettlingTests {
 
     /**
      * With the composer probe attached: the composer has rested on the close's edge, then the
-     * keyboard rises. Rest counted before the retarget, read off a composer that hasn't moved
-     * yet, used to land the fold back on the edge the composer was leaving.
+     * keyboard rises. The fold follows the composer up, not back to the edge it's leaving.
      */
     @Test
     fun keyboardRisingAfterTheComposerRestedFollowsTheLiveComposer() {
@@ -271,9 +269,8 @@ class OnePickerSettlingTests {
     }
 
     /**
-     * A close handing the keyboard back waits up to 75 ms for it. The composer sits still
-     * meanwhile, which used to count as rest and move the destination onto it, so a
-     * notification 4–8 frames in sent the fold down to the bottom edge while the composer rose.
+     * A close handing the keyboard back waits up to 75 ms for it; the composer sitting still
+     * meanwhile doesn't count as rest.
      */
     @Test
     fun lateKeyboardDuringTheCloseSyncWaitStillRidesToTheKeyboardComposer() {

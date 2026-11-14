@@ -375,9 +375,8 @@ class LiveDictationTests {
     }
 
     /**
-     * A press cancelled while its model loads used to start loading another
-     * at once, preparing two speech models side by side. The one in flight
-     * goes back to warm and the next press takes it.
+     * A press cancelled while its model loads doesn't start loading another; the one in flight goes
+     * back to warm and the next press takes it.
      */
     @Test fun aPressCancelledWhileItsModelLoadsLoadsNoSecond() = runBlocking {
         val fake = Fake(loads = false)

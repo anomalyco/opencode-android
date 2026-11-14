@@ -15,11 +15,9 @@ import kotlin.math.abs
 import kotlin.math.max
 
 /**
- * Drives [AutocompleteSimulation] per frame (iOS `AutocompleteMotionController`, which steps it
- * on a 60–120 Hz `CADisplayLink`). A plain object: it publishes [currentFrame] as Compose
- * state and asks for frames through [needsFrames]; [AutocompleteMotionDriver] runs the
- * frame loop ([motionFrameLoop]) while it does. iOS's per-frame glass trace
- * (`-lab-glass-trace`) and Motion X-Ray reporting are lab tooling and not ported.
+ * Drives [AutocompleteSimulation] per frame (iOS `AutocompleteMotionController`). Publishes
+ * [currentFrame] as Compose state and asks for frames through [needsFrames];
+ * [AutocompleteMotionDriver] runs the frame loop while it does.
  */
 @Stable
 class AutocompleteMotionController {

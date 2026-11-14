@@ -16,17 +16,12 @@ import androidx.compose.ui.semantics.semantics
 import kotlin.math.max
 
 /**
- * iOS `View.handsGlassOver(to:...)`: the morph's source under it hands its surface over to the
- * morph as the morph starts to grow (fading out in 0.12 s), and takes it back as the morph lands
- * on it (after `close.duration × 0.62`, or [closeDelay]). [sinksUnderSheet]: the composer sinks
+ * iOS `View.handsGlassOver(to:...)`: the morph's source hands its surface over as the morph starts
+ * to grow (fading out in 0.12 s), and takes it back as the morph lands (after `close.duration ×
+ * 0.62`, or [closeDelay]). With [sinksUnderSheet] the composer sinks
  * [ComposerMorphTunables.composerSink] and fades under a photo sheet instead; [pulledDown] (dp
- * the sheet is pulled below its rest) raises it back with the finger instead of popping it in
- * on release. Handed over, the source is invisible: the composer hides itself from TalkBack
- * under the sheet (the session's composer).
- *
- * iOS also sets the `attachmentMenuAnchorHold` environment here; Compose modifiers can't
- * provide a composition local, so the host provides [attachmentMenuAnchorHold] around the
- * composer through [LocalAttachmentMenuAnchorHold].
+ * below the sheet's rest) raises it with the finger. Modifiers can't provide a composition local,
+ * so the host provides [attachmentMenuAnchorHold] through [LocalAttachmentMenuAnchorHold].
  */
 fun Modifier.handsGlassOver(
     morph: ComposerMorph,

@@ -14,11 +14,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Port of iOS `RequestAnswerTests.swift` (D-31 B: a pending request's panel grows out of the
- * composer, and the composer's row is your own answer). Only `RequestDockFeature`'s own suite
- * lives here, with the fold's pure rules (`RequestCollapse`, `RequestPanelGesture`,
- * `RequestErrorLine`): the rest drive `SessionFeature`/`HomeFeature` (`:feature:session`, drawer)
- * or probe UIKit text views (see docs/parity/composer.md "Tests").
+ * Port of iOS `RequestAnswerTests.swift`: only `RequestDockFeature`'s own suite, with the fold's
+ * pure rules (`RequestCollapse`, `RequestPanelGesture`, `RequestErrorLine`). The rest drive
+ * `SessionFeature`/`HomeFeature` or probe UIKit text views (see docs/parity/composer.md "Tests").
  */
 class RequestAnswerTests {
     private val json = Json { ignoreUnknownKeys = true }

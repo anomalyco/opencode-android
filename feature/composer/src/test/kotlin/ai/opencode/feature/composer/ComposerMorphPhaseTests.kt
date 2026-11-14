@@ -14,9 +14,8 @@ import org.junit.Test
 /** Port of iOS `ComposerMorphPhaseTests.swift`. */
 class ComposerMorphPhaseTests {
     /**
-     * p282: a fold waiting for its next turn is dropped when the morph opens or closes another
-     * way. Its flag must go with it: left set, the morph stays open but never `isOpening`, so
-     * Back and every close guard bail.
+     * A fold waiting for its next turn is dropped when the morph opens or closes another way, and
+     * its flag goes with it, so Back and the close guards still work.
      */
     @Test fun openingOrClosingAnotherWayClearsAPendingFold() = runTest {
         val morph = ComposerMorph(animationScope())

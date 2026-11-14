@@ -10,10 +10,8 @@ enum class AutocompleteExitMode(val rawValue: String) { Fade("fade"), Collapse("
 enum class AutocompleteCommandAction(val rawValue: String) { Fill("fill"), Run("run") }
 
 /**
- * Port of iOS `ComposerAutocompleteTunables` (D-105 option 3, "Composer Grows"), keys and
- * defaults under `composer.autocomplete.*`. iOS backs these with live `Tunable`s in the
- * Developer Mode Tuning Panel; Android has no tuning store, so these are the baked defaults
- * (lengths in dp, times in seconds). Timing is the motion roles' ([AutocompleteParameters]).
+ * Port of iOS `ComposerAutocompleteTunables` (`composer.autocomplete.*`), baked to their defaults:
+ * lengths in dp, times in seconds.
  */
 object ComposerAutocompleteTunables {
     /** `composer.autocomplete.order` "Best match". */

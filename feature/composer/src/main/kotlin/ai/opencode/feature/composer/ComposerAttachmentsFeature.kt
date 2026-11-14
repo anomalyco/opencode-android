@@ -25,13 +25,10 @@ import java.io.File
 import java.util.UUID
 
 /**
- * Port of iOS `ComposerAttachmentsFeature` (`Composer/ComposerFileAttachment.swift`): the
- * composer's pending images, files and location, and the + menu's Location.
- *
- * As on iOS, this reducer owns only Location and inline-attachment removal; the session
- * (`SessionFeature+Attachments`) handles [Action.AttachmentAdded], [Action.FilesStaged],
- * uploads, retry and removal, using the static [readInlineFile], [upload] and
- * [cancelUpload] effects here (they need the session's server, directory and model).
+ * Port of iOS `ComposerAttachmentsFeature`: the composer's pending images, files and location. This
+ * reducer owns only Location and inline-attachment removal; the session handles
+ * [Action.AttachmentAdded], [Action.FilesStaged], uploads, retry and removal with the static
+ * effects here.
  */
 class ComposerAttachmentsFeature : Reducer<ComposerAttachmentsFeature.State, ComposerAttachmentsFeature.Action> {
 

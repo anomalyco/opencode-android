@@ -14,9 +14,8 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * A composer's draft (iOS `SessionFeature.State.DraftState`, `Session/SessionFeature+State.swift`).
- * Moved down from the session area because [ComposerPersistence] stores it; the session area
- * uses this type for its composer state rather than redeclaring it.
+ * A composer's draft (iOS `SessionFeature.State.DraftState`). Lives here because
+ * [ComposerPersistence] stores it.
  */
 data class DraftState(
     val text: String = "",
@@ -47,9 +46,8 @@ data class DraftState(
 }
 
 /**
- * The composer as an undo/revert left it, plus the pre-undo snapshot that Undo/Redo restores
- * when the reverted draft is still untouched (iOS `SessionFeature.State.UndoSnapshot`). Moved
- * down with [DraftState].
+ * The composer as an undo/revert left it, plus the pre-undo snapshot Undo/Redo restores while the
+ * reverted draft is untouched (iOS `SessionFeature.State.UndoSnapshot`).
  */
 @Serializable
 data class UndoSnapshot(
@@ -63,10 +61,8 @@ data class UndoSnapshot(
 )
 
 /**
- * What a share adds to one composer (iOS `SharedComposerDraft`, `System/Share/ShareInbox.swift`).
- * Here because it carries composer types ([ComposerFileAttachment], chips) that `:feature:system`
- * can't see; the drawer/session area builds one from a received share
- * (iOS `init(_ share: ReceivedShare, projectID:)`).
+ * What a share adds to one composer (iOS `SharedComposerDraft`). Here because it carries composer
+ * types `:feature:system` can't see.
  */
 data class SharedComposerDraft(
     val text: String = "",

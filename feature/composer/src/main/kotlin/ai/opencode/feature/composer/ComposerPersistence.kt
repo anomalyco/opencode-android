@@ -16,18 +16,10 @@ import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Typed drafts, unsent outbox lanes and failed sends that outlive the process (iOS
- * `ComposerPersistence`, `Composer/ComposerPersistence.swift`), keyed by server persistence ID
- * and session ID (null: the New Session draft).
- *
- * Typing is debounced (500 ms) off the main path and written at once by [flush] (the app
- * backgrounding). Inline attachments (images, Pasted Text) are stored as blobs beside the
- * state; uploaded files keep only their server path, and staged files still uploading stay in
- * memory across in-process session switches. Entries untouched for 30 days, and every entry
- * of a deleted session ([removeSession]) or server ([removeServer]), are removed with their
- * blobs. Draft text is never logged.
- *
- * The session and drawer areas own the iOS `SessionFeature`/`HomeFeature` extensions in the
- * same Swift file; their logic is in `ComposerPersistenceIntegration.kt` as plain functions.
+ * `ComposerPersistence`), keyed by server persistence ID and session ID (null: the New Session
+ * draft). Typing is debounced (500 ms) and written at once by [flush]. Entries untouched for 30
+ * days, or of a deleted session or server, are removed with their blobs. Draft text is never
+ * logged.
  */
 class ComposerPersistence(
     val identity: String = "",

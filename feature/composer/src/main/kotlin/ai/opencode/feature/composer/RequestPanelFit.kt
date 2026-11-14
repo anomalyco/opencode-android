@@ -26,9 +26,9 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * How the request panel fits under the header (iOS `RequestPanelFit`): a pure function of the
- * room, never of the panel's own height, so it can't feed back on itself (OC-471). Heights
- * are in whatever unit the caller uses (dp or px), consistently.
+ * How the request panel fits under the header (iOS `RequestPanelFit`): a pure function of the room,
+ * never of the panel's own height, so it can't feed back on itself. Heights are in whatever unit
+ * the caller uses, consistently.
  */
 object RequestPanelFit {
     /**
@@ -235,10 +235,7 @@ private fun RequestPanelStack(modifier: Modifier = Modifier, content: @Composabl
         content = content,
         modifier = modifier
             // Clipped top and bottom only, and only while the column scrolls: the header's × sits
-            // out past the panel's side padding, on the surface's corner arc (`outset`), which a
-            // full `clipToBounds` cut in half; and a page sliding out over a shorter new one
-            // (drawn below the new page's end) stays whole, revealed by the panel's own surface
-            // as its height follows, instead of losing its rows at once.
+            // out past the side padding, and a page sliding out over a shorter one stays whole.
             .drawWithContent {
                 if (holder.overflow > 0) {
                     clipRect(-size.width, 0f, size.width * 2, size.height) { this@drawWithContent.drawContent() }

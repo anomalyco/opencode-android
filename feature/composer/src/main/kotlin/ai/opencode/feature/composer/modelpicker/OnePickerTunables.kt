@@ -36,9 +36,8 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
- * iOS `OnePickerTunables` (`modelPicker.one.*`): One Picker's layout metrics and options at
- * their shipped defaults; its timing is the shared motion roles' ([OnePickerTiming]). The
- * presets and registration are Tuning Panel, n/a (Android's tuning is `:devtools`).
+ * iOS `OnePickerTunables` (`modelPicker.one.*`): One Picker's layout metrics and options at their
+ * shipped defaults; its timing is [OnePickerTiming].
  */
 object OnePickerTunables {
     /** "Compact height" (320…640). */
@@ -132,9 +131,8 @@ object OnePickerProviderMark {
     )
 
     /**
-     * A real asset name, or null when the provider is unknown, so callers draw the filled
-     * fallback instead of the stroked `provider-synthetic` sparkles. [exists] is iOS's
-     * `UIImage(named:) != nil`.
+     * A real asset name, or null when the provider is unknown, so callers draw the filled fallback
+     * instead of the stroked `provider-synthetic` sparkles.
      */
     fun resolvedAssetName(providerID: String, canonical: String?, exists: (String) -> Boolean = BrandAssets::exists): String? {
         val stripped = if (providerID.startsWith("console-")) providerID.drop(8) else null
@@ -198,9 +196,8 @@ fun OnePickerProviderMark(
 }
 
 /**
- * iOS `AnimatedLevelArc`: the level arc sweeping on `Motion.microIn` as the level
- * changes. Off by default (`CHIP_SHOWS_ARC`, `ROW_SHOWS_ARC`). iOS's UIKit template-image cache
- * is n/a: Compose draws it directly.
+ * iOS `AnimatedLevelArc`: the level arc sweeping on `Motion.microIn` as the level changes. Off by
+ * default (`CHIP_SHOWS_ARC`, `ROW_SHOWS_ARC`).
  */
 @Composable
 fun AnimatedLevelArc(

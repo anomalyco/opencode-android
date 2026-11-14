@@ -17,15 +17,10 @@ import kotlin.math.min
 private typealias HoldArm = DictationFeature.Hold.Arm
 
 /**
- * Where a held mic's finger has gone (iOS `DictationHoldTracker`, from
- * `Session/DictationViews.swift`, moved down so the composer's press owns it).
- * Sliding up arms lock and sliding left arms cancel. Every move measures
- * progress toward both from where the finger is now: its travel up over
- * [lockDistance] and left over [cancelDistance]. Nothing latches onto an axis,
- * so one drag can swing from cancel to lock and back. A target arms once its
- * progress reaches 1 and leads the other's; it stays armed until the finger is
- * [hysteresis] short of its line or the other leads by [dominanceMargin], so a
- * finger resting on a boundary never flickers. Distances are in dp (iOS points).
+ * Where a held mic's finger has gone (iOS `DictationHoldTracker`). Sliding up arms lock and sliding
+ * left arms cancel, measured from where the finger is now, so one drag can swing between them. A
+ * target arms once its progress reaches 1 and leads the other's, and stays armed until the finger
+ * is [hysteresis] short of its line or the other leads by [dominanceMargin]. Distances in dp.
  */
 class DictationHoldTracker {
     /** Progress toward each target, 1 at its line. */
@@ -176,15 +171,10 @@ class MicPress(var callbacks: MicPressCallbacks) {
 }
 
 /**
- * The mic's press (iOS `MicPressGesture`/`MicPressRecognizer`): it begins at
- * touch-down, with the touch's own timestamp, so recording starts the moment
- * the finger lands whether it turns out to be a tap or a hold; which one it was
- * is decided at the lift, from how long and how far it went. Only the first
- * finger counts. A touch a parent takes over (a scroll) or that the system
- * cancels ends as an interruption, never a send.
- *
- * [isEnabled] is off while a recording is hands-free: the bar over the mic owns
- * those touches, so none falls through to start another.
+ * The mic's press (iOS `MicPressGesture`): it begins at touch-down with the touch's timestamp, so
+ * recording starts the moment the finger lands; tap or hold is decided at the lift. Only the first
+ * finger counts, and a touch a parent takes over or the system cancels ends as an interruption,
+ * never a send. [isEnabled] is off while a recording is hands-free.
  */
 @Composable
 fun Modifier.micPressGesture(isEnabled: Boolean, callbacks: MicPressCallbacks): Modifier {
