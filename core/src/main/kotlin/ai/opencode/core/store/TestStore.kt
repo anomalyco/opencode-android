@@ -16,29 +16,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * Port of TCA's `TestStore`. Use inside `runTest { }` and pass its scope:
- *
- * ```kotlin
- * @Test fun askOpensComposer() = runTest {
- *     val store = TestStore(BrowserFeature.State(), BrowserFeature(), this) {
- *         this[UuidClient] = UuidClient.incrementing()
- *     }
- *     store.send(BrowserFeature.Action.AskTapped) { it.copy(isAsking = true) }
- *     store.finish()
- * }
- * ```
- *
- * Exhaustive by default: every state change must be asserted by the `update` lambda, every
- * action an effect sends must be [receive]d, and [finish] fails while effects still run
- * (cancellation included), as TCA's default. Set [exhaustive] = false for TCA's
- * `exhaustivity = .off`: `update` then applies to the actual new state (partial asserts),
- * unasserted effect actions are reduced before the next send, and [receive] skips
- * non-matching actions.
- *
- * Dependencies resolve to `testValue` unless overridden; keys without one fail loudly. An
- * effect that throws fails the test at the next call. Effects should take dispatchers from a
- * dependency, never `Dispatchers.IO` directly, so virtual time stays in control.
- * Never add test-only flags to production state; configure through dependencies.
+ * Port of TCA's `TestStore`. Exhaustive by default: assert every state change, [receive] every
+ * effect action, and [finish] fails while effects run. [exhaustive] = false is TCA's `exhaustivity
+ * = .off`.
  */
 class TestStore<S, A>(
     initialState: S,
@@ -76,8 +56,8 @@ class TestStore<S, A>(
         private set
 
     /**
-     * The sending coroutine's context, less its job and dispatcher: effects see the task locals it
-     * bound (`withRetryPolicy { store.send(…) }`), as Swift effects inherit the sending task's.
+     * The sending coroutine's context, less its job and dispatcher, so effects see the locals it
+     * bound.
      */
     private var callerContext: CoroutineContext = EmptyCoroutineContext
     private val effectScope = object : CoroutineScope {
@@ -148,9 +128,8 @@ class TestStore<S, A>(
     }
 
     /**
-     * Asserts every action was received and no effect is still running. Non-exhaustive, as TCA's
-     * `exhaustivity = .off` (which reduces effect actions as they arrive), actions keep being
-     * reduced while waiting, and effects still running after [timeout] are cancelled without failing.
+     * Asserts every action was received and no effect still runs. Non-exhaustive, effects still
+     * running after [timeout] are cancelled without failing.
      */
     suspend fun finish(timeout: Duration = 1.seconds) {
         captureCaller()

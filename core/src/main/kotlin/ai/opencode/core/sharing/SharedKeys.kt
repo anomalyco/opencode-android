@@ -10,12 +10,8 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 /**
- * Port of the primitive-typed keys in iOS `OpenCode/Core/SharedKeys.swift`: same names,
- * defaults and semantics. Keys whose values are server or voice types live with those types:
- * `ai.opencode.server.ServerSharedKeys` (saved servers, Home/transcript caches) and
- * `ai.opencode.feature.voice.VoiceSharedKeys` (engine, provider, voice, transcripts).
- *
- * Read with `shared(SharedKeys.returnKeySends)`; mutate only from reducers.
+ * Port of the primitive-typed keys in iOS `SharedKeys.swift`. Keys whose values are server or voice
+ * types live with those types.
  */
 object SharedKeys {
     /** Whether an iPad-wide window shows the sessions sidebar (large-screen Android: list-detail pane). On by default. */
@@ -101,7 +97,7 @@ object SharedKeys {
     /** Remembered reasoning variant per model (`model.id` → variant), restored when picking that model again. */
     val modelVariants = SharedKey.fileStorage<Map<String, String>>(FileDirectory.Documents, "model-variants.json", emptyMap())
 
-    /** Pinned sessions. Keeps iOS's file name so previously followed chats became pins. */
+    /** Pinned sessions, under iOS's file name. */
     val pinnedSessionKeys = SharedKey.fileStorage<List<String>>(FileDirectory.Documents, "followed-sessions.json", emptyList())
 
     /** Recently picked models (`model.id`), most recent first. */

@@ -105,7 +105,7 @@ class ExperimentalFeatureTests {
         assertEquals(listOf("Composer", "Calls", "Drawer", "Transcript"), ExperimentalGroup.entries.map { it.title })
     }
 
-    /** Removed experiments and ones now always on (p217) leave no switch behind, whatever was saved. */
+    /** Removed experiments and ones now always on leave no switch behind, whatever was saved. */
     @Test
     fun removedExperimentsLeaveNoSwitchBehind() {
         val retired = listOf(

@@ -12,12 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * Executes [Effect]s for a store. Shared by [Store] and [TestStore] so tests exercise the
- * exact cancellation semantics production uses.
- *
- * Synchronous parts run before the call returns: [Effect.Cancel] cancels at once,
- * `cancelInFlight` cancels the previous run at once, and [Effect.SendAction] is handed to
- * [sendNow]. Coroutine parts launch in [scope].
+ * Executes [Effect]s for [Store] and [TestStore] alike. Cancels and sends run before the call
+ * returns; coroutines launch in [scope].
  */
 internal class EffectRunner<A>(
     private val scope: CoroutineScope,
@@ -49,9 +45,8 @@ internal class EffectRunner<A>(
     }
 
     /**
-     * [keys] are the enclosing cancellable identities: every coroutine launched under them is
-     * registered with each at once, so a cancel sent right after (before the coroutine first runs)
-     * reaches nested `cancellable`s too, as TCA registers them when the effect is subscribed.
+     * Coroutines register with every enclosing key at once, so a cancel sent before one first runs
+     * still reaches it.
      */
     @Suppress("UNCHECKED_CAST")
     private fun <B> execute(

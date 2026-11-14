@@ -9,15 +9,8 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
 /**
- * Port of swift-sharing's `SharedKey` as the iOS app declares them (`OpenCode/Core/SharedKeys.swift`):
- * an identity, a default, a serializer and where the value lives.
- *
- * ```kotlin
- * val returnKeySends = SharedKey.appStorage("return-key-sends", false)
- * ```
- *
- * Keep iOS's names (the `id` strings) and defaults. Values whose types live above `:core`
- * declare their keys in the module that owns the type (e.g. `ServerSharedKeys` in `:server`).
+ * Port of swift-sharing's `SharedKey`: an identity, a default, a serializer and where the value
+ * lives. Keep iOS's `id` strings and defaults.
  */
 class SharedKey<T>(
     val id: String,
@@ -64,15 +57,8 @@ enum class FileDirectory {
 }
 
 /**
- * Port of `@Shared(.key) var value`: a reference to one persisted value. Reads are
- * synchronous ([value]); writes persist in the background.
- *
- * Rule (iOS AGENTS.md): mutate shared keys only inside reducers, and only when the value
- * actually changes ([set] and [update] skip unchanged values, so routine refreshes never
- * rewrite storage). Views read [value]/[flow]; effects observe [flow] and send actions.
- *
- * Equality is by key identity, so a `Shared` may sit in reducer `State` without making
- * state comparisons depend on persisted contents; assert shared values directly in tests.
+ * Port of `@Shared(.key) var value`. Writes persist in the background; [set] and [update] skip
+ * unchanged values. Equality is by key identity, so assert shared values directly in tests.
  */
 class Shared<T> internal constructor(
     val key: SharedKey<T>,
@@ -114,9 +100,8 @@ internal class SharedReference<T>(
         val new = transform(old)
         if (new == old) return
         state.value = new
-        // Inside the lock (it only enqueues onto the serial writer), so writes keep transition order.
-        // Encoded by the writer: a large file value (Home's snapshots) isn't encoded on the main
-        // thread (iOS 24057173).
+        // Inside the lock so writes keep transition order; the writer encodes, keeping large values
+        // off the main thread.
         bytes.writeEncoded(key.storage, key.id) { json.encodeToString(key.serializer, new).encodeToByteArray() }
     }
 
@@ -127,11 +112,7 @@ internal class SharedReference<T>(
     }
 }
 
-/**
- * Where shared values persist. Live: DataStore/file/Keystore backends on disk. Test: a fresh
- * in-memory store per test container, so tests never read or clobber real settings or secrets
- * (iOS `KeychainStorage.inMemory()`).
- */
+/** Where shared values persist. Tests get a fresh in-memory store per test container. */
 class SharedStore internal constructor(private val bytes: SharedBytes) {
     private val references = HashMap<Pair<SharedStorageKind, String>, SharedReference<*>>()
     private val json = Json {

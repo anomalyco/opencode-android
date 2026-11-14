@@ -12,9 +12,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.nanoseconds
 
 /**
- * The application [Context], installed once by `OpenCodeApplication.onCreate` via
- * [DependencyValues.installRoot]. Live clients that need Android services read it;
- * reducers never do.
+ * The application [Context], installed once by `OpenCodeApplication.onCreate`. Reducers never read
+ * it.
  */
 object AppContext : DependencyKey<Context> {
     override val liveValue: Context
@@ -46,9 +45,8 @@ private object UnimplementedClock : Clock {
 }
 
 /**
- * A clock whose sleeps return at once, advancing its time (swift-clocks' `ImmediateClock`). Like
- * swift-clocks, each sleep still yields, so a loop that sleeps on it never starves the other
- * work on its dispatcher.
+ * swift-clocks' `ImmediateClock`: sleeps return at once, but still yield, so a sleeping loop never
+ * starves its dispatcher.
  */
 class ImmediateClock : Clock {
     @Volatile private var time = Duration.ZERO
@@ -79,8 +77,7 @@ class TestClock : Clock {
 
     /**
      * Moves time forward by [by], resuming due sleeps one deadline at a time and yielding after
-     * each so the woken effect runs (and may sleep again) before time moves on, as swift-clocks'
-     * `advance(by:)` does. Sleeps registered during the advance are honoured.
+     * each so the woken effect runs before time moves on.
      */
     suspend fun advance(by: Duration = Duration.ZERO) {
         val target = synchronized(lock) { time + by }

@@ -9,11 +9,8 @@ import java.util.UUID
 import kotlin.math.max
 
 /**
- * Port of iOS `ProblemReport.swift` (`Diagnostics/Traces/`): a report of where the app was and
- * what it recorded, bounded under 2 MB. No credentials or server addresses: the server goes by
- * a short hash of its persistence ID ([ProblemReportBuilder.safeServerID]), the session by ID.
- * Lives in `:core` so Report a Problem (session), the developer tools' diagnostics bundle and
- * Developer Mode uploads share one builder.
+ * Port of iOS `ProblemReport.swift`: where the app was and what it recorded, under 2 MB. No
+ * credentials or server addresses: the server goes by a short hash.
  */
 @Serializable
 data class ProblemReportContext(

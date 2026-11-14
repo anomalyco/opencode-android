@@ -9,27 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.roundToInt
 
 /**
- * Port of iOS `PerfTimeline`: the performance baseline's end points (iOS docs/performance.md), as
- * async trace sections ([PerfTrace.begin]/[PerfTrace.end], iOS's `opencode.perf` signposted
- * intervals) for Perfetto and, when the lab is on, as `perf_*` marks with their duration:
- *
- * - **Cold Start**: process start → the first timeline frame.
- * - **First Timeline**: a session opened → the first frame showing rows after a REST snapshot of
- *   it was applied (a cached frame doesn't count). Each applied snapshot gets a revision that
- *   rides in the transcript's configuration; the transcript reports it once that configuration is
- *   applied and laid out ([snapshotRendered]), and the Choreographer frame after that report is
- *   the one that showed it. Without the report it stays pending, however long that takes.
- * - **Session Switch**: a drawer tap → the target's fresh rows on screen with the card at rest.
- * - **Reconnect**: the event stream dropped → it's back and the open session's snapshot is
- *   reconciled on screen.
- * - **Older Page** and **Long Session Load**: an older history page read → on screen, and the
- *   tap → every older page fetched.
- *
- * Callers report coarse moments that already happen once per action or REST read, never per
- * frame. Measuring is on only for a lab run (marks posted to the fixture) or a debug launch with
- * the `perf-signposts` boolean extra (iOS `OPENCODE_PERF_SIGNPOSTS=1`). Otherwise every call
- * returns after one check. iOS reads its switch once; here it's read per call because the lab
- * extras arrive with the activity's launch intent, after the process started.
+ * Port of iOS `PerfTimeline`: the performance baseline's end points as trace sections and, in a lab
+ * run, `perf_*` marks. On only for a lab run or the `perf-signposts` extra; read per call because
+ * lab extras arrive after process start.
  */
 object PerfTimeline {
     /** The `perf-signposts` launch extra (iOS `OPENCODE_PERF_SIGNPOSTS`); set by `DevTools.handleLaunchIntent`. */
@@ -38,9 +20,8 @@ object PerfTimeline {
     val isEnabled: Boolean get() = LabMarks.isEnabled || signpostsRequested
 
     /**
-     * Ties the sessions a transcript shows to its lifetime, so a list that goes away stops
-     * counting as rows on screen. iOS releases it in `deinit`; Kotlin has no deinit, so the list
-     * calls [release] when it leaves composition.
+     * Ties the sessions a transcript shows to its lifetime; the list calls [release] when it leaves
+     * composition.
      */
     class RowsToken internal constructor() {
         internal val id = nextTokenID()
@@ -74,8 +55,8 @@ object PerfTimeline {
     }
 
     /**
-     * A REST window for the session was applied to its state, reconciled. Returns the snapshot's
-     * revision for the state to carry into the transcript's configuration; null when not measuring.
+     * A REST window for the session was applied. Returns the snapshot's revision for the
+     * transcript's configuration; null when not measuring.
      */
     fun snapshotApplied(sessionID: String?): Int? {
         if (sessionID == null || !isEnabled) return null
@@ -152,7 +133,7 @@ object PerfTimeline {
         finished?.let(::finishSwitch)
     }
 
-    /** The event stream that was live ended. */
+    /** The live event stream ended. */
     fun streamLost() {
         if (!isEnabled) return
         val begins = synchronized(lock) {
@@ -164,7 +145,6 @@ object PerfTimeline {
         synchronized(lock) { state.reconnect = Interval(interval, now()) }
     }
 
-    /** The event stream connected. */
     fun streamConnected() {
         if (!isEnabled) return
         val lost = synchronized(lock) {
@@ -325,7 +305,7 @@ object PerfTimeline {
 
     private fun milliseconds(start: Long, end: Long): Int = ((end - start) / 1_000_000.0).roundToInt()
 
-    /** Since the kernel started this process (iOS reads `kinfo_proc`'s start time; Android keeps it on [Process]). */
+    /** Since the kernel started this process. */
     private fun processStartMs(): Int? =
         (SystemClock.uptimeMillis() - Process.getStartUptimeMillis()).takeIf { it >= 0 }?.toInt()
 }
@@ -353,11 +333,9 @@ private object PerfFrames : Choreographer.FrameCallback {
 }
 
 /**
- * Port of iOS `PerfFreshTracker`: which applied REST snapshots are on screen yet, kept pure so it
- * can be driven frame by frame. A snapshot counts at the first frame after a transcript that's on
- * screen, with rows of the session laid out, reported a configuration of that revision or newer
- * rendered in an earlier frame. Nothing counts on elapsed time alone. Not thread-safe: the
- * timeline holds its lock around every call.
+ * Port of iOS `PerfFreshTracker`: a snapshot counts at the first frame after an on-screen
+ * transcript reported its revision rendered. Not thread-safe: the timeline holds its lock around
+ * every call.
  */
 class PerfFreshTracker {
     data class Pending(val revision: Int, val applied: Long)

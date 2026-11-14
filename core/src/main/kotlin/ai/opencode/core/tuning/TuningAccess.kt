@@ -10,10 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 
 /**
- * Port of iOS `InternalBuild` (`DiagnosticsJournal.swift`): Debug or TestFlight vs App Store.
- * Android: [isDebug] is the app's debuggable flag; [isEnabled] (iOS Debug || TestFlight) is a
- * debuggable build or one not installed by Google Play (sideloaded, Firebase App Distribution,
- * internal test APKs). Play's own testing tracks look like release, as TestFlight can't on iOS.
+ * Port of iOS `InternalBuild`: [isEnabled] is a debuggable build or one not installed by Google
+ * Play.
  */
 object InternalBuild {
     val isDebug: Boolean by lazy {

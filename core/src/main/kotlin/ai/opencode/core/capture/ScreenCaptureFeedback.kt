@@ -20,14 +20,9 @@ import android.view.animation.DecelerateInterpolator
 import java.lang.ref.WeakReference
 
 /**
- * Port of iOS `Core/ScreenCaptureFeedback.swift`: what the person sees and hears when the app
- * captures its own screen (Voice Screenshots, Report a Problem's screenshot): a camera-style
- * flash that decays, and the shutter. Every self-capture goes through
- * [ScreenCaptureFeedback.capture], which captures first and flashes after, so the flash is never
- * in the picture.
- *
- * iOS's `UIWindowScene` is the [Activity] whose window was captured (Android's multi-instance
- * windows are activities).
+ * Port of iOS `Core/ScreenCaptureFeedback.swift`: the flash and shutter when the app captures its
+ * own screen. [ScreenCaptureFeedback.capture] captures first and flashes after, so the flash is
+ * never in the picture.
  */
 class ScreenCaptureFeedbackClient(
     /** The app just captured its own screen in [Activity] (null when unknown): flash it and play the shutter. */
@@ -43,11 +38,8 @@ class ScreenCaptureFeedbackClient(
 }
 
 /**
- * The shutter outside the flash (iOS `LiveScreenCaptureFeedback.playShutterSound`): during a call
- * the call's own engine plays it (`VoiceCallCueClient.shutter`), while dictation or media holds
- * the audio session it stays quiet, else the app's own shutter (`ShutterSystemSound`, voice's
- * `VoiceShutterSound` clicks). Those live in `:feature:voice`, above `:core`, so the app installs
- * this at the root; until then a capture only flashes.
+ * The shutter outside the flash (iOS `LiveScreenCaptureFeedback.playShutterSound`). Its sounds live
+ * in `:feature:voice`, so the app installs this at the root; until then a capture only flashes.
  */
 fun interface ScreenCaptureShutterSound {
     fun play()
@@ -60,9 +52,8 @@ fun interface ScreenCaptureShutterSound {
 
 object ScreenCaptureFeedback {
     /**
-     * Runs [capture] of the app's own screen in [scene], the activity whose window it draws,
-     * then, when it succeeded, flashes that activity and plays the shutter. A refused capture
-     * shows nothing.
+     * Runs [capture] in [scene], then, when it succeeded, flashes that activity and plays the
+     * shutter.
      */
     inline fun <T> capture(scene: Activity?, capture: () -> Result<T>): Result<T> {
         val result = capture()
@@ -100,9 +91,8 @@ data class ScreenFlashStyle(
 
     companion object {
         /**
-         * A white flash; with Reduce Motion (Android: Remove Animations) a softer, shorter dim;
-         * with Dim Flashing Lights none at all. Android has no Dim Flashing Lights setting, so
-         * the live flash passes `false`.
+         * A white flash; with Reduce Motion a softer, shorter dim; with Dim Flashing Lights none.
+         * Android has no Dim Flashing Lights, so the live flash passes `false`.
          */
         fun resolve(reduceMotion: Boolean, dimFlashingLights: Boolean): ScreenFlashStyle? {
             if (dimFlashingLights) return null
@@ -152,9 +142,8 @@ private class ForegroundActivities : Application.ActivityLifecycleCallbacks {
     fun isResumed(activity: Activity): Boolean = resumed.any { it.get() === activity }
 
     /**
-     * When the capture didn't say (iOS `flashScene`): the one in use (window focus, iOS's last
-     * touched), else the only resumed one. iOS's first rule, the window floating the call, is
-     * n/a: Android's call floats inside the activity.
+     * When the capture didn't say (iOS `flashScene`): the activity with window focus, else the only
+     * resumed one.
      */
     fun flashScene(): Activity? {
         val scenes = resumed.mapNotNull { it.get() }.filter { !it.isFinishing }
@@ -178,12 +167,9 @@ private class ForegroundActivities : Application.ActivityLifecycleCallbacks {
 }
 
 /**
- * A window over everything (sheets and dialogs, the keyboard) that shows the flash (iOS
- * `ScreenFlash` + `PassthroughFlashWindow`). It never takes touches or focus (`FLAG_NOT_TOUCHABLE`,
- * `FLAG_NOT_FOCUSABLE`, which also orders it above the IME) and is hidden from accessibility; its
- * view's alpha carries the decay. It's added for one flash and removed when the decay ends, so
- * between flashes it's in no activity's window list and holds no activity alive. Captures copy
- * the activity's own window (`PixelCopy`), so the flash is never in one.
+ * A window over everything, including the IME, for one flash (iOS `ScreenFlash`). Not touchable or
+ * focusable, hidden from accessibility, and removed when the decay ends so it holds no activity
+ * alive.
  */
 private class ScreenFlash {
     private var window: View? = null

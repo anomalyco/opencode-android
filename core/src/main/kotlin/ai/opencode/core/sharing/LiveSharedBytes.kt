@@ -29,15 +29,9 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
 /**
- * Live persistence for shared keys:
- * - AppStorage → one DataStore Preferences file (`app-storage.preferences_pb`), JSON strings.
- * - File → `<dir>/<fileName>` JSON, written atomically.
- * - Keychain → AES-256-GCM with a non-exportable Android Keystore key, in `noBackupFilesDir/keychain/`
- *   (iOS keychain items are AfterFirstUnlock; Android Keystore keys are usable after first unlock too).
- * - InMemory → a map.
- *
- * The first read of AppStorage blocks once to load the preferences snapshot (a few ms);
- * every write is asynchronous on one serial I/O thread, in order.
+ * Live persistence: AppStorage in one DataStore file, File as atomic JSON, Keychain as AES-256-GCM
+ * with an Android Keystore key in `noBackupFilesDir`. Writes are async on one serial I/O thread, in
+ * order.
  */
 internal class LiveSharedBytes private constructor(private val context: Context) : SharedBytes {
     private val io = Executors.newSingleThreadExecutor { Thread(it, "opencode-shared-io") }

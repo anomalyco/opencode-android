@@ -20,24 +20,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 
 /**
- * Port of iOS `Haptic` (`OpenCode/Core/HapticsClient.swift`): every haptic the app plays,
- * named by what it means. Same vocabulary, same rules:
- *
- * - [tap] a control acted (Send, Copy, mic press, a menu opening). Copies play `tap`.
- * - [lightTap] a light control acted: the + menu and its recent photos opening, and choosing
- *   one of their rows. As light as a pick.
- * - [selection] a choice changed (toggle, picker, pin, mute, read, a row reached by sliding).
- * - [confirm] a firm commit (start a call, confirmed delete, Stop Shell).
- * - [cancel] backing out (End, Close, cancel dictation, Stop).
- * - [threshold] a drag crossed its act point (Catch Up card, held mic's lock/cancel).
- * - [snap] the session drawer committed to opening or closing.
- * - [attention] a request docked (top screen only, not during a call).
- * - [success], [warning], [error].
- *
- * Answer the finger on the press, not the animation. Navigation (except opening the session
- * sheet from the title, which taps) and closing stay quiet; no-ops play nothing. Play only
- * through [HapticsClient] (reducers) or [HapticEffect] (composables); never touch
- * `Vibrator` or `View.performHapticFeedback` elsewhere.
+ * Port of iOS `Haptic`: every haptic the app plays, named by what it means. Answer the press, not
+ * the animation; navigation and closing stay quiet. Play only through [HapticsClient] or
+ * [HapticEffect].
  */
 enum class Haptic {
     tap, lightTap, selection, confirm, cancel, threshold, snap, attention, success, warning, error;
@@ -101,9 +86,8 @@ fun <T> HapticEffect(haptic: Haptic, trigger: T, condition: (old: T, new: T) -> 
 }
 
 /**
- * The app's only vibrator user. Plays nothing while the app isn't in the foreground
- * (requests and notices also arrive in the background) or when the system's touch
- * feedback setting is off (iOS's System Haptics switch).
+ * The app's only vibrator user. Plays nothing in the background or when the system's touch feedback
+ * setting is off.
  */
 internal class LiveHaptics(context: Context) {
     private val context = context.applicationContext
@@ -181,10 +165,8 @@ internal class LiveHaptics(context: Context) {
 }
 
 /**
- * The audio half of a haptic's trace line (iOS `AudioSessionHaptics`). iOS mutes haptics while
- * its audio session records unless the session allows them; Android never does (`allow=1`).
- * `audio=` is the `AudioManager` mode (iOS: category/mode). Dictation and calls report through
- * [isDictating] and [isCallActive] where they own the audio.
+ * The audio half of a haptic's trace line (iOS `AudioSessionHaptics`). `audio=` is the
+ * `AudioManager` mode.
  */
 object AudioSessionHaptics {
     data class AudioState(val category: String, val mode: String, val allowsHaptics: Boolean, val dictating: Boolean, val otherAudio: Boolean)
@@ -209,7 +191,9 @@ object AudioSessionHaptics {
         return AudioState(category = "-", mode = mode, allowsHaptics = true, dictating = isDictating(), otherAudio = audio?.isMusicActive == true)
     }
 
-    /** One content-free line: what was asked for, whether the app was active, and what the audio was doing. */
+    /**
+     * One content-free line: what was asked for, whether the app was active, and the audio state.
+     */
     fun traceLine(kind: String, appActive: Boolean, callActive: Boolean, audio: AudioState): String =
         "haptic_$kind app=${if (appActive) "active" else "inactive"} audio=${audio.category}/${audio.mode}" +
             " allow=${if (audio.allowsHaptics) 1 else 0} dictating=${if (audio.dictating) 1 else 0}" +

@@ -11,18 +11,8 @@ fun interface Send<in A> {
 }
 
 /**
- * Port of TCA's `Effect<Action>`: work a reducer asks for, run by the store after
- * the state transition. Effects are values; nothing runs until a store executes them.
- *
- * - [none]: nothing.
- * - [run]: a coroutine that may [Send] actions. It captures the [DependencyValues]
- *   current at creation, so it resolves the same clients as the reducer that made it.
- * - [send]: one action, delivered synchronously after the current reduce.
- * - [merge] / [concatenate]: run together / one after another.
- * - [cancellable] / [cancel]: deterministic cancellation by ID (TCA's `CancelID`).
- *
- * IDs are any value with stable equality; use a private `enum class CancelID` or a
- * `data class` keyed by session, exactly as the iOS reducer does.
+ * Port of TCA's `Effect<Action>`: work a reducer asks for, run by the store after the transition. A
+ * [run] effect captures the current [DependencyValues]; cancellation IDs need stable equality.
  */
 sealed interface Effect<out A> {
     data object None : Effect<Nothing>
@@ -58,10 +48,8 @@ sealed interface Effect<out A> {
         fun none(): Effect<Nothing> = None
 
         /**
-         * A coroutine effect. It starts on the main thread, synchronously up to its first
-         * suspension: wrap blocking work in `withContext(...)` (take dispatchers from a
-         * dependency in code tests must control). Throwing (other than cancellation) is reported through
-         * [onError] when given, else logged by the store; it never crashes the app.
+         * A coroutine effect, started on the main thread synchronously up to its first suspension.
+         * A throw is reported through [onError], else logged; it never crashes the app.
          */
         fun <A> run(
             onError: (suspend (Throwable, Send<A>) -> Unit)? = null,

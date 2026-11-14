@@ -43,7 +43,6 @@ private class MemorySettings : DiagnosticsSettings {
     }
 }
 
-/** iOS's default `build` (`DiagnosticsJournal(directory:)`); Kotlin takes it explicitly. */
 private const val BUILD = "1 (1)"
 
 class DiagnosticsJournalTests {

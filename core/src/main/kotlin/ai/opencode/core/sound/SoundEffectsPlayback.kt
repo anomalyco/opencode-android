@@ -20,11 +20,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 
 /**
- * The part of iOS's `AudioSessionOwner` Sound Effects borrows the idle session through:
- * whether no call, dictation or media holds it, read under the owner's lock so none activates
- * midway, and a stop that runs as a holder activates. The owner lives in `:feature:voice`
- * (above `:core`), so the app installs it at the root; until then the live value reads the
- * system audio mode (idle while no call or communication session runs).
+ * Whether no call, dictation or media holds the audio session (part of iOS's `AudioSessionOwner`).
+ * The app installs the owner from `:feature:voice`; until then the system audio mode is read.
  */
 interface AudioSessionIdleState {
     fun <T> withIdleState(body: (isIdle: Boolean) -> T): T
@@ -48,9 +45,8 @@ private class ModeIdleState(private val isIdle: () -> Boolean) : AudioSessionIdl
 }
 
 /**
- * What iOS's `UIApplication`/`AVAudioSession` notifications tell playback, from Android's
- * process lifecycle (resumed/paused/stopped), audio devices (route) and audio mode (a call
- * interrupts).
+ * What ends playback, from Android's process lifecycle, audio devices (route) and audio mode (a
+ * call interrupts).
  */
 sealed interface SoundEffectsEvent {
     data object BecameActive : SoundEffectsEvent
@@ -101,9 +97,8 @@ interface SoundEffectsAudio {
 }
 
 /**
- * Plays admitted sounds on the idle session and gives it back: activates only while the app is
- * active and no call, dictation or media holds the session, stops at once when one starts, the
- * app leaves, the route changes or an interruption begins, and deactivates as the sound ends.
+ * Plays admitted sounds on the idle session, stops at once when it's taken, the app leaves, the
+ * route changes or an interruption begins, and gives it back.
  */
 class SoundEffectsPlayback(
     private val owner: AudioSessionIdleState,
@@ -217,9 +212,8 @@ class SoundEffectsPlayback(
         }
 
         /**
-         * The bundled sounds on the idle session, the owner the app installed, and the
-         * process's lifecycle, devices and audio mode. iOS stays silent in simulators (they play
-         * through the Mac's speakers); an emulator plays through its own audio, so Android plays.
+         * The bundled sounds on the idle session, the installed owner, and the process's lifecycle,
+         * devices and audio mode.
          */
         fun live(): SoundEffectOutput {
             val context = dependency(AppContext)
@@ -256,10 +250,8 @@ class SoundEffectsPlayback(
 }
 
 /**
- * The bundled sounds, read into memory up front: one prepared [MediaPlayer] each (iOS's
- * `AVAudioPlayer(data:)`), as sonification. iOS's `.ambient` mixes with other audio and goes
- * quiet on the silent switch, so this takes no audio focus and won't start unless the ringer is
- * normal. Created on the playback thread, so completions come back there.
+ * The bundled sounds, one prepared [MediaPlayer] each. Takes no audio focus and won't start unless
+ * the ringer is normal. Completions come back on the playback thread.
  */
 class BundledSoundEffectsAudio(
     private val context: Context,

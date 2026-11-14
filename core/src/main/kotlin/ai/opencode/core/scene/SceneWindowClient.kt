@@ -16,17 +16,8 @@ import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 
 /**
- * Port of iOS `SceneWindow` (`Core/ActiveScene.swift`): the window a store runs in. Whether it
- * is the one in use, so attention haptics and announcements play only there and two windows
- * never buzz twice for one event, and its [sceneID], so a URL opened from it (the in-app
- * browser's Open in Browser and the links it hands to the system) opens beside that window.
- *
- * iOS tracks the iPad window last touched; Android runs one activity per task, so the window is
- * in use while one of the app's activities is resumed and has window focus (not behind another
- * app in split screen, the shade or a system dialog). Before any activity is seen nothing is
- * tracked and, as on iOS, the window counts as in front. A window's [sceneID] is its task's id
- * ([ActiveScene.sceneID]; iOS: the scene session's `persistentIdentifier`). The app-wide value
- * has none, as iOS's untracked `SceneWindow()`; each tablet window sets its own.
+ * Port of iOS `SceneWindow`: the window a store runs in. In use while one of the app's activities
+ * is resumed with window focus; in front before any activity is seen. [sceneID] is its task's id.
  */
 class SceneWindowClient(
     private val front: () -> Boolean = { true },
@@ -49,11 +40,7 @@ class SceneWindowClient(
     }
 }
 
-/**
- * The app's windows (iOS `ActiveScene`): the activities alive now and the ones resumed, so a URL
- * opens from the window that asked ([open]) and [SceneWindowClient.isFront] can tell the window
- * in use. Window focus is read when asked, so it is never stale.
- */
+/** The app's windows (iOS `ActiveScene`). Window focus is read when asked, so it is never stale. */
 object ActiveScene {
     private val lock = Any()
     private val alive = ArrayList<WeakReference<Activity>>()
@@ -113,9 +100,8 @@ object ActiveScene {
     }
 
     /**
-     * Opens [url] in whatever claims it, from the window with [sceneID] (or the one in use), so
-     * the app it opens appears beside that window; with one window, as before. Returns whether
-     * something took it.
+     * Opens [url] from the window with [sceneID] (or the one in use), so the app it opens appears
+     * beside it. Returns whether something took it.
      */
     suspend fun open(url: String, sceneID: String?): Boolean = withContext(Dispatchers.Main) {
         val origin: Context = activity(sceneID) ?: dependency(AppContext)

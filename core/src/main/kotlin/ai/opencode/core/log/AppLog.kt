@@ -12,16 +12,9 @@ import java.util.IdentityHashMap
 import kotlin.time.Duration
 
 /**
- * Port of iOS `AppLog` (`OpenCode/Core/AppLog.swift`): the app's only log. Lines go to
- * logcat under tag `OpenCode/<category>` and into an in-process ring buffer that
- * [recentLines] reads (iOS reads `OSLogStore`) for diagnostics/feedback reports.
- *
- * PRIVACY (same rule as iOS): log IDs, counts, lengths, statuses and timings only. Never
- * tokens, credentials, server addresses, pairing codes, message text, or file contents.
- * Use the `logSummary` helpers for errors and durations. Never call `android.util.Log`
- * directly anywhere else.
- *
- * Messages are lambdas, built only when the level is collected (iOS's autoclosure).
+ * Port of iOS `AppLog`: the app's only log, to logcat (`OpenCode/<category>`) and a ring buffer for
+ * reports. Log IDs, counts, lengths, statuses and timings only; never credentials, addresses or
+ * content.
  */
 class AppLog private constructor(val category: String, subsystem: String = SUBSYSTEM, private val traces: Boolean = false) {
     /** iOS `recentLines` reads only the app's own subsystem, so `opencode.perf` marks stay out of reports. */
@@ -66,7 +59,7 @@ class AppLog private constructor(val category: String, subsystem: String = SUBSY
         /** The responsiveness gauntlet's timing marks (`LabMarks`), under the `opencode.perf` subsystem. */
         val perf = AppLog("session", subsystem = "opencode.perf", traces = true)
 
-        /** Recent `AppLog` lines from this process (the app's own subsystem, not `opencode.perf`), oldest first. */
+        /** Recent lines from this process (not `opencode.perf`), oldest first. */
         fun recentLines(since: Instant): List<String> = Ring.since(since)
     }
 

@@ -11,10 +11,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 /**
- * The in-app sounds of Sound Effects (experimental, iOS OC-588, D-142 Soft Glass): Breath Ping's
- * soft sines with air, in G major like the call cues, bundled as WAVs in `res/raw` (bit-exact
- * copies of iOS's `Core/Sounds` CAFs). Each plays with its haptic, on the same reducer path; a
- * sound never carries meaning on its own.
+ * The in-app sounds of Sound Effects (experimental), bundled as WAVs in `res/raw`. Each plays with
+ * its haptic; a sound never carries meaning on its own.
  */
 enum class SoundEffect(val rawValue: String) {
     /** A reply finished in another session (an In-App Notice). B4 + G5. */
@@ -44,10 +42,8 @@ enum class SoundEffect(val rawValue: String) {
 }
 
 /**
- * Plays the vocabulary from reducers, beside `haptics.play`. Reducers decide the event (Sound
- * Effects on, no call); the live client adds the volume and one sound per burst, and playback
- * what only the moment of playing knows: the app active, no call, dictation or media holding the
- * audio session.
+ * Plays the vocabulary from reducers, beside `haptics.play`. The live client adds volume and one
+ * sound per burst.
  */
 class SoundEffectsClient(
     val play: (SoundEffect) -> Unit = {},
@@ -103,9 +99,8 @@ interface SoundEffectOutput {
 }
 
 /**
- * The gate in front of the players: the volume and the throttle. Whether the app is active and
- * the session free is checked once, as the sound starts ([SoundEffectsPlayback]). iOS's
- * silent switch and mixing are `.ambient`'s; Android's ringer mode is checked by the players.
+ * The gate in front of the players: the volume and the throttle. Android's ringer mode is checked
+ * by the players.
  */
 class LiveSoundEffects(
     private val now: () -> Duration = { dependency(Clock).now() },

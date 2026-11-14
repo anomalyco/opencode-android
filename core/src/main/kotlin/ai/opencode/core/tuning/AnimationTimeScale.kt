@@ -6,16 +6,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Port of iOS `AnimationTimeScale` (`OpenCode/Tuning/AnimationTimeScale.swift`): slow motion
- * (`1×`, `0.5×`, `0.25×`, `0.1×`) from one continuous virtual clock.
- *
- * iOS slows every window's `CALayer.speed`. Android has no app-wide equivalent, so the scale is
- * applied where motion is defined: every `Motion.*` spring and fade and every [MotionSpring.spec]
- * (spring ω × scale, tween durations ÷ scale), and `motionFrameLoop` (dt × scale). Animations
- * written with those primitives slow down; a raw `tween(300)` does not.
- *
- * Gated by [TuningAccess.isAvailable] (debug builds, and other builds while Developer Mode is
- * on). At `1×` every read is one volatile load.
+ * Port of iOS `AnimationTimeScale`: slow motion from one virtual clock. Applied where motion is
+ * defined (`Motion.*`, [MotionSpring.spec], `motionFrameLoop`), so a raw `tween(300)` doesn't slow.
  */
 class AnimationTimeScale {
     private val lock = Any()
@@ -56,7 +48,9 @@ class AnimationTimeScale {
     /** A duration in virtual seconds as real seconds at the current scale (for `delay`). */
     fun wallSeconds(virtual: Double): Double = if (virtual <= 0) 0.0 else virtual / max(0.05, scale)
 
-    /** Sets the scale, re-anchoring the virtual clock so nothing jumps. Returns what was applied. */
+    /**
+     * Sets the scale, re-anchoring the virtual clock so nothing jumps. Returns what was applied.
+     */
     fun setScale(requested: Double, realSeconds: Double = System.nanoTime() / 1e9, bypassAccessCheck: Boolean = false): Double {
         val clamped = normalizeScale(requested)
         if (!bypassAccessCheck && !TuningAccess.isAvailable && clamped != 1.0) return 1.0

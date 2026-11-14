@@ -1,24 +1,11 @@
 package ai.opencode.core.store
 
-/**
- * What a reducer returns: the next state and the effect to run (TCA's
- * `reduce(into: &state, action:) -> Effect`, with `inout` replaced by an immutable copy).
- *
- * Porting `state.title = t; return .none` is `return Reduced(state.copy(title = t))`.
- * For many sequential mutations use a local `var next = state` and reassign.
- */
+/** What a reducer returns: the next state and the effect to run. */
 data class Reduced<out S, out A>(val state: S, val effect: Effect<A> = Effect.none())
 
 /**
- * Port of TCA's `Reducer`. A reducer is a pure function of (state, action); everything
- * else (I/O, timers, persistence) is an [Effect]. Dependencies are read with
- * `dependency(Key)` / `by Dependency(Key)`, which resolve the store's values.
- *
- * Rules carried over from iOS (`docs/architecture.md` §1):
- * - Never call `reduce` of the same reducer recursively from inside `reduce`; extract a
- *   private helper that returns a [Reduced] instead.
- * - No protocol decoding in reducers; `:server` decodes.
- * - Mutate shared keys only in reducers, only when the value changes ([ai.opencode.core.sharing.Shared.set]).
+ * Port of TCA's `Reducer`: a pure function of (state, action). Never call `reduce` recursively;
+ * extract a private helper returning [Reduced].
  */
 fun interface Reducer<S, A> {
     fun reduce(state: S, action: A): Reduced<S, A>
@@ -36,11 +23,7 @@ fun <S, A> combine(vararg reducers: Reducer<S, A>): Reducer<S, A> = Reducer { st
     Reduced(current, Effect.merge(effects))
 }
 
-/**
- * Port of TCA's `Scope(state:action:)`: runs [child] on a slice of the parent state when the
- * parent action carries a child action. Put it before the parent's own reducer in [combine],
- * as TCA's body ordering does.
- */
+/** Port of TCA's `Scope(state:action:)`. Put it before the parent's own reducer in [combine]. */
 fun <S, A, CS, CA> scope(
     state: (S) -> CS,
     setState: (S, CS) -> S,
@@ -54,17 +37,9 @@ fun <S, A, CS, CA> scope(
 }
 
 /**
- * Port of TCA's `.ifLet(\.$child, action: \.child)` for presented (`@Presents`) child state.
- *
- * - Child actions while the child is absent are ignored.
- * - The parent reduces [PresentationAction.Dismiss] with the child still present; the child is
- *   cleared afterwards unless the parent replaced it (TCA order).
- * - When the child goes away or is replaced by a child with a different [childID] (e.g. another
- *   session), every effect the old child started is cancelled, so presented work lives and dies
- *   with its presentation. Effects that must outlive dismissal belong in the parent.
- *
- * [id] distinguishes this presentation slot from others in the same store; pass a stable
- * private object. [childID] is the child's identity (TCA's `Identifiable` id); default: its class.
+ * Port of TCA's `.ifLet(\.$child, action: \.child)`. The parent reduces
+ * [PresentationAction.Dismiss] first; when the child goes or its [childID] changes, its effects are
+ * cancelled. [id] must be stable.
  */
 fun <S, A, CS : Any, CA> ifLet(
     id: Any,
@@ -103,11 +78,8 @@ fun <S, A, CS : Any, CA> ifLet(
 }
 
 /**
- * Port of TCA's plain-optional `.ifLet(\.child, action: \.child)` (no `@Presents`): runs [child]
- * while its state exists, with the same navigation isolation and lifetime as a presentation.
- * A UI dismissal that keeps the child state (e.g. `SessionFeature.sessionSheet`) keeps its work.
- * [slot] identifies the slot, defaulting to this combinator instance; pass a stable value when
- * rebuilding a reducer. [childID] distinguishes replacements within the slot.
+ * Port of TCA's plain-optional `.ifLet(\.child, action: \.child)`: runs [child] while its state
+ * exists. Pass a stable [slot] when rebuilding a reducer.
  */
 fun <S, A, CS : Any, CA> ifLet(
     parent: Reducer<S, A>,
@@ -181,11 +153,7 @@ fun <S, A, ID : Any, CS, CA> forEach(
 
 private data class ForEachCancelID(val slot: Any, val id: Any)
 
-/**
- * Port of TCA's `.onChange(of:)`: after [this] reducer runs, when [select] differs between the
- * old and new state, runs [onChange] with the old and new values. Key it on a small value
- * with cheap equality (iOS keys `.onChange` on small `Equatable` structs).
- */
+/** Port of TCA's `.onChange(of:)`. Key it on a small value with cheap equality. */
 fun <S, A, V> Reducer<S, A>.onChange(
     select: (S) -> V,
     onChange: (old: V, new: V, state: S) -> Reduced<S, A>,

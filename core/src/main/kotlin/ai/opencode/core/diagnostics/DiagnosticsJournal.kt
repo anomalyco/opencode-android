@@ -16,19 +16,9 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 
 /**
- * Port of iOS `DiagnosticsJournal` (`OpenCode/Diagnostics/DiagnosticsJournal.swift`): the
- * diagnostics timeline on disk, an append-only JSON-lines file per run that rotates into one older
- * segment, so a run keeps at most two segments. Events are written in batches, at most
- * [WRITE_INTERVAL_MS] apart, and at once when the app backgrounds or something reads the segments,
- * so the tail survives a crash or a kill to within that window. At launch the previous run's
- * segments are set aside on the journal's queue, and a marker written on activation and cleared on
- * backgrounding tells whether that run ended while it was in the foreground.
- *
- * Android: the marker follows `ProcessLifecycleOwner` (ON_RESUME ↔ iOS didBecomeActive, ON_STOP ↔
- * didEnterBackground); Android has no reliable willTerminate, and a process killed in the
- * background never holds the marker, so only a foreground crash, ANR kill or debugger stop leaves
- * it. Files live in `noBackupFilesDir/Diagnostics` (never backed up), as iOS keeps them out of
- * iCloud backups in Application Support.
+ * Port of iOS `DiagnosticsJournal`: the timeline on disk, a JSON-lines file per run plus one older
+ * segment, written in batches at most [WRITE_INTERVAL_MS] apart. A foreground marker
+ * (ON_RESUME/ON_STOP) tells whether the last run ended in the foreground.
  */
 class DiagnosticsJournal(
     val directory: File,
@@ -68,13 +58,7 @@ class DiagnosticsJournal(
         queue.execute(block)
     }
 
-    /**
-     * Sets the previous run aside and starts this one. Call once, before appending.
-     *
-     * The marker is a few bytes, read here because launch asks whether the last run ended
-     * unexpectedly; the directory and the last run's files are set aside on the queue, ahead of
-     * every append this run makes.
-     */
+    /** Sets the previous run aside and starts this one. Call once, before appending. */
     fun open(recording: Boolean): PreviousRun {
         val markedBuild = runCatching { marker.readText() }.getOrNull()
         val hadEvents = older.exists() || current.exists()

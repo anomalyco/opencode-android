@@ -5,11 +5,8 @@ import androidx.compose.runtime.DisposableEffect
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
- * Port of iOS `CredentialSurface` (`Diagnostics/Traces/TraceTriggers.swift`): counts what's on
- * screen that screenshots must skip. `sheets` show credentials (the server and pairing sheets, the
- * pairing camera) and skip every screenshot; `screens` (Settings, What's New) show server
- * addresses and account details and skip only problem reports, which leave the phone (9436b567).
- * In `:core` so Settings and the app can mark themselves without depending on the developer tools.
+ * Port of iOS `CredentialSurface`: what's on screen that screenshots must skip. `sheets` skip every
+ * screenshot; `screens` skip only problem reports.
  */
 object CredentialSurface {
     data class Marks(val sheets: Int = 0, val screens: Int = 0)
@@ -39,9 +36,8 @@ object CredentialSurface {
 }
 
 /**
- * iOS `ScreenshotPolicy`: who a screenshot is for. Problem reports leave the phone, so they skip
- * every marked surface; the Developer Mode voice tool sends to the person's own session, so it
- * skips only the credential sheets.
+ * iOS `ScreenshotPolicy`: problem reports leave the phone, so they skip every marked surface; the
+ * voice tool skips only credential sheets.
  */
 enum class ScreenshotPolicy {
     problemReport,

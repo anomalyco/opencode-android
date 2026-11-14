@@ -1,10 +1,8 @@
 package ai.opencode.core.log
 
 /**
- * Port of iOS `CallTrigger` (`OpenCode/Voice/CallTrigger.swift`): what asked for a call. Each
- * start logs one `Call trigger: …` line in the voice category, so a call nobody meant to start
- * names its source. Lives in `:core` (not `:feature:voice`) because [SystemActionOrigin] is
- * shared with `:feature:system`'s `SystemAction`.
+ * Port of iOS `CallTrigger`: what asked for a call, logged once per start. In `:core` because
+ * [SystemActionOrigin] is shared with `:feature:system`.
  */
 sealed interface CallTrigger {
     /** The composer's call button. */
@@ -61,10 +59,7 @@ sealed interface CallTrigger {
     }
 }
 
-/**
- * iOS `SystemAction.Origin`: which surface made a `SystemAction`, for the call trigger log line.
- * In `:core` so `:feature:system` (which sets it) and [CallTrigger] (which names it) share it.
- */
+/** iOS `SystemAction.Origin`: which surface made a `SystemAction`. */
 enum class SystemActionOrigin {
     /** Start Voice Call: the app shortcut, Assistant, or a home-screen shortcut pinned from it. */
     shortcut,

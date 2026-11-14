@@ -4,15 +4,9 @@ import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.log.AppLog
 
 /**
- * Port of iOS `OpenCode/Settings/Experimental/AllExperiments.swift`. All Experiments (p217): one
- * switch that turns every experiment on, new ones included, except those that ask for a
- * permission or share data ([ExperimentalFeature.joinsAll]). It writes each experiment's own
- * switch, so everything that reads `shared(experimental(…))` sees it without change.
- *
- * Switching it on saves each switch ([allExperimentsSaved]) and turns on all but the ones skipped;
- * switching one off while it's on records a skip ([allExperimentsSkips]), kept for next time.
- * Switching it off puts back what was saved. An experiment that arrives while it's on has nothing
- * saved yet: launch saves it and turns it on ([adoptNewExperimentsIntoAll]).
+ * Port of iOS `AllExperiments.swift`: one switch that turns every experiment on except
+ * [ExperimentalFeature.joinsAll] opt-outs, writing each experiment's own switch. Switching it off
+ * restores what was saved.
  */
 object AllExperiments {
     /** Settings › Experimental › All Experiments (iOS `.allExperiments`). */
@@ -22,10 +16,7 @@ object AllExperiments {
     data class Change(val feature: ExperimentalFeature, val on: Boolean)
 }
 
-/**
- * Switched off by hand while All Experiments was on: it stays off when All Experiments switches
- * everything on (iOS `.allExperimentsSkips(feature)`).
- */
+/** Switched off by hand while All Experiments was on (iOS `.allExperimentsSkips(feature)`). */
 fun allExperimentsSkips(feature: ExperimentalFeature): SharedKey<Boolean> =
     SharedKey.appStorage("experimental-all-skip-${feature.rawValue}", false)
 

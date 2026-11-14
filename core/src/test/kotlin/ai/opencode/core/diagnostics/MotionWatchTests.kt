@@ -315,10 +315,9 @@ class MotionAuditDetectorTests {
     }
 
     /**
-     * The keyboard's first frame carries the composer, and the rows riding it, past the 60 pt keyboard
-     * limit (67.9 pt in iOS testKeyboardShowsAndHides, then 41.8, 40.8 … as it glides). Riding the
-     * composer and gliding on isn't a jump; the same step without the composer, or one both stop dead
-     * after, still is (p142).
+     * The keyboard's first frame carries the composer and the rows riding it past the 60 pt
+     * keyboard limit. Riding the composer isn't a jump; the same step without it, or one both stop
+     * dead after, still is.
      */
     @Test
     fun rowsRidingTheKeyboardsFirstFrameAreNotAJump() {

@@ -7,25 +7,12 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.properties.ReadOnlyProperty
 
 /**
- * Port of swift-dependencies' `DependencyKey`: a client's identity plus its live and test
- * implementations. Declare one as the companion of the client type:
- *
- * ```kotlin
- * class HapticsClient(val play: (Haptic) -> Unit) {
- *     companion object Key : DependencyKey<HapticsClient> {
- *         override val liveValue by lazy { HapticsClient(play = LiveHaptics::play) }
- *         override val testValue = HapticsClient(play = {})
- *     }
- * }
- * ```
- *
- * `liveValue` is read once per process and cached (as TCA caches it), so a single
- * process-wide instance stays private behind its key. `testValue` must be inert or
- * isolated; it is what [DependencyValues.testing] resolves when nothing overrides it.
+ * Port of swift-dependencies' `DependencyKey`: a client's live and test implementations.
+ * `liveValue` is read once per process and cached; `testValue` must be inert.
  */
 interface DependencyKey<T> {
     val liveValue: T
-    /** Consulted only in test containers. Without an override, tests fail loudly instead of running live I/O. */
+    /** Consulted only in test containers. */
     val testValue: T
         get() = throw AssertionError(
             "${javaClass.enclosingClass?.simpleName ?: javaClass.simpleName} has no testValue; override it in the test",
@@ -33,15 +20,8 @@ interface DependencyKey<T> {
 }
 
 /**
- * Port of `DependencyValues`: an immutable map of overridden clients layered over the
- * key defaults. Reducers and effects read clients with [dependency]; tests and previews
- * override them with [withDependencies] or `TestStore(dependencies = { ... })`.
- *
- * Resolution order: the innermost override (thread/coroutine-local), then the key's
- * `testValue` when [isTesting] (created once per test container), else its cached `liveValue`.
- *
- * There are no business singletons: a service is a [DependencyKey] client, never a
- * top-level `object` reached directly from a reducer, effect or composable.
+ * Port of `DependencyValues`. Resolution order: the innermost override (coroutine-local), then the
+ * key's `testValue` when [isTesting], else its cached `liveValue`.
  */
 class DependencyValues private constructor(
     private val overrides: Map<DependencyKey<*>, Any?>,
@@ -86,9 +66,8 @@ class DependencyValues private constructor(
         }
 
         /**
-         * swift-dependencies' `isTesting`: true in JVM unit tests (JUnit on the classpath and
-         * not running on ART), so code outside a `TestStore` resolves `testValue`s too and a
-         * test never reaches live storage or the network by accident.
+         * swift-dependencies' `isTesting`: true in JVM unit tests (JUnit on the classpath and not
+         * on ART).
          */
         val isProcessTesting: Boolean =
             System.getProperty("java.vm.name") != "Dalvik" &&
@@ -100,9 +79,8 @@ class DependencyValues private constructor(
             private set
 
         /**
-         * Forgets the root's resolved `testValue`s and installed overrides (iOS test isolation's
-         * `cachedValues.resetCache()` after each test), so no test sees another's clients.
-         * Only under unit tests.
+         * Forgets the root's resolved `testValue`s and installed overrides, so no test sees
+         * another's clients. Only under unit tests.
          */
         fun resetTestCache() {
             check(isProcessTesting) { "resetTestCache() is for unit tests" }
@@ -157,10 +135,8 @@ class DependencyValues private constructor(
 fun <T> dependency(key: DependencyKey<T>): T = DependencyValues.current[key]
 
 /**
- * Property-delegate form of `@Dependency`, resolved on every read so a reducer object
- * always sees the store's (or test's) values:
- * `private val haptics by Dependency(HapticsClient)`.
- * Hot loops resolve once into a local `val` instead (iOS architecture §2).
+ * Property-delegate form of `@Dependency`, resolved on every read. Hot loops resolve once into a
+ * local `val` instead.
  */
 @Suppress("FunctionName")
 fun <T> Dependency(key: DependencyKey<T>): ReadOnlyProperty<Any?, T> =

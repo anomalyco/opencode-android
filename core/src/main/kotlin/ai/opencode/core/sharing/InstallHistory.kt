@@ -4,10 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Port of iOS `InstallHistory` (`OpenCode/App/AppFeature+Migrations.swift`, b13208e9): what this
- * install has been through, recorded on its first launch of a build that knows and kept when
- * servers are removed. In `:core` rather than `:app` because `OpenCodeServer.remember` (`:server`)
- * marks it [paired], and Settings' Welcome reads it.
+ * Port of iOS `InstallHistory`: what this install has been through, kept when servers are removed.
+ * In `:core` because `:server` marks it [paired].
  */
 @Serializable
 enum class InstallHistory(val rawValue: String) {

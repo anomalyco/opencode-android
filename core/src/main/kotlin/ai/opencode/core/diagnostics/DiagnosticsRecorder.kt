@@ -59,9 +59,8 @@ sealed interface DiagnosticsErrorCategory {
         }
 
         /**
-         * iOS `init(_ error:)`: cancellation, timeouts and lost networks by type, else
-         * transport. A socket error reads its errno from the message, as iOS reads
-         * `NSPOSIXErrorDomain` codes (ETIMEDOUT → timeout; a lost connection → offline).
+         * iOS `init(_ error:)`: cancellation, timeouts and lost networks by type, else transport. A
+         * socket error's errno is read from its message.
          */
         fun of(error: Throwable): DiagnosticsErrorCategory = when (error) {
             is kotlinx.coroutines.CancellationException -> Cancelled
@@ -81,7 +80,7 @@ sealed interface DiagnosticsErrorCategory {
             else -> if (error.message.equals("Canceled", ignoreCase = true)) Cancelled else Transport
         }
 
-        /** Persisted iOS diagnostics keep their original NSError domains/codes (moved down from `:feature:voice`). */
+        /** Persisted iOS diagnostics keep their original NSError domains and codes. */
         fun of(domain: String, code: Int): DiagnosticsErrorCategory = when (domain) {
             "NSURLErrorDomain" -> when (code) {
                 -1001 -> Timeout
@@ -163,9 +162,8 @@ data class DiagnosticsNetworkAddress(val family: DiagnosticsAddressFamily, val s
 }
 
 /**
- * iOS `DiagnosticsNetworkPhases`: timestamp evidence only; a missing phase stays unknown. TLS
- * is nested in connect, so an unfinished handshake takes precedence over unfinished TCP.
- * Timestamps are any monotonic reading (OkHttp `EventListener` callbacks use `System.nanoTime`).
+ * iOS `DiagnosticsNetworkPhases`: a missing phase stays unknown; an unfinished TLS handshake wins
+ * over unfinished TCP. Monotonic timestamps.
  */
 data class DiagnosticsNetworkPhases(
     var dnsStart: Long? = null, var dnsEnd: Long? = null,
@@ -295,14 +293,9 @@ interface DiagnosticsSettings {
 }
 
 /**
- * Port of iOS `DiagnosticsRecorder` (`OpenCode/Diagnostics/Diagnostics.swift`): a bounded
- * timeline suitable for shipping builds. Opt-in on Play builds; on by default in debug and
- * internal builds (5,000 events, 15 minutes). Events contain timing and routing metadata only;
- * headers and bodies have no place in this model, paths are redacted ([redactedPath]). The one
- * exception is a voice turn's excerpt, kept only while Include Transcripts is on.
- *
- * `:server` records requests and the event stream here; `LabMarks.mark` records marks; the
- * developer tools (`:devtools`) show and export it.
+ * Port of iOS `DiagnosticsRecorder`: a bounded timeline (5,000 events, 15 minutes) of timing and
+ * routing metadata only; paths are redacted. A voice excerpt is kept only while Include Transcripts
+ * is on.
  */
 class DiagnosticsRecorder(
     enabled: Boolean? = null,
@@ -570,8 +563,7 @@ class DiagnosticsRecorder(
 
     private fun prune(now: Double) {
         val oldest = now - retentionSeconds
-        // A sweep walks every unfinished start, so it runs periodically rather than on every
-        // recorded event; unswept starts are only ever read by an end.
+        // Sweeps run periodically, not per event: one walks every unfinished start.
         state.eventsSinceRequestPrune += 1
         if (state.eventsSinceRequestPrune >= REQUEST_PRUNE_EVERY_EVENTS || now - state.requestPrunedAt >= REQUEST_PRUNE_EVERY_SECONDS) {
             state.eventsSinceRequestPrune = 0

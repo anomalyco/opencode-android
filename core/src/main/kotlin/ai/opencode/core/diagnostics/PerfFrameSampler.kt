@@ -12,10 +12,7 @@ import kotlin.math.roundToInt
 
 /**
  * Port of iOS `PerfFrameClock`: how late each frame callback came for the frame it was due to
- * prepare, at whatever rate the display ran (iOS docs/performance.md, "Smoothness"). Each
- * callback names the frame it prepares (`target`); the next callback normally comes for exactly
- * that frame (`timestamp`), so a rate change (60 to 120 Hz and back) or a slow steady cadence
- * costs nothing, and only time past that deadline counts. Times in seconds.
+ * prepare, so a refresh-rate change costs nothing. Seconds.
  */
 class PerfFrameClock {
     data class Frame(
@@ -90,19 +87,9 @@ class PerfFrameWindow {
 }
 
 /**
- * Port of iOS `PerfFrameSampler`: samples every display frame while a lab run measures smoothness
- * (the `perf-frames` launch extra, iOS `OPENCODE_PERF_FRAMES=1`, with lab marks on) and posts a
- * `frames_window` mark every half second and a `frame_stall` mark for each stall. A callback past
- * its deadline means the main thread was busy, so these are main-thread hitches; frames the
- * render thread or SurfaceFlinger drop don't show. This is the only `frames_window` poster (the
- * perf HUD only draws and logs).
- *
- * Android mapping: `CADisplayLink.timestamp` → `Choreographer.FrameCallback`'s `frameTimeNanos`
- * (the vsync this frame is for; Choreographer snaps it to the latest vsync when it runs a frame
- * or more late, so skipped vsyncs still show as lateness). Choreographer has no
- * `targetTimestamp`, so the frame it prepares is `frameTimeNanos` + the display's current refresh
- * period (`1 / Display.getRefreshRate()`, re-read every frame so 60↔120 Hz switches count as
- * nothing, as on iOS).
+ * Port of iOS `PerfFrameSampler`: during a `perf-frames` lab run, posts `frames_window` every half
+ * second and `frame_stall` per stall. The prepared frame is `frameTimeNanos` + the current refresh
+ * period, re-read every frame.
  */
 object PerfFrameSampler {
     /** The `perf-frames` launch extra; set by `DevTools.handleLaunchIntent`. */
@@ -172,18 +159,8 @@ private object PerfFrameLink : Choreographer.FrameCallback {
 }
 
 /**
- * Port of iOS `PerfFrameLatency`: main-thread latency to the next frame, for the smoothness suite
- * (frames pass only, `perf-frames`): from a moment the app names to the display frame due to show
- * its result (the first frame callback's target after it: its `frameTimeNanos` + one refresh
- * period, see [PerfFrameSampler]), posted as a `perf_<name>` mark with `ms` and any counts.
- * Main-thread work for it delays that callback, so it counts. One measurement at a time, and each
- * name at most every 250 ms: a moment while one is pending or within 250 ms of the last of its
- * name isn't measured.
- *
- * - `keystroke`: the composer accepting a keystroke. Input delivery before the text field sees
- *   the key isn't in it.
- * - `delta_batch`: the session reducer taking a batch of streamed content events (`events`
- *   counts them), through projection, transcript apply and layout, to the frame showing them.
+ * Port of iOS `PerfFrameLatency`: main-thread latency from a named moment to the frame showing its
+ * result, posted as a `perf_<name>` mark. One at a time, each name at most every 250 ms.
  */
 object PerfFrameLatency {
     val isEnabled: Boolean get() = PerfFrameSampler.isEnabled

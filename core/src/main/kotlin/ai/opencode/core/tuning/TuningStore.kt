@@ -47,14 +47,8 @@ interface TuningPersistence {
 }
 
 /**
- * Port of iOS `TuningStore`: the one place tuned values live. Tunables register themselves the
- * first time they're read while tuning is on, so the panel lists exactly what this build uses.
- * Overrides persist across launches (keys `tuning-overrides`, `tuning-hidden-groups`, as iOS).
- * Readable from any thread; a composable that reads a value recomposes when values change
- * ([revision] is Compose snapshot state, iOS's Observation registrar).
- *
- * Reducers read through the dependency: `dependency(TuningStore).value(SomeTunables.thing)`.
- * Tests get a fresh in-memory store at defaults.
+ * Port of iOS `TuningStore`: the one place tuned values live. Overrides persist across launches.
+ * Readable from any thread; [revision] is snapshot state, so reading composables recompose.
  */
 class TuningStore(
     private val persistence: TuningPersistence?,
@@ -185,7 +179,6 @@ class TuningStore(
     /** Overrides only: keys at their default are absent. */
     val overrides: Map<String, TuneValue> get() = synchronized(lock) { state.overrides.toMap() }
 
-    /** The overrides, observed like [value]. */
     val observedOverrides: Map<String, TuneValue>
         get() {
             revisionState.intValue
@@ -472,7 +465,10 @@ class TuningStore(
         return sanitized
     }
 
-    /** Registration happens during composition; tell the panel afterwards (a write mid-composition would be a backwards write). */
+    /**
+     * Registration happens during composition; tell the panel afterwards to avoid a backwards
+     * write.
+     */
     private fun notifyCatalogLocked() {
         if (state.catalogNotificationPending) return
         state.catalogNotificationPending = true
