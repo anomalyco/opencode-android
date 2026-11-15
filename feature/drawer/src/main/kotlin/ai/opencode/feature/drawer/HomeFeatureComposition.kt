@@ -112,6 +112,9 @@ private fun HomeFeature.fullBody(): Reducer<State, Action> =
         .onChange({ it.transcriptCoverIsStale }) { _, _, state ->
             Reduced(if (state.transcriptCoverIsStale) state.syncingTranscriptCover() else state)
         }
+        .onChange({ it.pollingPauseIsStale }) { _, _, state ->
+            if (state.pollingPauseIsStale) state.syncingPollingPause() else Reduced(state)
+        }
         // The stream sheds other sessions' deltas under load, never these. Watched over all of
         // Home, so Catch Up reconciling to another card counts too (cd04514c).
         .onChange({ it.streamFocusSessionIDs }) { _, new, state ->

@@ -480,8 +480,7 @@ class SessionFeatureTestsRendering {
             )
         }
 
-        // Unchanged family session IDs: updates active state without restarting the 12 s poll.
-        store.send(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet()) }
+        store.send(familyRead(listOf(root, child), setOf(child.id))) { it.copy(familyReadAt = now) }
         // Failed family read while poll is already running: also keeps the running poll untouched.
         store.send(Action.FamilyResponse(Result.failure(OpenCodeClientError(message = "offline"))))
         assertTrue(polledFamilies.value.isEmpty())
@@ -699,7 +698,7 @@ class SessionFeatureTestsRendering {
             it.copy(isVisible = true, resync = State.ResyncState(refreshID = 1), restoredShellIDs = setOf(staleShell.id))
         }
         store.receive(familyRead(listOf(root, child))) {
-            it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet(), pendingWorkPollSeconds = 12)
+            it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet(), pendingWorkPollSeconds = 60)
         }
         store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
             it.copy(shells = emptyList(), restoredShellIDs = emptySet())
@@ -715,7 +714,7 @@ class SessionFeatureTestsRendering {
 
         assertTrue(store.state.activeSubagents.isEmpty())
         assertTrue(store.state.backgroundShells.isEmpty())
-        assertEquals(12, store.state.pendingWorkPollSeconds)
+        assertEquals(60, store.state.pendingWorkPollSeconds)
         assertEquals(1, familyCalls.value)
         assertEquals(1, shellCalls.value)
         assertEquals(1, pendingRequestCalls.value)

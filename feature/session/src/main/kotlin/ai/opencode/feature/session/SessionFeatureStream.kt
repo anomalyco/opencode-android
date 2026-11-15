@@ -226,6 +226,8 @@ internal fun SessionFeature.reduceStream(
     is Action.RefreshRequested -> refreshRequested(state, action.reason)
     is Action.RefreshResponse -> refreshResponse(state, action)
     is Action.SceneActiveChanged -> sceneActiveChanged(state, action.isActive)
+    is Action.ActiveSessionsRead -> Reduced(state.copy(activeFamilySessionIDs = action.sessionIDs))
+    is Action.PollingPauseChanged -> pollingPauseChanged(state, action.paused)
     is Action.VisibilityChanged -> visibilityChanged(state, action.isVisible)
     is Action.ResyncDelayElapsed -> resyncDelayElapsed(state, action.refreshID)
     is Action.ResyncMinimumElapsed -> {
@@ -255,6 +257,25 @@ internal fun SessionFeature.reduceStream(
     else -> null
 }
 
+private fun SessionFeature.pollingPauseChanged(
+    state: SessionFeature.State,
+    paused: Boolean,
+): Reduced<SessionFeature.State, Action> {
+    var s = state.copy(isPollingPaused = paused)
+    if (paused) s = s.copy(pausedWatchdogDeadline = s.watchdogSchedule?.deadline)
+    if (!s.pollsServer) return quietServerPolling(s)
+    val deadline = s.pausedWatchdogDeadline
+    s = s.copy(pausedWatchdogDeadline = null)
+    val clock = watchdogClock
+    val due = deadline != null && (clock == null || clock.now() >= deadline)
+    val reads = due && s.hasRenderedFirstContentFrame && s.session != null
+    val resumed = resumeServerPolling(s)
+    return Reduced(
+        resumed.state,
+        Effect.merge(resumed.effect, if (reads) Effect.send(Action.RefreshRequested(RefreshReason.Watchdog)) else Effect.none()),
+    )
+}
+
 private fun SessionFeature.eventStreamConnected(
     state: SessionFeature.State,
     action: Action.EventStreamConnected,
@@ -264,7 +285,7 @@ private fun SessionFeature.eventStreamConnected(
     if (support != null && support != ServerVoiceSupport.unknown) {
         s = s.copy(voice = s.voice?.copy(serverVoiceSupport = ServerVoiceSupport.unknown))
     }
-    val retune = retunePendingWork(s)
+    val retune = pendingWorkAfterStreamConnected(s)
     // A new socket epoch invalidates delta accumulators, not rendered parts: unfinished
     // text/tools are still absent from REST. Keep their row protection until reconciliation can
     // echo them or the run ends. Shell events are ephemeral: an exit may have been missed. The

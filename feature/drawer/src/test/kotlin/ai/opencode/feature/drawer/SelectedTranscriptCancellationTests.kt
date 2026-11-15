@@ -454,9 +454,10 @@ class SelectedTranscriptCancellationTests {
         assertTrue(eventually { startedTranscripts.count { it == "other" } == 4 })
         store.send(Action.detail(SessionFeature.Action.Delegate(SessionFeature.Delegate.OpenSubagent(childSession)))) {
             store.withDependencies {
-                it.copy(refreshingTranscripts = emptySet(), dirtyCachedTranscriptIDs = listOf("other")).pushingSubagent(childSession).syncingTranscriptCover()
+                it.copy(refreshingTranscripts = emptySet(), dirtyCachedTranscriptIDs = listOf("other")).pushingSubagent(childSession).syncingTranscriptCover().syncingPollingPause().state
             }
         }
+        store.receive(Action.detail(SessionFeature.Action.PollingPauseChanged(true)))
         assertTrue(eventually { cancelledTranscripts.count { it == "other" } == 4 })
         store.skipInFlightEffects()
     }
@@ -886,8 +887,11 @@ class SelectedTranscriptCancellationTests {
                         (it.sessionKey("home") to home.updatedAt) +
                         (it.sessionKey("cached") to cached.updatedAt),
                     initializedInboxServerIDs = setOf(server.persistenceID),
-                ).updatingDetail { d -> d.copy(activeFamilySessionIDs = setOf("ses_subagent")) }.persistingSnapshot(Instant.EPOCH)
+                ).persistingSnapshot(Instant.EPOCH)
             }
+        }
+        store.receive(Action.detail(SessionFeature.Action.ActiveSessionsRead(setOf("ses_subagent")))) {
+            it.updatingDetail { d -> d.copy(activeFamilySessionIDs = setOf("ses_subagent")) }
         }
         store.receive(Action.detail(SessionFeature.Action.SessionSnapshotUpdated(home)))
         store.receive(Action.AttentionRefreshed(emptySet())) { it.copy(noticeReadiness = HomeFeature.State.NoticeReadiness.settled) }

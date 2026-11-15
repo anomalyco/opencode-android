@@ -1,7 +1,9 @@
 package ai.opencode.feature.drawer
 
 import ai.opencode.core.dependencies.Clock
+import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.ImmediateClock
+import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.core.haptics.Haptic
 import ai.opencode.core.haptics.HapticsClient
@@ -21,6 +23,7 @@ import ai.opencode.feature.drawer.HomeFeatureTestSupport.session
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.snapshot
 import ai.opencode.feature.session.RefreshReason
 import ai.opencode.feature.session.SessionFeature
+import ai.opencode.feature.session.SessionTimers
 import ai.opencode.feature.session.isDraft
 import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.settings.SettingsFeature
@@ -29,6 +32,7 @@ import ai.opencode.feature.system.notifications.NotificationPermissionClient
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.voice.CallVoice
 import ai.opencode.feature.voice.VoiceEngine
+import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
@@ -36,6 +40,8 @@ import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.ServerSharedKeys
 import ai.opencode.server.model.OpenCodeNotifyPluginStatus
+import ai.opencode.server.model.OpenCodeDelivery
+import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
 import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.model.OpenCodeTranscriptItem
@@ -49,7 +55,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.core.testing.eventually
 import java.time.Instant
+import java.util.UUID
 
 /**
  * Notifications and Settings, busy state and priority, the transcript caches, snapshots, prefetch
@@ -129,6 +137,141 @@ class HomeFeatureTests {
         assertTrue(store.state.isSettingsShown)
         store.send(Action.SettingsShownChanged(false)) { it.copy(settings = null).syncingTranscriptCover() }
         assertFalse(store.state.isSettingsShown)
+    }
+
+    @Test
+    fun homePausesTheTimersOfCoveredScreens() = homeTest { h ->
+        val root = session(id = "ses_root", title = "Root")
+        val child = session(id = "ses_child", title = "Child", parentID = root.id)
+        var home = h.state {
+            val base = HomeFeature.State(savedServer, snapshot(listOf(root)))
+            val (opened, detail) = base.makeDetail(root, cachedItems = emptyList(), reason = "test")
+            opened.copy(sessionDetail = detail)
+        }
+        assertFalse(home.pollingPauseIsStale)
+
+        home = h.state { home.pushingSubagent(child) }
+        val top = home.subagentStack.last().navigationID
+        fun topState() = home.subagentStack.first { it.navigationID == top }
+        fun updateTop(change: (SessionFeature.State) -> SessionFeature.State) {
+            home = home.copy(subagentStack = home.subagentStack.map { if (it.navigationID == top) change(it) else it })
+        }
+        assertTrue(home.pollingPauseIsStale)
+        home = home.syncingPollingPause().state
+        assertEquals("The parent under the subagent waits", true, home.sessionDetail?.isPollingPaused)
+        assertFalse(topState().isPollingPaused)
+        assertFalse(home.pollingPauseIsStale)
+
+        home = home.copy(settings = SettingsFeature.State(server = savedServer)).syncingPollingPause().state
+        assertTrue("Settings covers the top screen", topState().isPollingPaused)
+        val call = h.state { VoiceFeature.State(savedServer, child) }.withPhase(VoiceFeature.State.Phase.Live)
+        home = home.copy(sessionDetail = home.sessionDetail?.copy(voice = call)).syncingPollingPause().state
+        assertFalse(topState().isPollingPaused)
+        assertEquals(false, home.sessionDetail?.isPollingPaused)
+        home = home.copy(sessionDetail = home.sessionDetail?.copy(voice = call.withPhase(VoiceFeature.State.Phase.Ended))).syncingPollingPause().state
+        assertTrue(topState().isPollingPaused)
+
+        home = home.copy(settings = null)
+        updateTop { it.copy(browser = it.browser.copy(pageID = UUID.randomUUID())) }
+        home = home.syncingPollingPause().state
+        assertTrue(topState().isPollingPaused)
+        updateTop { it.copy(browser = it.browser.copy(peekMessageID = "msg_ask")) }
+        home = home.syncingPollingPause().state
+        assertTrue("An Ask that's done keeps nothing awake", topState().isPollingPaused)
+        updateTop { it.copy(queuedInputs = listOf(OpenCodePendingInput(id = "msg_ask", text = "Ask", delivery = OpenCodeDelivery.Queue))) }
+        home = home.syncingPollingPause().state
+        assertFalse("Queued", topState().isPollingPaused)
+        updateTop { it.copy(queuedInputs = emptyList(), isExternallyActive = true) }
+        home = home.syncingPollingPause().state
+        assertFalse("Its turn runs", topState().isPollingPaused)
+        updateTop { it.copy(cancelledInputIDs = setOf("msg_ask")) }
+        home = home.syncingPollingPause().state
+        assertTrue("Cancelled", topState().isPollingPaused)
+
+        home = h.state { home.poppingSubagents(toDepth = 0) }.syncingPollingPause().state
+        assertEquals(false, home.sessionDetail?.isPollingPaused)
+    }
+
+    private fun DependencyValues.Builder.answerPendingWork(log: LockIsolated<List<String>>) {
+        this[OpenCodeClient] = this[OpenCodeClient].copy(
+            homeAttention = { _, _, _ -> emptySet() },
+            familyPendingRequests = { _, _, _ ->
+                log.append("requests")
+                OpenCodePendingRequests(permissions = emptyList(), forms = emptyList())
+            },
+            pendingInputs = { _, _ ->
+                log.append("inbox")
+                emptyList()
+            },
+        )
+    }
+
+    @Test
+    fun settingsPausesTheOpenScreensTimers() = homeTest { h ->
+        val open = session(id = "ses_settings", title = "Settings")
+        val log = LockIsolated<List<String>>(emptyList())
+        val home = h.state {
+            val base = HomeFeature.State(savedServer, snapshot(listOf(open), active = setOf(open.id)))
+            val (opened, detail) = base.makeDetail(open, cachedItems = emptyList(), reason = "test")
+            opened.copy(sessionDetail = detail.copy(hasRenderedFirstContentFrame = true))
+        }
+        val store = h.store(home) {
+            this[Clock] = TestClock()
+            this[SessionTimers] = SessionTimers.testValue.copy(watchdog = true)
+            answerPendingWork(log)
+        }
+        store.exhaustive = false
+        store.send(detail(SessionFeature.Action.RequestsConnectionChanged(false)))
+        store.send(detail(SessionFeature.Action.RequestsConnectionChanged(true)))
+        assertNotNull(store.state.sessionDetail?.pendingWorkPollSeconds)
+
+        store.send(Action.SettingsTapped)
+        store.receive(detail(SessionFeature.Action.PollingPauseChanged(true)))
+        assertEquals(true, store.state.sessionDetail?.isPollingPaused)
+        assertNull(store.state.sessionDetail?.pendingWorkPollSeconds)
+        assertNull(store.state.sessionDetail?.watchdogSchedule)
+
+        assertTrue(eventually { log.value.count { it == "requests" } == 1 })
+        store.send(Action.SettingsShownChanged(false))
+        store.receive(detail(SessionFeature.Action.PollingPauseChanged(false)))
+        assertEquals(false, store.state.sessionDetail?.isPollingPaused)
+        assertNotNull(store.state.sessionDetail?.pendingWorkPollSeconds)
+        assertTrue(eventually { log.value.count { it == "requests" } == 2 })
+        store.skipInFlightEffects()
+    }
+
+    @Test
+    fun aSubagentTheListShowsRunningFirstPutsItsParentOnTheRunningCadence() = homeTest { h ->
+        val root = session(id = "ses_root", title = "Root")
+        val child = session(id = "ses_kid", title = "Kid", parentID = root.id)
+        val log = LockIsolated<List<String>>(emptyList())
+        val home = h.state {
+            val base = HomeFeature.State(savedServer, snapshot(listOf(root))).copy(activeSessionParents = mapOf(child.id to root.id))
+            val (opened, detail) = base.makeDetail(root, cachedItems = emptyList(), reason = "test")
+            opened.copy(
+                sessionDetail = detail.copy(
+                    familySessions = listOf(root, child),
+                    familyRootID = root.id,
+                    hasRenderedFirstContentFrame = true,
+                    streamIsHealthy = true,
+                    pendingWorkPollSeconds = 60,
+                ),
+            )
+        }
+        val store = h.store(home) {
+            this[Clock] = TestClock()
+            answerPendingWork(log)
+        }
+        store.exhaustive = false
+
+        store.send(Action.SnapshotRefreshed(snapshot(listOf(root), active = setOf(child.id))))
+        store.receive(detail(SessionFeature.Action.ActiveSessionsRead(setOf(child.id))))
+        assertEquals(12, store.state.sessionDetail?.pendingWorkPollSeconds)
+        assertTrue("The new cadence reads at once", eventually { log.value.count { it == "requests" } == 1 })
+
+        store.send(detail(SessionFeature.Action.FamilyRunStateChanged(sessionID = child.id, isRunning = true)))
+        assertEquals(12, store.state.sessionDetail?.pendingWorkPollSeconds)
+        store.skipInFlightEffects()
     }
 
     @Test

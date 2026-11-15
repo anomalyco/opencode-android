@@ -254,13 +254,20 @@ private fun HomeFeature.snapshotRefreshed(state: State, action: Action.SnapshotR
     val unattributed = runChanges.any { (sessionID, isRunning) ->
         isRunning && sessionID !in readActiveIDs && !s.isAttributed(sessionID, knownParents)
     }
-    if (s.sessionDetail?.session != null) s = s.updatingDetail { it.copy(activeFamilySessionIDs = snapshotActive) }
-    s = s.updatingSubagents { it.copy(activeFamilySessionIDs = snapshotActive) }
+    val activeDetail = s.sessionDetail
+    val detailActivity: Effect<Action> =
+        if (activeDetail?.session != null && activeDetail.activeFamilySessionIDs != snapshotActive) {
+            Effect.send(Action.detail(SessionFeature.Action.ActiveSessionsRead(snapshotActive)))
+        } else {
+            Effect.none()
+        }
     val subagentRuns = Effect.merge(
         s.subagentStack.mapNotNull { child ->
             val childID = child.session?.id ?: return@mapNotNull null
             val running = childID in snapshotActive
             Effect.merge(
+                if (child.activeFamilySessionIDs == snapshotActive) Effect.none()
+                else Effect.send(Action.SubagentStack(child.navigationID, SessionFeature.Action.ActiveSessionsRead(snapshotActive))),
                 if (child.isExternallyActive == running) Effect.none()
                 else Effect.send(Action.SubagentStack(child.navigationID, SessionFeature.Action.ExternalRunStateChanged(running))),
                 if (wasConnected) Effect.none()
@@ -364,6 +371,7 @@ private fun HomeFeature.snapshotRefreshed(state: State, action: Action.SnapshotR
                 prefetch,
                 drained.effect,
                 voiceSnapshot,
+                detailActivity,
                 subagentRuns,
                 searchesServer,
                 update,
@@ -373,7 +381,7 @@ private fun HomeFeature.snapshotRefreshed(state: State, action: Action.SnapshotR
             ),
         )
     }
-    return Reduced(s, Effect.merge(attention, ancestry, prefetch, drained.effect, voiceSnapshot, subagentRuns, searchesServer, detailReconnected))
+    return Reduced(s, Effect.merge(attention, ancestry, prefetch, drained.effect, voiceSnapshot, detailActivity, subagentRuns, searchesServer, detailReconnected))
 }
 
 private fun HomeFeature.activeAncestryResolved(state: State, resolved: Map<String, String>): HomeReduced {

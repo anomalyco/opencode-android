@@ -3,6 +3,7 @@ package ai.opencode.feature.session
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.TestClock
+import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.eventually
 import ai.opencode.feature.composer.RequestDockFeature
 import ai.opencode.feature.session.SessionFeature.Action
@@ -15,10 +16,14 @@ import ai.opencode.feature.session.SessionTestSupport.testServer
 import ai.opencode.feature.session.SessionTestSupport.testSession
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
+import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
+import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeTranscriptItem
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.delay
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -64,6 +69,151 @@ class SessionFeatureTestsQuietPolling {
         return count
     }
 
+    private fun DependencyValues.Builder.answerPendingWork(gate: TestClock, log: LockIsolated<List<String>>) {
+        holdReads(gate, log)
+        this[OpenCodeClient] = this[OpenCodeClient].copy(
+            familyPendingRequests = { _, _, _ ->
+                log.append("requests")
+                OpenCodePendingRequests(permissions = emptyList(), forms = emptyList())
+            },
+            pendingInputs = { _, _ ->
+                log.append("inbox")
+                emptyList()
+            },
+        )
+    }
+
+    private suspend fun TestStore<State, Action>.settles(condition: () -> Boolean): Boolean {
+        repeat(300) {
+            skipReceivedActions()
+            if (condition()) return true
+            delay(10.milliseconds)
+        }
+        return false
+    }
+
+    private fun quietState(h: SessionTestSupport.Harness, session: OpenCodeSession, isRunning: Boolean = false): State =
+        h.makeState(session = session, isRunning = isRunning, hasRenderedFirstContentFrame = true)
+            .withRequestsConnectionIsAvailable(false)
+            .copy(streamIsHealthy = true, streamSupportsProjection = true)
+
+    @Test fun aSettledSessionOnAHealthyStreamPollsOnlyAsASafetyNet() = sessionTest { h ->
+        val session = testSession(id = "ses_settled", title = "Settled")
+        val clock = TestClock()
+        val gate = TestClock()
+        val log = LockIsolated<List<String>>(emptyList())
+        val store = h.store(quietState(h, session)) {
+            this[Clock] = clock
+            this[SessionTimers] = SessionTimers.testValue.copy(watchdog = true)
+            answerPendingWork(gate, log)
+        }
+        store.exhaustive = false
+        val watchdog = 120 + abs(session.id.hashCode() % 25)
+
+        store.send(Action.RequestsConnectionChanged(true))
+        assertEquals(60, store.state.pendingWorkPollSeconds)
+        assertEquals(watchdog.seconds, store.state.watchdogSchedule?.interval)
+        assertTrue(store.settles { count("requests", log) == 1 && count("inbox", log) == 1 })
+
+        clock.advance(59.seconds)
+        store.skipReceivedActions()
+        assertEquals(1, count("requests", log))
+        assertEquals(1, count("inbox", log))
+        clock.advance(1.seconds)
+        assertTrue(store.settles { count("requests", log) == 2 && count("inbox", log) == 2 })
+        clock.advance((watchdog - 61).seconds)
+        store.skipReceivedActions()
+        assertEquals(0, count("transcript", log))
+        clock.advance(1.seconds)
+        assertTrue(store.settles { count("transcript", log) == 1 })
+        assertEquals(3, count("requests", log))
+
+        store.send(Action.ExternalRunStateChanged(isRunning = true))
+        assertEquals(12, store.state.pendingWorkPollSeconds)
+        assertEquals((20 + abs(session.id.hashCode() % 5)).seconds, store.state.watchdogSchedule?.interval)
+        assertTrue(store.settles { count("requests", log) == 4 && count("inbox", log) == 4 })
+        clock.advance(12.seconds)
+        assertTrue(store.settles { count("requests", log) == 5 })
+        h.skipInFlightEffects()
+    }
+
+    @Test fun pendingWorkKeepsTheActiveCadences() = sessionTest { h ->
+        var state = h.makeState(session = testSession(id = "ses_cadence", title = "Cadence"))
+        assertEquals(2, state.pendingWorkPollCadence)
+        assertEquals(30, state.watchdogSeconds)
+        state = state.copy(streamIsHealthy = true)
+        assertEquals(60, state.pendingWorkPollCadence)
+        assertEquals(120, state.watchdogSeconds)
+        state = state.copy(queuedInputs = listOf(OpenCodePendingInput(id = "in_1", text = "Later")))
+        assertEquals(12, state.pendingWorkPollCadence)
+        assertEquals(30, state.watchdogSeconds)
+        state = state.copy(queuedInputs = emptyList(), activeFamilySessionIDs = setOf("ses_child"))
+        assertEquals(12, state.pendingWorkPollCadence)
+        state = state.copy(activeFamilySessionIDs = emptySet(), isExternallyActive = true, streamSupportsProjection = true)
+        assertEquals(12, state.pendingWorkPollCadence)
+        assertEquals(20, state.watchdogSeconds)
+        state = state.copy(streamSupportsProjection = false)
+        assertEquals(3, state.watchdogSeconds)
+    }
+
+    @Test fun aCoveredScreenStopsItsTimersAndUncoveringReadsAtOnce() = sessionTest { h ->
+        val session = testSession(id = "ses_cover", title = "Cover")
+        val clock = TestClock()
+        val gate = TestClock()
+        val log = LockIsolated<List<String>>(emptyList())
+        val store = h.store(quietState(h, session, isRunning = true)) {
+            this[Clock] = clock
+            this[SessionTimers] = SessionTimers.testValue.copy(watchdog = true)
+            answerPendingWork(gate, log)
+        }
+        store.exhaustive = false
+        store.send(Action.RequestsConnectionChanged(true))
+        assertTrue(store.settles { count("requests", log) == 1 && count("inbox", log) == 1 })
+
+        store.send(Action.PollingPauseChanged(true))
+        assertTrue(!store.state.pollsServer)
+        assertNull(store.state.pendingWorkPollSeconds)
+        assertNull(store.state.watchdogSchedule)
+        clock.advance(120.seconds)
+        store.skipReceivedActions()
+        assertEquals(1, count("requests", log))
+        assertEquals(1, count("inbox", log))
+        assertEquals(0, count("transcript", log))
+        store.send(Action.RequestsChanged)
+        assertTrue(store.settles { count("requests", log) == 2 })
+
+        store.send(Action.PollingPauseChanged(false))
+        assertEquals(12, store.state.pendingWorkPollSeconds)
+        assertNotNull(store.state.watchdogSchedule)
+        assertTrue(store.settles { count("requests", log) == 3 && count("inbox", log) == 2 && count("transcript", log) == 1 })
+        h.skipInFlightEffects()
+    }
+
+    @Test fun aBriefCoverReadsNoTranscriptOnTheWayBack() = sessionTest { h ->
+        val session = testSession(id = "ses_brief", title = "Brief")
+        val clock = TestClock()
+        val gate = TestClock()
+        val log = LockIsolated<List<String>>(emptyList())
+        val store = h.store(quietState(h, session)) {
+            this[Clock] = clock
+            this[SessionTimers] = SessionTimers.testValue.copy(watchdog = true)
+            answerPendingWork(gate, log)
+        }
+        store.exhaustive = false
+        store.send(Action.RequestsConnectionChanged(true))
+        assertTrue(store.settles { count("requests", log) == 1 && count("inbox", log) == 1 })
+
+        for (reads in 2..3) {
+            store.send(Action.PollingPauseChanged(true))
+            clock.advance(2.seconds)
+            store.send(Action.PollingPauseChanged(false))
+            assertTrue(store.settles { count("requests", log) == reads && count("inbox", log) == reads })
+        }
+        assertNotNull(store.state.watchdogSchedule)
+        assertEquals(0, count("transcript", log))
+        h.skipInFlightEffects()
+    }
+
     /**
      * A running session whose stream drops asks nothing until Home hears from the server again;
      * then the polls and the 3 s watchdog start at once.
@@ -107,6 +257,7 @@ class SessionFeatureTestsQuietPolling {
         store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(eventually { count("requests", log) == 1 && count("inbox", log) == 1 })
         clock.advance(3.seconds)
+        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         store.receive(Action.WatchdogElapsed(generation = 1)) {
             it.copy(watchdogSchedule = it.watchdogSchedule?.copy(deadline = start + 126.seconds))
         }

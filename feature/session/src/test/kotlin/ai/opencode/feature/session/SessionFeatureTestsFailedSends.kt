@@ -345,7 +345,7 @@ class SessionFeatureTestsFailedSends {
             it.movedTo("/work/repo")
                 .withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
                 .withRequestLoadError(null)
-                .copy(pendingWorkPollSeconds = 12, isLoadingModels = true)
+                .copy(pendingWorkPollSeconds = 60, isLoadingModels = true)
         }
         store.receive(Action.PendingInputsRequested(sessionID = "ses_1"))
         store.receive(Action.PendingInputsResponse(sessionID = "ses_1", inputs = emptyList()))
