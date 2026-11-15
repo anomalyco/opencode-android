@@ -658,7 +658,6 @@ class ComposerPersistenceTests {
                 ).withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
             }
             relaunchedStore.receive(Action.PromptAdmitted(sessionID = createdSession.id, messageID = firstID, requestEpoch = 1)) { it.admitted(firstID) }
-            relaunchedStore.receive(Action.PendingInputsRequested(sessionID = createdSession.id))
             relaunchedStore.send(Action.RequestsConnectionChanged(false)) {
                 it.withRequestsConnectionIsAvailable(false)
                     .withRequestLoadAttempt(null)
@@ -732,7 +731,6 @@ class ComposerPersistenceTests {
             ).withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
         }
         firstStore.receive(Action.PromptAdmitted(sessionID = createdSession.id, messageID = firstID, requestEpoch = 1)) { it.admitted(firstID) }
-        firstStore.receive(Action.PendingInputsRequested(sessionID = createdSession.id))
         firstStore.send(Action.RequestsConnectionChanged(false)) {
             it.withRequestsConnectionIsAvailable(false)
                 .withRequestLoadAttempt(null)

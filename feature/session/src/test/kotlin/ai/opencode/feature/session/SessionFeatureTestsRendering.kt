@@ -496,7 +496,6 @@ class SessionFeatureTestsRendering {
                 result = Result.success(OpenCodePendingRequests(permissions = emptyList(), forms = emptyList())),
             ),
         ) { it.withRequestArrivalsAreLive(true) }
-        store.receive(Action.PendingInputsRequested(sessionID = root.id))
         store.receive(Action.PendingInputsResponse(sessionID = root.id, inputs = emptyList()))
         assertEquals(listOf(listOf(root.id, child.id, grandchild.id)), polledFamilies.value)
         assertEquals(1, inboxCalls.value)
@@ -709,7 +708,6 @@ class SessionFeatureTestsRendering {
                 result = Result.success(OpenCodePendingRequests(permissions = emptyList(), forms = emptyList())),
             ),
         ) { it.withRequestArrivalsAreLive(true) }
-        store.receive(Action.PendingInputsRequested(sessionID = root.id))
         store.receive(Action.PendingInputsResponse(sessionID = root.id, inputs = emptyList()))
 
         assertTrue(store.state.activeSubagents.isEmpty())

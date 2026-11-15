@@ -347,7 +347,6 @@ class SessionFeatureTestsFailedSends {
                 .withRequestLoadError(null)
                 .copy(pendingWorkPollSeconds = 60, isLoadingModels = true)
         }
-        store.receive(Action.PendingInputsRequested(sessionID = "ses_1"))
         store.receive(Action.PendingInputsResponse(sessionID = "ses_1", inputs = emptyList()))
         requestsGate.complete(Unit)
         store.receive(Action.PendingRequestsResponse(sessionID = "ses_1", result = Result.success(OpenCodePendingRequests(permissions = emptyList())))) {

@@ -744,7 +744,6 @@ class RunErrorTests {
             store.receive(Action.RefreshRequested::class) {
                 it.copy(nextRefreshID = 1, refresh = SessionFeature.State.Refresh(id = 1, reason = RefreshReason.Open))
             }
-            store.receive(Action.PendingInputsRequested::class)
 
             store.send(Action.FamilyPicked("ses_1")) {
                 val restoredSession = rootSession.copy(revertMessageID = "msg_earlier")
@@ -767,7 +766,6 @@ class RunErrorTests {
             store.receive(Action.RefreshRequested::class) {
                 it.copy(nextRefreshID = 2, refresh = SessionFeature.State.Refresh(id = 2, reason = RefreshReason.Open))
             }
-            store.receive(Action.PendingInputsRequested::class)
             h.skipInFlightEffects()
 
             // 2. Capture SwitchSnapshot (with equal `updatedAt`) and flush persistence to disk,

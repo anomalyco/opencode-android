@@ -446,7 +446,6 @@ class SessionFeatureTestsLoading {
             it.copy(familyReadAt = now, pendingWorkPollSeconds = 2)
         }
         store.receive(Action.ShellsResponse(sessionID = session.id, result = Result.success(emptyList())))
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(store.state.isLoadingEarlier)
         assertTrue(store.state.isTranscriptLoading)
         assertFalse(store.state.showsEmptyState)
@@ -577,7 +576,6 @@ class SessionFeatureTestsLoading {
                 pendingWorkPollSeconds = 2,
             ).withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
         }
-        store.receive(Action.PendingInputsRequested(sessionID = created.id))
         assertFalse(store.state.isDraft)
         assertTrue(store.state.initialTranscriptIsFresh)
         assertFalse(store.state.isTranscriptLoading)
@@ -718,7 +716,6 @@ class SessionFeatureTestsLoading {
                 pendingWorkPollSeconds = 2,
             ).withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
         }
-        store.receive(Action.PendingInputsRequested(sessionID = created.id))
         assertTrue(store.state.showsEmptyState)
         assertFalse(store.state.isTranscriptLoading)
 
@@ -864,7 +861,6 @@ class SessionFeatureTestsLoading {
             it.copy(isLoadingModels = false, models = listOf(model))
         }
         store.state.assertRemembersModelNames(listOf(model))
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertNull(store.state.errorMessage)
         assertFalse(store.state.isTranscriptLoading)
 
@@ -944,7 +940,6 @@ class SessionFeatureTestsLoading {
             it.copy(familyReadAt = now, pendingWorkPollSeconds = 2)
         }
         store.receive(Action.ShellsResponse(sessionID = session.id, result = Result.success(emptyList())))
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertFalse(store.state.isTranscriptLoading)
         assertFalse(store.state.showsEmptyState)
         assertEquals(loadError.message, store.state.errorMessage)

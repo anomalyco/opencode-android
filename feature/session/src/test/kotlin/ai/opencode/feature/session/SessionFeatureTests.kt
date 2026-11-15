@@ -790,7 +790,6 @@ class SessionFeatureTests {
             it.withRequestLoadAttempt(null).withRequestLoadError(error.message)
         }
         assertEquals(error.message, store.state.settledRequestLoadError)
-        store.receive(Action.PendingInputsRequested(sessionID = sessionID))
         store.send(Action.RequestsConnectionChanged(false)) {
             it.withRequestsConnectionIsAvailable(false).withRequestLoadError(null).copy(pendingWorkPollSeconds = null)
         }

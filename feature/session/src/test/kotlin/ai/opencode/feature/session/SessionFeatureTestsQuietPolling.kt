@@ -214,6 +214,37 @@ class SessionFeatureTestsQuietPolling {
         h.skipInFlightEffects()
     }
 
+    @Test fun theInboxPollNeverCancelsItsOwnSlowRead() = sessionTest { h ->
+        val session = testSession(id = "ses_slow", title = "Slow")
+        val clock = TestClock()
+        val gate = TestClock()
+        val log = LockIsolated<List<String>>(emptyList())
+        val state = h.makeState(session = session, hasRenderedFirstContentFrame = true)
+            .withRequestsConnectionIsAvailable(false)
+        val store = h.store(state) {
+            this[Clock] = clock
+            this[SessionTimers] = SessionTimers.testValue.copy(watchdog = true)
+            holdReads(gate, log)
+        }
+        store.exhaustive = false
+        store.send(Action.RequestsConnectionChanged(true))
+        assertEquals(2, store.state.pendingWorkPollSeconds)
+        assertTrue(store.settles { count("inbox", log) == 1 })
+        repeat(3) {
+            clock.advance(2.seconds)
+            repeat(20) {
+                delay(10.milliseconds)
+                store.skipReceivedActions()
+            }
+        }
+        assertEquals(1, count("inbox", log))
+        assertEquals(0, count("inbox cancelled", log))
+        gate.advance(1.seconds)
+        clock.advance(2.seconds)
+        assertTrue(store.settles { count("inbox", log) == 2 })
+        h.skipInFlightEffects()
+    }
+
     /**
      * A running session whose stream drops asks nothing until Home hears from the server again;
      * then the polls and the 3 s watchdog start at once.
@@ -254,10 +285,8 @@ class SessionFeatureTestsQuietPolling {
                     watchdogGeneration = 1,
                 )
         }
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(eventually { count("requests", log) == 1 && count("inbox", log) == 1 })
         clock.advance(3.seconds)
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         store.receive(Action.WatchdogElapsed(generation = 1)) {
             it.copy(watchdogSchedule = it.watchdogSchedule?.copy(deadline = start + 126.seconds))
         }
@@ -297,7 +326,6 @@ class SessionFeatureTestsQuietPolling {
                     watchdogGeneration = 1,
                 )
         }
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(eventually { count("requests", log) == 1 && count("inbox", log) == 1 })
 
         // The notification shade comes and goes: nothing restarts.
@@ -329,7 +357,6 @@ class SessionFeatureTestsQuietPolling {
                 watchdogGeneration = 3,
             )
         }
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(eventually { count("requests", log) == 2 && count("inbox", log) == 2 })
         h.skipInFlightEffects()
     }
@@ -369,7 +396,6 @@ class SessionFeatureTestsQuietPolling {
         store.send(Action.RequestsConnectionChanged(true)) {
             it.withRequestsConnectionIsAvailable(true).withRequestLoadAttempt(RequestDockFeature.State.LoadAttempt.Initial)
         }
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         store.receive(Action.PendingInputsResponse(sessionID = session.id, inputs = emptyList()))
         assertTrue(eventually { "requests" in reads.value })
         gate.advance(1.seconds)
@@ -393,7 +419,6 @@ class SessionFeatureTestsQuietPolling {
                 watchdogGeneration = 1,
             )
         }
-        store.receive(Action.PendingInputsRequested(sessionID = session.id))
         store.receive(Action.PendingInputsResponse(sessionID = session.id, inputs = emptyList()))
         assertTrue(eventually { count("requests", reads) == 2 })
         h.skipInFlightEffects()

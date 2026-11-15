@@ -695,7 +695,6 @@ class NewMessagesTests {
             )
         }
         store.send(Action.SceneActiveChanged(true)) { it.copy(isSceneActive = true, isBackgrounded = false, pendingWorkPollSeconds = 12) }
-        store.receive(Action.PendingInputsRequested::class)
         store.receive(Action.PendingInputsResponse::class)
         store.send(pageRead(listOf(m1, m2, live))) {
             it.copy(refresh = null, initialTranscriptIsFresh = true, newMessagesBaseline = null)

@@ -214,7 +214,7 @@ internal fun SessionFeature.pollPendingWork(
     }.cancellable(CancelID.Requests, cancelInFlight = true)
     val inbox = Effect.run<Action> { send ->
         while (currentCoroutineContext().isActive) {
-            send(Action.PendingInputsRequested(sessionID = session.id))
+            readQueuedInputs(server, session.id, send)
             if (!repeats) return@run
             clock.sleep(seconds.seconds)
         }

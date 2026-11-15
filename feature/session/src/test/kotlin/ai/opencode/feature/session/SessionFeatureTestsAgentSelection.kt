@@ -418,7 +418,6 @@ class SessionFeatureTestsAgentSelection {
         assertNull(store.state.draftAgent)
         store.receive(Action.AgentApplied(sessionID = "ses_new", agent = "plan")) { it.withAgent("plan") }
         store.receive(Action.PromptAdmitted(sessionID = "ses_new", messageID = sentID, requestEpoch = 1)) { it.admitted() }
-        store.receive(Action.PendingInputsRequested(sessionID = "ses_new"))
         assertEquals(listOf("agent ses_new plan", "prompt hello steer"), calls.value)
         h.skipInFlightEffects()
     }
