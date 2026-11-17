@@ -8,6 +8,8 @@ import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.haptics.Haptic
 import ai.opencode.core.haptics.HapticsClient
 import ai.opencode.core.motion.Motion
+import ai.opencode.core.motion.MotionPhase
+import ai.opencode.core.motion.MotionPress
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeTextStyles
@@ -28,6 +30,7 @@ import ai.opencode.server.model.SessionLink
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.view.ViewConfiguration
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import androidx.compose.runtime.CompositionLocalProvider
@@ -45,6 +48,9 @@ import kotlinx.coroutines.delay
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,6 +90,7 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
@@ -139,8 +146,18 @@ internal fun TranscriptUserBubble(
         isSelecting = true
     }
 
-    // The bubble lifts while its menu is open, as iOS's context menu lifts its preview.
-    val lift by animateFloatAsState(if (menu) 1.03f else 1f, if (reduceMotion) Motion.reducedFadeSpec() else Motion.microPop.spec(), label = "lift")
+    val hasMenu = pendingActions != null || text.isNotEmpty()
+    var pressed by remember { mutableStateOf(false) }
+    // The bubble gives under the finger, then lifts while its menu is open, as iOS's context menu does.
+    val lift by animateFloatAsState(
+        targetValue = if (menu) 1.03f else MotionPress.scale(pressed && (failedSend != null || (hasMenu && !isSelecting)), reduceMotion),
+        animationSpec = when {
+            reduceMotion -> Motion.reducedFadeSpec()
+            pressed && !menu -> Motion.press.animation(MotionPhase.Enter)
+            else -> Motion.microPop.spec()
+        },
+        label = "lift",
+    )
     TrailingFractionLayout(TranscriptMetrics.maximumUserBubbleFraction, modifier) {
         Box {
             val face: @Composable (Modifier) -> Unit = { faceModifier ->
@@ -155,10 +172,27 @@ internal fun TranscriptUserBubble(
                     reduceMotion = reduceMotion,
                     onCopy = onCopy,
                     onEndSelection = { isSelecting = false },
-                    modifier = faceModifier.graphicsLayer {
-                        scaleX = lift
-                        scaleY = lift
-                    },
+                    modifier = faceModifier
+                        // Only watches, and waits out the tap timeout as clickable does in a list, so a scroll never presses it.
+                        .pointerInput(Unit) {
+                            awaitEachGesture {
+                                awaitFirstDown(requireUnconsumed = false)
+                                var ended = false
+                                withTimeoutOrNull(ViewConfiguration.getTapTimeout().toLong()) {
+                                    waitForUpOrCancellation()
+                                    ended = true
+                                }
+                                if (!ended) {
+                                    pressed = true
+                                    waitForUpOrCancellation()
+                                    pressed = false
+                                }
+                            }
+                        }
+                        .graphicsLayer {
+                            scaleX = lift
+                            scaleY = lift
+                        },
                 )
             }
             if (failedSend != null) {
@@ -171,7 +205,6 @@ internal fun TranscriptUserBubble(
             } else {
                 // Long press opens the bubble's menu (lifting the bubble shape), not word-by-word
                 // text selection; Select enters native range selection.
-                val hasMenu = pendingActions != null || text.isNotEmpty()
                 face(
                     Modifier.transcriptDragSource(
                         payload = if (isSelecting || isPending || pendingActions != null) null else TranscriptDragPayload.Text(text),
