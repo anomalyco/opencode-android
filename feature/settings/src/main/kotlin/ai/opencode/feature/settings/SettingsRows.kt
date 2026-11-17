@@ -13,10 +13,8 @@ import ai.opencode.core.ui.OpenCodeRadius
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
 import androidx.compose.foundation.clickable
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.VisibilityThreshold
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.selection.selectable
@@ -35,6 +33,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.layout.layout
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -565,6 +568,12 @@ fun <T> SettingsSegmentedControl(
         colors.isDark -> Color.White.copy(alpha = 0.2f)
         else -> Color.Black.copy(alpha = 0.2f)
     }
+    val reduceMotion = rememberReduceMotion()
+    val position = animateFloatAsState(
+        options.indexOf(selected).toFloat(),
+        MotionRole.Layout.animation(reduceMotion = reduceMotion),
+        label = "segmentIndicator",
+    )
     Box(modifier.fillMaxWidth().height(SegmentTapHeight), contentAlignment = Alignment.Center) {
         Box(
             Modifier
@@ -573,24 +582,23 @@ fun <T> SettingsSegmentedControl(
                 .background(trackFill, shape)
                 .border(SegmentEdge, colors.rowDivider, shape),
         )
+        Box(
+            Modifier
+                .align(Alignment.CenterStart)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints)
+                    layout(placeable.width, placeable.height) {
+                        placeable.placeRelative((position.value * placeable.width).roundToInt(), 0)
+                    }
+                }
+                .fillMaxWidth(1f / options.size)
+                .height(SegmentHeight)
+                .background(indicatorFill, shape)
+                .border(SegmentEdge, indicatorEdge, shape),
+        )
         Row(Modifier.fillMaxWidth().selectableGroup()) {
-            for (option in options) {
+            for ((index, option) in options.withIndex()) {
                 val isSelected = option == selected
-                val fill by animateColorAsState(
-                    if (isSelected) indicatorFill else Color.Transparent,
-                    tween(120),
-                    label = "segmentFill",
-                )
-                val edge by animateColorAsState(
-                    if (isSelected) indicatorEdge else Color.Transparent,
-                    tween(120),
-                    label = "segmentEdge",
-                )
-                val text by animateColorAsState(
-                    if (isSelected) colors.text else colors.secondaryText,
-                    tween(150),
-                    label = "segmentText",
-                )
                 Box(
                     Modifier
                         .weight(1f)
@@ -598,17 +606,11 @@ fun <T> SettingsSegmentedControl(
                         .selectable(selected = isSelected, role = Role.RadioButton, onClick = { onSelect(option) }),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(SegmentHeight)
-                            .background(fill, shape)
-                            .border(SegmentEdge, edge, shape),
-                    )
                     val labelStyle = MaterialTheme.typography.labelLarge
                     BasicText(
                         title(option),
-                        style = labelStyle.copy(color = text),
+                        style = labelStyle,
+                        color = { lerp(colors.secondaryText, colors.text, (1f - abs(position.value - index)).coerceIn(0f, 1f)) },
                         maxLines = 1,
                         softWrap = false,
                         overflow = TextOverflow.Ellipsis,
