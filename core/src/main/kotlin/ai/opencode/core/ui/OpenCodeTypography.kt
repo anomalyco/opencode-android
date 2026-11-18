@@ -6,13 +6,14 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 /**
- * Inter (variable) for UI text and IBM Plex Mono for code, as the desktop. Both OFL-1.1
+ * Inter (variable) for UI text and OpenMono for code, as the desktop. Both OFL-1.1
  * (`docs/licenses/`).
  */
 object OpenCodeFonts {
@@ -38,24 +39,19 @@ object OpenCodeFonts {
         },
     )
 
-    /** IBM Plex Mono for code, tool output and paths (desktop `--font-family-mono`). */
+    /**
+     * OpenMono for code, tool output and paths (desktop `--font-family-mono`). It has two weights:
+     * Regular also serves Medium and Bold also serves SemiBold, so no weight is synthesized.
+     */
     val monospace: FontFamily = FontFamily(
-        Font(R.font.plex_mono_regular, FontWeight.Normal),
-        Font(R.font.plex_mono_medium, FontWeight.Medium),
-        Font(R.font.plex_mono_semibold, FontWeight.SemiBold),
-        Font(R.font.plex_mono_semibold, FontWeight.Bold),
-    )
-
-    /** Berkeley Mono (variable), only for onboarding's brand marks. */
-    @OptIn(ExperimentalTextApi::class)
-    val berkeleyMono: FontFamily = FontFamily(
-        listOf(FontWeight.Normal, FontWeight.Medium, FontWeight.SemiBold, FontWeight.Bold).map { weight ->
-            Font(
-                R.font.berkeley_mono,
-                weight = weight,
-                variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight)),
-            )
-        },
+        Font(R.font.openmono_regular, FontWeight.Normal),
+        Font(R.font.openmono_regular, FontWeight.Medium),
+        Font(R.font.openmono_bold, FontWeight.SemiBold),
+        Font(R.font.openmono_bold, FontWeight.Bold),
+        Font(R.font.openmono_italic, FontWeight.Normal, FontStyle.Italic),
+        Font(R.font.openmono_italic, FontWeight.Medium, FontStyle.Italic),
+        Font(R.font.openmono_bold_italic, FontWeight.SemiBold, FontStyle.Italic),
+        Font(R.font.openmono_bold_italic, FontWeight.Bold, FontStyle.Italic),
     )
 }
 
