@@ -69,9 +69,11 @@ import android.os.Process
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
@@ -160,6 +162,7 @@ import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import kotlin.math.abs
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -1725,6 +1728,8 @@ private fun SessionComposerEnv.Composer() {
     val attachmentReveal = handOffReveal.value
     val sendReset = host.sendReset
     sendReset.Animate()
+    val cardHeight = remember { ComposerCardHeight() }
+    val cardScope = rememberCoroutineScope()
     val current by rememberUpdatedState(this)
     Box(
         Modifier
@@ -1739,12 +1744,15 @@ private fun SessionComposerEnv.Composer() {
                 }
             }
             .composerSendReset(sendReset)
-            .then(
-                    if (reducedMotion || (morphMoving && !sendReset.isResetting)) Modifier
-                else Modifier.animateContentSize(
-                    (if (sendReset.isResetting) SEND_RESET_SLIDE else MotionSpring(0.25)).spec(),
-                    alignment = Alignment.BottomStart,
-                ),
+            .composerCardHeight(
+                cardHeight,
+                spec = when {
+                    reducedMotion || (morphMoving && !sendReset.isResetting) -> null
+                    sendReset.isResetting -> SEND_RESET_SLIDE.spec(visibilityThreshold = 1)
+                    else -> MotionSpring(0.25).spec(visibilityThreshold = 1)
+                },
+                animatesInput = sendReset.isResetting,
+                scope = cardScope,
             )
             // iOS `ComposerKeyboardSpacing(top: true, recording:)`: the top inset is taken back as
             // the row opens, unless folded for dictation.
@@ -1786,7 +1794,12 @@ private fun SessionComposerEnv.Composer() {
                         Box(
                             Modifier
                                 .alpha(rowAlpha)
-                                .then(if (recording) Modifier.clearAndSetSemantics { } else Modifier),
+                                .then(if (recording) Modifier.clearAndSetSemantics { } else Modifier)
+                                .layout { measurable, constraints ->
+                                    val placeable = measurable.measure(constraints)
+                                    cardHeight.input = placeable.height
+                                    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+                                },
                         ) {
                             ComposerInput(composerExpanded, recording, bar)
                         }
@@ -1876,6 +1889,52 @@ private fun SessionComposerEnv.Composer() {
         }
     }
 }
+
+/**
+ * The card's height, animated as `animateContentSize(alignment = BottomStart)` would, except the
+ * field's own growth (a line added or removed), which lands at once.
+ */
+private class ComposerCardHeight {
+    /** The input region's height, written as the card measures it. */
+    var input = 0
+    private var lastInput = 0
+    /** How much of the height the field's growth added at once, outside the animation. */
+    private var unanimated = 0
+    private var animation: Animatable<Int, AnimationVector1D>? = null
+
+    /** The height to show for content [height] tall; a null [spec] shows it at once. */
+    fun measure(height: Int, spec: AnimationSpec<Int>?, animatesInput: Boolean, scope: CoroutineScope): Int {
+        if (!animatesInput) unanimated += input - lastInput
+        lastInput = input
+        val target = height - unanimated
+        val current = animation
+        if (spec == null) {
+            animation = null
+            return height
+        }
+        if (current == null) {
+            animation = Animatable(target, Int.VectorConverter)
+            return height
+        }
+        if (current.targetValue != target) {
+            scope.launch { current.animateTo(target, spec) }
+        }
+        return current.value + unanimated
+    }
+}
+
+private fun Modifier.composerCardHeight(
+    cardHeight: ComposerCardHeight,
+    spec: AnimationSpec<Int>?,
+    animatesInput: Boolean,
+    scope: CoroutineScope,
+): Modifier = this
+    .clipToBounds()
+    .layout { measurable, constraints ->
+        val placeable = measurable.measure(constraints)
+        val height = constraints.constrainHeight(cardHeight.measure(placeable.height, spec, animatesInput, scope))
+        layout(placeable.width, height) { placeable.place(0, height - placeable.height) }
+    }
 
 /**
  * The placeholder over the field: one at a time, hidden without animation when the draft has
