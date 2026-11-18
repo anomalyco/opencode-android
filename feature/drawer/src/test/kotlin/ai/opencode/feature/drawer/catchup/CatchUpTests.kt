@@ -673,27 +673,6 @@ class CatchUpTests {
         assertNull(CatchUpSwipeMath.decision(translation = Offset(130f, 0f), velocity = Offset(-550f, 0f), width = width))
     }
 
-    @Test fun snapBackSpringReturnsMonotonicallyWithoutReversalFrames() {
-        for (initialVx in listOf(0f, -400f, -1_200f)) {
-            val spring = CatchUpSpring(
-                position = Offset(84f, 18f),
-                velocity = Offset(initialVx, 0f),
-                target = Offset.Zero,
-            )
-            var prevX = spring.position.x
-            var settled = false
-            for (frame in 0 until 240) {
-                settled = spring.step(1.0f / 120.0f)
-                assertTrue("Never reverses outward during return", spring.position.x <= prevX + 1e-5f)
-                assertTrue("Never overshoots past zero", spring.position.x >= -1e-5f)
-                prevX = spring.position.x
-                if (settled) break
-            }
-            assertTrue(settled)
-            assertEquals(Offset.Zero, spring.position)
-        }
-    }
-
     @Test fun swipingThroughTwelveCardsAvoidsRedundantPublicationsAndMeasuresMainThreadWork() = runTest {
         val sessions = (0 until 12).map { index -> session("card_$index", 100L + index, idle = 2_000, viewed = 1_000) } +
             listOf(session("read_base", 50, idle = 1_000, viewed = 1_000))

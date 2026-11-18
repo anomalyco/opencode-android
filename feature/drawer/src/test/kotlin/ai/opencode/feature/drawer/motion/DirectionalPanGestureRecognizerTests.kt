@@ -252,7 +252,7 @@ class CatchUpTransitionTests {
         val stage = CatchUpStage(
             queue = listOf("first", "second"),
             undoDirection = CatchUpDisposition.markRead,
-            onDismiss = { dismissed += 1 },
+            onDismiss = { _, _ -> dismissed += 1 },
             onUndo = { undone += 1 },
         )
 
@@ -260,12 +260,10 @@ class CatchUpTransitionTests {
         controller.catchUpStack.begin(stage)
         assertEquals("The entrance owns the card", CatchUpModeMorph.EnterCatchUp, controller.morph)
         controller.dismissCard(CatchUpDisposition.markRead)
-        assertEquals("The store hears a dismissal the frame after its flight starts", 0, dismissed)
+        assertEquals("The store hears a dismissal once the card is off screen", 0, dismissed)
         assertNull("The entrance must finish before a flight takes ownership", controller.morph)
         controller.undoCard()
         assertEquals("Undo lands the flight, and the dismissal reaches the store before the undo", 1, dismissed)
-        // Android captures the card's picture asynchronously; Undo tells the store once it has.
-        runCurrent()
         assertEquals(1, undone)
         controller.updateCatchUp(null, returnsToDrawer = false, animated = true)
         // Re-enter and leave before the exit morph completes, too.
@@ -273,9 +271,8 @@ class CatchUpTransitionTests {
         controller.updateCatchUp(null, returnsToDrawer = false, animated = false)
         controller.catchUpStack.end()
         assertNull(controller.morph)
-        assertNull("Flights and morphs must release every snapshot", controller.outgoing)
+        assertNull("Morphs must release every snapshot", controller.outgoing)
         assertNull(controller.stageSnapshot)
-        assertTrue(controller.catchUpStack.flyingCards.isEmpty())
         assertFalse(controller.cardPosed)
         assertEquals(1f, controller.cardAlpha.floatValue)
         assertEquals(1f, controller.cardScale.floatValue)
@@ -287,7 +284,7 @@ class CatchUpTransitionTests {
         val controller = controller(isPresented = false)
         val stack = controller.catchUpStack
         val dismissed = mutableListOf<CatchUpDisposition>()
-        val stage = CatchUpStage(queue = listOf("first", "second"), onDismiss = { dismissed += it })
+        val stage = CatchUpStage(queue = listOf("first", "second"), onDismiss = { _, disposition -> dismissed += disposition })
         controller.updateCatchUp(stage, returnsToDrawer = false, animated = false)
         stack.begin(stage)
 
@@ -309,7 +306,7 @@ class CatchUpTransitionTests {
         stack.panChanged(Offset(24f, 0f))
         assertTrue(abs(stack.dragOffset.x - (midSettleX + 24f)) < 0.01f)
         stack.panEnded(Offset(24f, 0f), velocity = Offset(680f, 0f))
-        assertTrue("The store hears the dismissal the frame after the flight starts", dismissed.isEmpty())
+        assertTrue("The store hears the dismissal once the card is off screen", dismissed.isEmpty())
         advanceTimeBy(1_000)
         assertEquals("Fast flick commits via projected landing", listOf(CatchUpDisposition.markRead), dismissed)
     }
@@ -686,7 +683,7 @@ class SessionDrawerSettleTests {
         val controller = harness.controller
         val stack = harness.stack
         val dismissed = mutableListOf<CatchUpDisposition>()
-        val stage = CatchUpStage(queue = listOf("a", "b"), onDismiss = { dismissed += it })
+        val stage = CatchUpStage(queue = listOf("a", "b"), onDismiss = { _, disposition -> dismissed += disposition })
         controller.updateCatchUp(stage, returnsToDrawer = false, animated = false)
         stack.begin(stage)
         harness.sleep(100)

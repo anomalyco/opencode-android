@@ -220,8 +220,7 @@ private fun HomeLayout(
         CatchUpStage(
             queue = stack.queue,
             undoDirection = stack.handled.lastOrNull()?.disposition,
-            onDismiss = { disposition ->
-                val sessionID = store.state.catchUp?.queue?.firstOrNull() ?: return@CatchUpStage
+            onDismiss = { sessionID, disposition ->
                 store.send(HomeFeature.Action.catchUpCardDismissed(sessionID, disposition))
             },
             onUndo = { store.send(HomeFeature.Action.catchUpUndoTapped) },

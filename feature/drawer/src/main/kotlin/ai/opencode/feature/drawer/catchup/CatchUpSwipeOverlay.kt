@@ -97,14 +97,6 @@ class CatchUpBadgeState(val disposition: CatchUpDisposition) {
             scope?.launch { pop.snapTo(1f) }
         }
     }
-
-    internal fun copyFrom(other: CatchUpBadgeState) {
-        threshold = other.threshold
-        ringDistance = other.ringDistance
-        washDistance = other.washDistance
-        isFull = other.isFull
-        lastDistance = other.lastDistance
-    }
 }
 
 /**

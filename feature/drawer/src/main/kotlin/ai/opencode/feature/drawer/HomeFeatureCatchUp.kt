@@ -41,7 +41,7 @@ internal fun HomeFeature.reduceCatchUp(state: State, action: CatchUpFeature.Acti
         }
 
         is CatchUpFeature.Action.CardDismissed -> {
-            val stack = state.catchUp ?: return Reduced(state)
+            val stack = state.catchUp ?: return lateCardDismissed(state, action)
             if (stack.queue.firstOrNull() != action.sessionID) return Reduced(state)
             var session = state.sessions.firstOrNull { it.id == action.sessionID } ?: return Reduced(state)
             // The card may have observed a newer idle watermark than the list.
@@ -176,4 +176,12 @@ private fun HomeFeature.openCatchUpCard(state: State): HomeReduced {
     val (s, changed) = state.openingCatchUpCard()
     if (!changed) return Reduced(s)
     return cancelBackgroundTranscriptReads(s, setOfNotNull(s.sessionDetail?.session?.id))
+}
+
+/** A card still flying off when something else closed Catch Up: Mark as Read still counts. */
+private fun HomeFeature.lateCardDismissed(state: State, action: CatchUpFeature.Action.CardDismissed): HomeReduced {
+    if (action.disposition != CatchUpFeature.Disposition.markRead) return Reduced(state)
+    val session = state.sessions.firstOrNull { it.id == action.sessionID } ?: return Reduced(state)
+    val s = state.markingReadLocally(session).clearingUnseenBaseline(session.id)
+    return Reduced(s, acknowledgeView(session, s.server))
 }
