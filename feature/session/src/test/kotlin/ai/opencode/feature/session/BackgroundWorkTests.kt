@@ -6,12 +6,9 @@ import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.PasteboardClient
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.haptics.HapticsClient
 import ai.opencode.core.store.TestStore
-import ai.opencode.core.ui.OpenCodeShapeGeometry
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionTestSupport.Harness
-import ai.opencode.feature.session.SessionTestSupport.HapticsRecorder
 import ai.opencode.feature.session.SessionTestSupport.LockIsolated
 import ai.opencode.feature.session.SessionTestSupport.append
 import ai.opencode.feature.session.SessionTestSupport.receive
@@ -29,7 +26,6 @@ import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeShellOutputPage
 import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptItem
-import androidx.compose.ui.geometry.Rect
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -40,7 +36,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
-import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -135,26 +130,8 @@ private suspend fun TestStore<SessionFeature.State, Action>.receiveInAnyOrder(va
 
 private val missing = OpenCodeClientError(message = "Missing", statusCode = 404)
 
-/**
- * Move to Background, the shell output sheet and the panel's drag.
- * `glassRadiusFitsCapsuleAndPanelThroughoutMorph` checks `OpenCodeShapeGeometry`.
- */
+/** Move to Background and the shell output sheet. */
 class BackgroundWorkTests {
-    @Test fun glassRadiusFitsCapsuleAndPanelThroughoutMorph() {
-        // The 44 pt target contains 34 pt of surface. The desktop's 12 dp corners fit it whole.
-        val capsuleHeight = 44f - 2 * BackgroundWorkMotion.capsuleInset
-        assertEquals(12f, OpenCodeShapeGeometry.radius(BackgroundWorkMotion.panelRadius, capsuleHeight))
-        assertEquals(BackgroundWorkMotion.panelRadius, OpenCodeShapeGeometry.radius(BackgroundWorkMotion.panelRadius, 160f))
-        var height = 0f
-        while (height <= 320f) {
-            val radius = OpenCodeShapeGeometry.radius(BackgroundWorkMotion.panelRadius, height)
-            assertTrue(radius >= 0)
-            assertTrue(radius <= height / 2)
-            assertTrue(radius <= BackgroundWorkMotion.panelRadius)
-            height += 0.5f
-        }
-    }
-
     // region Move to Background
 
     /**
@@ -872,185 +849,6 @@ class BackgroundWorkTests {
         pollStore.finish()
         assertEquals(listOf("sh_1", "sh_1"), metered.value.map { it.first })
         assertEquals(listOf(6, 6), metered.value.map { it.second })
-    }
-
-    // endregion
-
-    // region Panel Drag Dismissal & Return
-
-    private fun Rect.offsetBy(dy: Float) = translate(0f, dy)
-
-    @Test fun panelDragTracksFingerScalesTowardCapsuleAndDismissesPastDistanceOrVelocity() {
-        val panel = Rect(20f, 480f, 410f, 740f)
-        val pill = Rect(20f, 706f, 216f, 740f)
-        val recorder = HapticsRecorder()
-        val log = { recorder.log.map { it.name } }
-        val controller = BackgroundWorkDragController(haptics = recorder.client)
-
-        // First sample after gesture recognition starts at zero offset (no grab jump).
-        controller.update(translation = 8f, velocity = 120f)
-        assertEquals(0f, controller.drag.offset)
-        assertEquals(panel, controller.drag.placed(panel, pill, reduceMotion = false).first)
-        assertTrue(log().isEmpty())
-
-        // Dragging down 40 pt (below the 56 pt threshold) translates down and scales slightly toward the capsule.
-        controller.update(translation = 48f, velocity = 120f)
-        assertEquals(40f, controller.drag.offset)
-        val (midFrame, midScale) = controller.drag.placed(panel, pill, reduceMotion = false)
-        assertEquals(panel.left, midFrame.left)
-        assertEquals(panel.top + 40, midFrame.top)
-        assertTrue(midScale < 1 && midScale > BackgroundWorkTunables.dragMinScale)
-        assertTrue(midFrame.width < panel.width && midFrame.width > pill.width)
-        assertTrue("Below threshold stays quiet", log().isEmpty())
-
-        // Under Reduce Motion the panel follows the finger 1:1 without scaling.
-        val reduced = controller.drag.placed(panel, pill, reduceMotion = true)
-        assertEquals(1f, reduced.second)
-        assertEquals(panel.offsetBy(40f), reduced.first)
-
-        // Releasing below distance and velocity thresholds springs back to the open panel.
-        val belowDecision = controller.end(velocity = 90f)
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.ReturnToPanel(velocity = 90f), belowDecision)
-        assertTrue(controller.drag.isReturning)
-
-        // Crossing the distance threshold plays `.threshold` once, and releasing dismisses from where it is.
-        controller.reset()
-        controller.update(translation = 6f, velocity = 180f)
-        controller.update(translation = 40f, velocity = 180f)
-        assertTrue(log().isEmpty())
-        controller.update(translation = 66f, velocity = 180f)
-        assertEquals(60f, controller.drag.offset)
-        assertEquals(listOf("threshold"), log())
-        controller.update(translation = 80f, velocity = 180f)
-        assertEquals("Staying past threshold does not repeat the haptic", listOf("threshold"), log())
-
-        // Backing above the threshold and crossing again ticks `.threshold` again.
-        controller.update(translation = 50f, velocity = -120f)
-        assertFalse(controller.drag.isPastThreshold)
-        controller.update(translation = 74f, velocity = 200f)
-        assertEquals(listOf("threshold", "threshold"), log())
-
-        val dismissDecision = controller.end(velocity = 220f)
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.DismissToCapsule(velocity = 220f), dismissDecision)
-        assertEquals("Offset stays at release position so the capsule morph starts there", 68f, controller.drag.offset)
-
-        // A fast downward flick dismisses even before the distance threshold.
-        controller.reset()
-        controller.update(translation = 6f, velocity = 720f)
-        controller.update(translation = 30f, velocity = 720f)
-        assertEquals(24f, controller.drag.offset)
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.DismissToCapsule(velocity = 720f), controller.end(velocity = 720f))
-        assertEquals(24f, controller.drag.offset)
-    }
-
-    @Test fun panelDragRubberBandsUpwardAndArbitratesScrolledListBeforeTakingOver() {
-        val drag = BackgroundWorkDrag()
-        drag.beginOrUpdate(translation = -6f, velocity = -200f)
-        assertEquals("Grab frame has zero jump", 0f, drag.offset)
-        drag.beginOrUpdate(translation = -46f, velocity = -200f)
-        assertTrue(drag.offset < 0 && drag.offset > -BackgroundWorkTunables.upwardRubberBand)
-        val roundTrip = BackgroundWorkDrag.rubberBandedOffset(BackgroundWorkDrag.rawPull(drag.offset))
-        assertTrue(abs(roundTrip - drag.offset) < 0.001f)
-        val released = drag.end(-200f)
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.ReturnToPanel(velocity = drag.velocity), released)
-
-        // When the list is scrolled (`scrollOffset > 0`), dragging down scrolls the list first
-        // and only moves the panel once the list reaches its top (`scrollOffset <= 0`).
-        val scrolled = BackgroundWorkDrag()
-        scrolled.beginOrUpdate(translation = 12f, velocity = 240f, scrollOffset = 48f, isScrollable = true)
-        assertTrue(!scrolled.isDragging && scrolled.offset == 0f)
-        scrolled.beginOrUpdate(translation = 36f, velocity = 240f, scrollOffset = 24f, isScrollable = true)
-        assertTrue(!scrolled.isDragging && scrolled.offset == 0f)
-        scrolled.beginOrUpdate(translation = 60f, velocity = 240f, scrollOffset = 0f, isScrollable = true)
-        assertTrue("Takes over at the top with zero jump", scrolled.isDragging && scrolled.offset == 0f)
-        scrolled.beginOrUpdate(translation = 84f, velocity = 240f, scrollOffset = -12f, isScrollable = true)
-        assertEquals(24f, scrolled.offset)
-    }
-
-    @Test fun panelDragMovesContinuouslyAcrossGrabReleaseAndMidFlightRegrab() {
-        val panel = Rect(20f, 480f, 410f, 740f)
-        val pill = Rect(20f, 706f, 216f, 740f)
-        val controller = BackgroundWorkDragController(haptics = HapticsClient())
-        val frames = mutableListOf(panel)
-
-        fun currentFrame(): Rect = controller.drag.placed(panel, pill, reduceMotion = false).first
-        fun maxEdgeDelta(a: Rect, b: Rect): Float =
-            listOf(abs(b.left - a.left), abs(b.right - a.right), abs(b.top - a.top), abs(b.bottom - a.bottom)).max()
-
-        // Grab and drag down in 1 pt finger increments to 24 pt.
-        for (step in 0..24) {
-            controller.update(translation = (6 + step).toFloat(), velocity = 60f)
-            frames += currentFrame()
-        }
-        assertTrue(abs(controller.drag.offset - 24) < 0.001f)
-
-        // Release below threshold: step 120 Hz return partway (10 frames), then regrab mid-return.
-        val decision = controller.end(velocity = 0f)
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.ReturnToPanel(velocity = 0f), decision)
-        repeat(10) {
-            controller.stepReturn(dt = 1.0 / 120.0)
-            frames += currentFrame()
-        }
-        val caughtOffset = controller.drag.offset
-        assertTrue("Caught in flight at $caughtOffset", caughtOffset > 4 && caughtOffset < 22)
-
-        // Regrab mid-return and drag 6 pt down, then release to settle back at `panel`.
-        for (delta in 0..6) {
-            controller.update(translation = (10 + delta).toFloat(), velocity = 60f)
-            frames += currentFrame()
-        }
-        assertTrue(abs(controller.drag.offset - (caughtOffset + 6)) < 0.001f)
-        controller.end(velocity = 0f)
-        var safety = 0
-        while (controller.drag.isReturning && safety < 240) {
-            controller.stepReturn(dt = 1.0 / 120.0)
-            frames += currentFrame()
-            safety += 1
-        }
-        assertTrue(!controller.drag.isReturning && controller.drag.offset == 0f)
-        assertEquals(panel, frames.last())
-
-        // Every single frame-to-frame transition across grab, drag, release, regrab, and settle
-        // moves by at most 2.5 pt on every edge: no jump, only the release spring's
-        // peak speed (24 pt back at ω 28.5 peaks near 250 pt/s, 2.1 pt a frame at 120 Hz).
-        val maxStep = frames.zipWithNext().maxOf { (a, b) -> maxEdgeDelta(a, b) }
-        assertTrue("Largest frame-to-frame edge step was $maxStep pt", maxStep <= 2.5f)
-
-        // Grabbing during the open morph (where `open()` resets the controller) starts at
-        // offset 0 with zero jump, and `stopReturn()` at the start of `close()` stops any
-        // in-flight return or active drag without leaving `isDragging` stuck.
-        controller.reset()
-        controller.update(translation = 6f, velocity = 120f)
-        assertTrue(controller.drag.isDragging)
-        assertEquals("No jump on grab during the open morph", 0f, controller.drag.offset)
-        assertEquals(panel, currentFrame())
-        controller.update(translation = 7f, velocity = 120f)
-        assertTrue(abs(controller.drag.offset - 1) < 0.001f)
-        assertTrue(maxEdgeDelta(panel, currentFrame()) <= 1.5f)
-
-        // If `close()` starts while a drag or return spring is active, `stopReturn()` clears
-        // `isDragging` and `isReturning` while keeping `offset` for the close morph.
-        controller.update(translation = 26f, velocity = 120f)
-        assertTrue(abs(controller.drag.offset - 20) < 0.001f)
-        var dismissedVelocity: Float? = null
-        val cancelledBelow = controller.end(velocity = 0f) { dismissedVelocity = it }
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.ReturnToPanel(velocity = 0f), cancelledBelow)
-        assertTrue(dismissedVelocity == null && controller.drag.isReturning)
-        controller.stopReturn()
-        assertTrue(!controller.drag.isReturning && !controller.drag.isDragging)
-        assertTrue(abs(controller.drag.offset - 20) < 0.001f)
-
-        // A cancelled drag (`isGestureActive` reset -> `end(velocity: 0, onDismiss:)`) past
-        // `dragCloses` invokes `onDismiss` so the panel closes instead of sticking partway down.
-        controller.reset()
-        controller.update(translation = 6f, velocity = 120f)
-        controller.update(translation = 76f, velocity = 120f)
-        assertTrue(controller.drag.isDragging && controller.drag.offset == 70f)
-        val cancelledPast = controller.end(velocity = 0f) { dismissedVelocity = it }
-        assertEquals(BackgroundWorkDrag.ReleaseDecision.DismissToCapsule(velocity = 0f), cancelledPast)
-        assertEquals(0f, dismissedVelocity)
-        assertTrue(!controller.drag.isDragging && !controller.drag.isReturning)
-        assertEquals(70f, controller.drag.offset)
     }
 
     // endregion

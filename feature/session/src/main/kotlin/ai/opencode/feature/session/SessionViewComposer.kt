@@ -198,8 +198,8 @@ class SessionComposerHost {
     var onJumpToLatest: () -> Unit by mutableStateOf({})
     /** iOS `passesDragsToTranscript(scrollEdgeBridge)`: the transcript a pill's drag scrolls. */
     var borrowedDrag: TranscriptBorrowedDrag? by mutableStateOf(null)
-    /** Where [BackgroundWorkPresentation] draws the capsule (iOS `backgroundActivityAnchor()`). */
-    var backgroundWorkAnchor: BackgroundWorkAnchor? by mutableStateOf(null)
+    /** The background-work capsule tapped: [BackgroundWorkSheet] opens. */
+    var onShowBackgroundWork: () -> Unit by mutableStateOf({})
     /** Catch Up's card: no project list, no swipe-up focus, its own side clearance. */
     var isCatchUpCard by mutableStateOf(false)
 
@@ -565,8 +565,6 @@ fun SessionComposer(
         send = { store.send(Action.Autocomplete(it)) },
     )
     host.focusAction = env.focus
-    // The background-work capsule above rides the request panel's room as it animates.
-    host.backgroundWorkAnchor?.motion = { view.requestPanelShown.value * 1000f + view.requestPanelReveal.value }
     host.dismissAction = env.dismissKeyboard
     SideEffect {
         host.autocompleteCovers = autocomplete.isOpen
@@ -1141,14 +1139,13 @@ private fun SessionComposerEnv.DraftProjectsOverlay(modifier: Modifier) {
 private fun SessionComposerEnv.ComposerPills() {
     val hasActivity = s.hasBackgroundWork
     val hasQueued = s.queuedMessages.isNotEmpty()
-    if (!hasActivity && !hasQueued) return
     val fontScale = LocalDensity.current.fontScale
     // iOS `ViewThatFits`: the row unless large text makes it overflow.
     val stacks = fontScale >= 1.8f
     val showsJump = host.showsJumpButton && !holdsClientToolCard
     if (!stacks) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            if (hasActivity) BackgroundActivity()
+            BackgroundActivity()
             Spacer(Modifier.weight(1f))
             // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1169,14 +1166,17 @@ private fun SessionComposerEnv.ComposerPills() {
     }
 }
 
-/** iOS `backgroundActivity`: the capsule's place in the pill row; [BackgroundWorkPresentation] draws it. */
+/** iOS `backgroundActivity`. */
 @Composable
 private fun SessionComposerEnv.BackgroundActivity() {
-    val anchor = host.backgroundWorkAnchor
-    BackgroundWorkCapsuleSpace(
-        agents = s.backgroundAgents,
-        shells = s.backgroundShells,
-        modifier = if (anchor != null) Modifier.backgroundActivityAnchor(anchor) else Modifier,
+    val work by store.observe(BackgroundWorkModel::from)
+    BackgroundWorkCapsule(
+        agents = work.agents,
+        shells = work.shells,
+        waitingSessionIDs = work.waitingSessionIDs,
+        probe = work.probe,
+        onClick = host.onShowBackgroundWork,
+        transcript = host.borrowedDrag,
     )
 }
 
@@ -1197,7 +1197,6 @@ private fun SessionComposerEnv.QueuedActivity(hasQueued: Boolean) {
             accessibilityLabel = pluralStringResource(R.plurals.session_queued_messages_description, count, count),
             modifier = Modifier
                 .passesDragsToTranscript(host.borrowedDrag)
-                .coveredByBackgroundWork()
                 .semantics { testTag = "queued-messages" },
         ) {
             OpenCodeIcon(SFSymbol.TextBubble, contentDescription = null, size = 17.dp, modifier = Modifier.offset(y = ComposerTunables.queuedGlyphDrop.dp))

@@ -163,8 +163,7 @@ fun SessionView(
     isInertPreview: Boolean = false,
 ) {
     val scrollEdgeBridge = rememberSaveable(saver = SessionScrollEdgeBridge.Saver) { SessionScrollEdgeBridge() }
-    val backgroundWorkAnchor = rememberBackgroundWorkAnchor()
-    // What the composer shares with the screen around it (the capsule's place, jump to latest, the + menu).
+    // What the composer shares with the screen around it (the background-work capsule, jump to latest, the + menu).
     // The pill a session opens with (a cold launch's reconnect) is there from its first frame, as
     // iOS's is, rather than rising in over the last row a frame later.
     // So is the jump button a recreated screen showed (F-38).
@@ -229,6 +228,10 @@ fun SessionView(
     OrbClearance(callStore, orbGeometry, isCovered, composerHost)
 
     val work by store.observe(BackgroundWorkModel::from)
+    LaunchedEffect(work.sessionID) { showsBackgroundWork = false }
+    LaunchedEffect(work.inCall) { if (work.inCall) showsBackgroundWork = false }
+    LaunchedEffect(composerHost.composerPanelCovers) { if (composerHost.composerPanelCovers) showsBackgroundWork = false }
+    HapticEffect(Haptic.tap, showsBackgroundWork) { _, open -> open }
     val agentScope by store.observe { "${it.server.persistenceID}|${it.session?.id ?: "draft"}" }
     val errorMessage by store.observe { it.errorMessage }
     val identity by store.observe { it.transcriptIdentity }
@@ -238,7 +241,11 @@ fun SessionView(
     val isImportingAttachments = isImportingImages || importer.isLoadingFiles
 
     SideEffect {
-        composerHost.backgroundWorkAnchor = backgroundWorkAnchor
+        composerHost.onShowBackgroundWork = {
+            composerHost.dismissComposerKeyboard()
+            if (attachmentMenu.attachmentMenu != AttachmentMenuPhase.Closed) attachmentMenu.closeAttachmentMenu()
+            showsBackgroundWork = true
+        }
         composerHost.isCatchUpCard = onCatchUpOpen != null
         composerHost.connection = listContext.connection
         composerHost.onConnectionAction = onConnectionAction
@@ -262,39 +269,16 @@ fun SessionView(
         LocalDotScopeCovered provides isCovered,
         LocalSessionAttachmentMenu provides attachmentMenu,
     ) {
-        // The + menu draws above the background-work capsule (iOS: the menu's glass covers it).
         // iOS `ComposerWindowTouchObserver` on the window: the screen's latest touch-down, for the
         // model chip's double-tap check.
         Box(modifier.composerWindowTouches(composerHost.fieldLink.windowTouches)) {
-        BackgroundWorkPresentation(
-            anchor = backgroundWorkAnchor,
-            sessionID = work.sessionID,
-            agents = work.agents,
-            shells = work.shells,
-            waitingSessionIDs = work.waitingSessionIDs,
-            probe = work.probe,
-            isPresented = showsBackgroundWork,
-            onPresentedChange = { showsBackgroundWork = it },
-            onOpenSubagent = { store.send(Action.SubagentTapped(it)) },
-            onOpenShell = { store.send(Action.ShellOutputTapped(it)) },
-            isCovered = composerHost.composerPanelCovers,
-            inCall = work.inCall,
-            transcript = scrollEdgeBridge.borrowedDrag,
-            // The capsule draws above the + menu's dismiss area: tapping it closes the menu.
-            // iOS: typing ends, and the capsule draws above the menu's dismiss area: tapping it closes the menu.
-            onToggle = {
-                composerHost.dismissComposerKeyboard()
-                if (attachmentMenu.attachmentMenu != AttachmentMenuPhase.Closed) attachmentMenu.closeAttachmentMenu()
-            },
-            // TalkBack reads the header, then the transcript, then the background-work capsule, then
-            // the composer, as VoiceOver reads iOS's top overlay first and the rest top to bottom: the
-            // header draws over the transcript, so it came after it (QA P-06). The group is the
-            // presentation's, not the screen's, so the capsule drawn over the screen sits in it by
-            // its place above the composer (iOS `SessionView+Composer.swift:209-241`), not after
-            // everything (QA AB-02).
-            // iOS: the + menu is an `.isModal` container in its own window, so VoiceOver reaches
-            // nothing beneath it. TalkBack has no modal, so the screen under it (the + too) hides.
-            modifier = Modifier
+        // TalkBack reads the header, then the transcript, then the composer, as VoiceOver reads iOS's
+        // top overlay first and the rest top to bottom: the header draws over the transcript, so it
+        // came after it (QA P-06).
+        // iOS: the + menu is an `.isModal` container in its own window, so VoiceOver reaches
+        // nothing beneath it. TalkBack has no modal, so the screen under it (the + too) hides.
+        Box(
+            Modifier
                 .semantics { isTraversalGroup = true }
                 .then(if (attachmentMenu.plusMenuIsOpen) Modifier.clearAndSetSemantics {} else Modifier),
         ) {
@@ -404,6 +388,17 @@ fun SessionView(
         if (!isInertPreview) {
             SessionAttachmentMenu(store, composerHost, importer, attachmentMenu)
         }
+        if (showsBackgroundWork) {
+            BackgroundWorkSheet(
+                agents = work.agents,
+                shells = work.shells,
+                waitingSessionIDs = work.waitingSessionIDs,
+                probe = work.probe,
+                onDismiss = { showsBackgroundWork = false },
+                onOpenSubagent = { store.send(Action.SubagentTapped(it)) },
+                onOpenShell = { store.send(Action.ShellOutputTapped(it)) },
+            )
+        }
         }
         if (!isInertPreview) {
             SessionSheets(store, listContext)
@@ -461,7 +456,7 @@ private fun SessionBottomScrollEdge(surfaceTopInWindow: () -> Float, modifier: M
 
 /** What the background-work panel reads from the session. */
 @Immutable
-private data class BackgroundWorkModel(
+internal data class BackgroundWorkModel(
     val sessionID: String?,
     val agents: List<OpenCodeSession>,
     val shells: List<OpenCodeShell>,
