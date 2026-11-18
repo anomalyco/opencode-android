@@ -18,8 +18,6 @@ import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
 import ai.opencode.feature.composer.AttachmentMenuAnchors
-import ai.opencode.feature.composer.AttachmentMenuItem
-import ai.opencode.feature.composer.AttachmentMenuPress
 import ai.opencode.feature.composer.ComposerAutocompleteAction
 import ai.opencode.feature.composer.ComposerAutocompletePanel
 import ai.opencode.feature.composer.ComposerAutocompleteState
@@ -250,14 +248,10 @@ class SessionComposerHost {
     /** The screen's imports (iOS `imageImporter`/`fileImporter`): pastes and drops on the field start them. */
     var importer: SessionAttachmentImporter? by mutableStateOf(null)
     val fieldLink = ai.opencode.feature.composer.ComposerFieldLink()
-    /** iOS `attachmentMenuAnchors`: the + button, the composer, the menu's rows (root px). */
+    /** The composer's frame (root px). */
     val attachmentAnchors = AttachmentMenuAnchors()
-    /** iOS `attachmentMenuPress`; set by the screen's attachment menu. */
-    var attachmentPress: AttachmentMenuPress? by mutableStateOf(null)
-    /** The rows a slide from + can reach: the menu's, only while it rests open. */
-    var attachmentMenuRows: Map<AttachmentMenuItem, androidx.compose.ui.geometry.Rect> by mutableStateOf(emptyMap())
-    /** iOS `chooseAttachment`: a row chosen by sliding from + and releasing on it. */
-    var onAttachmentChoose: (AttachmentMenuItem) -> Unit by mutableStateOf({})
+    /** The + menu, drawn hanging from the + button; set by the screen's attachment menu. */
+    var attachmentDropdown: @Composable () -> Unit by mutableStateOf({})
     /** iOS `closeAttachmentMenu`: a request docking closes the menu. */
     var closeAttachmentMenu: () -> Unit = {}
     /**

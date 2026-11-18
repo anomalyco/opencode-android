@@ -137,7 +137,6 @@
     <string name="composer_model_hide_keyboard_description">Skrýt klávesnici</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">Možnosti příloh</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">Ultraširokoúhlý</string>

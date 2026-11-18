@@ -45,6 +45,10 @@ by hand (`gh workflow run scheduled-release.yml`) to release sooner ([docs/relea
 - The session's page stack (subagent and browser pages) is Android-native on purpose: one animated
   shared-axis move in `SessionPageStack.kt` and system predictive back. Don't port iOS's full-width
   back pan or its stack motion; covered pages still stay composed so they keep their state.
+- The composer's + menu is Android-native on purpose: a Material `DropdownMenu` hanging from + in
+  `SessionView.kt` (`SessionAttachmentDropdown`), with Material's motion and a non-focusable popup so the
+  keyboard stays up. Don't port iOS's glass surface, hold-to-open or slide-to-choose, or `TouchRecovery`;
+  its rows, order, haptics and keyboard hand-back still follow iOS.
 
 ## Modules (fixed; never edit `settings.gradle.kts`)
 

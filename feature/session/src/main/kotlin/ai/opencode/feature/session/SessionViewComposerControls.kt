@@ -1,5 +1,6 @@
 package ai.opencode.feature.session
 
+import ai.opencode.core.ui.accessibilityFocusTarget
 import ai.opencode.core.R as CoreR
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.feature.voice.FloatingCallCenter
@@ -24,7 +25,6 @@ import ai.opencode.core.ui.excludedFromDrawerPan
 import ai.opencode.core.ui.openCodeTapTarget
 import ai.opencode.core.ui.rememberAccessibilityFocusRequest
 import ai.opencode.feature.session.SessionFeature.Action
-import ai.opencode.feature.composer.AttachmentMenuPhase
 import ai.opencode.feature.composer.AttachmentPickerButton
 import ai.opencode.feature.composer.ComposerAgentChip
 import ai.opencode.core.store.observe
@@ -200,32 +200,24 @@ internal fun SessionComposerEnv.composerTextTakesDoubleTap(): Boolean = host.fie
 
 /**
  * iOS `attachmentButton`: :feature:composer's [AttachmentPickerButton]. + opens the attachment
- * menu (a hold opens it under the finger, and sliding to a row and releasing chooses it); turned
- * 45° it's the menu's close and, on its tinted circle, the recording's × (red while sliding has
- * armed cancel).
+ * menu, which hangs from it; turned 45° it's the menu's close and, on its tinted circle, the
+ * recording's × (red while sliding has armed cancel).
  */
 @Composable
 private fun SessionComposerEnv.AttachmentButton() {
-    val press = host.attachmentPress ?: return
     val hold = s.dictationHold
     val pose = hold?.let { dictationPose(it) }
     val menu = LocalSessionAttachmentMenu.current
     AttachmentPickerButton(
         isLoading = host.isImportingAttachments,
         isOpen = host.isAttachmentMenuOpen,
-        anchors = host.attachmentAnchors,
-        press = press,
-        rows = host.attachmentMenuRows,
         onToggle = { host.onPlusTapped?.invoke() },
-        onChoose = host.onAttachmentChoose,
         dictation = pose?.let { AttachmentPickerButton.Dictation(isCancelArmed = it.cancelArmed, isEnabled = !it.isFinishing) },
         onCancelDictation = { store.send(Action.micPressCancelled) },
         // Its ink as far from the surface's leading edge as from its top; the expanded text inset starts on the same line.
         glyphOffset = ComposerTunables.plusInkOffset,
-        // iOS `popsOnClose`: the + menu collapses back into + and the glyph pops.
-        popsOnClose = menu != null && menu.attachmentMenu == AttachmentMenuPhase.Menu,
-        // Sliding from + to the rows must not open the drawer; loading, or as the recording's ×, it takes no slide.
-        modifier = Modifier.excludedFromDrawerPan(!host.isImportingAttachments && hold == null),
+        modifier = if (menu != null) Modifier.accessibilityFocusTarget(menu.plusButton) else Modifier,
+        menu = host.attachmentDropdown,
     )
 }
 

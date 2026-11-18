@@ -33,8 +33,6 @@ import ai.opencode.feature.session.header.SessionContextGauge
 import ai.opencode.feature.session.header.SessionContextText
 import ai.opencode.server.model.OpenCodeExportFormat
 import ai.opencode.server.model.isUntitled
-import android.view.View
-import android.view.accessibility.AccessibilityManager
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
@@ -64,11 +62,9 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -76,9 +72,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -88,7 +82,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -103,10 +96,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.coroutines.resume
 import kotlin.math.max
 
 // The header row (drawer or Back, the title capsule, Back to main session and the … session menu),
@@ -449,12 +438,12 @@ private fun SessionMenuButton(store: StoreOf<State, Action>, model: SessionHeade
     LaunchedEffect(showsDialog) {
         if (showsDialog || !returnsFocusAfterDialog) return@LaunchedEffect
         returnsFocusAfterDialog = false
-        view.focusSessionMenuButtonForAccessibility(more)
+        view.focusMenuButtonForAccessibility(more)
     }
     LaunchedEffect(showsInfo) {
         if (showsInfo || !returnsFocusAfterInfo) return@LaunchedEffect
         returnsFocusAfterInfo = false
-        view.focusSessionMenuButtonForAccessibility(more)
+        view.focusMenuButtonForAccessibility(more)
     }
     Box(Modifier.onGloballyPositioned { anchorBottom = it.boundsInWindow().bottom.toInt() }) {
         OpenCodeIconButton(
@@ -496,15 +485,6 @@ private fun SessionMenuButton(store: StoreOf<State, Action>, model: SessionHeade
     }
 }
 
-/** The system lists a shown window for accessibility on its 100 ms accessibility event interval; twice that, to be sure. */
-private const val MENU_WINDOW_LISTED_MS = 200L
-
-/** How long More waits for TalkBack's focus, so it isn't lost with the menu or what the menu opened. */
-private const val MENU_FOCUS_DELAY_MS = 150L
-
-/** Material's menu margin from the window's edge (`MenuVerticalMargin`). */
-private val sessionMenuMargin = 48.dp
-
 /** The session's own actions, its work, and deletion. */
 @Composable
 private fun SessionMenu(
@@ -528,23 +508,10 @@ private fun SessionMenu(
     // non-focusable popup gets neither Back nor a hardware Escape: both close it here.
     BackHandler(enabled = expanded, onBack = onDismiss)
     EscapeHandler(enabled = expanded, onEscape = onDismiss)
-    // Accessibility focus isn't input focus, so TalkBack still treats the open menu as a pane: the
-    // menu takes TalkBack's focus as it opens, the screen behind then leaves the accessibility tree
-    // so swipes stay in the menu (its window otherwise came after the whole composer), and More
-    // gets the focus back as it closes.
+    // Accessibility focus isn't input focus, so TalkBack still treats the open menu as a pane.
     val hostView = LocalView.current
-    val context = LocalContext.current
-    val talkBack = remember(context) { context.getSystemService(AccessibilityManager::class.java) }
-    val isOpen by rememberUpdatedState(expanded)
     val firstRow = remember { AccessibilityFocusTarget() }
-    DisposableEffect(expanded, hostView) {
-        if (!expanded || talkBack?.isTouchExplorationEnabled != true) return@DisposableEffect onDispose { }
-        val previous = hostView.importantForAccessibility
-        onDispose {
-            hostView.importantForAccessibility = previous
-            hostView.focusSessionMenuButtonForAccessibility(more)
-        }
-    }
+    MenuReturnsTalkBackFocus(expanded, more)
     val density = LocalDensity.current
     val windowHeight = LocalWindowInfo.current.containerSize.height
     // Insets are read only while open, so the keyboard's animation doesn't recompose the header.
@@ -552,7 +519,7 @@ private fun SessionMenu(
         val keyboard = WindowInsets.ime.getBottom(density)
         if (keyboard > WindowInsets.navigationBars.getBottom(density)) {
             val bottom = windowHeight - keyboard - WindowInsets.statusBars.getTop(density)
-            with(density) { (bottom - anchorBottom()).toDp() } - sessionMenuMargin
+            with(density) { (bottom - anchorBottom()).toDp() } - menuWindowMargin
         } else {
             Dp.Unspecified
         }
@@ -565,20 +532,7 @@ private fun SessionMenu(
         modifier = if (room != Dp.Unspecified) Modifier.heightIn(max = room.coerceAtLeast(headerButtonSize)) else Modifier,
         properties = PopupProperties(focusable = false),
     ) {
-        if (talkBack?.isTouchExplorationEnabled == true) {
-            val menuView = LocalView.current
-            LaunchedEffect(menuView) {
-                // Focus sent before the system lists the popup's window for accessibility is
-                // dropped (TalkBack stayed on More): the window is listed once shown.
-                while (!menuView.isAttachedToWindow) withFrameNanos { }
-                withTimeoutOrNull(MENU_WINDOW_LISTED_MS) { menuView.awaitFrameCommit() }
-                delay(MENU_WINDOW_LISTED_MS)
-                val focused = firstRow.focus()
-                // Hidden only once the menu has the focus: TalkBack otherwise recovers from losing
-                // More by focusing the keyboard.
-                if (focused && isOpen) hostView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
-            }
-        }
+        MenuTakesTalkBackFocus(hostView, expanded, firstRow)
         listContext.isPinned?.let { isPinned ->
             MenuItem(
                 if (isPinned) stringResource(R.string.session_unpin) else stringResource(R.string.session_pin),
@@ -648,31 +602,3 @@ private fun SessionMenu(
 }
 
 private val PaddingWithIndent = PaddingValues(start = 48.dp, end = 12.dp)
-
-/** Resumes once this view's window commits its next frame. */
-private suspend fun View.awaitFrameCommit() = suspendCancellableCoroutine { continuation ->
-    val observer = viewTreeObserver
-    val callback = Runnable { if (continuation.isActive) continuation.resume(Unit) }
-    observer.registerFrameCommitCallback(callback)
-    continuation.invokeOnCancellation { if (observer.isAlive) observer.unregisterFrameCommitCallback(callback) }
-    invalidate()
-}
-
-/** TalkBack back on More, once the menu or what it opened has gone, unless a dialog it opened (Rename, Delete) has the focus. */
-private fun View.focusSessionMenuButtonForAccessibility(more: AccessibilityFocusTarget) {
-    if (context.getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled != true) return
-    postDelayed({
-        if (hasWindowFocus()) more.focus()
-    }, MENU_FOCUS_DELAY_MS)
-}
-
-@Composable
-private fun MenuItem(label: String, symbol: SFSymbol, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    DropdownMenuItem(
-        text = { Text(label) },
-        leadingIcon = { OpenCodeIcon(symbol, contentDescription = null, size = OpenCodeIconSize.small) },
-        onClick = onClick,
-        modifier = modifier,
-        contentPadding = MenuDefaults.DropdownMenuItemContentPadding,
-    )
-}

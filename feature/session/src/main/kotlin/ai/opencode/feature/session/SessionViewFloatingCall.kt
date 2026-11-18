@@ -3,7 +3,6 @@ package ai.opencode.feature.session
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.store.StoreOf
 import ai.opencode.core.store.observe
-import ai.opencode.feature.composer.AttachmentMenuPhase
 import ai.opencode.feature.composer.ComposerAutocompleteAction
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.State
@@ -72,7 +71,7 @@ internal fun SessionFloatingCallCoverage(
         if (!covers) return@LaunchedEffect
         host.dismissComposerKeyboard()
         attachmentMenu.attachmentMenuRestoresFocus = false
-        if (attachmentMenu.attachmentMenu != AttachmentMenuPhase.Closed) attachmentMenu.closeAttachmentMenu()
+        attachmentMenu.closeAttachmentMenu()
         // Cancels the model list's focus restore first.
         host.modelPanels?.closeModelPanels()
         if (store.state.autocomplete.isOpen) store.send(Action.Autocomplete(ComposerAutocompleteAction.Dismissed))

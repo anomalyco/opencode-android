@@ -1,24 +1,16 @@
 package ai.opencode.feature.composer
 
 import ai.opencode.core.R as CoreR
-import ai.opencode.core.dependencies.dependency
-import ai.opencode.core.haptics.Haptic
-import ai.opencode.core.haptics.HapticsClient
 import ai.opencode.core.motion.Motion
 import ai.opencode.core.strings.localized
 import ai.opencode.core.motion.MotionPhase
-import ai.opencode.core.motion.MotionSpring
 import ai.opencode.core.motion.motionPressEffect
 import ai.opencode.core.motion.rememberReduceMotion
-import ai.opencode.core.tuning.AnimationTimeScale
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
-import ai.opencode.core.ui.accessibilityFocusRequest
-import ai.opencode.core.ui.rememberAccessibilityFocusRequest
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -35,24 +27,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.LayoutCoordinates
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -63,15 +48,6 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.math.roundToLong
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 
 /**
  * The `ComposerTunables` defaults the + reads: `innerHorizontal` 6, `plusOffset` 28, `plusScale`
@@ -85,12 +61,9 @@ private object PlusButtonComposerTunables {
 }
 
 /**
- * The composer's + button. A tap opens the attachment menu
- * ([ai.opencode.feature.composer.plusmenu.PlusMenuGlassSurface]), which grows up out of the button;
- * touching down and holding opens it too, and the finger can slide across the rows and release on
- * one to choose it. While the menu is open the + turns into a × that closes it. While dictating the
- * same + turns into the recording's ×, which cancels it, and a filled circle grows in behind it in
- * the same spring.
+ * The composer's + button. A tap opens the attachment menu, a dropdown hanging from the button.
+ * While the menu is open the + turns into a × that closes it. While dictating the same + turns into
+ * the recording's ×, which cancels it, and a filled circle grows in behind it in the same spring.
  */
 object AttachmentPickerButton {
     /** The recording the × cancels while dictating. */
@@ -103,18 +76,10 @@ object AttachmentPickerButton {
 
     /** The + menu takes up to 8 photos. */
     const val MAX_PHOTO_SELECTION = 8
-
-    /** How long a touch rests on + before the menu opens under it. */
-    val holdDuration: Duration = PlusMenuTunables.HOLD_DURATION.seconds
-
-    /** Moving this far (dp) before the hold elapses opens the menu at once. */
-    internal const val DRAG_DISTANCE = 10f
 }
 
 /**
- * @param rows the rows a slide can reach, in root coordinates: none unless the menu is up.
- * @param popsOnClose the + menu is showing; when it collapses back into + the glyph pops
- *   ([PlusPop]).
+ * @param menu the attachment menu, anchored to the button.
  * @param glyphOffset moves the glyph's ink inside the target (the composer lines its + up with
  *   the placeholder's leading edge); the target stays put. Dp.
  */
@@ -122,39 +87,24 @@ object AttachmentPickerButton {
 fun AttachmentPickerButton(
     isLoading: Boolean,
     isOpen: Boolean,
-    anchors: AttachmentMenuAnchors,
-    press: AttachmentMenuPress,
-    rows: Map<AttachmentMenuItem, Rect>,
     onToggle: () -> Unit,
-    onChoose: (AttachmentMenuItem) -> Unit,
     modifier: Modifier = Modifier,
     dictation: AttachmentPickerButton.Dictation? = null,
     onCancelDictation: () -> Unit = {},
     glyphOffset: Float = 0f,
-    /** The + menu is showing; when it collapses back into + the glyph pops. */
-    popsOnClose: Boolean = false,
+    menu: @Composable () -> Unit = {},
 ) {
     val reduceMotion = rememberReduceMotion()
     val density = LocalDensity.current
-    val scope = rememberCoroutineScope()
     val fontScale = minOf(density.fontScale, 1.6f)
     val isDictating = dictation != null
     val showsX = isOpen || isDictating
     val cancelArmed = dictation?.isCancelArmed == true
     var isTouching by remember { mutableStateOf(false) }
-    var coordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
-
-    val currentIsOpen by rememberUpdatedState(isOpen)
-    val currentRows by rememberUpdatedState(rows)
-    val currentToggle by rememberUpdatedState(onToggle)
-    val currentChoose by rememberUpdatedState(onChoose)
 
     // A touch that began on + (the menu's) isn't the recording's.
     LaunchedEffect(isDictating) {
-        if (isDictating && isTouching) {
-            isTouching = false
-            press.cancelled()
-        }
+        if (isDictating) isTouching = false
     }
 
     val visualOffsetX = PlusButtonComposerTunables.PLUS_OFFSET - (PlusButtonComposerTunables.INNER_HORIZONTAL + 22f)
@@ -180,23 +130,6 @@ fun AttachmentPickerButton(
         label = "dictation-circle-color",
     )
     val glyphX by animateFloatAsState(if (isDictating) 0f else glyphOffset, dictationSpec, label = "plus-glyph-x")
-    // The menu gave TalkBack's focus a place of its own; as it closes, the focus comes back here
-    // (VoiceOver returns from an `.isModal` container by itself).
-    var closes by remember { mutableIntStateOf(0) }
-    var wasOpen by remember { mutableStateOf(isOpen) }
-    LaunchedEffect(isOpen) {
-        if (wasOpen && !isOpen) closes += 1
-        wasOpen = isOpen
-    }
-    // One move per close: laid out again later (the session moved into Catch Up's stack), the + doesn't take it again.
-    val closeFocus = rememberAccessibilityFocusRequest(closes.takeIf { it > 0 })
-    val pop = remember { PlusPop() }
-    var wasPopping by remember { mutableStateOf(popsOnClose) }
-    LaunchedEffect(popsOnClose) {
-        val was = wasPopping
-        wasPopping = popsOnClose
-        if (was && !popsOnClose && !currentIsOpen && !reduceMotion) pop.play()
-    }
     val glyphColor = if (cancelArmed) Color.White else OpenCodeTheme.colors.text
     val label = when {
         isDictating -> stringResource(R.string.composer_plus_cancel_dictation_description)
@@ -210,99 +143,30 @@ fun AttachmentPickerButton(
         if (dictation?.isEnabled == true) onCancelDictation()
     }
 
-    val menuGesture = if (isLoading || isDictating) Modifier else Modifier.pointerInput(press, anchors) {
-        val dragDistance = AttachmentPickerButton.DRAG_DISTANCE.dp.toPx()
-        awaitEachGesture {
-            val down = awaitFirstDown(requireUnconsumed = false)
-            down.consume()
-            var hold: Job? = null
-            fun openByHold() {
-                hold?.cancel()
-                hold = null
-                if (!press.holdElapsed()) return
-                currentToggle()
-            }
-            fun toRoot(point: Offset): Offset = coordinates?.localToRoot(point) ?: point
-            fun finishTouch() {
-                hold?.cancel()
-                hold = null
-                isTouching = false
-            }
-            isTouching = true
-            press.began(isOpen = currentIsOpen)
-            if (!currentIsOpen) {
-                hold = scope.launch {
-                    delay(AttachmentPickerButton.holdDuration)
-                    openByHold()
-                }
-            }
-            var released: Offset? = null
-            try {
-                while (true) {
-                    val event = awaitPointerEvent()
-                    val change = event.changes.firstOrNull { it.id == down.id } ?: break
-                    if (!change.pressed) {
-                        released = change.position
-                        change.consume()
-                        break
-                    }
-                    if ((change.position - down.position).getDistance() > dragDistance) openByHold()
-                    val point = toRoot(change.position)
-                    press.moved(point, anchors.button, currentRows, dragSlopPx = AttachmentMenuPress.BUTTON_SLOP.dp.toPx())
-                    change.consume()
-                }
-            } catch (cancellation: CancellationException) {
-                if (isTouching) {
-                    finishTouch()
-                    press.cancelled()
-                }
-                throw cancellation
-            }
-            val end = released
-            if (end == null) {
-                // The system took the touch: it still finishes.
-                if (isTouching) {
-                    finishTouch()
-                    press.cancelled()
-                }
-                return@awaitEachGesture
-            }
-            if (!isTouching) return@awaitEachGesture
-            finishTouch()
-            when (val outcome = press.ended(toRoot(end), anchors.button, currentRows, AttachmentMenuPress.BUTTON_SLOP.dp.toPx())) {
-                AttachmentMenuPress.Outcome.None -> Unit
-                AttachmentMenuPress.Outcome.Toggle, AttachmentMenuPress.Outcome.Close -> currentToggle()
-                is AttachmentMenuPress.Outcome.Choose -> currentChoose(outcome.item)
-            }
-        }
+    val onTap by rememberUpdatedState {
+        if (isDictating) cancelDictation() else if (!isLoading) onToggle()
     }
-    val dictationTap = if (!isDictating) Modifier else Modifier.pointerInput(Unit) {
+    val tap = Modifier.pointerInput(isDictating) {
         awaitEachGesture {
-            val down = awaitFirstDown()
-            down.consume()
+            awaitFirstDown().consume()
+            isTouching = !isDictating
             val up = waitForUpOrCancellationCompat()
-            if (up) cancelDictation()
+            isTouching = false
+            if (up) onTap()
         }
     }
 
     Box(
         modifier
             .size(48.dp)
-            .onGloballyPositioned {
-                coordinates = it
-                anchors.button = Rect(it.positionInRoot(), it.size.toSize())
-            }
-            .then(menuGesture)
-            .then(dictationTap)
-            // Ahead of the clearing below, which would drop its marker.
-            .accessibilityFocusRequest(closeFocus)
+            .then(tap)
             .clearAndSetSemantics {
                 role = Role.Button
                 contentDescription = label
                 testTag = "attachment-menu-button"
                 if (!enabled) disabled()
                 onClick {
-                    if (isDictating) cancelDictation() else if (!isLoading) onToggle()
+                    onTap()
                     true
                 }
             },
@@ -327,13 +191,7 @@ fun AttachmentPickerButton(
                     .background(circleColor, CircleShape),
             )
             Box(
-                Modifier
-                    .offset(x = glyphX.dp)
-                    .graphicsLayer {
-                        scaleX = pop.scale.value
-                        scaleY = pop.scale.value
-                        alpha = pop.opacity.value
-                    },
+                Modifier.offset(x = glyphX.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 val glyphSize = (PlusButtonComposerTunables.PLUS_SCALE * 1.3f * fontScale).dp
@@ -360,40 +218,17 @@ fun AttachmentPickerButton(
                 }
             }
         }
+        menu()
     }
 }
 
 private val SystemRed = Color(0xFFFF3B30)
 
-/**
- * The + arriving back as the + menu's glass collapses into it: hidden under the glass, then fading
- * in from `plusPop` and springing to full size.
- */
-@Stable
-internal class PlusPop {
-    val scale = Animatable(1f)
-    val opacity = Animatable(1f)
-
-    suspend fun play() = coroutineScope {
-        // Held under the folding glass until it arrives, then in on `microIn` (its fade on
-        // `swap`'s entrance).
-        val delaySeconds = AnimationTimeScale.shared.wallSeconds(Motion.panelClose.curve().duration * PlusMenuTunables.PLUS_POP_LEAD)
-        val pop = Motion.microIn.curve()
-        val settle = AnimationTimeScale.shared.wallSeconds(pop.duration)
-        val fade = AnimationTimeScale.shared.wallSeconds(Motion.swap.curve().duration)
-        scale.snapTo(PlusMenuTunables.PLUS_POP.toFloat())
-        opacity.snapTo(0f)
-        delay((delaySeconds * 1000).roundToLong())
-        launch { scale.animateTo(1f, MotionSpring(settle, pop.bounce).spec()) }
-        launch { opacity.animateTo(1f, MotionSpring(fade, 0.0).spec()) }
-    }
-}
-
 /** True on an up, false on a cancel (the gesture moved away or was consumed). */
 private suspend fun AwaitPointerEventScope.waitForUpOrCancellationCompat(): Boolean =
     waitForUpOrCancellation()?.also { it.consume() } != null
 
-/** What the menu offers. Paste can only be tapped, never chosen by releasing a drag over it. */
+/** What the menu offers. */
 enum class AttachmentMenuItem(@StringRes private val titleRes: Int, val systemImage: SFSymbol) {
     Camera(R.string.composer_attachment_menu_camera, SFSymbol.Camera),
     Photos(R.string.composer_attachment_menu_photos, SFSymbol.PhotoOnRectangle),
@@ -402,123 +237,11 @@ enum class AttachmentMenuItem(@StringRes private val titleRes: Int, val systemIm
     Paste(R.string.composer_attachment_menu_paste, SFSymbol.DocOnClipboard);
 
     val title: String get() = localized(titleRes)
-
-    val isDragSelectable: Boolean get() = this != Paste
 }
 
-/**
- * A touch on + and what it does: opening by hold, sliding over rows with a highlight, and releasing
- * to choose, cancel, or leave the menu open. It plays the menu's haptics, each once: a light impact
- * as the menu opens, a selection tick as the finger reaches each row, and a light impact as a
- * release chooses one. Closing plays nothing, like the system's menus. A plain object: it owns
- * per-touch state, not the reducer.
- */
-@Stable
-class AttachmentMenuPress(private val haptics: HapticsClient = dependency(HapticsClient)) {
-    sealed interface Outcome {
-        /** Nothing changes: a release away from the rows and the button. */
-        data object None : Outcome
-        /** A plain tap: opens a closed menu, closes an open one. */
-        data object Toggle : Outcome
-        /** Released back on the × after sliding away from it. */
-        data object Close : Outcome
-        data class Choose(val item: AttachmentMenuItem) : Outcome
-    }
-
-    /** The row under the finger. */
-    var highlighted: AttachmentMenuItem? by mutableStateOf(null)
-        private set
-
-    private data class Touch(val wasOpen: Boolean, val openedByHold: Boolean = false, val leftButton: Boolean = false)
-
-    private var touch: Touch? = null
-
-    /** A finger is down on +. */
-    val isTouching: Boolean get() = touch != null
-
-    /** The menu opened, by a tap, a hold, or assistive technology. */
-    fun menuOpened() {
-        haptics.play(Haptic.lightTap)
-    }
-
-    /** A row tapped (a slide-release ticks in [ended]). */
-    fun rowTapped() {
-        haptics.play(Haptic.lightTap)
-    }
-
-    fun began(isOpen: Boolean) {
-        touch = Touch(wasOpen = isOpen)
-        highlighted = null
-    }
-
-    /** The hold elapsed, or the finger moved before it did. Whether the menu should open now: once per touch, and only if it was closed. */
-    fun holdElapsed(): Boolean {
-        val current = touch ?: return false
-        if (current.wasOpen || current.openedByHold) return false
-        touch = current.copy(openedByHold = true)
-        return true
-    }
-
-    /** [dragSlopPx]: [BUTTON_SLOP] in pixels. */
-    fun moved(to: Offset, button: Rect, rows: Map<AttachmentMenuItem, Rect>, dragSlopPx: Float) {
-        val current = touch ?: return
-        if (!(current.wasOpen || current.openedByHold)) return
-        if (!button.inflate(dragSlopPx).contains(to)) touch = current.copy(leftButton = true)
-        val item = item(to, rows)
-        if (item == highlighted) return
-        highlighted = item
-        if (item != null) haptics.play(Haptic.selection)
-    }
-
-    fun ended(at: Offset, button: Rect, rows: Map<AttachmentMenuItem, Rect>, dragSlopPx: Float): Outcome {
-        val current = touch
-        touch = null
-        highlighted = null
-        current ?: return Outcome.None
-        val isMenuUp = current.wasOpen || current.openedByHold
-        if (isMenuUp && current.leftButton) {
-            val item = item(at, rows)
-            if (item != null) {
-                haptics.play(Haptic.lightTap)
-                return Outcome.Choose(item)
-            }
-        }
-        if (!button.inflate(dragSlopPx).contains(at)) return Outcome.None
-        if (!current.openedByHold) return Outcome.Toggle
-        // Held open and released in place: the menu stays for a tap.
-        return if (current.leftButton) Outcome.Close else Outcome.None
-    }
-
-    fun cancelled() {
-        touch = null
-        highlighted = null
-    }
-
-    companion object {
-        /** Slop (dp) around the button before the finger counts as having left it. */
-        const val BUTTON_SLOP = 8f
-
-        fun item(at: Offset, rows: Map<AttachmentMenuItem, Rect>): AttachmentMenuItem? =
-            rows.entries.firstOrNull { it.key.isDragSelectable && it.value.contains(at) }?.key
-    }
-}
-
-/**
- * Frames the attachment menu lays itself out against, in root coordinates. Measured after layout,
- * so the overlay never depends on the composer's layout mid-update.
- */
+/** Frames other panels lay themselves out against, in root coordinates. */
 @Stable
 class AttachmentMenuAnchors {
-    /** The + button the menu grows from and shrinks back into. */
-    var button: Rect by mutableStateOf(Rect.Zero)
-    /** The composer surface the menu stands above. */
+    /** The composer surface. */
     var composer: Rect by mutableStateOf(Rect.Zero)
-    /** Each row of the menu where it rests open, for choosing by sliding a finger from +. */
-    var rows: Map<AttachmentMenuItem, Rect> by mutableStateOf(emptyMap())
-    /** The seed centered above + that the menu grows out of. */
-    var seed: Rect by mutableStateOf(Rect.Zero)
-    /** The menu's surface where it rests open. */
-    var menu: Rect by mutableStateOf(Rect.Zero)
-    /** Horizontal offset (px) of the + glyph's center from the menu's leading edge. */
-    var buttonCenterXInMenu: Float by mutableFloatStateOf(0f)
 }

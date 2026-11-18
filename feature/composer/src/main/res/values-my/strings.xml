@@ -128,7 +128,6 @@
     <string name="composer_model_hide_keyboard_description">ကီးဘုတ်ကို ဖျောက်ပါ</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">ပူးတွဲဖိုင် ရွေးချယ်စရာများ</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">မြင်ကွင်း အလွန်ကျယ်</string>

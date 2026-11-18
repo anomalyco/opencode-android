@@ -128,7 +128,6 @@
     <string name="composer_model_hide_keyboard_description">키보드 숨기기</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">첨부 파일 옵션</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">초광각</string>

@@ -1,6 +1,6 @@
 package ai.opencode.feature.session
 
-import ai.opencode.feature.composer.AttachmentMenuPhase
+import ai.opencode.core.ui.AccessibilityFocusTarget
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -12,16 +12,18 @@ import androidx.compose.runtime.staticCompositionLocalOf
 /** The + menu's state, owned by `SessionView`. */
 @Stable
 class SessionAttachmentMenuState {
-    /** The + menu's phase. */
-    var attachmentMenu by mutableStateOf(AttachmentMenuPhase.Closed)
+    var plusMenuIsOpen by mutableStateOf(false)
     /** The keyboard comes back as the menu closes. */
     var attachmentMenuRestoresFocus by mutableStateOf(false)
-
-    val plusMenuIsOpen: Boolean
-        get() = attachmentMenu == AttachmentMenuPhase.Menu
+    /** The clipboard held an image as the menu opened. */
+    var clipboardHasImages by mutableStateOf(false)
+    /** Location stays a row while the menu closes after choosing it. */
+    var keepingLocationRow by mutableStateOf(false)
+    /** The + button, which gets TalkBack's focus back as the menu closes. */
+    val plusButton = AccessibilityFocusTarget()
 
     fun closeAttachmentMenu() {
-        attachmentMenu = AttachmentMenuPhase.Closed
+        plusMenuIsOpen = false
     }
 }
 

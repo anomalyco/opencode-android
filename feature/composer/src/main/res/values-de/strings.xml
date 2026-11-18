@@ -131,7 +131,6 @@
     <string name="composer_model_hide_keyboard_description">Tastatur verstecken</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">Anhangoptionen</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">Ultraweitwinkel</string>

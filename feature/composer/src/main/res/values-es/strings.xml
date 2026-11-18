@@ -134,7 +134,6 @@
     <string name="composer_model_hide_keyboard_description">Ocultar teclado</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">Opciones de adjuntos</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">Ultra gran angular</string>

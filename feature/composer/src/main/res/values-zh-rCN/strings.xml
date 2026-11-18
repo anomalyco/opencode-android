@@ -128,7 +128,6 @@
     <string name="composer_model_hide_keyboard_description">隐藏键盘</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">附件选项</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">超广角</string>

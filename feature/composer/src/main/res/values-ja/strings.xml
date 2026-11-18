@@ -128,7 +128,6 @@
     <string name="composer_model_hide_keyboard_description">キーボードを非表示</string>
 
     <!-- Plus menu -->
-    <string name="composer_plus_menu_title">添付ファイルのオプション</string>
 
     <!-- Camera lenses and flash (AttachmentCameraLenses) -->
     <string name="composer_camera_lens_ultra_wide_description">超広角</string>
