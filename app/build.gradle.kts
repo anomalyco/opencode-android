@@ -14,26 +14,15 @@ android {
     namespace = "ai.opencode.app"
     defaultConfig {
         applicationId = "ai.opencode.mobilecode"
-        // CI stamps builds so testers can tell them apart: the workflow run number as the
-        // version code (each build installs over the last), the release tag's version
-        // (OC_VERSION_NAME) for releases, else the short commit SHA in the name.
+        // CI stamps builds so testers can tell them apart: the version code (each build installs
+        // over the last), the release's version (OC_VERSION_NAME) for releases, else the short
+        // commit SHA in the name.
         versionCode = providers.environmentVariable("OC_VERSION_CODE").orNull?.toIntOrNull() ?: 1
         versionName = providers.environmentVariable("OC_VERSION_NAME").orNull
             ?: ("0.1.0" + (providers.environmentVariable("OC_VERSION_SUFFIX").orNull?.let { "-$it" } ?: ""))
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    // Google Play upload key, from CI secrets only (Play App Signing holds the app signing key).
-    // Without OC_UPLOAD_KEYSTORE the release build is unsigned, as before.
-    val uploadKeystore = providers.environmentVariable("OC_UPLOAD_KEYSTORE").orNull
-    if (uploadKeystore != null) {
-        signingConfigs.create("upload") {
-            storeFile = file(uploadKeystore)
-            storeType = "PKCS12"
-            storePassword = providers.environmentVariable("OC_UPLOAD_KEYSTORE_PASSWORD").get()
-            keyAlias = providers.environmentVariable("OC_UPLOAD_KEY_ALIAS").get()
-            keyPassword = providers.environmentVariable("OC_UPLOAD_KEYSTORE_PASSWORD").get()
-        }
-    }
+    // The release bundle is built unsigned; release.yml signs it with the Play upload key.
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -44,7 +33,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            if (uploadKeystore != null) signingConfig = signingConfigs.getByName("upload")
         }
         create("benchmark") {
             initWith(getByName("release"))

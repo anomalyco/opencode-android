@@ -12,12 +12,12 @@ https://play.google.com/apps/internaltest/4698009188042349382 with your @anoma.l
 account, tap **Become a tester**, then install OpenCode from Play. Every release (a `v*` GitHub
 Release) arrives as a Play update. Details in [docs/releasing.md](docs/releasing.md).
 
-**Sideload instead:** every push to `main` builds a debug APK and publishes it as the rolling
-[`main-latest` pre-release](https://github.com/anomalyco/opencode-android/releases/tag/main-latest).
+**Sideload instead:** every push to `dev` builds a debug APK and publishes it as the rolling
+[`dev-latest` pre-release](https://github.com/anomalyco/opencode-android/releases/tag/dev-latest).
 It runs on Android 13 or newer.
 
-1. On your phone, sign in to GitHub in the browser (the repo is private), then open
-   [opencode-android.apk](https://github.com/anomalyco/opencode-android/releases/download/main-latest/opencode-android.apk).
+1. On your phone, open
+   [opencode-android.apk](https://github.com/anomalyco/opencode-android/releases/download/dev-latest/opencode-android.apk).
 2. Open the downloaded file. Android asks to allow installing apps from your browser: tap
    **Settings**, turn on **Allow from this source**, then go back and tap **Install**.
 3. Open **OpenCode** and pair with your computer: run `opencode pair --remote` there (works from

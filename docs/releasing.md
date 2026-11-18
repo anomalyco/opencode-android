@@ -1,76 +1,80 @@
 # Releasing
 
-Mirrors iOS (`opencode-ios/docs/releasing.md`): releases go through GitHub Releases only.
-Pushing `main` doesn't release to Play by itself.
+Releases ship `dev` to Google Play. `.github/workflows/release.yml` and `.github/release/` are
+the release boundary: changes there need Dax's review (`.github/CODEOWNERS` and a ruleset).
 
 ## Branches
 
-Feature branch → PR into `dev` → `dev` merged into `main` (a PR from `dev` into `main`, merge
-commit). `main` is production: the scheduled release ships whatever is on it. A push to `dev`
-only runs `scripts/check.sh`; it never tags, uploads to Play or publishes `main-latest`.
+Feature branch → squash-merged PR into `dev`, the default branch. CI (`ci.yml`) must pass to
+merge. `production` only moves by fast-forward (`git push origin dev:production`) and releases
+nothing; both branches block deletion and force pushes.
 
 ## Cutting a release
 
-`.github/workflows/scheduled-release.yml` releases `main` at noon and 6 p.m. Central, as iOS
-does, unless `main` already has a `v*` tag or its commit hasn't passed `android.yml` on `main`
-(a run still going waits for the next release time). A tag created with the workflow's token
-doesn't start other workflows, so it then runs `android.yml` on the tag itself. Run it now with
-`gh workflow run scheduled-release.yml -R anomalyco/opencode-android`. Every release reaches
-open testers, so cut one by hand only for an urgent fix, from a green `main` commit:
+`release.yml` runs from `dev` at noon and 6 p.m. Central with a patch bump. It skips when `dev`
+hasn't moved since the last release or `ci.yml` hasn't passed on its commit yet (a run still
+going waits for the next release time). To release now, or with a bigger bump:
 
 ```sh
-gh release create "v$(scripts/version.sh <sha>)" --target "$(git rev-parse <sha>)" --generate-notes
+gh workflow run release.yml --ref dev -f bump=patch   # or minor, major
 ```
 
-(`--target` needs the full SHA.) The `v*` tag starts `.github/workflows/android.yml`, which
-skips `scripts/check.sh` when that commit already passed on `main` (otherwise runs it first), then:
+A dispatch fails instead of skipping. Each run:
 
-1. **Google Play internal testing.** Builds `:app:bundleRelease` signed with the Play upload key
-   and uploads it to the internal testing track (`play` job), released to every tester at
-   once. Testers get it as a normal Play update.
-2. **Google Play open testing** (the counterpart of iOS's External TestFlight group), only when
-   the `PLAY_OPEN_TESTING` repo variable is `true`. The same `play` job then puts that bundle
-   on the open testing (`beta`) track with `scripts/play-promote.sh`; it doesn't upload it a
-   second time. Otherwise it skips with a notice.
+1. **plan** picks the version: the latest `vX.Y.Z` tag bumped by `bump`.
+2. **build** builds the unsigned `:app:bundleRelease` with no secrets and reports the digest of
+   its `SHA256SUMS`.
+3. **publish** (environment `release`, allowed only on `dev`) checks out only `.github/release/`,
+   verifies the bundle against that digest, signs it with the Play upload key
+   (`sign-bundle.sh`), uploads it to Google Play internal testing and, when the
+   `PLAY_OPEN_TESTING` variable is `true`, puts the same build on open testing (`beta`)
+   (`ship-play.sh`). Only then does it tag `v<version>` and create the GitHub release, so a
+   failed run spends no version.
 
-Both uploads refuse to commit while Google is reviewing earlier changes (Play's default would
-cancel that review and start it again): the step fails and that track stays as it was. Once
-Publishing overview shows no changes in review, re-run the `play` job, or, if internal testing
-already took the build, let the next release promote a newer one.
+Both Play uploads refuse to commit while Google is reviewing earlier changes (Play's default
+would cancel that review and start it again): the step fails and the track stays as it was. Once
+Publishing overview shows no changes in review, re-run the failed jobs.
 
 Report the tag, the workflow run and the Play version code.
 
-## What a push to main does
+## What a push to dev does
 
 Runs `scripts/check.sh` and publishes the debug APK (`ai.opencode.mobilecode.debug`, installs
-beside the Play build) as the rolling `main-latest` GitHub pre-release for sideloading. Nothing
+beside the Play build) as the rolling `dev-latest` GitHub pre-release for sideloading. Nothing
 goes to Play.
 
 ## Versions
 
-`scripts/version.sh` gives every first-parent commit on `main` its own version from git history,
-with the same rules as iOS (patch per commit, minor for 400+ changed lines, major only for a
-`type!:` or `BREAKING CHANGE` marker) from this repo's baseline (`acc23eab` = 0.1.0). A release
-build's `versionName` is its tag without the `v`; other builds are `0.1.0-<short sha>`.
-`versionCode` is the workflow run number, so it only goes up (Play rejects a code it has seen).
-Never bump either by hand. A re-run keeps its number and Play refuses the duplicate: cut the
-release from a new commit instead.
+A release build's `versionName` is its version, from the latest tag and the bump. Other builds
+are `0.1.0-<short sha>`. `versionCode` is `release.yml`'s run number plus 1000, so it only goes
+up (Play rejects a code it has seen). Never bump either by hand. Re-running failed jobs keeps
+the run number, so if Play already took that code, start a new run instead.
+
+## Credentials
+
+Nothing is stored in GitHub secrets. The `publish` job assumes
+`arn:aws:iam::604439173067:role/github/opencode-android-release` over GitHub OIDC; the role
+trusts only `release.yml` on `refs/heads/dev` in environment `release` (`anomalyco/secrets`).
+It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
+(`with-secrets.sh`):
+
+- `ANDROID_UPLOAD_KEYSTORE_BASE64` and `ANDROID_UPLOAD_KEYSTORE_PASSWORD`: the Play upload key
+  (PKCS12), alias from the `ANDROID_UPLOAD_KEY_ALIAS` variable.
+- `PLAY_SERVICE_ACCOUNT_JSON`: the Play publishing service account.
 
 ## Google Play
 
 - Account Anomaly Innovations, Inc. (`5599481792709483137`), app **OpenCode**
   `ai.opencode.mobilecode` (same ID as iOS), Play Console app id `4973267939382667246`.
-- Play App Signing holds the app signing key. CI signs uploads with the **upload key**, kept
-  only in repo secrets (`ANDROID_UPLOAD_KEYSTORE_BASE64`, `ANDROID_UPLOAD_KEYSTORE_PASSWORD`,
-  `ANDROID_UPLOAD_KEY_ALIAS`). If it's lost or leaks, request an upload key reset in Play Console
+- Play App Signing holds the app signing key. CI signs uploads with the **upload key** (see
+  Credentials). If it's lost or leaks, request an upload key reset in Play Console
   (App integrity → App signing) with a new key's certificate; nothing else changes.
 - The Play upload uses `PLAY_SERVICE_ACCOUNT_JSON`: a key for
   `play-publisher@opencode-android-play.iam.gserviceaccount.com` (Google Cloud project
   `opencode-android-play` in the anoma.ly org), invited in Play Console with only *View app
   information* and *Release apps to testing tracks* on OpenCode, so it can't publish to
-  production. Rotate it with `gcloud iam service-accounts keys create` and `gh secret set`, then
-  delete the old key. Without the secret the `play` job skips with a notice and the bundle stays
-  a workflow artifact (`opencode-android-aab-<sha>`).
+  production. Rotate it with `gcloud iam service-accounts keys create` and `put-secret-value` on
+  `opencode-android/release/PLAY_SERVICE_ACCOUNT_JSON`, then delete the old key.
 - Internal testing: email list **Anomaly team** (everyone on Anomaly's Slack, up to 100).
   Testers opt in once at https://play.google.com/apps/internaltest/4698009188042349382, then
   install OpenCode from Play. Add people by editing that list in Play Console (Testing →

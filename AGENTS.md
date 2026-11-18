@@ -1,15 +1,15 @@
 # OpenCode Android: agent rules
 
+<!-- tallow -->
+
 A native Android port of the OpenCode iOS app (Kotlin, Jetpack Compose, Material 3 Expressive).
-Lives at github.com/anomalyco/opencode-android (private). Work goes on a feature branch → PR
-into `dev`; `dev` is merged into `main` (production) for release.
-CI (`.github/workflows/android.yml`) runs `scripts/check.sh` on every PR and on pushes to `dev`
-and `main`; a push to `main` also publishes the debug APK as the `main-latest` pre-release.
-As on iOS, releases go through GitHub Releases only: `gh release create
-"v$(scripts/version.sh <sha>)" --target "$(git rev-parse <sha>)" --generate-notes` ships to
-Google Play internal testing (and open testing once `PLAY_OPEN_TESTING` is on).
-`scheduled-release.yml` releases `main` at noon and 6 p.m. Central, as on iOS; run it
-by hand (`gh workflow run scheduled-release.yml`) to release sooner ([docs/releasing.md](docs/releasing.md)).
+Lives at github.com/anomalyco/opencode-android. Work goes on a feature branch → squash-merged PR
+into `dev`, the default branch.
+CI (`.github/workflows/ci.yml`) runs `scripts/check.sh` on every PR and push to `dev`; a push to
+`dev` also publishes the debug APK as the `dev-latest` pre-release.
+`.github/workflows/release.yml` releases `dev` to Google Play at noon and 6 p.m. Central; run it
+by hand to release sooner (`gh workflow run release.yml --ref dev -f bump=patch`). Changes under
+`.github/` need Dax's review ([docs/releasing.md](docs/releasing.md)).
 
 ## The iOS app is a reference
 
@@ -213,7 +213,7 @@ Add a new library only with a one-line justification here.
 ## Commits
 
 - Commit every completed, verified change on a feature branch and open a PR into `dev` (never
-  commit to `main` directly), one coherent change per commit. The message says what changed,
+  commit to `dev` directly), one coherent change per commit. The message says what changed,
   why, and what was verified (commands run, emulator checks); call out removed or replaced
   behaviour.
 - In this shared checkout stage only the files you own (`git add <paths>`), never `git add -A`.

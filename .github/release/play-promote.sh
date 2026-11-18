@@ -2,7 +2,7 @@
 # Puts a bundle on a Google Play track: uploads it first when given a bundle and its R8 mapping
 # (CI's internal testing upload), otherwise promotes one Play already has, e.g. the build CI just
 # shipped to internal testing onto open testing (`beta`), like iOS's External TestFlight group.
-#   PLAY_SERVICE_ACCOUNT_JSON='{…}' scripts/play-promote.sh <package> <track> <versionCode> <release name> [<bundle> <mapping>]
+#   PLAY_SERVICE_ACCOUNT_JSON='{…}' .github/release/play-promote.sh <package> <track> <versionCode> <release name> [<bundle> <mapping>]
 # Play keeps every uploaded bundle, so promoting only edits the track; uploading the same
 # versionCode again would be rejected. Fails, changing nothing, while Google is reviewing earlier
 # changes. Needs curl, jq and openssl. Never prints the key or the access token.

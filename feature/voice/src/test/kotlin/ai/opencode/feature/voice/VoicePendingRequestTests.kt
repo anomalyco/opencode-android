@@ -26,10 +26,10 @@ import java.time.Instant
 /** A session waiting on a question form takes no steered messages. */
 class VoicePendingRequestTests {
     private val server = OpenCodeServer(url = "http://localhost:4096", username = "", password = "")
-    private val abattoir = OpenCodeSession(id = "ses_abattoir", serverTitle = "ABATTOIR", projectID = "p", directory = "/Users/kit/abattoir", updatedAt = Instant.parse("0001-01-01T00:00:00Z"))
+    private val workshop = OpenCodeSession(id = "ses_workshop", serverTitle = "WORKSHOP", projectID = "p", directory = "/Users/kit/workshop", updatedAt = Instant.parse("0001-01-01T00:00:00Z"))
     private val iconForm: OpenCodeFormRequest
         get() = OpenCodeFormRequest(
-            id = "form_icon", sessionID = abattoir.id, title = "Banshee icon",
+            id = "form_icon", sessionID = workshop.id, title = "Banshee icon",
             fields = listOf(OpenCodeFormField(key = "q0", type = OpenCodeFormFieldType.String, title = "Which icon should ship?", options = listOf(OpenCodeFormOption(value = "a", label = "Wail"), OpenCodeFormOption(value = "b", label = "Veil")))),
             metadata = mapOf("kind" to OpenCodeJSONValue.Str("question")),
         )
@@ -38,7 +38,7 @@ class VoicePendingRequestTests {
         VoiceDelegatorWorkspace(
             client = client,
             start = VoiceDelegatorWorkspace.Start(
-                server = server, viewing = abattoir, draftDirectory = abattoir.directory, draftModel = null, transcriptDelta = emptyList(), explained = emptySet(),
+                server = server, viewing = workshop, draftDirectory = workshop.directory, draftModel = null, transcriptDelta = emptyList(), explained = emptySet(),
                 board = { board }, viewingNeedsInput = viewingNeedsInput,
             ),
             effects = VoiceDelegatorWorkspace.Effects(open = {}, explained = {}, note = {}),
@@ -53,15 +53,15 @@ class VoicePendingRequestTests {
         ((get("questions") as? JsonArray)?.firstOrNull() as? JsonObject)?.string("form_id")
 
     private fun board(busyIDs: Set<String>, attentionIDs: Set<String>) = VoiceSessionBoard(
-        serverID = server.persistenceID, sessions = listOf(abattoir), busyIDs = busyIDs, attentionIDs = attentionIDs,
-        unreadIDs = emptySet(), pinnedIDs = emptyList(), attentionDirectories = setOf(abattoir.directory), isLive = true, attentionKnown = true,
+        serverID = server.persistenceID, sessions = listOf(workshop), busyIDs = busyIDs, attentionIDs = attentionIDs,
+        unreadIDs = emptySet(), pinnedIDs = emptyList(), attentionDirectories = setOf(workshop.directory), isLive = true, attentionKnown = true,
     )
 
     @Test fun aSteerIntoASessionWaitingOnAQuestionIsntSent() = runBlocking<Unit> {
         val prompts = Locked(0)
         val readIDs = Locked(listOf<List<String>>())
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, ids, _ ->
                 readIDs.update { it + listOf(ids) }
                 OpenCodePendingRequests(permissions = emptyList(), forms = listOf(iconForm))
@@ -78,7 +78,7 @@ class VoicePendingRequestTests {
         assertTrue(note, note?.contains("A message never answers it. When the user approved, picked, or answered, that is the answer: answer_question") == true)
         assertTrue(note, note?.contains("A request for more or other work isn't an answer") == true)
         assertEquals(0, prompts.value)
-        assertTrue("Only the target is read", readIDs.value.all { it == listOf("ses_abattoir") })
+        assertTrue("Only the target is read", readIDs.value.all { it == listOf("ses_workshop") })
 
         // A deliberate queue waits behind the form anyway.
         val queued = jsonObject(tools.run(call("""{"text":"Then tidy up","delivery":"queue"}""")))
@@ -89,7 +89,7 @@ class VoicePendingRequestTests {
     @Test fun aGlobalFormDoesntHoldASteer() = runBlocking<Unit> {
         val prompts = Locked(0)
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, _, _ ->
                 OpenCodePendingRequests(
                     permissions = emptyList(),
@@ -106,11 +106,11 @@ class VoicePendingRequestTests {
     @Test fun aSessionHomeFlagsStaysHeldWhenItsRequestsCantBeRead() = runBlocking<Unit> {
         val prompts = Locked(0)
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, _, _ -> throw OpenCodeClientError(message = "Offline") },
             sendDeliveredPrompt = { _, _, _, _ -> prompts.update { it + 1 }; "msg_1" },
         )
-        val board = board(busyIDs = setOf(abattoir.id), attentionIDs = setOf(abattoir.id))
+        val board = board(busyIDs = setOf(workshop.id), attentionIDs = setOf(workshop.id))
         val held = jsonObject(workspace(client, board = board).run(call("""{"text":"Pick b"}""")))
         assertEquals(true, held.bool("not_sent"))
         assertTrue(held.toString(), held.string("note")?.contains("list_requests") == true)
@@ -122,12 +122,12 @@ class VoicePendingRequestTests {
         val reads = Locked(0)
         val prompts = Locked(0)
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, _, _ -> reads.update { it + 1 }; OpenCodePendingRequests(permissions = emptyList(), forms = listOf(iconForm)) },
             sendDeliveredPrompt = { _, _, _, _ -> prompts.update { it + 1 }; "msg_1" },
         )
         // Home's flags lag: no attention on the session yet.
-        val board = board(busyIDs = setOf(abattoir.id), attentionIDs = emptySet())
+        val board = board(busyIDs = setOf(workshop.id), attentionIDs = emptySet())
         val tools = workspace(client, board = board)
 
         val steered = jsonObject(tools.run(call("""{"text":"User approves Wail"}""")))
@@ -144,7 +144,7 @@ class VoicePendingRequestTests {
         val prompts = Locked(0)
         val readIDs = Locked(listOf<List<String>>())
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, ids, _ ->
                 readIDs.update { it + listOf(ids) }
                 reads.update { it + 1 }
@@ -157,13 +157,13 @@ class VoicePendingRequestTests {
         assertEquals("msg_1", sent.string("message_id"))
         assertEquals(1, reads.value)
         assertEquals(1, prompts.value)
-        assertTrue("Only the target is read", readIDs.value.all { it == listOf("ses_abattoir") })
+        assertTrue("Only the target is read", readIDs.value.all { it == listOf("ses_workshop") })
     }
 
     @Test fun anUnflaggedSessionWhoseRequestsCantBeReadIsStillSent() = runBlocking<Unit> {
         val prompts = Locked(0)
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             familyPendingRequests = { _, _, _ -> throw OpenCodeClientError(message = "Offline") },
             sendDeliveredPrompt = { _, _, _, _ -> prompts.update { it + 1 }; "msg_1" },
         )
@@ -176,7 +176,7 @@ class VoicePendingRequestTests {
     @Test fun theDelegatorIsToldAnApprovalIsAnAnswerNeverAMessage() {
         assertTrue(VoiceDelegator.instructions.contains("The user's approval, pick, or answer to a pending request goes only through answer_question or reply_permission, never send_message"))
         val watch = ReplyWatch(callPhase = ReplyWatch.CallPhase.live)
-        val summary = watch.statusSummary(viewing = abattoir, needsInput = true, draftDirectory = abattoir.directory)
+        val summary = watch.statusSummary(viewing = workshop, needsInput = true, draftDirectory = workshop.directory)
         assertTrue(summary, summary.contains("It is waiting on a pending request: the user's approval or answer goes through list_requests and answer_question or reply_permission, never send_message."))
     }
 
@@ -184,7 +184,7 @@ class VoicePendingRequestTests {
         val cancelled = Locked(listOf<String?>())
         val replies = Locked(listOf<String?>())
         val client = OpenCodeClient.testValue.copy(
-            getSession = { _, _ -> abattoir },
+            getSession = { _, _ -> workshop },
             cancelForm = { _, _, _, message -> cancelled.update { it + message } },
             replyPermission = { _, _, _, _, message -> replies.update { it + message } },
         )
