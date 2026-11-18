@@ -129,9 +129,6 @@
         <item quantity="many">%1$d paslėpto modelio</item>
         <item quantity="other">%1$d paslėptų modelių</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Skydelio rankenėlė</string>
-    <string name="composer_model_grabber_compact_action">Sumažinti pasirinkimo skydelį</string>
-    <string name="composer_model_grabber_expand_action">Išskleisti pasirinkimo skydelį</string>
     <string name="composer_model_search_placeholder">Ieškoti modelių</string>
     <string name="composer_model_clear_search_description">Išvalyti paiešką</string>
     <string name="composer_model_hide_keyboard_description">Slėpti klaviatūrą</string>
@@ -215,7 +212,5 @@
     <string name="composer_model_section_recent">Naujausi</string>
     <string name="composer_model_section_all_models">Visi modeliai</string>
     <string name="composer_model_placeholder">Modelis</string>
-    <string name="composer_model_list_full_description">Visas ekranas</string>
-    <string name="composer_model_list_half_description">Pusė ekrano</string>
     <string name="composer_model_favorite_description">Pridėti prie mėgstamiausių</string>
 </resources>

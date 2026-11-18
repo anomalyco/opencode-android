@@ -123,9 +123,6 @@
         <item quantity="one">%1$d թաքցված</item>
         <item quantity="other">%1$d թաքցված</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Վահանակի բռնակ</string>
-    <string name="composer_model_grabber_compact_action">Ընտրիչը դարձնել կոմպակտ</string>
-    <string name="composer_model_grabber_expand_action">Ընդարձակել ընտրիչը</string>
     <string name="composer_model_search_placeholder">Որոնել մոդելներ</string>
     <string name="composer_model_clear_search_description">Մաքրել որոնումը</string>
     <string name="composer_model_hide_keyboard_description">Թաքցնել ստեղնաշարը</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Վերջինները</string>
     <string name="composer_model_section_all_models">Բոլոր մոդելները</string>
     <string name="composer_model_placeholder">Մոդել</string>
-    <string name="composer_model_list_full_description">Ամբողջությամբ</string>
-    <string name="composer_model_list_half_description">Կիսով չափ</string>
     <string name="composer_model_favorite_description">Ավելացնել ընտրյալներին</string>
 </resources>

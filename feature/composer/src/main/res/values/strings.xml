@@ -123,9 +123,6 @@
         <item quantity="one">%1$d hidden</item>
         <item quantity="other">%1$d hidden</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Sheet Grabber</string>
-    <string name="composer_model_grabber_compact_action">Make the picker compact</string>
-    <string name="composer_model_grabber_expand_action">Expand the picker</string>
     <string name="composer_model_search_placeholder">Search Models</string>
     <string name="composer_model_clear_search_description">Clear search</string>
     <string name="composer_model_hide_keyboard_description">Hide keyboard</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Recent</string>
     <string name="composer_model_section_all_models">All Models</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Full</string>
-    <string name="composer_model_list_half_description">Half</string>
     <string name="composer_model_favorite_description">Favorite</string>
 </resources>

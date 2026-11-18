@@ -45,6 +45,10 @@ by hand (`gh workflow run scheduled-release.yml`) to release sooner ([docs/relea
 - The session's page stack (subagent and browser pages) is Android-native on purpose: one animated
   shared-axis move in `SessionPageStack.kt` and system predictive back. Don't port iOS's full-width
   back pan or its stack motion; covered pages still stay composed so they keep their state.
+- The model picker (One Picker) is Android-native on purpose: it opens in the standard sheet
+  (`OnePickerSheetHost` in `ModelPickerDetentsSheet`) with Material's motion, scrim, drag and predictive
+  back. Don't port iOS's chip-to-panel morph; the picker's rows, ordering, search, selection and copy
+  still follow iOS.
 
 ## Modules (fixed; never edit `settings.gradle.kts`)
 

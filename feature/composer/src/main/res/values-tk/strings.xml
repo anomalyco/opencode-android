@@ -123,9 +123,6 @@
         <item quantity="one">%1$d gizlenen</item>
         <item quantity="other">%1$d gizlenen</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Paneliň tutawajy</string>
-    <string name="composer_model_grabber_compact_action">Saýlaw panelini ykjamla</string>
-    <string name="composer_model_grabber_expand_action">Saýlaw panelini giňelt</string>
     <string name="composer_model_search_placeholder">Gözleg modelleri</string>
     <string name="composer_model_clear_search_description">Gözlegi arassala</string>
     <string name="composer_model_hide_keyboard_description">Klawiaturany gizle</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Soňky</string>
     <string name="composer_model_section_all_models">Ähli modeller</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Doly</string>
-    <string name="composer_model_list_half_description">Ýarym</string>
     <string name="composer_model_favorite_description">Halanlara goş</string>
 </resources>

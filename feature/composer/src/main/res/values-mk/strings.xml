@@ -123,9 +123,6 @@
         <item quantity="one">%1$d скриен</item>
         <item quantity="other">%1$d скриени</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Рачка на панелот</string>
-    <string name="composer_model_grabber_compact_action">Направи го избирачот компактен</string>
-    <string name="composer_model_grabber_expand_action">Прошири го избирачот</string>
     <string name="composer_model_search_placeholder">Пребарајте модели</string>
     <string name="composer_model_clear_search_description">Исчисти го пребарувањето</string>
     <string name="composer_model_hide_keyboard_description">Сокриј ја тастатурата</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Неодамнешни</string>
     <string name="composer_model_section_all_models">Сите модели</string>
     <string name="composer_model_placeholder">Модел</string>
-    <string name="composer_model_list_full_description">Целосно</string>
-    <string name="composer_model_list_half_description">Половина</string>
     <string name="composer_model_favorite_description">Додадете во омилени</string>
 </resources>

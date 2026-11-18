@@ -126,9 +126,6 @@
         <item quantity="many">%1$d nascosti</item>
         <item quantity="other">%1$d nascosti</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Maniglia del pannello</string>
-    <string name="composer_model_grabber_compact_action">Compatta il selettore</string>
-    <string name="composer_model_grabber_expand_action">Espandi il selettore</string>
     <string name="composer_model_search_placeholder">Cerca modelli</string>
     <string name="composer_model_clear_search_description">Cancella ricerca</string>
     <string name="composer_model_hide_keyboard_description">Nascondi tastiera</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Recenti</string>
     <string name="composer_model_section_all_models">Tutti i modelli</string>
     <string name="composer_model_placeholder">Modello</string>
-    <string name="composer_model_list_full_description">Schermo intero</string>
-    <string name="composer_model_list_half_description">Metà schermo</string>
     <string name="composer_model_favorite_description">Aggiungi ai preferiti</string>
 </resources>

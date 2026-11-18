@@ -123,9 +123,6 @@
         <item quantity="one">%1$d rejtett</item>
         <item quantity="other">%1$d rejtett</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Panel fogantyúja</string>
-    <string name="composer_model_grabber_compact_action">Választó összecsukása</string>
-    <string name="composer_model_grabber_expand_action">Választó kibontása</string>
     <string name="composer_model_search_placeholder">Modellek keresése</string>
     <string name="composer_model_clear_search_description">Keresés törlése</string>
     <string name="composer_model_hide_keyboard_description">Billentyűzet elrejtése</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Legutóbbiak</string>
     <string name="composer_model_section_all_models">Összes modell</string>
     <string name="composer_model_placeholder">Modell</string>
-    <string name="composer_model_list_full_description">Teljes</string>
-    <string name="composer_model_list_half_description">Fél</string>
     <string name="composer_model_favorite_description">Kedvencekhez adás</string>
 </resources>

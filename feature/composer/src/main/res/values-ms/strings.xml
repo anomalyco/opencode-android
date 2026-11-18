@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d tersembunyi</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Pemegang panel</string>
-    <string name="composer_model_grabber_compact_action">Padatkan pemilih</string>
-    <string name="composer_model_grabber_expand_action">Kembangkan pemilih</string>
     <string name="composer_model_search_placeholder">Cari model</string>
     <string name="composer_model_clear_search_description">Kosongkan carian</string>
     <string name="composer_model_hide_keyboard_description">Sembunyi papan kekunci</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">Terkini</string>
     <string name="composer_model_section_all_models">Semua model</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Penuh</string>
-    <string name="composer_model_list_half_description">Separuh</string>
     <string name="composer_model_favorite_description">Jadikan kegemaran</string>
 </resources>

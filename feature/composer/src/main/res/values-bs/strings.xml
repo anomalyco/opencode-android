@@ -126,9 +126,6 @@
         <item quantity="few">%1$d skrivena modela</item>
         <item quantity="other">%1$d skrivenih modela</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Ručica panela</string>
-    <string name="composer_model_grabber_compact_action">Sažmi birač</string>
-    <string name="composer_model_grabber_expand_action">Proširi birač</string>
     <string name="composer_model_search_placeholder">Pretraži modele</string>
     <string name="composer_model_clear_search_description">Očisti pretragu</string>
     <string name="composer_model_hide_keyboard_description">Sakrij tastaturu</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Nedavni</string>
     <string name="composer_model_section_all_models">Svi modeli</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Cijeli ekran</string>
-    <string name="composer_model_list_half_description">Pola ekrana</string>
     <string name="composer_model_favorite_description">Dodaj u omiljene</string>
 </resources>

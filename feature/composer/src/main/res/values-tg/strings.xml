@@ -123,9 +123,6 @@
         <item quantity="one">%1$d пинҳон</item>
         <item quantity="other">%1$d пинҳон</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Дастаи панел</string>
-    <string name="composer_model_grabber_compact_action">Интихобгарро фишурда кунед</string>
-    <string name="composer_model_grabber_expand_action">Интихобгарро васеъ кунед</string>
     <string name="composer_model_search_placeholder">Ҷустуҷӯи моделҳо</string>
     <string name="composer_model_clear_search_description">Ҷустуҷӯро тоза кунед</string>
     <string name="composer_model_hide_keyboard_description">Клавиатураро пинҳон кунед</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Охиринҳо</string>
     <string name="composer_model_section_all_models">Ҳамаи моделҳо</string>
     <string name="composer_model_placeholder">Модел</string>
-    <string name="composer_model_list_full_description">Пурра</string>
-    <string name="composer_model_list_half_description">Ним</string>
     <string name="composer_model_favorite_description">Ба баргузидаҳо илова кунед</string>
 </resources>

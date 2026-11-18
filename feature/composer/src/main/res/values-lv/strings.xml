@@ -126,9 +126,6 @@
         <item quantity="one">%1$d slēpts</item>
         <item quantity="other">%1$d slēpti</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Paneļa rokturis</string>
-    <string name="composer_model_grabber_compact_action">Samazināt izvēles paneli</string>
-    <string name="composer_model_grabber_expand_action">Izvērst izvēles paneli</string>
     <string name="composer_model_search_placeholder">Meklēt modeļus</string>
     <string name="composer_model_clear_search_description">Notīrīt meklēšanu</string>
     <string name="composer_model_hide_keyboard_description">Slēpt tastatūru</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Nesen lietotie</string>
     <string name="composer_model_section_all_models">Visi modeļi</string>
     <string name="composer_model_placeholder">Modelis</string>
-    <string name="composer_model_list_full_description">Pilns</string>
-    <string name="composer_model_list_half_description">Puse</string>
     <string name="composer_model_favorite_description">Pievienot izlasei</string>
 </resources>

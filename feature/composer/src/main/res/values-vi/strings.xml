@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d mô hình bị ẩn</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Thanh kéo bảng</string>
-    <string name="composer_model_grabber_compact_action">Thu gọn bảng chọn</string>
-    <string name="composer_model_grabber_expand_action">Mở rộng bảng chọn</string>
     <string name="composer_model_search_placeholder">Tìm kiếm mô hình</string>
     <string name="composer_model_clear_search_description">Xóa tìm kiếm</string>
     <string name="composer_model_hide_keyboard_description">Ẩn bàn phím</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">Gần đây</string>
     <string name="composer_model_section_all_models">Tất cả mô hình</string>
     <string name="composer_model_placeholder">Mô hình</string>
-    <string name="composer_model_list_full_description">Toàn màn hình</string>
-    <string name="composer_model_list_half_description">Nửa màn hình</string>
     <string name="composer_model_favorite_description">Yêu thích</string>
 </resources>

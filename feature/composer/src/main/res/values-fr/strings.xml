@@ -126,9 +126,6 @@
         <item quantity="many">%1$d masqués</item>
         <item quantity="other">%1$d masqués</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Poignée du panneau</string>
-    <string name="composer_model_grabber_compact_action">Réduire le sélecteur</string>
-    <string name="composer_model_grabber_expand_action">Développer le sélecteur</string>
     <string name="composer_model_search_placeholder">Rechercher des modèles</string>
     <string name="composer_model_clear_search_description">Effacer la recherche</string>
     <string name="composer_model_hide_keyboard_description">Masquer le clavier</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Récents</string>
     <string name="composer_model_section_all_models">Tous les modèles</string>
     <string name="composer_model_placeholder">Modèle</string>
-    <string name="composer_model_list_full_description">Plein écran</string>
-    <string name="composer_model_list_half_description">Demi-écran</string>
     <string name="composer_model_favorite_description">Ajouter aux favoris</string>
 </resources>

@@ -123,9 +123,6 @@
         <item quantity="one">%1$d versteckt</item>
         <item quantity="other">%1$d versteckt</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Ziehgriff</string>
-    <string name="composer_model_grabber_compact_action">Auswahl verkleinern</string>
-    <string name="composer_model_grabber_expand_action">Auswahl vergrößern</string>
     <string name="composer_model_search_placeholder">Modelle durchsuchen</string>
     <string name="composer_model_clear_search_description">Suche leeren</string>
     <string name="composer_model_hide_keyboard_description">Tastatur verstecken</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Zuletzt verwendet</string>
     <string name="composer_model_section_all_models">Alle Modelle</string>
     <string name="composer_model_placeholder">Modell</string>
-    <string name="composer_model_list_full_description">Vollbild</string>
-    <string name="composer_model_list_half_description">Halbansicht</string>
     <string name="composer_model_favorite_description">Als Favorit markieren</string>
 </resources>

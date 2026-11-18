@@ -123,9 +123,6 @@
         <item quantity="one">%1$d verborgen</item>
         <item quantity="other">%1$d verborgen</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Sleepgreep van paneel</string>
-    <string name="composer_model_grabber_compact_action">Keuzelijst verkleinen</string>
-    <string name="composer_model_grabber_expand_action">Keuzelijst uitvouwen</string>
     <string name="composer_model_search_placeholder">Zoek modellen</string>
     <string name="composer_model_clear_search_description">Zoekopdracht wissen</string>
     <string name="composer_model_hide_keyboard_description">Toetsenbord verbergen</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Recent</string>
     <string name="composer_model_section_all_models">Alle modellen</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Volledig</string>
-    <string name="composer_model_list_half_description">Half</string>
     <string name="composer_model_favorite_description">Favoriet maken</string>
 </resources>

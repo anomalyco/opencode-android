@@ -123,9 +123,6 @@
         <item quantity="one">%1$d ta yashirilgan</item>
         <item quantity="other">%1$d ta yashirilgan</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Panel tutqichi</string>
-    <string name="composer_model_grabber_compact_action">Tanlash panelini ixchamlash</string>
-    <string name="composer_model_grabber_expand_action">Tanlash panelini kengaytirish</string>
     <string name="composer_model_search_placeholder">Modellarni qidirish</string>
     <string name="composer_model_clear_search_description">Qidiruvni tozalash</string>
     <string name="composer_model_hide_keyboard_description">Klaviaturani yashirish</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Oxirgilar</string>
     <string name="composer_model_section_all_models">Barcha modellar</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">To\'liq</string>
-    <string name="composer_model_list_half_description">Yarim</string>
     <string name="composer_model_favorite_description">Sevimlilarga qo\'shish</string>
 </resources>

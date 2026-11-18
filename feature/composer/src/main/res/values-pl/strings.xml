@@ -129,9 +129,6 @@
         <item quantity="many">%1$d ukrytych</item>
         <item quantity="other">%1$d ukrytego</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Uchwyt panelu</string>
-    <string name="composer_model_grabber_compact_action">Zmniejsz panel wyboru</string>
-    <string name="composer_model_grabber_expand_action">Rozwiń panel wyboru</string>
     <string name="composer_model_search_placeholder">Szukaj modeli</string>
     <string name="composer_model_clear_search_description">Wyczyść wyszukiwanie</string>
     <string name="composer_model_hide_keyboard_description">Ukryj klawiaturę</string>
@@ -215,7 +212,5 @@
     <string name="composer_model_section_recent">Ostatnie</string>
     <string name="composer_model_section_all_models">Wszystkie modele</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Pełny ekran</string>
-    <string name="composer_model_list_half_description">Połowa ekranu</string>
     <string name="composer_model_favorite_description">Dodaj do ulubionych</string>
 </resources>

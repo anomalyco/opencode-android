@@ -123,9 +123,6 @@
         <item quantity="one">%1$d piilotettu</item>
         <item quantity="other">%1$d piilotettua</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Paneelin vetokahva</string>
-    <string name="composer_model_grabber_compact_action">Pienennä valitsin</string>
-    <string name="composer_model_grabber_expand_action">Laajenna valitsin</string>
     <string name="composer_model_search_placeholder">Hae malleja</string>
     <string name="composer_model_clear_search_description">Tyhjennä haku</string>
     <string name="composer_model_hide_keyboard_description">Piilota näppäimistö</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Viimeaikaiset</string>
     <string name="composer_model_section_all_models">Kaikki mallit</string>
     <string name="composer_model_placeholder">Malli</string>
-    <string name="composer_model_list_full_description">Koko näyttö</string>
-    <string name="composer_model_list_half_description">Puoli näyttöä</string>
     <string name="composer_model_favorite_description">Lisää suosikkeihin</string>
 </resources>

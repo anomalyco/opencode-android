@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">ซ่อนอยู่ %1$d โมเดล</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">แถบลากแผง</string>
-    <string name="composer_model_grabber_compact_action">ย่อแผงเลือกโมเดล</string>
-    <string name="composer_model_grabber_expand_action">ขยายแผงเลือกโมเดล</string>
     <string name="composer_model_search_placeholder">ค้นหาโมเดล</string>
     <string name="composer_model_clear_search_description">ล้างการค้นหา</string>
     <string name="composer_model_hide_keyboard_description">ซ่อนแป้นพิมพ์</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">ล่าสุด</string>
     <string name="composer_model_section_all_models">โมเดลทั้งหมด</string>
     <string name="composer_model_placeholder">โมเดล</string>
-    <string name="composer_model_list_full_description">เต็มจอ</string>
-    <string name="composer_model_list_half_description">ครึ่งจอ</string>
     <string name="composer_model_favorite_description">ชื่นชอบ</string>
 </resources>

@@ -126,9 +126,6 @@
         <item quantity="many">%1$d ocultos</item>
         <item quantity="other">%1$d ocultos</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Asa del panel</string>
-    <string name="composer_model_grabber_compact_action">Compactar el selector</string>
-    <string name="composer_model_grabber_expand_action">Expandir el selector</string>
     <string name="composer_model_search_placeholder">Buscar modelos</string>
     <string name="composer_model_clear_search_description">Borrar búsqueda</string>
     <string name="composer_model_hide_keyboard_description">Ocultar teclado</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Recientes</string>
     <string name="composer_model_section_all_models">Todos los modelos</string>
     <string name="composer_model_placeholder">Modelo</string>
-    <string name="composer_model_list_full_description">Pantalla completa</string>
-    <string name="composer_model_list_half_description">Media pantalla</string>
     <string name="composer_model_favorite_description">Añadir a favoritos</string>
 </resources>

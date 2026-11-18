@@ -1,7 +1,6 @@
 package ai.opencode.feature.composer.modelpicker
 
 import ai.opencode.core.motion.Motion
-import ai.opencode.core.motion.MotionTunables
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.BrandAssets
 import ai.opencode.core.ui.TemplateAssetImage
@@ -35,29 +34,8 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-/**
- * One Picker's layout metrics and options at their shipped defaults; its timing is
- * [OnePickerTiming].
- */
+/** One Picker's row metrics and options at their shipped defaults. */
 object OnePickerTunables {
-    /** "Compact height" (320…640). */
-    const val COMPACT_HEIGHT = 460.0
-
-    /** "Side inset" (0…24). */
-    const val SIDE_INSET = 8.0
-
-    /** "Bottom inset" (0…24). */
-    const val BOTTOM_INSET = 8.0
-
-    /** "Search keyboard gap" (0…20). */
-    const val KEYBOARD_GAP = 6.0
-
-    /** "Top corners" (16…48). */
-    const val TOP_RADIUS = 16.0
-
-    /** "Bottom corners" (16…56). */
-    const val BOTTOM_RADIUS = 16.0
-
     /** "Row height" (44…62). */
     const val ROW_HEIGHT = 50.0
 
@@ -69,12 +47,6 @@ object OnePickerTunables {
 
     /** "Scroll edge fade" (0…40). */
     const val EDGE_FADE = 24.0
-
-    /** "Drag closes past" (32…220). */
-    const val DRAG_CLOSES = 88.0
-
-    /** "Throw closes at (pt/s)" (200…2400). */
-    const val THROW_CLOSES = 680.0
 
     /** "Show providers below Recent". */
     const val SHOWS_ALL_MODELS = true
@@ -93,17 +65,6 @@ object OnePickerTunables {
 
     /** "Chevron on chip". */
     const val CHIP_SHOWS_CHEVRON = true
-}
-
-/**
- * One Picker's motion, on the shared roles. It grows out of the chip on `Motion.panelOpen` and
- * folds back on `Motion.panelClose`, its bottom edge riding the keyboard on `Motion.keyboard`; a
- * rest changes on `Motion.layout`, and a drag let go settles on `Motion.release`.
- */
-object OnePickerTiming {
-    /** Narrow to wide, the width gets there first: `panelOpen` quickened by `widthLead`. */
-    val widthDuration: Double
-        get() = Motion.panelOpen.curve().duration / max(MotionTunables.widthLead.value, 1.0)
 }
 
 /**

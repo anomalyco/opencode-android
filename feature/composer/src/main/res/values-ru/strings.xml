@@ -129,9 +129,6 @@
         <item quantity="many">Скрыто %1$d моделей</item>
         <item quantity="other">Скрыто %1$d модели</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Ручка панели</string>
-    <string name="composer_model_grabber_compact_action">Свернуть панель выбора</string>
-    <string name="composer_model_grabber_expand_action">Развернуть панель выбора</string>
     <string name="composer_model_search_placeholder">Поиск моделей</string>
     <string name="composer_model_clear_search_description">Очистить поиск</string>
     <string name="composer_model_hide_keyboard_description">Скрыть клавиатуру</string>
@@ -215,7 +212,5 @@
     <string name="composer_model_section_recent">Недавние</string>
     <string name="composer_model_section_all_models">Все модели</string>
     <string name="composer_model_placeholder">Модель</string>
-    <string name="composer_model_list_full_description">На весь экран</string>
-    <string name="composer_model_list_half_description">На полэкрана</string>
     <string name="composer_model_favorite_description">В избранное</string>
 </resources>

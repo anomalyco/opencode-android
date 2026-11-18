@@ -189,7 +189,7 @@ fun AgentChip(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val style = OpenCodeTextStyles.subheadline.copy(fontWeight = FontWeight.Medium)
-            OnePickerChipRoll(name, animates = true, reduceMotion, label = "agentName") { rolled ->
+            OnePickerChipRoll(name, reduceMotion, label = "agentName") { rolled ->
                 Text(rolled, style = style, color = OpenCodeTheme.colors.text, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 96.dp))
             }
             OpenCodeIcon(SFSymbol.ChevronDown, null, size = 11.dp, tint = secondary)

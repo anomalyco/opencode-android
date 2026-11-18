@@ -123,9 +123,6 @@
         <item quantity="one">%1$d falin</item>
         <item quantity="other">%1$d faldar</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Draghandfang spjalds</string>
-    <string name="composer_model_grabber_compact_action">Minnka valspjaldið</string>
-    <string name="composer_model_grabber_expand_action">Stækka valspjaldið</string>
     <string name="composer_model_search_placeholder">Leitaðu að gerðum</string>
     <string name="composer_model_clear_search_description">Hreinsa leit</string>
     <string name="composer_model_hide_keyboard_description">Fela lyklaborð</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Nýlegt</string>
     <string name="composer_model_section_all_models">Allar fyrirmyndir</string>
     <string name="composer_model_placeholder">Líkan</string>
-    <string name="composer_model_list_full_description">Full stærð</string>
-    <string name="composer_model_list_half_description">Hálf stærð</string>
     <string name="composer_model_favorite_description">Setja í eftirlæti</string>
 </resources>

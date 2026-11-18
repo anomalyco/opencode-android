@@ -123,9 +123,6 @@
         <item quantity="one">%1$d gizli</item>
         <item quantity="other">%1$d gizli</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Panel tutamacı</string>
-    <string name="composer_model_grabber_compact_action">Seçiciyi küçült</string>
-    <string name="composer_model_grabber_expand_action">Seçiciyi genişlet</string>
     <string name="composer_model_search_placeholder">Model ara</string>
     <string name="composer_model_clear_search_description">Aramayı temizle</string>
     <string name="composer_model_hide_keyboard_description">Klavyeyi gizle</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Son kullanılanlar</string>
     <string name="composer_model_section_all_models">Tüm modeller</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Tam</string>
-    <string name="composer_model_list_half_description">Yarım</string>
     <string name="composer_model_favorite_description">Favorilere ekle</string>
 </resources>

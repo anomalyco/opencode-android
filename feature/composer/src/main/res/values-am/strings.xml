@@ -123,9 +123,6 @@
         <item quantity="one">%1$d ተደብቋል</item>
         <item quantity="other">%1$d ተደብቀዋል</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">የፓነል መጎተቻ</string>
-    <string name="composer_model_grabber_compact_action">መምረጫውን አሳንስ</string>
-    <string name="composer_model_grabber_expand_action">መምረጫውን ዘርጋ</string>
     <string name="composer_model_search_placeholder">የፍለጋ ሞዴሎች</string>
     <string name="composer_model_clear_search_description">ፍለጋን አጽዳ</string>
     <string name="composer_model_hide_keyboard_description">የቁልፍ ሰሌዳውን ደብቅ</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">የቅርብ ጊዜ</string>
     <string name="composer_model_section_all_models">ሁሉም ሞዴሎች</string>
     <string name="composer_model_placeholder">ሞዴል</string>
-    <string name="composer_model_list_full_description">ሙሉ</string>
-    <string name="composer_model_list_half_description">ግማሽ</string>
     <string name="composer_model_favorite_description">ወደ ተወዳጆች አክል</string>
 </resources>

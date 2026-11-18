@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d tersembunyi</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Pegangan panel</string>
-    <string name="composer_model_grabber_compact_action">Perkecil panel pemilih</string>
-    <string name="composer_model_grabber_expand_action">Bentangkan panel pemilih</string>
     <string name="composer_model_search_placeholder">Cari model</string>
     <string name="composer_model_clear_search_description">Bersihkan pencarian</string>
     <string name="composer_model_hide_keyboard_description">Sembunyikan keyboard</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">Terbaru</string>
     <string name="composer_model_section_all_models">Semua model</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Penuh</string>
-    <string name="composer_model_list_half_description">Setengah</string>
     <string name="composer_model_favorite_description">Jadikan favorit</string>
 </resources>

@@ -224,7 +224,7 @@ class SessionComposerHost {
     var isImportingImages by mutableStateOf(false)
     /** iOS `pendingAttachmentsRow` (VIEW-PICKERS): shown above the field when the composer has attachments. */
     var pendingAttachmentsRow: (@Composable (composerExpanded: Boolean) -> Unit)? by mutableStateOf(null)
-    /** One Picker's panel (iOS `onePicker`), set by `SessionModelPickerOverlays`. */
+    /** The model picker's ties to the composer, set by `SessionModelPickerOverlays`. */
     internal var modelPanels: SessionModelPanels? by mutableStateOf(null)
     /** Composer Autocomplete's suggestions are open (iOS `autocompleteController.isOpen`), set by the composer. */
     internal var autocompleteCovers by mutableStateOf(false)
@@ -235,12 +235,8 @@ class SessionComposerHost {
     internal var floatingCallCovers by mutableStateOf(false)
     /** iOS `showsAutocomplete`: no request panel holds the composer's glass, so its suggestions can be drawn there. Set by the capsule. */
     internal var showsAutocomplete by mutableStateOf(true)
-    /** iOS `composerPanelCovers`: a panel grown out of the composer (One Picker, suggestions, a quote's comment panel), or the Living Orb's card, stands over what sits above it. */
-    val composerPanelCovers: Boolean get() = modelPanels?.covers == true || autocompleteCovers || floatingCallCovers || commentingQuoteID != null
-    /** One Picker is shown: the composer stays expanded under it. */
-    val keepsComposerExpanded: Boolean get() = modelPanels?.keepsComposerExpanded == true
-    /** A panel or overlay owns downward drags now (iOS `composerSwipeYields`' panels). */
-    val swipeYields: Boolean get() = modelPanels?.swipeYields == true
+    /** iOS `composerPanelCovers`: a panel grown out of the composer (suggestions, a quote's comment panel), or the Living Orb's card, stands over what sits above it. */
+    val composerPanelCovers: Boolean get() = autocompleteCovers || floatingCallCovers || commentingQuoteID != null
     /** iOS `UIAccessibility.post(.announcement)`, set by the composer (the view announces). */
     internal var announcer: (String) -> Unit = {}
 
@@ -792,16 +788,13 @@ internal class SessionComposerEnv(
             return ComposerPresentation(expanded, controls)
         }
 
-    /**
-     * The model controls live in the expanded composer: it stays expanded while their panels
-     * are drawn, or the + menu that will hand the keyboard back.
-     */
+    /** The model controls live in the expanded composer: it stays expanded under the + menu that will hand the keyboard back. */
     private val panelsHoldExpanded: Boolean
         get() {
             val menu = attachmentMenu
             // The + menu keeps the composer open only when it'll hand the keyboard back.
             val menuKeepsOpen = host.isAttachmentMenuOpen && (menu == null || menu.attachmentMenuRestoresFocus)
-            return host.keepsComposerExpanded || menuKeepsOpen
+            return menuKeepsOpen
         }
 
     /**
@@ -855,7 +848,7 @@ internal class SessionComposerEnv(
         get() {
             if (s.hasCall) return false
             return messageFieldFocused || s.hasPromptContent || s.dictationHold != null || s.isDictating ||
-                s.isFinishingDictation || host.isAttachmentMenuOpen || host.keepsComposerExpanded
+                s.isFinishingDictation || host.isAttachmentMenuOpen
         }
 
     /** iOS `composerSwipeYields(from:)`: a touch another control owns. */
@@ -865,7 +858,6 @@ internal class SessionComposerEnv(
             Companion.composerSwipeYields(
                 dictationHold = s.dictationHold,
                 attachmentMenuOpen = host.isAttachmentMenuOpen,
-                panelsShown = host.swipeYields,
                 requestPanelTracking = view.requestPanelGesture.isTracking,
                 requestPanelBottom = panelBottom,
                 start = start,
@@ -925,18 +917,17 @@ internal class SessionComposerEnv(
     companion object {
         /**
          * iOS `SessionView.composerSwipeYields(...)`: a touch another control owns (a held mic, the
-         * attachment menu, a panel grown out of the composer): a downward drag there is that
+         * attachment menu): a downward drag there is that
          * control's, never the keyboard's dismissal.
          */
         fun composerSwipeYields(
             dictationHold: DictationFeature.Hold? = null,
             attachmentMenuOpen: Boolean = false,
-            panelsShown: Boolean = false,
             requestPanelTracking: Boolean = false,
             requestPanelBottom: Float? = null,
             start: Offset? = null,
         ): Boolean {
-            if (dictationHold != null || attachmentMenuOpen || panelsShown) return true
+            if (dictationHold != null || attachmentMenuOpen) return true
             // A docked question's fold has the finger, or the touch began on its panel (whose
             // drags fold it or scroll its list).
             if (requestPanelTracking) return true
@@ -1947,8 +1938,6 @@ private fun SessionComposerEnv.ComposerInput(expanded: Boolean, recording: Boole
             accessibilityLabel = bar?.fieldLabel ?: stringResource(R.string.session_message_placeholder),
             isHoldingMic = s.dictationHold != null,
             fieldLink = host.fieldLink,
-            // One Picker in the keyboard's place keeps the field from taking it back.
-            refusesFocus = { host.modelPanels?.onePicker?.isOpen == true },
             // The + menu draws over the field, which keeps the keyboard.
             isCovered = host.isAttachmentMenuOpen,
         )

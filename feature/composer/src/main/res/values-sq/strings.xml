@@ -123,9 +123,6 @@
         <item quantity="one">%1$d i fshehur</item>
         <item quantity="other">%1$d të fshehur</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Doreza e panelit</string>
-    <string name="composer_model_grabber_compact_action">Bëje përzgjedhësin kompakt</string>
-    <string name="composer_model_grabber_expand_action">Zgjero përzgjedhësin</string>
     <string name="composer_model_search_placeholder">Kërko modele</string>
     <string name="composer_model_clear_search_description">Pastro kërkimin</string>
     <string name="composer_model_hide_keyboard_description">Fshih tastierën</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Të fundit</string>
     <string name="composer_model_section_all_models">Të gjitha modelet</string>
     <string name="composer_model_placeholder">Modeli</string>
-    <string name="composer_model_list_full_description">I plotë</string>
-    <string name="composer_model_list_half_description">Gjysmë</string>
     <string name="composer_model_favorite_description">Shto te të preferuarat</string>
 </resources>

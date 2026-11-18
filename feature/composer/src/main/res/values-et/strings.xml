@@ -123,9 +123,6 @@
         <item quantity="one">%1$d peidetud</item>
         <item quantity="other">%1$d peidetud</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Paneeli lohistamispide</string>
-    <string name="composer_model_grabber_compact_action">Muuda valija kompaktseks</string>
-    <string name="composer_model_grabber_expand_action">Laienda valijat</string>
     <string name="composer_model_search_placeholder">Otsige mudeleid</string>
     <string name="composer_model_clear_search_description">Tühjenda otsing</string>
     <string name="composer_model_hide_keyboard_description">Peida klaviatuur</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Hiljutised</string>
     <string name="composer_model_section_all_models">Kõik mudelid</string>
     <string name="composer_model_placeholder">Mudel</string>
-    <string name="composer_model_list_full_description">Täisekraan</string>
-    <string name="composer_model_list_half_description">Pool ekraani</string>
     <string name="composer_model_favorite_description">Lisa lemmikutesse</string>
 </resources>

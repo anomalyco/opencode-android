@@ -17,8 +17,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +31,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,26 +40,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.PointerEventPass
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalViewConfiguration
 import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.platform.testTag
@@ -81,15 +70,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 // One Picker's model list. A `LazyColumn` of immutable row snapshots (no store in a row): rows,
-// sections, footer, swipe and long-press favorites, level menu, and the pull-down-from-the-top
-// sheet drag reported to the panel through [OnePickerListActions].
+// sections, footer, swipe and long-press favorites and level menu.
 
 /** One row's immutable snapshot. */
 data class OnePickerRowItem(
@@ -138,15 +124,12 @@ class OnePickerListActions {
     var onPickLevel: (OpenCodeModel, String?) -> Unit = { _, _ -> }
     var onToggleFavorite: (OpenCodeModel) -> Unit = {}
     var onToggleShowAllModels: () -> Unit = {}
-    var onBeginSheetDrag: () -> Unit = {}
-    var onUpdateSheetDrag: (Double) -> Unit = {}
-    var onEndSheetDrag: (Double, Double) -> Unit = { _, _ -> }
     var onEdgesChanged: (OnePickerScrollEdges) -> Unit = {}
 }
 
 /**
- * A new [openGeneration] scrolls back to the top and drops a pull in progress; [scrollDisabled]
- * freezes the list (mid-morph). Structural changes (favoriting) animate, except while searching.
+ * A new [openGeneration] scrolls back to the top. Structural changes (favoriting) animate, except
+ * while searching.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -154,19 +137,15 @@ fun OnePickerListView(
     sections: List<OnePickerSectionSnapshot>,
     openGeneration: Int,
     isSearching: Boolean,
-    scrollDisabled: Boolean,
     bottomFooterRow: OnePickerFooterSnapshot?,
     actions: OnePickerListActions,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
-    val pull = rememberOnePickerPullDown(listState, actions)
 
     LaunchedEffect(openGeneration) {
         listState.scrollToItem(0)
-        pull.cancel()
     }
-    DisposableEffect(pull) { onDispose { pull.cancel() } }
     LaunchedEffect(listState) {
         snapshotFlow { OnePickerScrollEdges(listState.canScrollBackward, listState.canScrollForward) }
             .distinctUntilChanged()
@@ -175,25 +154,7 @@ fun OnePickerListView(
 
     LazyColumn(
         state = listState,
-        userScrollEnabled = !scrollDisabled,
-        modifier = modifier
-            .pointerInput(listState) {
-                // Whether this drag began with the list at its top.
-                awaitEachGesture {
-                    awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
-                    pull.startedAtTop = !listState.canScrollBackward
-                    // A gesture torn down before its release settles the pull.
-                    try {
-                        do {
-                            val event = awaitPointerEvent(PointerEventPass.Initial)
-                        } while (event.changes.any { it.pressed })
-                    } catch (cancelled: CancellationException) {
-                        pull.cancel()
-                        throw cancelled
-                    }
-                }
-            }
-            .nestedScroll(pull.connection),
+        modifier = modifier,
     ) {
         sections.forEachIndexed { index, section ->
             item(key = "spacer-top-${section.id}", contentType = "inset") {
@@ -219,74 +180,6 @@ fun OnePickerListView(
             }
         }
     }
-}
-
-/**
- * Sheet pull: a drag that began at the top and pulls down moves the sheet instead of the list,
- * reporting its translation (dp) until released (with its velocity) or pushed back up past its
- * anchor (which cancels).
- */
-@Stable
-internal class OnePickerPullDown(
-    private val listState: LazyListState,
-    private val density: () -> Float,
-    /** Refreshed every composition, so a pull settles through the latest callbacks. */
-    var actions: OnePickerListActions,
-) {
-    var startedAtTop = true
-    private var pulling = false
-    private var pullPx = 0f
-
-    /** A cancelled pull (or a new opening) settles the sheet where it was, once. */
-    fun cancel() {
-        if (pulling) end(0.0, 0.0)
-        pullPx = 0f
-    }
-
-    private fun end(dy: Double, vy: Double) {
-        pulling = false
-        pullPx = 0f
-        actions.onEndSheetDrag(dy, vy)
-    }
-
-    val connection = object : NestedScrollConnection {
-        override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-            if (!pulling || source != NestedScrollSource.UserInput) return Offset.Zero
-            pullPx += available.y
-            if (pullPx < -2f * density()) {
-                end(0.0, 0.0)
-                return Offset.Zero
-            }
-            actions.onUpdateSheetDrag(max(0f, pullPx) / density().toDouble())
-            return available
-        }
-
-        override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-            if (source != NestedScrollSource.UserInput) return Offset.Zero
-            if (listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 4f * density()) startedAtTop = false
-            if (pulling || !startedAtTop || available.y <= 2f) return Offset.Zero
-            // The sheet starts from 0.
-            pulling = true
-            pullPx = 0f
-            actions.onBeginSheetDrag()
-            actions.onUpdateSheetDrag(0.0)
-            return available
-        }
-
-        override suspend fun onPreFling(available: Velocity): Velocity {
-            if (!pulling) return Velocity.Zero
-            end(max(0f, pullPx) / density().toDouble(), available.y / density().toDouble())
-            return available
-        }
-    }
-}
-
-@Composable
-private fun rememberOnePickerPullDown(listState: LazyListState, actions: OnePickerListActions): OnePickerPullDown {
-    val density = LocalDensity.current
-    val pull = remember(listState) { OnePickerPullDown(listState, { density.density }, actions) }
-    pull.actions = actions
-    return pull
 }
 
 /** Footnote semibold on the 22 pt spine, not pinned. */

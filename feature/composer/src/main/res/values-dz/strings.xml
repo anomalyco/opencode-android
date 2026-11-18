@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d སྦ་བཞག་ཡོད།</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">ཤོག་ལེབ་འཐེན་ས།</string>
-    <string name="composer_model_grabber_compact_action">སེལ་འཐུའི་ཤོག་ལེབ་བསྡུ་སྒྲིག་འབད།</string>
-    <string name="composer_model_grabber_expand_action">སེལ་འཐུའི་ཤོག་ལེབ་རྒྱ་བསྐྱེད་འབད།</string>
     <string name="composer_model_search_placeholder">དཔེ་ཚད་འཚོལ་ཞིབ་འབད།</string>
     <string name="composer_model_clear_search_description">འཚོལ་ཞིབ་བསལ།</string>
     <string name="composer_model_hide_keyboard_description">ལྡེ་སྒྲོམ་སྦ་བཞག</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">འཕྲལ་གྱི།</string>
     <string name="composer_model_section_all_models">དཔེ་ཚད་ཆ་མཉམ།</string>
     <string name="composer_model_placeholder">དཔེ་ཚད།</string>
-    <string name="composer_model_list_full_description">ཆ་ཚང་།</string>
-    <string name="composer_model_list_half_description">ཕྱེད་ཀ།</string>
     <string name="composer_model_favorite_description">དགའ་ཤོས་ནང་བཙུགས།</string>
 </resources>

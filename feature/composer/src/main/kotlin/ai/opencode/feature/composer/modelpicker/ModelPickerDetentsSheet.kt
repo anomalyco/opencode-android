@@ -54,18 +54,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-/**
- * The stock sheet One Picker opens in when its morph can't present ([OnePickerSheetHost]), plus the
- * favourite swipe its rows share. The plain (Today) picker these used to sit with graduated away
- * with One Picker.
- */
+/** The stock sheet One Picker opens in ([OnePickerSheetHost]), plus the favourite swipe its rows share. */
 
 /**
- * One Picker's sheet (while the composer is covered) opens at the partially expanded rest and drag
- * up to full. Dragged down from full, a flick at [ModelPickerTunables.flickCloses] (800 dp/s) or
+ * One Picker's sheet opens at the partially expanded rest and drags up to full. Dragged down from full, a flick at [ModelPickerTunables.flickCloses] (800 dp/s) or
  * faster closes them and a slower drag rests partially expanded (a probe beside the sheet's own
  * drag reads the release velocity, which the settled value doesn't carry). Under TalkBack the
- * grabber still steps between the two rests: collapsing there isn't a request to close.
+ * handle still steps between the two rests: collapsing there isn't a request to close.
  *
  * [onClose] asks the owner to close it (`activePicker = nil`); [onClosed] runs once it leaves
  * however it closed.

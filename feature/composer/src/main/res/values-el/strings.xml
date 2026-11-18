@@ -123,9 +123,6 @@
         <item quantity="one">%1$d κρυφό</item>
         <item quantity="other">%1$d κρυφά</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Λαβή πλαισίου</string>
-    <string name="composer_model_grabber_compact_action">Συμπαγής προβολή επιλογέα</string>
-    <string name="composer_model_grabber_expand_action">Ανάπτυξη επιλογέα</string>
     <string name="composer_model_search_placeholder">Αναζήτηση μοντέλων</string>
     <string name="composer_model_clear_search_description">Διαγραφή αναζήτησης</string>
     <string name="composer_model_hide_keyboard_description">Απόκρυψη πληκτρολογίου</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Πρόσφατα</string>
     <string name="composer_model_section_all_models">Όλα τα μοντέλα</string>
     <string name="composer_model_placeholder">Μοντέλο</string>
-    <string name="composer_model_list_full_description">Πλήρες</string>
-    <string name="composer_model_list_half_description">Μισό</string>
     <string name="composer_model_favorite_description">Προσθήκη στα αγαπημένα</string>
 </resources>

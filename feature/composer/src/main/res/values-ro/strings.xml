@@ -126,9 +126,6 @@
         <item quantity="few">%1$d modele ascunse</item>
         <item quantity="other">%1$d de modele ascunse</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Mânerul panoului</string>
-    <string name="composer_model_grabber_compact_action">Restrânge selectorul</string>
-    <string name="composer_model_grabber_expand_action">Extinde selectorul</string>
     <string name="composer_model_search_placeholder">Caută modele</string>
     <string name="composer_model_clear_search_description">Șterge căutarea</string>
     <string name="composer_model_hide_keyboard_description">Ascunde tastatura</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Recente</string>
     <string name="composer_model_section_all_models">Toate modelele</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Ecran întreg</string>
-    <string name="composer_model_list_half_description">Jumătate de ecran</string>
     <string name="composer_model_favorite_description">Adaugă la favorite</string>
 </resources>

@@ -129,9 +129,6 @@
         <item quantity="few">%1$d skriti</item>
         <item quantity="other">%1$d skritih</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Ročica podokna</string>
-    <string name="composer_model_grabber_compact_action">Zmanjšaj izbirnik</string>
-    <string name="composer_model_grabber_expand_action">Razširi izbirnik</string>
     <string name="composer_model_search_placeholder">Iskanje modelov</string>
     <string name="composer_model_clear_search_description">Počisti iskanje</string>
     <string name="composer_model_hide_keyboard_description">Skrij tipkovnico</string>
@@ -215,7 +212,5 @@
     <string name="composer_model_section_recent">Nedavni</string>
     <string name="composer_model_section_all_models">Vsi modeli</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Cel zaslon</string>
-    <string name="composer_model_list_half_description">Pol zaslona</string>
     <string name="composer_model_favorite_description">Dodaj med priljubljene</string>
 </resources>

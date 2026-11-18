@@ -123,9 +123,6 @@
         <item quantity="one">%1$dක් සඟවා ඇත</item>
         <item quantity="other">%1$dක් සඟවා ඇත</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">පැනලය ඇදීමේ හසුරුව</string>
-    <string name="composer_model_grabber_compact_action">තේරීම් පැනලය සංක්ෂිප්ත කරන්න</string>
-    <string name="composer_model_grabber_expand_action">තේරීම් පැනලය පුළුල් කරන්න</string>
     <string name="composer_model_search_placeholder">සෙවුම් ආකෘති</string>
     <string name="composer_model_clear_search_description">සෙවුම හිස් කරන්න</string>
     <string name="composer_model_hide_keyboard_description">යතුරුපුවරුව සඟවන්න</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">මෑත</string>
     <string name="composer_model_section_all_models">සියලු ආකෘති</string>
     <string name="composer_model_placeholder">ආකෘතිය</string>
-    <string name="composer_model_list_full_description">සම්පූර්ණ</string>
-    <string name="composer_model_list_half_description">අඩක්</string>
     <string name="composer_model_favorite_description">ප්‍රියතමයන්ට එකතු කරන්න</string>
 </resources>

@@ -123,9 +123,6 @@
         <item quantity="one">%1$d скрит</item>
         <item quantity="other">%1$d скрити</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Дръжка на панела</string>
-    <string name="composer_model_grabber_compact_action">Свиване на панела за избор</string>
-    <string name="composer_model_grabber_expand_action">Разгъване на панела за избор</string>
     <string name="composer_model_search_placeholder">Търсене на модели</string>
     <string name="composer_model_clear_search_description">Изчистване на търсенето</string>
     <string name="composer_model_hide_keyboard_description">Скриване на клавиатурата</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Последни</string>
     <string name="composer_model_section_all_models">Всички модели</string>
     <string name="composer_model_placeholder">Модел</string>
-    <string name="composer_model_list_full_description">Цял екран</string>
-    <string name="composer_model_list_half_description">Половин екран</string>
     <string name="composer_model_favorite_description">Добавяне в любими</string>
 </resources>

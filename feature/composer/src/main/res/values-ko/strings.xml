@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d개 숨김</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">시트 조절 핸들</string>
-    <string name="composer_model_grabber_compact_action">선택 창 줄이기</string>
-    <string name="composer_model_grabber_expand_action">선택 창 펼치기</string>
     <string name="composer_model_search_placeholder">모델 검색</string>
     <string name="composer_model_clear_search_description">검색어 지우기</string>
     <string name="composer_model_hide_keyboard_description">키보드 숨기기</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">최근</string>
     <string name="composer_model_section_all_models">모든 모델</string>
     <string name="composer_model_placeholder">모델</string>
-    <string name="composer_model_list_full_description">전체 화면</string>
-    <string name="composer_model_list_half_description">절반 화면</string>
     <string name="composer_model_favorite_description">즐겨찾기</string>
 </resources>

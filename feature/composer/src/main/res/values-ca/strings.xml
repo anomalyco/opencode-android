@@ -126,9 +126,6 @@
         <item quantity="many">%1$d ocults</item>
         <item quantity="other">%1$d ocults</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Tirador del panell</string>
-    <string name="composer_model_grabber_compact_action">Fes el selector compacte</string>
-    <string name="composer_model_grabber_expand_action">Amplia el selector</string>
     <string name="composer_model_search_placeholder">Cerca models</string>
     <string name="composer_model_clear_search_description">Neteja la cerca</string>
     <string name="composer_model_hide_keyboard_description">Amaga el teclat</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Recents</string>
     <string name="composer_model_section_all_models">Tots els models</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Pantalla completa</string>
-    <string name="composer_model_list_half_description">Mitja pantalla</string>
     <string name="composer_model_favorite_description">Marca com a preferit</string>
 </resources>

@@ -129,9 +129,6 @@
         <item quantity="many">%1$d skrytého</item>
         <item quantity="other">%1$d skrytých</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Úchyt panelu</string>
-    <string name="composer_model_grabber_compact_action">Zmenšit panel výběru</string>
-    <string name="composer_model_grabber_expand_action">Rozbalit panel výběru</string>
     <string name="composer_model_search_placeholder">Hledat modely</string>
     <string name="composer_model_clear_search_description">Vymazat hledání</string>
     <string name="composer_model_hide_keyboard_description">Skrýt klávesnici</string>
@@ -215,7 +212,5 @@
     <string name="composer_model_section_recent">Nedávné</string>
     <string name="composer_model_section_all_models">Všechny modely</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Celá výška</string>
-    <string name="composer_model_list_half_description">Poloviční výška</string>
     <string name="composer_model_favorite_description">Přidat do oblíbených</string>
 </resources>

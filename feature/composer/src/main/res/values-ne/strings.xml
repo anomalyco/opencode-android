@@ -123,9 +123,6 @@
         <item quantity="one">%1$d लुकाइएको</item>
         <item quantity="other">%1$d लुकाइएका</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">पाना तान्ने ह्यान्डल</string>
-    <string name="composer_model_grabber_compact_action">छनोट पाना सङ्क्षिप्त बनाउनुहोस्</string>
-    <string name="composer_model_grabber_expand_action">छनोट पाना विस्तार गर्नुहोस्</string>
     <string name="composer_model_search_placeholder">मोडेलहरू खोज्नुहोस्</string>
     <string name="composer_model_clear_search_description">खोज खाली गर्नुहोस्</string>
     <string name="composer_model_hide_keyboard_description">किबोर्ड लुकाउनुहोस्</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">भर्खरका</string>
     <string name="composer_model_section_all_models">सबै मोडेलहरू</string>
     <string name="composer_model_placeholder">मोडेल</string>
-    <string name="composer_model_list_full_description">पूरा</string>
-    <string name="composer_model_list_half_description">आधा</string>
     <string name="composer_model_favorite_description">मनपर्नेमा राख्नुहोस्</string>
 </resources>

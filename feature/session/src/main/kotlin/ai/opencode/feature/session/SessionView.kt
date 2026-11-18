@@ -347,10 +347,6 @@ fun SessionView(
                             traversalIndex = -1f
                         },
                 )
-                // One Picker's surface grows out of the composer, over the transcript and under the composer.
-                if (!isInertPreview) {
-                    SessionOnePickerBackdrop(composerHost, Modifier.matchParentSize())
-                }
                 val statusBar = WindowInsets.statusBarsIgnoringVisibility.inContainer()
                 Column(
                     Modifier
@@ -392,11 +388,11 @@ fun SessionView(
                         .then(if (!isCovered) Modifier.floatingCallComposerColumn() else Modifier),
                 ) {
                     SessionCallCards(callStore)
-                    SessionComposer(store, Modifier.modelPanelsComposer(composerHost), callStore = callStore)
+                    SessionComposer(store, callStore = callStore)
                 }
                 if (!isInertPreview) {
                     RequestPanelRoomProbe(composerHost, Modifier.matchParentSize())
-                    SessionModelPickerOverlays(store, headerHeight)
+                    SessionModelPickerOverlays(store)
                     QuoteCommentOverlay(store, Modifier.matchParentSize())
                 }
             }

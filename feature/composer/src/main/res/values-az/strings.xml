@@ -123,9 +123,6 @@
         <item quantity="one">%1$d model gizlədilib</item>
         <item quantity="other">%1$d model gizlədilib</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Panel tutacağı</string>
-    <string name="composer_model_grabber_compact_action">Seçim panelini yığcam et</string>
-    <string name="composer_model_grabber_expand_action">Seçim panelini genişlət</string>
     <string name="composer_model_search_placeholder">Modelləri axtar</string>
     <string name="composer_model_clear_search_description">Axtarışı təmizlə</string>
     <string name="composer_model_hide_keyboard_description">Klaviaturanı gizlət</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Son istifadə olunanlar</string>
     <string name="composer_model_section_all_models">Bütün modellər</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Tam</string>
-    <string name="composer_model_list_half_description">Yarım</string>
     <string name="composer_model_favorite_description">Sevimlilərə əlavə et</string>
 </resources>

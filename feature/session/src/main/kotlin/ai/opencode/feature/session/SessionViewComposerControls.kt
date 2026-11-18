@@ -33,7 +33,6 @@ import ai.opencode.feature.composer.SelectionMark
 import ai.opencode.feature.composer.SelectionMarkWidth
 import ai.opencode.feature.composer.micPressGesture
 import ai.opencode.feature.composer.modelpicker.OnePickerChip
-import ai.opencode.feature.composer.modelpicker.OnePickerController
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.LocalIndication
@@ -161,31 +160,25 @@ private fun SessionComposerEnv.AgentButton() {
     }
 }
 
-/**
- * The model control (iOS `modelButton`): One Picker's [OnePickerChip]; a tap grows One Picker
- * out of the composer, or opens it in a sheet when the morph can't present.
- */
+/** The model control (iOS `modelButton`): One Picker's [OnePickerChip]; a tap opens One Picker's sheet. */
 @Composable
 private fun SessionComposerEnv.ModelButton(enabled: Boolean) {
     val picker = rememberModelPickerState(store)
     ComposerHidden(foldsComposerControls) {
-        val panels = host.modelPanels
-        val unmounted = remember { OnePickerController() }
         OnePickerChip(
             state = picker,
-            controller = panels?.onePicker ?: unmounted,
             onEvent = { event -> modelPickerAction(event)?.let(store::send) },
-            // iOS `openOnePicker()`: the picker grows out of the composer in the keyboard's place.
             onOpen = {
                 if (composerTextTakesDoubleTap()) return@OnePickerChip
-                if (panels != null && panels.canPresentOnePickerMorph) {
-                    panels.openOnePicker()
+                val panels = host.modelPanels
+                if (panels != null) {
+                    panels.openModelPicker()
                 } else {
                     dismissKeyboard()
                     store.send(Action.ModelButtonTapped)
                 }
             },
-            isEnabled = enabled && panels?.onePicker?.isOpen != true,
+            isEnabled = enabled,
             targetDrop = ComposerLayoutMetrics.pickerTargetDrop.dp,
             besideAgent = agentSelection,
         )

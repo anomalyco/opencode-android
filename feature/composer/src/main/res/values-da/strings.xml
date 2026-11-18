@@ -123,9 +123,6 @@
         <item quantity="one">%1$d skjult</item>
         <item quantity="other">%1$d skjulte</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Panelhåndtag</string>
-    <string name="composer_model_grabber_compact_action">Gør vælgeren kompakt</string>
-    <string name="composer_model_grabber_expand_action">Udvid vælgeren</string>
     <string name="composer_model_search_placeholder">Søg modeller</string>
     <string name="composer_model_clear_search_description">Ryd søgning</string>
     <string name="composer_model_hide_keyboard_description">Skjul tastatur</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Seneste</string>
     <string name="composer_model_section_all_models">Alle modeller</string>
     <string name="composer_model_placeholder">Model</string>
-    <string name="composer_model_list_full_description">Fuld</string>
-    <string name="composer_model_list_half_description">Halv</string>
     <string name="composer_model_favorite_description">Gør til favorit</string>
 </resources>

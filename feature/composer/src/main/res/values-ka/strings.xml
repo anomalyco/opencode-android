@@ -123,9 +123,6 @@
         <item quantity="one">%1$d დამალულია</item>
         <item quantity="other">%1$d დამალულია</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">პანელის სახელური</string>
-    <string name="composer_model_grabber_compact_action">ამრჩევის კომპაქტურად ჩვენება</string>
-    <string name="composer_model_grabber_expand_action">ამრჩევის გაფართოება</string>
     <string name="composer_model_search_placeholder">მოდელების ძიება</string>
     <string name="composer_model_clear_search_description">ძიების გასუფთავება</string>
     <string name="composer_model_hide_keyboard_description">კლავიატურის დამალვა</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">ბოლო</string>
     <string name="composer_model_section_all_models">ყველა მოდელი</string>
     <string name="composer_model_placeholder">მოდელი</string>
-    <string name="composer_model_list_full_description">სრული</string>
-    <string name="composer_model_list_half_description">ნახევარი</string>
     <string name="composer_model_favorite_description">რჩეულებში დამატება</string>
 </resources>

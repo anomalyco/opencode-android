@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d ခု ဖျောက်ထားသည်</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">အကွက် ဆွဲရွှေ့ဘား</string>
-    <string name="composer_model_grabber_compact_action">ရွေးချယ်မှုအကွက်ကို ချုံ့ပါ</string>
-    <string name="composer_model_grabber_expand_action">ရွေးချယ်မှုအကွက်ကို ချဲ့ပါ</string>
     <string name="composer_model_search_placeholder">မော်ဒယ်များကို ရှာဖွေပါ။</string>
     <string name="composer_model_clear_search_description">ရှာဖွေမှုကို ရှင်းလင်းပါ</string>
     <string name="composer_model_hide_keyboard_description">ကီးဘုတ်ကို ဖျောက်ပါ</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">လတ်တလော</string>
     <string name="composer_model_section_all_models">မော်ဒယ်အားလုံး</string>
     <string name="composer_model_placeholder">မော်ဒယ်</string>
-    <string name="composer_model_list_full_description">အပြည့်</string>
-    <string name="composer_model_list_half_description">တစ်ဝက်</string>
     <string name="composer_model_favorite_description">အကြိုက်ဆုံးအဖြစ် မှတ်ပါ</string>
 </resources>

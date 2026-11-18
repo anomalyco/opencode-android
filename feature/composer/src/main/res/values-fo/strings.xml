@@ -123,9 +123,6 @@
         <item quantity="one">%1$d goymt</item>
         <item quantity="other">%1$d goymd</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Dragihandtak</string>
-    <string name="composer_model_grabber_compact_action">Ger veljaran kompaktan</string>
-    <string name="composer_model_grabber_expand_action">Víðka veljaran</string>
     <string name="composer_model_search_placeholder">Leitimodell</string>
     <string name="composer_model_clear_search_description">Rudda leiting</string>
     <string name="composer_model_hide_keyboard_description">Goym knappaborð</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Nýliga brúkt</string>
     <string name="composer_model_section_all_models">Øll modell</string>
     <string name="composer_model_placeholder">Modell</string>
-    <string name="composer_model_list_full_description">Full</string>
-    <string name="composer_model_list_half_description">Hálv</string>
     <string name="composer_model_favorite_description">Legg í yndislistan</string>
 </resources>

@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">ຫລົບຊ່ອນໄວ້ %1$d ຕົວ</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">ແຖບລາກແຜງ</string>
-    <string name="composer_model_grabber_compact_action">ເຮັດໃຫ້ແຜງເລືອກກະທັດຮັດ</string>
-    <string name="composer_model_grabber_expand_action">ຂະຫຍາຍແຜງເລືອກ</string>
     <string name="composer_model_search_placeholder">ຄົ້ນຫາຕົວແບບ</string>
     <string name="composer_model_clear_search_description">ລ້າງການຄົ້ນຫາ</string>
     <string name="composer_model_hide_keyboard_description">ຫລົບຊ່ອນແປ້ນພິມ</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">ຫຼ້າສຸດ</string>
     <string name="composer_model_section_all_models">ຕົວແບບທັງໝົດ</string>
     <string name="composer_model_placeholder">ຕົວແບບ</string>
-    <string name="composer_model_list_full_description">ເຕັມຈໍ</string>
-    <string name="composer_model_list_half_description">ເຄິ່ງຈໍ</string>
     <string name="composer_model_favorite_description">ມັກ</string>
 </resources>

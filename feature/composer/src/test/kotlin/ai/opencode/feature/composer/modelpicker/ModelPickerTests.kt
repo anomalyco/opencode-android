@@ -6,8 +6,6 @@ import ai.opencode.server.model.ModelSearch
 import ai.opencode.server.model.OpenCodeModel
 import ai.opencode.server.model.ambiguousShortNames
 import androidx.compose.ui.geometry.Offset
-import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
@@ -19,7 +17,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * The model picker: the list's sections, the level scale the meter and
@@ -167,83 +164,6 @@ class ModelPickerTests {
         assertFalse("The next drag decides afresh", ownership.yields(start) { false })
         assertFalse(ownership.yields(Offset(41f, 10f)) { false })
         assertTrue("A new start decides afresh", ownership.yields(Offset(90f, 10f)) { true })
-    }
-
-    /**
-     * The list's rests: medium about half the large reach (never under 300 pt), a throw settling
-     * at the nearer rest or closing well below medium, and a pull past large rubber-banding.
-     */
-    @Test fun theListRestsLikeASheetsDetents() {
-        val rests = ModelListDetent.Rests(large = 800.0)
-        assertEquals(400.0, rests.medium, 0.0)
-        assertEquals(300.0, ModelListDetent.Rests(large = 420.0).medium, 0.0)
-        assertEquals("Never above large", 200.0, ModelListDetent.Rests(large = 200.0).medium, 0.0)
-        assertEquals(ModelListDetent.Large, ModelListDetent.rest(projected = 700.0, rests = rests))
-        assertEquals(ModelListDetent.Medium, ModelListDetent.rest(projected = 520.0, rests = rests))
-        assertEquals(ModelListDetent.Medium, ModelListDetent.rest(projected = 230.0, rests = rests))
-        assertNull("Thrown well below medium, it closes", ModelListDetent.rest(projected = 200.0, rests = rests))
-        assertEquals(300.0, ModelListDetent.reach(resting = 400.0, drag = 100.0, full = 800.0), 0.0)
-        assertEquals(0.0, ModelListDetent.reach(resting = 400.0, drag = 500.0, full = 800.0), 0.0)
-        val pulled = ModelListDetent.reach(resting = 800.0, drag = -400.0, full = 800.0)
-        assertTrue("Past large it gives a little, never more than 48 pt", pulled > 800 && pulled < 848)
-    }
-
-    /**
-     * A drag that begins mid-spring starts from where the glass is drawn, not from the rest it's
-     * heading for, and keeps that start; a drag the system cancels (no throw) settles at the
-     * nearer rest, never in between.
-     */
-    @Test fun aDragCatchesTheGlassWhereItIsAndACancelledOneSettles() {
-        val first = ModelListDetent.drag(null, drawnReach = 523.0, translation = 4.0)
-        assertEquals("Caught mid-spring at 523, not at a rest", ModelListDetent.Drag(start = 523.0, translation = 4.0), first)
-        assertEquals("No jump", 519.0, ModelListDetent.reach(resting = first.start, drag = first.translation, full = 800.0), 0.0)
-        val later = ModelListDetent.drag(first, drawnReach = 610.0, translation = -30.0)
-        assertEquals("Later moves keep the catch", 523.0, later.start, 0.0)
-        val rests = ModelListDetent.Rests(large = 800.0)
-        assertEquals("Let go (or cancelled) nearer medium", ModelListDetent.Medium, ModelListDetent.rest(projected = 523.0 - 0, rests = rests))
-        assertEquals(ModelListDetent.Large, ModelListDetent.rest(projected = 700.0 - 0, rests = rests))
-    }
-
-    /**
-     * A drag the system cancels settles from where the finger left the glass, not from where it
-     * caught it: dragged from Half nearly to Full, it stays Full.
-     */
-    @Test fun aCancelledDragSettlesFromWhereTheFingerLeftIt() {
-        val rests = ModelListDetent.Rests(large = 800.0)
-        val nearlyFull = ModelListDetent.Drag(start = 400.0, translation = -360.0)
-        assertEquals(ModelListDetent.Large, ModelListDetent.settle(nearlyFull, predictedTranslation = null, rests = rests))
-        val barely = ModelListDetent.Drag(start = 400.0, translation = -60.0)
-        assertEquals(ModelListDetent.Medium, ModelListDetent.settle(barely, predictedTranslation = null, rests = rests))
-        val downFar = ModelListDetent.Drag(start = 400.0, translation = 260.0)
-        assertNull("Left well below medium, it closes", ModelListDetent.settle(downFar, predictedTranslation = null, rests = rests))
-        assertEquals(
-            "A throw's own prediction wins when there is one",
-            ModelListDetent.Medium,
-            ModelListDetent.settle(nearlyFull, predictedTranslation = 0.0, rests = rests),
-        )
-    }
-
-    /** TalkBack's grabber reads and adjusts the rest like a sheet's. */
-    @Test fun theGrabberAdjustsTheRest() {
-        assertEquals("Half", ModelListDetent.Medium.accessibilityValue)
-        assertEquals("Full", ModelListDetent.Large.accessibilityValue)
-        assertEquals(ModelListDetent.Large, ModelListDetent.Medium.adjusted(1))
-        assertEquals(ModelListDetent.Medium, ModelListDetent.Large.adjusted(-1))
-        assertEquals(ModelListDetent.Large, ModelListDetent.Large.adjusted(1))
-    }
-
-    /** One restore at a time: scheduling another or cancelling drops it. */
-    @Test fun aFocusRestoreRunsOnceUnlessCancelled() = runTest {
-        val restore = ComposerFocusRestore(this)
-        val runs = mutableListOf<String>()
-        restore.schedule(after = 30.milliseconds) { runs += "first" }
-        restore.schedule(after = 30.milliseconds) { runs += "second" }
-        advanceTimeBy(150.milliseconds)
-        assertEquals(listOf("second"), runs)
-        restore.schedule(after = 30.milliseconds) { runs += "third" }
-        restore.cancel()
-        advanceTimeBy(150.milliseconds)
-        assertEquals(listOf("second"), runs)
     }
 
     /** The pixel bounds [LevelArc.draw] covers in a 20×20 box (a 1 px stroke), or null when nothing is drawn. */

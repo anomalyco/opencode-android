@@ -123,9 +123,6 @@
         <item quantity="one">%1$d загвар нуусан</item>
         <item quantity="other">%1$d загвар нуусан</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Самбарын бариул</string>
-    <string name="composer_model_grabber_compact_action">Сонгох самбарыг хураах</string>
-    <string name="composer_model_grabber_expand_action">Сонгох самбарыг дэлгэх</string>
     <string name="composer_model_search_placeholder">Загвар хайх</string>
     <string name="composer_model_clear_search_description">Хайлтыг арилгах</string>
     <string name="composer_model_hide_keyboard_description">Гарыг нуух</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">Сүүлийн</string>
     <string name="composer_model_section_all_models">Бүх загвар</string>
     <string name="composer_model_placeholder">Загвар</string>
-    <string name="composer_model_list_full_description">Бүтэн</string>
-    <string name="composer_model_list_half_description">Хагас</string>
     <string name="composer_model_favorite_description">Дуртайд нэмэх</string>
 </resources>

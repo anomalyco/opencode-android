@@ -123,9 +123,6 @@
         <item quantity="one">%1$dটি লুকানো</item>
         <item quantity="other">%1$dটি লুকানো</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">শিট টানার হাতল</string>
-    <string name="composer_model_grabber_compact_action">নির্বাচক সংক্ষিপ্ত করুন</string>
-    <string name="composer_model_grabber_expand_action">নির্বাচক প্রসারিত করুন</string>
     <string name="composer_model_search_placeholder">মডেল অনুসন্ধান করুন</string>
     <string name="composer_model_clear_search_description">অনুসন্ধান পরিষ্কার করুন</string>
     <string name="composer_model_hide_keyboard_description">কীবোর্ড লুকান</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">সাম্প্রতিক</string>
     <string name="composer_model_section_all_models">সব মডেল</string>
     <string name="composer_model_placeholder">মডেল</string>
-    <string name="composer_model_list_full_description">পুরো</string>
-    <string name="composer_model_list_half_description">অর্ধেক</string>
     <string name="composer_model_favorite_description">পছন্দের তালিকায় যোগ করুন</string>
 </resources>

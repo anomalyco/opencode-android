@@ -126,9 +126,6 @@
         <item quantity="few">%1$d скривена модела</item>
         <item quantity="other">%1$d скривених модела</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">Ручица панела</string>
-    <string name="composer_model_grabber_compact_action">Смањи бирач</string>
-    <string name="composer_model_grabber_expand_action">Прошири бирач</string>
     <string name="composer_model_search_placeholder">Претражите моделе</string>
     <string name="composer_model_clear_search_description">Обриши претрагу</string>
     <string name="composer_model_hide_keyboard_description">Сакриј тастатуру</string>
@@ -212,7 +209,5 @@
     <string name="composer_model_section_recent">Недавни</string>
     <string name="composer_model_section_all_models">Сви модели</string>
     <string name="composer_model_placeholder">Модел</string>
-    <string name="composer_model_list_full_description">Цео екран</string>
-    <string name="composer_model_list_half_description">Пола екрана</string>
     <string name="composer_model_favorite_description">Додај у омиљене</string>
 </resources>

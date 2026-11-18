@@ -123,9 +123,6 @@
         <item quantity="one">%1$d छिपा हुआ</item>
         <item quantity="other">%1$d छिपे हुए</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">शीट खींचने का हैंडल</string>
-    <string name="composer_model_grabber_compact_action">चयन पैनल छोटा करें</string>
-    <string name="composer_model_grabber_expand_action">चयन पैनल बड़ा करें</string>
     <string name="composer_model_search_placeholder">मॉडल खोजें</string>
     <string name="composer_model_clear_search_description">खोज साफ़ करें</string>
     <string name="composer_model_hide_keyboard_description">कीबोर्ड छिपाएँ</string>
@@ -209,7 +206,5 @@
     <string name="composer_model_section_recent">हाल के</string>
     <string name="composer_model_section_all_models">सभी मॉडल</string>
     <string name="composer_model_placeholder">मॉडल</string>
-    <string name="composer_model_list_full_description">पूरा</string>
-    <string name="composer_model_list_half_description">आधा</string>
     <string name="composer_model_favorite_description">पसंदीदा बनाएँ</string>
 </resources>

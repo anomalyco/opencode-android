@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">បានលាក់ %1$d</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">ចំណុចអូសផ្ទាំង</string>
-    <string name="composer_model_grabber_compact_action">បង្រួមផ្ទាំងជ្រើសរើស</string>
-    <string name="composer_model_grabber_expand_action">ពង្រីកផ្ទាំងជ្រើសរើស</string>
     <string name="composer_model_search_placeholder">ស្វែងរកម៉ូដែល</string>
     <string name="composer_model_clear_search_description">ជម្រះការស្វែងរក</string>
     <string name="composer_model_hide_keyboard_description">លាក់ក្តារចុច</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">ថ្មីៗ</string>
     <string name="composer_model_section_all_models">ម៉ូដែលទាំងអស់</string>
     <string name="composer_model_placeholder">ម៉ូដែល</string>
-    <string name="composer_model_list_full_description">ពេញ</string>
-    <string name="composer_model_list_half_description">ពាក់កណ្តាល</string>
     <string name="composer_model_favorite_description">ដាក់ជាចំណូលចិត្ត</string>
 </resources>

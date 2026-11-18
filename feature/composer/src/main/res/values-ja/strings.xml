@@ -120,9 +120,6 @@
     <plurals name="composer_model_hidden_count">
         <item quantity="other">%1$d件を非表示</item>
     </plurals>
-    <string name="composer_sheet_grabber_description">シートのドラッグハンドル</string>
-    <string name="composer_model_grabber_compact_action">選択画面をコンパクトにする</string>
-    <string name="composer_model_grabber_expand_action">選択画面を展開</string>
     <string name="composer_model_search_placeholder">モデルを検索</string>
     <string name="composer_model_clear_search_description">検索をクリア</string>
     <string name="composer_model_hide_keyboard_description">キーボードを非表示</string>
@@ -206,7 +203,5 @@
     <string name="composer_model_section_recent">最近使用</string>
     <string name="composer_model_section_all_models">すべてのモデル</string>
     <string name="composer_model_placeholder">モデル</string>
-    <string name="composer_model_list_full_description">全画面</string>
-    <string name="composer_model_list_half_description">半画面</string>
     <string name="composer_model_favorite_description">お気に入りに登録</string>
 </resources>
