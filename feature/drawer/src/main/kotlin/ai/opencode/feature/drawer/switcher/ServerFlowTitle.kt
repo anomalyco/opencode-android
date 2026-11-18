@@ -1,11 +1,8 @@
 package ai.opencode.feature.drawer.switcher
 
 import ai.opencode.core.R as CoreR
-import ai.opencode.core.motion.transitionBlur
-
 import ai.opencode.core.motion.AmbientTimeline
 import ai.opencode.core.motion.MotionRole
-import ai.opencode.core.experiments.key
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.StoreOf
@@ -19,10 +16,7 @@ import ai.opencode.feature.drawer.HomeFeature
 import ai.opencode.feature.drawer.R
 import ai.opencode.feature.drawer.ServerMenuStatus
 import ai.opencode.feature.drawer.ServerReachability
-import ai.opencode.feature.drawer.ServerSwapTarget
-import ai.opencode.feature.drawer.motion.ServerSwapMotion
 import ai.opencode.feature.drawer.style.DrawerTunables
-import ai.opencode.feature.session.ServerFlowTunables
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import ai.opencode.server.friendlyName
@@ -42,15 +36,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,20 +50,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.CompositingStrategy
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -86,13 +67,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlin.math.abs
 
 /**
- * The drawer's title with Server Flow on. The server picked shows at once. Its name rolls in the
- * way the menu goes ([ServerSwapMotion]), the title's width springs to it, and an underline
- * shimmers under it until the server answers, then fills and fades. The menu checks the server
- * shown and gives every server it knows about a status glyph and word ([ServerMenuStatus]).
+ * The drawer's title with Server Flow on. The server picked shows at once, with an underline
+ * shimmering under its name until it answers. The menu checks the server shown and gives every
+ * server it knows about a status glyph and word ([ServerMenuStatus]).
  *
  * @param servers in the menu's order ([drawerTitleServers]).
  */
@@ -101,7 +80,6 @@ fun ServerFlowTitle(
     current: OpenCodeServer,
     servers: List<OpenCodeServer>,
     status: HomeConnectionFeature.State.ConnectionStatus,
-    motion: ServerSwapMotion,
     onSwitch: (OpenCodeServer) -> Unit,
     onRetry: () -> Unit,
     onEdit: () -> Unit,
@@ -112,19 +90,12 @@ fun ServerFlowTitle(
     reachability: Map<String, ServerReachability> = emptyMap(),
 ) {
     val shown = switchingTo ?: current
-    val target = ServerSwapTarget(current, switchingTo, servers)
     // A switch speaks for itself: the server it left has nothing to offer.
     val presentation = DrawerTitle.Presentation(
         serverCount = servers.size,
         status = if (switchingTo == null) status else HomeConnectionFeature.State.ConnectionStatus.connected,
         credentialsRejected = credentialsRejected,
     )
-    val previous = remember { mutableStateOf<ServerSwapTarget?>(null) }
-    val reducedMotion = rememberReduceMotion()
-    SideEffect {
-        motion.sync(target, animated = previous.value != null && previous.value != target, reduceMotion = reducedMotion)
-        previous.value = target
-    }
     val accessibilityValue = if (switchingTo == null) presentation.accessibilityValue else stringResource(R.string.drawer_server_connecting_state)
     val selectedText = stringResource(R.string.drawer_row_selected)
     BoxWithConstraints(modifier.fillMaxWidth()) {
@@ -133,7 +104,7 @@ fun ServerFlowTitle(
             var expanded by rememberSaveable { mutableStateOf(false) }
             Box {
                 Label(
-                    shown, presentation, motion, chevron = true, available = available,
+                    shown, presentation, isConnecting = switchingTo != null, chevron = true, available = available,
                     modifier = Modifier
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
@@ -210,7 +181,7 @@ fun ServerFlowTitle(
             }
         } else {
             Label(
-                shown, presentation, motion, chevron = false, available = available,
+                shown, presentation, isConnecting = switchingTo != null, chevron = false, available = available,
                 modifier = Modifier
                     .clearAndSetSemantics {
                         contentDescription = shown.friendlyName
@@ -223,11 +194,10 @@ fun ServerFlowTitle(
     }
 }
 
-/** The Server Flow title wired to Home, sharing [motion] with the list. */
+/** The Server Flow title wired to Home. */
 @Composable
 fun ServerFlowTitle(
     store: StoreOf<HomeFeature.State, HomeFeature.Action>,
-    motion: ServerSwapMotion,
     onManage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -241,7 +211,6 @@ fun ServerFlowTitle(
         current = current,
         servers = drawerTitleServers(current, saved),
         status = status,
-        motion = motion,
         onSwitch = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.ServerSwitchTapped(it))) },
         onRetry = { store.send(HomeFeature.Action.RetryConnectionTapped) },
         onEdit = { store.send(HomeFeature.Action.Delegate(HomeFeature.DelegateAction.EditServerRequested(current))) },
@@ -263,7 +232,7 @@ private val chevronWidth = chevronSize + chevronGap
 private fun Label(
     shown: OpenCodeServer,
     presentation: DrawerTitle.Presentation,
-    motion: ServerSwapMotion,
+    isConnecting: Boolean,
     chevron: Boolean,
     available: Dp,
     modifier: Modifier = Modifier,
@@ -275,7 +244,14 @@ private fun Label(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(chevronGap),
     ) {
-        Names(shown, presentation, motion, limit)
+        Box {
+            Name(shown.friendlyName, presentation, limit = limit)
+            if (isConnecting) {
+                Box(Modifier.matchParentSize(), contentAlignment = Alignment.BottomStart) {
+                    ServerFlowUnderline(reducedMotion = rememberReduceMotion(), modifier = Modifier.offset(y = 2.dp))
+                }
+            }
+        }
         if (chevron) {
             val chevronColor by animateColorAsState(
                 if (presentation.isDimmed && !colors.highContrast) colors.tertiaryText else colors.secondaryText,
@@ -288,62 +264,7 @@ private fun Label(
 }
 
 @Composable
-private fun Names(shown: OpenCodeServer, presentation: DrawerTitle.Presentation, motion: ServerSwapMotion, limit: Dp) {
-    val reducedMotion = rememberReduceMotion()
-    val density = LocalDensity.current
-    val travel = if (reducedMotion) 0f else ServerFlowTunables.titleTravel
-    val blur = if (reducedMotion) 0f else ServerFlowTunables.blur
-    val width = motion.width?.let { with(density) { it.toDp() } }?.let { minOf(it, limit) }
-    Box(
-        Modifier
-            .then(if (width != null) Modifier.width(width) else Modifier.widthIn(max = limit))
-            // Names lay out at full width and never truncate as the box springs; a longer name
-            // leaving fades out past its edge.
-            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
-            .drawWithContent {
-                drawContent()
-                val edge = size.width * 1.1f + 4.dp.toPx()
-                drawRect(
-                    Brush.horizontalGradient(0f to Color.Black, 0.9f to Color.Black, 1f to Color.Transparent, startX = 0f, endX = edge),
-                    blendMode = BlendMode.DstIn,
-                )
-            },
-        contentAlignment = Alignment.CenterStart,
-    ) {
-        // The shown name's width, truncated to the room, which the title springs to, so the chevron
-        // sits right after a truncated name.
-        val id = shown.persistenceID
-        Name(
-            shown.friendlyName, presentation, limit = limit,
-            modifier = Modifier
-                .wrapContentWidth(Alignment.Start, unbounded = true)
-                .onSizeChanged { motion.measured(id, it.width.toFloat()) }
-                .alpha(0f)
-                .clearAndSetSemantics {},
-        )
-        val names = motion.names
-        for (pose in names) {
-            Name(
-                pose.name, presentation, limit = limit,
-                modifier = Modifier
-                    .wrapContentWidth(Alignment.Start, unbounded = true)
-                    .offset(y = (pose.position * travel).dp)
-                    .alpha(pose.opacity)
-                    .then(if (blur > 0f) Modifier.transitionBlur((abs(pose.position) * blur).dp) else Modifier),
-            )
-        }
-        if (names.isEmpty()) Name(shown.friendlyName, presentation, limit = limit)
-        ServerFlowUnderline(
-            presence = motion.underline,
-            fill = motion.underlineFill,
-            reducedMotion = reducedMotion,
-            modifier = Modifier.align(Alignment.BottomStart).offset(y = 2.dp),
-        )
-    }
-}
-
-@Composable
-private fun Name(text: String, presentation: DrawerTitle.Presentation, limit: Dp, modifier: Modifier = Modifier) {
+private fun Name(text: String, presentation: DrawerTitle.Presentation, limit: Dp) {
     val colors = OpenCodeTheme.colors
     val color by animateColorAsState(
         if (presentation.isDimmed) colors.secondaryText else colors.text,
@@ -352,7 +273,7 @@ private fun Name(text: String, presentation: DrawerTitle.Presentation, limit: Dp
     )
     Text(
         text,
-        modifier = modifier.widthIn(max = limit),
+        modifier = Modifier.widthIn(max = limit),
         style = DrawerTunables.titleFont.font.copy(fontWeight = FontWeight.Bold),
         color = color,
         maxLines = 1,
@@ -362,22 +283,19 @@ private fun Name(text: String, presentation: DrawerTitle.Presentation, limit: Dp
 
 /**
  * The line under the name while a server connects. A sweep runs along it once per
- * `AmbientClock.sweepPeriod`, and it fills when the server answers. Reduce Motion holds the sweep.
- * Hidden from TalkBack.
+ * `AmbientClock.sweepPeriod`. Reduce Motion holds the sweep. Hidden from TalkBack.
  */
 @Composable
-fun ServerFlowUnderline(presence: Float, fill: Float, reducedMotion: Boolean, modifier: Modifier = Modifier) {
-    if (presence <= 0.001f) return
+fun ServerFlowUnderline(reducedMotion: Boolean, modifier: Modifier = Modifier) {
     val colors = OpenCodeTheme.colors
     val track = colors.tertiaryText.copy(alpha = colors.tertiaryText.alpha * 0.5f)
     val ink = colors.secondaryText
-    AmbientTimeline(isActive = fill < 1f, reduceMotion = reducedMotion) { sample ->
+    AmbientTimeline(isActive = true, reduceMotion = reducedMotion) { sample ->
         val phase = FastOutSlowInEasing.transform(sample.sweep.toFloat())
         Canvas(
             modifier
                 .fillMaxWidth()
                 .height(2.dp)
-                .alpha(presence)
                 .clipToBounds()
                 .clearAndSetSemantics {},
         ) {
@@ -387,7 +305,6 @@ fun ServerFlowUnderline(presence: Float, fill: Float, reducedMotion: Boolean, mo
                 val segment = size.width * 0.32f
                 drawRoundRect(ink, topLeft = Offset(segment * (-1 + 4.2f * phase), 0f), size = Size(segment, size.height), cornerRadius = radius)
             }
-            drawRoundRect(ink, size = Size(size.width * fill.coerceAtLeast(0.0001f), size.height), cornerRadius = radius)
         }
     }
 }

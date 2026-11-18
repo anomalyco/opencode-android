@@ -17,7 +17,6 @@ import ai.opencode.feature.drawer.motion.DrawerMotionTunables
 import ai.opencode.feature.drawer.motion.DrawerShortcutMotion
 import ai.opencode.feature.drawer.motion.DrawerTimeReveal
 import ai.opencode.feature.drawer.motion.DrawerTimestamp
-import ai.opencode.feature.drawer.motion.ServerSwapMotion
 import ai.opencode.feature.drawer.motion.drawerPanList
 import ai.opencode.feature.drawer.drawerSessions
 import ai.opencode.feature.drawer.style.DrawerEmptyPinDropZone
@@ -25,12 +24,9 @@ import ai.opencode.feature.drawer.style.DrawerHeaderScrollState
 import ai.opencode.feature.drawer.style.DrawerSectionHeaderKind
 import ai.opencode.feature.drawer.style.DrawerTunables
 import ai.opencode.feature.drawer.visibleSessions
-import ai.opencode.feature.session.ServerFlowTunables
-import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -54,19 +50,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
@@ -172,7 +164,6 @@ fun DrawerListView(
     modifier: Modifier = Modifier,
     panRegions: DrawerPanRegions? = null,
     listState: LazyListState = rememberLazyListState(),
-    serverSwap: ServerSwapMotion? = null,
 ) {
     remember { DrawerListPerfProbe.mountStarted(); true }
     val density = LocalDensity.current
@@ -215,13 +206,6 @@ fun DrawerListView(
 
     // The drawer's knobs join the tuning panel once while it's on.
     SideEffect { DrawerTunables.registerIfNeeded() }
-
-    // Server Flow: before the rows it moves, as the title may not have drawn it yet.
-    val hasApplied = remember { booleanArrayOf(false) }
-    SideEffect {
-        inputs.serverSwap?.let { serverSwap?.sync(it, animated = hasApplied[0], reduceMotion = inputs.reducedMotion) }
-        hasApplied[0] = true
-    }
 
     // What changed while the drawer was hidden lands in place on reveal.
     val shortcutsAnimate = isDrawerVisible && !holder.isRevealing
@@ -366,36 +350,6 @@ fun DrawerListView(
     val returnFocus = rememberAccessibilityFocusRequest(catchUpReturn)
     val returnsToCatchUp = model.search.isEmpty() && model.shortcuts.showsCatchUp
 
-    // Server Flow's switch leaves the old server's rows hanging off its name as it goes
-    // (`swapRows`); otherwise another server's Home arriving in place, or Server Flow's ghost rows
-    // giving way to what loaded, fades the list in.
-    val listAlpha = remember { Animatable(1f) }
-    val graphics = LocalGraphicsContext.current
-    val swapPictures = remember(graphics) { ServerSwapPictures(graphics) }
-    DisposableEffect(swapPictures) { onDispose { swapPictures.release() } }
-    val swapsRows = serverSwap != null && inputs.serverSwap != null
-    val shownList = remember { arrayOf(model.serverID to model.items) }
-    val listFades = remember { intArrayOf(0) }
-    val (shownServer, shownItems) = shownList[0]
-    if (shownServer != model.serverID || shownItems != model.items) {
-        val switched = shownServer != model.serverID
-        val ghosted = shownItems.any { it is DrawerListItem.Ghost }
-        if (switched && swapsRows && serverSwap != null) {
-            // Before the next server's rows compose: the rows on screen are still the old ones.
-            Snapshot.withoutReadObservation {
-                swapPictures.swap(server = shownServer, next = model.serverID, info = listState.layoutInfo, firstVisible = listState.firstVisibleItemIndex, motion = serverSwap)
-            }
-        } else if (switched || (ghosted && swapsRows)) {
-            listFades[0] += 1
-        }
-        shownList[0] = model.serverID to model.items
-    }
-    LaunchedEffect(listFades[0]) {
-        if (listFades[0] == 0) return@LaunchedEffect
-        listAlpha.snapTo(0f)
-        listAlpha.animateTo(1f, MotionRole.Swap.animation(reduceMotion = model.reducedMotion))
-    }
-
     if (DrawerListPerfProbe.isEnabled) {
         LaunchedEffect(listState) {
             snapshotFlow { listState.layoutInfo.visibleItemsInfo.count { it.key is String && (it.key as String).startsWith("session-") } }
@@ -464,21 +418,15 @@ fun DrawerListView(
                 }
                 .onGloballyPositioned { listCoordinates[0] = it }
                 .then(if (panRegions != null) Modifier.drawerPanList(panRegions) else Modifier)
-                .graphicsLayer { alpha = listAlpha.value }
                 .testTag("drawer-list"),
         ) {
             val current = model
-            itemsIndexed(current.items, key = { _, item -> item.key }, contentType = { _, item -> contentType(item) }) { index, item ->
+            itemsIndexed(current.items, key = { _, item -> item.key }, contentType = { _, item -> contentType(item) }) { _, item ->
                 // The dragged row draws above every other item, headers included, through its drag,
                 // landing and settle. The z-order has to sit on the item's root: the list orders
                 // its items, not their content.
                 val isDragged = item is DrawerListItem.Session && pinDrag.draggingID == item.id
-                Box(
-                    Modifier
-                        .zIndex(if (isDragged) 1f else 0f)
-                        .serverSwapRow(serverSwap.takeIf { inputs.serverSwap != null }, current.serverID, current.reducedMotion) { index - listState.firstVisibleItemIndex }
-                        .serverSwapPicture(swapPictures.takeIf { swapsRows }, item.key),
-                ) {
+                Box(Modifier.zIndex(if (isDragged) 1f else 0f)) {
                 when (item) {
                     DrawerListItem.CatchUp, DrawerListItem.WhatsNew -> DrawerListShortcutRow(
                         kind = if (item == DrawerListItem.CatchUp) DrawerListShortcutKind.CatchUp else DrawerListShortcutKind.WhatsNew,
@@ -521,20 +469,6 @@ fun DrawerListView(
                 }
                 }
             }
-        }
-        // The leaving pictures draw over the list.
-        if (serverSwap != null && swapsRows) {
-            Spacer(
-                Modifier
-                    .matchParentSize()
-                    .clipToBounds()
-                    .graphicsLayer { alpha = listAlpha.value }
-                    .drawBehind {
-                        serverSwap.frame // read so each frame redraws
-                        val travel = if (model.reducedMotion) 0f else ServerFlowTunables.listTravel.dp.toPx()
-                        with(swapPictures) { drawLeaving(serverSwap, travel) }
-                    },
-            )
         }
     }
 }

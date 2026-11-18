@@ -14,7 +14,6 @@ import ai.opencode.core.haptics.Haptic
 import ai.opencode.core.haptics.HapticsClient
 import ai.opencode.core.experiments.key
 import ai.opencode.core.motion.rememberReduceMotion
-import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.StoreOf
 import ai.opencode.core.store.observe
 import ai.opencode.core.ui.OpenCodeIcon
@@ -44,8 +43,6 @@ import ai.opencode.feature.drawer.list.rememberInboxSidebarOn
 import ai.opencode.feature.drawer.list.selectionActions
 import ai.opencode.feature.drawer.motion.DrawerSearchPill
 import ai.opencode.feature.drawer.motion.DrawerSearchPillDefaults
-import ai.opencode.feature.drawer.motion.RunServerSwapMotion
-import ai.opencode.feature.drawer.motion.ServerSwapMotion
 import ai.opencode.feature.drawer.motion.drawerPanList
 import ai.opencode.feature.drawer.motion.drawerSearchFocusFade
 import ai.opencode.feature.drawer.motion.drawerSearchTitleFade
@@ -57,12 +54,10 @@ import ai.opencode.feature.drawer.style.DrawerMetrics
 import ai.opencode.feature.drawer.style.DrawerSectionBreak
 import ai.opencode.feature.drawer.style.DrawerTunables
 import ai.opencode.feature.drawer.switcher.ServerFlowTitle
-import ai.opencode.feature.drawer.switcher.drawerTitleServers
 import ai.opencode.feature.session.ComposerTunables
 import ai.opencode.feature.settings.whatsnew.WhatsNewFeature
 import ai.opencode.feature.voice.FloatingCallCenter
 import ai.opencode.feature.voice.floatingCallDrawerButton
-import ai.opencode.server.ServerSharedKeys
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.expandHorizontally
@@ -96,7 +91,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -198,13 +192,9 @@ fun HomeDrawer(
     val search by store.observe { it.search }
     val failure by store.observe { it.deletionError ?: it.inboxSidebarStatus.archiveError }
     val inboxSidebarOn = rememberInboxSidebarOn()
-    // Server Flow: the title and the list share one swap motion.
-    val serverSwap = remember { ServerSwapMotion() }
-    RunServerSwapMotion(serverSwap)
     val current by store.observe { it.server }
     val switchingTo by store.observe { it.switchingTo }
-    val saved by remember { shared(ServerSharedKeys.savedServers).flow }.collectAsState()
-    val serverSwapTarget = ServerSwapTarget(current, switchingTo, drawerTitleServers(current, saved))
+    val serverSwapTarget = ServerSwapTarget(current, switchingTo)
 
     // Always draws its own bottom edge.
     val hardBottomEdge = highContrast || DrawerTunables.bottomEdge == DrawerEdgeStyle.Hard
@@ -325,7 +315,6 @@ fun HomeDrawer(
             actions = actions,
             contentPadding = listPadding,
             modifier = Modifier.fillMaxSize().then(beneathArchived),
-            serverSwap = serverSwap,
         )
         // The list as the drawer's pan sees it: between the title band and the controls, which take
         // their own touches.
@@ -374,7 +363,7 @@ fun HomeDrawer(
                         .fillMaxWidth()
                         .padding(start = DrawerMetrics.textInset, end = DrawerSearchPillDefaults.size + DrawerTunables.searchGap)
                         .drawerSearchTitleFade(viewState.search)
-                    ServerFlowTitle(store = store, motion = serverSwap, onManage = viewState::manageServers, modifier = titleModifier)
+                    ServerFlowTitle(store = store, onManage = viewState::manageServers, modifier = titleModifier)
                     DrawerSearchPill(
                         state = viewState.search,
                         text = search,
