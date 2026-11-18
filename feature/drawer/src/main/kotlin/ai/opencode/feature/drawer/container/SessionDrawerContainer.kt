@@ -253,8 +253,7 @@ fun SessionDrawerContainer(
     // Catch Up just ended and the morph hasn't started yet (it starts in this pass's effects):
     // the stage stays mounted so the morph can fade it.
     val exiting = catchUp == null && controller.catchUp != null
-    val hasFlyingCards = controller.catchUpStack.flyingCards.isNotEmpty()
-    val stackStage = catchUp ?: if (exiting || exitMorph || hasFlyingCards) controller.lastStage else null
+    val stackStage = catchUp ?: if (exiting || exitMorph) controller.lastStage else null
     val cardInStack = catchUp != null
     val chromeMounted = catchUp != null || exiting || exitMorph
     // Catch Up began this pass; its morph (which fades the drawer out) starts in this pass's effects.

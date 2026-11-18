@@ -167,9 +167,9 @@ class SessionDrawerController internal constructor(
      * that picture out over the new content.
      */
     fun captureCardThen(then: () -> Unit) {
-        // Finishing Catch Up: the last card already handed over to its flying snapshot (`live.alpha == 0`),
-        // so there is no live card to snapshot (and reading `cardLayer` back would stall the flight).
-        val liveHidden = catchUp != null && catchUpStack.live.alpha <= 0.01f
+        catchUpStack.settle()
+        // Finishing Catch Up: the last card has already flown away (`liveAlpha == 0`).
+        val liveHidden = catchUp != null && catchUpStack.liveAlpha <= 0.01f
         if (reducedMotion || cardLayer == null || liveHidden) {
             pendingSnapshot = null
             pendingStageSnapshot = null
@@ -477,9 +477,9 @@ class SessionDrawerController internal constructor(
         }
         catchUp = stage
         if (stage != null) lastStage = stage
-        // Once the last card hands over to its flying snapshot (`live.alpha == 0`), there is no
-        // live card left to linger as `outgoing`.
-        val wasShowingCard = previous != null && previous.cardID != null && catchUpStack.live.alpha > 0.01f
+        // Once the last card has flown away (`liveAlpha == 0`), there is no live card left to
+        // linger as `outgoing`.
+        val wasShowingCard = previous != null && previous.cardID != null && catchUpStack.liveAlpha > 0.01f
         // A card drag under way is nobody's now. (The stack keeps its stage until the exit morph
         // unmounts it, so its preview fades with the stage.)
         if (previous != null && stage == null) catchUpStack.dropDrag()
@@ -535,7 +535,7 @@ class SessionDrawerController internal constructor(
         val startScale = DrawerDepth.scale(startProgress, reducedMotion || sidebarShown != null)
         val startDim = if (sidebarShown != null) 0f else DrawerDim.alpha(startProgress, dimMaximum)
         val endDim = if (sidebarShown != null) 0f else DrawerDim.alpha(0f, dimMaximum)
-        catchUpStack.live.alpha = if (showsCard) 1f else 0f
+        catchUpStack.liveAlpha = if (showsCard) 1f else 0f
         outgoing = snapshot
         outgoingRect = null
         val modalFromDrawer = sidebarShown == null && startProgress > 0f
@@ -595,8 +595,8 @@ class SessionDrawerController internal constructor(
     private fun exitIntoSession(animated: Boolean, wasShowingCard: Boolean) {
         val snapshot = pendingSnapshot.takeIf { animated && wasShowingCard }
         pendingSnapshot = null
-        catchUpStack.live.alpha = 0f
-        val previewFrom = catchUpStack.preview.alpha
+        catchUpStack.liveAlpha = 0f
+        val previewFrom = catchUpStack.previewAlpha
         // Beside a sidebar the session's card starts past it.
         val cardLeft = if (isSidebarVisible) drawerWidth * density else 0f
         val fullW = containerSizePx.width.toFloat() - cardLeft
@@ -682,7 +682,7 @@ class SessionDrawerController internal constructor(
 
     /** The stage and the card behind leave on `swap`'s exit, on the frame the session starts. */
     private fun fadeStage(t: Double, previewFrom: Float, finishing: Boolean) {
-        catchUpStack.preview.alpha = previewFrom * (1f - progress(t, SWAP_OUT))
+        catchUpStack.previewAlpha = previewFrom * (1f - progress(t, SWAP_OUT))
         val stage = progress(t, SWAP_OUT)
         chromeAlpha.floatValue = 1f - stage
         chromeScale.floatValue = if (finishing) 1f + 0.04f * stage else 1f
@@ -717,8 +717,8 @@ class SessionDrawerController internal constructor(
     private fun returnToDrawer(animated: Boolean, wasShowingCard: Boolean) {
         val snapshot = pendingSnapshot.takeIf { animated && wasShowingCard }
         pendingSnapshot = null
-        catchUpStack.live.alpha = 0f
-        val previewFrom = catchUpStack.preview.alpha
+        catchUpStack.liveAlpha = 0f
+        val previewFrom = catchUpStack.previewAlpha
         stageSnapshot = pendingStageSnapshot
         pendingStageSnapshot = null
         // The open drawer's pose for everything but the picture.
@@ -759,7 +759,7 @@ class SessionDrawerController internal constructor(
                 // What leaves goes on `swap`'s exit as the list comes forward on its entrance, on
                 // the same frame: the exit is the quicker, so the list never shows through them.
                 val stageFade = progress(t, SWAP_OUT)
-                catchUpStack.preview.alpha = previewFrom * (1f - stageFade)
+                catchUpStack.previewAlpha = previewFrom * (1f - stageFade)
                 chromeAlpha.floatValue = 1f - stageFade
                 chromeScale.floatValue = 1f
                 stackAlpha.floatValue = 1f

@@ -4,15 +4,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import ai.opencode.core.motion.MotionRole
 import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.exp
-import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 /**
  * Catch Up's swipe, spring, stack and card tunables, as their baked defaults. Android has no Tuning
@@ -52,24 +46,7 @@ object CatchUpTunables {
     const val dragRotation = 0.16f
     /** Card side inset. */
     const val sideInset = 10f
-
-    fun layoutSnapshot(): CatchUpLayoutTuning = CatchUpLayoutTuning()
 }
-
-/**
- * Snapshot of layout- and stack-pose-affecting Catch Up tunables. Kept as a value so a future
- * tuning surface can update the resting stack in place.
- */
-data class CatchUpLayoutTuning(
-    val backScale: Float = CatchUpTunables.backScale,
-    val backOffset: Float = CatchUpTunables.backOffset,
-    val backLiftRatio: Float = CatchUpTunables.backLiftRatio,
-    val backRotation: Float = CatchUpTunables.backRotation,
-    val revealFraction: Float = CatchUpTunables.revealFraction,
-    val cornerRadius: Float = CatchUpTunables.cornerRadius,
-    val dragRotation: Float = CatchUpTunables.dragRotation,
-    val sideInset: Float = CatchUpTunables.sideInset,
-)
 
 /** Projected-landing math and release decision for Catch Up card swipes. */
 object CatchUpSwipeMath {
@@ -114,90 +91,6 @@ object CatchUpSwipeMath {
         val commitsByFlick = signedX >= 12 && signedV >= velocityThreshold
         if (!commitsByProjection && !commitsByFlick) return null
         return if (dir > 0) CatchUpDisposition.markRead else CatchUpDisposition.keepUnread
-    }
-}
-
-/**
- * Damped 2D spring stepped per frame for Catch Up card snap-back. Starts from the finger's release
- * position and velocity and steps every visual property (card transform, rotation, badge ring and
- * back-card peek) in lockstep so catching a card mid-flight takes over from where it's drawn.
- * Units: dp and dp/s.
- */
-class CatchUpSpring(
-    var position: Offset,
-    var velocity: Offset,
-    val target: Offset = Offset.Zero,
-) {
-    /** The release role's spring. */
-    val omega: Float
-    val zeta: Float
-    private val initialSignX: Float
-    private val initialSignY: Float
-
-    init {
-        val release = MotionRole.Release.curve().springParameters
-        omega = release.omega.toFloat()
-        zeta = release.zeta.toFloat()
-        val dx = position.x - target.x
-        val dy = position.y - target.y
-        initialSignX = if (abs(dx) > 0.001f) (if (dx > 0) 1f else -1f) else 0f
-        initialSignY = if (abs(dy) > 0.001f) (if (dy > 0) 1f else -1f) else 0f
-    }
-
-    val isSettled: Boolean
-        get() = hypot(position.x - target.x, position.y - target.y) < 0.5f && hypot(velocity.x, velocity.y) < 12f
-
-    /** Advances by [dt] seconds; true once settled (snapped exactly onto the target). */
-    fun step(dt: Float): Boolean {
-        if (dt <= 0) return isSettled
-        val clampedDt = min(dt, 1f / 20f)
-        val (nx, nvx) = stepAxis(position.x - target.x, velocity.x, omega, zeta, clampedDt, initialSignX)
-        val (ny, nvy) = stepAxis(position.y - target.y, velocity.y, omega, zeta, clampedDt, initialSignY)
-        position = Offset(target.x + nx, target.y + ny)
-        velocity = Offset(nvx, nvy)
-        if (isSettled) {
-            position = target
-            velocity = Offset.Zero
-            return true
-        }
-        return false
-    }
-
-    private fun stepAxis(x0: Float, v0: Float, omega: Float, zeta: Float, dt: Float, initialSign: Float): Pair<Float, Float> {
-        var x: Float
-        var v: Float
-        if (abs(zeta - 1) < 1e-3f) {
-            val decay = exp(-omega * dt)
-            val a = v0 + omega * x0
-            x = (x0 + a * dt) * decay
-            v = (v0 - omega * a * dt) * decay
-        } else if (zeta < 1) {
-            val omegaD = omega * sqrt(1 - zeta * zeta)
-            val decay = exp(-zeta * omega * dt)
-            val c1 = x0
-            val c2 = (v0 + zeta * omega * x0) / omegaD
-            val cosTerm = cos(omegaD * dt)
-            val sinTerm = sin(omegaD * dt)
-            x = decay * (c1 * cosTerm + c2 * sinTerm)
-            v = decay * ((c2 * omegaD - zeta * omega * c1) * cosTerm - (c1 * omegaD + zeta * omega * c2) * sinTerm)
-        } else {
-            val gamma = omega * sqrt(zeta * zeta - 1)
-            val r1 = -omega * zeta + gamma
-            val r2 = -omega * zeta - gamma
-            val c1 = (v0 - r2 * x0) / (2 * gamma)
-            val c2 = x0 - c1
-            val e1 = exp(r1 * dt)
-            val e2 = exp(r2 * dt)
-            x = c1 * e1 + c2 * e2
-            v = c1 * r1 * e1 + c2 * r2 * e2
-        }
-        // Critically damped or overdamped springs never cross the target when driven inward
-        // faster than natural decay: clamp on arrival at the target.
-        if (zeta >= 0.99f && initialSign != 0f && x * initialSign < 0) {
-            x = 0f
-            v = 0f
-        }
-        return x to v
     }
 }
 

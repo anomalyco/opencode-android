@@ -42,6 +42,10 @@ by hand to release sooner (`gh workflow run release.yml --ref dev -f bump=patch`
 - The composer's autocomplete list motion (opening, filtering, scrolling, the highlight, picking a row) is
   Android-native on purpose: a `LazyColumn` with `animateItem` in `AutocompleteViews.kt`. Don't port iOS's
   autocomplete simulation or chip flight; the list's rows, ordering, selection and copy still follow iOS.
+- Catch Up's card stack motion (the swipe, settle, fling, Undo and preview) is Android-native on purpose: the drag
+  writes the card's offset and Compose `animate`/`Animatable` jobs on motion roles in `CatchUpStackController.kt`
+  move it; the swiped card flies off as itself. Don't port iOS's card flights or snapshots; the stack's flows,
+  gestures, haptics and copy still follow iOS.
 - The session's page stack (subagent and browser pages) is Android-native on purpose: one animated
   shared-axis move in `SessionPageStack.kt` and system predictive back. Don't port iOS's full-width
   back pan or its stack motion; covered pages still stay composed so they keep their state.

@@ -1,13 +1,11 @@
 package ai.opencode.feature.drawer.catchup
 
-import ai.opencode.core.motion.rememberFrameDurationSeconds
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.LocalContainerInsets
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.feature.drawer.container.clearAndMergeSemantics
 import ai.opencode.feature.drawer.motion.DirectionalPan
 import ai.opencode.feature.drawer.motion.DrawerPanRegions
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -25,13 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -40,13 +36,11 @@ import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.layer.GraphicsLayer
 import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
@@ -73,7 +67,7 @@ fun rememberCatchUpStackController(): CatchUpStackController {
 
 /**
  * The Catch Up card stack: the live session card inset between the chrome's header and footer, the
- * next session's preview beneath it, and the snapshots that fly away. Drag the card right to Mark
+ * next session's preview beneath it. Drag the card right to Mark
  * as Read, left to Keep Unread; the chrome's buttons play the same flight through [proxy].
  *
  * Draw it edge to edge over [CatchUpChrome]; it insets the card itself (system bars + header,
@@ -83,8 +77,8 @@ fun rememberCatchUpStackController(): CatchUpStackController {
  *
  * Swiping never recomposes [card] or [preview]: motion is snapshot state read in `graphicsLayer`.
  *
- * @param stage the queue and its actions. Changes are diffed: a new queue animates (rise, crossfade,
- *   fade) unless a flight or drag is running, which settles against the latest stage when it lands.
+ * @param stage the queue and its actions. Changes are diffed: a new queue animates (rise, fade)
+ *   unless a flight or drag is running, which settles against the latest stage when it lands.
  * @param revealsPreviewOnBegin Reveal the card behind as soon as the stack begins. A host that
  *     morphs into Catch Up (the session container) passes `false` and calls
  *     [CatchUpStackController.revealPreview] when its morph lands.
@@ -114,10 +108,8 @@ fun CatchUpStack(
     val reducedMotion = rememberReduceMotion()
     val colors = OpenCodeTheme.colors
     val isDark = colors.isDark
-    val frameDuration = rememberFrameDurationSeconds()
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
-    val liveLayer = rememberGraphicsLayer()
     val insets = WindowInsets.systemBars.union(WindowInsets.displayCutout)
     val insetPadding = insets.asPaddingValues()
     // The window's edges outside the card: the system bars plus the header, footer and sides. The
@@ -141,9 +133,7 @@ fun CatchUpStack(
     SideEffect {
         controller.reducedMotion = reducedMotion
         controller.isDark = isDark
-        controller.frameDuration = frameDuration
         controller.endEditing = { focusManager.clearFocus() }
-        controller.liveLayer = liveLayer
         proxy?.dismiss = dismissCard
         proxy?.undo = undoCard
         if (!isExiting) {
@@ -170,10 +160,7 @@ fun CatchUpStack(
             .fillMaxSize()
             .onSizeChanged { size ->
                 val width = size.width / density.density
-                if (width != controller.containerWidth) {
-                    controller.containerWidth = width
-                    controller.refreshTuning()
-                }
+                controller.containerWidth = width
             },
     ) {
         Box(
@@ -188,10 +175,7 @@ fun CatchUpStack(
                 .fillMaxSize()
                 .onSizeChanged { size ->
                     val height = size.height / density.density
-                    if (height != controller.cardHeight) {
-                        controller.cardHeight = height
-                        controller.refreshTuning()
-                    }
+                    controller.cardHeight = height
                 }
                 .then(if (!isExiting) Modifier.catchUpPan(controller, panRegions) else Modifier),
         ) {
@@ -201,7 +185,8 @@ fun CatchUpStack(
                     .matchParentSize()
                     .clearAndMergeSemantics()
                     .catchUpCardSurface(
-                        layerState = controller.preview,
+                        pose = { controller.previewPose() },
+                        alpha = { controller.previewAlpha },
                         cornerRadius = cornerRadius,
                         skipWhenHidden = { controller.isPreviewHidden },
                     )
@@ -229,10 +214,6 @@ fun CatchUpStack(
                 )
             }
 
-            for (flying in controller.flyingCards) {
-                if (!flying.aboveLive) key(flying.id) { CatchUpFlyingCardView(flying, cornerRadius, borderWidth, baseBorder) }
-            }
-
             if (leavingCard != null) {
                 leavingCard()
             }
@@ -242,7 +223,8 @@ fun CatchUpStack(
                 Modifier
                     .matchParentSize()
                     .catchUpCardSurface(
-                        layerState = controller.live,
+                        pose = { controller.livePose() },
+                        alpha = { controller.liveAlpha },
                         cornerRadius = cornerRadius,
                         skipWhenHidden = { isExiting },
                     ),
@@ -250,10 +232,6 @@ fun CatchUpStack(
                 Box(
                     Modifier
                         .matchParentSize()
-                        .drawWithContent {
-                            liveLayer.record { this@drawWithContent.drawContent() }
-                            drawLayer(liveLayer)
-                        }
                         .background(canvas)
                         .consumeWindowInsets(cardInsets),
                 ) {
@@ -277,48 +255,7 @@ fun CatchUpStack(
                     Box(Modifier.matchParentSize().pointerInput(Unit) { awaitPointerEventScope { while (true) awaitPointerEvent() } })
                 }
             }
-
-            for (flying in controller.flyingCards) {
-                if (flying.aboveLive) key(flying.id) { CatchUpFlyingCardView(flying, cornerRadius, borderWidth, baseBorder) }
-            }
         }
-    }
-}
-
-/** A snapshot in flight: inert, hidden from TalkBack, with a shadow. */
-@Composable
-private fun CatchUpFlyingCardView(
-    flying: CatchUpFlyingCard,
-    cornerRadius: Dp,
-    borderWidth: Dp,
-    baseBorder: Color,
-) {
-    val bitmap = flying.bitmap ?: return
-    val colors = OpenCodeTheme.colors
-    Box(
-        Modifier
-            .fillMaxSize()
-            .clearAndMergeSemantics()
-            .catchUpCardSurface(
-                layerState = flying.layer,
-                cornerRadius = cornerRadius,
-                shadow = flying.shadow,
-            ),
-    ) {
-        Image(bitmap, contentDescription = null, contentScale = ContentScale.FillBounds, modifier = Modifier.fillMaxSize())
-        flying.badge?.let { CatchUpSwipeOverlay(it, opaque = colors.highContrast) }
-        Box(
-            Modifier
-                .fillMaxSize()
-                .drawBehind {
-                    if (flying.dim > 0f) drawRect(Color.Black.copy(alpha = flying.dim))
-                    drawRoundRect(
-                        color = flying.borderColor ?: baseBorder,
-                        cornerRadius = CornerRadius(cornerRadius.toPx()),
-                        style = Stroke(borderWidth.toPx()),
-                    )
-                },
-        )
     }
 }
 
@@ -402,51 +339,49 @@ private suspend fun PointerInputScope.catchUpPanGestures(
     }
 }
 
-private val FlyingShadowColor = Color.Black.copy(alpha = 0.16f)
-
 /**
  * Draws a Catch Up card surface through a [GraphicsLayer] in the draw phase:
  * `Modifier.graphicsLayer` dispatches layout-change and `onGloballyPositioned` callbacks on every
  * positional frame, which re-lays out hosted `SessionView`s and floods TalkBack with change events.
  */
 private fun Modifier.catchUpCardSurface(
-    layerState: CatchUpCardLayer,
+    pose: () -> CatchUpPose,
+    alpha: () -> Float,
     cornerRadius: Dp,
-    shadow: Boolean = false,
     skipWhenHidden: () -> Boolean = { false },
-): Modifier = this then CatchUpCardSurfaceElement(layerState, cornerRadius, shadow, skipWhenHidden)
+): Modifier = this then CatchUpCardSurfaceElement(pose, alpha, cornerRadius, skipWhenHidden)
 
 private data class CatchUpCardSurfaceElement(
-    val layerState: CatchUpCardLayer,
+    val pose: () -> CatchUpPose,
+    val alpha: () -> Float,
     val cornerRadius: Dp,
-    val shadow: Boolean,
     val skipWhenHidden: () -> Boolean,
 ) : ModifierNodeElement<CatchUpCardSurfaceNode>() {
-    override fun create() = CatchUpCardSurfaceNode(layerState, cornerRadius, shadow, skipWhenHidden)
+    override fun create() = CatchUpCardSurfaceNode(pose, alpha, cornerRadius, skipWhenHidden)
     override fun update(node: CatchUpCardSurfaceNode) {
-        node.layerState = layerState
+        node.pose = pose
+        node.alpha = alpha
         node.cornerRadius = cornerRadius
-        node.shadow = shadow
         node.skipWhenHidden = skipWhenHidden
     }
 }
 
 private class CatchUpCardSurfaceNode(
-    var layerState: CatchUpCardLayer,
+    var pose: () -> CatchUpPose,
+    var alpha: () -> Float,
     var cornerRadius: Dp,
-    var shadow: Boolean,
     var skipWhenHidden: () -> Boolean,
 ) : Modifier.Node(), DrawModifierNode, CompositionLocalConsumerModifierNode {
     private var layer: GraphicsLayer? = null
     private var layerOwner: GraphicsContext? = null
 
     override fun ContentDrawScope.draw() {
-        val alpha = layerState.alpha
-        val p = layerState.pose
+        val alpha = alpha()
         if (skipWhenHidden() || alpha <= 0.001f || size.width <= 0f || size.height <= 0f) {
             if (skipWhenHidden() || size.width <= 0f || size.height <= 0f) dropLayer()
             return
         }
+        val p = pose()
         val graphics = currentValueOf(LocalGraphicsContext)
         if (layerOwner !== graphics) dropLayer()
         val activeLayer = layer ?: graphics.createGraphicsLayer().also {
@@ -461,14 +396,6 @@ private class CatchUpCardSurfaceNode(
         activeLayer.alpha = alpha
         activeLayer.setRoundRectOutline(Offset.Zero, size, cornerRadius.toPx())
         activeLayer.clip = true
-        if (shadow) {
-            // The desktop overlay elevation: softer than Material's 16 dp lift.
-            activeLayer.shadowElevation = 8.dp.toPx()
-            activeLayer.ambientShadowColor = FlyingShadowColor
-            activeLayer.spotShadowColor = FlyingShadowColor
-        } else {
-            activeLayer.shadowElevation = 0f
-        }
         activeLayer.record { this@draw.drawContent() }
         drawLayer(activeLayer)
     }
