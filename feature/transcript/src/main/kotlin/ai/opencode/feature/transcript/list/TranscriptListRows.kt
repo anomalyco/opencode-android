@@ -2,12 +2,8 @@ package ai.opencode.feature.transcript.list
 
 import ai.opencode.core.R as CoreR
 import ai.opencode.core.motion.AmbientClock
-import ai.opencode.core.motion.Motion
 import ai.opencode.core.motion.MotionFrameAction
-import ai.opencode.core.motion.MotionPhase
-import ai.opencode.core.motion.MotionRole
 import ai.opencode.core.motion.MotionTunables
-import ai.opencode.core.motion.motionBlurReveal
 import ai.opencode.core.motion.motionFrameLoop
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.OpenCodeIcon
@@ -16,7 +12,6 @@ import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.feature.media.TranscriptMetrics
 import ai.opencode.feature.transcript.R
 import ai.opencode.server.model.OpenCodeQueuedInput
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -198,9 +193,8 @@ fun MarkLoadingView(loadingSince: Double?, isHidden: Boolean = false, modifier: 
 
 /**
  * The empty and loading session state (iOS `TranscriptEmptyView`): the pulsing mark while a load
- * shows, the bubble glyph above “No messages yet” once it settles empty, revealed with
- * [motionBlurReveal] on the reveal spring (subtitle 0.04 s later). Centred in the fitted viewport
- * height by the list.
+ * shows, the bubble glyph above “No messages yet” once it settles empty. Centred in the fitted
+ * viewport height by the list.
  */
 @Composable
 fun TranscriptEmptyView(
@@ -210,13 +204,8 @@ fun TranscriptEmptyView(
     pulsePaused: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val reduceMotion = rememberReduceMotion()
     val showsText = !isLoading && showsEmptyState
-    val phase = if (showsText) MotionPhase.Enter else MotionPhase.Exit
-    val target = if (showsText) 1f else 0f
-    val title by animateFloatAsState(target, Motion.layout.animation(phase, reduceMotion))
-    val subtitleDelay = if (showsText) MotionRole.staggerDelay(1) else 0.0
-    val subtitle by animateFloatAsState(target, Motion.layout.animation(phase, reduceMotion, subtitleDelay))
+    val textAlpha = if (showsText) 1f else 0f
     val loadingSessionDescription = stringResource(R.string.transcript_empty_loading_description)
     Box(modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Column(
@@ -241,7 +230,7 @@ fun TranscriptEmptyView(
             Spacer(Modifier.height(EmptyStateTunables.glyphSpacing.dp))
             Text(
                 stringResource(R.string.transcript_empty_title),
-                modifier = Modifier.motionBlurReveal(title, MotionTunables.blurPanel.value, MotionTunables.entranceRise.value, reduceMotion)
+                modifier = Modifier.alpha(textAlpha)
                     .then(if (!showsText) Modifier.clearAndSetSemantics { } else Modifier),
                 style = OpenCodeTextStyles.title2.copy(fontWeight = FontWeight.Bold),
                 color = OpenCodeTheme.colors.text,
@@ -250,7 +239,7 @@ fun TranscriptEmptyView(
             Spacer(Modifier.height(EmptyStateTunables.subtitleSpacing.dp))
             Text(
                 stringResource(R.string.transcript_empty_subtitle),
-                modifier = Modifier.motionBlurReveal(subtitle, MotionTunables.blurPanel.value, MotionTunables.entranceRise.value, reduceMotion)
+                modifier = Modifier.alpha(textAlpha)
                     .then(if (!showsText) Modifier.clearAndSetSemantics { } else Modifier),
                 style = OpenCodeTextStyles.subheadline,
                 color = OpenCodeTheme.colors.secondaryText,
