@@ -370,7 +370,7 @@ class CatchUpStackController internal constructor() {
 
     /**
      * Catch Up ended under the finger: the rest of the drag, or the snap-back it started, moves
-     * nothing and can't dismiss a card.
+     * nothing and can't dismiss a card. The card stays where it was while the stage fades.
      */
     internal fun dropDrag() {
         if (!isDragging && !isSettling) return
@@ -382,7 +382,6 @@ class CatchUpStackController internal constructor() {
         isDragging = false
         dragStartOffset = Offset.Zero
         armedDisposition = null
-        moveCardQuietly(Offset.Zero)
     }
 
     private fun finishSettle() {

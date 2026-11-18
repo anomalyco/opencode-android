@@ -10,7 +10,6 @@ import ai.opencode.feature.drawer.container.DrawerScrim
 import ai.opencode.feature.drawer.container.SessionDrawerController
 import androidx.compose.runtime.MonotonicFrameClock
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.IntSize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.plus
@@ -21,7 +20,6 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -55,7 +53,7 @@ import kotlin.math.abs
  *
  * UIKit-only assertions dropped inside ported tests: subview/snapshot counts, `CALayer` masks
  * and animation keys, `safeAreaRegions`, first responders and `UIAccessibility` screen changes
- * (their Android counterparts — morph state, `cardPosed`, TalkBack state, focus — are asserted).
+ * (their Android counterparts — the fade's state, TalkBack state, focus — are asserted).
  */
 class DirectionalPanGestureRecognizerTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -240,7 +238,6 @@ class CatchUpTransitionTests {
         }
         return SessionDrawerController(scope, DrawerMotionState(scope, isPresented, 330f), stack).also {
             it.drawerWidth = 330f
-            it.containerSizePx = IntSize(440, 956)
         }
     }
 
@@ -271,12 +268,8 @@ class CatchUpTransitionTests {
         controller.updateCatchUp(null, returnsToDrawer = false, animated = false)
         controller.catchUpStack.end()
         assertNull(controller.morph)
-        assertNull("Morphs must release every snapshot", controller.outgoing)
-        assertNull(controller.stageSnapshot)
-        assertFalse(controller.cardPosed)
-        assertEquals(1f, controller.cardAlpha.floatValue)
-        assertEquals(1f, controller.cardScale.floatValue)
-        assertEquals(0f, controller.cardTx.floatValue)
+        assertNull("Fades must release the card's picture", controller.leavingCard)
+        assertEquals(0f, controller.stageAlpha.floatValue)
     }
 
     @Test
@@ -332,7 +325,6 @@ class SessionDrawerSettleTests {
 
         init {
             controller.drawerWidth = 330f
-            controller.containerSizePx = IntSize(440, 956)
             setReducedMotion(reducedMotion)
             controller.onArrived = { settled += it }
             controller.onCommitted = { commits += 1 }
@@ -644,7 +636,7 @@ class SessionDrawerSettleTests {
         assertTrue(motion.isModal.value)
         assertTrue("the keyboard goes as the drawer returns", harness.focusCleared > clearedBefore)
         harness.sleep(30)
-        assertTrue("still returning", harness.controller.cardPosed)
+        assertEquals("still returning", CatchUpModeMorph.ReturnToDrawer, harness.controller.morph)
     }
 
     @Test
@@ -656,8 +648,7 @@ class SessionDrawerSettleTests {
         harness.controller.updateCatchUp(stage(), returnsToDrawer = false, animated = false)
         assertTrue("the drawer never arrived, so Home never reads it as open", harness.settled.isEmpty())
         assertEquals(listOf(false), harness.presentations)
-        assertFalse(harness.controller.cardPosed)
-        assertEquals("the stack owns the card again", 0f, harness.controller.cardTx.floatValue)
+        assertEquals("the stage shows again", 1f, harness.controller.stageAlpha.floatValue)
         assertEquals(0, harness.commits)
     }
 
@@ -668,8 +659,7 @@ class SessionDrawerSettleTests {
         harness.controller.updateCatchUp(null, returnsToDrawer = true, animated = true)
         harness.controller.setSidebar(true, animated = false)
         assertTrue(harness.settled.isEmpty())
-        assertFalse(harness.controller.cardPosed)
-        assertEquals(0f, harness.controller.cardTx.floatValue)
+        assertNull(harness.controller.morph)
     }
 
     /**
@@ -693,13 +683,13 @@ class SessionDrawerSettleTests {
         assertEquals(20f, stack.dragOffset.x)
 
         controller.updateCatchUp(null, returnsToDrawer = true, animated = true)
-        assertEquals("the drag surface lets go of the card", Offset.Zero, stack.dragOffset)
+        assertEquals("the card stays where the drag left it while the stage fades", Offset(20f, 0f), stack.dragOffset)
         stack.panChanged(Offset(400f, 0f))
         stack.panEnded(Offset(400f, 0f), velocity = Offset(2_000f, 0f))
         harness.sleep(100)
         assertTrue("the rest of the drag dismisses nothing", dismissed.isEmpty())
         assertEquals("the old drag neither moved nor settled the drawer", CatchUpModeMorph.ReturnToDrawer, controller.morph)
-        assertEquals(Offset.Zero, stack.dragOffset)
+        assertEquals("the rest of the drag doesn't move the card", Offset(20f, 0f), stack.dragOffset)
         assertTrue(harness.settled.isEmpty())
 
         // The next drag is the drawer's again.
@@ -728,16 +718,12 @@ class SessionDrawerSettleTests {
         val controller = harness.controller
         harness.controller.updateCatchUp(stage(), returnsToDrawer = false, animated = false)
         harness.controller.updateCatchUp(null, returnsToDrawer = true, animated = true)
-        assertTrue("the stack's frame grows as a mask", controller.cardPosed)
-        assertNotNull(controller.cardMaskStart)
+        assertEquals("the stage fades over the open drawer", CatchUpModeMorph.ReturnToDrawer, controller.morph)
         harness.sleep(800)
         assertNull(controller.morph)
-        assertFalse(controller.cardPosed)
-        assertNull(controller.cardMaskStart)
-        assertNull(controller.outgoing)
-        assertNull(controller.stageSnapshot)
+        assertNull(controller.leavingCard)
+        assertEquals(0f, controller.stageAlpha.floatValue)
         assertEquals(330f, harness.motion.offset)
-        assertEquals(1f, controller.cardAlpha.floatValue)
         assertEquals(listOf(true), harness.settled)
         assertEquals(0, harness.commits)
     }
@@ -748,7 +734,7 @@ class SessionDrawerSettleTests {
         harness.controller.updateCatchUp(stage(listOf("a")), returnsToDrawer = false, animated = false)
         harness.controller.updateCatchUp(null, returnsToDrawer = true, animated = true)
         harness.beginDrag()
-        assertFalse("the return lands before the finger takes the card", harness.controller.cardPosed)
+        assertNull("the return lands before the finger takes the card", harness.controller.morph)
         harness.drag(-100f)
         assertEquals(230f, harness.motion.offset)
     }

@@ -102,7 +102,6 @@ object CatchUpMetrics {
     val headerHeight: Dp = 52.dp
     val footerHeight: Dp = 74.dp
     val sideInset: Dp get() = CatchUpTunables.sideInset.dp
-    val composerInset: Dp = 12.dp
 
     /** Concentric with the 28 pt composer capsule inset 12 pt from the card's edges (`28 + 12 = 40`). */
     val cornerRadius: Dp get() = CatchUpTunables.cornerRadius.dp
