@@ -631,7 +631,7 @@ private fun DrawerFooterTrailing(
                     },
                 ) {
                     OpenCodeIconButton(
-                        symbol = SFSymbol.Waveform,
+                        symbol = SFSymbol.PhoneFill,
                         contentDescription = stringResource(R.string.drawer_start_voice_call_description),
                         onClick = {
                             // The orb breaks out of this button, not the composer's under the drawer.
