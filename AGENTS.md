@@ -2,7 +2,7 @@
 
 <!-- tallow -->
 
-A native Android port of the OpenCode iOS app (Kotlin, Jetpack Compose, Material 3 Expressive).
+The OpenCode app for Android (Kotlin, Jetpack Compose, Material 3 Expressive).
 Lives at github.com/anomalyco/opencode-android. Work goes on a feature branch → squash-merged PR
 into `dev`, the default branch.
 CI (`.github/workflows/ci.yml`) runs `scripts/check.sh` on every PR and push to `dev`; a push to

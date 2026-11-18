@@ -1,6 +1,6 @@
 # OpenCode for Android
 
-A native Android port of the OpenCode iOS app, in Kotlin with Jetpack Compose and Material 3
+The OpenCode app for Android, in Kotlin with Jetpack Compose and Material 3
 Expressive. The iOS app is the spec: same features, flows, copy and server contract, with
 Android-native visuals. Contributor and agent rules are in [AGENTS.md](AGENTS.md); parity with
 iOS is tracked file by file in [docs/parity](docs/parity/README.md).
