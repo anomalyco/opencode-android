@@ -210,15 +210,43 @@ object AgentFileLoader {
     @Serializable
     private data class Validators(val entityTag: String? = null, val lastModified: String? = null)
 
+    /** The validators stored with a downloaded copy, if any. */
+    fun storedValidators(destination: File): AgentImageValidators? =
+        readValidators(File(destination.path + ".validators"))?.let { AgentImageValidators(it.entityTag, it.lastModified) }
+
     private fun readValidators(sidecar: File): Validators? = runCatching {
         Json.decodeFromString(Validators.serializer(), sidecar.readText())
     }.getOrNull()
 
     /** `<cache>/AgentFiles/<hash of server + path>/<name>`. */
-    fun cacheURL(server: OpenCodeServer, absolutePath: String, name: String, cacheDirectory: File = dependency(AppContext).cacheDir): File {
-        val digest = MessageDigest.getInstance("SHA-256").digest("${server.persistenceID}|$absolutePath".toByteArray())
+    fun cacheURL(server: OpenCodeServer, absolutePath: String, name: String, cacheDirectory: File = dependency(AppContext).cacheDir): File =
+        cacheURL(server.persistenceID, absolutePath, name, cacheDirectory)
+
+    fun cacheURL(serverID: String, absolutePath: String, name: String, cacheDirectory: File): File {
+        val digest = MessageDigest.getInstance("SHA-256").digest("$serverID|$absolutePath".toByteArray())
         val key = digest.take(12).joinToString("") { "%02x".format(it) }
         return File(File(File(cacheDirectory, "AgentFiles"), key), AttachmentFileType.sanitizedName(name))
+    }
+
+    /**
+     * Writes bytes another reader already downloaded (a preview) to [destination] with their
+     * validators, as [download] would have, so the viewer's next read is a 304 or none at all.
+     */
+    fun store(destination: File, data: ByteArray, entityTag: String?, lastModified: String?) {
+        val sidecar = File(destination.path + ".validators")
+        val temporary = File(destination.parentFile ?: return, "agent-file-${UUID.randomUUID().toString().uppercase()}")
+        try {
+            destination.parentFile?.mkdirs()
+            temporary.writeBytes(data)
+            sidecar.delete()
+            destination.delete()
+            if (!temporary.renameTo(destination)) temporary.copyTo(destination, overwrite = true)
+            if (entityTag != null || lastModified != null) {
+                sidecar.writeText(Json.encodeToString(Validators.serializer(), Validators(entityTag, lastModified)))
+            }
+        } finally {
+            temporary.delete()
+        }
     }
 
     /**
@@ -233,6 +261,8 @@ object AgentFileLoader {
         client: OkHttpClient = client(),
         temporaryDirectory: File = destination.parentFile ?: File("."),
         maxBytes: Long = Long.MAX_VALUE,
+        /** The answer's HTTP status: 304 when the cached copy was kept. */
+        onStatus: ((Int) -> Unit)? = null,
         progress: (received: Long, expected: Long?) -> Unit,
     ): File = withContext(Dispatchers.IO) {
         val sidecar = File(destination.path + ".validators")
@@ -261,12 +291,14 @@ object AgentFileLoader {
                     }
                     if (destination.length() > maxBytes) throw overLimit
                     noteContact(contact, server, authorized, response)
+                    onStatus?.invoke(304)
                     return@withContext destination
                 }
                 AgentFileError.from(response.code)?.let { throw it }
                 try {
                     if (response.code == 206) throw AgentFileError.unexpectedResponse
                     transfer(response, temporary, maxBytes, progress)
+                    onStatus?.invoke(response.code)
                 } catch (error: CancellationException) {
                     throw error
                 } catch (error: IOException) {

@@ -539,7 +539,7 @@ class MediaPresenter internal constructor() {
         if (isPresenting) return
         val file = preview.pages.firstOrNull { it.id == preview.id }?.file
         val store = Store(
-            FullscreenViewerFeature.State(preview, allowsDrawing = addDrawing != null),
+            FullscreenViewerFeature.State(preview.withSelectedStandIn(), allowsDrawing = addDrawing != null),
             FullscreenViewerFeature(addDrawing),
         )
         present(preview.id, file?.reference?.kind?.isMedia ?: true, reducesMotion, flightAccessories = flightAccessories, onDismiss = store::close) { viewer ->

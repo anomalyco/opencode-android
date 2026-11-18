@@ -9,8 +9,10 @@ import ai.opencode.server.live.MediaReferenceFetch
 import ai.opencode.server.model.OpenCodeImageAttachment
 import android.graphics.Bitmap
 import android.graphics.Color
+import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertArrayEquals
+import kotlin.time.Duration.Companion.seconds
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -266,6 +268,255 @@ class MediaReferenceTests {
         assertEquals(listOf("a", "b"), started)
         assertEquals(started, cancelled)
     }
+
+    @Test
+    fun revisitedFileImagePagesComeBackDecodedFromABoundedCache() = runTest {
+        val server = OpenCodeServer(url = "https://fixture.invalid", username = "", password = "")
+        val pages = listOf("a", "b", "c", "d").map {
+            TranscriptImagePreview.Page(AgentFileDestination(ai.opencode.server.model.AgentFileReference(path = "shots/$it.png"), "/fixture"))
+        }
+        val pixels = pages.map { Bitmap.createBitmap(4, 4, Bitmap.Config.ARGB_8888) }
+        val bytes = pixels[0].allocationByteCount.toLong()
+        val memory = coil3.memory.MemoryCache.Builder().maxSizeBytes(bytes * 3).weakReferencesEnabled(false).build()
+        val cache = DecodedImageCache(memory)
+        val (a, b, c, d) = pages.map { it.id }
+        val store = TestStore(FullscreenViewerFeature.State(TranscriptImagePreview(a, pages, server)), FullscreenViewerFeature(), this) {
+            this[DecodedImageCache] = cache
+            this[AgentImageCache] = AgentImageCache(cache)
+        }
+        store.send(FullscreenViewerFeature.Action.Task)
+        store.send(FullscreenViewerFeature.Action.FileImageLoaded(pages[0].file!!, pixels[0])) { it.withPage(0) { p -> p.copy(image = pixels[0]) } }
+        store.send(FullscreenViewerFeature.Action.PageSelected(b)) { it.copy(selectedID = b) }
+        store.send(FullscreenViewerFeature.Action.FileImageLoaded(pages[1].file!!, pixels[1])) { it.withPage(1) { p -> p.copy(image = pixels[1]) } }
+        store.send(FullscreenViewerFeature.Action.PageSelected(c)) { it.copy(selectedID = c).withPage(0) { p -> p.copy(image = null) } }
+        store.send(FullscreenViewerFeature.Action.FileImageLoaded(pages[2].file!!, pixels[2])) { it.withPage(2) { p -> p.copy(image = pixels[2]) } }
+        // Back one step: `b` kept its pixels, and `a`, a neighbour again, is back from the cache before it's reached.
+        store.send(FullscreenViewerFeature.Action.PageSelected(b)) { it.copy(selectedID = b).withPage(0) { p -> p.copy(image = pixels[0]) } }
+        store.send(FullscreenViewerFeature.Action.PageSelected(a)) { it.copy(selectedID = a).withPage(2) { p -> p.copy(image = null) } }
+        assertTrue(store.state.preview.pages[0].image === pixels[0])
+        // Only the selection's neighbours hold pixels, and the cache drops its oldest entry (`b`) past its budget.
+        store.send(FullscreenViewerFeature.Action.PageSelected(d)) {
+            it.copy(selectedID = d).withPage(0) { p -> p.copy(image = null) }.withPage(1) { p -> p.copy(image = null) }.withPage(2) { p -> p.copy(image = pixels[2]) }
+        }
+        store.send(FullscreenViewerFeature.Action.FileImageLoaded(pages[3].file!!, pixels[3])) { it.withPage(3) { p -> p.copy(image = pixels[3]) } }
+        store.send(FullscreenViewerFeature.Action.PageSelected(b)) {
+            it.copy(selectedID = b).withPage(3) { p -> p.copy(image = null) }.withPage(0) { p -> p.copy(image = pixels[0]) }
+        }
+        assertNull(store.state.preview.pages[1].image)
+        store.finish()
+        assertEquals(bytes * 3, memory.size)
+    }
+
+    // The shared session image cache (AgentImageCache)
+
+    @Test
+    fun sharedImageFreshnessEndsOnlyOnInvalidationAndStaysPerServer() {
+        val images = AgentImageCache(DecodedImageCache())
+        val server = OpenCodeServer(url = "https://one.invalid", username = "", password = "")
+        val other = OpenCodeServer(url = "https://two.invalid", username = "", password = "")
+        val reference = ai.opencode.server.model.AgentFileReference(path = "shots/a.png")
+        val key = AgentImageCache.key(server, reference, "/fixture")!!
+        val otherKey = AgentImageCache.key(other, reference, "/fixture")!!
+        // One identity per server and absolute path, the same one the preview cache's keys make.
+        assertEquals(AgentImageCache.key(AgentImageKey(server.persistenceID, "/fixture/shots/a.png")), key)
+        assertFalse(key == otherKey)
+        assertFalse(images.isFresh(key))
+        images.validated(key)
+        images.validated(otherKey)
+        assertTrue(images.isFresh(key))
+        // The server's files may have changed: its files need a check again, another server's don't.
+        images.invalidate(server.persistenceID)
+        assertFalse(images.isFresh(key))
+        assertTrue(images.isFresh(otherKey))
+        images.validated(key)
+        assertTrue(images.isFresh(key))
+        // An upload is addressed by its content: always fresh.
+        val upload = ai.opencode.server.model.AgentFileReference(path = "media:" + "c".repeat(64), media = ai.opencode.server.model.MediaFileOriginal("c".repeat(64), "u.png", "image/png", 3))
+        assertTrue(images.isFresh(AgentImageCache.key(server, upload, null)!!))
+    }
+
+    @Test
+    fun sharedImageDecodesCoalesceAndAChangedFileReplacesThePixels() = kotlinx.coroutines.runBlocking {
+        val memory = coil3.memory.MemoryCache.Builder().maxSizeBytes(1024 * 1024).weakReferencesEnabled(false).build()
+        val images = AgentImageCache(DecodedImageCache(memory))
+        val file = File.createTempFile("shared", ".png").apply { deleteOnExit() }
+        val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val calls = java.util.concurrent.atomic.AtomicInteger()
+        val first = Bitmap.createBitmap(4, 4, Bitmap.Config.ARGB_8888)
+        val decode: suspend (File) -> Bitmap? = { calls.incrementAndGet(); gate.await(); first }
+        val readers = (1..4).map { kotlinx.coroutines.GlobalScope.async(kotlinx.coroutines.Dispatchers.IO) { images.decode("s\u0000/a.png", file, decode = decode) } }
+        kotlinx.coroutines.delay(100)
+        gate.complete(Unit)
+        val results = readers.map { it.await() }
+        // Four readers at once: one decode, one bitmap, kept in the shared decoded budget.
+        assertEquals(1, calls.get())
+        assertTrue(results.all { it === first })
+        assertTrue(images.image("s\u0000/a.png") === first)
+        assertTrue(images.decode("s\u0000/a.png", file) { error("resident: no decode") } === first)
+        // A changed file (a 200, not a 304) decodes again and replaces what's resident.
+        val second = Bitmap.createBitmap(4, 4, Bitmap.Config.ARGB_8888)
+        assertTrue(images.decode("s\u0000/a.png", file, replacing = true) { second } === second)
+        assertTrue(images.image("s\u0000/a.png") === second)
+        assertEquals(second.allocationByteCount.toLong(), memory.size)
+    }
+
+    @Test
+    fun sharedImageDiskCopiesKeepTheAppCacheWithinItsQuotaOldestFirst() {
+        val root = Files.createTempDirectory("agent-files").toFile().apply { deleteOnExit() }
+        val copies = (0 until 4).map { index ->
+            AgentFileLoader.cacheURL("server", "/fixture/$index.png", "$index.png", root).also { file ->
+                AgentFileLoader.store(file, ByteArray(100), "\"tag$index\"", null)
+                file.setLastModified(1_000L * (index + 1))
+            }
+        }
+        assertTrue(copies.all { it.isFile && File(it.path + ".validators").isFile })
+        // Another cache's file and a download still being written, both older than every copy.
+        val other = File(root, "other.bin").apply { writeBytes(ByteArray(100)); setLastModified(1) }
+        val writing = File(copies[0].parentFile, "agent-file-WRITING").apply { writeBytes(ByteArray(50)); setLastModified(1) }
+        val copy = 100 + File(copies[0].path + ".validators").length()
+        // No quota known: nothing is trimmed.
+        AgentImageCache(DecodedImageCache(), cacheQuota = { null }).trim(root)
+        AgentImageCache(DecodedImageCache(), cacheQuota = { 0 }).trim(root)
+        assertTrue(copies.all { it.isFile })
+        // The quota covers the whole cache: the two oldest copies go, with their validators.
+        AgentImageCache(DecodedImageCache(), cacheQuota = { other.length() + writing.length() + 2 * copy }).trim(root)
+        assertEquals(listOf(false, false, true, true), copies.map { it.isFile })
+        assertFalse(File(copies[0].path + ".validators").exists())
+        assertTrue(other.isFile && writing.isFile)
+    }
+
+    @Test
+    fun aFreshFileShowsItsResidentPixelsWithoutAnyRequest() {
+        val server = OpenCodeServer(url = "https://fixture.invalid", username = "", password = "")
+        val reference = ai.opencode.server.model.AgentFileReference(path = "shots/a.png")
+        val images = AgentImageCache(DecodedImageCache())
+        val seed = Bitmap.createBitmap(4, 4, Bitmap.Config.ARGB_8888)
+        images.validated(AgentImageCache.key(server, reference, "/fixture")!!)
+        val context = org.robolectric.RuntimeEnvironment.getApplication()
+        // The fixture host answers nothing: any probe or GET would fail the page.
+        val model = AgentFileViewerModel(reference, server, "/fixture", context = context, seed = seed, images = images)
+        model.open()
+        org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+        val ready = model.phase as AgentFileViewerModel.Phase.Ready
+        assertTrue((ready.content as AgentFileViewerModel.Content.Image).image === seed)
+        model.release()
+    }
+
+    @Test
+    fun aFileThatNeedsACheckShowsItsDiskCopyAndKeepsItWhenTheServerCantBeReached() {
+        // Offline after the file was downloaded: the check fails, the copy stays on screen.
+        val (image, requests) = checkStaleCopy(ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET))
+        assertEquals(6, image.width)
+        assertTrue(requests.isNotEmpty())
+    }
+
+    @Test
+    fun aStaleCopyIsCheckedByOneConditionalGetAndA304KeepsItsPixels() {
+        val (image, requests) = checkStaleCopy(ai.opencode.server.testing.WireFixture.Reply.status(304))
+        assertEquals(6, image.width)
+        // No range probe first: one GET carrying the copy's validator.
+        assertEquals(1, requests.size)
+        assertEquals("\"v1\"", requests[0].header("If-None-Match"))
+        assertNull(requests[0].header("Range"))
+    }
+
+    /** A downloaded copy that isn't fresh, opened against [reply]: what the page shows and what it sent. */
+    private fun checkStaleCopy(reply: ai.opencode.server.testing.WireFixture.Reply): Pair<Bitmap, List<ai.opencode.server.testing.WireFixture.Request>> =
+        ai.opencode.server.testing.WireFixture { reply }.use { fixture ->
+            val server = fixture.server
+            val reference = ai.opencode.server.model.AgentFileReference(path = "shots/a.png")
+            val context = org.robolectric.RuntimeEnvironment.getApplication()
+            val copy = AgentFileLoader.cacheURL(server, AgentFileLoader.original(server, reference, "/fixture")!!.cacheKey, reference.name, context.cacheDir)
+            AgentFileLoader.store(copy, pngBytes(Bitmap.createBitmap(6, 4, Bitmap.Config.ARGB_8888)), "\"v1\"", null)
+            // Never validated in this run (or invalidated since): not fresh.
+            val model = AgentFileViewerModel(reference, server, "/fixture", context = context, images = AgentImageCache(DecodedImageCache(), fileDecoder = ::decodeFile))
+            model.open()
+            val looper = org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper())
+            var waited = 0
+            while (fixture.requests.isEmpty() || model.phase !is AgentFileViewerModel.Phase.Ready && model.phase !is AgentFileViewerModel.Phase.Failed) {
+                looper.idle(); Thread.sleep(20)
+                if (++waited > 250) break
+            }
+            repeat(20) { looper.idle(); Thread.sleep(20) }
+            val ready = model.phase as? AgentFileViewerModel.Phase.Ready
+            assertNotNull("phase ${model.phase}", ready)
+            val image = (ready!!.content as AgentFileViewerModel.Content.Image).image
+            model.release()
+            image to fixture.requests
+        }
+
+    @Test
+    fun selectingAPageDecodesItsNeighboursFromTheirDiskCopiesAhead(): Unit = kotlinx.coroutines.runBlocking {
+        ai.opencode.server.testing.WireFixture { ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET) }.use { fixture ->
+            val server = fixture.server
+            val context = org.robolectric.RuntimeEnvironment.getApplication()
+            val pages = listOf("a", "b").map {
+                TranscriptImagePreview.Page(AgentFileDestination(ai.opencode.server.model.AgentFileReference(path = "shots/n$it.png"), "/fixture"))
+            }
+            val neighbour = pages[1].file!!
+            val copy = AgentFileLoader.cacheURL(server, AgentFileLoader.original(server, neighbour.reference, "/fixture")!!.cacheKey, neighbour.reference.name, context.cacheDir)
+            AgentFileLoader.store(copy, pngBytes(Bitmap.createBitmap(5, 3, Bitmap.Config.ARGB_8888)), "\"v1\"", null)
+            val store = TestStore(FullscreenViewerFeature.State(TranscriptImagePreview(pages[0].id, pages, server)), FullscreenViewerFeature(), this) {
+                this[AgentImageCache] = AgentImageCache(DecodedImageCache(), fileDecoder = ::decodeFile)
+                this[ai.opencode.core.dependencies.AppContext] = context
+            }
+            store.send(FullscreenViewerFeature.Action.Task)
+            // The neighbour comes in drawn: its disk copy decoded before it's swiped to, without a request.
+            var prepared: Bitmap? = null
+            store.receive({ action ->
+                (action as? FullscreenViewerFeature.Action.NeighbourPrepared)?.takeIf { it.pageID == pages[1].id && it.image.width == 5 }?.also { prepared = it.image } != null
+            }, "neighbour prepared", timeout = 5.seconds) { state -> state.withPage(1) { p -> p.copy(image = prepared) } }
+            assertNotNull(store.state.preview.pages[1].image)
+            assertTrue(fixture.requests.isEmpty())
+        }
+    }
+
+    @Test
+    fun aFileImageOpensOnItsSharedPreviewWhileItsFullResolutionPixelsDecode(): Unit = kotlinx.coroutines.runBlocking {
+        ai.opencode.server.testing.WireFixture { ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET) }.use { fixture ->
+            val server = fixture.server
+            val context = org.robolectric.RuntimeEnvironment.getApplication()
+            val page = TranscriptImagePreview.Page(AgentFileDestination(ai.opencode.server.model.AgentFileReference(path = "shots/tall.png"), "/fixture"))
+            val other = TranscriptImagePreview.Page(AgentFileDestination(ai.opencode.server.model.AgentFileReference(path = "shots/other.png"), "/fixture"))
+            val full = Bitmap.createBitmap(40, 80, Bitmap.Config.ARGB_8888)
+            val small = Bitmap.createBitmap(20, 40, Bitmap.Config.ARGB_8888)
+            val previews = AgentImagePreviews(
+                sizes = AgentImageSizeCache.inMemory,
+                loader = { _, _, _ -> AgentImageResponse.File(pngBytes(full), AgentImageValidators(entityTag = "\"v1\"")) },
+                decoder = { small },
+                sleep = {},
+                shouldDeferPrefetch = { false },
+                pathUpdates = { kotlinx.coroutines.flow.emptyFlow() },
+                dispatcher = kotlinx.coroutines.Dispatchers.Unconfined,
+            )
+            // The transcript read the file as it is now: a preview smaller than the file.
+            val key = AgentImageKey(server.persistenceID, "/fixture/shots/tall.png")
+            previews.show(AgentImageSighting(key, "transcript"), AgentImageRequest(okhttp3.Request.Builder().url("http://lab/api/fs/read/tall.png").build()))
+            assertTrue(ai.opencode.core.testing.eventually(wallClock = true) { previews.entry(key).phase == AgentImagePreviews.Phase.Loaded })
+            val requestsBefore = fixture.requests.size
+            val store = TestStore(FullscreenViewerFeature.State(TranscriptImagePreview(page.id, listOf(page, other), server)), FullscreenViewerFeature(), this) {
+                this[AgentImagePreviews] = previews
+                this[AgentImageCache] = AgentImageCache(DecodedImageCache(), fileDecoder = ::decodeFile)
+                this[ai.opencode.core.dependencies.AppContext] = context
+            }
+            store.exhaustive = false
+            store.send(FullscreenViewerFeature.Action.Task)
+            // Selected: the preview stands in at once, rather than Opening.
+            assertTrue(store.state.preview.pages[0].image === small)
+            // A file the preview never read gets no one else's pixels.
+            assertNull(store.state.preview.pages[1].image)
+            // The full-resolution pixels replace it.
+            store.send(FullscreenViewerFeature.Action.FileImageLoaded(page.file!!, full))
+            assertTrue(store.state.preview.pages[0].image === full)
+            assertEquals(requestsBefore, fixture.requests.size)
+            previews.close()
+        }
+    }
+
+    /** Robolectric decodes files with BitmapFactory only (its ImageDecoder is Android-only). */
+    private fun decodeFile(file: File): Bitmap? = android.graphics.BitmapFactory.decodeFile(file.path)
+
+    private fun pngBytes(image: Bitmap): ByteArray = ByteArrayOutputStream().also { image.compress(Bitmap.CompressFormat.PNG, 100, it) }.toByteArray()
 
     @Test
     fun failedOriginalKeepsThumbnailAndDoesNotAutomaticallyRetry() = runTest {

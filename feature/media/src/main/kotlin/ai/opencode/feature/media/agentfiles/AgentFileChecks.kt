@@ -35,6 +35,8 @@ import okhttp3.OkHttpClient
 class AgentFileChecks(
     private val checker: AgentFileChecker?,
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    /** The server's files may have changed (live: the shared image cache's freshness ends). */
+    private val onInvalidate: (serverID: String) -> Unit = {},
 ) {
     sealed interface Result {
         /** There, at [reference] (a bare name found in a subfolder resolves to its path). */
@@ -132,6 +134,7 @@ class AgentFileChecks(
 
     /** The agent may have changed files in [directory]. Safe from any thread. */
     fun invalidate(server: OpenCodeServer, directory: String) {
+        onInvalidate(server.persistenceID)
         scope.launch {
             val folder = folder(server.persistenceID, directory)
             generations[folder] = (generations[folder] ?: 0) + 1
@@ -201,7 +204,8 @@ class AgentFileChecks(
 
         override val liveValue: AgentFileChecks by lazy {
             val client = AgentFileLoader.client()
-            AgentFileChecks(checker = { server, directory, reference -> check(server, directory, reference, client) })
+            val images = dependency(AgentImageCache)
+            AgentFileChecks(checker = { server, directory, reference -> check(server, directory, reference, client) }, onInvalidate = images::invalidate)
         }
 
         /** Inert: checks nothing, shows every card. */
