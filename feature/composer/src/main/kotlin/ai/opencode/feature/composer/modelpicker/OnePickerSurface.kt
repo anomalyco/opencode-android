@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -211,7 +212,10 @@ fun OnePickerSurface(
                 )
             },
     ) {
-        val viewport = Rect(0f, 0f, maxWidth.value, maxHeight.value)
+        // The overlay is the full-screen session box; the panel's floor belongs above the
+        // navigation bar, as the composer's does.
+        val navigationBottom = WindowInsets.navigationBars.getBottom(density) / density.density
+        val viewport = Rect(0f, 0f, maxWidth.value, max(0f, maxHeight.value - navigationBottom))
         LaunchedEffect(viewport, ceiling) {
             controller.latestViewportInSpace = viewport
             controller.syncViewport(viewport, ceiling, liveComposer)
