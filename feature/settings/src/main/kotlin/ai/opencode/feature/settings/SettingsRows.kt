@@ -34,9 +34,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.layout
-import kotlin.math.abs
 import kotlin.math.roundToInt
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.selection.toggleable
@@ -571,7 +571,7 @@ fun <T> SettingsSegmentedControl(
     val reduceMotion = rememberReduceMotion()
     val position = animateFloatAsState(
         options.indexOf(selected).toFloat(),
-        MotionRole.Layout.animation(reduceMotion = reduceMotion),
+        MotionRole.MicroOut.animation(),
         label = "segmentIndicator",
     )
     Box(modifier.fillMaxWidth().height(SegmentTapHeight), contentAlignment = Alignment.Center) {
@@ -582,23 +582,30 @@ fun <T> SettingsSegmentedControl(
                 .background(trackFill, shape)
                 .border(SegmentEdge, colors.rowDivider, shape),
         )
-        Box(
-            Modifier
-                .align(Alignment.CenterStart)
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    layout(placeable.width, placeable.height) {
-                        placeable.placeRelative((position.value * placeable.width).roundToInt(), 0)
+        if (!reduceMotion) {
+            Box(
+                Modifier
+                    .align(Alignment.CenterStart)
+                    .layout { measurable, constraints ->
+                        val placeable = measurable.measure(constraints)
+                        layout(placeable.width, placeable.height) {
+                            placeable.placeRelative((position.value * placeable.width).roundToInt(), 0)
+                        }
                     }
-                }
-                .fillMaxWidth(1f / options.size)
-                .height(SegmentHeight)
-                .background(indicatorFill, shape)
-                .border(SegmentEdge, indicatorEdge, shape),
-        )
+                    .fillMaxWidth(1f / options.size)
+                    .height(SegmentHeight)
+                    .background(indicatorFill, shape)
+                    .border(SegmentEdge, indicatorEdge, shape),
+            )
+        }
         Row(Modifier.fillMaxWidth().selectableGroup()) {
-            for ((index, option) in options.withIndex()) {
+            for (option in options) {
                 val isSelected = option == selected
+                val emphasis = animateFloatAsState(
+                    if (isSelected) 1f else 0f,
+                    MotionRole.MicroOut.animation(reduceMotion = reduceMotion),
+                    label = "segmentEmphasis",
+                )
                 Box(
                     Modifier
                         .weight(1f)
@@ -606,11 +613,21 @@ fun <T> SettingsSegmentedControl(
                         .selectable(selected = isSelected, role = Role.RadioButton, onClick = { onSelect(option) }),
                     contentAlignment = Alignment.Center,
                 ) {
+                    if (reduceMotion) {
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(SegmentHeight)
+                                .graphicsLayer { alpha = emphasis.value }
+                                .background(indicatorFill, shape)
+                                .border(SegmentEdge, indicatorEdge, shape),
+                        )
+                    }
                     val labelStyle = MaterialTheme.typography.labelLarge
                     BasicText(
                         title(option),
                         style = labelStyle,
-                        color = { lerp(colors.secondaryText, colors.text, (1f - abs(position.value - index)).coerceIn(0f, 1f)) },
+                        color = { lerp(colors.secondaryText, colors.text, emphasis.value) },
                         maxLines = 1,
                         softWrap = false,
                         overflow = TextOverflow.Ellipsis,
