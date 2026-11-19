@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">執行中</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">顯示執行中的子代理與 Shell</string>
+    <string name="session_background_work_show_label">顯示執行中的子代理、腳本與 Shell</string>
     <string name="session_background_work_collapsed_description">已摺疊</string>
     <string name="session_background_work_subagents_title">子代理</string>
     <string name="session_background_work_open_subagent_label">開啟子代理的工作階段</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">腳本</string>
     <string name="session_background_work_stop_script_label">停止腳本</string>
     <string name="session_background_work_stop_subagent_label">停止子代理</string>
+    <string name="session_background_work_stop_script_failed">無法停止腳本</string>
+    <string name="session_background_work_stop_subagent_failed">無法停止子代理</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">傳送訊息</string>

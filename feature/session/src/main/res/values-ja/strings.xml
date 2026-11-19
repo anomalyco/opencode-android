@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">実行中</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">実行中のサブエージェントとシェルを表示</string>
+    <string name="session_background_work_show_label">実行中のサブエージェント、スクリプト、シェルを表示</string>
     <string name="session_background_work_collapsed_description">折りたたみ済み</string>
     <string name="session_background_work_subagents_title">サブエージェント</string>
     <string name="session_background_work_open_subagent_label">サブエージェントのセッションを開く</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">スクリプト</string>
     <string name="session_background_work_stop_script_label">スクリプトを停止</string>
     <string name="session_background_work_stop_subagent_label">サブエージェントを停止</string>
+    <string name="session_background_work_stop_script_failed">スクリプトを停止できませんでした</string>
+    <string name="session_background_work_stop_subagent_failed">サブエージェントを停止できませんでした</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">メッセージを送信</string>

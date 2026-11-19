@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Виконується</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Показати активні субагенти й команди</string>
+    <string name="session_background_work_show_label">Показати активні субагенти, скрипти й команди</string>
     <string name="session_background_work_collapsed_description">Згорнуто</string>
     <string name="session_background_work_subagents_title">Субагенти</string>
     <string name="session_background_work_open_subagent_label">Відкрити сесію субагента</string>
@@ -223,6 +223,8 @@
     <string name="session_background_work_scripts_title">Скрипти</string>
     <string name="session_background_work_stop_script_label">Зупинити скрипт</string>
     <string name="session_background_work_stop_subagent_label">Зупинити субагента</string>
+    <string name="session_background_work_stop_script_failed">Не вдалося зупинити скрипт</string>
+    <string name="session_background_work_stop_subagent_failed">Не вдалося зупинити субагента</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Надіслати повідомлення</string>

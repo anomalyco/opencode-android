@@ -446,6 +446,7 @@ class SessionFeatureTestsLoading {
             it.copy(familyReadAt = now, pendingWorkPollSeconds = 2)
         }
         store.receive(Action.ShellsResponse(sessionID = session.id, result = Result.success(emptyList())))
+        store.receive(Action.JobsResponse(sessionID = session.id, jobs = emptyList()))
         store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertTrue(store.state.isLoadingEarlier)
         assertTrue(store.state.isTranscriptLoading)
@@ -860,6 +861,7 @@ class SessionFeatureTestsLoading {
             it.copy(familyReadAt = now, pendingWorkPollSeconds = 2)
         }
         store.receive(Action.ShellsResponse(sessionID = session.id, result = Result.success(emptyList())))
+        store.receive(Action.JobsResponse(sessionID = session.id, jobs = emptyList()))
         store.receive(Action.ModelsResponse(Result.success(catalog))) {
             it.copy(isLoadingModels = false, models = listOf(model))
         }
@@ -944,6 +946,7 @@ class SessionFeatureTestsLoading {
             it.copy(familyReadAt = now, pendingWorkPollSeconds = 2)
         }
         store.receive(Action.ShellsResponse(sessionID = session.id, result = Result.success(emptyList())))
+        store.receive(Action.JobsResponse(sessionID = session.id, jobs = emptyList()))
         store.receive(Action.PendingInputsRequested(sessionID = session.id))
         assertFalse(store.state.isTranscriptLoading)
         assertFalse(store.state.showsEmptyState)

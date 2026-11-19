@@ -653,6 +653,7 @@ private fun SessionFeature.visibilityChanged(state: SessionFeature.State, visibl
                 Effect.cancel(CancelID.ViewReceipt),
                 Effect.cancel(CancelID.FamilyRefresh),
                 Effect.cancel(CancelID.Shells),
+                Effect.cancel(CancelID.Jobs),
                 abandoned.effect,
             ),
         )
@@ -719,7 +720,7 @@ private fun SessionFeature.task(state: SessionFeature.State): Reduced<SessionFea
                 listOf(
                     CancelID.Models, CancelID.Requests, CancelID.Inbox, CancelID.InboxFetch, CancelID.PromptEcho,
                     CancelID.RequestsRetry, CancelID.RequestsChanged, CancelID.Freshness, CancelID.Watchdog,
-                    CancelID.EarlierHistory, CancelID.FamilyRefresh, CancelID.Shells, CancelID.Revert,
+                    CancelID.EarlierHistory, CancelID.FamilyRefresh, CancelID.Shells, CancelID.Jobs, CancelID.Revert,
                     CancelID.BackgroundHint, CancelID.ViewReceipt, CancelID.ResyncDelay, CancelID.ResyncMinimum,
                     CancelID.AutocompleteCatalog, CancelID.AutocompleteCommands,
                     CancelID.AutocompleteFiles, CancelID.AutocompleteSessions, CancelID.AutocompleteAutoRun,

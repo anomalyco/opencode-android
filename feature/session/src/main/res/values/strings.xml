@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Running</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Show running subagents and shells</string>
+    <string name="session_background_work_show_label">Show running subagents, scripts and shells</string>
     <string name="session_background_work_collapsed_description">Collapsed</string>
     <string name="session_background_work_subagents_title">Subagents</string>
     <string name="session_background_work_open_subagent_label">Open the subagent’s session</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Scripts</string>
     <string name="session_background_work_stop_script_label">Stop script</string>
     <string name="session_background_work_stop_subagent_label">Stop subagent</string>
+    <string name="session_background_work_stop_script_failed">Couldn’t stop script</string>
+    <string name="session_background_work_stop_subagent_failed">Couldn’t stop subagent</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Send message</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">ກຳລັງເຮັດວຽກ</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">ສະແດງຕົວແທນຍ່ອຍ ແລະ shell ທີ່ກຳລັງເຮັດວຽກ</string>
+    <string name="session_background_work_show_label">ສະແດງຕົວແທນຍ່ອຍ, ສະຄຣິບ ແລະ shell ທີ່ກຳລັງເຮັດວຽກ</string>
     <string name="session_background_work_collapsed_description">ຫຍໍ້ແລ້ວ</string>
     <string name="session_background_work_subagents_title">ຕົວແທນຍ່ອຍ</string>
     <string name="session_background_work_open_subagent_label">ເປີດເຊດຊັນຂອງຕົວແທນຍ່ອຍ</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">ສະຄຣິບ</string>
     <string name="session_background_work_stop_script_label">ຢຸດສະຄຣິບ</string>
     <string name="session_background_work_stop_subagent_label">ຢຸດຕົວແທນຍ່ອຍ</string>
+    <string name="session_background_work_stop_script_failed">ຢຸດສະຄຣິບບໍ່ໄດ້</string>
+    <string name="session_background_work_stop_subagent_failed">ຢຸດຕົວແທນຍ່ອຍບໍ່ໄດ້</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">ສົ່ງຂໍ້ຄວາມ</string>

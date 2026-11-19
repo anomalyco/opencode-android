@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Vykdoma</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Rodyti veikiančius subagentus ir apvalkalus</string>
+    <string name="session_background_work_show_label">Rodyti veikiančius subagentus, scenarijus ir apvalkalus</string>
     <string name="session_background_work_collapsed_description">Sutraukta</string>
     <string name="session_background_work_subagents_title">Subagentai</string>
     <string name="session_background_work_open_subagent_label">Atidaryti subagento seansą</string>
@@ -223,6 +223,8 @@
     <string name="session_background_work_scripts_title">Scenarijai</string>
     <string name="session_background_work_stop_script_label">Stabdyti scenarijų</string>
     <string name="session_background_work_stop_subagent_label">Stabdyti subagentą</string>
+    <string name="session_background_work_stop_script_failed">Nepavyko sustabdyti scenarijaus</string>
+    <string name="session_background_work_stop_subagent_failed">Nepavyko sustabdyti subagento</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Siųsti žinutę</string>

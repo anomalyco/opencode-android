@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Ishlamoqda</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Ishlayotgan subagentlar va shelllarni ko‘rsatish</string>
+    <string name="session_background_work_show_label">Ishlayotgan subagentlar, skriptlar va shelllarni ko‘rsatish</string>
     <string name="session_background_work_collapsed_description">Yig\'ilgan</string>
     <string name="session_background_work_subagents_title">Subagentlar</string>
     <string name="session_background_work_open_subagent_label">Subagent sessiyasini ochish</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Skriptlar</string>
     <string name="session_background_work_stop_script_label">Skriptni to‘xtatish</string>
     <string name="session_background_work_stop_subagent_label">Subagentni to‘xtatish</string>
+    <string name="session_background_work_stop_script_failed">Skriptni to‘xtatib bo‘lmadi</string>
+    <string name="session_background_work_stop_subagent_failed">Subagentni to‘xtatib bo‘lmadi</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Xabar yuborish</string>

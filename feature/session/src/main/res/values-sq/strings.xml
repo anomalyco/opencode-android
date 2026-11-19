@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Në ekzekutim</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Trego nënagjentët dhe guaskat në ekzekutim</string>
+    <string name="session_background_work_show_label">Trego nënagjentët, skriptet dhe guaskat në ekzekutim</string>
     <string name="session_background_work_collapsed_description">E palosur</string>
     <string name="session_background_work_subagents_title">Nënagjentë</string>
     <string name="session_background_work_open_subagent_label">Hap sesionin e nënagjentit</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Skriptet</string>
     <string name="session_background_work_stop_script_label">Ndalo skriptin</string>
     <string name="session_background_work_stop_subagent_label">Ndalo nënagjentin</string>
+    <string name="session_background_work_stop_script_failed">Skripti nuk u ndal dot</string>
+    <string name="session_background_work_stop_subagent_failed">Nënagjenti nuk u ndal dot</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Dërgo mesazhin</string>

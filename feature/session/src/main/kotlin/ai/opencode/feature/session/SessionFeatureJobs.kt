@@ -1,8 +1,11 @@
 package ai.opencode.feature.session
 
+import ai.opencode.core.haptics.Haptic
+import ai.opencode.core.log.AppLog
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.cancellable
+import ai.opencode.core.strings.localized
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.CancelID
 import ai.opencode.feature.session.SessionFeature.State
@@ -12,10 +15,13 @@ import ai.opencode.server.model.OpenCodeJob
 import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import ai.opencode.server.model.SessionActivity
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import java.time.Instant
 
-// Background jobs, as the desktop's activity pill reads them: listed once when the session opens or
-// the connection returns, then kept by `experimental.job.updated` events. Never polled.
+// Background jobs, as the desktop's activity pill reads them: listed when the session opens, comes
+// back, or rereads its family, then kept by `experimental.job.updated` events. Never polled.
 
 /** A script the session moved to the background, while its job runs. */
 data class BackgroundScript(val id: String, val label: String, val startedAt: Instant?)
@@ -25,65 +31,120 @@ internal fun SessionFeature.refreshJobs(state: State): Reduced<State, Action> {
     val sessionID = state.session?.id ?: return Reduced(state)
     val server = state.server
     val client = openCodeClient
-    val hadJobs = state.jobs.isNotEmpty()
+    val next = if (state.jobChangesDuringRefresh.isEmpty()) state else state.copy(jobChangesDuringRefresh = emptyMap())
     return Reduced(
-        state,
+        next,
         Effect.run<Action> { send ->
-            // Only a list that changes something reports back; a failure keeps what events gave.
-            val listed = try { client.runningJobs(server, sessionID) } catch (_: OpenCodeClientError) { return@run }
-            if (hadJobs || listed.isNotEmpty()) send(Action.JobsResponse(sessionID, Result.success(listed)))
+            try {
+                send(Action.JobsResponse(sessionID, client.runningJobs(server, sessionID)))
+            } catch (error: OpenCodeClientError) {
+                AppLog.network.notice { "Couldn’t list background jobs: ${error.logSummary}" }
+            }
         }.cancellable(CancelID.Jobs, cancelInFlight = true),
     )
 }
 
 internal fun SessionFeature.reduceJobs(state: State, action: Action): Reduced<State, Action>? = when (action) {
     is Action.JobsResponse -> {
-        val listed = action.result.getOrNull()
-        if (listed == null || state.session?.id != action.sessionID) Reduced(state)
-        else Reduced(state.copy(jobs = listed.filter { it.isRunning }.associateBy { it.id }))
+        if (state.session?.id != action.sessionID) {
+            Reduced(state)
+        } else {
+            val jobs = action.jobs.filter { it.isRunning }.associateByTo(LinkedHashMap()) { it.id }
+            for ((id, job) in state.jobChangesDuringRefresh) if (job != null) jobs[id] = job else jobs.remove(id)
+            Reduced(state.copy(jobs = jobs, jobChangesDuringRefresh = emptyMap()))
+        }
     }
 
     is Action.JobUpdated -> {
         val job = action.job
-        when {
-            job.isRunning -> Reduced(state.copy(jobs = state.jobs + (job.id to job)))
-            job.id in state.jobs -> Reduced(state.copy(jobs = state.jobs - job.id))
-            else -> Reduced(state)
+        val running = job.takeIf { it.isRunning }
+        if (running != null && !state.ownsJob(running) && job.id !in state.jobs) {
+            Reduced(state)
+        } else {
+            val jobs = if (running != null) state.jobs + (job.id to running) else state.jobs - job.id
+            Reduced(state.copy(jobs = jobs, jobChangesDuringRefresh = state.jobChangesDuringRefresh + (job.id to running)))
         }
     }
 
-    is Action.BackgroundScriptStopTapped -> cancelJobs(state, listOf(action.jobID))
+    is Action.BackgroundScriptStopTapped -> {
+        val jobID = action.jobID
+        if (jobID in state.stoppingIDs) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.tap)
+            val server = state.server
+            val client = openCodeClient
+            Reduced(
+                state.copy(stoppingIDs = state.stoppingIDs + jobID),
+                Effect.run<Action> { send ->
+                    val failed = stopFailed(listOf(suspend { client.cancelJob(server, jobID) }))
+                    send(Action.BackgroundStopFinished(jobID, isSubagent = false, failed = failed))
+                },
+            )
+        }
+    }
 
     is Action.BackgroundSubagentStopTapped -> {
         val sessionID = action.sessionID
-        val jobs = state.subagentJobIDs(sessionID)
-        val interrupts = sessionID in state.activeFamilySessionIDs
-        val server = state.server
-        val client = openCodeClient
-        val cancel = cancelJobs(state, jobs)
-        Reduced(
-            cancel.state,
-            Effect.merge(
-                if (interrupts) Effect.run<Action> { runCatching { client.interrupt(server, sessionID) } } else Effect.none(),
-                cancel.effect,
-            ),
-        )
+        if (sessionID in state.stoppingIDs) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.tap)
+            val jobs = state.subagentJobIDs(sessionID)
+            val interrupts = sessionID in state.activeFamilySessionIDs
+            val server = state.server
+            val client = openCodeClient
+            val calls = buildList<suspend () -> Unit> {
+                if (interrupts) add { client.interrupt(server, sessionID) }
+                for (id in jobs) add { client.cancelJob(server, id) }
+            }
+            Reduced(
+                state.copy(stoppingIDs = state.stoppingIDs + sessionID),
+                Effect.run<Action> { send ->
+                    send(Action.BackgroundStopFinished(sessionID, isSubagent = true, failed = stopFailed(calls)))
+                },
+            )
+        }
+    }
+
+    is Action.BackgroundStopFinished -> {
+        val next = state.copy(stoppingIDs = state.stoppingIDs - action.id)
+        if (!action.failed) {
+            Reduced(next)
+        } else {
+            haptics.play(Haptic.error)
+            val text = localized(if (action.isSubagent) R.string.session_background_work_stop_subagent_failed else R.string.session_background_work_stop_script_failed)
+            Reduced(appendInfo(next, text))
+        }
     }
 
     else -> null
 }
 
-/** Cancelling a job that already finished does nothing; its update removes it. */
-private fun SessionFeature.cancelJobs(state: State, ids: List<String>): Reduced<State, Action> {
-    if (ids.isEmpty()) return Reduced(state)
-    val server = state.server
-    val client = openCodeClient
-    return Reduced(state, Effect.run<Action> { for (id in ids) runCatching { client.cancelJob(server, id) } })
+/** Runs every call at once; true when any failed. */
+private suspend fun stopFailed(calls: List<suspend () -> Unit>): Boolean = coroutineScope {
+    calls.map { call ->
+        async {
+            try {
+                call()
+                false
+            } catch (error: OpenCodeClientError) {
+                AppLog.network.notice { "Couldn’t stop background work: ${error.logSummary}" }
+                true
+            }
+        }
+    }.awaitAll().any { it }
 }
 
 /** The session's parents, as far as its family is known. */
 private val State.familyParents: Map<String, String>
     get() = HashMap<String, String>().also { parents -> for (member in familySessions) member.parentID?.let { parents[member.id] = it } }
+
+/** A job this screen can show: its work runs in the session on screen or a known member of its family. */
+private fun State.ownsJob(job: OpenCodeJob): Boolean {
+    val owner = job.ownerSessionID
+    return owner == session?.id || familySessions.any { it.id == owner }
+}
 
 /** Running jobs owned by [sessionID] or any session below it; a subagent job belongs to the child it runs. */
 internal fun State.subagentJobIDs(sessionID: String, parents: Map<String, String> = familyParents): List<String> =
@@ -91,6 +152,12 @@ internal fun State.subagentJobIDs(sessionID: String, parents: Map<String, String
         val owner = job.ownerSessionID
         owner == sessionID || sessionID in SessionActivity.ancestors(setOf(owner), parents)
     }.map { it.id }
+
+/** Drops the jobs a deleted session owned. */
+internal fun State.pruningJobs(ownedBy: String): State {
+    if (jobs.values.none { it.ownerSessionID == ownedBy }) return this
+    return copy(jobs = jobs.filterValues { it.ownerSessionID != ownedBy })
+}
 
 /** The session's own Code Mode scripts running in the background, named by their first line. */
 val State.backgroundScripts: List<BackgroundScript>

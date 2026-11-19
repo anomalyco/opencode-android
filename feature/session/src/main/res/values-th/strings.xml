@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">กำลังทำงาน</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">แสดงตัวแทนย่อยและเชลล์ที่กำลังทำงาน</string>
+    <string name="session_background_work_show_label">แสดงตัวแทนย่อย สคริปต์ และเชลล์ที่กำลังทำงาน</string>
     <string name="session_background_work_collapsed_description">ย่อแล้ว</string>
     <string name="session_background_work_subagents_title">ตัวแทนย่อย</string>
     <string name="session_background_work_open_subagent_label">เปิดเซสชันของตัวแทนย่อย</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">สคริปต์</string>
     <string name="session_background_work_stop_script_label">หยุดสคริปต์</string>
     <string name="session_background_work_stop_subagent_label">หยุดตัวแทนย่อย</string>
+    <string name="session_background_work_stop_script_failed">หยุดสคริปต์ไม่ได้</string>
+    <string name="session_background_work_stop_subagent_failed">หยุดตัวแทนย่อยไม่ได้</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">ส่งข้อความ</string>

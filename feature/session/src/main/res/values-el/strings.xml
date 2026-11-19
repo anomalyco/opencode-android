@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Σε εξέλιξη</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Εμφάνιση ενεργών υποπρακτόρων και κελυφών</string>
+    <string name="session_background_work_show_label">Εμφάνιση ενεργών υποπρακτόρων, σεναρίων και κελυφών</string>
     <string name="session_background_work_collapsed_description">Συμπτυγμένο</string>
     <string name="session_background_work_subagents_title">Υποπράκτορες</string>
     <string name="session_background_work_open_subagent_label">Άνοιγμα συνεδρίας του υποπράκτορα</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Σενάρια</string>
     <string name="session_background_work_stop_script_label">Διακοπή σεναρίου</string>
     <string name="session_background_work_stop_subagent_label">Διακοπή υποπράκτορα</string>
+    <string name="session_background_work_stop_script_failed">Αδυναμία διακοπής σεναρίου</string>
+    <string name="session_background_work_stop_subagent_failed">Αδυναμία διακοπής υποπράκτορα</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Αποστολή μηνύματος</string>

@@ -318,6 +318,7 @@ class SessionFeatureTestsRendering {
                 store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
                     it.copy(shells = emptyList(), restoredShellIDs = emptySet())
                 }
+                store.receive(Action.JobsResponse(sessionID = root.id, jobs = emptyList()))
                 store.receive(pageRead(root, 1, initialItems)) { it.copy(refresh = null, resync = null) }
                 store.receive(Action.AcceptedTranscriptUpdated(sessionID = root.id, items = initialItems))
             } else {
@@ -343,6 +344,8 @@ class SessionFeatureTestsRendering {
             val familyCancelled = LockIsolated(false)
             val shellsCancelled = LockIsolated(false)
             val transcriptCancelled = LockIsolated(false)
+            val jobsStarted = Gate()
+            val jobsCancelled = LockIsolated(false)
 
             val cancelStore = h.store(initial.copy(isVisible = true)) {
                 this[DateClient] = DateClient.constant(now)
@@ -352,6 +355,7 @@ class SessionFeatureTestsRendering {
                     transcript = { _, _, _ -> hangUntilCancelled(transcriptStarted, transcriptCancelled) },
                     sessionFamily = { _, _ -> hangUntilCancelled(familyStarted, familyCancelled) },
                     runningShells = { _, _ -> hangUntilCancelled(shellsStarted, shellsCancelled) },
+                    runningJobs = { _, _ -> hangUntilCancelled(jobsStarted, jobsCancelled) },
                 )
             }
 
@@ -365,6 +369,7 @@ class SessionFeatureTestsRendering {
             }
             familyStarted.await()
             shellsStarted.await()
+            jobsStarted.await()
             transcriptStarted.await()
 
             cancelStore.send(Action.VisibilityChanged(false)) {
@@ -373,6 +378,7 @@ class SessionFeatureTestsRendering {
             cancelStore.finish()
             assertTrue(familyCancelled.value)
             assertTrue(shellsCancelled.value)
+            assertTrue(jobsCancelled.value)
             assertTrue(transcriptCancelled.value)
         }
     }
@@ -648,6 +654,7 @@ class SessionFeatureTestsRendering {
             store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
                 it.copy(shells = emptyList(), restoredShellIDs = emptySet())
             }
+            store.receive(Action.JobsResponse(sessionID = root.id, jobs = emptyList()))
             if (!inFlightFollowupIsRunState) {
                 // Even if a later .runState overwrites the settlement's followup before
                 // the settlement finishes, the .resume background refresh already ran.
@@ -721,6 +728,7 @@ class SessionFeatureTestsRendering {
         store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
             it.copy(shells = emptyList(), restoredShellIDs = emptySet())
         }
+        store.receive(Action.JobsResponse(sessionID = root.id, jobs = emptyList()))
         store.receive(
             Action.PendingRequestsResponse(
                 sessionID = root.id,

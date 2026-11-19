@@ -20,6 +20,8 @@ import ai.opencode.core.strings.localizedPlural
 import ai.opencode.core.tuning.InternalBuild
 import ai.opencode.core.ui.OpenCodeFonts
 import ai.opencode.core.ui.OpenCodeIcon
+import ai.opencode.core.ui.OpenCodeIconButton
+import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.RollingNumber
@@ -237,8 +239,8 @@ object BackgroundWorkSummary {
     fun summary(agents: Int, shells: Int, scripts: Int = 0): String {
         val parts = listOfNotNull(
             if (agents > 0) localizedPlural(R.plurals.session_background_work_subagent_count, agents, agents) else null,
-            if (shells > 0) localizedPlural(R.plurals.session_background_work_shell_count, shells, shells) else null,
             if (scripts > 0) localizedPlural(R.plurals.session_background_work_script_count, scripts, scripts) else null,
+            if (shells > 0) localizedPlural(R.plurals.session_background_work_shell_count, shells, shells) else null,
         )
         return parts.reduceOrNull { a, b -> localized(R.string.session_background_work_summary, a, b) } ?: ""
     }
@@ -330,10 +332,11 @@ fun BackgroundWorkCounts(agents: Int, shells: Int, modifier: Modifier = Modifier
     }
     Row(modifier, verticalAlignment = Alignment.CenterVertically) {
         Opening(agents > 0) { CountGroup(if (agents > 0) agents else lastAgents, R.plurals.session_background_work_subagent_count) }
-        Opening(agents > 0 && shells > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
-        Opening(shells > 0) { CountGroup(if (shells > 0) shells else lastShells, R.plurals.session_background_work_shell_count) }
-        Opening((agents > 0 || shells > 0) && scripts > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
+        // Desktop's order: subagents · scripts · shells.
+        Opening(agents > 0 && scripts > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
         Opening(scripts > 0) { CountGroup(if (scripts > 0) scripts else lastScripts, R.plurals.session_background_work_script_count) }
+        Opening((agents > 0 || scripts > 0) && shells > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
+        Opening(shells > 0) { CountGroup(if (shells > 0) shells else lastShells, R.plurals.session_background_work_shell_count) }
     }
 }
 
@@ -422,7 +425,10 @@ fun BackgroundWorkGlyph(
 
 @Composable
 private fun ScriptGlyph() {
-    OpenCodeIcon(SFSymbol.ChevronLeftForwardslashChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.secondaryText)
+    // The 18 dp footprint of the orb and the shell disc, centred like them.
+    Box(Modifier.size(18.dp), contentAlignment = Alignment.Center) {
+        OpenCodeIcon(SFSymbol.ChevronLeftForwardslashChevronRight, contentDescription = null, size = 14.dp, tint = OpenCodeTheme.colors.secondaryText)
+    }
 }
 
 // MARK: Presentation
@@ -482,6 +488,7 @@ fun BackgroundWorkPresentation(
     scripts: List<BackgroundScript> = emptyList(),
     onStopScript: (String) -> Unit = {},
     onStopSubagent: (String) -> Unit = {},
+    stoppingIDs: Set<String> = emptySet(),
     isCovered: Boolean = false,
     inCall: Boolean = false,
     transcript: TranscriptBorrowedDrag? = null,
@@ -892,8 +899,9 @@ fun BackgroundWorkPresentation(
                         waitingSessionIDs = waitingSessionIDs,
                         shells = rowShells,
                         scripts = rowScripts,
-                        onStopScript = onStopScript,
-                        onStopSubagent = onStopSubagent,
+                        stoppingIDs = stoppingIDs,
+                        onStopScript = { id -> if (!dragController.drag.isDragging) onStopScript(id) },
+                        onStopSubagent = { id -> if (!dragController.drag.isDragging) onStopSubagent(id) },
                         probe = probe,
                         scrollState = scrollState,
                         isLive = rowsOpen,
@@ -960,6 +968,7 @@ fun BackgroundWorkPanel(
     scripts: List<BackgroundScript> = emptyList(),
     onStopScript: (String) -> Unit = {},
     onStopSubagent: (String) -> Unit = {},
+    stoppingIDs: Set<String> = emptySet(),
     waitingSessionIDs: Set<String> = emptySet(),
     probe: ShellGlyphProbe? = null,
     scrollState: ScrollState = rememberScrollState(),
@@ -970,7 +979,7 @@ fun BackgroundWorkPanel(
     val density = LocalDensity.current
     Box(modifier.fillMaxWidth().verticalScroll(scrollState)) {
         BackgroundWorkRows(
-            agents, waitingSessionIDs, shells, scripts, probe, isLive, focusRequest, onOpenSubagent, onOpenShell, onStopScript, onStopSubagent,
+            agents, waitingSessionIDs, shells, scripts, probe, isLive, focusRequest, onOpenSubagent, onOpenShell, onStopScript, onStopSubagent, stoppingIDs,
             Modifier.onSizeChanged { onContentHeight(it.height / density.density) },
         )
     }
@@ -989,6 +998,7 @@ private fun BackgroundWorkRows(
     onOpenShell: (String) -> Unit,
     onStopScript: (String) -> Unit,
     onStopSubagent: (String) -> Unit,
+    stoppingIDs: Set<String>,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.fillMaxWidth().padding(vertical = 10.dp)) {
@@ -1002,6 +1012,7 @@ private fun BackgroundWorkRows(
                         onTap = { onOpenSubagent(agent.id) },
                         stopLabel = stringResource(R.string.session_background_work_stop_subagent_label),
                         onStop = { onStopSubagent(agent.id) },
+                        isStopping = agent.id in stoppingIDs,
                         modifier = Modifier.testTag("background-subagent-${agent.id}"),
                     ) {
                         AgentActivityGlyph(
@@ -1014,11 +1025,39 @@ private fun BackgroundWorkRows(
                 }
             }
         }
-        if (agents.isNotEmpty() && shells.isNotEmpty()) {
+        if (agents.isNotEmpty() && scripts.isNotEmpty()) {
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 6.dp), color = OpenCodeTheme.colors.border)
+        }
+        if (scripts.isNotEmpty()) {
+            SectionHeader(
+                stringResource(R.string.session_background_work_scripts_title),
+                if (agents.isEmpty()) Modifier.accessibilityFocusRequest(focusRequest) else Modifier,
+            )
+            for (script in scripts) {
+                androidx.compose.runtime.key(script.id) {
+                    val stopLabel = stringResource(R.string.session_background_work_stop_script_label)
+                    BackgroundWorkRow(
+                        title = script.label,
+                        isCommand = true,
+                        startedAt = script.startedAt,
+                        isLive = isLive,
+                        accessibilityHint = stopLabel,
+                        onTap = null,
+                        stopLabel = stopLabel,
+                        onStop = { onStopScript(script.id) },
+                        isStopping = script.id in stoppingIDs,
+                        modifier = Modifier.testTag("background-script-${script.id}"),
+                    ) {
+                        ScriptGlyph()
+                    }
+                }
+            }
+        }
+        if ((agents.isNotEmpty() || scripts.isNotEmpty()) && shells.isNotEmpty()) {
             HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 6.dp), color = OpenCodeTheme.colors.border)
         }
         if (shells.isNotEmpty()) {
-            SectionHeader(stringResource(R.string.session_background_work_shells_title), if (agents.isEmpty()) Modifier.accessibilityFocusRequest(focusRequest) else Modifier)
+            SectionHeader(stringResource(R.string.session_background_work_shells_title), if (agents.isEmpty() && scripts.isEmpty()) Modifier.accessibilityFocusRequest(focusRequest) else Modifier)
             for (shell in shells) {
                 androidx.compose.runtime.key(shell.id) {
                     BackgroundWorkRow(
@@ -1031,34 +1070,6 @@ private fun BackgroundWorkRows(
                         modifier = Modifier.testTag("background-shell-${shell.id}"),
                     ) {
                         ShellGlyph(shellIDs = listOf(shell.id), probe = probe, isPaused = !isLive)
-                    }
-                }
-            }
-        }
-        if ((agents.isNotEmpty() || shells.isNotEmpty()) && scripts.isNotEmpty()) {
-            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 6.dp), color = OpenCodeTheme.colors.border)
-        }
-        if (scripts.isNotEmpty()) {
-            SectionHeader(
-                stringResource(R.string.session_background_work_scripts_title),
-                if (agents.isEmpty() && shells.isEmpty()) Modifier.accessibilityFocusRequest(focusRequest) else Modifier,
-            )
-            for (script in scripts) {
-                androidx.compose.runtime.key(script.id) {
-                    val stopLabel = stringResource(R.string.session_background_work_stop_script_label)
-                    // A script has nowhere to open: the row's one action is Stop.
-                    BackgroundWorkRow(
-                        title = script.label,
-                        isCommand = true,
-                        startedAt = script.startedAt,
-                        isLive = isLive,
-                        accessibilityHint = stopLabel,
-                        onTap = null,
-                        stopLabel = stopLabel,
-                        onStop = { onStopScript(script.id) },
-                        modifier = Modifier.testTag("background-script-${script.id}"),
-                    ) {
-                        ScriptGlyph()
                     }
                 }
             }
@@ -1089,6 +1100,7 @@ private fun BackgroundWorkRow(
     isLive: Boolean = true,
     stopLabel: String? = null,
     onStop: (() -> Unit)? = null,
+    isStopping: Boolean = false,
     leading: @Composable () -> Unit,
 ) {
     Row(
@@ -1101,8 +1113,14 @@ private fun BackgroundWorkRow(
             .then(if (onTap != null) Modifier.clickable(role = Role.Button, onClickLabel = accessibilityHint, onClick = onTap) else Modifier)
             .semantics(mergeDescendants = true) {
                 contentDescription = title
-                if (onTap != null) onClick(label = accessibilityHint) { onTap(); true }
-                if (onStop != null && stopLabel != null) customActions = listOf(CustomAccessibilityAction(stopLabel) { onStop(); true })
+                if (onTap != null) {
+                    onClick(label = accessibilityHint) { onTap(); true }
+                    if (onStop != null && stopLabel != null && !isStopping) {
+                        customActions = listOf(CustomAccessibilityAction(stopLabel) { onStop(); true })
+                    }
+                } else if (onStop != null && !isStopping) {
+                    onClick(label = stopLabel ?: accessibilityHint) { onStop(); true }
+                }
             }
             .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -1127,16 +1145,16 @@ private fun BackgroundWorkRow(
             }
         }
         if (onStop != null) {
-            Box(
-                Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickable(role = Role.Button, onClickLabel = stopLabel, onClick = onStop)
-                    .clearAndSetSemantics { },
-                contentAlignment = Alignment.Center,
-            ) {
-                OpenCodeIcon(SFSymbol.Xmark, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.secondaryText)
-            }
+            OpenCodeIconButton(
+                symbol = SFSymbol.Xmark,
+                contentDescription = stopLabel ?: "",
+                onClick = onStop,
+                // The row's semantics carry Open's custom Stop action; a script row's own Stop stays its button.
+                modifier = if (onTap != null) Modifier.clearAndSetSemantics { } else Modifier,
+                style = OpenCodeIconButtonStyle.Standard,
+                iconSize = 16.dp,
+                enabled = !isStopping,
+            )
         }
         if (onTap != null) OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
     }

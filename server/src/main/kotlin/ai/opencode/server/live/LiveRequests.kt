@@ -16,6 +16,7 @@ import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeShellOutputPage
 import ai.opencode.server.model.PromptContext
 import ai.opencode.server.model.nonEmpty
+import ai.opencode.server.retry.RequestIdempotency
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -236,7 +237,8 @@ internal suspend fun requestRunningJobs(server: OpenCodeServer, sessionID: Strin
     ).data.map { it.job() }.filter { it.isRunning }
 
 internal suspend fun requestCancelJob(server: OpenCodeServer, jobID: String) {
-    perform("/api/experimental/job/$jobID/cancel", method = "POST", server = server)
+    // Cancelling a job that already finished does nothing, so a second copy is harmless.
+    perform("/api/experimental/job/$jobID/cancel", method = "POST", idempotency = RequestIdempotency.Idempotent, server = server)
 }
 
 // Shells.

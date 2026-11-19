@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Berjalan</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Tampilkan subagen dan shell yang berjalan</string>
+    <string name="session_background_work_show_label">Tampilkan subagen, skrip, dan shell yang berjalan</string>
     <string name="session_background_work_collapsed_description">Diciutkan</string>
     <string name="session_background_work_subagents_title">Subagen</string>
     <string name="session_background_work_open_subagent_label">Buka sesi subagen</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">Skrip</string>
     <string name="session_background_work_stop_script_label">Hentikan skrip</string>
     <string name="session_background_work_stop_subagent_label">Hentikan subagen</string>
+    <string name="session_background_work_stop_script_failed">Gagal menghentikan skrip</string>
+    <string name="session_background_work_stop_subagent_failed">Gagal menghentikan subagen</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Kirim pesan</string>

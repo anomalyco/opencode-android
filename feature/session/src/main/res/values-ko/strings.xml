@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">실행 중</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">실행 중인 하위 에이전트와 셸 표시</string>
+    <string name="session_background_work_show_label">실행 중인 하위 에이전트, 스크립트 및 셸 표시</string>
     <string name="session_background_work_collapsed_description">접힘</string>
     <string name="session_background_work_subagents_title">하위 에이전트</string>
     <string name="session_background_work_open_subagent_label">하위 에이전트의 세션 열기</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">스크립트</string>
     <string name="session_background_work_stop_script_label">스크립트 중지</string>
     <string name="session_background_work_stop_subagent_label">하위 에이전트 중지</string>
+    <string name="session_background_work_stop_script_failed">스크립트를 중지할 수 없어요</string>
+    <string name="session_background_work_stop_subagent_failed">하위 에이전트를 중지할 수 없어요</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">메시지 보내기</string>

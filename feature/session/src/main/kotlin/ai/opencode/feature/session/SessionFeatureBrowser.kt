@@ -277,7 +277,7 @@ internal fun SessionFeature.reduceBrowserAndBackgroundWork(state: State, action:
             familySessions = state.familySessions.filter { it.id != sessionID },
             activeFamilySessionIDs = state.activeFamilySessionIDs - sessionID,
             familyTranscriptCache = state.familyTranscriptCache - sessionID,
-        )
+        ).pruningJobs(ownedBy = sessionID)
         // Its requests went with it. Left here, reconciliation would keep them for an owner it never
         // rediscovers, docked forever.
         next = next.pruneRequests(removing = { _, owner -> owner == sessionID })

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Işleýär</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Işleýän kiçi agentleri we Shell-leri görkez</string>
+    <string name="session_background_work_show_label">Işleýän kiçi agentleri, skriptleri we shell-leri görkez</string>
     <string name="session_background_work_collapsed_description">Ýygnalan</string>
     <string name="session_background_work_subagents_title">Kiçi agentler</string>
     <string name="session_background_work_open_subagent_label">Kiçi agentiň sessiýasyny açyň</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Skriptler</string>
     <string name="session_background_work_stop_script_label">Skripti duruz</string>
     <string name="session_background_work_stop_subagent_label">Kiçi agenti duruz</string>
+    <string name="session_background_work_stop_script_failed">Skripti duruzyp bolmady</string>
+    <string name="session_background_work_stop_subagent_failed">Kiçi agenti duruzyp bolmady</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Habar iber</string>

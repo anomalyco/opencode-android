@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Çalışıyor</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Çalışan alt temsilcileri ve kabukları göster</string>
+    <string name="session_background_work_show_label">Çalışan alt temsilcileri, betikleri ve kabukları göster</string>
     <string name="session_background_work_collapsed_description">Daraltıldı</string>
     <string name="session_background_work_subagents_title">Alt temsilciler</string>
     <string name="session_background_work_open_subagent_label">Alt temsilcinin oturumunu aç</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Betikler</string>
     <string name="session_background_work_stop_script_label">Betiği durdur</string>
     <string name="session_background_work_stop_subagent_label">Alt temsilciyi durdur</string>
+    <string name="session_background_work_stop_script_failed">Betik durdurulamadı</string>
+    <string name="session_background_work_stop_subagent_failed">Alt temsilci durdurulamadı</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Mesaj gönder</string>

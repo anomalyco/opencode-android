@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">ක්‍රියාත්මකයි</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">ක්‍රියාත්මක උප නියෝජිතයින් සහ ෂෙල් පෙන්වන්න</string>
+    <string name="session_background_work_show_label">ක්‍රියාත්මක උප නියෝජිතයින්, ස්ක්‍රිප්ට් සහ ෂෙල් පෙන්වන්න</string>
     <string name="session_background_work_collapsed_description">හකුළා ඇත</string>
     <string name="session_background_work_subagents_title">උප නියෝජිතයින්</string>
     <string name="session_background_work_open_subagent_label">උප නියෝජිතයාගේ සැසිය විවෘත කරන්න</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">ස්ක්‍රිප්ට්</string>
     <string name="session_background_work_stop_script_label">ස්ක්‍රිප්ටය නවත්වන්න</string>
     <string name="session_background_work_stop_subagent_label">උප නියෝජිතයා නවත්වන්න</string>
+    <string name="session_background_work_stop_script_failed">ස්ක්‍රිප්ටය නැවැත්වීමට නොහැකි විය</string>
+    <string name="session_background_work_stop_subagent_failed">උප නියෝජිතයා නැවැත්වීමට නොහැකි විය</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">පණිවිඩය යවන්න</string>

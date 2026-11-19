@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Bezig</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Actieve subagents en shells tonen</string>
+    <string name="session_background_work_show_label">Actieve subagents, scripts en shells tonen</string>
     <string name="session_background_work_collapsed_description">Samengevouwen</string>
     <string name="session_background_work_subagents_title">Subagents</string>
     <string name="session_background_work_open_subagent_label">Sessie van de subagent openen</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Scripts</string>
     <string name="session_background_work_stop_script_label">Script stoppen</string>
     <string name="session_background_work_stop_subagent_label">Subagent stoppen</string>
+    <string name="session_background_work_stop_script_failed">Script stoppen mislukt</string>
+    <string name="session_background_work_stop_subagent_failed">Subagent stoppen mislukt</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Bericht verzenden</string>

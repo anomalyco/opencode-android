@@ -21,6 +21,7 @@ import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodeJSONValue
+import ai.opencode.server.model.OpenCodeJob
 import ai.opencode.server.model.OpenCodeModelCatalog
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
@@ -1052,6 +1053,102 @@ class BackgroundWorkTests {
         assertTrue(!controller.drag.isDragging && !controller.drag.isReturning)
         assertEquals(70f, controller.drag.offset)
     }
+
+    // region Background jobs
+
+    private fun job(id: String, kind: OpenCodeJob.Kind, owner: String = session.id, child: String? = null, running: Boolean = true) =
+        OpenCodeJob(id = id, kind = kind, sessionID = owner, isRunning = running, childSessionID = child, startedAt = Instant.ofEpochMilli(1))
+
+    private fun execute(jobID: String, code: String): OpenCodeTranscriptItem = OpenCodeTranscriptItem.Tool(
+        id = "msg_a-$jobID",
+        call = OpenCodeToolCall(
+            callID = jobID, messageID = "msg_a", name = "execute", status = OpenCodeToolCall.Status.Completed,
+            input = OpenCodeJSONValue.Object(mapOf("code" to OpenCodeJSONValue.Str(code))), output = emptyList(), error = null,
+            metadata = mapOf("jobID" to OpenCodeJSONValue.Str(jobID)),
+        ),
+    )
+
+    private val child = OpenCodeSession(id = "ses_child", serverTitle = "Child", projectID = "p", directory = "/project", updatedAt = Instant.EPOCH, parentID = session.id)
+    private val grandchild = OpenCodeSession(id = "ses_grand", serverTitle = "Grand", projectID = "p", directory = "/project", updatedAt = Instant.EPOCH, parentID = child.id)
+
+    @Test fun backgroundScriptsAreTheSessionsOwnCodeModeJobsNamedByTheirFirstLine() = sessionTest { h ->
+        val state = h.state().copy(
+            items = listOf(execute("cm_1", "\n  const a = 1\nreturn a")),
+            familySessions = listOf(session, child),
+            jobs = listOf(
+                job("cm_1", OpenCodeJob.Kind.CodeMode),
+                job("cm_2", OpenCodeJob.Kind.CodeMode),
+                job("cm_3", OpenCodeJob.Kind.CodeMode, owner = child.id),
+                job("img", OpenCodeJob.Kind.Image),
+            ).associateBy { it.id },
+        )
+        assertEquals(listOf("const a = 1", "cm_2"), state.backgroundScripts.map { it.label })
+        assertTrue(state.hasBackgroundWork)
+    }
+
+    @Test fun anIdleSubagentStaysListedWhileItsTreeRunsAJob() = sessionTest { h ->
+        val base = h.state().copy(familySessions = listOf(session, child, grandchild))
+        assertTrue(base.activeSubagents.isEmpty())
+        val nested = base.copy(jobs = mapOf("img" to job("img", OpenCodeJob.Kind.Image, owner = grandchild.id)))
+        assertEquals(listOf(child.id, grandchild.id), nested.activeSubagents.map { it.id })
+        assertTrue(nested.backgroundScripts.isEmpty())
+        val video = base.copy(jobs = mapOf("v" to job("v", OpenCodeJob.Kind.Video)))
+        assertFalse("The session's own media never shows alone", video.hasBackgroundWork)
+        val subagentJob = base.copy(jobs = mapOf("j" to job("j", OpenCodeJob.Kind.Subagent, child = child.id)))
+        assertEquals(listOf(child.id), subagentJob.activeSubagents.map { it.id })
+    }
+
+    @Test fun stoppingASubagentInterruptsItAndCancelsItsTreesJobs() = sessionTest { h ->
+        val calls = LockIsolated(listOf<String>())
+        val jobs = listOf(
+            job("j_child", OpenCodeJob.Kind.Subagent, child = child.id),
+            job("img", OpenCodeJob.Kind.Image, owner = grandchild.id),
+            job("own", OpenCodeJob.Kind.CodeMode),
+        ).associateBy { it.id }
+        val state = h.state().copy(familySessions = listOf(session, child, grandchild), activeFamilySessionIDs = setOf(child.id), jobs = jobs)
+        val store = h.store(state) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                interrupt = { _, id -> calls.append("interrupt:$id"); true },
+                cancelJob = { _, id -> calls.append("cancel:$id") },
+            )
+        }
+        store.send(Action.BackgroundSubagentStopTapped(child.id)) { it.copy(stoppingIDs = setOf(child.id)) }
+        store.receive(Action.BackgroundStopFinished(child.id, isSubagent = true, failed = false)) { it.copy(stoppingIDs = emptySet()) }
+        assertEquals(setOf("interrupt:${child.id}", "cancel:j_child", "cancel:img"), calls.value.toSet())
+        assertEquals(3, calls.value.size)
+    }
+
+    @Test fun aFailedScriptStopSaysSo() = sessionTest { h ->
+        val state = h.state().copy(jobs = mapOf("cm_1" to job("cm_1", OpenCodeJob.Kind.CodeMode)))
+        val store = h.store(state) {
+            this[UuidClient] = UuidClient.incrementing()
+            this[OpenCodeClient] = this[OpenCodeClient].copy(cancelJob = { _, _ -> throw OpenCodeClientError("Down") })
+        }
+        store.send(Action.BackgroundScriptStopTapped("cm_1")) { it.copy(stoppingIDs = setOf("cm_1")) }
+        store.receive(Action.BackgroundStopFinished("cm_1", isSubagent = false, failed = true)) {
+            it.copy(
+                stoppingIDs = emptySet(),
+                items = it.items + OpenCodeTranscriptItem.Info(id = "info-00000000-0000-0000-0000-000000000000", text = "Couldn’t stop script"),
+            )
+        }
+    }
+
+    @Test fun jobUpdatesDuringAListOutliveIt() = sessionTest { h ->
+        val running = job("cm_1", OpenCodeJob.Kind.CodeMode)
+        val store = h.store(h.state())
+        // Started while the list was in flight: the list doesn't have it yet.
+        store.send(Action.JobUpdated(running)) { it.copy(jobs = mapOf(running.id to running), jobChangesDuringRefresh = mapOf(running.id to running)) }
+        store.send(Action.JobsResponse(session.id, emptyList())) { it.copy(jobChangesDuringRefresh = emptyMap()) }
+        assertEquals(setOf(running.id), store.state.jobs.keys)
+        // Ended while the list was in flight: the list still has it.
+        store.send(Action.JobUpdated(running.copy(isRunning = false))) { it.copy(jobs = emptyMap(), jobChangesDuringRefresh = mapOf(running.id to null)) }
+        store.send(Action.JobsResponse(session.id, listOf(running))) { it.copy(jobChangesDuringRefresh = emptyMap()) }
+        assertTrue(store.state.jobs.isEmpty())
+        // Another tree's job never lands here.
+        store.send(Action.JobUpdated(job("other", OpenCodeJob.Kind.CodeMode, owner = "ses_elsewhere")))
+    }
+
+    // endregion
 
     // endregion
 }

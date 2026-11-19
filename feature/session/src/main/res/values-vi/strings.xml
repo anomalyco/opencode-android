@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Đang chạy</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Hiện chất phụ và vỏ bọc đang chạy</string>
+    <string name="session_background_work_show_label">Hiện chất phụ, script và vỏ bọc đang chạy</string>
     <string name="session_background_work_collapsed_description">Đã thu gọn</string>
     <string name="session_background_work_subagents_title">Chất phụ</string>
     <string name="session_background_work_open_subagent_label">Mở phiên của chất phụ</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">Script</string>
     <string name="session_background_work_stop_script_label">Dừng script</string>
     <string name="session_background_work_stop_subagent_label">Dừng chất phụ</string>
+    <string name="session_background_work_stop_script_failed">Không thể dừng script</string>
+    <string name="session_background_work_stop_subagent_failed">Không thể dừng chất phụ</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Gửi tin nhắn</string>

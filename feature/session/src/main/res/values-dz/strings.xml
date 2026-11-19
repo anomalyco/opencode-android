@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">གཡོག་བཀོལ་དོ།</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">གཡོག་བཀོལ་མི་ཡན་ལག་ལས་ཚབ་དང་ཤལ་ཚུ་སྟོན།</string>
+    <string name="session_background_work_show_label">གཡོག་བཀོལ་མི་ཡན་ལག་ལས་ཚབ་ཚུ་དང་ ཡིག་ཚུགས་ཚུ་ ཤལ་ཚུ་སྟོན།</string>
     <string name="session_background_work_collapsed_description">བརྡིབས་ཡོདཔ།</string>
     <string name="session_background_work_subagents_title">ཡན་ལག་ལས་ཚབ་ཚུ།</string>
     <string name="session_background_work_open_subagent_label">ཡན་ལག་ལས་ཚབ་ཀྱི་ལཱ་ཡུན་ཁ་ཕྱེ།</string>
@@ -199,6 +199,8 @@
     <string name="session_background_work_scripts_title">ཡིག་ཚུགས་ཚུ།</string>
     <string name="session_background_work_stop_script_label">ཡིག་ཚུགས་བཀག</string>
     <string name="session_background_work_stop_subagent_label">ཡན་ལག་ལས་ཚབ་བཀག</string>
+    <string name="session_background_work_stop_script_failed">ཡིག་ཚུགས་བཀག་མ་ཚུགས།</string>
+    <string name="session_background_work_stop_subagent_failed">ཡན་ལག་ལས་ཚབ་བཀག་མ་ཚུགས།</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">འཕྲིན་དོན་གཏང་།</string>

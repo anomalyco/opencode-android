@@ -497,6 +497,7 @@ class SelectedTranscriptCancellationTests {
                 deleteSession = { _, _ -> },
                 sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> awaitCancellation() },
+                runningJobs = { _, _ -> awaitCancellation() },
             )
         }
 

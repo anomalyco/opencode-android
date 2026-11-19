@@ -1312,6 +1312,11 @@ fun HomeFeature.State.pushingSubagent(session: OpenCodeSession, reason: String? 
             SessionActivity.descendants(session.id, parent.familySessions).filter { it.id !in known },
     )
     if (detail.familyReadAt == null) detail = detail.copy(familyReadAt = parent.familyReadAt)
+    // Its tree's running jobs, until its own list answers.
+    if (detail.jobs.isEmpty()) {
+        val tree = detail.familySessions.mapTo(HashSet()) { it.id } + session.id
+        detail = detail.copy(jobs = parent.jobs.filterValues { it.ownerSessionID in tree })
+    }
     if (!detail.hasLoadedPendingRequests) {
         val members = detail.familySessions.mapTo(HashSet()) { it.id }
         val forms = parent.formRequests.filter { it.sessionID in members }

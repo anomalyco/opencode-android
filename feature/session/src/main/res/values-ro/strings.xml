@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Se execută</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Arată subagenții și shell-urile în execuție</string>
+    <string name="session_background_work_show_label">Arată subagenții, scripturile și shell-urile în execuție</string>
     <string name="session_background_work_collapsed_description">Restrâns</string>
     <string name="session_background_work_subagents_title">Subagenți</string>
     <string name="session_background_work_open_subagent_label">Deschide sesiunea subagentului</string>
@@ -215,6 +215,8 @@
     <string name="session_background_work_scripts_title">Scripturi</string>
     <string name="session_background_work_stop_script_label">Oprește scriptul</string>
     <string name="session_background_work_stop_subagent_label">Oprește subagentul</string>
+    <string name="session_background_work_stop_script_failed">Nu s-a putut opri scriptul</string>
+    <string name="session_background_work_stop_subagent_failed">Nu s-a putut opri subagentul</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Trimite mesajul</string>

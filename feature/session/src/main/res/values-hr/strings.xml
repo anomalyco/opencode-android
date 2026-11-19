@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">U tijeku</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Prikaži aktivne subagente i ljuske</string>
+    <string name="session_background_work_show_label">Prikaži aktivne subagente, skripte i ljuske</string>
     <string name="session_background_work_collapsed_description">Sažeto</string>
     <string name="session_background_work_subagents_title">Subagenti</string>
     <string name="session_background_work_open_subagent_label">Otvori sesiju subagenta</string>
@@ -215,6 +215,8 @@
     <string name="session_background_work_scripts_title">Skripte</string>
     <string name="session_background_work_stop_script_label">Zaustavi skriptu</string>
     <string name="session_background_work_stop_subagent_label">Zaustavi subagenta</string>
+    <string name="session_background_work_stop_script_failed">Nije moguće zaustaviti skriptu</string>
+    <string name="session_background_work_stop_subagent_failed">Nije moguće zaustaviti subagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Pošalji poruku</string>

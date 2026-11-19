@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">चलिरहेको</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">चलिरहेका उप-एजेन्ट र शेलहरू देखाउनुहोस्</string>
+    <string name="session_background_work_show_label">चलिरहेका उप-एजेन्टहरू, स्क्रिप्टहरू र शेलहरू देखाउनुहोस्</string>
     <string name="session_background_work_collapsed_description">संक्षिप्त</string>
     <string name="session_background_work_subagents_title">उप-एजेन्टहरू</string>
     <string name="session_background_work_open_subagent_label">उप-एजेन्टको सत्र खोल्नुहोस्</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">स्क्रिप्टहरू</string>
     <string name="session_background_work_stop_script_label">स्क्रिप्ट रोक्नुहोस्</string>
     <string name="session_background_work_stop_subagent_label">उप-एजेन्ट रोक्नुहोस्</string>
+    <string name="session_background_work_stop_script_failed">स्क्रिप्ट रोक्न सकिएन</string>
+    <string name="session_background_work_stop_subagent_failed">उप-एजेन्ट रोक्न सकिएन</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">सन्देश पठाउनुहोस्</string>

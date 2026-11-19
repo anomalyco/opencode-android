@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">चल रहा है</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">चल रहे सबएजेंट और शेल दिखाएँ</string>
+    <string name="session_background_work_show_label">चल रहे सबएजेंट, स्क्रिप्ट और शेल दिखाएँ</string>
     <string name="session_background_work_collapsed_description">संक्षिप्त</string>
     <string name="session_background_work_subagents_title">सबएजेंट</string>
     <string name="session_background_work_open_subagent_label">सबएजेंट का सेशन खोलें</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">स्क्रिप्ट</string>
     <string name="session_background_work_stop_script_label">स्क्रिप्ट रोकें</string>
     <string name="session_background_work_stop_subagent_label">सबएजेंट रोकें</string>
+    <string name="session_background_work_stop_script_failed">स्क्रिप्ट नहीं रोकी जा सकी</string>
+    <string name="session_background_work_stop_subagent_failed">सबएजेंट नहीं रोका जा सका</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">संदेश भेजें</string>

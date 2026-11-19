@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Körs</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Visa underagenter och skal som körs</string>
+    <string name="session_background_work_show_label">Visa underagenter, skript och skal som körs</string>
     <string name="session_background_work_collapsed_description">Hopfälld</string>
     <string name="session_background_work_subagents_title">Underagenter</string>
     <string name="session_background_work_open_subagent_label">Öppna underagentens session</string>
@@ -207,6 +207,8 @@
     <string name="session_background_work_scripts_title">Skript</string>
     <string name="session_background_work_stop_script_label">Stoppa skript</string>
     <string name="session_background_work_stop_subagent_label">Stoppa underagent</string>
+    <string name="session_background_work_stop_script_failed">Kunde inte stoppa skriptet</string>
+    <string name="session_background_work_stop_subagent_failed">Kunde inte stoppa underagenten</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Skicka meddelande</string>

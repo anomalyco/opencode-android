@@ -344,6 +344,10 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val shells: List<OpenCodeShell> = emptyList(),
         /** Running background jobs in the session's tree, by ID. */
         val jobs: Map<String, OpenCodeJob> = emptyMap(),
+        /** Jobs that started (the job) or settled (null) since the latest jobs read began. */
+        val jobChangesDuringRefresh: Map<String, OpenCodeJob?> = emptyMap(),
+        /** Background rows whose Stop is on its way: script job IDs and subagent session IDs. */
+        val stoppingIDs: Set<String> = emptySet(),
         /** Restored live arrivals predate the next list and must be removable by it. */
         val restoredShellIDs: Set<String> = emptySet(),
         /** An exit can beat the list response that still reports the shell. */
@@ -693,12 +697,14 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class ShellStarted(val shell: OpenCodeShell) : Action
         data class ShellEnded(val shellID: String) : Action
         data class ShellOutputTapped(val shellID: String) : Action
-        data class JobsResponse(val sessionID: String, val result: Result<List<OpenCodeJob>>) : Action
+        data class JobsResponse(val sessionID: String, val jobs: List<OpenCodeJob>) : Action
         data class JobUpdated(val job: OpenCodeJob) : Action
         /** Stops a background script: cancels its job. */
         data class BackgroundScriptStopTapped(val jobID: String) : Action
         /** Interrupts the subagent if it runs and cancels every running job in its tree. */
         data class BackgroundSubagentStopTapped(val sessionID: String) : Action
+        /** A row's Stop settled; [id] is the script's job or the subagent's session. */
+        data class BackgroundStopFinished(val id: String, val isSubagent: Boolean, val failed: Boolean) : Action
         data class ShellOutput(val action: PresentationAction<ShellOutputFeature.Action>) : Action
         data class BackgroundHintElapsed(val key: String) : Action
         data object MoveToBackgroundTapped : Action
