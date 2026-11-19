@@ -213,7 +213,16 @@
         <item quantity="many">%1$d shellu</item>
         <item quantity="other">%1$d shellov</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="few">%1$d skripty</item>
+        <item quantity="many">%1$d skriptu</item>
+        <item quantity="other">%1$d skriptov</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripty</string>
+    <string name="session_background_work_stop_script_label">Zastaviť skript</string>
+    <string name="session_background_work_stop_subagent_label">Zastaviť subagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Odoslať správu</string>

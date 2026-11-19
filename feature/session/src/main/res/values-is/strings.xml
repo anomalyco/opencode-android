@@ -199,7 +199,14 @@
         <item quantity="one">%1$d skel</item>
         <item quantity="other">%1$d skeljar</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skrifta</item>
+        <item quantity="other">%1$d skriftur</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriftur</string>
+    <string name="session_background_work_stop_script_label">Stöðva skriftu</string>
+    <string name="session_background_work_stop_subagent_label">Stöðva undirfulltrúa</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Senda skilaboð</string>

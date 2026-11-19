@@ -199,7 +199,14 @@
         <item quantity="one">%1$d Shell</item>
         <item quantity="other">%1$d Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriptler</string>
+    <string name="session_background_work_stop_script_label">Skripti duruz</string>
+    <string name="session_background_work_stop_subagent_label">Kiçi agenti duruz</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Habar iber</string>

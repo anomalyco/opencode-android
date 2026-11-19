@@ -199,7 +199,14 @@
         <item quantity="one">%1$d Shell</item>
         <item quantity="other">%1$d Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="other">%1$d скрипт</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скриптүүд</string>
+    <string name="session_background_work_stop_script_label">Скриптийг зогсоох</string>
+    <string name="session_background_work_stop_subagent_label">Дэд агентыг зогсоох</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Мессеж илгээх</string>

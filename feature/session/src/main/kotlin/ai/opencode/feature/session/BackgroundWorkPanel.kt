@@ -59,6 +59,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -114,7 +115,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -228,20 +231,22 @@ fun Modifier.coveredByBackgroundWork(): Modifier = composed {
 /** The panel's copy and sizing rules. */
 object BackgroundWorkSummary {
     /** “1 subagent · 2 shells”, as the capsule reads. */
-    fun summary(agents: List<OpenCodeSession>, shells: List<OpenCodeShell>): String = summary(agents.size, shells.size)
+    fun summary(agents: List<OpenCodeSession>, shells: List<OpenCodeShell>, scripts: List<BackgroundScript> = emptyList()): String =
+        summary(agents.size, shells.size, scripts.size)
 
-    fun summary(agents: Int, shells: Int): String {
-        val agentsText = localizedPlural(R.plurals.session_background_work_subagent_count, agents, agents)
-        val shellsText = localizedPlural(R.plurals.session_background_work_shell_count, shells, shells)
-        if (agents == 0 && shells == 0) return ""
-        if (agents == 0) return shellsText
-        if (shells == 0) return agentsText
-        return localized(R.string.session_background_work_summary, agentsText, shellsText)
+    fun summary(agents: Int, shells: Int, scripts: Int = 0): String {
+        val parts = listOfNotNull(
+            if (agents > 0) localizedPlural(R.plurals.session_background_work_subagent_count, agents, agents) else null,
+            if (shells > 0) localizedPlural(R.plurals.session_background_work_shell_count, shells, shells) else null,
+            if (scripts > 0) localizedPlural(R.plurals.session_background_work_script_count, scripts, scripts) else null,
+        )
+        return parts.reduceOrNull { a, b -> localized(R.string.session_background_work_summary, a, b) } ?: ""
     }
 
     /** Before the first measurement: rows, headers, and padding (dp). */
-    fun estimatedHeight(agents: List<OpenCodeSession>, shells: List<OpenCodeShell>): Float =
-        (agents.size + shells.size) * 48f + (if (agents.isEmpty()) 0f else 30f) + (if (shells.isEmpty()) 0f else 30f) + 20f
+    fun estimatedHeight(agents: List<OpenCodeSession>, shells: List<OpenCodeShell>, scripts: List<BackgroundScript> = emptyList()): Float =
+        (agents.size + shells.size + scripts.size) * 48f + (if (agents.isEmpty()) 0f else 30f) + (if (shells.isEmpty()) 0f else 30f) +
+            (if (scripts.isEmpty()) 0f else 30f) + 20f
 }
 
 private const val PILL_GLYPH_GAP = 5f
@@ -257,10 +262,11 @@ private val countsStyle: TextStyle
  * into the panel's. Put [backgroundActivityAnchor] on this.
  */
 @Composable
-fun BackgroundWorkCapsuleSpace(agents: Int, shells: Int, modifier: Modifier = Modifier) {
+fun BackgroundWorkCapsuleSpace(agents: Int, shells: Int, modifier: Modifier = Modifier, scripts: Int = 0) {
     BackgroundWorkCapsuleLabel(
         agents = agents,
         shells = shells,
+        scripts = scripts,
         modifier = modifier.padding(vertical = BackgroundWorkMotion.capsuleInset.dp).alpha(0f).clearAndSetSemantics { },
         sizingOnly = true,
     ) { Box(Modifier.width(18.dp)) }
@@ -276,6 +282,7 @@ fun BackgroundWorkCapsuleLabel(
     agents: Int,
     shells: Int,
     modifier: Modifier = Modifier,
+    scripts: Int = 0,
     sizingOnly: Boolean = false,
     leading: @Composable () -> Unit,
 ) {
@@ -288,11 +295,11 @@ fun BackgroundWorkCapsuleLabel(
         horizontalArrangement = Arrangement.spacedBy(PILL_GLYPH_GAP.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.width(glyphWidth(agents, shells).dp).clearAndSetSemantics { }, contentAlignment = Alignment.CenterStart) { leading() }
+        Box(Modifier.width(glyphWidth(agents, shells + scripts).dp).clearAndSetSemantics { }, contentAlignment = Alignment.CenterStart) { leading() }
         if (sizingOnly) {
-            Text(BackgroundWorkSummary.summary(agents, shells), style = countsStyle, maxLines = 1, softWrap = false)
+            Text(BackgroundWorkSummary.summary(agents, shells, scripts), style = countsStyle, maxLines = 1, softWrap = false)
         } else {
-            BackgroundWorkCounts(agents, shells, Modifier.offset(y = BackgroundWorkTunables.countNudge.dp))
+            BackgroundWorkCounts(agents, shells, Modifier.offset(y = BackgroundWorkTunables.countNudge.dp), scripts)
         }
     }
 }
@@ -306,15 +313,17 @@ fun glyphWidth(agents: Int, shells: Int): Float = if (agents > 0 && shells > 0) 
  * while it fades and blurs, and the rest slides over. Under Reduce Motion the words cross-fade.
  */
 @Composable
-fun BackgroundWorkCounts(agents: Int, shells: Int, modifier: Modifier = Modifier) {
+fun BackgroundWorkCounts(agents: Int, shells: Int, modifier: Modifier = Modifier, scripts: Int = 0) {
     val reduceMotion = rememberReduceMotion()
     // What a group last counted, shown while it closes.
     var lastAgents by remember { mutableIntStateOf(max(1, agents)) }
     var lastShells by remember { mutableIntStateOf(max(1, shells)) }
+    var lastScripts by remember { mutableIntStateOf(max(1, scripts)) }
     if (agents > 0 && agents != lastAgents) lastAgents = agents
     if (shells > 0 && shells != lastShells) lastShells = shells
+    if (scripts > 0 && scripts != lastScripts) lastScripts = scripts
     if (reduceMotion) {
-        Crossfade(BackgroundWorkSummary.summary(agents, shells), modifier, animationSpec = BackgroundWorkMotion.fade(), label = "BackgroundWorkCounts") {
+        Crossfade(BackgroundWorkSummary.summary(agents, shells, scripts), modifier, animationSpec = BackgroundWorkMotion.fade(), label = "BackgroundWorkCounts") {
             Text(it, style = countsStyle, maxLines = 1, softWrap = false)
         }
         return
@@ -323,6 +332,8 @@ fun BackgroundWorkCounts(agents: Int, shells: Int, modifier: Modifier = Modifier
         Opening(agents > 0) { CountGroup(if (agents > 0) agents else lastAgents, R.plurals.session_background_work_subagent_count) }
         Opening(agents > 0 && shells > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
         Opening(shells > 0) { CountGroup(if (shells > 0) shells else lastShells, R.plurals.session_background_work_shell_count) }
+        Opening((agents > 0 || shells > 0) && scripts > 0) { Text(" · ", style = countsStyle, maxLines = 1, softWrap = false) }
+        Opening(scripts > 0) { CountGroup(if (scripts > 0) scripts else lastScripts, R.plurals.session_background_work_script_count) }
     }
 }
 
@@ -381,6 +392,7 @@ fun BackgroundWorkGlyph(
     modifier: Modifier = Modifier,
     /** Held still (the panel covers the capsule). */
     isPaused: Boolean = false,
+    scripts: List<BackgroundScript> = emptyList(),
 ) {
     val reduceMotion = rememberReduceMotion()
     // Swapped in place as subagents come and go, like the words beside it. The disc's dot field
@@ -402,7 +414,15 @@ fun BackgroundWorkGlyph(
                 isPaused = isPaused,
             )
         }
+        AnimatedVisibility(shells.isEmpty() && scripts.isNotEmpty(), enter = swap.enter, exit = swap.exit) {
+            ScriptGlyph()
+        }
     }
+}
+
+@Composable
+private fun ScriptGlyph() {
+    OpenCodeIcon(SFSymbol.ChevronLeftForwardslashChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.secondaryText)
 }
 
 // MARK: Presentation
@@ -423,6 +443,7 @@ private class Retained {
     var capsule: Rect? = null
     var agents: List<OpenCodeSession> = emptyList()
     var shells: List<OpenCodeShell> = emptyList()
+    var scripts: List<BackgroundScript> = emptyList()
 }
 
 /**
@@ -458,13 +479,16 @@ fun BackgroundWorkPresentation(
     onOpenSubagent: (String) -> Unit,
     onOpenShell: (String) -> Unit,
     modifier: Modifier = Modifier,
+    scripts: List<BackgroundScript> = emptyList(),
+    onStopScript: (String) -> Unit = {},
+    onStopSubagent: (String) -> Unit = {},
     isCovered: Boolean = false,
     inCall: Boolean = false,
     transcript: TranscriptBorrowedDrag? = null,
     onToggle: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-    val hasWork = agents.isNotEmpty() || shells.isNotEmpty()
+    val hasWork = agents.isNotEmpty() || shells.isNotEmpty() || scripts.isNotEmpty()
     val reduceMotion = rememberReduceMotion()
     val density = LocalDensity.current
     val dark = OpenCodeTheme.colors.isDark
@@ -703,16 +727,17 @@ fun BackgroundWorkPresentation(
         if (capsule == null && !capsuleMounted) return@Box
 
         // The rows the work has, or once it has ended, the rows it last had.
-        val rows: Pair<List<OpenCodeSession>, List<OpenCodeShell>> = if (agents.isNotEmpty() || shells.isNotEmpty()) {
+        val rows: Triple<List<OpenCodeSession>, List<OpenCodeShell>, List<BackgroundScript>> = if (hasWork) {
             keep.agents = agents
             keep.shells = shells
-            agents to shells
+            keep.scripts = scripts
+            Triple(agents, shells, scripts)
         } else if (stage == BackgroundWorkStage.closed && !capsuleMounted) {
-            emptyList<OpenCodeSession>() to emptyList()
+            Triple(emptyList(), emptyList(), emptyList())
         } else {
-            keep.agents to keep.shells
+            Triple(keep.agents, keep.shells, keep.scripts)
         }
-        val (rowAgents, rowShells) = rows
+        val (rowAgents, rowShells, rowScripts) = rows
 
         // Scrim.
         val scrimAlpha by androidx.compose.animation.core.animateFloatAsState(if (isPanel) 1f else 0f, Motion.dim.animation(if (isPanel) MotionPhase.Enter else MotionPhase.Exit, reduceMotion), label = "scrim")
@@ -730,7 +755,7 @@ fun BackgroundWorkPresentation(
         val pill = Rect(capsule.left, capsule.top + BackgroundWorkMotion.capsuleInset, capsule.right, capsule.bottom - BackgroundWorkMotion.capsuleInset)
         val maxHeight = max(160f, pill.bottom - max(0f, safeTop) - 72f)
         val measuredHeight = displayedContentHeight()
-        val height = max(pill.height, min(measuredHeight ?: BackgroundWorkSummary.estimatedHeight(rowAgents, rowShells), maxHeight))
+        val height = max(pill.height, min(measuredHeight ?: BackgroundWorkSummary.estimatedHeight(rowAgents, rowShells, rowScripts), maxHeight))
         // Rooted on the capsule: its bottom and leading edges are the capsule's, and it widens across the composer's column and up.
         val widthDp = overlayWidth / density.density
         val panel = Rect(pill.left, pill.bottom - height, pill.left + max(pill.width, widthDp - 2 * pill.left), pill.bottom)
@@ -738,7 +763,7 @@ fun BackgroundWorkPresentation(
         // Like the pills it grows from, it hides under a panel grown out of the composer.
         val hidden = isCovered
         val hiddenAlpha by androidx.compose.animation.core.animateFloatAsState(if (hidden) 0f else 1f, Motion.reducedFadeSpec(), label = "hidden")
-        val summary = BackgroundWorkSummary.summary(rowAgents, rowShells)
+        val summary = BackgroundWorkSummary.summary(rowAgents, rowShells, rowScripts)
         val showWorkLabel = stringResource(R.string.session_background_work_show_label)
         val collapsedDescription = stringResource(R.string.session_background_work_collapsed_description)
         val surfaceColor = OpenCodeSurfaces.color
@@ -829,8 +854,8 @@ fun BackgroundWorkPresentation(
                         ),
                     contentAlignment = Alignment.CenterStart,
                 ) {
-                    BackgroundWorkCapsuleLabel(rowAgents.size, rowShells.size, Modifier.clearAndSetSemantics { }) {
-                        BackgroundWorkGlyph(rowAgents, rowShells, waitingSessionIDs, probe, isPaused = !labelShown)
+                    BackgroundWorkCapsuleLabel(rowAgents.size, rowShells.size, Modifier.clearAndSetSemantics { }, scripts = rowScripts.size) {
+                        BackgroundWorkGlyph(rowAgents, rowShells, waitingSessionIDs, probe, isPaused = !labelShown, scripts = rowScripts)
                     }
                 }
             }
@@ -866,6 +891,9 @@ fun BackgroundWorkPresentation(
                         agents = rowAgents,
                         waitingSessionIDs = waitingSessionIDs,
                         shells = rowShells,
+                        scripts = rowScripts,
+                        onStopScript = onStopScript,
+                        onStopSubagent = onStopSubagent,
                         probe = probe,
                         scrollState = scrollState,
                         isLive = rowsOpen,
@@ -929,6 +957,9 @@ fun BackgroundWorkPanel(
     onOpenSubagent: (String) -> Unit,
     onOpenShell: (String) -> Unit,
     modifier: Modifier = Modifier,
+    scripts: List<BackgroundScript> = emptyList(),
+    onStopScript: (String) -> Unit = {},
+    onStopSubagent: (String) -> Unit = {},
     waitingSessionIDs: Set<String> = emptySet(),
     probe: ShellGlyphProbe? = null,
     scrollState: ScrollState = rememberScrollState(),
@@ -939,7 +970,7 @@ fun BackgroundWorkPanel(
     val density = LocalDensity.current
     Box(modifier.fillMaxWidth().verticalScroll(scrollState)) {
         BackgroundWorkRows(
-            agents, waitingSessionIDs, shells, probe, isLive, focusRequest, onOpenSubagent, onOpenShell,
+            agents, waitingSessionIDs, shells, scripts, probe, isLive, focusRequest, onOpenSubagent, onOpenShell, onStopScript, onStopSubagent,
             Modifier.onSizeChanged { onContentHeight(it.height / density.density) },
         )
     }
@@ -950,11 +981,14 @@ private fun BackgroundWorkRows(
     agents: List<OpenCodeSession>,
     waitingSessionIDs: Set<String>,
     shells: List<OpenCodeShell>,
+    scripts: List<BackgroundScript>,
     probe: ShellGlyphProbe?,
     isLive: Boolean,
     focusRequest: AccessibilityFocusRequest?,
     onOpenSubagent: (String) -> Unit,
     onOpenShell: (String) -> Unit,
+    onStopScript: (String) -> Unit,
+    onStopSubagent: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier.fillMaxWidth().padding(vertical = 10.dp)) {
@@ -966,6 +1000,8 @@ private fun BackgroundWorkRows(
                         title = agent.title,
                         accessibilityHint = stringResource(R.string.session_background_work_open_subagent_label),
                         onTap = { onOpenSubagent(agent.id) },
+                        stopLabel = stringResource(R.string.session_background_work_stop_subagent_label),
+                        onStop = { onStopSubagent(agent.id) },
                         modifier = Modifier.testTag("background-subagent-${agent.id}"),
                     ) {
                         AgentActivityGlyph(
@@ -999,6 +1035,34 @@ private fun BackgroundWorkRows(
                 }
             }
         }
+        if ((agents.isNotEmpty() || shells.isNotEmpty()) && scripts.isNotEmpty()) {
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp, vertical = 6.dp), color = OpenCodeTheme.colors.border)
+        }
+        if (scripts.isNotEmpty()) {
+            SectionHeader(
+                stringResource(R.string.session_background_work_scripts_title),
+                if (agents.isEmpty() && shells.isEmpty()) Modifier.accessibilityFocusRequest(focusRequest) else Modifier,
+            )
+            for (script in scripts) {
+                androidx.compose.runtime.key(script.id) {
+                    val stopLabel = stringResource(R.string.session_background_work_stop_script_label)
+                    // A script has nowhere to open: the row's one action is Stop.
+                    BackgroundWorkRow(
+                        title = script.label,
+                        isCommand = true,
+                        startedAt = script.startedAt,
+                        isLive = isLive,
+                        accessibilityHint = stopLabel,
+                        onTap = null,
+                        stopLabel = stopLabel,
+                        onStop = { onStopScript(script.id) },
+                        modifier = Modifier.testTag("background-script-${script.id}"),
+                    ) {
+                        ScriptGlyph()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1018,11 +1082,13 @@ private fun SectionHeader(title: String, modifier: Modifier = Modifier) {
 private fun BackgroundWorkRow(
     title: String,
     accessibilityHint: String,
-    onTap: () -> Unit,
+    onTap: (() -> Unit)?,
     modifier: Modifier = Modifier,
     isCommand: Boolean = false,
     startedAt: Instant? = null,
     isLive: Boolean = true,
+    stopLabel: String? = null,
+    onStop: (() -> Unit)? = null,
     leading: @Composable () -> Unit,
 ) {
     Row(
@@ -1032,10 +1098,11 @@ private fun BackgroundWorkRow(
             // A ripple inset from the panel's edges answers the press.
             .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .clickable(role = Role.Button, onClickLabel = accessibilityHint, onClick = onTap)
+            .then(if (onTap != null) Modifier.clickable(role = Role.Button, onClickLabel = accessibilityHint, onClick = onTap) else Modifier)
             .semantics(mergeDescendants = true) {
                 contentDescription = title
-                onClick(label = accessibilityHint) { onTap(); true }
+                if (onTap != null) onClick(label = accessibilityHint) { onTap(); true }
+                if (onStop != null && stopLabel != null) customActions = listOf(CustomAccessibilityAction(stopLabel) { onStop(); true })
             }
             .padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -1059,7 +1126,19 @@ private fun BackgroundWorkRow(
                 )
             }
         }
-        OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
+        if (onStop != null) {
+            Box(
+                Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(role = Role.Button, onClickLabel = stopLabel, onClick = onStop)
+                    .clearAndSetSemantics { },
+                contentAlignment = Alignment.Center,
+            ) {
+                OpenCodeIcon(SFSymbol.Xmark, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.secondaryText)
+            }
+        }
+        if (onTap != null) OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
     }
 }
 

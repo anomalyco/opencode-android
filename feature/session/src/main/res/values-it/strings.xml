@@ -206,7 +206,15 @@
         <item quantity="many">%1$d shell</item>
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d script</item>
+        <item quantity="many">%1$d script</item>
+        <item quantity="other">%1$d script</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Script</string>
+    <string name="session_background_work_stop_script_label">Interrompi script</string>
+    <string name="session_background_work_stop_subagent_label">Interrompi subagente</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Invia messaggio</string>

@@ -79,6 +79,7 @@ import ai.opencode.server.model.OpenCodeProject
 import ai.opencode.server.model.OpenCodeRunError
 import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.model.OpenCodeSessionFamily
+import ai.opencode.server.model.OpenCodeJob
 import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptItem
@@ -341,6 +342,8 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val contextNeedsRead: Boolean = false,
         /** Running shells of the selected session. */
         val shells: List<OpenCodeShell> = emptyList(),
+        /** Running background jobs in the session's tree, by ID. */
+        val jobs: Map<String, OpenCodeJob> = emptyMap(),
         /** Restored live arrivals predate the next list and must be removable by it. */
         val restoredShellIDs: Set<String> = emptySet(),
         /** An exit can beat the list response that still reports the shell. */
@@ -690,6 +693,14 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class ShellStarted(val shell: OpenCodeShell) : Action
         data class ShellEnded(val shellID: String) : Action
         data class ShellOutputTapped(val shellID: String) : Action
+        /** Lists running jobs again: the connection came back. */
+        data object JobsRefreshRequested : Action
+        data class JobsResponse(val sessionID: String, val result: Result<List<OpenCodeJob>>) : Action
+        data class JobUpdated(val job: OpenCodeJob) : Action
+        /** Stops a background script: cancels its job. */
+        data class BackgroundScriptStopTapped(val jobID: String) : Action
+        /** Interrupts the subagent if it runs and cancels every running job in its tree. */
+        data class BackgroundSubagentStopTapped(val sessionID: String) : Action
         data class ShellOutput(val action: PresentationAction<ShellOutputFeature.Action>) : Action
         data class BackgroundHintElapsed(val key: String) : Action
         data object MoveToBackgroundTapped : Action
@@ -946,6 +957,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data object EarlierHistory : CancelID
         data object FamilyRefresh : CancelID
         data object Shells : CancelID
+        data object Jobs : CancelID
         data object Revert : CancelID
         data object MissingFolderMove : CancelID
         data class Interrupt(val generation: Int) : CancelID
@@ -998,6 +1010,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
             SessionFeature::reduceRunLifecycle,
             SessionFeature::reduceModelsAndFamily,
             SessionFeature::reduceBrowserAndBackgroundWork,
+            SessionFeature::reduceJobs,
             SessionFeature::reduceAttachments,
             SessionFeature::reduceRequests,
             SessionFeature::reduceHistory,

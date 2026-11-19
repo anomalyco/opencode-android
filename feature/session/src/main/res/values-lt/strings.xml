@@ -213,7 +213,16 @@
         <item quantity="many">%1$d apvalkalo</item>
         <item quantity="other">%1$d apvalkalų</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d scenarijus</item>
+        <item quantity="few">%1$d scenarijai</item>
+        <item quantity="many">%1$d scenarijaus</item>
+        <item quantity="other">%1$d scenarijų</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Scenarijai</string>
+    <string name="session_background_work_stop_script_label">Stabdyti scenarijų</string>
+    <string name="session_background_work_stop_subagent_label">Stabdyti subagentą</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Siųsti žinutę</string>

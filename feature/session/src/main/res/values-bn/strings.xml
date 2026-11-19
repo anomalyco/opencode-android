@@ -199,7 +199,14 @@
         <item quantity="one">%1$dটি শেল</item>
         <item quantity="other">%1$dটি শেল</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$dটি স্ক্রিপ্ট</item>
+        <item quantity="other">%1$dটি স্ক্রিপ্ট</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">স্ক্রিপ্ট</string>
+    <string name="session_background_work_stop_script_label">স্ক্রিপ্ট থামান</string>
+    <string name="session_background_work_stop_subagent_label">সাবএজেন্ট থামান</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">বার্তা পাঠান</string>

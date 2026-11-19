@@ -199,7 +199,14 @@
         <item quantity="one">%1$d shell</item>
         <item quantity="other">%1$d shelli</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skripti</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriptid</string>
+    <string name="session_background_work_stop_script_label">Peata skript</string>
+    <string name="session_background_work_stop_subagent_label">Peata alamagent</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Saada sõnum</string>

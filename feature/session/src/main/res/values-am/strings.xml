@@ -199,7 +199,14 @@
         <item quantity="one">%1$d ሼል</item>
         <item quantity="other">%1$d ሼሎች</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d ስክሪፕት</item>
+        <item quantity="other">%1$d ስክሪፕቶች</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">ስክሪፕቶች</string>
+    <string name="session_background_work_stop_script_label">ስክሪፕቱን አቁም</string>
+    <string name="session_background_work_stop_subagent_label">ንዑስ ወኪሉን አቁም</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">መልእክት ላክ</string>

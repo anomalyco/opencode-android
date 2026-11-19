@@ -199,7 +199,14 @@
         <item quantity="one">ෂෙල් %1$d</item>
         <item quantity="other">ෂෙල් %1$d</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">ස්ක්‍රිප්ට් %1$dක්</item>
+        <item quantity="other">ස්ක්‍රිප්ට් %1$dක්</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">ස්ක්‍රිප්ට්</string>
+    <string name="session_background_work_stop_script_label">ස්ක්‍රිප්ටය නවත්වන්න</string>
+    <string name="session_background_work_stop_subagent_label">උප නියෝජිතයා නවත්වන්න</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">පණිවිඩය යවන්න</string>

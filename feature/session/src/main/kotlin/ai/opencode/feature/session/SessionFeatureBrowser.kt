@@ -473,7 +473,9 @@ internal fun SessionFeature.refreshBackgroundWork(state: State, reason: RefreshR
     if (!refreshes) return Reduced(state)
     val family = refreshFamily(state)
     val shells = refreshShells(family.state)
-    return Reduced(shells.state, Effect.merge(family.effect, shells.effect))
+    // Jobs arrive as events; only a return re-lists them.
+    val jobs = if (reason == RefreshReason.Resume) refreshJobs(shells.state) else Reduced(shells.state)
+    return Reduced(jobs.state, Effect.merge(family.effect, shells.effect, jobs.effect))
 }
 
 internal fun SessionFeature.refreshFamily(state: State): Reduced<State, Action> {

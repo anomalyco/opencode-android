@@ -199,7 +199,14 @@
         <item quantity="one">%1$d κέλυφος</item>
         <item quantity="other">%1$d κελύφη</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d σενάριο</item>
+        <item quantity="other">%1$d σενάρια</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Σενάρια</string>
+    <string name="session_background_work_stop_script_label">Διακοπή σεναρίου</string>
+    <string name="session_background_work_stop_subagent_label">Διακοπή υποπράκτορα</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Αποστολή μηνύματος</string>

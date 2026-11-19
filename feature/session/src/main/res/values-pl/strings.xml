@@ -213,7 +213,16 @@
         <item quantity="many">%1$d terminali</item>
         <item quantity="other">%1$d terminala</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skrypt</item>
+        <item quantity="few">%1$d skrypty</item>
+        <item quantity="many">%1$d skryptów</item>
+        <item quantity="other">%1$d skryptu</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skrypty</string>
+    <string name="session_background_work_stop_script_label">Zatrzymaj skrypt</string>
+    <string name="session_background_work_stop_subagent_label">Zatrzymaj podagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Wyślij wiadomość</string>

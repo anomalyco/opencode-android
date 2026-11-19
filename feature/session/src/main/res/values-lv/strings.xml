@@ -206,7 +206,15 @@
         <item quantity="one">%1$d čaula</item>
         <item quantity="other">%1$d čaulas</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="zero">%1$d skriptu</item>
+        <item quantity="one">%1$d skripts</item>
+        <item quantity="other">%1$d skripti</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripti</string>
+    <string name="session_background_work_stop_script_label">Apturēt skriptu</string>
+    <string name="session_background_work_stop_subagent_label">Apturēt apakšaģentu</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Sūtīt ziņu</string>

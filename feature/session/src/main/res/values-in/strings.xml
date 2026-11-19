@@ -192,7 +192,13 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d skrip</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skrip</string>
+    <string name="session_background_work_stop_script_label">Hentikan skrip</string>
+    <string name="session_background_work_stop_subagent_label">Hentikan subagen</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Kirim pesan</string>

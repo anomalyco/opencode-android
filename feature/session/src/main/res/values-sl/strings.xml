@@ -213,7 +213,16 @@
         <item quantity="few">%1$d lupine</item>
         <item quantity="other">%1$d lupin</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skripta</item>
+        <item quantity="two">%1$d skripti</item>
+        <item quantity="few">%1$d skripte</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripte</string>
+    <string name="session_background_work_stop_script_label">Ustavi skripto</string>
+    <string name="session_background_work_stop_subagent_label">Ustavi subagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Pošlji sporočilo</string>

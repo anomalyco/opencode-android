@@ -434,6 +434,7 @@ internal data class ComposerSnapshot(
     val chipLevelLabel: String?,
     val backgroundAgents: Int,
     val backgroundShells: Int,
+    val backgroundScripts: Int,
     val queuedMessages: List<OpenCodeQueuedInput>,
     val settledRequestLoadError: String?,
     val canChooseProject: Boolean,
@@ -443,7 +444,7 @@ internal data class ComposerSnapshot(
     val dockResponding: Boolean,
     val composerFocusRequest: Int,
 ) {
-    val hasBackgroundWork: Boolean get() = backgroundAgents > 0 || backgroundShells > 0
+    val hasBackgroundWork: Boolean get() = backgroundAgents > 0 || backgroundShells > 0 || backgroundScripts > 0
 
     companion object {
         fun of(state: SessionFeature.State): ComposerSnapshot {
@@ -484,6 +485,7 @@ internal data class ComposerSnapshot(
                 chipLevelLabel = chipLevelLabel(state),
                 backgroundAgents = state.activeSubagents.size,
                 backgroundShells = state.backgroundShells.size,
+                backgroundScripts = state.backgroundScripts.size,
                 queuedMessages = state.queuedInputRows.filter { it.waitsInQueuedPill },
                 settledRequestLoadError = state.settledRequestLoadError,
                 canChooseProject = state.canChooseProject,
@@ -1173,6 +1175,7 @@ private fun SessionComposerEnv.BackgroundActivity() {
     BackgroundWorkCapsuleSpace(
         agents = s.backgroundAgents,
         shells = s.backgroundShells,
+        scripts = s.backgroundScripts,
         modifier = if (anchor != null) Modifier.backgroundActivityAnchor(anchor) else Modifier,
     )
 }

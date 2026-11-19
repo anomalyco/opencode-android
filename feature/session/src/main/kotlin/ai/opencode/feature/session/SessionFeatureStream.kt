@@ -780,6 +780,8 @@ private fun SessionFeature.firstContentFrameRendered(state: SessionFeature.State
     s = family.state
     val shells = refreshShells(s)
     s = shells.state
+    val jobs = refreshJobs(s)
+    s = jobs.state
     val dictation = dictation
     return Reduced(
         s,
@@ -787,6 +789,7 @@ private fun SessionFeature.firstContentFrameRendered(state: SessionFeature.State
             Effect.run<Action> { dictation.prepare() },
             family.effect,
             shells.effect,
+            jobs.effect,
             backgroundHint.effect,
             loadModels.effect,
             if (s.initialTranscriptIsFresh || s.loadError != null) Effect.none() else Effect.send(Action.RefreshRequested(RefreshReason.Open)),

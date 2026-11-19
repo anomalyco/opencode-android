@@ -192,7 +192,13 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">シェル%1$d個</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d件のスクリプト</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">スクリプト</string>
+    <string name="session_background_work_stop_script_label">スクリプトを停止</string>
+    <string name="session_background_work_stop_subagent_label">サブエージェントを停止</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">メッセージを送信</string>

@@ -199,7 +199,14 @@
         <item quantity="one">%1$d черупка</item>
         <item quantity="other">%1$d черупки</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="other">%1$d скрипта</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скриптове</string>
+    <string name="session_background_work_stop_script_label">Спиране на скрипта</string>
+    <string name="session_background_work_stop_subagent_label">Спиране на субагента</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Изпрати съобщение</string>
