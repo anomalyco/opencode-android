@@ -222,12 +222,7 @@ Add a new library only with a one-line justification here.
   commit to `dev` directly), one coherent change per commit. The message says what changed,
   why, and what was verified (commands run, emulator checks); call out removed or replaced
   behaviour.
-- A PR that changes anything a person can see (layout, styling, copy, motion, a flow) shows it
-  right after the description's opening paragraph: a before/after screenshot pair for a static
-  change, one short before/after video for motion or a flow. One pair or one video, light and
-  dark at most, not a gallery.
-- Attach that media to the PR; don't commit it. Take it on the emulator with fixture data, never
-  from a real phone or real sessions.
+- PRs that change visuals should include videos or images of the change.
 - In this shared checkout stage only the files you own (`git add <paths>`), never `git add -A`.
   Don't amend, rebase, stash, or reset other agents' work.
 - Never commit secrets, `local.properties`, `google-services.json`, keystores, or private
