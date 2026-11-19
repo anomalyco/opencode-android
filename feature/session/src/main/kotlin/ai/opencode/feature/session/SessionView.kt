@@ -143,6 +143,7 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
+import androidx.compose.ui.unit.roundToIntRect
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
@@ -711,7 +712,8 @@ private fun SessionAttachmentDropdown(
     val density = LocalDensity.current
     val top = WindowInsets.statusBars.getTop(density)
     val room = with(density) { (anchor.top - top).toDp() } - OpenCodeSpacing.s6 * 2
-    val position = remember(density, top) { PlusMenuPosition(gap = with(density) { OpenCodeSpacing.s6.roundToPx() }, top = top) }
+    val gap = with(density) { OpenCodeSpacing.s6.roundToPx() }
+    val position = remember(gap, top, anchor) { PlusMenuPosition(anchor.roundToIntRect(), gap, top) }
     Box(Modifier.fillMaxSize().onGloballyPositioned { anchor = it.boundsInWindow() }) {
         DropdownMenuPopup(
             expanded = expanded,
@@ -746,7 +748,7 @@ private fun SessionAttachmentDropdown(
 }
 
 /** Puts the + menu's bottom a small gap above the +, and keeps its top clear of the status bar. */
-private class PlusMenuPosition(private val gap: Int, private val top: Int) : DropdownMenuPopupPositionProvider {
+private class PlusMenuPosition(private val anchor: IntRect, private val gap: Int, private val top: Int) : DropdownMenuPopupPositionProvider {
     override var transformOrigin = TransformOrigin(0f, 1f)
         private set
 
@@ -756,14 +758,14 @@ private class PlusMenuPosition(private val gap: Int, private val top: Int) : Dro
         layoutDirection: LayoutDirection,
         popupContentSize: IntSize,
     ): IntOffset {
-        var x = anchorBounds.left
+        var x = anchor.left
         transformOrigin = TransformOrigin(0f, 1f)
         if (layoutDirection == LayoutDirection.Rtl) {
-            x = anchorBounds.right - popupContentSize.width
+            x = anchor.right - popupContentSize.width
             transformOrigin = TransformOrigin(1f, 1f)
         }
         x = x.coerceIn(0, maxOf(0, windowSize.width - popupContentSize.width))
-        val y = maxOf(top + gap, anchorBounds.top - gap - popupContentSize.height)
+        val y = maxOf(top + gap, anchor.top - gap - popupContentSize.height)
         return IntOffset(x, y)
     }
 }
