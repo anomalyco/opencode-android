@@ -798,6 +798,7 @@ class AppFeatureTests {
         val gatedClient = OpenCodeClient.testValue.copy(
             health = { switchGate.receiveCatching() },
             homeSnapshot = { emptySnapshot },
+            archivedSessions = { _, _, _ -> emptyList() },
         )
 
         val store = store(initial, gatedClient) {

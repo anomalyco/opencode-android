@@ -9,10 +9,8 @@ import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.snap
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -371,7 +369,8 @@ fun autocompletePanelHeight(state: ComposerAutocompleteState): Float {
 
 /**
  * [autocompletePanelHeight] as drawn: it opens and closes on the panel springs and follows
- * filtering on the layout spring. Under Reduce Motion it never moves; it waits out the fade.
+ * filtering at once; a change while it is still opening finishes the open at the new height.
+ * Under Reduce Motion it never moves; it waits out the fade.
  */
 @Composable
 fun rememberAutocompletePanelHeight(state: ComposerAutocompleteState): State<Float> {
@@ -383,8 +382,8 @@ fun rememberAutocompletePanelHeight(state: ComposerAutocompleteState): State<Flo
             reduceMotion && target == 0f -> snap(delayMillis = Motion.millis(MotionTunables.reducedDuration.value))
             reduceMotion -> snap()
             target == 0f -> Motion.panelClose.animation(MotionPhase.Exit)
-            height.value == 0f -> Motion.panelOpen.animation(MotionPhase.Enter)
-            else -> Motion.layout.animation(MotionPhase.Enter)
+            height.targetValue == 0f || height.value != height.targetValue -> Motion.panelOpen.animation(MotionPhase.Enter)
+            else -> snap()
         }
         height.animateTo(target, spec)
     }
@@ -428,7 +427,7 @@ fun ComposerAutocompletePanel(
             enter = transition.enter,
             exit = transition.exit,
         ) {
-            AutocompleteList(shown, isActive = state.isOpen, reduceMotion, onSelectRow)
+            AutocompleteList(shown, isActive = state.isOpen, onSelectRow)
         }
     }
 }
@@ -437,7 +436,6 @@ fun ComposerAutocompletePanel(
 private fun AutocompleteList(
     state: ComposerAutocompleteState,
     isActive: Boolean,
-    reduceMotion: Boolean,
     onSelectRow: (String) -> Unit,
 ) {
     val isDark = OpenCodeTheme.colors.isDark
@@ -456,7 +454,6 @@ private fun AutocompleteList(
 
     val pad = ComposerAutocompleteTunables.padding.dp
     val fade = ComposerAutocompleteTunables.edgeFade.dp
-    val placementSpec = if (reduceMotion) null else Motion.layout.animation(visibilityThreshold = IntOffset.VisibilityThreshold)
     LazyColumn(
         state = listState,
         reverseLayout = true,
@@ -487,13 +484,7 @@ private fun AutocompleteList(
                 isHighlighted = item.id == state.selectedRowID,
                 isActive = isActive,
                 isDark = isDark,
-                reduceMotion = reduceMotion,
                 onSelect = { onSelectRow(item.id) },
-                modifier = Modifier.animateItem(
-                    fadeInSpec = Motion.microIn.animation(MotionPhase.Enter, reduceMotion),
-                    placementSpec = placementSpec,
-                    fadeOutSpec = Motion.microOut.animation(MotionPhase.Exit, reduceMotion),
-                ),
             )
         }
     }
@@ -522,20 +513,14 @@ private fun AutocompleteRow(
     isHighlighted: Boolean,
     isActive: Boolean,
     isDark: Boolean,
-    reduceMotion: Boolean,
     onSelect: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val highlight = if (isDark) Color.White.copy(alpha = 0.11f) else Color.Black.copy(alpha = 0.07f)
-    val background by animateColorAsState(
-        if (isHighlighted) highlight else highlight.copy(alpha = 0f),
-        Motion.swap.animation(MotionPhase.Enter, reduceMotion),
-        label = "autocompleteHighlight",
-    )
+    val background = if (isHighlighted) highlight else Color.Transparent
     val activatable = item.isSelectable && isActive
     val label = item.accessibilityLabel
     Box(
-        modifier
+        Modifier
             .fillMaxWidth()
             .height(ComposerAutocompleteTunables.rowHeight.dp)
             .background(background)

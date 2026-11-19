@@ -2,7 +2,7 @@
 
 <!-- tallow -->
 
-A native Android port of the OpenCode iOS app (Kotlin, Jetpack Compose, Material 3 Expressive).
+The OpenCode app for Android (Kotlin, Jetpack Compose, Material 3 Expressive).
 Lives at github.com/anomalyco/opencode-android. Work goes on a feature branch → squash-merged PR
 into `dev`, the default branch.
 CI (`.github/workflows/ci.yml`) runs `scripts/check.sh` on every PR and push to `dev`; a push to
@@ -39,9 +39,10 @@ by hand to release sooner (`gh workflow run release.yml --ref dev -f bump=patch`
 - The full-screen media viewer's motion (open, close, drag to dismiss, predictive back) is Android-native
   on purpose: an animated frame and rounded clip in `MediaPresentation.kt`. Don't port iOS's viewer flight;
   the drawing hand-off into the composer still follows iOS.
-- The composer's autocomplete list motion (opening, filtering, scrolling, the highlight, picking a row) is
-  Android-native on purpose: a `LazyColumn` with `animateItem` in `AutocompleteViews.kt`. Don't port iOS's
-  autocomplete simulation or chip flight; the list's rows, ordering, selection and copy still follow iOS.
+- The composer's autocomplete list motion is Android-native on purpose: a `LazyColumn` in
+  `AutocompleteViews.kt` whose panel opens and closes on the panel roles, while filtering and the highlight
+  land on the next frame. Don't port iOS's autocomplete simulation or chip flight; the list's rows, ordering,
+  selection and copy still follow iOS.
 - Catch Up's card stack motion (the swipe, settle, fling, Undo and preview) is Android-native on purpose: the drag
   writes the card's offset and Compose `animate`/`Animatable` jobs on motion roles in `CatchUpStackController.kt`
   move it; the swiped card flies off as itself. Entering and leaving Catch Up is one stage fade on

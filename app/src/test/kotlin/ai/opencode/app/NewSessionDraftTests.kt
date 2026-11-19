@@ -82,6 +82,7 @@ class NewSessionDraftTests {
         val store: TestStore<AppFeature.State, AppFeature.Action> = shared.appStore(app, effects) {
             this[Clock] = TestClock()
             this[OpenCodeClient] = noSends(gate.client()).copy(
+                archivedSessions = { _, _, _ -> emptyList() },
                 modelCatalog = { server, _ ->
                     val model = if (server.persistenceID == studio.persistenceID) studioModel else laptopModel
                     OpenCodeModelCatalog(models = listOf(model), defaultModel = model)

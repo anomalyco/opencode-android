@@ -120,7 +120,7 @@ class ServerFlowTests {
             state = home, inputs = inputs, liftedID = null,
             now = Instant.ofEpochSecond(100), timestamp = { _, _ -> "" }, project = { _, _ -> null },
         )
-        inputs = inputs.copy(serverSwap = ServerSwapTarget(current = laptop, switchingTo = studio, servers = listOf(laptop, studio)))
+        inputs = inputs.copy(serverSwap = ServerSwapTarget(current = laptop, switchingTo = studio))
         val connecting = build()
         assertEquals("the drawer shows the server picked from the start", studio.persistenceID, connecting.serverID)
         assertEquals(
@@ -130,7 +130,7 @@ class ServerFlowTests {
         )
 
         home = home.copy(switchingTo = null)
-        inputs = inputs.copy(serverSwap = ServerSwapTarget(current = laptop, switchingTo = null, servers = listOf(laptop, studio)))
+        inputs = inputs.copy(serverSwap = ServerSwapTarget(current = laptop, switchingTo = null))
         val back = build()
         assertEquals(laptop.persistenceID, back.serverID)
         assertEquals(DrawerListItem.ServerNote, back.sections[DrawerListSection.top]?.firstOrNull())

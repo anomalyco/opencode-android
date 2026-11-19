@@ -89,6 +89,11 @@ data class TranscriptImagePreview(val id: String, val pages: List<Page>, val ser
         val hasDecodedOriginal: Boolean = false,
         val originalFailed: Boolean = false,
         val showsSource: Boolean = false,
+        /**
+         * [image] is the shared preview of [file], smaller than the file, standing in until the
+         * full-resolution pixels decode; laid out at this, the file's own size.
+         */
+        val placeholderSize: AgentImageSize? = null,
     ) {
         constructor(file: AgentFileDestination) : this(
             id = file.reference.zoomSourceID,
@@ -105,9 +110,11 @@ data class TranscriptImagePreview(val id: String, val pages: List<Page>, val ser
         // Snapshots compare arrays and bitmaps by identity: never scan pixels on the UI thread.
         override fun hashCode(): Int = id.hashCode()
 
-        internal fun evicted(): Page = if (image != null && !usesFileViewer && !isUnavailable && !originalFailed &&
-            (original != null || mediaHash != null || imageSource != null)
-        ) copy(image = null, hasDecodedOriginal = false) else this
+        internal fun evicted(): Page = if (image != null && !isUnavailable && !originalFailed && (
+                !usesFileViewer && (original != null || mediaHash != null || imageSource != null) ||
+                    videoURL == null && file?.reference?.kind == AgentFileReference.Kind.Image
+            )
+        ) copy(image = null, hasDecodedOriginal = false, placeholderSize = null) else this
     }
 
     constructor(file: AgentFileDestination, server: OpenCodeServer) : this(file.reference.zoomSourceID, listOf(Page(file)), server)

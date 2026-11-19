@@ -25,8 +25,7 @@ import androidx.compose.ui.semantics.semantics
 
 /**
  * Server Flow's tunables, moved down from the drawer because the session's [ServerConnectionPill]
- * reads the pill's palette; the drawer reads the springs and travels, the app the switch-back
- * timeout. Constants here: Android has no Tuning Panel.
+ * reads the pill's palette; the app reads the switch-back timeout. Constants here: Android has no Tuning Panel.
  */
 object ServerFlowTunables {
     /** Switch back after (s). */
@@ -35,11 +34,6 @@ object ServerFlowTunables {
     const val offlineGrace = 12.0
     /** Offline sooner when the phone has no network at all (s). */
     const val unsatisfiedOfflineGrace = 4.0
-    /** How far each ghost row trails the one above (s); the springs themselves are `MotionRole`s. */
-    const val chainLag = 0.08
-    const val titleTravel = 22f
-    const val listTravel = 28f
-    const val blur = 2f
     /**
      * How long a reconnect stays quiet before “Reconnecting…” shows (s; the pill and the drawer
      * title), so the first connect at launch, a return to the app and a quick reconnect never

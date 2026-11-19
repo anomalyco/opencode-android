@@ -460,9 +460,11 @@ fun ZoomableImagePage(
     onZoomChange: (Boolean) -> Unit = {},
     onFrame: (Rect) -> Unit = {},
     placement: (Rect) -> MediaPlacement? = { null },
+    /** The size the image is laid out at: a smaller stand-in takes the full image's, so swapping it keeps fit and zoom. */
+    pixelSize: Size = Size(image.width.toFloat(), image.height.toFloat()),
 ) {
     val bitmap = remember(image) { image.asImageBitmap() }
-    ZoomableVisualPage(Size(image.width.toFloat(), image.height.toFloat()), label, isSelected, modifier,
+    ZoomableVisualPage(pixelSize, label, isSelected, modifier,
         onSingleTap, onZoomChange, onFrame) { state ->
         Spacer(Modifier.fillMaxSize().drawBehind {
             if (isHidden) return@drawBehind

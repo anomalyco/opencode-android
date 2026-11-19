@@ -128,15 +128,25 @@ class ComposerPhotoViewerTests {
 
         // A replacement is cold until Remove selects it. Assert the completion as well as
         // the delegate, using real time for the media decoder's IO dispatcher.
-        suspend fun receiveOriginal(id: String) {
-            var decoded: Bitmap? = null
-            store.receive({ action ->
-                (action as? Action.SourceLoaded)?.takeIf { it.pageID == id }?.also { decoded = it.image } != null
-            }) { state ->
-                assertNotNull(decoded)
-                state.copy(preview = state.preview.copy(pages = state.preview.pages.map { page ->
-                    if (page.id == id) page.copy(image = decoded, hasDecodedOriginal = true) else page
-                }))
+        // Its neighbour's original decodes ahead at the same time, so the two land in either order.
+        suspend fun receiveOriginal(id: String, neighbour: String? = null) {
+            val pending = listOfNotNull(id, neighbour).toMutableSet()
+            while (pending.isNotEmpty()) {
+                var page: String? = null
+                var decoded: Bitmap? = null
+                store.receive({ action ->
+                    when (action) {
+                        is Action.SourceLoaded -> action.takeIf { it.pageID == id && id in pending }?.also { page = it.pageID; decoded = it.image }
+                        is Action.NeighbourPrepared -> action.takeIf { it.pageID == neighbour && neighbour in pending }?.also { page = it.pageID; decoded = it.image }
+                        else -> null
+                    } != null
+                }) { state ->
+                    assertNotNull(decoded)
+                    state.copy(preview = state.preview.copy(pages = state.preview.pages.map {
+                        if (it.id == page) it.copy(image = decoded, hasDecodedOriginal = true) else it
+                    }))
+                }
+                pending.remove(page)
             }
         }
 
@@ -145,16 +155,15 @@ class ComposerPhotoViewerTests {
             it.copy(preview = TranscriptImagePreview(ids[1], listOf(preview.pages[0], preview.pages[2])), selectedID = ids[2])
         }
         store.receive(Action.Delegate(Action.DelegateAction.Removed(ids[1])))
-        receiveOriginal(ids[2])
+        receiveOriginal(ids[2], neighbour = ids[0])
         store.finish()
         assertEquals(listOf(photos[1].id), removed)
 
-        // The last page steps back to the one before it.
+        // The last page steps back to the one before it, already decoded as its neighbour.
         store.send(Action.RemoveTapped) {
-            it.copy(preview = TranscriptImagePreview(ids[1], listOf(preview.pages[0])), selectedID = ids[0])
+            it.copy(preview = TranscriptImagePreview(ids[1], listOf(it.preview.pages[0])), selectedID = ids[0])
         }
         store.receive(Action.Delegate(Action.DelegateAction.Removed(ids[2])))
-        receiveOriginal(ids[0])
 
         // The only photo left: the viewer goes without flying home.
         store.send(Action.RemoveTapped) { it.copy(isDiscarded = true) }

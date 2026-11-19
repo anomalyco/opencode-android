@@ -95,6 +95,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.media3.common.util.UnstableApi
+import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.AgentFileReference.Kind
 import androidx.compose.runtime.staticCompositionLocalOf
 import java.io.File
@@ -272,6 +273,8 @@ class FullscreenViewerFeature(
         data class RetryPageTapped(val id: String) : Action
         data class MediaLoaded(val pageID: String, val image: Bitmap?, val unavailable: Boolean = false) : Action
         data class SourceLoaded(val pageID: String, val image: Bitmap?) : Action
+        /** A neighbour's pixels decoded ahead (its disk copy, or its inline bytes), so it comes in drawn. */
+        data class NeighbourPrepared(val pageID: String, val image: Bitmap) : Action
         data object ImageTapped : Action
         data object CloseTapped : Action
         data object SaveTapped : Action
@@ -298,6 +301,7 @@ class FullscreenViewerFeature(
     }
 
     private data class PageLoadID(val id: String)
+    private data class NeighbourLoadID(val id: String)
 
     private object ExportSlot
     private object DrawingSlot
@@ -360,7 +364,12 @@ class FullscreenViewerFeature(
             val page = state.selectedPage
             when {
                 page == null || page.file != action.file -> Reduced(state)
-                else -> Reduced(state.withSelectedFile(page.copy(image = action.image)))
+                else -> {
+                    val key = fileImageKey(action.file, state.preview.server)
+                    val images = dependency(AgentImageCache)
+                    Reduced(state.withSelectedFile(page.copy(image = action.image, placeholderSize = null)),
+                        if (key == null || images.image(key) === action.image) Effect.none() else Effect.run { _ -> images.store(key, action.image) })
+                }
             }
         }
 
@@ -383,6 +392,15 @@ class FullscreenViewerFeature(
                     originalFailed = action.image == null && page.original != null,
                     loadFailed = action.image == null,
                     hasDecodedOriginal = action.image != null && page.original != null)))
+            }
+        }
+
+        is Action.NeighbourPrepared -> {
+            val selected = state.activePageIndex(state.selectedID)
+            val index = state.preview.pages.indexOfFirst { it.id == action.pageID }
+            val page = state.preview.pages.getOrNull(index)
+            if (selected < 0 || page == null || kotlin.math.abs(index - selected) > 1 || (page.image != null && page.placeholderSize == null)) Reduced(state) else {
+                Reduced(state.withPage(index, page.copy(image = action.image, placeholderSize = null, hasDecodedOriginal = !page.usesFileViewer && page.original != null)))
             }
         }
 
@@ -512,10 +530,57 @@ class FullscreenViewerFeature(
     private fun loadSelection(state: State): Reduced<State, Action> {
         val selected = state.activePageIndex(state.selectedID)
         if (selected < 0) return Reduced(state)
+        val server = state.preview.server
+        val images = dependency(AgentImageCache)
+        val previews = dependency(AgentImagePreviews)
         val pages = state.preview.pages.mapIndexed { index, page ->
-            if (kotlin.math.abs(index - selected) > 1) page.evicted() else page
+            when {
+                kotlin.math.abs(index - selected) > 1 -> page.evicted()
+                page.image == null && page.videoURL == null && page.file?.reference?.kind == Kind.Image -> {
+                    val key = fileImageKey(page.file, server)
+                    val decoded = key?.let(images::image)
+                    // The transcript preview's pixels, when they're the whole image: never a thumbnail scaled up.
+                    val preview = if (decoded == null && server != null && page.file.reference.media == null) {
+                        page.file.reference.target(page.file.directory)?.let { AgentImageCache.fullResolutionPreview(previews, AgentImageKey(server.persistenceID, it.absolutePath)) }
+                    } else null
+                    (decoded ?: preview)?.let { page.copy(image = it) }
+                        ?: (if (index == selected) previewStandIn(page, server, previews) else null)
+                        ?: page
+                }
+                else -> page
+            }
         }
-        return loadPageIfNeeded(state.selectedID, state.copy(preview = state.preview.copy(pages = pages)))
+        val loaded = loadPageIfNeeded(state.selectedID, state.copy(preview = state.preview.copy(pages = pages)))
+        val ahead = pages.withIndex().filter { (index, page) -> kotlin.math.abs(index - selected) == 1 && (page.image == null || page.placeholderSize != null) }
+            .mapNotNull { (_, page) -> prepareNeighbour(page, server) }
+        return if (ahead.isEmpty()) loaded else Reduced(loaded.state, Effect.merge(listOf(loaded.effect) + ahead))
+    }
+
+    /** Decodes a neighbour's pixels from what the device already holds; never reads the network. */
+    private fun prepareNeighbour(page: TranscriptImagePreview.Page, server: OpenCodeServer?): Effect<Action>? {
+        val id = page.id
+        val decodeContext = dependency(VisualDecodeContext)
+        val file = page.file
+        val effect: Effect<Action> = when {
+            file != null && page.videoURL == null && file.reference.kind == Kind.Image && server != null -> {
+                val key = fileImageKey(file, server) ?: return null
+                val images = dependency(AgentImageCache)
+                Effect.run { send ->
+                    val copy = withContext(decodeContext) { runCatching { AgentFileViewerModel.diskCopy(file, server) }.getOrNull() } ?: return@run
+                    val image = images.decodeFile(key, copy) ?: return@run
+                    send(Action.NeighbourPrepared(id, image))
+                }
+            }
+            !page.usesFileViewer && page.original != null && !page.isUnavailable && !page.originalFailed -> {
+                val original = page.original
+                Effect.run { send ->
+                    val image = withContext(decodeContext) { decodeBitmap(original) } ?: return@run
+                    send(Action.NeighbourPrepared(id, image))
+                }
+            }
+            else -> return null
+        }
+        return effect.cancellable(NeighbourLoadID(id), cancelInFlight = true)
     }
 
     private fun loadPageIfNeeded(id: String, state: State, forceRetry: Boolean = false): Reduced<State, Action> {
@@ -561,8 +626,52 @@ class FullscreenViewerFeature(
     private fun State.withPage(index: Int, page: TranscriptImagePreview.Page): State =
         copy(preview = preview.copy(pages = preview.pages.toMutableList().also { it[index] = page }))
 
+    private fun fileImageKey(file: AgentFileDestination, server: OpenCodeServer?): String? =
+        server?.let { AgentImageCache.key(it, file.reference, file.directory) }
+
+
     private fun decodeBitmap(data: ByteArray): Bitmap? =
         if (data.isEmpty()) null else BitmapFactory.decodeByteArray(data, 0, data.size)
+}
+
+/**
+ * [page] showing its file's shared preview (the transcript card's) at the file's own
+ * size, when the preview holds the file as it is now but fewer pixels than it. Null otherwise.
+ */
+internal fun previewStandIn(
+    page: TranscriptImagePreview.Page,
+    server: OpenCodeServer?,
+    previews: AgentImagePreviews,
+): TranscriptImagePreview.Page? {
+    if (page.image != null || page.videoURL != null || server == null) return null
+    val file = page.file ?: return null
+    if (file.reference.kind != Kind.Image || file.reference.media != null) return null
+    val target = file.reference.target(file.directory) ?: return null
+    val key = AgentImageKey(server.persistenceID, target.absolutePath)
+    val entry = previews.entry(key)
+    if (entry.phase != AgentImagePreviews.Phase.Loaded) return null
+    val image = previews.image(key) ?: return null
+    val size = entry.size ?: return null
+    if (size.width <= 0 || size.height <= 0 || image.height <= 0) return null
+    val aspect = image.width.toDouble() / image.height
+    if (kotlin.math.abs(aspect / (size.width / size.height) - 1) > 0.02) return null
+    return page.copy(image = image, placeholderSize = size)
+}
+
+/** The selected page standing on its shared preview from the first frame, when nothing better is resident. */
+internal fun TranscriptImagePreview.withSelectedStandIn(): TranscriptImagePreview {
+    val index = pages.indexOfFirst { it.id == id }
+    val page = pages.getOrNull(index) ?: return this
+    val file = page.file ?: return this
+    val server = server ?: return this
+    val images = dependency(AgentImageCache)
+    val previews = dependency(AgentImagePreviews)
+    val key = AgentImageCache.key(server, file.reference, file.directory) ?: return this
+    if (images.image(key) != null) return this
+    val target = file.reference.target(file.directory) ?: return this
+    if (AgentImageCache.fullResolutionPreview(previews, AgentImageKey(server.persistenceID, target.absolutePath)) != null) return this
+    val standIn = previewStandIn(page, server, previews) ?: return this
+    return copy(pages = pages.toMutableList().also { it[index] = standIn })
 }
 
 // MARK: - View
@@ -667,7 +776,11 @@ fun FullscreenViewer(
                 gallery -> VisualPager(state, viewer, store::send, flight = tracksSource,
                     selectedContent = when {
                         movie != null -> visualMovie
-                        file != null && image == null -> ({
+                        // The file's pixels before the page holds them (they reach it a frame later).
+                        image != null && page.image == null -> ({
+                            ViewerImage(page, image, viewer, selected = true, flight = tracksSource, handingOff = state.handOff != null, onTap = { store.send(Action.ImageTapped) })
+                        })
+                        file != null && image == null && page.image == null -> ({
                             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                                 AgentFilePage(file, wrapsLines, false, false, true, null, {}, {})
                             }
@@ -761,7 +874,10 @@ private fun rememberSelectedFile(state: FullscreenViewerFeature.State): AgentFil
         listOfNotNull(state.selectedPage?.file.takeIf { back != null })
     val models = path.mapIndexed { index, file ->
         key(index, file) {
-            val model = remember { AgentFileViewerModel(file.reference, requireNotNull(preview.server), file.directory) }
+            val model = remember {
+                val seed = state.selectedPage?.takeIf { index == 0 && it.file == file && it.placeholderSize == null }?.image
+                AgentFileViewerModel(file.reference, requireNotNull(preview.server), file.directory, seed = seed).also { it.openResident() }
+            }
             DisposableEffect(model) { onDispose { model.release() } }
             model
         }
@@ -915,6 +1031,8 @@ private fun ViewerImage(
 ) {
     ZoomableImagePage(
         image = image, label = page.label, isSelected = selected, isHidden = handingOff || flight && viewer.mediaHidden && selected,
+        pixelSize = page.placeholderSize?.let { androidx.compose.ui.geometry.Size(it.width.toFloat(), it.height.toFloat()) }
+            ?: androidx.compose.ui.geometry.Size(image.width.toFloat(), image.height.toFloat()),
         modifier = if (page.file != null) Modifier.fillMaxSize().testTag("agent-file-image") else Modifier.fillMaxSize(),
         onSingleTap = onTap, onZoomChange = { if (selected) viewer.isZoomed = it },
         onFrame = { if (flight) viewer.mediaFrames[page.id] = it },

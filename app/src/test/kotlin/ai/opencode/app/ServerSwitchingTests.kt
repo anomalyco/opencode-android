@@ -120,7 +120,7 @@ class ServerSwitchingTests {
         saveAll(listOf(laptop, studio))
         val store = store(state) {
             this[Clock] = TestClock()
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(health = {}, homeSnapshot = { snapshot })
+            this[OpenCodeClient] = OpenCodeClient.testValue.copy(health = {}, homeSnapshot = { snapshot }, archivedSessions = { _, _, _ -> emptyList() })
         }
         store.exhaustive = false
         store.send(delegate(HomeFeature.DelegateAction.ServerSwitchTapped(studio))) { it.copy(home = it.home?.copy(switchingTo = studio)) }

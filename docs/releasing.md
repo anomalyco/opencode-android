@@ -27,7 +27,7 @@ A dispatch fails instead of skipping. Each run:
 3. **publish** (environment `release`, allowed only on `dev`) checks out only `.github/release/`,
    verifies the bundle against that digest, signs it with the Play upload key
    (`sign-bundle.sh`), uploads it to Google Play internal testing and, when the
-   `PLAY_OPEN_TESTING` variable is `true`, puts the same build on open testing (`beta`)
+   `PLAY_OPEN_TESTING` variable of the `release` environment is `true`, puts the same build on open testing (`beta`)
    (`ship-play.sh`). Only then does it tag `v<version>` and create the GitHub release, so a
    failed run spends no version.
 
@@ -59,7 +59,7 @@ It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
 (`with-secrets.sh`):
 
 - `ANDROID_UPLOAD_KEYSTORE_BASE64` and `ANDROID_UPLOAD_KEYSTORE_PASSWORD`: the Play upload key
-  (PKCS12), alias from the `ANDROID_UPLOAD_KEY_ALIAS` variable.
+  (PKCS12), alias from the `release` environment's `ANDROID_UPLOAD_KEY_ALIAS` variable.
 - `PLAY_SERVICE_ACCOUNT_JSON`: the Play publishing service account.
 
 ## Google Play
@@ -82,8 +82,8 @@ It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
 - Internal testing has no Google review. Closed or open testing (like iOS's External group)
   needs the store listing, content rating, data safety form and privacy policy first.
 - Open testing: in Play Console (Testing → Open testing) choose the countries and set up the
-  testers page, finish the items above, then `gh variable set PLAY_OPEN_TESTING --body true`.
-  Unset it (`gh variable delete PLAY_OPEN_TESTING`) to stop. Google reviews open testing
+  testers page, finish the items above, then `gh variable set PLAY_OPEN_TESTING -e release --body true`.
+  Unset it (`gh variable delete PLAY_OPEN_TESTING -e release`) to stop. Google reviews open testing
   releases, so a build can take a while to reach testers; a newer release replaces one still in
   review. Anyone opts in at https://play.google.com/apps/testing/ai.opencode.mobilecode.
 - Until Google has reviewed the app once, Play only accepts draft releases outside internal

@@ -61,7 +61,7 @@ class ServerFlowTests {
         effects = detachedScope(coroutineContext)
         return shared.appStore(state, effects) {
             this[Clock] = clock
-            this[OpenCodeClient] = client(OpenCodeClient.testValue)
+            this[OpenCodeClient] = client(OpenCodeClient.testValue.copy(archivedSessions = { _, _, _ -> emptyList() }))
         }
     }
 

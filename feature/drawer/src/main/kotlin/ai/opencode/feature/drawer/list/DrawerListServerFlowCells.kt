@@ -9,10 +9,8 @@ import ai.opencode.core.ui.OpenCodePrimaryButton
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.feature.drawer.ServerSwitchNote
-import ai.opencode.feature.drawer.motion.ServerSwapMotion
 import ai.opencode.feature.drawer.style.DrawerMetrics
 import ai.opencode.feature.drawer.style.DrawerTunables
-import ai.opencode.feature.session.ServerFlowTunables
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,15 +20,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,17 +33,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.foundation.lazy.LazyListLayoutInfo
-import androidx.compose.ui.graphics.GraphicsContext
-import androidx.compose.ui.graphics.drawscope.ContentDrawScope
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.layer.GraphicsLayer
-import androidx.compose.ui.graphics.layer.drawLayer
-import androidx.compose.ui.node.DrawModifierNode
-import androidx.compose.ui.node.ModifierNodeElement
-import androidx.compose.ui.node.invalidateDraw
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.font.FontWeight
@@ -154,150 +137,5 @@ fun DrawerServerNoteRow(note: ServerSwitchNote, onAction: () -> Unit, modifier: 
                 .padding(start = 28.dp, top = 10.dp)
                 .testTag("drawer-server-note-action"),
         )
-    }
-}
-
-/**
- * Title Leads: a row of the server shown hangs off the title's name, the [index]th on screen
- * following the one above it ([ServerSwapMotion.row]). Off without a swap target. Under Reduce
- * Motion the rows only fade.
- */
-internal fun Modifier.serverSwapRow(motion: ServerSwapMotion?, serverID: String, reducedMotion: Boolean, index: () -> Int): Modifier {
-    if (motion == null) return this
-    return graphicsLayer {
-        motion.frame // read so each frame redraws
-        if (!motion.isMoving && motion.leaving.isEmpty()) return@graphicsLayer
-        val pose = motion.row(serverID, index().coerceAtLeast(0))
-        translationY = if (reducedMotion) 0f else pose.position * ServerFlowTunables.listTravel.dp.toPx()
-        alpha = pose.opacity
-    }
-}
-
-/**
- * The pictures of the rows a server switch leaves, hanging off their name as it goes. A
- * `LazyColumn` drops the old server's items at once, so each row records what it draws into its own
- * layer ([serverSwapPicture]), and a switch takes the visible rows' layers, drawn over the list
- * ([drawLeaving]) until the name has gone. A taken layer belongs to the leaving server: its row
- * records into a new one before it draws again.
- */
-internal class ServerSwapPictures(private val graphics: GraphicsContext) {
-    private class Picture(val layer: GraphicsLayer, val top: Float)
-
-    /** The row drawing each key now. */
-    private val rows = HashMap<Any, ServerSwapPictureNode>()
-    private val leaving = HashMap<String, List<Picture>>()
-
-    /** Bumped when pictures start leaving, so the overlay draws them on the switch's own frame. */
-    private var version by mutableIntStateOf(0)
-
-    internal fun createLayer(): GraphicsLayer = graphics.createGraphicsLayer()
-
-    internal fun releaseLayer(layer: GraphicsLayer) = graphics.releaseGraphicsLayer(layer)
-
-    internal fun attach(row: ServerSwapPictureNode) {
-        rows[row.key] = row
-    }
-
-    internal fun detach(row: ServerSwapPictureNode) {
-        if (rows[row.key] === row) rows.remove(row.key)
-    }
-
-    /**
-     * Before the next server's rows compose, the rows on screen (as last laid out) become
-     * [server]'s leaving pictures. Rows coming back before they left turn round as live rows.
-     */
-    fun swap(server: String, next: String, info: LazyListLayoutInfo, firstVisible: Int, motion: ServerSwapMotion) {
-        for (id in listOf(server, next)) leaving.remove(id)?.forEach { releaseLayer(it.layer) }
-        val pictures = info.visibleItemsInfo
-            .filter { it.index >= firstVisible }
-            .sortedBy { it.offset }
-            .mapNotNull { item ->
-                rows[item.key]?.handOver()?.let { Picture(it, (item.offset - info.viewportStartOffset).toFloat()) }
-            }
-        if (pictures.isEmpty()) return
-        leaving[server] = pictures
-        // Their chain starts where they are, not where the name has got to by the first step.
-        motion.rows(server, pictures.size)
-        version += 1
-    }
-
-    /** Each on its server's chain, faded with it. */
-    fun DrawScope.drawLeaving(motion: ServerSwapMotion, travel: Float) {
-        version
-        if (leaving.isEmpty()) return
-        val still = motion.leaving.toSet()
-        val gone = leaving.keys.filter { it !in still }
-        for (id in gone) leaving.remove(id)?.forEach { releaseLayer(it.layer) }
-        for ((id, pictures) in leaving) {
-            val poses = motion.rows(id, pictures.size)
-            pictures.forEachIndexed { index, picture ->
-                val pose = poses[index]
-                if (pose.opacity <= 0f) return@forEachIndexed
-                picture.layer.alpha = pose.opacity
-                translate(top = picture.top + pose.position * travel) { drawLayer(picture.layer) }
-            }
-        }
-    }
-
-    /** The list left the screen (its rows release their own layers as they go). */
-    fun release() {
-        leaving.values.flatten().forEach { releaseLayer(it.layer) }
-        leaving.clear()
-        rows.clear()
-    }
-}
-
-/** A row records what it draws for [ServerSwapPictures], so a server switch can fly it out. */
-internal fun Modifier.serverSwapPicture(pictures: ServerSwapPictures?, key: Any): Modifier =
-    if (pictures == null) this else this then ServerSwapPictureElement(pictures, key)
-
-private data class ServerSwapPictureElement(val pictures: ServerSwapPictures, val key: Any) : ModifierNodeElement<ServerSwapPictureNode>() {
-    override fun create() = ServerSwapPictureNode(pictures, key)
-    override fun update(node: ServerSwapPictureNode) = node.update(pictures, key)
-}
-
-internal class ServerSwapPictureNode(var pictures: ServerSwapPictures, var key: Any) : Modifier.Node(), DrawModifierNode {
-    private var layer: GraphicsLayer? = null
-
-    /** What this row last drew, for the leaving server; the row records itself anew before it draws again. */
-    fun handOver(): GraphicsLayer? {
-        val taken = layer ?: return null
-        layer = null
-        invalidateDraw()
-        return taken
-    }
-
-    fun update(pictures: ServerSwapPictures, key: Any) {
-        if (pictures === this.pictures && key == this.key) return
-        if (isAttached) this.pictures.detach(this)
-        if (pictures !== this.pictures) dropLayer()
-        this.pictures = pictures
-        this.key = key
-        if (isAttached) {
-            pictures.attach(this)
-            invalidateDraw()
-        }
-    }
-
-    override fun ContentDrawScope.draw() {
-        val layer = layer ?: pictures.createLayer().also { layer = it }
-        layer.record { this@draw.drawContent() }
-        drawLayer(layer)
-    }
-
-    override fun onAttach() {
-        pictures.attach(this)
-        // Back from the reuse pool: what the list kept of it may draw a picture a switch took since.
-        invalidateDraw()
-    }
-
-    override fun onDetach() {
-        pictures.detach(this)
-        dropLayer()
-    }
-
-    private fun dropLayer() {
-        layer?.let(pictures::releaseLayer)
-        layer = null
     }
 }

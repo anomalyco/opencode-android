@@ -129,26 +129,18 @@ operator fun ServerConnectionNotice.Companion.invoke(
     isSwitching = isSwitching,
 )
 
-/** The server the drawer shows, as the swap's motion needs it. */
+/** The server the drawer shows. */
 data class ServerSwapTarget(
     /** Its persistence ID. */
     val id: String,
-    val name: String,
-    /** Its place in the server menu: the name rolls the way the menu goes. */
-    val order: Int,
-    /** Not answered yet: the underline shimmers under the name. */
+    /** Not answered yet: ghost rows hold the list. */
     val isConnecting: Boolean,
 ) {
     companion object {
         /** The server picked, from the moment it's picked. */
-        operator fun invoke(current: OpenCodeServer, switchingTo: OpenCodeServer?, servers: List<OpenCodeServer>): ServerSwapTarget {
+        operator fun invoke(current: OpenCodeServer, switchingTo: OpenCodeServer?): ServerSwapTarget {
             val shown = switchingTo ?: current
-            return ServerSwapTarget(
-                id = shown.persistenceID,
-                name = shown.friendlyName,
-                order = servers.indexOfFirst { it.persistenceID == shown.persistenceID }.coerceAtLeast(0),
-                isConnecting = switchingTo != null,
-            )
+            return ServerSwapTarget(id = shown.persistenceID, isConnecting = switchingTo != null)
         }
     }
 }
