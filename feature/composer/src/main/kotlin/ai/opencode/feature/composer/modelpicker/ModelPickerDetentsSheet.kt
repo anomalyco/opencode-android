@@ -24,10 +24,11 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxDefaults
+import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -183,7 +184,17 @@ internal fun FavoriteSwipeBox(
     content: @Composable () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
-    val swipe = rememberSwipeToDismissBoxState()
+    // Not saveable: a row that leaves its section mid-swipe and comes back would toggle again.
+    val positionalThreshold = SwipeToDismissBoxDefaults.positionalThreshold
+    val swipe = remember { SwipeToDismissBoxState(SwipeToDismissBoxValue.Settled, positionalThreshold) }
+    val toggle by rememberUpdatedState(onToggle)
+    // SwipeToDismissBox calls onDismiss again whenever the lambda changes, so it must stay the same.
+    val onDismiss: (SwipeToDismissBoxValue) -> Unit = remember(swipe, scope) {
+        { value ->
+            if (value != SwipeToDismissBoxValue.Settled) toggle()
+            scope.launch { swipe.reset() }
+        }
+    }
     SwipeToDismissBox(
         state = swipe,
         modifier = modifier,
@@ -199,10 +210,7 @@ internal fun FavoriteSwipeBox(
                 Text(if (isFavorite) stringResource(R.string.composer_model_unfavorite) else stringResource(R.string.composer_model_favorite), color = Color.White, style = OpenCodeTextStyles.subheadline)
             }
         },
-        onDismiss = { value ->
-            if (value != SwipeToDismissBoxValue.Settled) onToggle()
-            scope.launch { swipe.reset() }
-        },
+        onDismiss = onDismiss,
     ) {
         Box(Modifier.background(containerColor)) { content() }
     }
