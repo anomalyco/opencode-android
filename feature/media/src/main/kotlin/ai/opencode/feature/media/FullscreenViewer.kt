@@ -859,7 +859,8 @@ fun FullscreenViewer(
                 action = { FullscreenViewerFeature.Action.Drawing(PresentationAction.Presented(it)) },
             )
         }
-        ImageDrawingEditor(drawing, onImageFrame = { editorFrame.value = it })
+        val zoomedFrame = viewer.pageFrames[page.id]?.takeIf { viewer.isZoomed && !page.isVideo }
+        ImageDrawingEditor(drawing, zoomedFrame, onImageFrame = { editorFrame.value = it })
     }
 }
 
@@ -1035,7 +1036,10 @@ private fun ViewerImage(
             ?: androidx.compose.ui.geometry.Size(image.width.toFloat(), image.height.toFloat()),
         modifier = if (page.file != null) Modifier.fillMaxSize().testTag("agent-file-image") else Modifier.fillMaxSize(),
         onSingleTap = onTap, onZoomChange = { if (selected) viewer.isZoomed = it },
-        onFrame = { if (flight) viewer.mediaFrames[page.id] = it },
+        onFrame = {
+            viewer.pageFrames[page.id] = it
+            if (flight) viewer.mediaFrames[page.id] = it
+        },
         placement = { if (flight && selected) viewer.placeImage(it) else null },
     )
 }

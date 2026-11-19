@@ -418,6 +418,9 @@ class MediaViewerState(sourceID: String?) {
 
     val mediaFrame: Rect? get() = sourceID?.let { mediaFrames[it] }
 
+    /** Where each image page draws its image in the window, fitted or zoomed, by media ID. */
+    val pageFrames: MutableMap<String, Rect> = HashMap()
+
     /** The badges drawn on each source's corners, by media ID, carried by the flight. */
     var flightAccessories: (String) -> List<MediaFlightAccessory> = { emptyList() }
         internal set

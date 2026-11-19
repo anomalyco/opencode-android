@@ -49,15 +49,19 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -204,15 +208,22 @@ class ImageDrawingFeature(private val add: ImageDrawingAdd) : Reducer<ImageDrawi
 
 /**
  * The editor (iOS `ImageDrawingEditor`): its own full-screen window, so the gallery's paging,
- * zoom, dismiss gestures and Back stay out of drawing. Back is Cancel.
+ * dismiss gestures and Back stay out of drawing. Back is Cancel. One finger draws; two pinch
+ * and pan.
+ *
+ * @param zoomedFrame where the viewer has the image zoomed, in window coordinates, so the
+ *   editor opens on the same part of it; null opens it fitted.
+ * @param onImageFrame where the image is drawn, in window coordinates.
  */
 @Composable
 fun ImageDrawingEditor(
     store: StoreOf<ImageDrawingFeature.State, ImageDrawingFeature.Action>,
+    zoomedFrame: Rect? = null,
     onImageFrame: (Rect) -> Unit = {},
 ) {
     val state by store.collectState()
     val enabled = !state.isAdding
+    var inkCanvas by remember { mutableStateOf<InkCanvas?>(null) }
     val reduceMotion = rememberReduceMotion()
     val controlsAlpha by animateFloatAsState(
         if (state.isAdding) 0f else 1f,
@@ -255,26 +266,25 @@ fun ImageDrawingEditor(
                 )
             }
             AndroidView(
-                factory = ::InkCanvas,
+                factory = { context ->
+                    val canvas = InkCanvas(context)
+                    canvas.opening = zoomedFrame
+                    inkCanvas = canvas
+                    canvas
+                },
                 update = { canvas ->
                     canvas.image = state.image
                     canvas.drawing = state.drawing
                     canvas.isEnabled = enabled
                     canvas.commit = { store.send(ImageDrawingFeature.Action.StrokeFinished(it)) }
+                    canvas.onFrame = onImageFrame
                     canvas.invalidate()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .onGloballyPositioned { coordinates ->
-                        val box = coordinates.boundsInWindow()
-                        val image = state.image
-                        if (image.width > 0 && image.height > 0) {
-                            val scale = minOf(box.width / image.width, box.height / image.height)
-                            val size = Size(image.width * scale, image.height * scale)
-                            onImageFrame(Rect(Offset(box.center.x - size.width / 2, box.center.y - size.height / 2), size))
-                        }
-                    }
+                    .clipToBounds()
+                    .onGloballyPositioned { coordinates -> inkCanvas?.positioned(coordinates.positionInWindow()) }
                     .testTag("image-drawing-canvas"),
             )
             Surface(
@@ -344,8 +354,9 @@ private fun inkName(ink: ImageDrawing.Ink): String = stringResource(
 )
 
 /**
- * Owns touch sampling (historical points included) and the live stroke; only a finished stroke
- * reaches the reducer ([commit]). A cancelled touch never does (iOS `InkCanvas`).
+ * Owns touch sampling (historical points included), the live stroke and the zoom; only a finished
+ * stroke reaches the reducer ([commit]). A cancelled touch never does (iOS `InkCanvas`). A second
+ * finger drops the live stroke and pinches and pans instead, until every finger lifts.
  */
 private class InkCanvas(context: Context) : View(context) {
     var image: Bitmap? = null
@@ -357,13 +368,30 @@ private class InkCanvas(context: Context) : View(context) {
         }
     var drawing = ImageDrawing()
     var commit: (ImageDrawing.Stroke) -> Unit = {}
+
+    /** Where the viewer has the image zoomed, in window coordinates; taken once the canvas has its place. */
+    var opening: Rect? = null
+
+    /** Where the image is drawn, in window coordinates. */
+    var onFrame: (Rect) -> Unit = {}
     private var live: MutableList<Offset>? = null
     private var liveInk = ImageDrawing.Ink.Red
     private var pointer = -1
     private val frame = RectF()
     private val photoPaint = Paint(Paint.FILTER_BITMAP_FLAG)
     private val inkPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var scale = 1f
+    private var windowOrigin = Offset.Zero
+
+    /** Screen pixels per image pixel when the whole image fits. */
+    private var fitScale = 1f
+
+    /** 1 is fitted. */
+    private var zoom = 1f
+    private var maximumZoom = MediaZoomGeometry.smallestMaximumScale
+    private val scale: Float get() = fitScale * zoom
+    private var isZooming = false
+    private var pinchSpan = 0f
+    private var pinchCentre = Offset.Zero
 
     init {
         contentDescription = localized(R.string.media_drawing_canvas_description)
@@ -371,13 +399,56 @@ private class InkCanvas(context: Context) : View(context) {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = fit()
 
+    fun positioned(origin: Offset) {
+        windowOrigin = origin
+        val opening = opening
+        val image = image
+        if (opening != null && image != null) {
+            this.opening = null
+            val shown = opening.width / image.width
+            val centre = Offset(width / 2f, height / 2f)
+            val point = Offset(
+                (origin.x + centre.x - opening.left) / shown,
+                (origin.y + centre.y - opening.top) / shown,
+            )
+            show(shown / fitScale, point, centre)
+            invalidate()
+        }
+        reportFrame()
+    }
+
+    /** Shows the whole image. */
     private fun fit() {
         val image = image ?: return
-        scale = minOf(width.toFloat() / image.width, height.toFloat() / image.height)
-        frame.set(0f, 0f, image.width * scale, image.height * scale)
-        frame.offset((width - frame.width()) / 2, (height - frame.height()) / 2)
+        if (width == 0 || height == 0) return
+        fitScale = minOf(width.toFloat() / image.width, height.toFloat() / image.height)
+        val pixels = Size(image.width.toFloat(), image.height.toFloat())
+        maximumZoom = MediaZoomGeometry.maximumScale(pixels, Size(image.width * fitScale, image.height * fitScale), 1f)
         live = null
+        show(1f, Offset.Zero, Offset.Zero)
     }
+
+    /** Draws the image at [zoom] with [point] (image pixels) at [at] on the canvas, kept flush with the edges. */
+    private fun show(zoom: Float, point: Offset, at: Offset) {
+        val image = image ?: return
+        this.zoom = zoom.coerceIn(1f, maximumZoom)
+        val contentWidth = image.width * scale
+        val contentHeight = image.height * scale
+        val left = edge(at.x - point.x * scale, contentWidth, width.toFloat())
+        val top = edge(at.y - point.y * scale, contentHeight, height.toFloat())
+        frame.set(left, top, left + contentWidth, top + contentHeight)
+        reportFrame()
+    }
+
+    /** Content smaller than its room is centred; larger content covers the room. */
+    private fun edge(start: Float, content: Float, room: Float): Float =
+        if (content <= room) (room - content) / 2 else start.coerceIn(room - content, 0f)
+
+    private fun reportFrame() {
+        onFrame(Rect(frame.left + windowOrigin.x, frame.top + windowOrigin.y, frame.right + windowOrigin.x, frame.bottom + windowOrigin.y))
+    }
+
+    private fun imagePoint(x: Float, y: Float) = Offset((x - frame.left) / scale, (y - frame.top) / scale)
 
     override fun onDraw(canvas: Canvas) {
         val image = image ?: return
@@ -398,30 +469,54 @@ private class InkCanvas(context: Context) : View(context) {
             live = null
             return false
         }
-        fun point(x: Float, y: Float) = Offset((x - frame.left) / scale, (y - frame.top) / scale)
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
-                if (!frame.contains(event.x, event.y)) return false
+                isZooming = false
                 pointer = event.getPointerId(0)
                 liveInk = drawing.ink
-                live = mutableListOf(point(event.x, event.y))
+                live = if (frame.contains(event.x, event.y)) mutableListOf(imagePoint(event.x, event.y)) else null
+            }
+            MotionEvent.ACTION_POINTER_DOWN -> {
+                live = null
+                isZooming = true
+                pinch(event)
             }
             MotionEvent.ACTION_CANCEL -> live = null
-            MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
-                val index = event.findPointerIndex(pointer)
-                val points = live
-                if (index >= 0 && points != null) {
-                    fun append(p: Offset) { if (points.last() != p) points += p }
-                    for (i in 0 until event.historySize) append(point(event.getHistoricalX(index, i), event.getHistoricalY(index, i)))
-                    append(point(event.getX(index), event.getY(index)))
-                    if (event.actionMasked != MotionEvent.ACTION_MOVE && event.actionIndex == index) {
-                        if (event.flags and MotionEvent.FLAG_CANCELED == 0) commit(ImageDrawing.Stroke(liveInk, points.toList()))
-                        live = null
-                    }
-                }
-            }
+            MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP ->
+                if (isZooming) pinch(event) else draw(event)
         }
         invalidate()
         return true
+    }
+
+    private fun draw(event: MotionEvent) {
+        val index = event.findPointerIndex(pointer)
+        val points = live
+        if (index < 0 || points == null) return
+        fun append(p: Offset) { if (points.last() != p) points += p }
+        for (i in 0 until event.historySize) append(imagePoint(event.getHistoricalX(index, i), event.getHistoricalY(index, i)))
+        append(imagePoint(event.getX(index), event.getY(index)))
+        if (event.actionMasked != MotionEvent.ACTION_MOVE && event.actionIndex == index) {
+            if (event.flags and MotionEvent.FLAG_CANCELED == 0) commit(ImageDrawing.Stroke(liveInk, points.toList()))
+            live = null
+        }
+    }
+
+    /** Zooms about the first two fingers and pans with them. */
+    private fun pinch(event: MotionEvent) {
+        if (event.pointerCount < 2 || event.actionMasked == MotionEvent.ACTION_POINTER_UP) {
+            // The fingers changed, so the next move measures them afresh.
+            pinchSpan = 0f
+            return
+        }
+        val a = Offset(event.getX(0), event.getY(0))
+        val b = Offset(event.getX(1), event.getY(1))
+        val centre = (a + b) / 2f
+        val span = (a - b).getDistance()
+        if (event.actionMasked == MotionEvent.ACTION_MOVE && pinchSpan > 0f) {
+            show(zoom * span / pinchSpan, imagePoint(pinchCentre.x, pinchCentre.y), centre)
+        }
+        pinchSpan = span
+        pinchCentre = centre
     }
 }
