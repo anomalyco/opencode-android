@@ -61,7 +61,20 @@ import ai.opencode.core.ui.accessibilityFocusTarget
 import ai.opencode.core.ui.AccessibilityFocusTarget
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.window.PopupProperties
-import androidx.compose.material3.DropdownMenu
+import ai.opencode.core.ui.OpenCodeSpacing
+import androidx.compose.material3.DropdownMenuPopup
+import androidx.compose.material3.DropdownMenuPopupPositionProvider
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.runtime.mutableLongStateOf
 import android.os.SystemClock
 import android.content.pm.PackageManager
@@ -120,7 +133,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -128,7 +140,6 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
@@ -698,36 +709,62 @@ private fun SessionAttachmentDropdown(
     MenuReturnsTalkBackFocus(expanded, menu.plusButton)
     var anchor by remember { mutableStateOf(Rect.Zero) }
     val density = LocalDensity.current
-    val windowHeight = LocalWindowInfo.current.containerSize.height
-    // With the keyboard up the menu fits the larger room beside the + (it scrolls) instead of hiding behind the keys.
-    var room = Dp.Unspecified
-    if (expanded) {
-        val keyboard = WindowInsets.ime.getBottom(density)
-        if (keyboard > WindowInsets.navigationBars.getBottom(density)) {
-            val top = WindowInsets.statusBars.getTop(density)
-            val above = anchor.top - top
-            val below = windowHeight - keyboard - top - anchor.bottom
-            room = with(density) { maxOf(above, below).toDp() } - menuWindowMargin
-        }
-    }
+    val top = WindowInsets.statusBars.getTop(density)
+    val room = with(density) { (anchor.top - top).toDp() } - OpenCodeSpacing.s6 * 2
+    val position = remember(density, top) { PlusMenuPosition(gap = with(density) { OpenCodeSpacing.s6.roundToPx() }, top = top) }
     Box(Modifier.fillMaxSize().onGloballyPositioned { anchor = it.boundsInWindow() }) {
-        DropdownMenu(
+        DropdownMenuPopup(
             expanded = expanded,
             onDismissRequest = onDismiss,
-            modifier = if (room != Dp.Unspecified) {
-                Modifier.testTag("attachment-menu").heightIn(max = room.coerceAtLeast(48.dp))
-            } else {
-                Modifier.testTag("attachment-menu")
-            },
+            popupPositionProvider = position,
             properties = PopupProperties(focusable = false),
         ) {
-            MenuTakesTalkBackFocus(hostView, expanded, firstRow)
-            for ((index, item) in items.withIndex()) {
-                var rowModifier = Modifier.testTag("attachment-menu-${item.name.lowercase()}")
-                if (index == 0) rowModifier = rowModifier.accessibilityFocusTarget(firstRow)
-                MenuItem(item.title, item.systemImage, rowModifier) { onChoose(item) }
+            Surface(
+                shape = MenuDefaults.shape,
+                color = MenuDefaults.containerColor,
+                tonalElevation = MenuDefaults.TonalElevation,
+                shadowElevation = MenuDefaults.ShadowElevation,
+            ) {
+                Column(
+                    Modifier
+                        .testTag("attachment-menu")
+                        .heightIn(max = room.coerceAtLeast(48.dp))
+                        .padding(vertical = 8.dp)
+                        .width(IntrinsicSize.Max)
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    MenuTakesTalkBackFocus(hostView, expanded, firstRow)
+                    for ((index, item) in items.withIndex()) {
+                        var rowModifier = Modifier.testTag("attachment-menu-${item.name.lowercase()}")
+                        if (index == 0) rowModifier = rowModifier.accessibilityFocusTarget(firstRow)
+                        MenuItem(item.title, item.systemImage, rowModifier) { onChoose(item) }
+                    }
+                }
             }
         }
+    }
+}
+
+/** Puts the + menu's bottom a small gap above the +, and keeps its top clear of the status bar. */
+private class PlusMenuPosition(private val gap: Int, private val top: Int) : DropdownMenuPopupPositionProvider {
+    override var transformOrigin = TransformOrigin(0f, 1f)
+        private set
+
+    override fun calculatePosition(
+        anchorBounds: IntRect,
+        windowSize: IntSize,
+        layoutDirection: LayoutDirection,
+        popupContentSize: IntSize,
+    ): IntOffset {
+        var x = anchorBounds.left
+        transformOrigin = TransformOrigin(0f, 1f)
+        if (layoutDirection == LayoutDirection.Rtl) {
+            x = anchorBounds.right - popupContentSize.width
+            transformOrigin = TransformOrigin(1f, 1f)
+        }
+        x = x.coerceIn(0, maxOf(0, windowSize.width - popupContentSize.width))
+        val y = maxOf(top + gap, anchorBounds.top - gap - popupContentSize.height)
+        return IntOffset(x, y)
     }
 }
 
