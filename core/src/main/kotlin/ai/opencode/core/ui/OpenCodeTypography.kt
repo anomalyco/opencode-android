@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 /**
- * Inter (variable) for UI text and OpenMono for code, as the desktop. Both OFL-1.1
- * (`docs/licenses/`).
+ * Inter (variable) for UI text and OpenMono for code, as the desktop. Both OFL-1.1; the APK
+ * carries the licence texts (`assets/licenses/`).
  */
 object OpenCodeFonts {
     /**

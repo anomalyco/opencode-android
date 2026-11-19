@@ -23,8 +23,9 @@ by hand to release sooner (`gh workflow run release.yml --ref dev -f bump=patch`
 - Track every iOS file in `docs/parity/<area>.md` (see [docs/parity/README.md](docs/parity/README.md))
   and update the row in the same commit. Where Android differs on purpose, say so in the row.
 - Visuals follow the OpenCode desktop design system (`packages/ui` in the opencode repo), not
-  iOS: Inter for UI text and OpenMono for code and tool output (bundled, OFL; refresh the
-  OpenMono files with `scripts/update-openmono.py`), the
+  iOS: Inter for UI text and OpenMono for code and tool output (bundled, OFL, with the licence
+  texts shipped from `core/src/main/assets/licenses/`; refresh the OpenMono files with
+  `scripts/update-openmono.py`), the
   desktop's type scale in sp, flat surfaces with hairline borders instead of tonal elevation
   or glass, small radii (`OpenCodeRadius`, `OpenCodeShape.control`), the desktop palette as
   the default theme (`BrandPalette`). Use `core/ui` tokens and `OpenCodeSurfaces`
