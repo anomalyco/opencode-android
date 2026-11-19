@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Неуспешно спиране на черупката</string>
     <string name="session_quote_remove_description">Премахване на цитата</string>
     <string name="session_quote_comment_placeholder">Добавете коментар по избор…</string>
+    <string name="session_media_title">Медия от сесията</string>
+    <string name="session_media_filter_media">Медия</string>
+    <string name="session_media_filter_files">Файлове</string>
+    <string name="session_media_filter_links">Връзки</string>
+    <string name="session_media_layout_description">Оформление на медията</string>
+    <string name="session_media_layout_tiles">Плочки</string>
+    <string name="session_media_layout_list">Списък</string>
+    <string name="session_media_origin_user">Изпратено от вас</string>
+    <string name="session_media_origin_agent">Споделено от агента</string>
+    <string name="session_media_open_click_label">Отворете</string>
+    <string name="session_media_open_link_click_label">Отваряне на връзката</string>
+    <string name="session_media_empty_media_title">Няма медия</string>
+    <string name="session_media_empty_media_message">Изображенията, видеата и аудиото, споделени в тази сесия, се показват тук.</string>
+    <string name="session_media_empty_files_title">Няма файлове</string>
+    <string name="session_media_empty_files_message">Документите и поставеният текст от тази сесия се показват тук.</string>
+    <string name="session_media_empty_links_title">Няма връзки</string>
+    <string name="session_media_empty_links_message">Уеб връзките, споделени в тази сесия, се показват тук.</string>
+    <string name="session_media_earlier_note">По-ранните съобщения още не са заредени.</string>
+    <string name="session_media_load_earlier">Зареждане на по-ранни съобщения</string>
+    <string name="session_media_loading_earlier">Зареждане…</string>
+    <string name="session_media_earlier_failed">По-ранните съобщения не можаха да бъдат заредени. Проверете връзката си и опитайте отново.</string>
+    <string name="session_media_earlier_nothing_new">В току-що заредените съобщения няма нищо ново. По-ранните може да съдържат още.</string>
 </resources>

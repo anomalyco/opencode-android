@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">ሼሉን ማቆም አልተቻለም</string>
     <string name="session_quote_remove_description">ጥቅሱን አስወግድ</string>
     <string name="session_quote_comment_placeholder">አማራጭ አስተያየት አክል…</string>
+    <string name="session_media_title">የክፍለ ጊዜ ሚዲያ</string>
+    <string name="session_media_filter_media">ሚዲያ</string>
+    <string name="session_media_filter_files">ፋይሎች</string>
+    <string name="session_media_filter_links">አገናኞች</string>
+    <string name="session_media_layout_description">የሚዲያ አቀማመጥ</string>
+    <string name="session_media_layout_tiles">አቋራጮች</string>
+    <string name="session_media_layout_list">ዝርዝር</string>
+    <string name="session_media_origin_user">በእርስዎ የተላከ</string>
+    <string name="session_media_origin_agent">በወኪሉ የተጋራ</string>
+    <string name="session_media_open_click_label">ክፈት</string>
+    <string name="session_media_open_link_click_label">አገናኝ ክፈት</string>
+    <string name="session_media_empty_media_title">ምንም ሚዲያ የለም</string>
+    <string name="session_media_empty_media_message">በዚህ ክፍለ ጊዜ የተጋሩ ምስሎች፣ ቪዲዮዎች እና ድምጾች እዚህ ይታያሉ።</string>
+    <string name="session_media_empty_files_title">ፋይሎች የሉም</string>
+    <string name="session_media_empty_files_message">ከዚህ ክፍለ ጊዜ የመጡ ሰነዶች እና የተለጠፉ ጽሑፎች እዚህ ይታያሉ።</string>
+    <string name="session_media_empty_links_title">አገናኞች የሉም</string>
+    <string name="session_media_empty_links_message">በዚህ ክፍለ ጊዜ የተጋሩ የድር አገናኞች እዚህ ይታያሉ።</string>
+    <string name="session_media_earlier_note">ቀደም ያሉ መልእክቶች ገና አልተጫኑም።</string>
+    <string name="session_media_load_earlier">ቀደም ያሉ መልእክቶችን ጫን</string>
+    <string name="session_media_loading_earlier">በመጫን ላይ…</string>
+    <string name="session_media_earlier_failed">የቀደሙ መልእክቶችን መጫን አልተቻለም። ግንኙነትዎን ይፈትሹና እንደገና ይሞክሩ።</string>
+    <string name="session_media_earlier_nothing_new">አሁን በተጫኑት መልእክቶች ውስጥ አዲስ ነገር የለም። የቀደሙት ተጨማሪ ሊኖራቸው ይችላል።</string>
 </resources>

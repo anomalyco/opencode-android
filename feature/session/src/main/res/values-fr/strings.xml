@@ -307,4 +307,26 @@
     <string name="session_shell_stop_failed">Impossible d’arrêter le shell</string>
     <string name="session_quote_remove_description">Supprimer la citation</string>
     <string name="session_quote_comment_placeholder">Ajouter un commentaire optionnel…</string>
+    <string name="session_media_title">Médias de la session</string>
+    <string name="session_media_filter_media">Médias</string>
+    <string name="session_media_filter_files">Fichiers</string>
+    <string name="session_media_filter_links">Liens</string>
+    <string name="session_media_layout_description">Disposition des médias</string>
+    <string name="session_media_layout_tiles">Tuiles</string>
+    <string name="session_media_layout_list">Liste</string>
+    <string name="session_media_origin_user">Envoyé par vous</string>
+    <string name="session_media_origin_agent">Partagé par l’agent</string>
+    <string name="session_media_open_click_label">Ouvrir</string>
+    <string name="session_media_open_link_click_label">Ouvrir le lien</string>
+    <string name="session_media_empty_media_title">Aucun média</string>
+    <string name="session_media_empty_media_message">Les images, vidéos et fichiers audio partagés dans cette session apparaissent ici.</string>
+    <string name="session_media_empty_files_title">Aucun fichier</string>
+    <string name="session_media_empty_files_message">Les documents et le texte collé de cette session apparaissent ici.</string>
+    <string name="session_media_empty_links_title">Aucun lien</string>
+    <string name="session_media_empty_links_message">Les liens Web partagés dans cette session apparaissent ici.</string>
+    <string name="session_media_earlier_note">Les messages précédents ne sont pas encore chargés.</string>
+    <string name="session_media_load_earlier">Charger les messages précédents</string>
+    <string name="session_media_loading_earlier">Chargement…</string>
+    <string name="session_media_earlier_failed">Impossible de charger les messages précédents. Vérifiez votre connexion et réessayez.</string>
+    <string name="session_media_earlier_nothing_new">Rien de nouveau dans les messages qui viennent d’être chargés. Les messages précédents en contiennent peut-être davantage.</string>
 </resources>

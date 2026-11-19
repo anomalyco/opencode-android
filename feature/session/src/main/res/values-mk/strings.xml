@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Не успеа запирањето на школката</string>
     <string name="session_quote_remove_description">Отстрани цитат</string>
     <string name="session_quote_comment_placeholder">Додадете коментар по желба…</string>
+    <string name="session_media_title">Медиуми од сесијата</string>
+    <string name="session_media_filter_media">Медиуми</string>
+    <string name="session_media_filter_files">Датотеки</string>
+    <string name="session_media_filter_links">Врски</string>
+    <string name="session_media_layout_description">Распоред на медиумите</string>
+    <string name="session_media_layout_tiles">Плочки</string>
+    <string name="session_media_layout_list">Список</string>
+    <string name="session_media_origin_user">Испратено од тебе</string>
+    <string name="session_media_origin_agent">Споделено од агентот</string>
+    <string name="session_media_open_click_label">Отвори</string>
+    <string name="session_media_open_link_click_label">Отвори врска</string>
+    <string name="session_media_empty_media_title">Нема медиуми</string>
+    <string name="session_media_empty_media_message">Сликите, видеата и аудиото споделени во оваа сесија се појавуваат овде.</string>
+    <string name="session_media_empty_files_title">Нема датотеки</string>
+    <string name="session_media_empty_files_message">Документите и залепениот текст од оваа сесија се појавуваат овде.</string>
+    <string name="session_media_empty_links_title">Нема врски</string>
+    <string name="session_media_empty_links_message">Веб-врските споделени во оваа сесија се прикажуваат овде.</string>
+    <string name="session_media_earlier_note">Претходните пораки сè уште не се вчитани.</string>
+    <string name="session_media_load_earlier">Вчитај претходни пораки</string>
+    <string name="session_media_loading_earlier">Се вчитува…</string>
+    <string name="session_media_earlier_failed">Претходните пораки не се вчитаа. Провери ја врската и обиди се повторно.</string>
+    <string name="session_media_earlier_nothing_new">Нема ништо ново во штотуку вчитаните пораки. Претходните може да имаат повеќе.</string>
 </resources>

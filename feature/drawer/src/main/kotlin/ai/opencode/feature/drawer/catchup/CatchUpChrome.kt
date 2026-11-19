@@ -1,6 +1,5 @@
 package ai.opencode.feature.drawer.catchup
 
-import ai.opencode.core.ui.OpenCodeSurfaces
 import ai.opencode.core.motion.Motion
 import ai.opencode.core.motion.MotionPhase
 import ai.opencode.core.motion.MotionRole
@@ -8,12 +7,10 @@ import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.AccessibilityFocusRequest
 import ai.opencode.core.ui.OpenCodeIconButton
 import ai.opencode.core.ui.OpenCodeIconButtonStyle
-import ai.opencode.core.ui.OpenCodeMinTapTarget
 import ai.opencode.core.ui.OpenCodePrimaryButton
 import ai.opencode.core.ui.OpenCodeSecondaryButton
-import ai.opencode.core.ui.OpenCodeShape
 import ai.opencode.core.ui.OpenCodeTextStyles
-import ai.opencode.core.ui.OpenCodeTheme
+import ai.opencode.core.ui.OpenCodeTopBar
 import ai.opencode.core.ui.RollingNumber
 import ai.opencode.core.ui.RollingNumberAlignment
 import ai.opencode.core.ui.SFSymbol
@@ -31,19 +28,16 @@ import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.union
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.TextAutoSize
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -52,6 +46,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -102,41 +97,40 @@ fun CatchUpChrome(
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.systemBars.union(WindowInsets.displayCutout)),
         ) {
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(CatchUpMetrics.headerHeight),
-                contentAlignment = Alignment.Center,
-            ) {
-                RollingNumber(
-                    text = pluralStringResource(R.plurals.drawer_catch_up_remaining, shownRemaining, shownRemaining),
-                    style = OpenCodeTextStyles.headline.copy(fontWeight = FontWeight.SemiBold),
-                    alignment = RollingNumberAlignment.Center,
-                    modifier = Modifier
-                        .graphicsLayer { alpha = 1f - finishedProgress }
-                        .then(
-                            if (finished) Modifier.clearAndSetSemantics {}
-                            else Modifier.semantics { heading() },
-                        ),
-                )
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = CatchUpMetrics.sideInset),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+            OpenCodeTopBar(
+                title = {
+                    RollingNumber(
+                        text = pluralStringResource(R.plurals.drawer_catch_up_remaining, shownRemaining, shownRemaining),
+                        style = OpenCodeTextStyles.headline.copy(fontWeight = FontWeight.SemiBold),
+                        alignment = RollingNumberAlignment.Start,
+                        modifier = Modifier
+                            .graphicsLayer { alpha = 1f - finishedProgress }
+                            .then(
+                                if (finished) Modifier.clearAndSetSemantics {}
+                                else Modifier.semantics { heading() },
+                            ),
+                    )
+                },
+                modifier = Modifier.height(CatchUpMetrics.headerHeight),
+                navigation = {
                     OpenCodeIconButton(
                         symbol = SFSymbol.ChevronBackward,
                         contentDescription = stringResource(R.string.drawer_catch_up_leave_description),
                         onClick = onExit,
                         // The stage opens on its first element, as VoiceOver does on a screen change.
                         modifier = Modifier.accessibilityFocusRequest(openFocus),
-                        style = OpenCodeIconButtonStyle.Circle,
+                        style = OpenCodeIconButtonStyle.Standard,
                     )
-                    Spacer(Modifier.weight(1f))
-                    CatchUpUndoButton(canUndo = canUndo, onClick = onUndo)
-                }
-            }
+                },
+                actions = {
+                    TextButton(onClick = onUndo, enabled = canUndo) {
+                        Text(stringResource(R.string.drawer_catch_up_undo), maxLines = 1)
+                    }
+                },
+                containerColor = Color.Transparent,
+                hairline = false,
+                windowInsets = WindowInsets(0, 0, 0, 0),
+            )
 
             Spacer(Modifier.weight(1f))
 
@@ -170,28 +164,6 @@ fun CatchUpChrome(
                 }
             }
         }
-    }
-}
-
-/** Subheadline semibold, tertiary while there's nothing to undo. */
-@Composable
-private fun CatchUpUndoButton(canUndo: Boolean, onClick: () -> Unit) {
-    FilledTonalButton(
-        onClick = onClick,
-        enabled = canUndo,
-        shape = OpenCodeShape.control,
-        // The desktop's neutral button: base surface and a hairline.
-        border = OpenCodeSurfaces.border,
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp),
-        colors = ButtonDefaults.filledTonalButtonColors(
-            containerColor = OpenCodeSurfaces.neutralFill,
-            contentColor = OpenCodeTheme.colors.text,
-            disabledContainerColor = OpenCodeSurfaces.neutralFill,
-            disabledContentColor = OpenCodeTheme.colors.tertiaryText,
-        ),
-        modifier = Modifier.heightIn(min = OpenCodeMinTapTarget).widthIn(min = OpenCodeMinTapTarget),
-    ) {
-        Text(stringResource(R.string.drawer_catch_up_undo), style = OpenCodeTextStyles.subheadline.copy(fontWeight = FontWeight.SemiBold), maxLines = 1)
     }
 }
 

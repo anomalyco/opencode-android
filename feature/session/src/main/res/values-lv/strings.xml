@@ -307,4 +307,26 @@
     <string name="session_shell_stop_failed">Neizdevās apturēt čaulu</string>
     <string name="session_quote_remove_description">Noņemt citātu</string>
     <string name="session_quote_comment_placeholder">Pievienot komentāru (nav obligāti)…</string>
+    <string name="session_media_title">Sesijas multivide</string>
+    <string name="session_media_filter_media">Multivide</string>
+    <string name="session_media_filter_files">Faili</string>
+    <string name="session_media_filter_links">Saites</string>
+    <string name="session_media_layout_description">Multivides izkārtojums</string>
+    <string name="session_media_layout_tiles">Elementi</string>
+    <string name="session_media_layout_list">Saraksts</string>
+    <string name="session_media_origin_user">Nosūtīji tu</string>
+    <string name="session_media_origin_agent">Kopīgojis aģents</string>
+    <string name="session_media_open_click_label">Atvērt</string>
+    <string name="session_media_open_link_click_label">Atvērt saiti</string>
+    <string name="session_media_empty_media_title">Nav multivides</string>
+    <string name="session_media_empty_media_message">Šeit parādīsies attēli, video un audio, kas kopīgoti šajā sesijā.</string>
+    <string name="session_media_empty_files_title">Nav failu</string>
+    <string name="session_media_empty_files_message">Šeit parādīsies dokumenti un ielīmētais teksts no šīs sesijas.</string>
+    <string name="session_media_empty_links_title">Nav saišu</string>
+    <string name="session_media_empty_links_message">Šeit parādīsies šajā sesijā kopīgotās tīmekļa saites.</string>
+    <string name="session_media_earlier_note">Iepriekšējās ziņas vēl nav ielādētas.</string>
+    <string name="session_media_load_earlier">Ielādēt iepriekšējās ziņas</string>
+    <string name="session_media_loading_earlier">Notiek ielāde…</string>
+    <string name="session_media_earlier_failed">Neizdevās ielādēt iepriekšējās ziņas. Pārbaudi savienojumu un mēģini vēlreiz.</string>
+    <string name="session_media_earlier_nothing_new">Tikko ielādētajās ziņās nekā jauna nav. Iepriekšējās var saturēt vairāk.</string>
 </resources>

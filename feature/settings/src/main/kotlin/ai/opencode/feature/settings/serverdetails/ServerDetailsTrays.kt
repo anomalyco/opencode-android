@@ -1,5 +1,6 @@
 package ai.opencode.feature.settings.serverdetails
 
+import ai.opencode.core.R as CoreR
 import ai.opencode.core.ui.OpenCodeContentUnavailable
 import ai.opencode.core.ui.OpenCodeSearchField
 import ai.opencode.core.ui.OpenCodeShape
@@ -68,6 +69,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import ai.opencode.core.ui.OpenCodeFonts
 import androidx.compose.ui.text.font.FontWeight
@@ -119,7 +121,7 @@ private fun TrayHeader(title: String?, subtitle: String?, onClose: () -> Unit, o
     ) {
         Box(Modifier.width(48.dp)) {
             if (onBack != null) {
-                OpenCodeIconButton(SFSymbol.ChevronBackward, contentDescription = "Back", onClick = onBack, style = OpenCodeIconButtonStyle.Standard)
+                OpenCodeIconButton(SFSymbol.ChevronBackward, contentDescription = stringResource(CoreR.string.common_back), onClick = onBack, style = OpenCodeIconButtonStyle.Standard)
             }
         }
         Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -129,7 +131,7 @@ private fun TrayHeader(title: String?, subtitle: String?, onClose: () -> Unit, o
             }
         }
         Box(Modifier.width(48.dp)) {
-            OpenCodeIconButton(SFSymbol.Xmark, contentDescription = "Close", onClick = onClose)
+            OpenCodeIconButton(SFSymbol.Xmark, contentDescription = stringResource(CoreR.string.common_close), onClick = onClose, style = OpenCodeIconButtonStyle.Standard)
         }
     }
 }

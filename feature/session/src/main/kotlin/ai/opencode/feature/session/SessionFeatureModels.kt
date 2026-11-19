@@ -184,6 +184,35 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
 
     Action.ReportProblemTapped -> Reduced(state, Effect.send(Action.Delegate(SessionFeature.Delegate.ReportProblem)))
 
+    Action.SessionMediaTapped -> {
+        if (state.session == null) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.tap)
+            Reduced(state.copy(sessionMediaFilter = SessionMedia.Filter.media))
+        }
+    }
+
+    is Action.SessionMediaFilterPicked -> {
+        if (state.sessionMediaFilter == null || state.sessionMediaFilter == action.filter) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.selection)
+            Reduced(state.copy(sessionMediaFilter = action.filter, sessionMediaEarlier = null, sessionMediaNothingNew = false))
+        }
+    }
+
+    is Action.SessionMediaLayoutPicked -> {
+        if (state.sessionMediaFilter != SessionMedia.Filter.media || state.sessionMediaLayout == action.layout) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.selection)
+            Reduced(state.copy(sessionMediaLayout = action.layout))
+        }
+    }
+
+    Action.SessionMediaDismissed -> Reduced(state.copy(sessionMediaFilter = null, sessionMediaEarlier = null, sessionMediaNothingNew = false))
+
     is Action.SessionMenu -> {
         val (next, hasSheet) = state.ensureSessionSheet()
         if (!hasSheet) Reduced(next) else Reduced(next, Effect.send(Action.SessionSheet(action.action)))

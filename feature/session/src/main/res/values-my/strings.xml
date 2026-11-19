@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">ဘူးခွံကို မရပ်နိုင်ပါ</string>
     <string name="session_quote_remove_description">ကိုးကားချက်ကို ဖယ်ရှားပါ</string>
     <string name="session_quote_comment_placeholder">မှတ်ချက် ထည့်နိုင်သည်…</string>
+    <string name="session_media_title">စက်ရှင် မီဒီယာ</string>
+    <string name="session_media_filter_media">မီဒီယာ</string>
+    <string name="session_media_filter_files">ဖိုင်များ</string>
+    <string name="session_media_filter_links">လင့်ခ်များ</string>
+    <string name="session_media_layout_description">မီဒီယာ အပြင်အဆင်</string>
+    <string name="session_media_layout_tiles">အမြန်ခလုတ်များ</string>
+    <string name="session_media_layout_list">စာရင်း</string>
+    <string name="session_media_origin_user">သင် ပို့ထားသည်</string>
+    <string name="session_media_origin_agent">အေးဂျင့် မျှဝေထားသည်</string>
+    <string name="session_media_open_click_label">ဖွင့်ပါ</string>
+    <string name="session_media_open_link_click_label">လင့်ခ်ဖွင့်ရန်</string>
+    <string name="session_media_empty_media_title">မီဒီယာ မရှိပါ</string>
+    <string name="session_media_empty_media_message">ဤစက်ရှင်တွင် မျှဝေထားသော ပုံများ၊ ဗီဒီယိုများနှင့် အသံများကို ဤနေရာတွင် တွေ့ရပါမည်။</string>
+    <string name="session_media_empty_files_title">ဖိုင် မရှိပါ</string>
+    <string name="session_media_empty_files_message">ဤစက်ရှင်မှ စာရွက်စာတမ်းများနှင့် ကူးထည့်ထားသော စာသားများကို ဤနေရာတွင် တွေ့ရပါမည်။</string>
+    <string name="session_media_empty_links_title">လင့်ခ် မရှိပါ</string>
+    <string name="session_media_empty_links_message">ဤစက်ရှင်တွင် မျှဝေထားသော ဝဘ်လင့်ခ်များ ဤနေရာတွင် ပေါ်လာပါမည်။</string>
+    <string name="session_media_earlier_note">အစောပိုင်း မက်ဆေ့ဂျ်များကို မတင်ရသေးပါ။</string>
+    <string name="session_media_load_earlier">အစောပိုင်း မက်ဆေ့ဂျ်များကို ဖွင့်ပါ</string>
+    <string name="session_media_loading_earlier">တင်နေသည်…</string>
+    <string name="session_media_earlier_failed">အစောပိုင်း မက်ဆေ့ဂျ်များကို မဖွင့်နိုင်ပါ။ သင့်ချိတ်ဆက်မှုကို စစ်ပြီး ပြန်ကြိုးစားပါ။</string>
+    <string name="session_media_earlier_nothing_new">ယခုလေးတင် ဖွင့်ထားသော မက်ဆေ့ဂျ်များတွင် အသစ်ဘာမှ မရှိပါ။ ပိုစောသော မက်ဆေ့ဂျ်များတွင် ရှိနိုင်ပါသည်။</string>
 </resources>

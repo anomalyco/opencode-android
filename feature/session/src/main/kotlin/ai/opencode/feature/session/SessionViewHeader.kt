@@ -583,6 +583,9 @@ private fun SessionMenu(
                 contentPadding = PaddingWithIndent,
             )
         }
+        MenuItem(stringResource(R.string.session_media_title), SFSymbol.PhotoOnRectangle, Modifier.testTag("session-menu-media")) {
+            send(Action.SessionMediaTapped)
+        }
         MenuItem(stringResource(R.string.session_info), SFSymbol.InfoCircle) { send(Action.SessionInfoTapped) }
         if (developerMode) {
             MenuItem("Report a Problem", SFSymbol.ExclamationmarkBubble, Modifier.testTag("session-menu-report-problem")) {

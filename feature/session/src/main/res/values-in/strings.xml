@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">Gagal menghentikan kerang</string>
     <string name="session_quote_remove_description">Hapus kutipan</string>
     <string name="session_quote_comment_placeholder">Tambah komentar opsional…</string>
+    <string name="session_media_title">Media sesi</string>
+    <string name="session_media_filter_media">Media</string>
+    <string name="session_media_filter_files">Berkas</string>
+    <string name="session_media_filter_links">Tautan</string>
+    <string name="session_media_layout_description">Tata letak media</string>
+    <string name="session_media_layout_tiles">Ubin</string>
+    <string name="session_media_layout_list">Daftar</string>
+    <string name="session_media_origin_user">Dikirim oleh Anda</string>
+    <string name="session_media_origin_agent">Dibagikan oleh agen</string>
+    <string name="session_media_open_click_label">Buka</string>
+    <string name="session_media_open_link_click_label">Buka tautan</string>
+    <string name="session_media_empty_media_title">Belum ada media</string>
+    <string name="session_media_empty_media_message">Gambar, video, dan audio yang dibagikan di sesi ini akan muncul di sini.</string>
+    <string name="session_media_empty_files_title">Tidak ada berkas</string>
+    <string name="session_media_empty_files_message">Dokumen dan teks yang ditempel dari sesi ini akan muncul di sini.</string>
+    <string name="session_media_empty_links_title">Tidak ada tautan</string>
+    <string name="session_media_empty_links_message">Tautan web yang dibagikan di sesi ini akan muncul di sini.</string>
+    <string name="session_media_earlier_note">Pesan sebelumnya belum dimuat.</string>
+    <string name="session_media_load_earlier">Muat pesan sebelumnya</string>
+    <string name="session_media_loading_earlier">Memuat…</string>
+    <string name="session_media_earlier_failed">Gagal memuat pesan sebelumnya. Periksa koneksi Anda lalu coba lagi.</string>
+    <string name="session_media_earlier_nothing_new">Tidak ada yang baru di pesan yang baru dimuat. Pesan sebelumnya mungkin masih ada isinya.</string>
 </resources>

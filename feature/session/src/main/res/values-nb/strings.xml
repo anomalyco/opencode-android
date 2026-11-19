@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Kunne ikke stoppe skallet</string>
     <string name="session_quote_remove_description">Fjern sitat</string>
     <string name="session_quote_comment_placeholder">Legg til en valgfri kommentar…</string>
+    <string name="session_media_title">Sesjonsmedier</string>
+    <string name="session_media_filter_media">Medier</string>
+    <string name="session_media_filter_files">Filer</string>
+    <string name="session_media_filter_links">Lenker</string>
+    <string name="session_media_layout_description">Medieoppsett</string>
+    <string name="session_media_layout_tiles">Fliser</string>
+    <string name="session_media_layout_list">Liste</string>
+    <string name="session_media_origin_user">Sendt av deg</string>
+    <string name="session_media_origin_agent">Delt av agenten</string>
+    <string name="session_media_open_click_label">Åpne</string>
+    <string name="session_media_open_link_click_label">Åpne lenke</string>
+    <string name="session_media_empty_media_title">Ingen medier</string>
+    <string name="session_media_empty_media_message">Bilder, videoer og lyd som deles i denne sesjonen, vises her.</string>
+    <string name="session_media_empty_files_title">Ingen filer</string>
+    <string name="session_media_empty_files_message">Dokumenter og innlimt tekst fra denne sesjonen vises her.</string>
+    <string name="session_media_empty_links_title">Ingen lenker</string>
+    <string name="session_media_empty_links_message">Weblenker som deles i denne sesjonen, vises her.</string>
+    <string name="session_media_earlier_note">Tidligere meldinger er ikke lastet inn ennå.</string>
+    <string name="session_media_load_earlier">Last inn tidligere meldinger</string>
+    <string name="session_media_loading_earlier">Laster…</string>
+    <string name="session_media_earlier_failed">Kunne ikke laste inn tidligere meldinger. Sjekk tilkoblingen og prøv igjen.</string>
+    <string name="session_media_earlier_nothing_new">Ingenting nytt her i meldingene som nettopp ble lastet inn. Tidligere meldinger kan ha mer.</string>
 </resources>

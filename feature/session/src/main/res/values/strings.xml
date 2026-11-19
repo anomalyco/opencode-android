@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Couldn’t stop shell</string>
     <string name="session_quote_remove_description">Remove Quote</string>
     <string name="session_quote_comment_placeholder">Add an optional comment…</string>
+    <string name="session_media_title">Session Media</string>
+    <string name="session_media_filter_media">Media</string>
+    <string name="session_media_filter_files">Files</string>
+    <string name="session_media_filter_links">Links</string>
+    <string name="session_media_layout_description">Media Layout</string>
+    <string name="session_media_layout_tiles">Tiles</string>
+    <string name="session_media_layout_list">List</string>
+    <string name="session_media_origin_user">Sent by you</string>
+    <string name="session_media_origin_agent">Shared by the agent</string>
+    <string name="session_media_open_click_label">Open</string>
+    <string name="session_media_open_link_click_label">Open link</string>
+    <string name="session_media_empty_media_title">No Media</string>
+    <string name="session_media_empty_media_message">Images, videos and audio shared in this session show up here.</string>
+    <string name="session_media_empty_files_title">No Files</string>
+    <string name="session_media_empty_files_message">Documents and pasted text from this session show up here.</string>
+    <string name="session_media_empty_links_title">No Links</string>
+    <string name="session_media_empty_links_message">Web links shared in this session show up here.</string>
+    <string name="session_media_earlier_note">Earlier messages aren’t loaded yet.</string>
+    <string name="session_media_load_earlier">Load Earlier Messages</string>
+    <string name="session_media_loading_earlier">Loading…</string>
+    <string name="session_media_earlier_failed">Couldn’t load earlier messages. Check your connection and try again.</string>
+    <string name="session_media_earlier_nothing_new">Nothing new here in the messages just loaded. Earlier ones may have more.</string>
 </resources>

@@ -78,12 +78,75 @@ internal fun SessionFeature.reduceHistory(
 
     is Action.FillEarlierHistory -> loadEarlierHistory(state)
 
-    is Action.EarlierHistoryResponse -> earlierHistoryResponse(state, action)
+    Action.SessionMediaLoadEarlierTapped -> sessionMediaLoadEarlier(state)
+
+    is Action.EarlierHistoryResponse -> followSessionMediaEarlier(earlierHistoryResponse(state, action))
 
     is Action.TranscriptResponse -> transcriptResponse(state, action)
 
     // Every other action matched a case earlier in the chain.
     else -> null
+}
+
+/**
+ * Session Media lists every loaded row, so its Load Earlier always reads an older page: the
+ * transcript's window first takes in every loaded row (only then does [loadEarlierHistory] read).
+ */
+private fun SessionFeature.sessionMediaLoadEarlier(state: SessionFeature.State): Reduced<SessionFeature.State, Action> {
+    val filter = state.sessionMediaFilter
+    if (filter == null || state.session == null || state.isLoadingEarlier || state.earlierHistory == EarlierHistory.Exhausted) {
+        AppLog.app.debug { "Session Media: load earlier ignored (open ${filter != null}, loading ${state.isLoadingEarlier}, phase ${earlierPhase(state)})" }
+        return Reduced(state)
+    }
+    val baseline = SessionMedia.count(state, filter)
+    val widened = state.copy(
+        visibleLimit = maxOf(state.visibleLimit, state.items.size),
+        earlierHistoryRetriesOnReconnect = false,
+        sessionMediaNothingNew = false,
+    ).pinBrowsingWindowIfNeeded()
+    val loaded = loadEarlierHistory(widened)
+    if (!loaded.state.isLoadingEarlier) {
+        AppLog.app.debug { "Session Media: load earlier sent nothing (rows ${state.items.size}, phase ${earlierPhase(state)})" }
+        return Reduced(loaded.state)
+    }
+    AppLog.app.debug { "Session Media: load earlier ${filter.id} from ${state.items.size} rows, $baseline items" }
+    return Reduced(
+        loaded.state.copy(sessionMediaEarlier = SessionMedia.EarlierSearch(filter, baseline, SessionMedia.EARLIER_PAGES_PER_TAP - 1)),
+        Effect.merge(Effect.cancel(CancelID.WindowReset), loaded.effect),
+    )
+}
+
+/**
+ * After an older page lands for Session Media: done once its tab gained an item, history is
+ * exhausted, or the page failed; otherwise the next page, up to [SessionMedia.EARLIER_PAGES_PER_TAP]
+ * per tap, then it says nothing new turned up rather than looking like a tap that did nothing.
+ */
+private fun SessionFeature.followSessionMediaEarlier(reduced: Reduced<SessionFeature.State, Action>): Reduced<SessionFeature.State, Action> {
+    val search = reduced.state.sessionMediaEarlier ?: return reduced
+    val s = reduced.state
+    if (s.isLoadingEarlier) return reduced
+    fun done(nothingNew: Boolean) = Reduced(s.copy(sessionMediaEarlier = null, sessionMediaNothingNew = nothingNew), reduced.effect)
+    if (s.sessionMediaFilter != search.filter) return done(false)
+    if (s.earlierHistoryError != null || s.earlierHistoryRetriesOnReconnect) {
+        AppLog.app.debug { "Session Media: load earlier failed (status ${if (s.earlierHistoryRetriesOnReconnect) "none" else "http"})" }
+        return done(false)
+    }
+    val count = SessionMedia.count(s, search.filter)
+    val exhausted = s.earlierHistory == EarlierHistory.Exhausted
+    AppLog.app.debug { "Session Media: page landed, rows ${s.items.size}, ${search.filter.id} $count (was ${search.baseline}), pages left ${search.pagesLeft}, exhausted $exhausted" }
+    if (count > search.baseline || exhausted) return done(false)
+    if (search.pagesLeft <= 0) return done(true)
+    val next = loadEarlierHistory(s.copy(visibleLimit = maxOf(s.visibleLimit, s.items.size), sessionMediaEarlier = search.copy(pagesLeft = search.pagesLeft - 1)))
+    if (!next.state.isLoadingEarlier) return done(true)
+    return Reduced(next.state, Effect.merge(reduced.effect, next.effect))
+}
+
+private fun earlierPhase(state: SessionFeature.State): String = when (state.earlierHistory) {
+    EarlierHistory.UnknownEdge -> "unknown-edge"
+    is EarlierHistory.SeekingOverlap -> "seeking"
+    is EarlierHistory.Paging -> "paging"
+    is EarlierHistory.Loading -> "loading"
+    EarlierHistory.Exhausted -> "exhausted"
 }
 
 private fun SessionFeature.earlierHistoryResponse(

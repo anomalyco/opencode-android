@@ -18,6 +18,7 @@ import ai.opencode.core.tuning.TuningContext
 import ai.opencode.core.tuning.TuningContextEffect
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeIconButton
+import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodePrimaryButton
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
@@ -207,11 +208,11 @@ private fun Header(pairing: Boolean, isPreview: Boolean, onBack: () -> Unit, onC
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (pairing) {
-            OpenCodeIconButton(SFSymbol.ChevronBackward, contentDescription = stringResource(CoreR.string.common_back), onClick = onBack)
+            OpenCodeIconButton(SFSymbol.ChevronBackward, contentDescription = stringResource(CoreR.string.common_back), onClick = onBack, style = OpenCodeIconButtonStyle.Standard)
         }
         Spacer(Modifier.weight(1f))
         if (isPreview) {
-            OpenCodeIconButton(SFSymbol.Xmark, contentDescription = stringResource(CoreR.string.common_close), onClick = onClose, modifier = Modifier.semantics { testTag = "welcome-close" })
+            OpenCodeIconButton(SFSymbol.Xmark, contentDescription = stringResource(CoreR.string.common_close), onClick = onClose, modifier = Modifier.semantics { testTag = "welcome-close" }, style = OpenCodeIconButtonStyle.Standard)
         }
     }
 }

@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">ෂෙල් නැවැත්වීමට නොහැකි විය</string>
     <string name="session_quote_remove_description">උපුටාගැනීම ඉවත් කරන්න</string>
     <string name="session_quote_comment_placeholder">අවශ්‍ය නම් අදහසක් එක් කරන්න…</string>
+    <string name="session_media_title">සැසි මාධ්‍ය</string>
+    <string name="session_media_filter_media">මාධ්‍ය</string>
+    <string name="session_media_filter_files">ගොනු</string>
+    <string name="session_media_filter_links">සබැඳි</string>
+    <string name="session_media_layout_description">මාධ්‍ය පිරිසැලසුම</string>
+    <string name="session_media_layout_tiles">ටයිල්</string>
+    <string name="session_media_layout_list">ලැයිස්තුව</string>
+    <string name="session_media_origin_user">ඔබ යැවූ</string>
+    <string name="session_media_origin_agent">නියෝජිතයා බෙදාගත්</string>
+    <string name="session_media_open_click_label">විවෘත කරන්න</string>
+    <string name="session_media_open_link_click_label">සබැඳිය විවෘත කරන්න</string>
+    <string name="session_media_empty_media_title">මාධ්‍ය නැත</string>
+    <string name="session_media_empty_media_message">මෙම සැසියේ බෙදාගත් රූප, වීඩියෝ සහ ශ්‍රව්‍ය මෙහි දිස්වේ.</string>
+    <string name="session_media_empty_files_title">ගොනු නැත</string>
+    <string name="session_media_empty_files_message">මෙම සැසියේ ලේඛන සහ ඇලවූ පෙළ මෙහි දිස්වේ.</string>
+    <string name="session_media_empty_links_title">සබැඳි නැත</string>
+    <string name="session_media_empty_links_message">මෙම සැසියේ බෙදාගත් වෙබ් සබැඳි මෙහි පෙන්වයි.</string>
+    <string name="session_media_earlier_note">පෙර පණිවිඩ තවම පූරණය කර නැත.</string>
+    <string name="session_media_load_earlier">පෙර පණිවිඩ පූරණය කරන්න</string>
+    <string name="session_media_loading_earlier">පූරණය වෙමින්…</string>
+    <string name="session_media_earlier_failed">පෙර පණිවිඩ පූරණය කිරීමට නොහැකි විය. ඔබේ සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</string>
+    <string name="session_media_earlier_nothing_new">දැන් පූරණය වූ පණිවිඩවල අලුත් දෙයක් නැත. පෙර පණිවිඩවල තවත් තිබිය හැක.</string>
 </resources>

@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Kundi ikki steðga shelli</string>
     <string name="session_quote_remove_description">Tak endurgeving burtur</string>
     <string name="session_quote_comment_placeholder">Legg eina viðmerking afturat (valfrítt)…</string>
+    <string name="session_media_title">Miðlar í setuni</string>
+    <string name="session_media_filter_media">Miðlar</string>
+    <string name="session_media_filter_files">Fílur</string>
+    <string name="session_media_filter_links">Leinkjur</string>
+    <string name="session_media_layout_description">Miðlauppsetan</string>
+    <string name="session_media_layout_tiles">Flísar</string>
+    <string name="session_media_layout_list">Listi</string>
+    <string name="session_media_origin_user">Sent av tær</string>
+    <string name="session_media_origin_agent">Deilt av agentinum</string>
+    <string name="session_media_open_click_label">Opna</string>
+    <string name="session_media_open_link_click_label">Lat leinki upp</string>
+    <string name="session_media_empty_media_title">Eingir miðlar</string>
+    <string name="session_media_empty_media_message">Myndir, sjónbond og ljóð, sum verða deild í hesi setuni, síggjast her.</string>
+    <string name="session_media_empty_files_title">Ongar fílur</string>
+    <string name="session_media_empty_files_message">Skjøl og innsettur tekstur frá hesi setuni síggjast her.</string>
+    <string name="session_media_empty_links_title">Ongar leinkjur</string>
+    <string name="session_media_empty_links_message">Leinkjur á vevið, sum verða deildar í hesi setuni, síggjast her.</string>
+    <string name="session_media_earlier_note">Eldri boð eru ikki heintað enn.</string>
+    <string name="session_media_load_earlier">Heinta eldri boð</string>
+    <string name="session_media_loading_earlier">Heintar…</string>
+    <string name="session_media_earlier_failed">Kundi ikki heinta eldri boð. Kanna sambandið og royn aftur.</string>
+    <string name="session_media_earlier_nothing_new">Einki nýtt her í boðunum, sum júst vórðu heintað. Eldri boð kunnu hava meira.</string>
 </resources>

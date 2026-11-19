@@ -13,11 +13,15 @@ import ai.opencode.core.store.StoreOf
 import ai.opencode.core.store.cancellable
 import ai.opencode.core.store.collectState
 import ai.opencode.core.strings.localized
+import ai.opencode.core.ui.AppearanceColorScheme
 import ai.opencode.core.ui.OpenCodeAlertDialog
 import ai.opencode.core.ui.OpenCodeIconButton
+import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodeShape
 import ai.opencode.core.ui.OpenCodeTheme
+import ai.opencode.core.ui.OpenCodeTopBar
 import ai.opencode.core.ui.SFSymbol
+import ai.opencode.core.ui.rememberAppAppearance
 import ai.opencode.server.model.OpenCodeOutgoingAttachment
 import android.annotation.SuppressLint
 import android.content.Context
@@ -33,13 +37,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -68,6 +71,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
@@ -240,29 +244,41 @@ fun ImageDrawingEditor(
             if (state.isAdding && !reduceMotion) window?.setWindowAnimations(0)
         }
         Column(Modifier.fillMaxSize().background(Color.Black).safeDrawingPadding()) {
-            Row(Modifier.fillMaxWidth().padding(start = 16.dp, top = 8.dp, end = 16.dp).graphicsLayer { alpha = controlsAlpha }) {
-                OpenCodeIconButton(
-                    symbol = SFSymbol.Xmark,
-                    contentDescription = stringResource(CoreR.string.common_cancel),
-                    onClick = { store.send(ImageDrawingFeature.Action.CancelTapped) },
-                    modifier = Modifier.testTag("image-drawing-cancel"),
-                    enabled = enabled,
-                )
-                Spacer(Modifier.weight(1f))
-                OpenCodeIconButton(
-                    symbol = SFSymbol.ArrowUturnBackward,
-                    contentDescription = stringResource(R.string.media_drawing_undo_description),
-                    onClick = { store.send(ImageDrawingFeature.Action.UndoTapped) },
-                    modifier = Modifier.testTag("image-drawing-undo"),
-                    enabled = enabled && state.drawing.changed,
-                )
-                Spacer(Modifier.width(8.dp))
-                OpenCodeIconButton(
-                    symbol = SFSymbol.Checkmark,
-                    contentDescription = stringResource(R.string.media_drawing_add_to_prompt_description),
-                    onClick = { store.send(ImageDrawingFeature.Action.AddTapped) },
-                    modifier = Modifier.testTag("image-drawing-add"),
-                    enabled = enabled && state.drawing.changed,
+            OpenCodeTheme(theme = rememberAppAppearance().theme, appearance = AppearanceColorScheme.Dark) {
+                OpenCodeTopBar(
+                    title = { Text(stringResource(R.string.media_drawing_draw_on_image_description), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                    modifier = Modifier.graphicsLayer { alpha = controlsAlpha },
+                    navigation = {
+                        OpenCodeIconButton(
+                            symbol = SFSymbol.Xmark,
+                            contentDescription = stringResource(CoreR.string.common_cancel),
+                            onClick = { store.send(ImageDrawingFeature.Action.CancelTapped) },
+                            modifier = Modifier.testTag("image-drawing-cancel"),
+                            style = OpenCodeIconButtonStyle.Standard,
+                            enabled = enabled,
+                        )
+                    },
+                    actions = {
+                        OpenCodeIconButton(
+                            symbol = SFSymbol.ArrowUturnBackward,
+                            contentDescription = stringResource(R.string.media_drawing_undo_description),
+                            onClick = { store.send(ImageDrawingFeature.Action.UndoTapped) },
+                            modifier = Modifier.testTag("image-drawing-undo"),
+                            style = OpenCodeIconButtonStyle.Standard,
+                            enabled = enabled && state.drawing.changed,
+                        )
+                        val addDescription = stringResource(R.string.media_drawing_add_to_prompt_description)
+                        TextButton(
+                            onClick = { store.send(ImageDrawingFeature.Action.AddTapped) },
+                            modifier = Modifier.testTag("image-drawing-add").semantics { contentDescription = addDescription },
+                            enabled = enabled && state.drawing.changed,
+                        ) {
+                            Text(stringResource(CoreR.string.common_add), maxLines = 1)
+                        }
+                    },
+                    containerColor = Color.Black,
+                    hairline = false,
+                    windowInsets = WindowInsets(0, 0, 0, 0),
                 )
             }
             AndroidView(
