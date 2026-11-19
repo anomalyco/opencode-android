@@ -37,6 +37,10 @@ the OpenCode desktop design system (`packages/ui`, theme `oc-2`), not iOS's SF /
   capsules (grabbers, dots, avatars).
 - Surfaces (`ui/OpenCodeSurfaces.kt`): floating fill + 1 dp hairline (`openCodeHairline`)
   + small shadow; `OpenCodeAlertDialog` (desktop dialog over Material's `AlertDialog`).
+- Button menus (`ui/OpenCodeButtonMenu.kt`): `OpenCodeButtonMenu`, a Material menu (`DropdownMenuPopup`,
+  Material's motion) 6 dp above the button it's placed in, lined up with its leading edge, its
+  popup not focusable so the keyboard stays up; placed from the button's `boundsInWindow`. The
+  composer's + and agent menus use it. Android-only.
 - Errors use one of four shapes. In a form or next to what failed: `OpenCodeErrorText`
   (`danger`, read out by TalkBack) or `OpenCodeTextField`'s error state. A pane that has nothing
   to show (failed to load, empty, no results): `OpenCodeContentUnavailable`, a 48 dp glyph, a

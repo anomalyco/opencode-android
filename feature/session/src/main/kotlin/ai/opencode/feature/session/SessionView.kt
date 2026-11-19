@@ -4,6 +4,7 @@ package ai.opencode.feature.session
 
 import ai.opencode.core.strings.localized
 import ai.opencode.core.R as CoreR
+import ai.opencode.core.ui.OpenCodeButtonMenu
 import ai.opencode.core.ui.OpenCodeContentUnavailable
 import ai.opencode.core.ui.inContainer
 import ai.opencode.feature.composer.composerWindowTouches
@@ -60,21 +61,6 @@ import ai.opencode.feature.composer.EscapeHandler
 import ai.opencode.core.ui.accessibilityFocusTarget
 import ai.opencode.core.ui.AccessibilityFocusTarget
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.window.PopupProperties
-import ai.opencode.core.ui.OpenCodeSpacing
-import androidx.compose.material3.DropdownMenuPopup
-import androidx.compose.material3.DropdownMenuPopupPositionProvider
-import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntRect
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.runtime.mutableLongStateOf
 import android.os.SystemClock
 import android.content.pm.PackageManager
@@ -90,13 +76,11 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.widthIn
@@ -143,7 +127,6 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
-import androidx.compose.ui.unit.roundToIntRect
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
@@ -713,65 +696,13 @@ private fun SessionAttachmentDropdown(
     val hostView = LocalView.current
     val firstRow = remember { AccessibilityFocusTarget() }
     MenuReturnsTalkBackFocus(expanded, menu.plusButton)
-    var anchor by remember { mutableStateOf(Rect.Zero) }
-    val density = LocalDensity.current
-    val top = WindowInsets.statusBars.getTop(density)
-    val room = with(density) { (anchor.top - top).toDp() } - OpenCodeSpacing.s6 * 2
-    val gap = with(density) { OpenCodeSpacing.s6.roundToPx() }
-    val position = remember(gap, top, anchor) { PlusMenuPosition(anchor.roundToIntRect(), gap, top) }
-    Box(Modifier.fillMaxSize().onGloballyPositioned { anchor = it.boundsInWindow() }) {
-        DropdownMenuPopup(
-            expanded = expanded,
-            onDismissRequest = onDismiss,
-            popupPositionProvider = position,
-            properties = PopupProperties(focusable = false),
-        ) {
-            Surface(
-                shape = MenuDefaults.shape,
-                color = MenuDefaults.containerColor,
-                tonalElevation = MenuDefaults.TonalElevation,
-                shadowElevation = MenuDefaults.ShadowElevation,
-            ) {
-                Column(
-                    Modifier
-                        .testTag("attachment-menu")
-                        .heightIn(max = room.coerceAtLeast(48.dp))
-                        .padding(vertical = 8.dp)
-                        .width(IntrinsicSize.Max)
-                        .verticalScroll(rememberScrollState()),
-                ) {
-                    MenuTakesTalkBackFocus(hostView, expanded, firstRow)
-                    for ((index, item) in items.withIndex()) {
-                        var rowModifier = Modifier.testTag("attachment-menu-${item.name.lowercase()}")
-                        if (index == 0) rowModifier = rowModifier.accessibilityFocusTarget(firstRow)
-                        MenuItem(item.title, item.systemImage, rowModifier) { onChoose(item) }
-                    }
-                }
-            }
+    OpenCodeButtonMenu(expanded, onDismiss, Modifier.testTag("attachment-menu")) {
+        MenuTakesTalkBackFocus(hostView, expanded, firstRow)
+        for ((index, item) in items.withIndex()) {
+            var rowModifier = Modifier.testTag("attachment-menu-${item.name.lowercase()}")
+            if (index == 0) rowModifier = rowModifier.accessibilityFocusTarget(firstRow)
+            MenuItem(item.title, item.systemImage, rowModifier) { onChoose(item) }
         }
-    }
-}
-
-/** Puts the + menu's bottom a small gap above the +, and keeps its top clear of the status bar. */
-private class PlusMenuPosition(private val anchor: IntRect, private val gap: Int, private val top: Int) : DropdownMenuPopupPositionProvider {
-    override var transformOrigin = TransformOrigin(0f, 1f)
-        private set
-
-    override fun calculatePosition(
-        anchorBounds: IntRect,
-        windowSize: IntSize,
-        layoutDirection: LayoutDirection,
-        popupContentSize: IntSize,
-    ): IntOffset {
-        var x = anchor.left
-        transformOrigin = TransformOrigin(0f, 1f)
-        if (layoutDirection == LayoutDirection.Rtl) {
-            x = anchor.right - popupContentSize.width
-            transformOrigin = TransformOrigin(1f, 1f)
-        }
-        x = x.coerceIn(0, maxOf(0, windowSize.width - popupContentSize.width))
-        val y = maxOf(top + gap, anchor.top - gap - popupContentSize.height)
-        return IntOffset(x, y)
     }
 }
 
