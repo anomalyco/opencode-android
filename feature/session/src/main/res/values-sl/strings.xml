@@ -318,4 +318,26 @@
     <string name="session_shell_stop_failed">Lupine ni bilo mogoče ustaviti</string>
     <string name="session_quote_remove_description">Odstrani citat</string>
     <string name="session_quote_comment_placeholder">Dodaj neobvezen komentar …</string>
+    <string name="session_media_title">Predstavnost seje</string>
+    <string name="session_media_filter_media">Predstavnost</string>
+    <string name="session_media_filter_files">Datoteke</string>
+    <string name="session_media_filter_links">Povezave</string>
+    <string name="session_media_layout_description">Postavitev predstavnosti</string>
+    <string name="session_media_layout_tiles">Ploščice</string>
+    <string name="session_media_layout_list">Seznam</string>
+    <string name="session_media_origin_user">Poslali ste vi</string>
+    <string name="session_media_origin_agent">Delil agent</string>
+    <string name="session_media_open_click_label">Odpri</string>
+    <string name="session_media_open_link_click_label">Odpri povezavo</string>
+    <string name="session_media_empty_media_title">Ni predstavnosti</string>
+    <string name="session_media_empty_media_message">Tukaj se prikažejo slike, videoposnetki in zvok, deljeni v tej seji.</string>
+    <string name="session_media_empty_files_title">Ni datotek</string>
+    <string name="session_media_empty_files_message">Tukaj se prikažejo dokumenti in prilepljeno besedilo iz te seje.</string>
+    <string name="session_media_empty_links_title">Ni povezav</string>
+    <string name="session_media_empty_links_message">Spletne povezave, deljene v tej seji, se prikažejo tukaj.</string>
+    <string name="session_media_earlier_note">Prejšnja sporočila še niso naložena.</string>
+    <string name="session_media_load_earlier">Naloži prejšnja sporočila</string>
+    <string name="session_media_loading_earlier">Nalaganje…</string>
+    <string name="session_media_earlier_failed">Prejšnjih sporočil ni bilo mogoče naložiti. Preverite povezavo in poskusite znova.</string>
+    <string name="session_media_earlier_nothing_new">V pravkar naloženih sporočilih ni nič novega. Morda je več v prejšnjih.</string>
 </resources>

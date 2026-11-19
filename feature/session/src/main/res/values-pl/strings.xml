@@ -318,4 +318,26 @@
     <string name="session_shell_stop_failed">Nie udało się zatrzymać terminala</string>
     <string name="session_quote_remove_description">Usuń cytat</string>
     <string name="session_quote_comment_placeholder">Dodaj opcjonalny komentarz…</string>
+    <string name="session_media_title">Multimedia sesji</string>
+    <string name="session_media_filter_media">Multimedia</string>
+    <string name="session_media_filter_files">Pliki</string>
+    <string name="session_media_filter_links">Linki</string>
+    <string name="session_media_layout_description">Układ multimediów</string>
+    <string name="session_media_layout_tiles">Kafelki</string>
+    <string name="session_media_layout_list">Lista</string>
+    <string name="session_media_origin_user">Wysłane przez ciebie</string>
+    <string name="session_media_origin_agent">Udostępnione przez agenta</string>
+    <string name="session_media_open_click_label">Otwórz</string>
+    <string name="session_media_open_link_click_label">Otwórz link</string>
+    <string name="session_media_empty_media_title">Brak multimediów</string>
+    <string name="session_media_empty_media_message">Obrazy, wideo i dźwięki udostępnione w tej sesji pojawią się tutaj.</string>
+    <string name="session_media_empty_files_title">Brak plików</string>
+    <string name="session_media_empty_files_message">Dokumenty i wklejony tekst z tej sesji pojawią się tutaj.</string>
+    <string name="session_media_empty_links_title">Brak linków</string>
+    <string name="session_media_empty_links_message">Linki internetowe udostępnione w tej sesji pojawią się tutaj.</string>
+    <string name="session_media_earlier_note">Wcześniejsze wiadomości nie zostały jeszcze wczytane.</string>
+    <string name="session_media_load_earlier">Wczytaj wcześniejsze wiadomości</string>
+    <string name="session_media_loading_earlier">Ładowanie…</string>
+    <string name="session_media_earlier_failed">Nie udało się wczytać wcześniejszych wiadomości. Sprawdź połączenie i spróbuj ponownie.</string>
+    <string name="session_media_earlier_nothing_new">W właśnie wczytanych wiadomościach nie ma nic nowego. Wcześniejsze mogą zawierać więcej.</string>
 </resources>

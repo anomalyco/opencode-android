@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Shell-ийг зогсоож чадсангүй</string>
     <string name="session_quote_remove_description">Эшлэлийг арилгах</string>
     <string name="session_quote_comment_placeholder">Хүсвэл сэтгэгдэл нэмэх…</string>
+    <string name="session_media_title">Сессийн медиа</string>
+    <string name="session_media_filter_media">Медиа</string>
+    <string name="session_media_filter_files">Файлууд</string>
+    <string name="session_media_filter_links">Холбоосууд</string>
+    <string name="session_media_layout_description">Медиагийн байрлал</string>
+    <string name="session_media_layout_tiles">Хавтанцар</string>
+    <string name="session_media_layout_list">Жагсаалт</string>
+    <string name="session_media_origin_user">Таны илгээсэн</string>
+    <string name="session_media_origin_agent">Агентийн хуваалцсан</string>
+    <string name="session_media_open_click_label">Нээх</string>
+    <string name="session_media_open_link_click_label">Холбоос нээх</string>
+    <string name="session_media_empty_media_title">Медиа алга</string>
+    <string name="session_media_empty_media_message">Энэ сессид хуваалцсан зураг, видео, аудио энд харагдана.</string>
+    <string name="session_media_empty_files_title">Файл алга</string>
+    <string name="session_media_empty_files_message">Энэ сессийн баримт бичиг болон буулгасан текст энд харагдана.</string>
+    <string name="session_media_empty_links_title">Холбоос алга</string>
+    <string name="session_media_empty_links_message">Энэ сессид хуваалцсан вэб холбоосууд энд харагдана.</string>
+    <string name="session_media_earlier_note">Өмнөх мессежүүд хараахан ачаалагдаагүй байна.</string>
+    <string name="session_media_load_earlier">Өмнөх мессежүүдийг ачаалах</string>
+    <string name="session_media_loading_earlier">Ачааж байна…</string>
+    <string name="session_media_earlier_failed">Өмнөх мессежүүдийг ачаалж чадсангүй. Холболтоо шалгаад дахин оролдоно уу.</string>
+    <string name="session_media_earlier_nothing_new">Дөнгөж ачаалсан мессежүүдэд шинэ зүйл алга. Үүнээс өмнөх мессежүүдэд байж магадгүй.</string>
 </resources>

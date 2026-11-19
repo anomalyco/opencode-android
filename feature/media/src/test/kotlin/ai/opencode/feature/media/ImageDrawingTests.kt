@@ -299,4 +299,24 @@ class ImageDrawingFeatureTests {
         store.finish()
         assertTrue(offered.current.isEmpty())
     }
+
+    @Test fun aGalleryWithAudioPagesThroughItAndBackLikeAnyMedia() = runTest {
+        val server = OpenCodeServer(url = "https://fixture.invalid", username = "", password = "")
+        val root = AgentFileDestination(AgentFileReference(path = "/fixture/readme.md"), null)
+        val memo = TranscriptImagePreview.Page(AgentFileDestination(AgentFileReference(path = "memo.m4a"), "/fixture"))
+        val clip = TranscriptImagePreview.Page(AgentFileDestination(AgentFileReference(path = "clip.mp4"), "/fixture"))
+        val gallery = TranscriptImagePreview(memo.id, listOf(clip, memo), server)
+        val preview = TranscriptImagePreview(root, server)
+        val store = TestStore(FullscreenViewerFeature.State(preview), FullscreenViewerFeature(null), this)
+        store.exhaustive = false
+        store.send(FullscreenViewerFeature.Action.OpenFile(memo.file!!, gallery))
+        assertEquals(gallery, store.state.preview)
+        assertEquals(memo.id, store.state.selectedID)
+        assertTrue(store.state.filePath.isEmpty())
+        store.send(FullscreenViewerFeature.Action.PageSelected(clip.id))
+        assertEquals(clip.id, store.state.selectedID)
+        store.send(FullscreenViewerFeature.Action.PageSelected(memo.id))
+        assertEquals(memo.id, store.state.selectedID)
+        store.finish()
+    }
 }

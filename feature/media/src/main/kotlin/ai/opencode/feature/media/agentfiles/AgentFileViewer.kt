@@ -405,7 +405,7 @@ private fun PlayerControls(player: Player, modifier: Modifier) {
 }
 
 @Composable
-private fun AudioArtwork(name: String) {
+internal fun AudioArtwork(name: String) {
     val reducedMotion = rememberReduceMotion()
     val pulse = if (reducedMotion) {
         1f

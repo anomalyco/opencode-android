@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">Không thể dừng vỏ bọc</string>
     <string name="session_quote_remove_description">Xóa trích dẫn</string>
     <string name="session_quote_comment_placeholder">Thêm bình luận (tùy chọn)…</string>
+    <string name="session_media_title">Tệp phương tiện của phiên</string>
+    <string name="session_media_filter_media">Đa phương tiện</string>
+    <string name="session_media_filter_files">Tệp</string>
+    <string name="session_media_filter_links">Liên kết</string>
+    <string name="session_media_layout_description">Bố cục đa phương tiện</string>
+    <string name="session_media_layout_tiles">Ô</string>
+    <string name="session_media_layout_list">Danh sách</string>
+    <string name="session_media_origin_user">Bạn đã gửi</string>
+    <string name="session_media_origin_agent">Tác nhân đã chia sẻ</string>
+    <string name="session_media_open_click_label">Mở</string>
+    <string name="session_media_open_link_click_label">Mở liên kết</string>
+    <string name="session_media_empty_media_title">Chưa có đa phương tiện</string>
+    <string name="session_media_empty_media_message">Hình ảnh, video và âm thanh được chia sẻ trong phiên này sẽ hiện ở đây.</string>
+    <string name="session_media_empty_files_title">Chưa có tệp</string>
+    <string name="session_media_empty_files_message">Tài liệu và văn bản đã dán từ phiên này sẽ hiện ở đây.</string>
+    <string name="session_media_empty_links_title">Chưa có liên kết</string>
+    <string name="session_media_empty_links_message">Các liên kết web được chia sẻ trong phiên này sẽ hiện ở đây.</string>
+    <string name="session_media_earlier_note">Các tin nhắn trước đó chưa được tải.</string>
+    <string name="session_media_load_earlier">Tải tin nhắn trước đó</string>
+    <string name="session_media_loading_earlier">Đang tải…</string>
+    <string name="session_media_earlier_failed">Không thể tải các tin nhắn trước đó. Hãy kiểm tra kết nối và thử lại.</string>
+    <string name="session_media_earlier_nothing_new">Không có gì mới trong các tin nhắn vừa tải. Các tin nhắn trước đó có thể còn nhiều nội dung hơn.</string>
 </resources>

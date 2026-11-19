@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Shellni to‘xtatib bo‘lmadi</string>
     <string name="session_quote_remove_description">Iqtibosni olib tashlash</string>
     <string name="session_quote_comment_placeholder">Izoh qo\'shing (ixtiyoriy)…</string>
+    <string name="session_media_title">Sessiya mediasi</string>
+    <string name="session_media_filter_media">Media</string>
+    <string name="session_media_filter_files">Fayllar</string>
+    <string name="session_media_filter_links">Havolalar</string>
+    <string name="session_media_layout_description">Media joylashuvi</string>
+    <string name="session_media_layout_tiles">Plitkalar</string>
+    <string name="session_media_layout_list">Roʻyxat</string>
+    <string name="session_media_origin_user">Siz yuborgansiz</string>
+    <string name="session_media_origin_agent">Agent ulashgan</string>
+    <string name="session_media_open_click_label">Ochish</string>
+    <string name="session_media_open_link_click_label">Havolani ochish</string>
+    <string name="session_media_empty_media_title">Media yo‘q</string>
+    <string name="session_media_empty_media_message">Bu sessiyada ulashilgan rasmlar, videolar va audiolar shu yerda ko‘rinadi.</string>
+    <string name="session_media_empty_files_title">Fayllar yo‘q</string>
+    <string name="session_media_empty_files_message">Bu sessiyadagi hujjatlar va joylangan matnlar shu yerda ko‘rinadi.</string>
+    <string name="session_media_empty_links_title">Havolalar yo‘q</string>
+    <string name="session_media_empty_links_message">Bu sessiyada ulashilgan veb-havolalar shu yerda ko‘rinadi.</string>
+    <string name="session_media_earlier_note">Oldingi xabarlar hali yuklanmagan.</string>
+    <string name="session_media_load_earlier">Oldingi xabarlarni yuklash</string>
+    <string name="session_media_loading_earlier">Yuklanmoqda…</string>
+    <string name="session_media_earlier_failed">Oldingi xabarlarni yuklab bo‘lmadi. Ulanishni tekshirib, qayta urinib ko‘ring.</string>
+    <string name="session_media_earlier_nothing_new">Hozir yuklangan xabarlarda yangilik yo‘q. Oldingilarida bo‘lishi mumkin.</string>
 </resources>

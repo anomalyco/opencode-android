@@ -307,4 +307,26 @@
     <string name="session_shell_stop_failed">Nu s-a putut opri shell-ul</string>
     <string name="session_quote_remove_description">Elimină citatul</string>
     <string name="session_quote_comment_placeholder">Adaugă un comentariu opțional…</string>
+    <string name="session_media_title">Media din sesiune</string>
+    <string name="session_media_filter_media">Media</string>
+    <string name="session_media_filter_files">Fișiere</string>
+    <string name="session_media_filter_links">Linkuri</string>
+    <string name="session_media_layout_description">Aspectul conținutului media</string>
+    <string name="session_media_layout_tiles">Butoane rapide</string>
+    <string name="session_media_layout_list">Listă</string>
+    <string name="session_media_origin_user">Trimis de tine</string>
+    <string name="session_media_origin_agent">Distribuit de agent</string>
+    <string name="session_media_open_click_label">Deschide</string>
+    <string name="session_media_open_link_click_label">Deschide linkul</string>
+    <string name="session_media_empty_media_title">Niciun conținut media</string>
+    <string name="session_media_empty_media_message">Imaginile, videoclipurile și fișierele audio distribuite în această sesiune apar aici.</string>
+    <string name="session_media_empty_files_title">Niciun fișier</string>
+    <string name="session_media_empty_files_message">Documentele și textul lipit din această sesiune apar aici.</string>
+    <string name="session_media_empty_links_title">Niciun link</string>
+    <string name="session_media_empty_links_message">Linkurile web distribuite în această sesiune apar aici.</string>
+    <string name="session_media_earlier_note">Mesajele anterioare nu sunt încărcate încă.</string>
+    <string name="session_media_load_earlier">Încarcă mesajele anterioare</string>
+    <string name="session_media_loading_earlier">Se încarcă…</string>
+    <string name="session_media_earlier_failed">Mesajele anterioare nu s-au putut încărca. Verifică conexiunea și încearcă din nou.</string>
+    <string name="session_media_earlier_nothing_new">Nimic nou în mesajele tocmai încărcate. Cele anterioare ar putea avea mai mult.</string>
 </resources>

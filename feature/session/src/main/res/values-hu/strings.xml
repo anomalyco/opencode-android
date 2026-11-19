@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Nem sikerült leállítani a shellt</string>
     <string name="session_quote_remove_description">Idézet eltávolítása</string>
     <string name="session_quote_comment_placeholder">Megjegyzés hozzáadása (nem kötelező)…</string>
+    <string name="session_media_title">Munkamenet médiatartalmai</string>
+    <string name="session_media_filter_media">Média</string>
+    <string name="session_media_filter_files">Fájlok</string>
+    <string name="session_media_filter_links">Linkek</string>
+    <string name="session_media_layout_description">Média elrendezése</string>
+    <string name="session_media_layout_tiles">Csempék</string>
+    <string name="session_media_layout_list">Lista</string>
+    <string name="session_media_origin_user">Ön küldte</string>
+    <string name="session_media_origin_agent">Az ügynök osztotta meg</string>
+    <string name="session_media_open_click_label">Megnyitás</string>
+    <string name="session_media_open_link_click_label">Link megnyitása</string>
+    <string name="session_media_empty_media_title">Nincs média</string>
+    <string name="session_media_empty_media_message">Az ebben a munkamenetben megosztott képek, videók és hangok itt jelennek meg.</string>
+    <string name="session_media_empty_files_title">Nincsenek fájlok</string>
+    <string name="session_media_empty_files_message">Az ebből a munkamenetből származó dokumentumok és beillesztett szövegek itt jelennek meg.</string>
+    <string name="session_media_empty_links_title">Nincsenek linkek</string>
+    <string name="session_media_empty_links_message">A munkamenetben megosztott webes linkek itt jelennek meg.</string>
+    <string name="session_media_earlier_note">A korábbi üzenetek még nincsenek betöltve.</string>
+    <string name="session_media_load_earlier">Korábbi üzenetek betöltése</string>
+    <string name="session_media_loading_earlier">Betöltés…</string>
+    <string name="session_media_earlier_failed">Nem sikerült betölteni a korábbi üzeneteket. Ellenőrizze a kapcsolatot, és próbálja újra.</string>
+    <string name="session_media_earlier_nothing_new">Az imént betöltött üzenetek között nincs semmi új. A korábbiakban lehet még több.</string>
 </resources>

@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">មិនអាចឈប់សែលបាន</string>
     <string name="session_quote_remove_description">ដកការដកស្រង់ចេញ</string>
     <string name="session_quote_comment_placeholder">បន្ថែមមតិ (ជាជម្រើស)…</string>
+    <string name="session_media_title">មេឌៀសម័យ</string>
+    <string name="session_media_filter_media">មេឌៀ</string>
+    <string name="session_media_filter_files">ឯកសារ</string>
+    <string name="session_media_filter_links">តំណ</string>
+    <string name="session_media_layout_description">ប្លង់មេឌៀ</string>
+    <string name="session_media_layout_tiles">ប៊ូតុងផ្លូវកាត់</string>
+    <string name="session_media_layout_list">បញ្ជី</string>
+    <string name="session_media_origin_user">បានផ្ញើដោយអ្នក</string>
+    <string name="session_media_origin_agent">បានចែករំលែកដោយភ្នាក់ងារ</string>
+    <string name="session_media_open_click_label">បើក</string>
+    <string name="session_media_open_link_click_label">បើកតំណ</string>
+    <string name="session_media_empty_media_title">គ្មានមេឌៀ</string>
+    <string name="session_media_empty_media_message">រូបភាព វីដេអូ និងសំឡេងដែលបានចែករំលែកក្នុងសម័យនេះនឹងបង្ហាញនៅទីនេះ។</string>
+    <string name="session_media_empty_files_title">គ្មានឯកសារ</string>
+    <string name="session_media_empty_files_message">ឯកសារ និងអត្ថបទដែលបានបិទភ្ជាប់ពីសម័យនេះនឹងបង្ហាញនៅទីនេះ។</string>
+    <string name="session_media_empty_links_title">គ្មានតំណ</string>
+    <string name="session_media_empty_links_message">តំណគេហទំព័រដែលបានចែករំលែកក្នុងសម័យនេះនឹងបង្ហាញនៅទីនេះ។</string>
+    <string name="session_media_earlier_note">សារមុនៗមិនទាន់បានផ្ទុកនៅឡើយទេ។</string>
+    <string name="session_media_load_earlier">ផ្ទុកសារមុនៗ</string>
+    <string name="session_media_loading_earlier">កំពុងផ្ទុក…</string>
+    <string name="session_media_earlier_failed">មិនអាចផ្ទុកសារមុនៗបានទេ។ សូមពិនិត្យការតភ្ជាប់របស់អ្នក រួចព្យាយាមម្តងទៀត។</string>
+    <string name="session_media_earlier_nothing_new">គ្មានអ្វីថ្មីក្នុងសារដែលទើបតែផ្ទុកនេះទេ។ សារមុនៗអាចមានច្រើនជាងនេះ។</string>
 </resources>

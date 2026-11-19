@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Guaska nuk u ndal dot</string>
     <string name="session_quote_remove_description">Hiq citimin</string>
     <string name="session_quote_comment_placeholder">Shto një koment opsional…</string>
+    <string name="session_media_title">Media e sesionit</string>
+    <string name="session_media_filter_media">Media</string>
+    <string name="session_media_filter_files">Skedarët</string>
+    <string name="session_media_filter_links">Lidhjet</string>
+    <string name="session_media_layout_description">Struktura e medias</string>
+    <string name="session_media_layout_tiles">Butona</string>
+    <string name="session_media_layout_list">Lista</string>
+    <string name="session_media_origin_user">Dërguar nga ti</string>
+    <string name="session_media_origin_agent">Ndarë nga agjenti</string>
+    <string name="session_media_open_click_label">Hap</string>
+    <string name="session_media_open_link_click_label">Hap lidhjen</string>
+    <string name="session_media_empty_media_title">Nuk ka media</string>
+    <string name="session_media_empty_media_message">Imazhet, videot dhe audiot e ndara në këtë sesion shfaqen këtu.</string>
+    <string name="session_media_empty_files_title">Nuk ka skedarë</string>
+    <string name="session_media_empty_files_message">Dokumentet dhe teksti i ngjitur nga ky sesion shfaqen këtu.</string>
+    <string name="session_media_empty_links_title">Nuk ka lidhje</string>
+    <string name="session_media_empty_links_message">Lidhjet e ueb-it të ndara në këtë sesion shfaqen këtu.</string>
+    <string name="session_media_earlier_note">Mesazhet e mëparshme nuk janë ngarkuar ende.</string>
+    <string name="session_media_load_earlier">Ngarko mesazhet e mëparshme</string>
+    <string name="session_media_loading_earlier">Po ngarkohet…</string>
+    <string name="session_media_earlier_failed">Mesazhet e mëparshme nuk u ngarkuan dot. Kontrollo lidhjen dhe provo sërish.</string>
+    <string name="session_media_earlier_nothing_new">Asgjë e re te mesazhet që sapo u ngarkuan. Të mëparshmet mund të kenë më shumë.</string>
 </resources>

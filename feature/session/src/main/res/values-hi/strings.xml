@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">शेल नहीं रोका जा सका</string>
     <string name="session_quote_remove_description">उद्धरण हटाएँ</string>
     <string name="session_quote_comment_placeholder">चाहें तो टिप्पणी जोड़ें…</string>
+    <string name="session_media_title">सेशन मीडिया</string>
+    <string name="session_media_filter_media">मीडिया</string>
+    <string name="session_media_filter_files">फ़ाइलें</string>
+    <string name="session_media_filter_links">लिंक</string>
+    <string name="session_media_layout_description">मीडिया लेआउट</string>
+    <string name="session_media_layout_tiles">टाइलें</string>
+    <string name="session_media_layout_list">सूची</string>
+    <string name="session_media_origin_user">आपने भेजा</string>
+    <string name="session_media_origin_agent">एजेंट ने शेयर किया</string>
+    <string name="session_media_open_click_label">खोलें</string>
+    <string name="session_media_open_link_click_label">लिंक खोलें</string>
+    <string name="session_media_empty_media_title">कोई मीडिया नहीं</string>
+    <string name="session_media_empty_media_message">इस सेशन में शेयर की गई छवियाँ, वीडियो और ऑडियो यहाँ दिखेंगे।</string>
+    <string name="session_media_empty_files_title">कोई फ़ाइल नहीं</string>
+    <string name="session_media_empty_files_message">इस सेशन के दस्तावेज़ और पेस्ट किया गया टेक्स्ट यहाँ दिखेंगे।</string>
+    <string name="session_media_empty_links_title">कोई लिंक नहीं</string>
+    <string name="session_media_empty_links_message">इस सेशन में शेयर किए गए वेब लिंक यहाँ दिखेंगे।</string>
+    <string name="session_media_earlier_note">पहले के संदेश अभी लोड नहीं हुए हैं।</string>
+    <string name="session_media_load_earlier">पहले के संदेश लोड करें</string>
+    <string name="session_media_loading_earlier">लोड हो रहा है…</string>
+    <string name="session_media_earlier_failed">पहले के संदेश लोड नहीं हो सके। अपना कनेक्शन जाँचें और फिर से कोशिश करें।</string>
+    <string name="session_media_earlier_nothing_new">अभी लोड हुए संदेशों में कुछ नया नहीं है। पहले के संदेशों में और कुछ हो सकता है।</string>
 </resources>

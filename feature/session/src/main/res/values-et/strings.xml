@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Shelli peatamine ebaõnnestus</string>
     <string name="session_quote_remove_description">Eemalda tsitaat</string>
     <string name="session_quote_comment_placeholder">Lisa soovi korral kommentaar…</string>
+    <string name="session_media_title">Seansi meedia</string>
+    <string name="session_media_filter_media">Meedia</string>
+    <string name="session_media_filter_files">Failid</string>
+    <string name="session_media_filter_links">Lingid</string>
+    <string name="session_media_layout_description">Meedia paigutus</string>
+    <string name="session_media_layout_tiles">Paanid</string>
+    <string name="session_media_layout_list">Nimekiri</string>
+    <string name="session_media_origin_user">Saatsid sina</string>
+    <string name="session_media_origin_agent">Jagas agent</string>
+    <string name="session_media_open_click_label">Ava</string>
+    <string name="session_media_open_link_click_label">Ava link</string>
+    <string name="session_media_empty_media_title">Meediat pole</string>
+    <string name="session_media_empty_media_message">Siin kuvatakse selles seansis jagatud pildid, videod ja heli.</string>
+    <string name="session_media_empty_files_title">Faile pole</string>
+    <string name="session_media_empty_files_message">Siin kuvatakse selle seansi dokumendid ja kleebitud tekst.</string>
+    <string name="session_media_empty_links_title">Linke pole</string>
+    <string name="session_media_empty_links_message">Selles seansis jagatud veebilingid ilmuvad siia.</string>
+    <string name="session_media_earlier_note">Varasemaid sõnumeid pole veel laaditud.</string>
+    <string name="session_media_load_earlier">Laadi varasemad sõnumid</string>
+    <string name="session_media_loading_earlier">Laadimine…</string>
+    <string name="session_media_earlier_failed">Varasemate sõnumite laadimine ebaõnnestus. Kontrolli ühendust ja proovi uuesti.</string>
+    <string name="session_media_earlier_nothing_new">Äsja laaditud sõnumites pole siin midagi uut. Varasemates võib veel olla.</string>
 </resources>

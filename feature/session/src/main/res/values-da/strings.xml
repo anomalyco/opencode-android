@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Kunne ikke stoppe shell</string>
     <string name="session_quote_remove_description">Fjern citat</string>
     <string name="session_quote_comment_placeholder">Tilføj en valgfri kommentar…</string>
+    <string name="session_media_title">Sessionsmedier</string>
+    <string name="session_media_filter_media">Medier</string>
+    <string name="session_media_filter_files">Filer</string>
+    <string name="session_media_filter_links">Links</string>
+    <string name="session_media_layout_description">Medielayout</string>
+    <string name="session_media_layout_tiles">Felter</string>
+    <string name="session_media_layout_list">Liste</string>
+    <string name="session_media_origin_user">Sendt af dig</string>
+    <string name="session_media_origin_agent">Delt af agenten</string>
+    <string name="session_media_open_click_label">Åbn</string>
+    <string name="session_media_open_link_click_label">Åbn link</string>
+    <string name="session_media_empty_media_title">Ingen medier</string>
+    <string name="session_media_empty_media_message">Billeder, videoer og lyd, der deles i denne session, vises her.</string>
+    <string name="session_media_empty_files_title">Ingen filer</string>
+    <string name="session_media_empty_files_message">Dokumenter og indsat tekst fra denne session vises her.</string>
+    <string name="session_media_empty_links_title">Ingen links</string>
+    <string name="session_media_empty_links_message">Weblinks, der deles i denne session, vises her.</string>
+    <string name="session_media_earlier_note">Tidligere beskeder er ikke indlæst endnu.</string>
+    <string name="session_media_load_earlier">Indlæs tidligere beskeder</string>
+    <string name="session_media_loading_earlier">Indlæser…</string>
+    <string name="session_media_earlier_failed">Kunne ikke indlæse tidligere beskeder. Tjek din forbindelse, og prøv igen.</string>
+    <string name="session_media_earlier_nothing_new">Intet nyt her i de netop indlæste beskeder. Tidligere beskeder kan have mere.</string>
 </resources>

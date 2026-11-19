@@ -254,6 +254,7 @@ fun SessionView(
     val agentScope by store.observe { "${it.server.persistenceID}|${it.session?.id ?: "draft"}" }
     val errorMessage by store.observe { it.errorMessage }
     val identity by store.observe { it.transcriptIdentity }
+    val showsSessionMedia by store.observe { it.sessionMediaFilter != null }
     // Read in composition, not in the SideEffect: SideEffect reads aren't observed, so an import
     // finishing would leave the host's copy stale.
     val isImportingImages = importer.isLoadingImages
@@ -314,7 +315,10 @@ fun SessionView(
             // presentation's, not the screen's, so the capsule drawn over the screen sits in it by
             // its place above the composer (iOS `SessionView+Composer.swift:209-241`), not after
             // everything (QA AB-02).
-            modifier = Modifier.semantics { isTraversalGroup = true },
+            // The screen leaves the accessibility tree while Session Media covers it.
+            modifier = Modifier
+                .semantics { isTraversalGroup = true }
+                .then(if (showsSessionMedia) Modifier.clearAndSetSemantics {} else Modifier),
         ) {
             Box(Modifier.fillMaxSize().background(colors.canvas)) {
                 ComposedAfterComposer {
@@ -421,6 +425,7 @@ fun SessionView(
         }
         if (!isInertPreview) {
             SessionAttachmentMenu(store, composerHost, importer, attachmentMenu)
+            SessionMediaPage(store, Modifier.matchParentSize())
         }
         }
         if (!isInertPreview) {

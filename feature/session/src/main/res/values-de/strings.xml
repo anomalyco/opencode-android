@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Shell konnte nicht gestoppt werden</string>
     <string name="session_quote_remove_description">Zitat entfernen</string>
     <string name="session_quote_comment_placeholder">Optionalen Kommentar hinzufügen…</string>
+    <string name="session_media_title">Sitzungsmedien</string>
+    <string name="session_media_filter_media">Medien</string>
+    <string name="session_media_filter_files">Dateien</string>
+    <string name="session_media_filter_links">Links</string>
+    <string name="session_media_layout_description">Medienlayout</string>
+    <string name="session_media_layout_tiles">Kacheln</string>
+    <string name="session_media_layout_list">Liste</string>
+    <string name="session_media_origin_user">Von dir gesendet</string>
+    <string name="session_media_origin_agent">Vom Agenten geteilt</string>
+    <string name="session_media_open_click_label">Öffnen</string>
+    <string name="session_media_open_link_click_label">Link öffnen</string>
+    <string name="session_media_empty_media_title">Keine Medien</string>
+    <string name="session_media_empty_media_message">Bilder, Videos und Audio, die in dieser Sitzung geteilt werden, erscheinen hier.</string>
+    <string name="session_media_empty_files_title">Keine Dateien</string>
+    <string name="session_media_empty_files_message">Dokumente und eingefügter Text aus dieser Sitzung erscheinen hier.</string>
+    <string name="session_media_empty_links_title">Keine Links</string>
+    <string name="session_media_empty_links_message">In dieser Sitzung geteilte Web-Links erscheinen hier.</string>
+    <string name="session_media_earlier_note">Frühere Nachrichten sind noch nicht geladen.</string>
+    <string name="session_media_load_earlier">Frühere Nachrichten laden</string>
+    <string name="session_media_loading_earlier">Wird geladen…</string>
+    <string name="session_media_earlier_failed">Frühere Nachrichten konnten nicht geladen werden. Prüfe deine Verbindung und versuche es erneut.</string>
+    <string name="session_media_earlier_nothing_new">Unter den gerade geladenen Nachrichten ist nichts Neues. Frühere enthalten vielleicht mehr.</string>
 </resources>

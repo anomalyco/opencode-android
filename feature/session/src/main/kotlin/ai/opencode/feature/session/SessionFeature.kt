@@ -325,6 +325,14 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
          * survives dismissal.
          */
         val sessionSheet: SessionSheetFeature.State? = null,
+        /** Session Media's page over the session, on its filter; null while it's closed. */
+        val sessionMediaFilter: SessionMedia.Filter? = null,
+        /** Media as tiles or a list; kept while the screen lives, across the viewer, tabs and reopening. */
+        val sessionMediaLayout: SessionMedia.Layout = SessionMedia.Layout.tiles,
+        /** Session Media's Load Earlier while it pages for its tab; null otherwise. */
+        val sessionMediaEarlier: SessionMedia.EarlierSearch? = null,
+        /** The last Load Earlier ended with nothing new for its tab, and more history remains. */
+        val sessionMediaNothingNew: Boolean = false,
         /** The server's folders, browsed from the Project sheet (`@Presents`). */
         val folderBrowser: FolderBrowserFeature.State? = null,
         /** What the latest reply filled; null when unknown or nothing fills it. */
@@ -756,6 +764,14 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class RequestDock(val action: RequestDockFeature.Action) : Action
         data object SessionInfoTapped : Action
         data object ReportProblemTapped : Action
+        /** The header menu's Session Media: what the session shared, opening on Media. */
+        data object SessionMediaTapped : Action
+        data class SessionMediaFilterPicked(val filter: SessionMedia.Filter) : Action
+        /** Session Media's Load Earlier Messages: always an older page, never just the transcript's window. */
+        data object SessionMediaLoadEarlierTapped : Action
+        /** Media's Tiles / List switch. */
+        data class SessionMediaLayoutPicked(val layout: SessionMedia.Layout) : Action
+        data object SessionMediaDismissed : Action
         /** A header-menu item: the Session sheet's action without opening it. */
         data class SessionMenu(val action: SessionSheetFeature.Action) : Action
         data class SessionSheet(val action: SessionSheetFeature.Action) : Action

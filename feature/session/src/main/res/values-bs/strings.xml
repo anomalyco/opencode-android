@@ -307,4 +307,26 @@
     <string name="session_shell_stop_failed">Zaustavljanje ljuske nije uspjelo</string>
     <string name="session_quote_remove_description">Ukloni citat</string>
     <string name="session_quote_comment_placeholder">Dodaj komentar ako želiš…</string>
+    <string name="session_media_title">Mediji sesije</string>
+    <string name="session_media_filter_media">Mediji</string>
+    <string name="session_media_filter_files">Datoteke</string>
+    <string name="session_media_filter_links">Linkovi</string>
+    <string name="session_media_layout_description">Raspored medija</string>
+    <string name="session_media_layout_tiles">Pločice</string>
+    <string name="session_media_layout_list">Lista</string>
+    <string name="session_media_origin_user">Poslao si ti</string>
+    <string name="session_media_origin_agent">Podijelio agent</string>
+    <string name="session_media_open_click_label">Otvori</string>
+    <string name="session_media_open_link_click_label">Otvori link</string>
+    <string name="session_media_empty_media_title">Nema medija</string>
+    <string name="session_media_empty_media_message">Slike, videi i zvuk podijeljeni u ovoj sesiji pojavit će se ovdje.</string>
+    <string name="session_media_empty_files_title">Nema datoteka</string>
+    <string name="session_media_empty_files_message">Dokumenti i zalijepljeni tekst iz ove sesije pojavit će se ovdje.</string>
+    <string name="session_media_empty_links_title">Nema linkova</string>
+    <string name="session_media_empty_links_message">Web linkovi podijeljeni u ovoj sesiji pojavit će se ovdje.</string>
+    <string name="session_media_earlier_note">Ranije poruke još nisu učitane.</string>
+    <string name="session_media_load_earlier">Učitaj ranije poruke</string>
+    <string name="session_media_loading_earlier">Učitavanje…</string>
+    <string name="session_media_earlier_failed">Nije moguće učitati ranije poruke. Provjeri vezu i pokušaj ponovo.</string>
+    <string name="session_media_earlier_nothing_new">U upravo učitanim porukama nema ničeg novog. Ranije poruke možda imaju više.</string>
 </resources>

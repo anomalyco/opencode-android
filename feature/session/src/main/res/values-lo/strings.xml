@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">ຢຸດແກະບໍ່ໄດ້</string>
     <string name="session_quote_remove_description">ເອົາການອ້າງອີງອອກ</string>
     <string name="session_quote_comment_placeholder">ເພີ່ມຄຳເຫັນ (ທາງເລືອກ)…</string>
+    <string name="session_media_title">ສື່ຂອງເຊດຊັນ</string>
+    <string name="session_media_filter_media">ສື່</string>
+    <string name="session_media_filter_files">ໄຟລ໌</string>
+    <string name="session_media_filter_links">ລິ້ງ</string>
+    <string name="session_media_layout_description">ການຈັດວາງສື່</string>
+    <string name="session_media_layout_tiles">ປຸ່ມລັດ</string>
+    <string name="session_media_layout_list">ລາຍການ</string>
+    <string name="session_media_origin_user">ເຈົ້າສົ່ງ</string>
+    <string name="session_media_origin_agent">ຕົວແທນແບ່ງປັນ</string>
+    <string name="session_media_open_click_label">ເປີດ</string>
+    <string name="session_media_open_link_click_label">ເປີດລິ້ງ</string>
+    <string name="session_media_empty_media_title">ບໍ່ມີສື່</string>
+    <string name="session_media_empty_media_message">ຮູບພາບ, ວິດີໂອ ແລະສຽງທີ່ແບ່ງປັນໃນເຊດຊັນນີ້ຈະສະແດງຢູ່ບ່ອນນີ້.</string>
+    <string name="session_media_empty_files_title">ບໍ່ມີໄຟລ໌</string>
+    <string name="session_media_empty_files_message">ເອກະສານ ແລະຂໍ້ຄວາມທີ່ວາງຈາກເຊດຊັນນີ້ຈະສະແດງຢູ່ບ່ອນນີ້.</string>
+    <string name="session_media_empty_links_title">ບໍ່ມີລິ້ງ</string>
+    <string name="session_media_empty_links_message">ລິ້ງເວັບທີ່ແບ່ງປັນໃນເຊດຊັນນີ້ຈະສະແດງຢູ່ບ່ອນນີ້.</string>
+    <string name="session_media_earlier_note">ຂໍ້ຄວາມກ່ອນໜ້ານີ້ຍັງບໍ່ໄດ້ໂຫຼດເທື່ອ.</string>
+    <string name="session_media_load_earlier">ໂຫຼດຂໍ້ຄວາມກ່ອນໜ້າ</string>
+    <string name="session_media_loading_earlier">ກຳລັງໂຫຼດ…</string>
+    <string name="session_media_earlier_failed">ໂຫຼດຂໍ້ຄວາມກ່ອນໜ້າບໍ່ໄດ້. ກວດການເຊື່ອມຕໍ່ຂອງເຈົ້າແລ້ວລອງໃໝ່.</string>
+    <string name="session_media_earlier_nothing_new">ຂໍ້ຄວາມທີ່ຫາກໍໂຫຼດບໍ່ມີຫຍັງໃໝ່. ຂໍ້ຄວາມກ່ອນໜ້າອາດມີເພີ່ມ.</string>
 </resources>

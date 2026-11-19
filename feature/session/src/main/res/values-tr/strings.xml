@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Kabuk durdurulamadı</string>
     <string name="session_quote_remove_description">Alıntıyı kaldır</string>
     <string name="session_quote_comment_placeholder">İsteğe bağlı bir yorum ekleyin…</string>
+    <string name="session_media_title">Oturum medyası</string>
+    <string name="session_media_filter_media">Medya</string>
+    <string name="session_media_filter_files">Dosyalar</string>
+    <string name="session_media_filter_links">Bağlantılar</string>
+    <string name="session_media_layout_description">Medya düzeni</string>
+    <string name="session_media_layout_tiles">Kutucuklar</string>
+    <string name="session_media_layout_list">Liste</string>
+    <string name="session_media_origin_user">Siz gönderdiniz</string>
+    <string name="session_media_origin_agent">Ajan paylaştı</string>
+    <string name="session_media_open_click_label">Aç</string>
+    <string name="session_media_open_link_click_label">Bağlantıyı aç</string>
+    <string name="session_media_empty_media_title">Medya yok</string>
+    <string name="session_media_empty_media_message">Bu oturumda paylaşılan görseller, videolar ve sesler burada görünür.</string>
+    <string name="session_media_empty_files_title">Dosya yok</string>
+    <string name="session_media_empty_files_message">Bu oturumdaki belgeler ve yapıştırılan metinler burada görünür.</string>
+    <string name="session_media_empty_links_title">Bağlantı yok</string>
+    <string name="session_media_empty_links_message">Bu oturumda paylaşılan web bağlantıları burada görünür.</string>
+    <string name="session_media_earlier_note">Önceki mesajlar henüz yüklenmedi.</string>
+    <string name="session_media_load_earlier">Önceki mesajları yükle</string>
+    <string name="session_media_loading_earlier">Yükleniyor…</string>
+    <string name="session_media_earlier_failed">Önceki mesajlar yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
+    <string name="session_media_earlier_nothing_new">Yeni yüklenen mesajlarda yeni bir şey yok. Daha eskilerde olabilir.</string>
 </resources>

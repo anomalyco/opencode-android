@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">シェルを停止できませんでした</string>
     <string name="session_quote_remove_description">引用を削除</string>
     <string name="session_quote_comment_placeholder">コメントを追加（任意）…</string>
+    <string name="session_media_title">セッションのメディア</string>
+    <string name="session_media_filter_media">メディア</string>
+    <string name="session_media_filter_files">ファイル</string>
+    <string name="session_media_filter_links">リンク</string>
+    <string name="session_media_layout_description">メディアのレイアウト</string>
+    <string name="session_media_layout_tiles">タイル</string>
+    <string name="session_media_layout_list">一覧表示</string>
+    <string name="session_media_origin_user">あなたが送信</string>
+    <string name="session_media_origin_agent">エージェントが共有</string>
+    <string name="session_media_open_click_label">開く</string>
+    <string name="session_media_open_link_click_label">リンクを開く</string>
+    <string name="session_media_empty_media_title">メディアはありません</string>
+    <string name="session_media_empty_media_message">このセッションで共有された画像、動画、音声がここに表示されます。</string>
+    <string name="session_media_empty_files_title">ファイルがありません</string>
+    <string name="session_media_empty_files_message">このセッションのドキュメントや貼り付けたテキストがここに表示されます。</string>
+    <string name="session_media_empty_links_title">リンクがありません</string>
+    <string name="session_media_empty_links_message">このセッションで共有されたWebリンクがここに表示されます。</string>
+    <string name="session_media_earlier_note">以前のメッセージはまだ読み込まれていません。</string>
+    <string name="session_media_load_earlier">以前のメッセージを読み込む</string>
+    <string name="session_media_loading_earlier">読み込み中…</string>
+    <string name="session_media_earlier_failed">以前のメッセージを読み込めませんでした。接続を確認して、もう一度お試しください。</string>
+    <string name="session_media_earlier_nothing_new">読み込んだメッセージに新しい内容はありません。さらに以前のメッセージに続きがあるかもしれません。</string>
 </resources>

@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">Shell қатъ нашуд</string>
     <string name="session_quote_remove_description">Иқтибосро хориҷ кунед</string>
     <string name="session_quote_comment_placeholder">Шарҳ илова кунед (ихтиёрӣ)…</string>
+    <string name="session_media_title">Медиаи сессия</string>
+    <string name="session_media_filter_media">Медиа</string>
+    <string name="session_media_filter_files">Файлҳо</string>
+    <string name="session_media_filter_links">Истинодҳо</string>
+    <string name="session_media_layout_description">Тарҳбандии медиа</string>
+    <string name="session_media_layout_tiles">Тугмаҳо</string>
+    <string name="session_media_layout_list">Рӯйхат</string>
+    <string name="session_media_origin_user">Аз ҷониби шумо фиристода шуд</string>
+    <string name="session_media_origin_agent">Агент мубодила кард</string>
+    <string name="session_media_open_click_label">Кушодан</string>
+    <string name="session_media_open_link_click_label">Кушодани пайванд</string>
+    <string name="session_media_empty_media_title">Медиа нест</string>
+    <string name="session_media_empty_media_message">Тасвирҳо, видеоҳо ва аудиоҳои дар ин сессия мубодилашуда дар ин ҷо пайдо мешаванд.</string>
+    <string name="session_media_empty_files_title">Файл нест</string>
+    <string name="session_media_empty_files_message">Ҳуҷҷатҳо ва матни часпондашуда аз ин сессия дар ин ҷо пайдо мешаванд.</string>
+    <string name="session_media_empty_links_title">Истинод нест</string>
+    <string name="session_media_empty_links_message">Истинодҳои вебе, ки дар ин сессия мубодила мешаванд, дар ин ҷо пайдо мешаванд.</string>
+    <string name="session_media_earlier_note">Паёмҳои қаблӣ ҳанӯз бор карда нашудаанд.</string>
+    <string name="session_media_load_earlier">Бор кардани паёмҳои қаблӣ</string>
+    <string name="session_media_loading_earlier">Бор карда мешавад…</string>
+    <string name="session_media_earlier_failed">Паёмҳои қаблӣ бор нашуданд. Пайвастшавиро санҷед ва аз нав кӯшиш кунед.</string>
+    <string name="session_media_earlier_nothing_new">Дар паёмҳои навбор чизи нав нест. Дар паёмҳои қаблӣ шояд бештар бошад.</string>
 </resources>

@@ -236,4 +236,88 @@ class LowDataModeTests {
         )
         recheckPreviews.close()
     }
+
+    @Test
+    fun agentImagePreviewsReadOnDemandSightingsOnAConstrainedPathAndKeepBackgroundOnesDeferred() = runTest {
+        val dispatcher = StandardTestDispatcher(testScheduler)
+        val loads = Locked(listOf<AgentImageRequest>())
+        val stored = Locked(listOf<AgentImageKey>())
+        val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val running = Locked(0)
+        val peak = Locked(0)
+        val previews = AgentImagePreviews(
+            sizes = AgentImageSizeCache.inMemory,
+            loader = { request, _, _ ->
+                loads.update { it + request }
+                if (!request.allowsConstrainedNetworkAccess) throw AgentImageDownload.FailureException(AgentImageDownload.Failure.Constrained)
+                running.update { it + 1 }
+                peak.update { maxOf(it, running.current) }
+                gate.await()
+                running.update { it - 1 }
+                AgentImageResponse.File(AgentImageFixtures.red, AgentImageValidators(entityTag = "\"v1\""))
+            },
+            decoder = AgentImageFixtures.decoder,
+            sleep = {},
+            shouldDeferPrefetch = { true },
+            pathUpdates = { emptyFlow() },
+            dispatcher = dispatcher,
+            shared = { key, data, _ -> if (data != null) stored.update { it + key } },
+        )
+        fun request(name: String) = Request.Builder().url("http://lab/api/fs/read/$name").build()
+
+        // A transcript card is automatic prefetch: deferred on a constrained path, no request.
+        val card = AgentImageKey(server = "s", path = "/game/card.png")
+        previews.show(AgentImageSighting(card, "reply-1"), AgentImageRequest(request("card.png")))
+        delay(20)
+        assertTrue(loads.current.isEmpty())
+        assertTrue(previews.isDeferredByNetwork(card))
+
+        // Session Media tiles on screen read on demand, a few at a time, without a tap.
+        val tiles = (1..6).map { AgentImageKey(server = "s", path = "/game/s$it.png") }
+        for (tile in tiles) previews.show(AgentImageSighting(tile, "session-media"), AgentImageRequest(request(tile.path), allowsConstrainedNetworkAccess = true))
+        delay(20)
+        assertEquals(AgentImagePreviews.CONCURRENT_READS, loads.current.size)
+        assertTrue(loads.current.all { it.allowsConstrainedNetworkAccess })
+        gate.complete(Unit)
+        for (i in 0 until 100) {
+            if (tiles.all { previews.entry(it).phase == AgentImagePreviews.Phase.Loaded }) break
+            delay(5)
+        }
+        assertTrue(tiles.all { previews.entry(it).phase == AgentImagePreviews.Phase.Loaded && previews.image(it) != null })
+        assertTrue(peak.current <= AgentImagePreviews.CONCURRENT_READS)
+        // Each tile's bytes go to the shared disk copy the viewer opens.
+        assertEquals(tiles.toSet(), stored.current.toSet())
+
+        // The card stays deferred: on-demand reads don't change background prefetch.
+        assertTrue(previews.isDeferredByNetwork(card))
+        assertEquals(6, loads.current.size)
+        previews.close()
+    }
+
+    @Test
+    fun mediaPostersReadOnlyADiskCopyWhileLargePrefetchesAreDeferred() = runTest {
+        val directory = java.nio.file.Files.createTempDirectory("posters").toFile()
+        try {
+            val destination = java.io.File(directory, "clip.mp4")
+            val downloads = Locked(0)
+            val download: suspend () -> java.io.File = {
+                downloads.update { it + 1 }
+                destination.apply { writeBytes(byteArrayOf(1, 2, 3)) }
+            }
+
+            // Deferred with nothing on disk: the tile stays plain and nothing is fetched.
+            assertNull(MediaPosterClient.posterFile(destination, deferred = true, download))
+            assertEquals(0, downloads.current)
+
+            // Allowed: the file is downloaded.
+            assertEquals(destination, MediaPosterClient.posterFile(destination, deferred = false, download))
+            assertEquals(1, downloads.current)
+
+            // Deferred again: the copy already on disk is read without another download.
+            assertEquals(destination, MediaPosterClient.posterFile(destination, deferred = true, download))
+            assertEquals(1, downloads.current)
+        } finally {
+            directory.deleteRecursively()
+        }
+    }
 }

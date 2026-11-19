@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">शेल रोक्न सकिएन</string>
     <string name="session_quote_remove_description">उद्धरण हटाउनुहोस्</string>
     <string name="session_quote_comment_placeholder">चाहनुहुन्छ भने टिप्पणी थप्नुहोस्…</string>
+    <string name="session_media_title">सत्रका मिडिया</string>
+    <string name="session_media_filter_media">मिडिया</string>
+    <string name="session_media_filter_files">फाइलहरू</string>
+    <string name="session_media_filter_links">लिङ्कहरू</string>
+    <string name="session_media_layout_description">मिडिया लेआउट</string>
+    <string name="session_media_layout_tiles">टाइलहरू</string>
+    <string name="session_media_layout_list">सूची</string>
+    <string name="session_media_origin_user">तपाईंले पठाउनुभएको</string>
+    <string name="session_media_origin_agent">एजेन्टले साझा गरेको</string>
+    <string name="session_media_open_click_label">खोल्नुहोस्</string>
+    <string name="session_media_open_link_click_label">लिङ्क खोल्नुहोस्</string>
+    <string name="session_media_empty_media_title">कुनै मिडिया छैन</string>
+    <string name="session_media_empty_media_message">यो सत्रमा साझा गरिएका छवि, भिडियो र अडियो यहाँ देखिन्छन्।</string>
+    <string name="session_media_empty_files_title">कुनै फाइल छैन</string>
+    <string name="session_media_empty_files_message">यो सत्रका कागजात र टाँसिएको पाठ यहाँ देखिन्छन्।</string>
+    <string name="session_media_empty_links_title">कुनै लिङ्क छैन</string>
+    <string name="session_media_empty_links_message">यो सत्रमा साझा गरिएका वेब लिङ्कहरू यहाँ देखिन्छन्।</string>
+    <string name="session_media_earlier_note">अघिल्ला सन्देशहरू अझै लोड भएका छैनन्।</string>
+    <string name="session_media_load_earlier">अघिल्ला सन्देशहरू लोड गर्नुहोस्</string>
+    <string name="session_media_loading_earlier">लोड गर्दै…</string>
+    <string name="session_media_earlier_failed">अघिल्ला सन्देशहरू लोड गर्न सकिएन। आफ्नो जडान जाँच गरेर फेरि प्रयास गर्नुहोस्।</string>
+    <string name="session_media_earlier_nothing_new">भर्खरै लोड भएका सन्देशहरूमा यहाँ केही नयाँ छैन। अघिल्ला सन्देशहरूमा थप हुन सक्छ।</string>
 </resources>

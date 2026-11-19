@@ -318,4 +318,26 @@
     <string name="session_shell_stop_failed">Не удалось остановить оболочку</string>
     <string name="session_quote_remove_description">Удалить цитату</string>
     <string name="session_quote_comment_placeholder">Добавьте комментарий (необязательно)…</string>
+    <string name="session_media_title">Медиа сессии</string>
+    <string name="session_media_filter_media">Медиа</string>
+    <string name="session_media_filter_files">Файлы</string>
+    <string name="session_media_filter_links">Ссылки</string>
+    <string name="session_media_layout_description">Макет медиа</string>
+    <string name="session_media_layout_tiles">Плитки</string>
+    <string name="session_media_layout_list">Список</string>
+    <string name="session_media_origin_user">Отправлено вами</string>
+    <string name="session_media_origin_agent">Отправлено агентом</string>
+    <string name="session_media_open_click_label">Открыть</string>
+    <string name="session_media_open_link_click_label">Открыть ссылку</string>
+    <string name="session_media_empty_media_title">Нет медиа</string>
+    <string name="session_media_empty_media_message">Здесь появятся изображения, видео и аудио, отправленные в этой сессии.</string>
+    <string name="session_media_empty_files_title">Нет файлов</string>
+    <string name="session_media_empty_files_message">Здесь появятся документы и вставленный текст из этой сессии.</string>
+    <string name="session_media_empty_links_title">Нет ссылок</string>
+    <string name="session_media_empty_links_message">Веб-ссылки из этой сессии появятся здесь.</string>
+    <string name="session_media_earlier_note">Предыдущие сообщения ещё не загружены.</string>
+    <string name="session_media_load_earlier">Загрузить предыдущие сообщения</string>
+    <string name="session_media_loading_earlier">Загрузка…</string>
+    <string name="session_media_earlier_failed">Не удалось загрузить предыдущий вывод. Проверьте подключение и попробуйте снова.</string>
+    <string name="session_media_earlier_nothing_new">В только что загруженном выводе ничего нового. Возможно, что-то есть в более раннем.</string>
 </resources>

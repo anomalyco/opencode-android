@@ -318,4 +318,26 @@
     <string name="session_shell_stop_failed">Не вдалося зупинити команду</string>
     <string name="session_quote_remove_description">Видалити цитату</string>
     <string name="session_quote_comment_placeholder">Додайте коментар за бажанням…</string>
+    <string name="session_media_title">Медіа сесії</string>
+    <string name="session_media_filter_media">Медіа</string>
+    <string name="session_media_filter_files">Файли</string>
+    <string name="session_media_filter_links">Посилання</string>
+    <string name="session_media_layout_description">Макет медіа</string>
+    <string name="session_media_layout_tiles">Плитки</string>
+    <string name="session_media_layout_list">Список</string>
+    <string name="session_media_origin_user">Надіслано вами</string>
+    <string name="session_media_origin_agent">Надіслано агентом</string>
+    <string name="session_media_open_click_label">Відкрити</string>
+    <string name="session_media_open_link_click_label">Відкрити посилання</string>
+    <string name="session_media_empty_media_title">Немає медіа</string>
+    <string name="session_media_empty_media_message">Тут з’являтимуться зображення, відео й аудіо, надіслані в цій сесії.</string>
+    <string name="session_media_empty_files_title">Немає файлів</string>
+    <string name="session_media_empty_files_message">Тут з’являтимуться документи та вставлений текст із цієї сесії.</string>
+    <string name="session_media_empty_links_title">Немає посилань</string>
+    <string name="session_media_empty_links_message">Вебпосилання з цієї сесії з’являться тут.</string>
+    <string name="session_media_earlier_note">Раніші повідомлення ще не завантажено.</string>
+    <string name="session_media_load_earlier">Завантажити раніші повідомлення</string>
+    <string name="session_media_loading_earlier">Завантаження…</string>
+    <string name="session_media_earlier_failed">Не вдалося завантажити попередні повідомлення. Перевірте підключення й спробуйте ще раз.</string>
+    <string name="session_media_earlier_nothing_new">У щойно завантажених повідомленнях нічого нового. Можливо, у попередніх є більше.</string>
 </resources>

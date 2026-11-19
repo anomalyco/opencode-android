@@ -307,4 +307,26 @@
     <string name="session_shell_stop_failed">No se pudo detener el shell</string>
     <string name="session_quote_remove_description">Quitar cita</string>
     <string name="session_quote_comment_placeholder">Añade un comentario opcional…</string>
+    <string name="session_media_title">Multimedia de la sesión</string>
+    <string name="session_media_filter_media">Multimedia</string>
+    <string name="session_media_filter_files">Archivos</string>
+    <string name="session_media_filter_links">Enlaces</string>
+    <string name="session_media_layout_description">Diseño de multimedia</string>
+    <string name="session_media_layout_tiles">Mosaicos</string>
+    <string name="session_media_layout_list">Lista</string>
+    <string name="session_media_origin_user">Enviado por ti</string>
+    <string name="session_media_origin_agent">Compartido por el agente</string>
+    <string name="session_media_open_click_label">Abrir</string>
+    <string name="session_media_open_link_click_label">Abrir enlace</string>
+    <string name="session_media_empty_media_title">Sin contenido multimedia</string>
+    <string name="session_media_empty_media_message">Las imágenes, los vídeos y el audio compartidos en esta sesión aparecerán aquí.</string>
+    <string name="session_media_empty_files_title">No hay archivos</string>
+    <string name="session_media_empty_files_message">Los documentos y el texto pegado de esta sesión aparecerán aquí.</string>
+    <string name="session_media_empty_links_title">No hay enlaces</string>
+    <string name="session_media_empty_links_message">Los enlaces web compartidos en esta sesión aparecerán aquí.</string>
+    <string name="session_media_earlier_note">Los mensajes anteriores aún no se han cargado.</string>
+    <string name="session_media_load_earlier">Cargar mensajes anteriores</string>
+    <string name="session_media_loading_earlier">Cargando…</string>
+    <string name="session_media_earlier_failed">No se pudieron cargar los mensajes anteriores. Comprueba tu conexión y vuelve a intentarlo.</string>
+    <string name="session_media_earlier_nothing_new">No hay nada nuevo en los mensajes recién cargados. Puede que los anteriores tengan más.</string>
 </resources>

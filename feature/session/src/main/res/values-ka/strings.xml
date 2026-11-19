@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">გარსის შეჩერება ვერ მოხერხდა</string>
     <string name="session_quote_remove_description">ციტატის წაშლა</string>
     <string name="session_quote_comment_placeholder">დაამატეთ კომენტარი (არასავალდებულო)…</string>
+    <string name="session_media_title">სესიის მედია</string>
+    <string name="session_media_filter_media">მედია</string>
+    <string name="session_media_filter_files">ფაილები</string>
+    <string name="session_media_filter_links">ბმულები</string>
+    <string name="session_media_layout_description">მედიის განლაგება</string>
+    <string name="session_media_layout_tiles">ფილები</string>
+    <string name="session_media_layout_list">სია</string>
+    <string name="session_media_origin_user">გაგზავნილია თქვენ მიერ</string>
+    <string name="session_media_origin_agent">გააზიარა აგენტმა</string>
+    <string name="session_media_open_click_label">გახსნა</string>
+    <string name="session_media_open_link_click_label">ბმულის გახსნა</string>
+    <string name="session_media_empty_media_title">მედია არ არის</string>
+    <string name="session_media_empty_media_message">ამ სესიაში გაზიარებული სურათები, ვიდეოები და აუდიო აქ გამოჩნდება.</string>
+    <string name="session_media_empty_files_title">ფაილები არ არის</string>
+    <string name="session_media_empty_files_message">ამ სესიის დოკუმენტები და ჩასმული ტექსტი აქ გამოჩნდება.</string>
+    <string name="session_media_empty_links_title">ბმულები არ არის</string>
+    <string name="session_media_empty_links_message">ამ სესიაში გაზიარებული ვებ ბმულები აქ გამოჩნდება.</string>
+    <string name="session_media_earlier_note">წინა შეტყობინებები ჯერ არ ჩატვირთულა.</string>
+    <string name="session_media_load_earlier">წინა შეტყობინებების ჩატვირთვა</string>
+    <string name="session_media_loading_earlier">იტვირთება…</string>
+    <string name="session_media_earlier_failed">წინა შეტყობინებების ჩატვირთვა ვერ მოხერხდა. შეამოწმეთ კავშირი და სცადეთ ხელახლა.</string>
+    <string name="session_media_earlier_nothing_new">ახლახან ჩატვირთულ შეტყობინებებში ახალი არაფერია. შესაძლოა, უფრო ძველებში მეტი იყოს.</string>
 </resources>

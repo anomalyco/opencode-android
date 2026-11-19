@@ -330,7 +330,7 @@ class FullscreenViewerFeature(
 
         is Action.OpenFile -> if (state.selectedPage?.file != null) {
             val gallery = action.gallery
-            if (gallery != null && gallery.pages.any { it.id == gallery.id } && gallery.pages.all { it.isVisual }) {
+            if (gallery != null && gallery.pages.any { it.id == gallery.id } && gallery.pages.all { gallery.pagesThrough(it) }) {
                 val back = DocumentReturn(state.preview, state.selectedID, state.filePath, state.isShowingControls)
                 val next = loadSelection(state.copy(preview = gallery, selectedID = gallery.id, filePath = emptyList(),
                     coveredDocument = back, noAppOpens = false, shareError = null, isShowingControls = true))
@@ -682,6 +682,13 @@ val LocalDocumentVisualGallery = staticCompositionLocalOf<(AgentFileDestination)
 private val TranscriptImagePreview.Page.isVisual: Boolean
     get() = file == null || file.reference.kind == Kind.Image || file.reference.kind == Kind.Video
 
+private val TranscriptImagePreview.Page.isAudio: Boolean
+    get() = file?.reference?.kind == Kind.Audio
+
+/** A gallery pages through its images and video, and audio when it holds more than the one page. */
+private fun TranscriptImagePreview.pagesThrough(page: TranscriptImagePreview.Page): Boolean =
+    page.isVisual || (page.isAudio && pages.size > 1)
+
 /**
  * The opener’s exact gallery or a single file. Linked documents scroll in their own page,
  * never inside the image pager. Both surfaces use the same selection, toolbar and editor.
@@ -697,7 +704,7 @@ fun FullscreenViewer(
     val talkBack = rememberTalkBackEnabled()
     val page = state.selectedPage ?: return
     val root = state.filePath.isEmpty() && state.coveredDocument == null
-    val gallery = state.filePath.isEmpty() && page.isVisual
+    val gallery = state.filePath.isEmpty() && state.preview.pagesThrough(page)
     val tracksSource = root || state.coveredDocument != null
     val documentGallery = LocalDocumentVisualGallery.current
     val file = rememberSelectedFile(state)
@@ -738,6 +745,12 @@ fun FullscreenViewer(
 
     val remote = ready?.content as? AgentFileViewerModel.Content.Player
     val movie = remote?.takeUnless { it.isAudio }?.player ?: page.videoURL?.takeIf { page.file == null }?.let { rememberLocalMoviePlayer(it) }
+    // In a gallery the chrome carries audio's transport, as it does a video's.
+    val audio = remote?.takeIf { it.isAudio && gallery }?.player
+    // Audio has nothing to show but its controls: they come back as its page is reached.
+    LaunchedEffect(audio) {
+        if (audio != null && !store.state.isShowingControls) store.send(Action.ImageTapped)
+    }
     val pip = movie?.let { rememberAgentFilePictureInPicture(it, false) }
     // Each registration belongs to this selection; an old surface's disposal cannot clear its successor.
     var capture by remember(page.id, movie) { mutableStateOf<(() -> Bitmap?)?>(null) }
@@ -776,6 +789,13 @@ fun FullscreenViewer(
                 gallery -> VisualPager(state, viewer, store::send, flight = tracksSource,
                     selectedContent = when {
                         movie != null -> visualMovie
+                        audio != null -> ({
+                            Box(Modifier.fillMaxSize().clickable(interactionSource = null, indication = null) { store.send(Action.ImageTapped) }
+                                .testTag("agent-file-audio")) {
+                                // Above the chrome's centred play button.
+                                Box(Modifier.fillMaxSize().padding(bottom = 320.dp)) { AudioArtwork(page.name ?: page.label) }
+                            }
+                        })
                         // The file's pixels before the page holds them (they reach it a frame later).
                         image != null && page.image == null -> ({
                             ViewerImage(page, image, viewer, selected = true, flight = tracksSource, handingOff = state.handOff != null, onTap = { store.send(Action.ImageTapped) })
@@ -804,11 +824,11 @@ fun FullscreenViewer(
                     detail = file?.locationLabel ?: page.detail,
                     index = state.preview.pages.indexOfFirst { it.id == page.id }.coerceAtLeast(0),
                     count = if (gallery) state.preview.pages.size else 1,
-                    movie = movie,
+                    movie = movie ?: audio,
                     showsActions = file == null || ready != null || file.shareProgress != null,
                     removes = root && state.allowsRemove,
                     removeEnabled = !state.isDiscarded,
-                    autoHides = !talkBack,
+                    autoHides = !talkBack && audio == null,
                     onClose = { store.send(if (root) Action.CloseTapped else Action.BackTapped) },
                     onRemove = { store.send(Action.RemoveTapped) },
                     onToggle = { store.send(Action.ImageTapped) },
@@ -1002,6 +1022,7 @@ private fun VisualPager(state: FullscreenViewerFeature.State, viewer: MediaViewe
         when {
             selected && selectedContent != null -> selectedContent()
             image != null -> ViewerImage(page, image, viewer, selected, flight = flight, handingOff = state.handOff != null, onTap = tap)
+            page.file?.reference?.kind == Kind.Audio -> Box(placeholder) { AudioArtwork(page.name ?: page.label) }
             page.isUnavailable -> Box(placeholder) {
                 MediaAttachmentUnavailableView(name = page.name ?: page.displayTitle)
             }

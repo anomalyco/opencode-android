@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">無法停止 Shell</string>
     <string name="session_quote_remove_description">移除引用</string>
     <string name="session_quote_comment_placeholder">新增留言（選填）…</string>
+    <string name="session_media_title">工作階段媒體</string>
+    <string name="session_media_filter_media">媒體</string>
+    <string name="session_media_filter_files">檔案</string>
+    <string name="session_media_filter_links">連結</string>
+    <string name="session_media_layout_description">媒體版面配置</string>
+    <string name="session_media_layout_tiles">方塊</string>
+    <string name="session_media_layout_list">清單</string>
+    <string name="session_media_origin_user">你傳送的</string>
+    <string name="session_media_origin_agent">代理程式分享的</string>
+    <string name="session_media_open_click_label">開啟</string>
+    <string name="session_media_open_link_click_label">開啟連結</string>
+    <string name="session_media_empty_media_title">沒有媒體</string>
+    <string name="session_media_empty_media_message">此工作階段中分享的圖片、影片和音訊會顯示在這裡。</string>
+    <string name="session_media_empty_files_title">沒有檔案</string>
+    <string name="session_media_empty_files_message">此工作階段中的文件和貼上的文字會顯示在這裡。</string>
+    <string name="session_media_empty_links_title">沒有連結</string>
+    <string name="session_media_empty_links_message">此工作階段中分享的網頁連結會顯示在這裡。</string>
+    <string name="session_media_earlier_note">較早的訊息尚未載入。</string>
+    <string name="session_media_load_earlier">載入較早的訊息</string>
+    <string name="session_media_loading_earlier">載入中…</string>
+    <string name="session_media_earlier_failed">無法載入較早的訊息。請檢查連線後再試一次。</string>
+    <string name="session_media_earlier_nothing_new">剛載入的訊息中沒有新內容，更早的訊息可能還有。</string>
 </resources>

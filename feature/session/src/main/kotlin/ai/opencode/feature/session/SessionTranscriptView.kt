@@ -599,7 +599,7 @@ object SessionTranscriptView {
                 host?.dismissComposerKeyboard()
                 val state = store.state
                 presenter?.presentPreview(
-                    SessionVisualMedia.preview(action.preview, state.items, state.server, state.session?.directory, theme) {
+                    SessionVisualMedia.preview(action.preview, state.hidingUndone(state.items), state.server, state.session?.directory, theme) {
                         dependency(AgentFileChecks).shown(state.server, state.session?.directory, it)
                     },
                     drawingHandler(store),
@@ -614,7 +614,7 @@ object SessionTranscriptView {
                 val checks = dependency(AgentFileChecks)
                 val file = checks.shown(server, directory, action.file) ?: action.file
                 val target = AgentFileDestination(file, directory)
-                val items = store.state.items
+                val items = store.state.hidingUndone(store.state.items)
                 val gallery = { destination: AgentFileDestination ->
                     SessionVisualMedia.preview(destination, items, server, directory, theme) { checks.shown(server, directory, it) }
                 }

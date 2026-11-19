@@ -296,4 +296,26 @@
     <string name="session_shell_stop_failed">শেল বন্ধ করা যায়নি</string>
     <string name="session_quote_remove_description">উদ্ধৃতি সরান</string>
     <string name="session_quote_comment_placeholder">চাইলে মন্তব্য যোগ করুন…</string>
+    <string name="session_media_title">সেশনের মিডিয়া</string>
+    <string name="session_media_filter_media">মিডিয়া</string>
+    <string name="session_media_filter_files">ফাইল</string>
+    <string name="session_media_filter_links">লিঙ্ক</string>
+    <string name="session_media_layout_description">মিডিয়া লেআউট</string>
+    <string name="session_media_layout_tiles">টাইল</string>
+    <string name="session_media_layout_list">তালিকা</string>
+    <string name="session_media_origin_user">আপনি পাঠিয়েছেন</string>
+    <string name="session_media_origin_agent">এজেন্ট শেয়ার করেছে</string>
+    <string name="session_media_open_click_label">খুলুন</string>
+    <string name="session_media_open_link_click_label">লিঙ্ক খুলুন</string>
+    <string name="session_media_empty_media_title">কোনো মিডিয়া নেই</string>
+    <string name="session_media_empty_media_message">এই সেশনে শেয়ার করা ছবি, ভিডিও ও অডিও এখানে দেখা যাবে।</string>
+    <string name="session_media_empty_files_title">কোনো ফাইল নেই</string>
+    <string name="session_media_empty_files_message">এই সেশনের ডকুমেন্ট ও পেস্ট করা পাঠ্য এখানে দেখা যাবে।</string>
+    <string name="session_media_empty_links_title">কোনো লিঙ্ক নেই</string>
+    <string name="session_media_empty_links_message">এই সেশনে শেয়ার করা ওয়েব লিঙ্ক এখানে দেখা যাবে।</string>
+    <string name="session_media_earlier_note">আগের বার্তাগুলো এখনও লোড করা হয়নি।</string>
+    <string name="session_media_load_earlier">আগের বার্তা লোড করুন</string>
+    <string name="session_media_loading_earlier">লোড হচ্ছে…</string>
+    <string name="session_media_earlier_failed">আগের বার্তাগুলো লোড করা যায়নি। আপনার সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</string>
+    <string name="session_media_earlier_nothing_new">এইমাত্র লোড হওয়া বার্তাগুলোতে নতুন কিছু নেই। আরও আগের বার্তায় কিছু থাকতে পারে।</string>
 </resources>

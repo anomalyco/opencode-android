@@ -285,4 +285,26 @@
     <string name="session_shell_stop_failed">无法停止壳牌</string>
     <string name="session_quote_remove_description">移除引用</string>
     <string name="session_quote_comment_placeholder">添加评论（可选）…</string>
+    <string name="session_media_title">会话媒体</string>
+    <string name="session_media_filter_media">媒体</string>
+    <string name="session_media_filter_files">文件</string>
+    <string name="session_media_filter_links">链接</string>
+    <string name="session_media_layout_description">媒体布局</string>
+    <string name="session_media_layout_tiles">图块</string>
+    <string name="session_media_layout_list">列表</string>
+    <string name="session_media_origin_user">你发送的</string>
+    <string name="session_media_origin_agent">智能体分享的</string>
+    <string name="session_media_open_click_label">打开</string>
+    <string name="session_media_open_link_click_label">打开链接</string>
+    <string name="session_media_empty_media_title">暂无媒体</string>
+    <string name="session_media_empty_media_message">此会话中分享的图片、视频和音频会显示在这里。</string>
+    <string name="session_media_empty_files_title">暂无文件</string>
+    <string name="session_media_empty_files_message">此会话中的文档和粘贴的文本会显示在这里。</string>
+    <string name="session_media_empty_links_title">暂无链接</string>
+    <string name="session_media_empty_links_message">此会话中分享的网页链接会显示在这里。</string>
+    <string name="session_media_earlier_note">更早的消息尚未加载。</string>
+    <string name="session_media_load_earlier">加载更早的消息</string>
+    <string name="session_media_loading_earlier">加载中…</string>
+    <string name="session_media_earlier_failed">无法加载更早的消息。请检查网络连接后重试。</string>
+    <string name="session_media_earlier_nothing_new">刚加载的消息中没有新内容，更早的消息里可能还有。</string>
 </resources>

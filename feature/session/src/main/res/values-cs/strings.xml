@@ -318,4 +318,26 @@
     <string name="session_shell_stop_failed">Nepodařilo se zastavit shell</string>
     <string name="session_quote_remove_description">Odebrat citaci</string>
     <string name="session_quote_comment_placeholder">Přidat komentář (volitelné)…</string>
+    <string name="session_media_title">Média relace</string>
+    <string name="session_media_filter_media">Média</string>
+    <string name="session_media_filter_files">Soubory</string>
+    <string name="session_media_filter_links">Odkazy</string>
+    <string name="session_media_layout_description">Rozvržení médií</string>
+    <string name="session_media_layout_tiles">Dlaždice</string>
+    <string name="session_media_layout_list">Seznam</string>
+    <string name="session_media_origin_user">Odesláno vámi</string>
+    <string name="session_media_origin_agent">Sdílel agent</string>
+    <string name="session_media_open_click_label">Otevřít</string>
+    <string name="session_media_open_link_click_label">Otevřít odkaz</string>
+    <string name="session_media_empty_media_title">Žádná média</string>
+    <string name="session_media_empty_media_message">Tady se zobrazí obrázky, videa a zvuky sdílené v této relaci.</string>
+    <string name="session_media_empty_files_title">Žádné soubory</string>
+    <string name="session_media_empty_files_message">Tady se zobrazí dokumenty a vložený text z této relace.</string>
+    <string name="session_media_empty_links_title">Žádné odkazy</string>
+    <string name="session_media_empty_links_message">Zde se zobrazí webové odkazy sdílené v této relaci.</string>
+    <string name="session_media_earlier_note">Starší zprávy zatím nejsou načteny.</string>
+    <string name="session_media_load_earlier">Načíst starší zprávy</string>
+    <string name="session_media_loading_earlier">Načítání…</string>
+    <string name="session_media_earlier_failed">Starší zprávy se nepodařilo načíst. Zkontrolujte připojení a zkuste to znovu.</string>
+    <string name="session_media_earlier_nothing_new">Mezi právě načtenými zprávami není nic nového. Starší zprávy mohou obsahovat více.</string>
 </resources>

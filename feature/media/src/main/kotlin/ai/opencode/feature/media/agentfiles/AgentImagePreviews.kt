@@ -151,6 +151,10 @@ class AgentImagePreviews(
     /** Sightings on screen, counted per marker: only these hold pixels. */
     private val visibleState = mutableStateMapOf<AgentImageSighting, Int>()
     val visible: Map<AgentImageSighting, Int> get() = visibleState
+    /** Sightings on screen whose request may use a constrained network (a foreground screen the person opened). */
+    private val onDemand = HashMap<AgentImageSighting, Int>()
+
+    private fun isOnDemand(key: AgentImageKey): Boolean = onDemand.keys.any { it.key == key }
 
     /**
      * Called before an entry's change reaches any view when it changes the layout (a shape
@@ -573,6 +577,7 @@ class AgentImagePreviews(
     fun show(sighting: AgentImageSighting, request: AgentImageRequest) {
         val key = sighting.key
         visibleState[sighting] = (visibleState[sighting] ?: 0) + 1
+        if (request.allowsConstrainedNetworkAccess) onDemand[sighting] = (onDemand[sighting] ?: 0) + 1
         interest[key] = (interest[key] ?: 0) + 1
         requests[key] = request
         if (entriesState[key] == null) entriesState[key] = entry(key)
@@ -583,7 +588,7 @@ class AgentImagePreviews(
             fresh.removeAll { it.key == key }
             mutate(key) { it.copy(phase = Phase.Waiting, loadedAt = null) }
         }
-        if (isDeferredByNetwork(key)) {
+        if (!isOnDemand(key) && isDeferredByNetwork(key)) {
             recordConstrained(key, setOf(sighting))
             return
         }
@@ -615,6 +620,7 @@ class AgentImagePreviews(
     fun hide(sighting: AgentImageSighting) {
         val key = sighting.key
         visibleState[sighting]?.let { count -> if (count > 1) visibleState[sighting] = count - 1 else visibleState.remove(sighting) }
+        onDemand[sighting]?.let { count -> if (count > 1) onDemand[sighting] = count - 1 else onDemand.remove(sighting) }
         interest[key] = max(0, (interest[key] ?: 0) - 1)
         if (interest[key] != 0) return
         scope.launch {
@@ -673,7 +679,7 @@ class AgentImagePreviews(
         val sent = if (rechecks) validators[key]?.takeIf { !it.isEmpty } else null
         // The pixels a 304 confirms, kept until it answers whatever the cache does.
         val pinnedImage = if (rechecks) image(key) else null
-        val sentRequest = request.copy(allowsConstrainedNetworkAccess = isAllowed(key))
+        val sentRequest = request.copy(allowsConstrainedNetworkAccess = isAllowed(key) || isOnDemand(key))
         val job = scope.launch(start = CoroutineStart.LAZY) {
             read(key, id, sentRequest, sent, pinnedImage, sightings)
         }
