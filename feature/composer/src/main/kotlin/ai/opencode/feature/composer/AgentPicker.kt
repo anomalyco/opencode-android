@@ -30,7 +30,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MenuDefaults
@@ -187,12 +186,11 @@ private fun AgentMenu(
     OpenCodeButtonMenu(
         expanded = open,
         onDismissRequest = onDismiss,
-        scroll = { room ->
+        initialScroll = { viewportPx ->
             val rowPx = with(density) { OpenCodeMinTapTarget.roundToPx() }
-            val viewportPx = with(density) { room.roundToPx() }
             var initial = (currentIndex + 1) * rowPx - viewportPx + rowPx / 2
             initial = initial.coerceAtMost(currentIndex * rowPx)
-            rememberScrollState(initial = maxOf(0, initial))
+            maxOf(0, initial)
         },
     ) {
         if (agents.isEmpty()) {
