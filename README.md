@@ -5,6 +5,12 @@ Expressive. The iOS app is the spec: same features, flows, copy and server contr
 Android-native visuals. Contributor and agent rules are in [AGENTS.md](AGENTS.md); parity with
 iOS is tracked file by file in [docs/parity](docs/parity/README.md).
 
+## Contributing
+
+We don't accept pull requests from outside contributors. Open an
+[issue](https://github.com/anomalyco/opencode-android/issues) instead: our agent triages every
+issue automatically and the team picks up the work.
+
 ## Try it on Android
 
 **From Google Play (Anomaly team):** open
