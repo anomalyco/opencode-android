@@ -25,21 +25,18 @@ internal fun SessionFeature.refreshJobs(state: State): Reduced<State, Action> {
     val sessionID = state.session?.id ?: return Reduced(state)
     val server = state.server
     val client = openCodeClient
+    val hadJobs = state.jobs.isNotEmpty()
     return Reduced(
         state,
         Effect.run<Action> { send ->
-            try {
-                send(Action.JobsResponse(sessionID, Result.success(client.runningJobs(server, sessionID))))
-            } catch (error: OpenCodeClientError) {
-                send(Action.JobsResponse(sessionID, Result.failure(error)))
-            }
+            // Only a list that changes something reports back; a failure keeps what events gave.
+            val listed = try { client.runningJobs(server, sessionID) } catch (_: OpenCodeClientError) { return@run }
+            if (hadJobs || listed.isNotEmpty()) send(Action.JobsResponse(sessionID, Result.success(listed)))
         }.cancellable(CancelID.Jobs, cancelInFlight = true),
     )
 }
 
 internal fun SessionFeature.reduceJobs(state: State, action: Action): Reduced<State, Action>? = when (action) {
-    Action.JobsRefreshRequested -> refreshJobs(state)
-
     is Action.JobsResponse -> {
         val listed = action.result.getOrNull()
         if (listed == null || state.session?.id != action.sessionID) Reduced(state)

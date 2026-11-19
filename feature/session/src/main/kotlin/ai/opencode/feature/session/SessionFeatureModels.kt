@@ -146,7 +146,9 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
     Action.FamilyRefreshRequested -> {
         val family = refreshFamily(state)
         val shells = refreshShells(family.state)
-        Reduced(shells.state, Effect.merge(family.effect, shells.effect))
+        // Home asks for this on reconnect too, when job events may have been missed.
+        val jobs = refreshJobs(shells.state)
+        Reduced(jobs.state, Effect.merge(family.effect, shells.effect, jobs.effect))
     }
 
     is Action.ShellsResponse -> {

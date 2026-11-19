@@ -693,8 +693,6 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class ShellStarted(val shell: OpenCodeShell) : Action
         data class ShellEnded(val shellID: String) : Action
         data class ShellOutputTapped(val shellID: String) : Action
-        /** Lists running jobs again: the connection came back. */
-        data object JobsRefreshRequested : Action
         data class JobsResponse(val sessionID: String, val result: Result<List<OpenCodeJob>>) : Action
         data class JobUpdated(val job: OpenCodeJob) : Action
         /** Stops a background script: cancels its job. */

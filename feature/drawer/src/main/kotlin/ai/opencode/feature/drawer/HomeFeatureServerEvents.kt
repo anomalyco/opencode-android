@@ -64,8 +64,7 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
                 Effect.none()
             }
             val refreshed = familyAndListRefresh(s)
-            val jobs = forwardToScreens(refreshed.state, SessionFeature.Action.JobsRefreshRequested) { it.session != null }
-            return Reduced(refreshed.state, Effect.merge(refreshed.effect, voiceReconnect, jobs))
+            return Reduced(refreshed.state, Effect.merge(refreshed.effect, voiceReconnect))
         }
 
         is OpenCodeServerEvent.SessionCreated -> {
