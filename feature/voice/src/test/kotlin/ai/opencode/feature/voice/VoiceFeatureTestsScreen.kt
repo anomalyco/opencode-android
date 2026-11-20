@@ -272,7 +272,7 @@ class VoiceFeatureTestsScreen {
     @Test fun thePromptAssumesTheUserIsntLookingAtTheScreen() {
         var context = VoiceInstructions.Context(
             sessionTitle = "HOME", directoryName = "home", recentMessages = emptyList(), previousTail = emptyList(),
-            previousEndedAt = null, managesSessions = true,
+            previousEndedAt = null, managesSessions = true, recordsLooking = true,
         )
         val away = listOf(
             VoiceInstructions.buildLive(context),
@@ -295,8 +295,8 @@ class VoiceFeatureTestsScreen {
             assertFalse(prompt.contains("Assume the user is NOT looking"))
         }
 
-        context = context.copy(managesSessions = false)
-        assertFalse("Only a delegator can record it", VoiceInstructions.buildLive(context).contains("delegate it, so the work knows"))
+        context = context.copy(recordsLooking = false)
+        assertFalse("Only the built-in delegator can record it", VoiceInstructions.buildLive(context).contains("delegate it, so the work knows"))
     }
 
     /** "The user switched screens themselves" no longer claims they can see it. */
@@ -422,6 +422,30 @@ class VoiceFeatureTestsScreen {
                 VoiceInstructions.screenUpdate(VoiceScreenVisibility.appHidden),
                 VoiceInstructions.screenUpdate(VoiceScreenVisibility.visible),
                 VoiceInstructions.screenUpdate(VoiceScreenVisibility.notLooking),
+            ),
+            deltas.value,
+        )
+    }
+
+    @Test fun aPhoneAtTheEarHidesTheScreenFromACallTheUserIsLookingAt() = voiceTest { harness ->
+        h = harness
+        val voice = h.state { State(server, session) }.live().copy(
+            activeRoute = VoiceRoute.PhoneKey(VoiceEngine.gptLive),
+            usesDelegator = true,
+            userLooking = true,
+        )
+        val deltas = LockIsolated(listOf<String?>())
+        val store = h.store(voice) {
+            this[DateClient] = DateClient.constant(Instant.EPOCH)
+            voiceCall { copy(updateInstructions = { _, delta -> deltas.append(delta) }) }
+        }
+        store.send(Action.AtEarChanged(true)) { it.withAtEar(true) }
+        store.send(Action.AtEarChanged(false)) { it.withAtEar(false) }
+        store.finish()
+        assertEquals(
+            listOf(
+                VoiceInstructions.screenUpdate(VoiceScreenVisibility.appHidden),
+                VoiceInstructions.screenUpdate(VoiceScreenVisibility.visible),
             ),
             deltas.value,
         )

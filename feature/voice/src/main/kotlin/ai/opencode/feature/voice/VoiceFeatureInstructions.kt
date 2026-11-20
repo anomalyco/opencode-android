@@ -90,18 +90,32 @@ internal fun retargetCall(state: VoiceFeature.State): Reduced<VoiceFeature.State
  */
 internal fun noteScreenVisibility(from: VoiceScreenVisibility, state: VoiceFeature.State): Effect<VoiceFeature.Action> {
     val after = state.screenVisibility
-    if (after == from || state.phase != VoiceFeature.State.Phase.Live) return Effect.none()
-    // The voice model hears only a change in whether the user sees the screen.
-    val voiceModel = if (from.userSeesScreen != after.userSeesScreen) {
-        sendInstructions(state, VoiceFeature.CancelID.ScreenInstructions) { VoiceInstructions.screenUpdate(after) }
+    if (after == from || state.phase.isTerminal) return Effect.none()
+    val recorder = dependency(VoiceCallLogClient).recorder
+    val log = state.callLogID
+    val marker: Effect<VoiceFeature.Action> = if (recorder != null && log != null) {
+        val text = when (after) {
+            VoiceScreenVisibility.visible -> "The user can see the screen"
+            VoiceScreenVisibility.appHidden -> "The user can't see the screen (app in the background or phone at the ear)"
+            VoiceScreenVisibility.notLooking -> "The user can't see the screen (not said to be looking)"
+        }
+        Effect.run { recorder.note(log, VoiceCallLog.Note.Kind.marker, text) }
     } else {
         Effect.none()
+    }
+    if (state.phase != VoiceFeature.State.Phase.Live) return marker
+    // The voice model hears only a change in whether the user sees the screen.
+    val voiceModel = if (from.userSeesScreen != after.userSeesScreen) {
+        marker.merge(sendInstructions(state, VoiceFeature.CancelID.ScreenInstructions) { VoiceInstructions.screenUpdate(after) })
+    } else {
+        marker
     }
     // Every other route's delegator reads it with each request.
     if (!state.activeRoute.usesBrokerDelegator || !state.usesDelegator) return voiceModel
     val instructions = VoiceDelegator.serviceInstructions(context = delegatorContext(state, otherRequests = state.delegatorWork.size))
     val voiceCall = dependency(VoiceCallClient)
-    return voiceModel.merge(Effect.run { voiceCall.updateDelegatorInstructions(instructions) })
+    val broker = Effect.run<VoiceFeature.Action> { voiceCall.updateDelegatorInstructions(instructions) }
+    return voiceModel.merge(broker.cancellable(VoiceFeature.CancelID.CallScope))
 }
 
 private fun sendInstructions(

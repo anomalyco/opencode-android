@@ -14,7 +14,7 @@ enum class VoiceScreenVisibility {
     /** The app is in front and the user said, this call, that they're looking. */
     visible,
 
-    /** The app is in the background: the phone is locked or another app is in front. */
+    /** The app is in the background (the phone is locked or another app is in front), or the phone is at the user's ear. */
     appHidden,
 
     /** The app is in front, but the user hasn't said they're looking at it (or said they stopped): the default. */
@@ -36,10 +36,10 @@ enum class VoiceScreenVisibility {
     }
 }
 
-/** Seen only when the app is in front and the user said they're looking. */
+/** Seen only when the app is in front, away from the ear, and the user said they're looking. */
 val VoiceFeature.State.screenVisibility: VoiceScreenVisibility
     get() = when {
-        !isAppVisible -> VoiceScreenVisibility.appHidden
+        !isAppVisible || isAtEar -> VoiceScreenVisibility.appHidden
         userLooking -> VoiceScreenVisibility.visible
         else -> VoiceScreenVisibility.notLooking
     }

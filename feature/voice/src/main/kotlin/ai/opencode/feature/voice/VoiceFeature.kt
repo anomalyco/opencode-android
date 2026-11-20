@@ -391,6 +391,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 managesSessions = usesDelegator || usesSessionDelegator,
                 viewing = viewing,
                 userSeesScreen = screenVisibility.userSeesScreen,
+                recordsLooking = usesDelegator,
             )
 
         val isWorking: Boolean
@@ -915,7 +916,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 if (state.isAtEar == atEar) return Reduced(state)
                 val next = state.withAtEar(atEar)
                 if (next.phase.isTerminal) return Reduced(next)
-                Reduced(next, Effect.run { voiceCall.setAtEar(atEar) })
+                Reduced(next, Effect.merge(Effect.run { voiceCall.setAtEar(atEar) }, noteScreenVisibility(from = state.screenVisibility, next)))
             }
 
             is Action.CallEvent -> reduceCallEvent(state, action.event)
@@ -1389,7 +1390,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 listOf<Any>(CancelID.Call, CancelID.Goodbye, CancelID.CallScope) +
                     inFlightCallIDs.map { CancelID.WorkAdmission(it) } +
                     inFlightCallIDs.map { CancelID.WorkCall(it) } +
-                    listOf(CancelID.Reconnecting, CancelID.Instructions, CancelID.ReplyActiveRefresh),
+                    listOf(CancelID.Reconnecting, CancelID.Instructions, CancelID.ScreenInstructions, CancelID.ReplyActiveRefresh),
             ),
             runReplyWatch(watchEffects, next),
         )

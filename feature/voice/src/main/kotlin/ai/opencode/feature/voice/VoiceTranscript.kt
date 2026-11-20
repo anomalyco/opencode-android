@@ -625,6 +625,8 @@ object VoiceInstructions {
         val voiceLayer: String = VoiceEngine.realtime.selfDescription,
         /** The user said they're looking at the screen and the app is in front ([VoiceScreenVisibility.visible]). */
         val userSeesScreen: Boolean = false,
+        /** The built-in delegator can record the user saying they're looking (`set_user_looking`). */
+        val recordsLooking: Boolean = false,
     )
 
     val delegateTool = RealtimeFunctionTool(
@@ -787,7 +789,7 @@ Delegate when:
 - Always delegate any check on whether a session has responded, finished, or is still working; never assume work is still running just because no completion notice has been spoken yet.
 - Only for an external write with an uncertain outcome (a send, post, or purchase), delegate a status check first and retry the write only if it didn't happen.
 - The user answers a question you asked (a session's name, a yes, a choice): the answer completes their earlier request, so delegate that request now. "It didn't work" or "nothing happened" is a request to check: delegate it.
-- "Don't wait for it" means delegate now: never hold a request back to send with the next one.${if (context.managesSessions) lookingDelegation else ""}
+- "Don't wait for it" means delegate now: never hold a request back to send with the next one.${if (context.recordsLooking) lookingDelegation else ""}
 
 Do not delegate when:
 - You can answer from a completed result you already delivered on this call, your voice engine identity, or plain conversation (such as greetings meant for you, small talk, or repeating what was just said). Any status or outcome question ("did that go out?", "is it done?", "what's in it?") goes to `delegate` unless a completed result on this call directly answers it.
