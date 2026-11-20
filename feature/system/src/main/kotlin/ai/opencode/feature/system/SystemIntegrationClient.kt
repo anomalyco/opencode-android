@@ -108,7 +108,6 @@ class SystemPublication(
                 title = session.title,
                 projectID = session.projectID,
                 projectName = if (session.projectID == GLOBAL_PROJECT_ID) null else projectsByID[session.projectID]?.name,
-                updatedAt = session.updatedAt,
             )
             val prefix = server.persistenceID + "|"
             val pinnedIDs = pinnedSessionKeys.mapNotNull { key -> if (key.startsWith(prefix)) key.removePrefix(prefix) else null }
@@ -149,7 +148,8 @@ fun List<OpenCodeSession>.hasSameDirectoryMetadata(other: List<OpenCodeSession>)
 /**
  * Serializes publishes and removals, debounced per server: each server's latest publish runs half a
  * second after its last change, and removing a server cancels its pending publish, so a deleted
- * server is never published again.
+ * server is never published again. A publish that comes out the same as the last job (a run's
+ * activity that moved nothing) is dropped: it would change nothing the system shows.
  */
 class SystemIntegrationPublisher(
     private val delay: Duration = 500.milliseconds,
@@ -166,6 +166,7 @@ class SystemIntegrationPublisher(
 
     private val lock = Any()
     private val pending = HashMap<String, Pending>()
+    private var last: Job? = null
     private val jobs = Channel<Job>(Channel.UNLIMITED)
 
     init {
@@ -187,6 +188,7 @@ class SystemIntegrationPublisher(
 
     fun remove(key: String) = synchronized(lock) {
         pending.remove(key)?.task?.cancel()
+        last = Job.Remove(key)
         jobs.trySend(Job.Remove(key))
     }
 
@@ -194,6 +196,8 @@ class SystemIntegrationPublisher(
     private fun enqueue(job: Job, key: String, id: UUID) = synchronized(lock) {
         if (pending[key]?.id != id) return@synchronized
         pending.remove(key)
+        if (job == last) return@synchronized
+        last = job
         jobs.trySend(job)
     }
 }

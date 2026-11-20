@@ -105,6 +105,23 @@ class SystemIntegrationTests {
         assertTrue(keys.toString(), setOf("key", "name", "lastViewedSessionID", "pinnedIDs", "sessions", "projects").containsAll(keys))
     }
 
+    @Test
+    fun aRunOnTheNewestSessionChangesNoEntry() {
+        val first = OpenCodeSession(id = "ses_c", serverTitle = "ses_c", projectID = "prj_app", directory = "/work/app", updatedAt = Instant.ofEpochSecond(100))
+        var state = HomeFeature.State(server, snapshot(listOf(project, docs), listOf(newer, older, first)))
+        val entry = state.systemPublication.systemDirectoryEntry
+        // A `session.updated` during a run: the session's time moves on.
+        fun touched(state: HomeFeature.State, id: String, seconds: Long) =
+            state.copy(sessions = state.sessions.map { if (it.id == id) it.copy(updatedAt = Instant.ofEpochSecond(seconds)) else it })
+        for (tick in 1..20) {
+            state = touched(state, "ses_newer", 300L + tick)
+            assertEquals(entry, state.systemPublication.systemDirectoryEntry)
+        }
+        // Moving another session up the list changes it.
+        val moved = touched(state, "ses_c", 1_000)
+        assertEquals(listOf("ses_c", "ses_newer", "ses_older"), moved.systemPublication.systemDirectoryEntry.sessions.map { it.id })
+    }
+
     // endregion
 
     // region SystemRoutingTests
