@@ -415,7 +415,7 @@ private fun SessionFeature.familyPicked(id: String, state: State): Reduced<State
     if (selectedItems != null) next = next.noteOpening(seen = null)
     val abandon = abandonRefresh(next)
     val requests = startPendingWork(abandon.state, RequestDockFeature.State.LoadAttempt.Initial)
-    val shells = refreshShells(requests.state.copy(jobs = emptyMap()))
+    val shells = refreshShells(requests.state.copy(jobs = emptyMap(), stoppingIDs = emptySet()))
     val jobs = refreshJobs(shells.state)
     val watchdog = watchdog(jobs.state)
     return Reduced(

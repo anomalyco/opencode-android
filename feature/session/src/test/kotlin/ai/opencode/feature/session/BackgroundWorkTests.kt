@@ -248,6 +248,8 @@ class BackgroundWorkTests {
         assertFalse("The offer leaves as soon as it is taken", store.state.showsMoveToBackground)
         store.receive(Action.MoveToBackgroundFinished(session.id, "msg_a-tool-call_1", null))
         store.receive(Action.ShellsResponse::class) { it.copy(shells = listOf(listed)) }
+        // A moved script outlives its call too: the jobs are listed with the shells.
+        store.receive(Action.JobsResponse(session.id, emptyList()))
         assertEquals(listOf(session.id), moved.value)
 
         // The server settles the tool; the shell now outlives it in the capsule.
@@ -1146,6 +1148,77 @@ class BackgroundWorkTests {
         assertTrue(store.state.jobs.isEmpty())
         // Another tree's job never lands here.
         store.send(Action.JobUpdated(job("other", OpenCodeJob.Kind.CodeMode, owner = "ses_elsewhere")))
+    }
+
+    /** Home sends `FamilyRefreshRequested` on every new stream; its re-list drops a settle the stream missed. */
+    @Test fun aSettleMissedWhileTheStreamWasDownIsGoneAfterTheReconnect() = sessionTest { h ->
+        val stale = job("cm_1", OpenCodeJob.Kind.CodeMode)
+        val store = h.store(h.state().copy(jobs = mapOf(stale.id to stale))) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                sessionFamily = { _, _ -> awaitCancellation() },
+                runningShells = { _, _ -> emptyList() },
+                runningJobs = { _, _ -> emptyList() },
+            )
+        }
+        store.exhaustive = false
+        assertEquals(listOf("cm_1"), store.state.backgroundScripts.map { it.id })
+
+        store.send(Action.FamilyRefreshRequested)
+        store.receive(Action.JobsResponse(session.id, emptyList())) { it.copy(jobs = emptyMap()) }
+        assertFalse(store.state.hasBackgroundWork)
+        h.skipInFlightEffects()
+    }
+
+    @Test fun eventsDuringTheReconnectsListWinOverItsStaleResponse() = sessionTest { h ->
+        val settled = job("cm_old", OpenCodeJob.Kind.CodeMode)
+        val started = job("cm_new", OpenCodeJob.Kind.CodeMode)
+        val listed = Channel<List<OpenCodeJob>>(Channel.UNLIMITED)
+        val store = h.store(h.state().copy(jobs = mapOf(settled.id to settled))) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                sessionFamily = { _, _ -> awaitCancellation() },
+                runningShells = { _, _ -> emptyList() },
+                runningJobs = { _, _ -> listed.receive() },
+            )
+        }
+        store.exhaustive = false
+
+        store.send(Action.FamilyRefreshRequested)
+        store.send(Action.JobUpdated(settled.copy(isRunning = false)))
+        store.send(Action.JobUpdated(started))
+        // The read began before both: it still lists the settled job and not the new one.
+        listed.trySend(listOf(settled))
+        store.receive(Action.JobsResponse(session.id, listOf(settled))) {
+            it.copy(jobs = mapOf(started.id to started), jobChangesDuringRefresh = emptyMap())
+        }
+        assertEquals(listOf(started.id), store.state.backgroundScripts.map { it.id })
+        h.skipInFlightEffects()
+    }
+
+    @Test fun aSwitchSnapshotKeepsItsTreesJobsWhileAway() = sessionTest { h ->
+        val running = job("cm_1", OpenCodeJob.Kind.CodeMode)
+        val left = h.state().copy(familySessions = listOf(session, child), jobs = mapOf(running.id to running))
+        var snapshot = requireNotNull(h.state { SessionFeature.SwitchSnapshot.from(left) })
+        assertEquals(left.jobs, snapshot.jobs)
+
+        val childJob = job("img", OpenCodeJob.Kind.Image, owner = child.id)
+        snapshot = snapshot.applying(childJob)
+        // Another tree's job never joins it.
+        assertEquals(snapshot, snapshot.applying(job("other", OpenCodeJob.Kind.CodeMode, owner = "ses_elsewhere")))
+        snapshot = snapshot.applying(running.copy(isRunning = false))
+        assertEquals(setOf(childJob.id), snapshot.jobs.keys)
+
+        val restored = h.state { snapshot.restoreSessionData(h.state().copy(familySessions = listOf(session, child))) }
+        assertEquals(setOf(childJob.id), restored.jobs.keys)
+        assertEquals(listOf(child.id), restored.activeSubagents.map { it.id })
+    }
+
+    @Test fun aSubagentJobWhoseChildIsntListedYetIsKept() = sessionTest { h ->
+        // The family read hasn't reached the child the job runs in; its owner is the child.
+        val pending = job("j", OpenCodeJob.Kind.Subagent, child = "ses_unlisted")
+        val store = h.store(h.state())
+        store.send(Action.JobUpdated(pending)) {
+            it.copy(jobs = mapOf(pending.id to pending), jobChangesDuringRefresh = mapOf(pending.id to pending))
+        }
     }
 
     // endregion

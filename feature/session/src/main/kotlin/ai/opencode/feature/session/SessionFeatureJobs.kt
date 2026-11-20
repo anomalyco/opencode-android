@@ -140,10 +140,13 @@ private suspend fun stopFailed(calls: List<suspend () -> Unit>): Boolean = corou
 private val State.familyParents: Map<String, String>
     get() = HashMap<String, String>().also { parents -> for (member in familySessions) member.parentID?.let { parents[member.id] = it } }
 
-/** A job this screen can show: its work runs in the session on screen or a known member of its family. */
+/**
+ * A job this screen keeps: owned by its session or a known member of its family, or started by one
+ * (a subagent job whose child isn't listed yet).
+ */
 private fun State.ownsJob(job: OpenCodeJob): Boolean {
-    val owner = job.ownerSessionID
-    return owner == session?.id || familySessions.any { it.id == owner }
+    val selectedID = session?.id ?: return false
+    return listOf(job.ownerSessionID, job.sessionID).any { owner -> owner == selectedID || familySessions.any { it.id == owner } }
 }
 
 /** Running jobs owned by [sessionID] or any session below it; a subagent job belongs to the child it runs. */
@@ -169,7 +172,7 @@ val State.backgroundScripts: List<BackgroundScript>
         for (item in items) {
             val call = (item as? OpenCodeTranscriptItem.Tool)?.call ?: continue
             if (call.name != "execute" || call.status != OpenCodeToolCall.Status.Completed) continue
-            val jobID = call.metadata["jobID"]?.string ?: continue
+            val jobID = call.metadata["jobID"]?.string?.takeIf { it.isNotEmpty() } ?: continue
             labels[jobID] = firstLine((call.input as? OpenCodeJSONValue.Object)?.values?.get("code")?.string)
         }
         return running.map { BackgroundScript(it.id, labels[it.id] ?: it.id, it.startedAt) }.sortedBy { it.startedAt }

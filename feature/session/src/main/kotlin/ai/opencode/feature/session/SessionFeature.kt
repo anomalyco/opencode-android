@@ -913,6 +913,8 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val family: List<OpenCodeSession>,
         val familyReadAt: Instant?,
         val shells: List<OpenCodeShell>,
+        /** Running jobs in the tree, kept by `experimental.job.updated` while away. */
+        val jobs: Map<String, OpenCodeJob> = emptyMap(),
         val permissions: List<ai.opencode.server.model.OpenCodePermissionRequest>,
         val forms: List<ai.opencode.server.model.OpenCodeFormRequest>,
         val formAnswers: Map<String, Map<String, OpenCodeFormValue>>,

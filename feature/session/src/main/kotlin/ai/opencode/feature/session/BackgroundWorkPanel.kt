@@ -297,7 +297,7 @@ fun BackgroundWorkCapsuleLabel(
         horizontalArrangement = Arrangement.spacedBy(PILL_GLYPH_GAP.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(Modifier.width(glyphWidth(agents, shells + scripts).dp).clearAndSetSemantics { }, contentAlignment = Alignment.CenterStart) { leading() }
+        Box(Modifier.width(glyphWidth(agents, shells).dp).clearAndSetSemantics { }, contentAlignment = Alignment.CenterStart) { leading() }
         if (sizingOnly) {
             Text(BackgroundWorkSummary.summary(agents, shells, scripts), style = countsStyle, maxLines = 1, softWrap = false)
         } else {
@@ -408,6 +408,10 @@ fun BackgroundWorkGlyph(
                 isPaused = isPaused,
             )
         }
+        // Scripts alone show the plain busy orb, as the desktop's chip does; their rows keep `</>`.
+        AnimatedVisibility(agents.isEmpty() && shells.isEmpty() && scripts.isNotEmpty(), enter = swap.enter, exit = swap.exit) {
+            AgentActivityGlyph(source = AgentActivitySource.Running, isPaused = isPaused)
+        }
         AnimatedVisibility(shells.isNotEmpty(), enter = swap.enter, exit = swap.exit) {
             val ids = shells.map { it.id }
             ShellGlyph(
@@ -416,9 +420,6 @@ fun BackgroundWorkGlyph(
                 probe = probe,
                 isPaused = isPaused,
             )
-        }
-        AnimatedVisibility(shells.isEmpty() && scripts.isNotEmpty(), enter = swap.enter, exit = swap.exit) {
-            ScriptGlyph()
         }
     }
 }
@@ -1039,6 +1040,7 @@ private fun BackgroundWorkRows(
                     BackgroundWorkRow(
                         title = script.label,
                         isCommand = true,
+                        truncatesTail = true,
                         startedAt = script.startedAt,
                         isLive = isLive,
                         accessibilityHint = stopLabel,
@@ -1096,6 +1098,8 @@ private fun BackgroundWorkRow(
     onTap: (() -> Unit)?,
     modifier: Modifier = Modifier,
     isCommand: Boolean = false,
+    /** A script's first line reads from its start; a command keeps both ends. */
+    truncatesTail: Boolean = false,
     startedAt: Instant? = null,
     isLive: Boolean = true,
     stopLabel: String? = null,
@@ -1131,7 +1135,7 @@ private fun BackgroundWorkRow(
             title,
             style = if (isCommand) OpenCodeTextStyles.subheadline.copy(fontFamily = OpenCodeFonts.monospace) else OpenCodeTextStyles.body,
             maxLines = 1,
-            overflow = if (isCommand) TextOverflow.MiddleEllipsis else TextOverflow.Ellipsis,
+            overflow = if (isCommand && !truncatesTail) TextOverflow.MiddleEllipsis else TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f).clearAndSetSemantics { },
         )
         if (startedAt != null) {

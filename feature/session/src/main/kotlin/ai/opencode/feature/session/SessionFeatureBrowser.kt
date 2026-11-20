@@ -220,8 +220,10 @@ internal fun SessionFeature.reduceBrowserAndBackgroundWork(state: State, action:
             } else {
                 // Moved even if its send let the claim go meanwhile.
                 next = next.copy(movedWorkKeys = next.movedWorkKeys + key)
-                // The moved shell now outlives its tool call; list it for the capsule.
-                refreshShells(next)
+                // The moved shell (or script) now outlives its tool call; list it for the capsule.
+                val shells = refreshShells(next)
+                val jobs = refreshJobs(shells.state)
+                Reduced(jobs.state, Effect.merge(shells.effect, jobs.effect))
             }
         }
     }

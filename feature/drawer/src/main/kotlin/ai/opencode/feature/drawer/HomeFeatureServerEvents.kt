@@ -179,8 +179,12 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
             return Reduced(s, forwardToScreens(s, SessionFeature.Action.ShellEnded(event.shellID)))
         }
 
-        is OpenCodeServerEvent.JobUpdated ->
-            return Reduced(state, forwardToScreens(state, SessionFeature.Action.JobUpdated(event.job)) { it.session != null })
+        is OpenCodeServerEvent.JobUpdated -> {
+            val snapshots = state.sessionSnapshots.mapValues { (_, snapshot) -> snapshot.applying(event.job) }
+            val s = if (snapshots == state.sessionSnapshots) state else state.copy(sessionSnapshots = snapshots)
+            // Each screen keeps the jobs of its own tree.
+            return Reduced(s, forwardToScreens(s, SessionFeature.Action.JobUpdated(event.job)) { it.session != null })
+        }
 
         is OpenCodeServerEvent.ExecutionStarted -> {
             val sessionID = event.sessionID
