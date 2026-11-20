@@ -44,6 +44,7 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import java.io.File
 import java.time.Instant
+import java.util.Locale
 
 private val server = OpenCodeServer(url = "https://saved.example", username = "kit", password = "test")
 private val otherServer = OpenCodeServer(url = "https://other.example", username = "kit", password = "test")
@@ -541,6 +542,16 @@ class SystemPublisherTests {
         // Voice turning on changes the quick actions.
         publish(entry("a", title = "Renamed"), voiceAvailable = true)
         assertEquals(7, jobs.size)
+
+        // So does another language: the quick actions' labels change.
+        val locale = Locale.getDefault()
+        try {
+            Locale.setDefault(Locale.GERMAN)
+            publish(entry("a", title = "Renamed"), voiceAvailable = true)
+        } finally {
+            Locale.setDefault(locale)
+        }
+        assertEquals(8, jobs.size)
         publishers.cancel()
     }
 }

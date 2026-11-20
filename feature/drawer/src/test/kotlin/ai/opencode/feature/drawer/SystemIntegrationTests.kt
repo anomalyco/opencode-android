@@ -106,20 +106,23 @@ class SystemIntegrationTests {
     }
 
     @Test
-    fun aRunOnTheNewestSessionChangesNoEntry() {
-        val first = OpenCodeSession(id = "ses_c", serverTitle = "ses_c", projectID = "prj_app", directory = "/work/app", updatedAt = Instant.ofEpochSecond(100))
-        var state = HomeFeature.State(server, snapshot(listOf(project, docs), listOf(newer, older, first)))
+    fun aRunOnTheNewestSessionChangesNoEntryOrShareTargets() {
+        val oldest = OpenCodeSession(id = "ses_c", serverTitle = "ses_c", projectID = "prj_app", directory = "/work/app", updatedAt = Instant.ofEpochSecond(50))
+        var state = HomeFeature.State(server, snapshot(listOf(project, docs), listOf(newer, older, oldest)))
         val entry = state.systemPublication.systemDirectoryEntry
+        val targets = state.shareTargetsPublication.targets()
         // A `session.updated` during a run: the session's time moves on.
         fun touched(state: HomeFeature.State, id: String, seconds: Long) =
             state.copy(sessions = state.sessions.map { if (it.id == id) it.copy(updatedAt = Instant.ofEpochSecond(seconds)) else it })
         for (tick in 1..20) {
             state = touched(state, "ses_newer", 300L + tick)
             assertEquals(entry, state.systemPublication.systemDirectoryEntry)
+            assertEquals(targets, state.shareTargetsPublication.targets())
         }
-        // Moving another session up the list changes it.
+        // Moving another session up the list changes both.
         val moved = touched(state, "ses_c", 1_000)
         assertEquals(listOf("ses_c", "ses_newer", "ses_older"), moved.systemPublication.systemDirectoryEntry.sessions.map { it.id })
+        assertEquals(listOf("ses_c", "ses_newer", "ses_older"), moved.shareTargetsPublication.targets().recents.map { it.id })
     }
 
     // endregion

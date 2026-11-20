@@ -20,6 +20,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.UUID
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -158,7 +159,12 @@ class SystemIntegrationPublisher(
     perform: suspend (SystemIntegrationPublisher.Job) -> Unit,
 ) {
     sealed interface Job {
-        data class Publish(val server: SessionDirectory.Server, val voiceAvailable: Boolean) : Job
+        data class Publish(
+            val server: SessionDirectory.Server,
+            val voiceAvailable: Boolean,
+            /** The quick actions' labels are in it: changing the app's language republishes. */
+            val locale: Locale = Locale.getDefault(),
+        ) : Job
         data class Remove(val key: String) : Job
     }
 
