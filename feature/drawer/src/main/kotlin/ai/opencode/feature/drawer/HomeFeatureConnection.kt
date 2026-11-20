@@ -501,9 +501,36 @@ internal fun HomeFeature.flushPersistedComposer(state: State): Effect<Action> {
 }
 
 /**
- * The board the call's delegator reads while a call is up; null otherwise, so Home pays nothing for
- * it between calls.
+ * Everything the board is built from, compared per action in its place. While nothing changed each
+ * collection compares by reference, so a call's caption deltas don't rebuild the drawer's status.
  */
+internal data class VoiceSessionBoardInput(
+    /** Read and mute state, attention and whether activity shows; `busy` is left empty and compared through its sources. */
+    val status: State.StatusSnapshot,
+    val sessions: List<OpenCodeSession>,
+    val activeSessionIDs: Set<String>,
+    val parents: State.ParentSources,
+    val pinnedSessionKeys: List<String>,
+    val openSessionID: String?,
+    val home: VoiceAppState.Home?,
+)
+
+/** Null between calls, so Home pays nothing for the board then. */
+internal val State.voiceSessionBoardInput: VoiceSessionBoardInput?
+    get() {
+        if (sessionDetail?.voice == null) return null
+        return VoiceSessionBoardInput(
+            status = statusSnapshot(busy = emptySet()),
+            sessions = sessions,
+            activeSessionIDs = activeSessionIDs,
+            parents = parentSources,
+            pinnedSessionKeys = pinnedSessionKeys,
+            openSessionID = sessionDetail?.session?.id,
+            home = if (DeveloperMode.isEnabled) voiceAppStateHome else null,
+        )
+    }
+
+/** The board while a call is up; null otherwise. Built only when [voiceSessionBoardInput] changes. */
 internal val State.voiceSessionBoard: VoiceSessionBoard?
     get() {
         if (sessionDetail?.voice == null) return null

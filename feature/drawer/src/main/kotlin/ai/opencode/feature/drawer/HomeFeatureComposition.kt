@@ -467,8 +467,8 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
             Reduced(state)
         }
         // The call's delegator reads what the drawer shows from here.
-        .onChange({ it.voiceSessionBoard }) { _, new, state ->
-            dependency(VoiceSessionBoardClient).publish(new)
+        .onChange({ it.voiceSessionBoardInput }) { _, _, state ->
+            dependency(VoiceSessionBoardClient).publish(state.voiceSessionBoard)
             Reduced(state)
         }
         // Whoever moves a live call (the drawer, New Session, a draft's project) only edits its
