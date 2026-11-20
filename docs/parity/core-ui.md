@@ -11,10 +11,11 @@ Status values: `todo`, `partial: <what is missing>`, `done`, `n/a: <reason and w
 the OpenCode desktop design system (`packages/ui`, theme `oc-2`), not iOS's SF / Liquid Glass:
 
 - Fonts: Inter (variable; Normal 440, Medium 530, SemiBold 600, Bold 670) for UI text,
-  OpenMono (Regular, Bold and their italics, no programming ligatures; Medium draws as Regular
-  and SemiBold as Bold) for code, tool output, commands and onboarding's brand marks (`res/font`;
-  refresh with `scripts/update-openmono.py`). Both are OFL: the licence texts are in
-  `core/src/main/assets/licenses/`, so every APK carries them.
+  OpenMono (Regular and Bold, no programming ligatures; Medium draws as Regular and SemiBold as
+  Bold; italic is the system's slant, as no italic file is bundled) for code, tool output,
+  commands and onboarding's brand marks (`res/font`; refresh with `scripts/update-openmono.py`).
+  Both are OFL: the licence texts are in `core/src/main/assets/licenses/`, so every APK carries
+  them.
   `OpenCodeTextStyles` keep the iOS names at the desktop's sizes (body 15, subheadline 14,
   footnote 13, headline 16 medium, titles medium with tight tracking), all in sp.
 - Colour: `AppTheme.OpenCode` is `BrandPalette` (desktop v2 neutrals, monochrome contrast

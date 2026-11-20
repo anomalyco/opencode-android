@@ -6,7 +6,6 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
@@ -42,16 +41,13 @@ object OpenCodeFonts {
     /**
      * OpenMono for code, tool output and paths (desktop `--font-family-mono`). It has two weights:
      * Regular also serves Medium and Bold also serves SemiBold, so no weight is synthesized.
+     * Italic is the system's slant of these upright faces.
      */
     val monospace: FontFamily = FontFamily(
         Font(R.font.openmono_regular, FontWeight.Normal),
         Font(R.font.openmono_regular, FontWeight.Medium),
         Font(R.font.openmono_bold, FontWeight.SemiBold),
         Font(R.font.openmono_bold, FontWeight.Bold),
-        Font(R.font.openmono_italic, FontWeight.Normal, FontStyle.Italic),
-        Font(R.font.openmono_italic, FontWeight.Medium, FontStyle.Italic),
-        Font(R.font.openmono_bold_italic, FontWeight.SemiBold, FontStyle.Italic),
-        Font(R.font.openmono_bold_italic, FontWeight.Bold, FontStyle.Italic),
     )
 }
 
