@@ -102,20 +102,35 @@ class VoiceSessionToolsTests {
         h.skipInFlightEffects()
 
         val key = "${server.persistenceID}|${math.id}"
+        val base = home.copy(sessionReadDates = mapOf(key to Instant.ofEpochSecond(200)))
+        val detail = base.sessionDetail!!
+        val child = OpenCodeSession(id = "ses_child", serverTitle = "Child", projectID = "math", directory = math.directory, updatedAt = Instant.ofEpochSecond(60), parentID = math.id)
         val changes = listOf(
-            home.copy(attentionSessionIDs = setOf(math.id)),
-            home.copy(activeSessionIDs = setOf(math.id)),
-            home.copy(activeSessionParents = mapOf("ses_child" to math.id)),
-            home.copy(sessionReadDates = mapOf(key to Instant.ofEpochSecond(200))),
-            home.copy(mutedSessionKeys = setOf(key)),
-            home.copy(pinnedSessionKeys = listOf(key)),
-            home.copy(sessions = listOf(waiting)),
+            base.copy(attentionSessionIDs = setOf(math.id)),
+            base.copy(activeSessionIDs = setOf(math.id)),
+            base.copy(activeSessionParents = mapOf("ses_child" to math.id)),
+            base.copy(sessionDetail = detail.copy(familySessions = listOf(child))),
+            base.copy(sessionDetail = detail.copy(session = math)),
+            base.copy(sessionReadDates = emptyMap()),
+            base.copy(manuallyUnreadSessionKeys = setOf(key)),
+            base.copy(mutedSessionKeys = setOf("${server.persistenceID}|${waiting.id}")),
+            base.copy(pinnedSessionKeys = listOf(key)),
+            base.copy(sessions = listOf(waiting)),
+            base.copy(connection = base.connection.copy(connectionStatus = HomeConnectionFeature.State.ConnectionStatus.disconnected)),
+            base.copy(connection = base.connection.copy(server = OpenCodeServer(url = "http://localhost:4097", username = "", password = ""))),
         )
         h.state {
             for (changed in changes) {
-                assertNotEquals(home.voiceSessionBoard, changed.voiceSessionBoard)
-                assertNotEquals(home.voiceSessionBoardInput, changed.voiceSessionBoardInput)
+                assertNotEquals(base.voiceSessionBoard, changed.voiceSessionBoard)
+                assertNotEquals(base.voiceSessionBoardInput, changed.voiceSessionBoardInput)
             }
+        }
+        val board = h.state { base.voiceSessionBoard }
+        val input = h.state { base.voiceSessionBoardInput }
+        h.setShared(SharedKeys.developerMode, true)
+        h.state {
+            assertNotEquals(board, base.voiceSessionBoard)
+            assertNotEquals(input, base.voiceSessionBoardInput)
         }
     }
 }
