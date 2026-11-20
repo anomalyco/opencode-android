@@ -284,7 +284,7 @@ internal fun InboxSidebarRowView(row: InboxSidebarRow, now: Instant, checked: Bo
             checkSize = 18.dp,
             modifier = Modifier.padding(top = 2.dp).height(18.dp),
         ) {
-            Box(Modifier.size(8.dp).background(if (row.unread) colors.signal else Color.Transparent, CircleShape))
+            Box(Modifier.size(8.dp).background(if (row.unread) colors.secondaryText else Color.Transparent, CircleShape))
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             // Text + Spacer(minLength: 8) + age. The title takes all the width the age leaves (a

@@ -411,7 +411,11 @@ fun DrawerListSessionCell(
                         SFSymbol.CircleFill,
                         contentDescription = null,
                         size = (11 * density.fontScale).dp,
-                        tint = if (row.indicator == Indicator.attention) colors.warning else colors.signal,
+                        tint = when {
+                            row.indicator == Indicator.attention -> colors.warning
+                            onTint -> Color.White
+                            else -> colors.secondaryText
+                        },
                         modifier = Modifier.graphicsLayer { alpha = dotAlpha },
                     )
                     OpenCodeIcon(
