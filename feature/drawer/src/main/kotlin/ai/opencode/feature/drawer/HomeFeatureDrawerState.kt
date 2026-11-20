@@ -168,7 +168,10 @@ val HomeFeature.State.firstSessionProject: OpenCodeProject?
  */
 val HomeFeature.State.visibleSessions: List<OpenCodeSession>
     get() {
-        if (search.isEmpty()) return sessions.filter { it.parentID == null && !it.isArchived && !isHidden(it.id) }
+        if (search.isEmpty()) {
+            val hidden = hiddenSessionIDs
+            return sessions.filter { it.parentID == null && !it.isArchived && it.id !in hidden }
+        }
         val local = sessions.filter { it.parentID == null && !it.isArchived && it.title.contains(search, ignoreCase = true) }
         val found = sessionPages.search
         if (found == null || found.results.isEmpty()) return local
@@ -183,6 +186,18 @@ val HomeFeature.State.visibleSessions: List<OpenCodeSession>
             extra += result
         }
         return local + extra
+    }
+
+/** This server's hidden sessions by ID, worked out once for a loop over the sessions rather than a key built per session. */
+val HomeFeature.State.hiddenSessionIDs: Set<String>
+    get() {
+        if (hiddenSessionKeys.isEmpty()) return emptySet()
+        val prefix = server.persistenceID + "|"
+        val ids = HashSet<String>()
+        for (key in hiddenSessionKeys) {
+            if (key.startsWith(prefix)) ids += key.removePrefix(prefix)
+        }
+        return ids
     }
 
 val HomeFeature.State.pinnedSessions: List<OpenCodeSession> get() = drawerSessions.pinned

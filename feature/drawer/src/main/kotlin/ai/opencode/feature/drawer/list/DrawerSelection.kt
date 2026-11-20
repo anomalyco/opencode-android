@@ -24,6 +24,7 @@ import ai.opencode.feature.drawer.isHidden
 import ai.opencode.feature.drawer.isMuted
 import ai.opencode.feature.drawer.isPinned
 import ai.opencode.feature.drawer.isUnread
+import ai.opencode.feature.drawer.visibleSessions
 import ai.opencode.feature.system.SessionWindowTarget
 import ai.opencode.feature.system.WindowsClient
 import androidx.compose.animation.core.Animatable
@@ -195,7 +196,7 @@ internal fun selectionActions(
 ): Pair<List<DrawerRowMenuItem>, List<DrawerRowMenuItem>> {
     val state = store.state
     val ids = selection.ids.toList()
-    val sessions = state.sessions.filter { it.id in selection.ids }
+    val sessions = state.visibleSessions.filter { it.id in selection.ids }
     var anyUnread = false
     var allMuted = true
     var allPinned = true

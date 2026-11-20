@@ -9,7 +9,7 @@ import ai.opencode.feature.drawer.ServerSwapTarget
 import ai.opencode.feature.drawer.ServerSwitchNote
 import ai.opencode.feature.drawer.drawerListFooter
 import ai.opencode.feature.drawer.drawerSessions
-import ai.opencode.feature.drawer.isHidden
+import ai.opencode.feature.drawer.hiddenSessionIDs
 import ai.opencode.feature.drawer.placeholderSession
 import ai.opencode.feature.drawer.statusSnapshot
 import ai.opencode.feature.drawer.style.DrawerSectionHeaderKind
@@ -209,6 +209,7 @@ data class DrawerListModel(
             val recents = sessions.recents
             val rows = LinkedHashMap<String, DrawerListRow>()
             val headerFollows = HashMap<DrawerSectionHeaderKind, Boolean>()
+            val hiddenIDs = state.hiddenSessionIDs
 
             fun row(session: OpenCodeSession, pinned: Boolean) = DrawerListRow(
                 session = session,
@@ -216,7 +217,7 @@ data class DrawerListModel(
                 selected = inputs.selectedSessionID == session.id,
                 indicator = status.indicator(session),
                 muted = status.isMuted(session.id),
-                hidden = state.isHidden(session.id),
+                hidden = session.id in hiddenIDs,
                 unread = status.isUnread(session),
                 isLifted = liftedID == session.id,
                 time = timestamp(session.updatedAt, now),
