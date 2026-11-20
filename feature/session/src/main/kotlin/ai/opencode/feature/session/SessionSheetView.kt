@@ -75,6 +75,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -92,6 +93,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.currentStateAsState
 import ai.opencode.server.OpenCodeServer
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -242,8 +244,13 @@ fun SessionSheetView(
     providerIcon: (@Composable (providerID: String, canonicalProviderID: String?, size: Dp) -> Unit)? = null,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+    val openMedia = {
+        onMediaTapped()
+        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismissRequest() }
+    }
     OpenCodeBottomSheet(onDismissRequest = onDismissRequest, sheetState = sheetState) {
-        SessionSheetContent(sheet, context, details, onModelTapped, onMediaTapped, statusOrb, providerIcon)
+        SessionSheetContent(sheet, context, details, onModelTapped, { openMedia() }, statusOrb, providerIcon)
         SessionActionPresentations(sheet, title = details.session?.title)
     }
 }
@@ -360,6 +367,7 @@ fun SessionSheetPrewarm(
                 2 -> Tiles(warm.state, isListRow = true, warm.context, title = null, send = { })
                 3 -> DetailsCard(warm.details, onModelTapped = { }, providerIcon)
                 else -> {
+                    MediaCard { }
                     AlwaysNotifyCard(isOn = false, isPending = false) { }
                     DeleteRow(enabled = true) { }
                     rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -844,7 +852,7 @@ private fun MediaCard(onClick: () -> Unit) {
             },
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(7.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(mediaValue, style = OpenCodeTextStyles.callout, color = OpenCodeTheme.colors.secondaryText, maxLines = 1)
+            Text(mediaValue, style = OpenCodeTextStyles.callout, color = OpenCodeTheme.colors.secondaryText, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
             OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
         }
     }

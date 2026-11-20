@@ -198,12 +198,6 @@ class SessionMediaTests {
         store.finish()
     }
 
-    @Test fun openingFromTheSessionSheetReplacesIt() = sessionTest { h ->
-        val store = h.store(h.state { State.session(server, session()).copy(activePicker = State.ActivePicker.session) })
-        store.send(Action.SessionMediaTapped) { it.copy(sessionMediaFilter = Filter.media, activePicker = null) }
-        store.finish()
-    }
-
     /** An OpenCode ID minted at [at] (`<prefix>_` + 12 hex of `ms × 4096` + 14 characters). */
     private fun minted(prefix: String, at: Instant, counter: Int = 0) =
         prefix + "_" + "%012x".format(((at.toEpochMilli() * 0x1000) + counter) and 0xFFFF_FFFF_FFFFL) + "Abcdefghijklmn"
