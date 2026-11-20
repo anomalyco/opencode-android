@@ -90,7 +90,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -1133,36 +1132,60 @@ private fun SessionComposerEnv.DraftProjectsOverlay(modifier: Modifier) {
 // region Pills
 
 /**
- * iOS `composerPillStack`: one row (background work on the left; queued messages and the jump
- * button on the right), stacking only when the row can't fit (large text).
+ * iOS `ComposerPillRows`: one row (background work on the left; queued messages and the jump button
+ * on the right), stacking only when the two pills overflow it at full width. The jump button never
+ * decides that: it joins the queued pill's row when its slot fits too, and otherwise floats above the
+ * rows' top end, so its coming and going never changes their height.
  */
 @Composable
 private fun SessionComposerEnv.ComposerPills() {
     val hasActivity = s.hasBackgroundWork
     val hasQueued = s.queuedMessages.isNotEmpty()
     if (!hasActivity && !hasQueued) return
-    val fontScale = LocalDensity.current.fontScale
-    // iOS `ViewThatFits`: the row unless large text makes it overflow.
-    val stacks = fontScale >= 1.8f
     val showsJump = host.showsJumpButton && !holdsClientToolCard
-    if (!stacks) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            if (hasActivity) BackgroundActivity()
-            Spacer(Modifier.weight(1f))
-            // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                QueuedActivity(hasQueued)
+    Layout(
+        contents = listOf(
+            { if (hasActivity) BackgroundActivity() },
+            { QueuedActivity(hasQueued) },
+            {
+                // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
                 JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
-            }
-        }
-    } else {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            if (hasActivity) Box(Modifier.fillMaxWidth()) { BackgroundActivity() }
-            if (hasQueued || showsJump) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    QueuedActivity(hasQueued)
-                    JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
+            },
+        ),
+        modifier = Modifier.fillMaxWidth(),
+    ) { (activityMeasurables, queuedMeasurables, jumpMeasurables), constraints ->
+        val width = constraints.maxWidth
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val activity = activityMeasurables.firstOrNull()?.measure(loose)
+        val queued = queuedMeasurables.firstOrNull()?.measure(loose)
+        val jump = jumpMeasurables.single().measure(loose)
+        val activityWidth = activity?.width ?: 0
+        val queuedWidth = queued?.width ?: 0
+        // The slot fully open, so the jump button showing or not never changes where it stands.
+        val jumpSlot = (if (hasQueued) 48f + JumpToLatestPillMotion.gap else 48f).dp.roundToPx()
+        val floatingY = -(48 + ComposerTunables.pillGap + host.orbClearance).dp.roundToPx()
+        if (activity != null && queued != null && activityWidth + queuedWidth > width) {
+            val jumpInRow = queuedWidth + jumpSlot <= width
+            val queuedTop = activity.height + 10.dp.roundToPx()
+            val queuedRowHeight = if (jumpInRow) maxOf(queued.height, jump.height) else queued.height
+            layout(width, queuedTop + queuedRowHeight) {
+                activity.placeRelative(0, 0)
+                if (jumpInRow) {
+                    queued.placeRelative(width - jump.width - queued.width, queuedTop + (queuedRowHeight - queued.height) / 2)
+                    jump.placeRelative(width - jump.width, queuedTop + (queuedRowHeight - jump.height) / 2)
+                } else {
+                    queued.placeRelative(width - queued.width, queuedTop)
+                    jump.placeRelative(width - jump.width, floatingY)
                 }
+            }
+        } else {
+            val jumpInRow = activityWidth + queuedWidth + jumpSlot <= width
+            val jumpWidth = if (jumpInRow) jump.width else 0
+            val rowHeight = maxOf(activity?.height ?: 0, queued?.height ?: 0, if (jumpInRow) jump.height else 0)
+            layout(width, rowHeight) {
+                activity?.placeRelative(0, (rowHeight - activity.height) / 2)
+                queued?.placeRelative(width - jumpWidth - queued.width, (rowHeight - queued.height) / 2)
+                jump.placeRelative(width - jump.width, if (jumpInRow) (rowHeight - jump.height) / 2 else floatingY)
             }
         }
     }
