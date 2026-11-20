@@ -5,6 +5,7 @@ import ai.opencode.core.strings.localized
 import ai.opencode.feature.media.AgentFileDestination
 import ai.opencode.feature.media.AgentImageKey
 import ai.opencode.feature.media.AgentImageRequest
+import ai.opencode.feature.media.LinkPreview
 import ai.opencode.feature.media.LinkPreviewExtractor
 import ai.opencode.feature.media.LinkPreviewPolicy
 import ai.opencode.feature.media.LinkTextBlock
@@ -103,7 +104,7 @@ object SessionMedia {
         /** A long paste sent as a file. */
         data class PastedText(val text: String, val summary: PastedTextSummary) : Content
 
-        data class Link(val url: String) : Content
+        data class Link(val url: String, val label: String?) : Content
     }
 
     /**
@@ -145,7 +146,7 @@ object SessionMedia {
                 file(ref, origin, file.name, file.mime)
             }
             fun links(blocks: List<LinkTextBlock>, origin: Origin) {
-                for (target in LinkPreviewExtractor.targets(blocks, limit = Int.MAX_VALUE)) add("link:${target.key}", Content.Link(target.url), origin)
+                for ((target, label) in LinkPreviewExtractor.labeledTargets(blocks, limit = Int.MAX_VALUE)) add("link:${target.key}", Content.Link(target.url, label), origin)
             }
             when (item) {
                 is OpenCodeTranscriptItem.UserImages -> item.images.forEach { image(it, Origin.user) }
@@ -302,7 +303,7 @@ object SessionMedia {
         is Content.Image -> content.attachment.name ?: localized(R.string.session_visual_image)
         is Content.File -> content.name
         is Content.PastedText -> ai.opencode.server.model.PastedText.title
-        is Content.Link -> LinkPreviewPolicy.displayHost(content.url)
+        is Content.Link -> content.label ?: LinkPreview.readableTitle(content.url) ?: LinkPreviewPolicy.displayHost(content.url)
     }
 
     /** The card's type line: the file type, a paste's length, or a link's address. */

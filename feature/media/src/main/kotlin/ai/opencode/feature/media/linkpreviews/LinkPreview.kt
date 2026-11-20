@@ -185,25 +185,43 @@ internal object LinkDetector {
 
 /** The links a reply names, in order, once each. */
 object LinkPreviewExtractor {
-    fun targets(blocks: List<LinkTextBlock>, limit: Int = 6): List<LinkPreviewTarget> {
+    fun targets(blocks: List<LinkTextBlock>, limit: Int = 6): List<LinkPreviewTarget> =
+        labeledTargets(blocks, limit).map { it.first }
+
+    /**
+     * The same links, each with the text a Markdown link gave it (`[Docs](…)` is “Docs”); null for
+     * a bare URL or a label that only repeats the URL.
+     */
+    fun labeledTargets(blocks: List<LinkTextBlock>, limit: Int = 6): List<Pair<LinkPreviewTarget, String?>> {
         val seen = HashSet<String>()
-        val result = mutableListOf<LinkPreviewTarget>()
-        fun add(url: String) {
+        val result = mutableListOf<Pair<LinkPreviewTarget, String?>>()
+        fun add(url: String, label: String? = null) {
             if (result.size >= limit) return
             val target = LinkPreviewTarget.of(url) ?: return
             if (!seen.add(target.key)) return
-            result += target
+            val trimmed = label?.trim()
+            val readable = if (trimmed.isNullOrEmpty() || trimmed.contains("://") || trimmed == url.toHttpUrlOrNull()?.host) null else trimmed
+            result += target to readable
         }
         for (block in blocks) {
             // Appended PR blocks are derived by an older prefix matcher. Read the original prose
             // URL only: a derived block may have lost a credential query or matched just a
             // prefix of a longer URL.
             for (text in texts(block)) {
+                // A label styled in parts (`[**Docs** page](…)`) is several runs; a link's first span names it.
+                val labels = HashMap<String, String>()
+                var previous: String? = null
+                var open: String? = null
+                for (run in text) {
+                    if (run.link != previous) open = if (run.link != null && run.link !in labels) run.link else null
+                    if (open != null) labels[open] = labels[open].orEmpty() + run.text
+                    previous = run.link
+                }
                 // In reading order: a run's link, or bare URLs the Markdown left as its text. A
                 // URL in inline code is code, not a link.
                 for (run in text) {
                     if (run.link != null) {
-                        add(run.link)
+                        add(run.link, labels[run.link])
                         continue
                     }
                     if (run.isCode) continue

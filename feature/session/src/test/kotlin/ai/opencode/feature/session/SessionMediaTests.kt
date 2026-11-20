@@ -65,7 +65,7 @@ class SessionMediaTests {
             tool("tool_1", "media/amber.png", images = listOf(OpenCodeImageAttachment("read-pixels", byteArrayOf(3)))),
             OpenCodeTranscriptItem.AssistantMarkdown(
                 "msg_2-text",
-                "Here it is:\n\n`docs/report.pdf`\n\n`media/orbit.mp4`\n\nSee [the spec](https://example.com/spec?utm_source=x) and https://opencode.ai/docs. " +
+                "Here it is:\n\n`docs/report.pdf`\n\n`media/orbit.mp4`\n\nSee [the spec](https://example.com/spec?utm_source=x) and [the **OpenCode** docs](https://opencode.ai/docs). " +
                     "Not https://example.com/reset?token=abc.",
             ),
         )
@@ -87,8 +87,10 @@ class SessionMediaTests {
         assertEquals(Origin.agent, origins["link:https://opencode.ai/docs"])
         assertEquals(Origin.user, origins["file:/project/docs/report.pdf"])
         assertEquals(Origin.user, origins["link:https://example.com/spec"])
-        assertEquals("https://example.com/spec", (media.last().content as Content.Link).url)
-        assertEquals("example.com", SessionMedia.title(media.last().content))
+        assertEquals(Content.Link("https://opencode.ai/docs", "the OpenCode docs"), media[1].content)
+        assertEquals(Content.Link("https://example.com/spec", null), media.last().content)
+        assertEquals("the OpenCode docs", SessionMedia.title(media[1].content))
+        assertEquals("Spec", SessionMedia.title(media.last().content))
         assertEquals("report.pdf", SessionMedia.title(media[3].content))
         assertTrue(media[4].content is Content.PastedText)
         assertEquals("read-pixels", (media[2].content as Content.File).thumbnail?.id)
