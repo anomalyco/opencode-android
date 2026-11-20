@@ -88,11 +88,9 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
         is Action.DrawerRowPressed -> return refreshCachedTranscript(state, action.sessionID, freshFor = freshFor(2), force = true)
 
         is Action.CachedTranscriptRefreshed -> {
-            if (action.sessionID !in state.refreshingTranscripts) return Reduced(state)
-            var s = state.copy(
-                refreshingTranscripts = state.refreshingTranscripts - action.sessionID,
-                fetchingTranscripts = state.fetchingTranscripts - action.sessionID,
-            )
+            var s = state.copy(fetchingTranscripts = state.fetchingTranscripts - action.sessionID)
+            if (action.sessionID !in s.refreshingTranscripts) return Reduced(s)
+            s = s.copy(refreshingTranscripts = s.refreshingTranscripts - action.sessionID)
             // The opened session owns its entry.
             val items = action.items ?: return Reduced(s)
             if (!canCacheBackgroundTranscript(s, action.sessionID)) return Reduced(s)

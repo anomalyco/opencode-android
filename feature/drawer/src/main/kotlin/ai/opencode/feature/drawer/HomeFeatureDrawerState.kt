@@ -582,6 +582,7 @@ fun HomeFeature.State.purgingSession(sessionID: String): HomeFeature.State {
         localActivity = localActivity - sessionID,
         transcriptCache = transcriptCache - sessionID,
         refreshingTranscripts = refreshingTranscripts - sessionID,
+        fetchingTranscripts = fetchingTranscripts - sessionID,
         dirtyCachedTranscriptIDs = dirtyCachedTranscriptIDs - sessionID,
         transcriptReadAt = transcriptReadAt - sessionID,
         sessionSnapshots = (sessionSnapshots - sessionID).mapValues { (_, snapshot) ->

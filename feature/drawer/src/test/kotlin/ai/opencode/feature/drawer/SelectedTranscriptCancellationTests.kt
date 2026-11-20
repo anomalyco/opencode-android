@@ -1124,6 +1124,8 @@ class SelectedTranscriptCancellationTests {
 
         store.send(Action.SessionDrawerArrived(isOpen = true))
         store.send(Action.DrawerRowPressed("other"))
+        // The open session's update would prefetch uncached "slow".
+        store.send(Action.detail(SessionFeature.Action.AcceptedTranscriptUpdated(sessionID = "home", items = listOf(text("h0", "Home")))))
         repeat(20) { yield() }
         assertTrue(started.isEmpty())
         assertEquals(listOf("other"), store.state.dirtyCachedTranscriptIDs)
