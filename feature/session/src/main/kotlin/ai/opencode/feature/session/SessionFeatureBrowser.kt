@@ -229,14 +229,24 @@ internal fun SessionFeature.reduceBrowserAndBackgroundWork(state: State, action:
     }
 
     is Action.FamilyResponse -> {
+        val queued = state.familyRead.isQueued
+        val finished = state.copy(familyRead = CoalescedRead())
         val family = action.result.getOrNull()
-        if (family != null) {
-            familyResponse(family, state)
+        val applied = if (family != null) {
+            // Only the last answer of a queued run makes the family fresh.
+            familyResponse(family, finished, isLatest = !queued)
         } else {
             val error = action.result.exceptionOrNull()
             val summary = (error as? OpenCodeClientError)?.logSummary ?: error?.let { it::class.java.simpleName } ?: "client error"
             AppLog.network.notice("Family read failed: $summary")
-            if (!state.requestsConnectionIsAvailable || state.pendingWorkPollSeconds != null) Reduced(state) else pollPendingWork(state)
+            if (!finished.requestsConnectionIsAvailable || finished.pendingWorkPollSeconds != null) Reduced(finished) else pollPendingWork(finished)
+        }
+        if (!queued) {
+            applied
+        } else {
+            // After applying: a new read forgets the run changes this one keeps.
+            val again = refreshFamily(applied.state)
+            Reduced(again.state, Effect.merge(applied.effect, again.effect))
         }
     }
 
@@ -392,7 +402,11 @@ private fun SessionFeature.moveToBackgroundTapped(state: State): Reduced<State, 
     )
 }
 
-private fun SessionFeature.familyResponse(family: ai.opencode.server.model.OpenCodeSessionFamily, state: State): Reduced<State, Action> {
+private fun SessionFeature.familyResponse(
+    family: ai.opencode.server.model.OpenCodeSessionFamily,
+    state: State,
+    isLatest: Boolean,
+): Reduced<State, Action> {
     // A previous session's response, still in flight when a live call or recording carried this
     // screen to another session.
     val familyRootID = state.familyRootID
@@ -416,7 +430,8 @@ private fun SessionFeature.familyResponse(family: ai.opencode.server.model.OpenC
     for ((sessionID, isRunning) in state.familyRunChanges) {
         if (isRunning) active += sessionID else active -= sessionID
     }
-    var next = state.copy(familyReadAt = date.now(), familySessions = members, activeFamilySessionIDs = active)
+    val readAt = if (isLatest) date.now() else state.familyReadAt
+    var next = state.copy(familyReadAt = readAt, familySessions = members, activeFamilySessionIDs = active)
     val selected = next.session ?: return Reduced(next)
     val rootID = next.familyRootID
     if (family.sessions.none { it.id == selected.id } && rootID != null && family.sessions.any { it.id == rootID }) {
@@ -480,14 +495,18 @@ internal fun SessionFeature.refreshBackgroundWork(state: State, reason: RefreshR
     return Reduced(jobs.state, Effect.merge(family.effect, shells.effect, jobs.effect))
 }
 
-internal fun SessionFeature.refreshFamily(state: State): Reduced<State, Action> {
+/** Reads the family again. `coalescing`: while a read is in flight, one more follows it instead of this replacing it. */
+internal fun SessionFeature.refreshFamily(state: State, coalescing: Boolean = false): Reduced<State, Action> {
     val rootID = state.familyRootID ?: return Reduced(state)
     val root = state.familySessions.firstOrNull { it.id == rootID } ?: return Reduced(state)
+    if (coalescing && state.familyRead.isInFlight) {
+        return Reduced(state.copy(familyRead = CoalescedRead(isInFlight = true, isQueued = true)))
+    }
     // The new read's active status postdates every change seen so far.
     val server = state.server
     val client = openCodeClient
     return Reduced(
-        state.copy(familyRunChanges = emptyMap()),
+        state.copy(familyRead = CoalescedRead(isInFlight = true), familyRunChanges = emptyMap()),
         Effect.run<Action> { send ->
             try {
                 send(Action.FamilyResponse(Result.success(client.sessionFamily(server, root))))
@@ -539,3 +558,13 @@ fun State.forgetSessionLinks(ids: List<String>): State {
 }
 
 // endregion
+
+/**
+ * One background read at a time: asking while one is in flight queues a single read after it,
+ * instead of cancelling it and starting over. Effect bookkeeping, never compared: tests assert the
+ * reads themselves.
+ */
+class CoalescedRead(val isInFlight: Boolean = false, val isQueued: Boolean = false) {
+    override fun equals(other: Any?): Boolean = other is CoalescedRead
+    override fun hashCode(): Int = 0
+}

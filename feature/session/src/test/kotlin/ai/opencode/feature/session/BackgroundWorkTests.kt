@@ -1058,6 +1058,9 @@ class BackgroundWorkTests {
 
     // region Background jobs
 
+    private fun reconnecting(h: Harness) =
+        h.state().copy(nextRefreshID = 1, refresh = SessionFeature.State.Refresh(id = 1, reason = RefreshReason.Reconnect))
+
     private fun job(id: String, kind: OpenCodeJob.Kind, owner: String = session.id, child: String? = null, running: Boolean = true) =
         OpenCodeJob(id = id, kind = kind, sessionID = owner, isRunning = running, childSessionID = child, startedAt = Instant.ofEpochMilli(1))
 
@@ -1150,10 +1153,10 @@ class BackgroundWorkTests {
         store.send(Action.JobUpdated(job("other", OpenCodeJob.Kind.CodeMode, owner = "ses_elsewhere")))
     }
 
-    /** Home sends `FamilyRefreshRequested` on every new stream; its re-list drops a settle the stream missed. */
+    /** A new stream's re-list drops a settle the stream missed. */
     @Test fun aSettleMissedWhileTheStreamWasDownIsGoneAfterTheReconnect() = sessionTest { h ->
         val stale = job("cm_1", OpenCodeJob.Kind.CodeMode)
-        val store = h.store(h.state().copy(jobs = mapOf(stale.id to stale))) {
+        val store = h.store(reconnecting(h).copy(jobs = mapOf(stale.id to stale))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },
@@ -1163,7 +1166,7 @@ class BackgroundWorkTests {
         store.exhaustive = false
         assertEquals(listOf("cm_1"), store.state.backgroundScripts.map { it.id })
 
-        store.send(Action.FamilyRefreshRequested)
+        store.send(Action.EventStreamConnected(server))
         store.receive(Action.JobsResponse(session.id, emptyList())) { it.copy(jobs = emptyMap()) }
         assertFalse(store.state.hasBackgroundWork)
         h.skipInFlightEffects()
@@ -1173,7 +1176,7 @@ class BackgroundWorkTests {
         val settled = job("cm_old", OpenCodeJob.Kind.CodeMode)
         val started = job("cm_new", OpenCodeJob.Kind.CodeMode)
         val listed = Channel<List<OpenCodeJob>>(Channel.UNLIMITED)
-        val store = h.store(h.state().copy(jobs = mapOf(settled.id to settled))) {
+        val store = h.store(reconnecting(h).copy(jobs = mapOf(settled.id to settled))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },
@@ -1182,7 +1185,7 @@ class BackgroundWorkTests {
         }
         store.exhaustive = false
 
-        store.send(Action.FamilyRefreshRequested)
+        store.send(Action.EventStreamConnected(server))
         store.send(Action.JobUpdated(settled.copy(isRunning = false)))
         store.send(Action.JobUpdated(started))
         // The read began before both: it still lists the settled job and not the new one.
