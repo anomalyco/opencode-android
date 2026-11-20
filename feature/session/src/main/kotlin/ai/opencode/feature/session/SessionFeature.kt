@@ -489,8 +489,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
                 isLoading = false,
                 // A draft has no history to page; the flag stays true once created.
                 earlierHistory = EarlierHistory.Exhausted,
-                // The model comes with the catalog: the server's default
-                // (`OpenCodeModelCatalog.newSessionModel`).
+                // The model comes with the catalog and the agents (`draftDefaultModel`).
             )
 
             internal fun shellToolStatuses(items: List<OpenCodeTranscriptItem>): Map<String, OpenCodeToolCall.Status> {
