@@ -151,7 +151,7 @@ class SessionLiveActivityClient(
     companion object Key : DependencyKey<SessionLiveActivityClient> {
         override val liveValue: SessionLiveActivityClient by lazy {
             SessionLiveActivityClient(
-                update = { content, attributes -> SessionActivityStepThrottle.shared.update(content, attributes) },
+                update = { content, attributes -> sessionActivityStepThrottle.update(content, attributes) },
                 endAll = { LiveSessionActivity.shared.enqueue(LiveSessionActivity.Request.EndAll) },
             )
         }
@@ -163,7 +163,8 @@ class SessionLiveActivityClient(
 /**
  * Sends a working run's step changes at most once per [INTERVAL], since Android drops notification
  * updates that come too fast. The latest held step goes out when the interval ends or the app leaves
- * the foreground; any other change goes at once in its place.
+ * the foreground (Android reports that about 0.7 s after the last activity pauses); any other change
+ * goes at once in its place.
  */
 class SessionActivityStepThrottle(
     private val clock: Clock,
@@ -216,22 +217,22 @@ class SessionActivityStepThrottle(
 
     companion object {
         val INTERVAL: Duration = 1500.milliseconds
-
-        internal val shared: SessionActivityStepThrottle by lazy {
-            val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-            val throttle = SessionActivityStepThrottle(Clock.liveValue, scope) { content, attributes ->
-                LiveSessionActivity.shared.enqueue(LiveSessionActivity.Request.Update(content, attributes))
-            }
-            scope.launch {
-                ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-                    override fun onPause(owner: LifecycleOwner) {
-                        scope.launch { throttle.flush() }
-                    }
-                })
-            }
-            throttle
-        }
     }
+}
+
+private val sessionActivityStepThrottle: SessionActivityStepThrottle by lazy {
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    val throttle = SessionActivityStepThrottle(Clock.liveValue, scope) { content, attributes ->
+        LiveSessionActivity.shared.enqueue(LiveSessionActivity.Request.Update(content, attributes))
+    }
+    scope.launch {
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onPause(owner: LifecycleOwner) {
+                scope.launch { throttle.flush() }
+            }
+        })
+    }
+    throttle
 }
 
 /**
