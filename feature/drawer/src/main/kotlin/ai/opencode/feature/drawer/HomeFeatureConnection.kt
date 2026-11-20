@@ -117,14 +117,15 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
     }
 
     Action.ConnectionLost -> {
-        val s = state.unsettlingNotices()
+        val background = cancelBackgroundTranscriptReads(state.unsettlingNotices())
+        val s = background.state
         Reduced(
             s,
             Effect.merge(
                 Effect.cancel(HomeFeature.CancelID.Refresh),
-                Effect.cancel(HomeFeature.CancelID.ActiveAncestry),
                 Effect.cancel(HomeFeature.CancelID.Attention),
                 Effect.cancel(HomeFeature.CancelID.SnapshotRetry),
+                background.effect,
                 requestsDisconnected(s),
             ),
         )

@@ -89,7 +89,10 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
 
         is Action.CachedTranscriptRefreshed -> {
             if (action.sessionID !in state.refreshingTranscripts) return Reduced(state)
-            var s = state.copy(refreshingTranscripts = state.refreshingTranscripts - action.sessionID)
+            var s = state.copy(
+                refreshingTranscripts = state.refreshingTranscripts - action.sessionID,
+                fetchingTranscripts = state.fetchingTranscripts - action.sessionID,
+            )
             // The opened session owns its entry.
             val items = action.items ?: return Reduced(s)
             if (!canCacheBackgroundTranscript(s, action.sessionID)) return Reduced(s)

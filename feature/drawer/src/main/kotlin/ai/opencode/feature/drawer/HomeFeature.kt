@@ -106,6 +106,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val transcriptCache: Map<String, List<OpenCodeTranscriptItem>> = emptyMap(),
         /** Cached transcripts being read again (`refreshCachedTranscript`). */
         val refreshingTranscripts: Set<String> = emptySet(),
+        /** Those of [refreshingTranscripts] sent at once rather than after a delay, so a read wanted now joins them. */
+        val fetchingTranscripts: Set<String> = emptySet(),
         /**
          * Cached sessions whose background refresh was cancelled or skipped while a foreground
          * transcript read had the connection, oldest first, bounded to [dirtyCachedTranscriptLimit].
