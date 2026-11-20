@@ -223,7 +223,7 @@ private fun HomeFeature.snapshotRefreshed(state: State, action: Action.SnapshotR
     s = s.copy(
         localActivity = localActivity,
         locallyViewedMilliseconds = locallyViewed,
-        projects = incoming.projects,
+        projects = if (s.projects == incoming.projects) s.projects else incoming.projects,
         snapshotLoaded = true,
     )
     // The list is one page of the newest roots, not the whole server. Whatever is open or pinned
