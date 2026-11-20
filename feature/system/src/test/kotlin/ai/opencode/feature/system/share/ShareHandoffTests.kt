@@ -24,6 +24,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import java.io.ByteArrayInputStream
 import java.io.File
+import java.io.RandomAccessFile
 import java.nio.file.Files
 import java.time.Instant
 import java.util.UUID
@@ -286,5 +287,23 @@ class SharedImageEncoderTests {
     fun oversizedSourcesAreRejected() {
         assertNull(SharedImageEncoder.jpeg(ByteArray(SharedImageEncoder.MAX_SOURCE_BYTES + 1)))
         assertNull(SharedImageEncoder.jpeg("not an image".toByteArray()))
+    }
+
+    @Test
+    fun imageFilesPastTheFileCapAreRefused() {
+        val bitmap = Bitmap.createBitmap(64, 48, Bitmap.Config.ARGB_8888)
+        bitmap.eraseColor(Color.rgb(51, 102, 204))
+        val file = File.createTempFile("share-", ".png")
+        try {
+            file.outputStream().use { assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+            bitmap.recycle()
+            // Sparse: grows the reported size without writing the bytes.
+            RandomAccessFile(file, "rw").use { it.setLength(SharedImageEncoder.MAX_SOURCE_FILE_BYTES.toLong()) }
+            assertNotNull(SharedImageEncoder.jpeg(file))
+            RandomAccessFile(file, "rw").use { it.setLength(SharedImageEncoder.MAX_SOURCE_FILE_BYTES + 1L) }
+            assertNull(SharedImageEncoder.jpeg(file))
+        } finally {
+            file.delete()
+        }
     }
 }
