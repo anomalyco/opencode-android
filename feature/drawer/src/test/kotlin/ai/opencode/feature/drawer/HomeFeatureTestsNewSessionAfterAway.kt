@@ -4,6 +4,7 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.withDependencies
 import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.feature.composer.DictationFeature
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.Harness
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.homeTest
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.snapshot
@@ -56,6 +57,31 @@ class HomeFeatureTestsNewSessionAfterAway {
         state = next.copy(sessionDetail = detail)
         state = h.state { state.returnedToApp(leftAt + longAbsence.multipliedBy(2)) }
         assertEquals(session, state.sessionDetail?.session)
+    }
+
+    @Test
+    fun aSessionOpenedOnTheWayBackWinsOverTheNewSession() = homeTest { h ->
+        val (home, session) = homeShowingSession(h)
+        val child = OpenCodeSession(id = "ses_child", serverTitle = "Subagent", projectID = "p", directory = "/p", updatedAt = Instant.now(), parentID = session.id)
+        val withChild = h.state { home.copy(sessions = home.sessions + child).pushingSubagent(child) }
+        val feature = HomeFeature()
+        for ((state, opened) in listOf(home to session, withChild to child)) {
+            // A notification or link for what is already on screen.
+            val tapped = h.state { feature.reduce(state.appLeft(leftAt), HomeFeature.Action.SessionTapped(opened.id)).state }
+            val returned = h.state { tapped.returnedToApp(leftAt + longAbsence.multipliedBy(2)) }
+            assertEquals(opened, returned.topDetail?.session)
+        }
+    }
+
+    @Test
+    fun aRecordingOnASubagentKeepsItOpenAfterALongAbsence() = homeTest { h ->
+        val (home, session) = homeShowingSession(h)
+        val child = OpenCodeSession(id = "ses_child", serverTitle = "Subagent", projectID = "p", directory = "/p", updatedAt = Instant.now(), parentID = session.id)
+        var state = h.state { home.copy(sessions = home.sessions + child).pushingSubagent(child) }
+        val recording = DictationFeature.State(phase = DictationFeature.Phase.Recording)
+        state = state.copy(subagentStack = listOf(state.subagentStack[0].copy(dictation = recording)))
+        state = h.state { state.appLeft(leftAt).returnedToApp(leftAt + longAbsence.multipliedBy(2)) }
+        assertEquals(child, state.topDetail?.session)
     }
 
     @Test

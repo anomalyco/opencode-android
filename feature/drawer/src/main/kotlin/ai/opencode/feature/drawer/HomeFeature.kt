@@ -955,7 +955,7 @@ internal fun HomeFeature.State.syncAbsorbedDraft(detail: SessionFeature.State) {
 
 /** Opens the remembered session for this server, else a draft. */
 fun HomeFeature.State.restoringInitialSession(): HomeFeature.State {
-    if (wasAwayLongEnoughForNewSession(dependency(AppAwayDate).now())) return openingDraft(reason = "you came back after a while")
+    if (!isWindowLocal && wasAwayLongEnoughForNewSession(dependency(AppAwayDate).now())) return openingDraft(reason = "you came back after a while")
     val rememberedID = lastViewedSessionIDs[server.persistenceID]
     val session = rememberedID?.let { id -> sessions.firstOrNull { it.id == id } }
     if (session != null) {

@@ -554,12 +554,14 @@ internal val State.voiceAppStateHome: VoiceAppState.Home
         },
     )
 
-internal fun State.wasAwayLongEnoughForNewSession(now: Instant): Boolean {
+fun wasAwayLongEnoughForNewSession(now: Instant): Boolean {
     val leftAt = shared(SharedKeys.appLeftAt).value ?: return false
     return Duration.between(leftAt, now) >= HomeFeature.newSessionAfterAway
 }
 
 internal fun State.appLeft(at: Instant): State {
+    // Further windows on a tablet keep what they show; the app's one leave time is the first window's.
+    if (isWindowLocal) return this
     shared(SharedKeys.appLeftAt).set(at)
     return copy(detailGenerationWhenLeft = detailGeneration)
 }
@@ -570,6 +572,7 @@ internal fun State.appLeft(at: Instant): State {
  * notification, a link) wins.
  */
 internal fun State.returnedToApp(now: Instant): State {
+    if (isWindowLocal) return this
     val leftGeneration = detailGenerationWhenLeft
     val leftAt = shared(SharedKeys.appLeftAt).value
     val awayLongEnough = wasAwayLongEnoughForNewSession(now)
@@ -579,11 +582,13 @@ internal fun State.returnedToApp(now: Instant): State {
     if (selectedTranscriptFetch != null || pendingSubagentPush != null) return s
     val detail = sessionDetail ?: return s
     if (detail.isDraft || detail.voice?.phase?.isTerminal == false || detail.carriedDictation != null) return s
+    if (subagentStack.any { it.carriedDictation != null }) return s
     AppLog.app.info { "away ${Duration.between(leftAt, now).seconds}s opens a new session" }
     return s.leavingCatchUp().openingDraft(reason = "you came back after a while")
 }
 
 internal fun State.forgettingAppLeft(): State {
+    if (isWindowLocal) return this
     val appLeftAt = shared(SharedKeys.appLeftAt)
     if (appLeftAt.value != null) appLeftAt.set(null)
     return if (detailGenerationWhenLeft == null) this else copy(detailGenerationWhenLeft = null)
