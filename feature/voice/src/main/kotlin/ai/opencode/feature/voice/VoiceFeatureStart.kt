@@ -341,7 +341,14 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                 context = context.copy(recentMessages = fetchRecentMessages(target))
                 try {
                     currentCoroutineContext().ensureActive()
-                    val events = when (val chosen = resolvedRoute) {
+                    // Server Voice pins one broker; a call on another server would prompt that
+                    // other server's session ID and be refused (404 / "no key"). Run it here.
+                    val localHere = if (localSessionID != null && brokerServer.persistenceID != target.server.persistenceID) {
+                        startLocal(target.server)
+                    } else {
+                        null
+                    }
+                    val events = localHere ?: when (val chosen = resolvedRoute) {
                         is VoiceRoute.Server -> {
                             try {
                                 startOnServer(chosen, callBroker)
