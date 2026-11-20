@@ -156,7 +156,12 @@ object SessionMedia {
                     val read = item.call.fileReference?.takeIf { item.call.status == OpenCodeToolCall.Status.Completed && it.kind.showsCard }
                     // An image read returns the same pixels as an attachment: one card, the file.
                     val pixels = item.call.imageAttachments.filter { !it.isUnavailable && (it.mediaHash != null || it.data.isNotEmpty()) }
-                    if (read != null) file(read, Origin.agent, thumbnail = pixels.firstOrNull()) else pixels.forEach { image(it, Origin.agent) }
+                    if (read != null && read.kind.isVisual) {
+                        file(read, Origin.agent, thumbnail = pixels.firstOrNull())
+                    } else {
+                        pixels.forEach { image(it, Origin.agent) }
+                        if (read != null) file(read, Origin.agent)
+                    }
                     item.call.videos.orEmpty().forEach { transcriptFile(it, Origin.agent) }
                 }
                 is OpenCodeTranscriptItem.AssistantMarkdown -> {
