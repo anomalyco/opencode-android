@@ -190,7 +190,7 @@ object LinkPreviewExtractor {
 
     /**
      * The same links, each with the text a Markdown link gave it (`[Docs](…)` is “Docs”); null for
-     * a bare URL or a label that only repeats the URL.
+     * a URL found in plain text, or a label that is blank, contains `://` or is just the host.
      */
     fun labeledTargets(blocks: List<LinkTextBlock>, limit: Int = 6): List<Pair<LinkPreviewTarget, String?>> {
         val seen = HashSet<String>()
@@ -208,26 +208,26 @@ object LinkPreviewExtractor {
             // URL only: a derived block may have lost a credential query or matched just a
             // prefix of a longer URL.
             for (text in texts(block)) {
-                // A label styled in parts (`[**Docs** page](…)`) is several runs; a link's first span names it.
-                val labels = HashMap<String, String>()
-                var previous: String? = null
-                var open: String? = null
-                for (run in text) {
-                    if (run.link != previous) open = if (run.link != null && run.link !in labels) run.link else null
-                    if (open != null) labels[open] = labels[open].orEmpty() + run.text
-                    previous = run.link
-                }
                 // In reading order: a run's link, or bare URLs the Markdown left as its text. A
-                // URL in inline code is code, not a link.
+                // URL in inline code is code, not a link. A label styled in parts (`[**Docs** page](…)`)
+                // is several runs, so a link is added with its whole span's text once the span ends.
+                var spanLink: String? = null
+                val span = StringBuilder()
                 for (run in text) {
+                    if (run.link != spanLink) {
+                        if (spanLink != null) add(spanLink, span.toString())
+                        spanLink = run.link
+                        span.clear()
+                    }
                     if (run.link != null) {
-                        add(run.link, labels[run.link])
+                        span.append(run.text)
                         continue
                     }
                     if (run.isCode) continue
                     if (!run.text.contains("://")) continue
                     for ((url, _) in LinkDetector.matches(run.text)) add(url)
                 }
+                if (spanLink != null) add(spanLink, span.toString())
             }
         }
         return result

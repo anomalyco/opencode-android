@@ -120,6 +120,7 @@ object SessionMedia {
         var date: Instant? = null
         val rows = mutableListOf<List<Item>>()
         val seen = HashSet<String>()
+        val linkLabels = HashMap<String, String?>()
         // Each item where it was first shared, by whoever shared it; the newest row first.
         for ((index, item) in items.withIndex()) {
             // The app's own `msg_<UUID>` rows carry no time: they take the last one seen.
@@ -146,7 +147,10 @@ object SessionMedia {
                 file(ref, origin, file.name, file.mime)
             }
             fun links(blocks: List<LinkTextBlock>, origin: Origin) {
-                for ((target, label) in LinkPreviewExtractor.labeledTargets(blocks, limit = Int.MAX_VALUE)) add("link:${target.key}", Content.Link(target.url, label), origin)
+                for ((target, label) in LinkPreviewExtractor.labeledTargets(blocks, limit = Int.MAX_VALUE)) {
+                    linkLabels["link:${target.key}"] = label
+                    add("link:${target.key}", Content.Link(target.url, label), origin)
+                }
             }
             when (item) {
                 is OpenCodeTranscriptItem.UserImages -> item.images.forEach { image(it, Origin.user) }
@@ -174,7 +178,13 @@ object SessionMedia {
             }
             if (row.isNotEmpty()) rows += row
         }
-        return rows.asReversed().flatten()
+        // A link is titled by its newest mention's label.
+        val result = mutableListOf<Item>()
+        for (item in rows.asReversed().flatten()) {
+            val content = item.content
+            result += if (content is Content.Link) item.copy(content = content.copy(label = linkLabels[item.id])) else item
+        }
+        return result
     }
 
     /** The files replies name as cards, which are checked before their cards show. */

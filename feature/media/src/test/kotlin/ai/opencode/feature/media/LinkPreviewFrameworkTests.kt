@@ -65,6 +65,33 @@ class LinkPreviewFrameworkTests {
         )
         assertEquals(4, LinkPreviewExtractor.targets(listOf(many), limit = 4).size)
     }
+
+    @Test
+    fun labeledTargetsKeepEachLinksFirstWholeLabel() {
+        val docs = "https://docs.example.com/start"
+        val block = with(LinkBlocks) {
+            paragraph(
+                0,
+                text("See "), link("the ", docs), link("OpenCode", docs), link(" docs", docs), text(", "),
+                link("  Guide \n", "https://guide.example.com/a"), text(", "),
+                link("https://url.example.com/b", "https://url.example.com/b"), text(", "),
+                link("host.example.com", "https://host.example.com/c"), text(", "),
+                link(" ", "https://blank.example.com/d"), text(", "),
+                link("again", docs), text(" and https://bare.example.com/e."),
+            )
+        }
+        assertEquals(
+            listOf(
+                docs to "the OpenCode docs",
+                "https://guide.example.com/a" to "Guide",
+                "https://url.example.com/b" to null,
+                "https://host.example.com/c" to null,
+                "https://blank.example.com/d" to null,
+                "https://bare.example.com/e" to null,
+            ),
+            LinkPreviewExtractor.labeledTargets(listOf(block)).map { it.first.key to it.second },
+        )
+    }
 }
 
 /** The `LinkPreviewStoreTests` case that extracts bare URLs (`Patterns.WEB_URL`, under Robolectric). */
