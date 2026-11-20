@@ -89,7 +89,9 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     val route = resolve(broker, initialSupport)
     next = next.copy(diagnosesFailure = selectedEngine != VoiceEngine.grok, callPlace = null)
     val shouldProbe = serverVoiceEnabled && selectedEngine != VoiceEngine.grok && initialSupport != ServerVoiceSupport.supported
-    if (route is VoiceRoute.Unavailable && !shouldProbe) {
+    // No provider key anywhere, but a speech server is set: this phone can run the call itself.
+    val localSessionID = target.sessionID?.takeIf { ai.opencode.core.sharing.shared(ai.opencode.core.sharing.SharedKeys.voiceSpeechServer).value.isNotBlank() }
+    if (route is VoiceRoute.Unavailable && !shouldProbe && localSessionID == null) {
         next = next.setActiveRoute(route, usesDelegator = false).copy(callPlace = place(broker))
         return Reduced(next.withPhase(VoiceFeature.State.Phase.Failed(route.reason.message)))
     }
@@ -240,7 +242,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                 return voiceCall.start(key, config)
             }
 
-            suspend fun startOnServer(route: VoiceRoute, server: OpenCodeServer): Flow<VoiceCallEvent> {
+            suspend fun startOnServerOrFallBack(route: VoiceRoute, server: OpenCodeServer): Flow<VoiceCallEvent> {
                 val useSession = usesSessionDelegatorForRoute(route)
                 val delegation = if (!useSession && usesBuiltInDelegatorForRoute(route)) {
                     responsesDelegation ?: LiveDelegation.client
@@ -285,6 +287,32 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     )
                     return voiceCall.start("", fallbackConfig)
                 }
+            }
+
+            suspend fun startLocal(server: OpenCodeServer): Flow<VoiceCallEvent>? {
+                val id = localSessionID ?: return null
+                return voiceCall.start(
+                    "",
+                    RealtimeSessionConfig(
+                        engine = selectedEngine,
+                        model = "local",
+                        voice = voice,
+                        instructions = "",
+                        tools = emptyList(),
+                        isAtEar = atEarBox.current,
+                        serverVoice = server,
+                        localSessionID = id,
+                    ),
+                )
+            }
+
+            // The server says it can place calls but has no key for them (a 5xx): this phone does.
+            suspend fun startOnServer(route: VoiceRoute, server: OpenCodeServer): Flow<VoiceCallEvent> = try {
+                startOnServerOrFallBack(route, server)
+            } catch (cancelled: CancellationException) {
+                throw cancelled
+            } catch (error: Exception) {
+                startLocal(server) ?: throw error
             }
 
             // In parallel when using a phone key: the preflight, and the session's
@@ -339,7 +367,22 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                             )
                             voiceCall.start(key, config)
                         }
-                        is VoiceRoute.Unavailable -> throw RealtimePreflightError.Service(chosen.reason.message)
+                        is VoiceRoute.Unavailable -> {
+                            val localID = localSessionID ?: throw RealtimePreflightError.Service(chosen.reason.message)
+                            voiceCall.start(
+                                "",
+                                RealtimeSessionConfig(
+                                    engine = selectedEngine,
+                                    model = "local",
+                                    voice = voice,
+                                    instructions = "",
+                                    tools = emptyList(),
+                                    isAtEar = atEarBox.current,
+                                    serverVoice = target.server,
+                                    localSessionID = localID,
+                                ),
+                            )
+                        }
                     }
                     events to null
                 } catch (error: CancellationException) {

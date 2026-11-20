@@ -3,6 +3,8 @@ package ai.opencode.feature.voice
 import ai.opencode.core.dependencies.AppContext
 import ai.opencode.core.dependencies.DependencyKey
 import ai.opencode.core.dependencies.dependency
+import ai.opencode.core.sharing.SharedKeys
+import ai.opencode.core.sharing.shared
 import ai.opencode.core.strings.localized
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeTransport
@@ -88,6 +90,20 @@ enum class CallVoice {
     /** Short fixed sample spoken when previewing a voice in Settings › Voice. */
     val previewPrompt: String get() = "Hi, I’m $title. Ready when you are."
 
+    /** The voice a self-hosted server speaks this one with, when it names voices differently. */
+    val synthesizedVoice: String
+        get() = when (this) {
+            alloy -> "af_alloy"
+            ash -> "am_adam"
+            ballad -> "am_fenrir"
+            coral, marin -> "af_heart"
+            echo -> "am_echo"
+            sage -> "af_sky"
+            shimmer -> "af_bella"
+            verse -> "am_puck"
+            else -> "af_heart"
+        }
+
     companion object {
         val default = marin
 
@@ -131,6 +147,9 @@ object VoicePreviewRequest {
     const val xaiTTSURL = "https://api.x.ai/v1/tts"
     const val openAITTSModel = "gpt-4o-mini-tts"
 
+    /** The model a self-hosted OpenAI-compatible server is asked for; Kokoro servers answer to it. */
+    const val localTTSModel = "kokoro"
+
     /** Applied by the client that sends it. */
     const val timeoutSeconds = 15L
 
@@ -153,42 +172,56 @@ object VoicePreviewRequest {
 
     private val encoder = kotlinx.serialization.json.Json { encodeDefaults = true }
 
-    fun make(voice: CallVoice, provider: VoiceProvider, apiKey: String): Request {
+    /** Where [speechServer]'s OpenAI-compatible speech route is, or null when it's the provider's own API. */
+    fun speechURL(server: String): String? {
+        val trimmed = server.trim().trimEnd('/')
+        if (trimmed.isEmpty()) return null
+        return "$trimmed/v1/audio/speech"
+    }
+
+    fun make(voice: CallVoice, provider: VoiceProvider, apiKey: String, speechServer: String = ""): Request {
         val trimmedKey = apiKey.trim()
-        if (trimmedKey.isEmpty()) throw VoicePreviewError.MissingAPIKey
-        val url: String
-        val body: String
-        when (provider) {
-            VoiceProvider.openAI -> {
-                url = openAISpeechURL
-                body = encoder.encodeToString(OpenAIPayload.serializer(), OpenAIPayload(voice = voice.rawValue, input = voice.previewPrompt))
-            }
-            VoiceProvider.xAI -> {
-                url = xaiTTSURL
-                body = encoder.encodeToString(XAIPayload.serializer(), XAIPayload(text = voice.previewPrompt, voice_id = voice.rawValue))
-            }
+        val server = speechURL(speechServer)
+        if (server == null && trimmedKey.isEmpty()) throw VoicePreviewError.MissingAPIKey
+        val (url, body) = when {
+            server != null -> server to encoder.encodeToString(
+                OpenAIPayload.serializer(),
+                OpenAIPayload(model = localTTSModel, voice = voice.synthesizedVoice, input = voice.previewPrompt),
+            )
+            provider == VoiceProvider.xAI -> xaiTTSURL to encoder.encodeToString(
+                XAIPayload.serializer(),
+                XAIPayload(text = voice.previewPrompt, voice_id = voice.rawValue),
+            )
+            else -> openAISpeechURL to encoder.encodeToString(
+                OpenAIPayload.serializer(),
+                OpenAIPayload(voice = voice.rawValue, input = voice.previewPrompt),
+            )
         }
-        return Request.Builder()
+        val builder = Request.Builder()
             .url(url)
-            .header("Authorization", "Bearer $trimmedKey")
             .header("Content-Type", "application/json")
-            .post(body.toByteArray().toRequestBody(voiceJsonMediaType))
-            .build()
+        // A self-hosted server often takes no key.
+        if (trimmedKey.isNotEmpty()) builder.header("Authorization", "Bearer $trimmedKey")
+        return builder.post(body.toByteArray().toRequestBody(voiceJsonMediaType)).build()
     }
 }
 
 /** On-disk cache for synthesized voice preview clips, keyed by provider and voice. */
 class VoicePreviewCache(val directory: File = defaultDirectory()) {
-    fun fileURL(voice: CallVoice, provider: VoiceProvider): File = File(directory, "${provider.rawValue}-${voice.rawValue}.mp3")
+    fun fileURL(voice: CallVoice, provider: VoiceProvider, speechServer: String = ""): File {
+        val server = speechServer.trim().trimEnd('/')
+        val name = if (server.isEmpty()) "${provider.rawValue}-${voice.rawValue}.mp3" else "server-${server.hashCode()}-${voice.rawValue}.mp3"
+        return File(directory, name)
+    }
 
-    fun load(voice: CallVoice, provider: VoiceProvider): ByteArray? {
-        val data = try { fileURL(voice, provider).readBytes() } catch (_: Exception) { return null }
+    fun load(voice: CallVoice, provider: VoiceProvider, speechServer: String = ""): ByteArray? {
+        val data = try { fileURL(voice, provider, speechServer).readBytes() } catch (_: Exception) { return null }
         return data.takeIf { it.isNotEmpty() }
     }
 
-    fun save(data: ByteArray, voice: CallVoice, provider: VoiceProvider) {
+    fun save(data: ByteArray, voice: CallVoice, provider: VoiceProvider, speechServer: String = "") {
         if (data.isEmpty()) return
-        val url = fileURL(voice, provider)
+        val url = fileURL(voice, provider, speechServer)
         try {
             directory.mkdirs()
             // Atomic: a temporary file renamed over the clip.
@@ -228,6 +261,7 @@ class VoicePreviewClient(
                 dependency(OpenCodeTransport).request.withVoiceTimeout(VoicePreviewRequest.timeoutSeconds).voiceSend(request)
             },
             playAudio: (suspend (ByteArray) -> Unit)? = null,
+            speechServer: () -> String = { shared(SharedKeys.voiceSpeechServer).value },
         ): VoicePreviewClient {
             val defaultPlayAudio: suspend (ByteArray) -> Unit = { data -> VoicePreviewAudioPlayer.play(data) }
             val defaultStopAudio: suspend () -> Unit = { VoicePreviewAudioPlayer.stop() }
@@ -239,7 +273,7 @@ class VoicePreviewClient(
                 stopAudio = if (playAudio == null) defaultStopAudio else noOpStopAudio,
             )
             return VoicePreviewClient(
-                play = { voice, provider, apiKey -> coordinator.play(voice, provider, apiKey) },
+                play = { voice, provider, apiKey -> coordinator.play(voice, provider, apiKey, speechServer()) },
                 stop = { coordinator.stop() },
             )
         }
@@ -250,9 +284,15 @@ class VoicePreviewClient(
             provider: VoiceProvider,
             apiKey: String,
             send: suspend (Request) -> VoiceHttpResponse,
+            speechServer: String = "",
         ): ByteArray {
-            val request = VoicePreviewRequest.make(voice, provider, apiKey)
-            val label = if (provider == VoiceProvider.xAI) "POST https://api.x.ai/v1/tts" else "POST https://api.openai.com/v1/audio/speech"
+            val request = VoicePreviewRequest.make(voice, provider, apiKey, speechServer)
+            val server = VoicePreviewRequest.speechURL(speechServer)
+            val label = when {
+                server != null -> "POST $server"
+                provider == VoiceProvider.xAI -> "POST https://api.x.ai/v1/tts"
+                else -> "POST https://api.openai.com/v1/audio/speech"
+            }
             val failed = VoicePreviewError.Failed.errorDescription
             try {
                 return NetworkRetry.run(idempotency = RequestIdempotency.Unsafe, label = label) { _ ->
@@ -293,23 +333,23 @@ class VoicePreviewCoordinator(
 
     private fun isActive(id: UUID): Boolean = synchronized(lock) { activeID == id }
 
-    suspend fun play(voice: CallVoice, provider: VoiceProvider, apiKey: String) {
+    suspend fun play(voice: CallVoice, provider: VoiceProvider, apiKey: String, speechServer: String = "") {
         val trimmedKey = apiKey.trim()
-        if (trimmedKey.isEmpty()) throw VoicePreviewError.MissingAPIKey
+        if (trimmedKey.isEmpty() && VoicePreviewRequest.speechURL(speechServer) == null) throw VoicePreviewError.MissingAPIKey
         val id = UUID.randomUUID()
         synchronized(lock) { activeID = id }
         stopAudio()
 
         try {
             val clip: ByteArray
-            val cached = cache.load(voice, provider)
+            val cached = cache.load(voice, provider, speechServer)
             if (cached != null) {
                 clip = cached
             } else {
-                val fetched = fetchClip(voice, provider, trimmedKey)
+                val fetched = fetchClip(voice, provider, trimmedKey, speechServer)
                 currentCoroutineContext().ensureActive()
                 if (!isActive(id)) throw CancellationException()
-                cache.save(fetched, voice, provider)
+                cache.save(fetched, voice, provider, speechServer)
                 clip = fetched
             }
             currentCoroutineContext().ensureActive()
@@ -346,8 +386,8 @@ class VoicePreviewCoordinator(
     }
 
     // VoiceLabDemo is not ported.
-    private suspend fun fetchClip(voice: CallVoice, provider: VoiceProvider, apiKey: String): ByteArray =
-        VoicePreviewClient.synthesize(voice, provider, apiKey, send)
+    private suspend fun fetchClip(voice: CallVoice, provider: VoiceProvider, apiKey: String, speechServer: String): ByteArray =
+        VoicePreviewClient.synthesize(voice, provider, apiKey, send, speechServer)
 }
 
 /** One process-wide player. */

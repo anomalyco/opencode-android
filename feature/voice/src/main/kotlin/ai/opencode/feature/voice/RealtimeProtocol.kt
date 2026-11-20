@@ -91,6 +91,11 @@ data class RealtimeSessionConfig(
     val isAtEar: Boolean = false,
     /** The server brokering the session through `POST /api/experimental/voice/session`. */
     val serverVoice: OpenCodeServer? = null,
+    /**
+     * A call with no voice model: this phone listens with its own speech recognition, prompts
+     * this session, and speaks the reply with the speech server. Null for every hosted call.
+     */
+    val localSessionID: String? = null,
     /** The provider the broker runs, while a server brokers the session. */
     val provider: ServerVoiceProvider = ServerVoiceProvider.openAI,
     /**

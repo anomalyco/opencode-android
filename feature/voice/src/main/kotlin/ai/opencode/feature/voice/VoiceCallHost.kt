@@ -18,6 +18,7 @@ internal interface VoiceCallTestingCoordinator {
 class VoiceCallHost {
     private val dispatcher = Dispatchers.Default.limitedParallelism(1)
     private var current: VoiceCallTestingCoordinator? = null
+    private var localCurrent: LocalCallCoordinator? = null
     private val coordinator get() = current as? VoiceSessionCoordinator<*, *, *>
     private var startingAttemptID: UUID? = null
     private var nextAtEarSequence = 0
@@ -35,6 +36,13 @@ class VoiceCallHost {
         if (startingAttemptID != attemptID) throw CancellationException()
         val initial = pendingAtEar?.takeIf { it.attemptID == attemptID }?.let { config.copy(isAtEar = it.value) } ?: config
         pendingAtEar = null; startingAttemptID = null
+        initial.localSessionID?.let { sessionID ->
+            val server = initial.serverVoice ?: throw ServerVoiceError.InvalidResponse
+            val coordinator = LocalCallCoordinator(server, sessionID)
+            current = coordinator
+            localCurrent = coordinator
+            return@withContext coordinator.start()
+        }
         if (initial.provider == ServerVoiceProvider.geminiLive) {
             val coordinator = GeminiCallCoordinator()
             launch(coordinator) { coordinator.start(apiKey, GeminiLiveSessionConfig.from(initial), gemini, audio) }
@@ -77,7 +85,11 @@ class VoiceCallHost {
     suspend fun cancelPendingAnnouncements(promptIDs: List<String>) = withContext(dispatcher) { (current as? LiveCallCoordinator)?.cancelPendingAnnouncements(promptIDs); Unit }
     suspend fun closeDelegation(callID: String, reason: VoiceDelegationCloseReason) = withContext(dispatcher) { coordinator?.closeDelegation(callID, reason); Unit }
     suspend fun retarget() = withContext(dispatcher) { coordinator?.retarget(); Unit }
-    suspend fun setMuted(muted: Boolean) = withContext(dispatcher) { coordinator?.setMuted(muted); Unit }
+    suspend fun setMuted(muted: Boolean) = withContext(dispatcher) {
+        coordinator?.setMuted(muted)
+        localCurrent?.setMuted(muted)
+        Unit
+    }
     suspend fun setAtEar(atEar: Boolean) = withContext(dispatcher) {
         val sequence = ++nextAtEarSequence
         val entryAttemptID = startingAttemptID
@@ -112,5 +124,6 @@ class VoiceCallHost {
         val active = current ?: return
         active.end()
         if (current === active) current = null
+        if (localCurrent === active) localCurrent = null
     }
 }

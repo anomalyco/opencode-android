@@ -120,6 +120,9 @@
     <string name="settings_voice_provider_place">On %1$s</string>
     <string name="settings_voice_api_key_title">API Key</string>
     <string name="settings_voice_provider_automatic_footer">When %1$s isn’t ready, calls use one that is.</string>
+    <string name="settings_voice_speech_server_header">Speech Server</string>
+    <string name="settings_voice_speech_server_placeholder">https://example.com</string>
+    <string name="settings_voice_speech_server_footer">An OpenAI-compatible text-to-speech server that speaks voice previews from this phone. Leave it empty to use the provider’s API.</string>
     <string name="settings_voice_provider_choose_automatically">Choose Automatically</string>
     <string name="settings_voice_provider_others_header">Other Providers</string>
     <string name="settings_voice_provider_use_description">Use %1$s</string>

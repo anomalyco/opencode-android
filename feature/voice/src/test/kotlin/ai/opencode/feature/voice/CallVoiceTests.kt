@@ -292,5 +292,39 @@ class CallVoiceTests {
       }
     }
 
+    // A self-hosted OpenAI-compatible server (Kokoro) speaks previews with no key and its own voice names.
+    @Test fun previewSpeaksThroughASelfHostedSpeechServer() = runBlocking {
+        val directory = Files.createTempDirectory("voice-server-previews-").toFile()
+        try {
+            val cache = VoicePreviewCache(directory = directory)
+            val requests = Locked(listOf<Request>())
+            val played = Locked(listOf<String>())
+            val client = VoicePreviewClient.makeLive(
+                cache = cache,
+                send = { request ->
+                    requests.update { it + request }
+                    VoiceHttpResponse(statusCode = 200, headers = Headers.headersOf(), body = "riff".toByteArray())
+                },
+                playAudio = { data -> played.update { it + data.decodeToString() } },
+                speechServer = { "https://kokoro.example.com/" },
+            )
+
+            client.play(CallVoice.marin, VoiceProvider.openAI, "")
+
+            val request = requests.value.single()
+            assertEquals("https://kokoro.example.com/v1/audio/speech", request.url.toString())
+            assertEquals(null, request.header("Authorization"))
+            val payload = Json.decodeFromString(VoicePreviewRequest.OpenAIPayload.serializer(), body(request))
+            assertEquals(
+                VoicePreviewRequest.OpenAIPayload(model = "kokoro", voice = "af_heart", input = "Hi, I’m Marin. Ready when you are.", response_format = "mp3"),
+                payload,
+            )
+            assertEquals(listOf("riff"), played.value)
+            assertEquals("riff", cache.load(CallVoice.marin, VoiceProvider.openAI, "https://kokoro.example.com")?.decodeToString())
+        } finally {
+            directory.deleteRecursively()
+        }
+    }
+
     private fun body(request: Request): String = Buffer().also { request.body!!.writeTo(it) }.readUtf8()
 }

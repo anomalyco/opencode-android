@@ -53,6 +53,12 @@ object SharedKeys {
     /** Your own xAI key for Grok Voice calls; never sent to the OpenCode server. */
     val xaiAPIKey = SharedKey.keychain<String?>("xai-api-key", null)
 
+    /**
+     * An OpenAI-compatible text-to-speech server that previews voices on this phone instead of the
+     * provider's API (for example a Kokoro server). Empty uses the provider.
+     */
+    val voiceSpeechServer = SharedKey.appStorage("voice-speech-server", "")
+
     /** The random key that owns this phone's uploaded voice calls; whoever has it can view them. Made on first upload. */
     val developerModeOwner = SharedKey.keychain<String?>("voice-call-upload-owner", null)
 

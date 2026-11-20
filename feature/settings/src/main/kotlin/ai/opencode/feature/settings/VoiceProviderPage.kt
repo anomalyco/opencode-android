@@ -1,6 +1,7 @@
 package ai.opencode.feature.settings
 
 import ai.opencode.core.ui.OpenCodeShape
+import ai.opencode.core.ui.OpenCodeTextField
 import ai.opencode.core.diagnostics.HidesFromScreenshots
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeTextStyles
@@ -25,6 +26,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +46,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -121,6 +124,9 @@ internal fun VoiceProviderDetailPage(store: SettingsStore, opensAccount: Boolean
 
     val automaticFooter = stringResource(R.string.settings_voice_provider_automatic_footer, active.placeName)
     val othersHeader = stringResource(R.string.settings_voice_provider_others_header)
+    val speechHeader = stringResource(R.string.settings_voice_speech_server_header)
+    val speechFooter = stringResource(R.string.settings_voice_speech_server_footer)
+    val speechPlaceholder = stringResource(R.string.settings_voice_speech_server_placeholder)
 
     SettingsPageScaffold(title = stringResource(R.string.settings_voice_provider_title), store = store) {
         item(key = "header") {
@@ -134,6 +140,27 @@ internal fun VoiceProviderDetailPage(store: SettingsStore, opensAccount: Boolean
         if (active.place == VoiceProviderOption.Place.Phone) {
             settingsSection(key = "account") {
                 SettingsRow(stringResource(R.string.settings_voice_api_key_title), symbol = null, value = state.keyBadgeTitle, onClick = openAccount)
+            }
+        }
+        settingsSection(
+            key = "speech-server",
+            header = speechHeader,
+            footer = footerText(speechFooter),
+        ) {
+            Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+                var speechServer by rememberSaveable { mutableStateOf(state.speechServer) }
+                OpenCodeTextField(
+                    value = speechServer,
+                    onValueChange = { value ->
+                        speechServer = value
+                        voice.send(VoiceSettingsFeature.Action.SpeechServerEdited(value))
+                    },
+                    placeholder = speechPlaceholder,
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, autoCorrectEnabled = false),
+                    textStyle = SettingsText.title,
+                    modifier = Modifier.fillMaxWidth(),
+                )
             }
         }
         settingsSection(

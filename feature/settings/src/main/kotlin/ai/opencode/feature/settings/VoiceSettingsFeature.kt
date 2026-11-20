@@ -74,6 +74,9 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
         val xaiAPIKey: String? get() = shared(SharedKeys.xaiAPIKey).value
         val verifiedKeyFingerprint: String? get() = shared(SharedKeys.verifiedVoiceKeyFingerprint).value
 
+        /** An OpenAI-compatible speech server previews speak through; empty uses the provider. */
+        val speechServer: String get() = shared(SharedKeys.voiceSpeechServer).value
+
         val activeProvider: VoiceProvider get() = voiceEngine.provider
         /** The model alone while Voice Provider names who runs it. */
         val modelRowValue: String get() = if (showsProviderRow) voiceEngine.title else voiceEngine.providerModelTitle
@@ -116,7 +119,7 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
             }
 
         val keyBadgeTitle: String get() = keyStatus.badgeTitle
-        val canPreviewVoices: Boolean get() = activeAPIKey.isNotEmpty()
+        val canPreviewVoices: Boolean get() = activeAPIKey.isNotEmpty() || speechServer.isNotBlank()
         val previewDisabledHint: String?
             get() = if (canPreviewVoices) null else localized(R.string.settings_voice_preview_disabled_hint, activeProvider.displayName)
     }
@@ -132,6 +135,7 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
         data object VerifyKeyTapped : Action
         data class KeyVerificationFinished(val key: String, val model: String, val result: Result<String>) : Action
         data class CallVoiceSelected(val voice: CallVoice) : Action
+        data class SpeechServerEdited(val value: String) : Action
         data class PreviewVoiceTapped(val voice: CallVoice) : Action
         data class VoicePreviewFinished(val voice: CallVoice) : Action
         data class VoicePreviewFailed(val voice: CallVoice) : Action
@@ -233,6 +237,11 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
             }
         is Action.CallVoiceSelected -> {
             if (state.callVoice != action.voice) shared(VoiceSharedKeys.callVoice).set(action.voice)
+            Reduced(state)
+        }
+        is Action.SpeechServerEdited -> {
+            val trimmed = action.value.trim()
+            if (state.speechServer != trimmed) shared(SharedKeys.voiceSpeechServer).set(trimmed)
             Reduced(state)
         }
         is Action.PreviewVoiceTapped -> previewVoice(state, action.voice)
