@@ -18,7 +18,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.runBlocking
+import kotlin.time.Duration.Companion.seconds
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -480,6 +482,46 @@ class VoiceProviderTests {
     }
 
     // MARK: Failures
+
+    /**
+     * A server that places calls but has no key, on a new session's draft: the speech server runs
+     * the call on the session that draft's first request creates, instead of the card saying the
+     * server has no key. No session has been visited yet to stand in for it.
+     */
+    @Test fun aDraftFallsBackToTheSpeechServerWhenTheServerHasNoKey() = runBlocking {
+        val shared = reset()
+        shared.save(listOf(server))
+        shared.know(support = mapOf(server.persistenceID to ServerVoiceSupport.supported))
+        shared.run { shared(SharedKeys.voiceSpeechServer).set("https://kokoro.example.com") }
+        val attempts = Locked(listOf<RealtimeSessionConfig>())
+        val effects = detachedScope(coroutineContext)
+        val store = TestStore(
+            shared.run { VoiceFeature.State(server, draftDirectory = "/project", model = null) }
+                .copy(draftSessionID = "ses_minted"),
+            VoiceFeature(), effects,
+            callDependencies(
+                shared, at = 6_000,
+                checkSupport = { ServerVoiceSupport.supported },
+                start = { _, config ->
+                    attempts.update { it + config }
+                    if (config.localSessionID == null) {
+                        throw ServerVoiceError.Rejected(
+                            status = 503,
+                            message = "Couldn’t start voice: Voice needs an OpenAI API key on the server.",
+                        )
+                    }
+                    emptyFlow()
+                },
+                end = {},
+            ),
+        )
+        store.exhaustive = false
+        store.send(VoiceFeature.Action.Start)
+        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null), timeout = 4.seconds)
+        assertEquals("The server's start, then the speech server on the draft's session", listOf(null, "ses_minted"), attempts.value.map { it.localSessionID })
+        store.finish()
+        effects.cancel()
+    }
 
     /**
      * One sentence and the button that fixes it: a server's failure never

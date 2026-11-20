@@ -90,9 +90,11 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     next = next.copy(diagnosesFailure = selectedEngine != VoiceEngine.grok, callPlace = null)
     val shouldProbe = serverVoiceEnabled && selectedEngine != VoiceEngine.grok && initialSupport != ServerVoiceSupport.supported
     // No provider key anywhere, but a speech server is set: this phone can run the call itself.
-    // After a server switch the screen can still draw a session whose identity has not landed:
-    // fall back to the session the call was last in, then one it has visited.
+    // A draft's words go to the session its first request creates. After a server switch the
+    // screen can still draw a session whose identity has not landed: fall back to the session
+    // the call was last in, then one it has visited.
     val screenSessionID = target.sessionID
+        ?: next.draftSessionID
         ?: next.lastMove?.sessionID
         ?: next.visitedSessionIDs.lastOrNull()
     val localSessionID = screenSessionID?.takeIf { ai.opencode.core.sharing.shared(ai.opencode.core.sharing.SharedKeys.voiceSpeechServer).value.isNotBlank() }
