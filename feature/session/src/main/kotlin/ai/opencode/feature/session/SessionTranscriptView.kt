@@ -473,12 +473,14 @@ object SessionTranscriptView {
 
         /**
          * `now` as finely as the stamps tell it apart: they show minutes, and Today becomes
-         * Yesterday on a minute, but a last prompt with no time of its own may read as sent now.
+         * Yesterday on a minute, but a last prompt with no time of its own, or from a server clock
+         * ahead of the phone's, reads as now.
          */
         private fun stampClock(items: List<OpenCodeTranscriptItem>, now: Instant): Long {
             val lastPromptID = items.asReversed().firstNotNullOfOrNull(TranscriptEntry::promptID)
-            val untimed = lastPromptID != null && TranscriptTimeStamps.date(lastPromptID, now) == null
-            return if (untimed) now.epochSecond else now.epochSecond / 60
+            val time = lastPromptID?.let { TranscriptTimeStamps.date(it, now) }
+            val readsAsNow = lastPromptID != null && (time == null || !time.isBefore(now))
+            return if (readsAsNow) now.epochSecond else now.epochSecond / 60
         }
     }
 
