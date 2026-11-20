@@ -220,6 +220,25 @@ class ShellGlyphTests {
         assertTrue(!model.isLapping)
     }
 
+    @Test fun aRestingGlyphWakesOnTheNextReadThatSeesGrowth() {
+        val meter = ShellOutputMeter()
+        val model = ShellGlyphModel(meter)
+        meter.record("sh_dev", size = 4_096, now = 0.0)
+        meter.record("sh_dev", size = 4_096, now = 1.0)
+        val (restedAt, _) = play(model, start = 1.0, seconds = 1.0)
+        assertNotNull(restedAt)
+        val seen = meter.growth.value
+        // A probe that finds the size unchanged leaves it asleep.
+        meter.record("sh_dev", size = 4_096, now = 2.0)
+        assertEquals(seen, meter.growth.value)
+        // The sheet's read a moment after the probe is dropped, so the probe's next read sees the growth.
+        meter.record("sh_dev", size = 5_000, now = 2.1)
+        assertEquals(seen, meter.growth.value)
+        meter.record("sh_dev", size = 5_000, now = 3.0)
+        assertTrue(meter.growth.value != seen)
+        assertTrue(!model.isResting(3.0, listOf("sh_dev")))
+    }
+
     @Test fun theProbeSlowsOnlyOnceEveryShellSitsUnchanged() {
         val meter = ShellOutputMeter()
         assertEquals("Never read: read it now", 1.seconds, meter.probeInterval(listOf("sh_a"), now = 0.0))

@@ -2,6 +2,8 @@ package ai.opencode.feature.session
 
 import ai.opencode.core.dependencies.DependencyKey
 import ai.opencode.server.OpenCodeServer
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.max
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -33,6 +35,10 @@ class ShellOutputMeter {
 
     private val lock = Any()
     private val samples = HashMap<String, Sample>()
+    private val growthCount = MutableStateFlow(0L)
+
+    /** Counts the reads that saw a shell grow: a glyph at rest waits for the next. */
+    val growth: StateFlow<Long> get() = growthCount
 
     fun record(id: String, size: Int, now: Double = AgentActivityClock.now()) {
         synchronized(lock) {
@@ -52,6 +58,7 @@ class ShellOutputMeter {
                 grewAt = if (grown > 0) now else previous.grewAt,
                 changedAt = if (grown > 0) now else previous.changedAt,
             )
+            if (grown > 0) growthCount.value += 1
         }
     }
 

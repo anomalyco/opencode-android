@@ -102,7 +102,7 @@ import java.time.Instant
 fun ShellOutputView(
     store: StoreOf<ShellOutputFeature.State, ShellOutputFeature.Action>,
     onClose: () -> Unit,
-    runningGlyph: @Composable (shellID: String, outputEnd: Int?) -> Unit = { id, end -> ShellGlyph(shellIDs = listOf(id), outputEnd = end) },
+    runningGlyph: @Composable (shellID: String) -> Unit = { ShellGlyph(shellIDs = listOf(it)) },
 ) {
     val state by store.collectState()
     val lifecycle by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
@@ -451,7 +451,7 @@ private fun JumpToLatest(visible: Boolean, modifier: Modifier, onClick: () -> Un
 }
 
 @Composable
-private fun StatusBar(state: ShellOutputFeature.State, runningGlyph: @Composable (String, Int?) -> Unit, send: (ShellOutputFeature.Action) -> Unit) {
+private fun StatusBar(state: ShellOutputFeature.State, runningGlyph: @Composable (String) -> Unit, send: (ShellOutputFeature.Action) -> Unit) {
     Row(
         Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -484,7 +484,7 @@ private val successGreen = Color(0xFF34C759)
 
 /** “Running · 1:23”, “Exited with code 1”, “Interrupted”: sentence-case status. */
 @Composable
-private fun ShellStatusLabel(state: ShellOutputFeature.State, runningGlyph: @Composable (String, Int?) -> Unit, modifier: Modifier) {
+private fun ShellStatusLabel(state: ShellOutputFeature.State, runningGlyph: @Composable (String) -> Unit, modifier: Modifier) {
     val shell = state.shell
     val title = when {
         state.isStopping -> stringResource(R.string.session_shell_status_stopping)
@@ -497,7 +497,7 @@ private fun ShellStatusLabel(state: ShellOutputFeature.State, runningGlyph: @Com
     Row(modifier.semantics(mergeDescendants = true) {}.testTag("shell-output-status"), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Box(Modifier.width(18.dp), contentAlignment = Alignment.Center) {
             when {
-                shell.status == OpenCodeShell.Status.Running && !state.isUnavailable -> runningGlyph(shell.id, state.endCursor)
+                shell.status == OpenCodeShell.Status.Running && !state.isUnavailable -> runningGlyph(shell.id)
                 shell.status == OpenCodeShell.Status.Running || shell.status == OpenCodeShell.Status.Killed ->
                     OpenCodeIcon(SFSymbol.HandRaisedFill, contentDescription = null, size = 18.dp, tint = OpenCodeTheme.colors.secondaryText)
                 shell.status == OpenCodeShell.Status.Timeout ->
