@@ -77,6 +77,10 @@ internal fun HomeFeature.State.updatingSessionSeenWatermarks(transform: (Session
 internal fun HomeFeature.State.updatingMutedSessionKeys(transform: (Set<String>) -> Set<String>): HomeFeature.State =
     writingThrough(SharedKeys.mutedSessionKeys, mutedSessionKeys, transform) { copy(mutedSessionKeys = it) }
 
+/** `$hiddenSessionKeys.withLock { … }`. */
+internal fun HomeFeature.State.updatingHiddenSessionKeys(transform: (Set<String>) -> Set<String>): HomeFeature.State =
+    writingThrough(SharedKeys.hiddenSessionKeys, hiddenSessionKeys, transform) { copy(hiddenSessionKeys = it) }
+
 /** `$initializedInboxServerIDs.withLock { … }`. */
 internal fun HomeFeature.State.updatingInitializedInboxServerIDs(transform: (Set<String>) -> Set<String>): HomeFeature.State =
     writingThrough(SharedKeys.initializedInboxServerIDs, initializedInboxServerIDs, transform) { copy(initializedInboxServerIDs = it) }
@@ -159,11 +163,12 @@ val HomeFeature.State.firstSessionProject: OpenCodeProject?
 /**
  * Root sessions only: subagents' sessions are kept for their family's activity but open from their
  * parent, as on desktop. Archived sessions stay out of every list. Searching adds the server's
- * matches from every session; results of an earlier query show only while they still match.
+ * matches from every session; results of an earlier query show only while they still match. Hidden
+ * sessions show only while searching.
  */
 val HomeFeature.State.visibleSessions: List<OpenCodeSession>
     get() {
-        if (search.isEmpty()) return sessions.filter { it.parentID == null && !it.isArchived }
+        if (search.isEmpty()) return sessions.filter { it.parentID == null && !it.isArchived && !isHidden(it.id) }
         val local = sessions.filter { it.parentID == null && !it.isArchived && it.title.contains(search, ignoreCase = true) }
         val found = sessionPages.search
         if (found == null || found.results.isEmpty()) return local
@@ -519,6 +524,7 @@ fun HomeFeature.State.syncingSeenWatermark(detail: SessionFeature.State, session
 
 fun HomeFeature.State.sessionKey(id: String): String = "${server.persistenceID}|$id"
 fun HomeFeature.State.isPinned(id: String): Boolean = sessionKey(id) in pinnedSessionKeys
+fun HomeFeature.State.isHidden(id: String): Boolean = sessionKey(id) in hiddenSessionKeys
 
 /**
  * One implementation, in `StatusSnapshot`, so the drawer's bulk loops and a single question here
@@ -605,6 +611,7 @@ fun HomeFeature.State.purgingSession(sessionID: String): HomeFeature.State {
         .clearingSeenWatermark(sessionID)
         .updatingManuallyUnreadSessionKeys { it - key }
         .updatingMutedSessionKeys { it - key }
+        .updatingHiddenSessionKeys { it - key }
     if (s.lastViewedSessionIDs[serverID] == sessionID) s = s.updatingLastViewedSessionIDs { it - serverID }
     return s
 }

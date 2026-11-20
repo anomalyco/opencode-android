@@ -143,6 +143,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val pendingOpenReadState: Map<String, PendingOpenReadState> = emptyMap(),
         /** Mirror of `SharedKeys.mutedSessionKeys`. */
         val mutedSessionKeys: Set<String> = emptySet(),
+        /** Mirror of `SharedKeys.hiddenSessionKeys`. */
+        val hiddenSessionKeys: Set<String> = emptySet(),
         /** Mirror of `SharedKeys.sidebarShown`: beside a wide window's sidebar, whether it shows. */
         val isSidebarShown: Boolean = true,
         /**
@@ -573,6 +575,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
                     sessionSeenWatermarks = shared(SharedKeys.sessionSeenWatermarks).value,
                     manuallyUnreadSessionKeys = shared(SharedKeys.manuallyUnreadSessionKeys).value,
                     mutedSessionKeys = shared(SharedKeys.mutedSessionKeys).value,
+                    hiddenSessionKeys = shared(SharedKeys.hiddenSessionKeys).value,
                     isSidebarShown = shared(SharedKeys.sidebarShown).value,
                     showsWhatsNewButton = WhatsNewFeature.State().showsButton,
                     initializedInboxServerIDs = shared(SharedKeys.initializedInboxServerIDs).value,
@@ -704,6 +707,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object UnsentDraftsChanged : Action
         data class TogglePin(val sessionID: String) : Action
         data class ToggleMute(val sessionID: String) : Action
+        data class ToggleHidden(val sessionID: String) : Action
         data class MovePinUp(val sessionID: String) : Action
         data class MovePinDown(val sessionID: String) : Action
         data class DrawerPinZoneCrossed(val entered: Boolean) : Action

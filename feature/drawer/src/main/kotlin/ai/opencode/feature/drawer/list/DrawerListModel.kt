@@ -9,6 +9,7 @@ import ai.opencode.feature.drawer.ServerSwapTarget
 import ai.opencode.feature.drawer.ServerSwitchNote
 import ai.opencode.feature.drawer.drawerListFooter
 import ai.opencode.feature.drawer.drawerSessions
+import ai.opencode.feature.drawer.isHidden
 import ai.opencode.feature.drawer.placeholderSession
 import ai.opencode.feature.drawer.statusSnapshot
 import ai.opencode.feature.drawer.style.DrawerSectionHeaderKind
@@ -64,6 +65,8 @@ data class DrawerListRow(
     val selected: Boolean,
     val indicator: Indicator,
     val muted: Boolean,
+    /** Hidden from the list; it shows only while searching. */
+    val hidden: Boolean = false,
     val unread: Boolean,
     val isLifted: Boolean,
     val time: String,
@@ -84,6 +87,7 @@ data class DrawerListRow(
             val parts = mutableListOf<String>()
             if (isPinnedSection) parts += localized(R.string.drawer_row_pinned_state)
             if (muted) parts += localized(R.string.drawer_row_muted_state)
+            if (hidden) parts += localized(R.string.drawer_row_hidden_state)
             if (unsent == Unsent.Failed) parts += localized(R.string.drawer_row_unsent_failed_state)
             if (unsent == Unsent.Sending) parts += localized(R.string.drawer_row_unsent_sending_state)
             val status = when (indicator) {
@@ -212,6 +216,7 @@ data class DrawerListModel(
                 selected = inputs.selectedSessionID == session.id,
                 indicator = status.indicator(session),
                 muted = status.isMuted(session.id),
+                hidden = state.isHidden(session.id),
                 unread = status.isUnread(session),
                 isLifted = liftedID == session.id,
                 time = timestamp(session.updatedAt, now),

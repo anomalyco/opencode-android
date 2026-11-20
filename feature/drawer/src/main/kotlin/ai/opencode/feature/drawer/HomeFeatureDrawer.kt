@@ -199,6 +199,16 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
             return Reduced(s.reconcilingCatchUp())
         }
 
+        is Action.ToggleHidden -> {
+            if (state.sessions.none { it.id == action.sessionID }) return Reduced(state)
+            haptics.play(Haptic.selection)
+            val key = state.sessionKey(action.sessionID)
+            return Reduced(
+                if (state.isHidden(action.sessionID)) state.updatingHiddenSessionKeys { it - key }
+                else state.updatingHiddenSessionKeys { it + key },
+            )
+        }
+
         is Action.MovePinUp -> {
             val ids = state.pinnedSessions.map { it.id }
             val index = ids.indexOf(action.sessionID)
