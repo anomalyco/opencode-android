@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Невідомо</string>
     <string name="session_sheet_context_tokens">%1$s токенів</string>
     <string name="session_sheet_cost">Вартість</string>
+    <string name="session_sheet_media">Медіа</string>
+    <string name="session_sheet_media_value">Файли й посилання</string>
     <string name="session_always_notify">Завжди сповіщати</string>
     <string name="session_always_notify_message_phone">Сповіщати на цьому телефоні про кожну готову відповідь, навіть на запити з інших пристроїв.</string>
     <string name="session_always_notify_message_tablet">Сповіщати на цьому планшеті про кожну готову відповідь, навіть на запити з інших пристроїв.</string>

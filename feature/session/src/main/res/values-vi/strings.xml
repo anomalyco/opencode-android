@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Không rõ</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Chi phí</string>
+    <string name="session_sheet_media">Đa phương tiện</string>
+    <string name="session_sheet_media_value">Tệp và liên kết</string>
     <string name="session_always_notify">Luôn thông báo</string>
     <string name="session_always_notify_message_phone">Thông báo trên điện thoại này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>
     <string name="session_always_notify_message_tablet">Thông báo trên máy tính bảng này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>

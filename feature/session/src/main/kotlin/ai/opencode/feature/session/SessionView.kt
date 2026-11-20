@@ -982,6 +982,7 @@ private fun SessionSheets(store: StoreOf<State, Action>, listContext: SessionLis
                 context = listContext,
                 details = details,
                 onModelTapped = { store.send(Action.ModelButtonTapped) },
+                onMediaTapped = { store.send(Action.SessionMediaTapped) },
                 onDismissRequest = dismiss,
                 providerIcon = { providerID, canonical, size -> ProviderIcon(providerID, Modifier.size(size), canonical) },
                 statusOrb = { status, size ->

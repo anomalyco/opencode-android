@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">okänd</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Kostnad</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Filer och länkar</string>
     <string name="session_always_notify">Meddela alltid</string>
     <string name="session_always_notify_message_phone">Meddela den här telefonen när ett svar är klart, även om meddelandet skickades från en annan enhet.</string>
     <string name="session_always_notify_message_tablet">Meddela den här surfplattan när ett svar är klart, även om meddelandet skickades från en annan enhet.</string>

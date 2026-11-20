@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Óþekkt</string>
     <string name="session_sheet_context_tokens">%1$s tákn</string>
     <string name="session_sheet_cost">Kostnaður</string>
+    <string name="session_sheet_media">Margmiðlun</string>
+    <string name="session_sheet_media_value">Skrár og tenglar</string>
     <string name="session_always_notify">Alltaf tilkynna</string>
     <string name="session_always_notify_message_phone">Tilkynna í þessum síma þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>
     <string name="session_always_notify_message_tablet">Tilkynna í þessari spjaldtölvu þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>

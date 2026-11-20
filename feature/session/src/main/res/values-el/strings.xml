@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Άγνωστο</string>
     <string name="session_sheet_context_tokens">%1$s διακριτικά</string>
     <string name="session_sheet_cost">Κόστος</string>
+    <string name="session_sheet_media">Πολυμέσα</string>
+    <string name="session_sheet_media_value">Αρχεία και σύνδεσμοι</string>
     <string name="session_always_notify">Ειδοποίηση πάντα</string>
     <string name="session_always_notify_message_phone">Ειδοποίηση σε αυτό το κινητό όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>
     <string name="session_always_notify_message_tablet">Ειδοποίηση σε αυτό το τάμπλετ όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>

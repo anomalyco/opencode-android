@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">不明</string>
     <string name="session_sheet_context_tokens">%1$sトークン</string>
     <string name="session_sheet_cost">費用</string>
+    <string name="session_sheet_media">メディア</string>
+    <string name="session_sheet_media_value">ファイルとリンク</string>
     <string name="session_always_notify">常に通知</string>
     <string name="session_always_notify_message_phone">他の端末から送ったメッセージも含め、応答が完了するたびにこのスマホに通知します。</string>
     <string name="session_always_notify_message_tablet">他の端末から送ったメッセージも含め、応答が完了するたびにこのタブレットに通知します。</string>

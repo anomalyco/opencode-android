@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">නොදන්නා</string>
     <string name="session_sheet_context_tokens">ටෝකන %1$s</string>
     <string name="session_sheet_cost">වියදම</string>
+    <string name="session_sheet_media">මාධ්‍ය</string>
+    <string name="session_sheet_media_value">ගොනු සහ සබැඳි</string>
     <string name="session_always_notify">සැමවිටම දැනුම් දෙන්න</string>
     <string name="session_always_notify_message_phone">මෙතැනින් නොයැවූ පණිවිඩවලට ලැබෙන ප්‍රතිචාර ඇතුළුව, ප්‍රතිචාරයක් අවසන් වන සෑම විටම මේ දුරකථනයට දැනුම් දෙන්න.</string>
     <string name="session_always_notify_message_tablet">මෙතැනින් නොයැවූ පණිවිඩවලට ලැබෙන ප්‍රතිචාර ඇතුළුව, ප්‍රතිචාරයක් අවසන් වන සෑම විටම මේ ටැබ්ලටයට දැනුම් දෙන්න.</string>

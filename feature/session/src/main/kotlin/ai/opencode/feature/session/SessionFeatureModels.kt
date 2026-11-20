@@ -191,7 +191,7 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
             Reduced(state)
         } else {
             haptics.play(Haptic.tap)
-            Reduced(state.copy(sessionMediaFilter = SessionMedia.Filter.media))
+            Reduced(state.copy(sessionMediaFilter = SessionMedia.Filter.media, activePicker = null))
         }
     }
 
