@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -30,6 +31,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 
 // The meter, its client and the probe type are in `ShellOutputMeter.kt`; the engine in
@@ -49,8 +51,10 @@ private const val END_OF_CAPTURE_CURSOR = Int.MAX_VALUE
  *
  * @param shellIDs the shells whose output drives it (the capsule sums several).
  * @param key keeps the motion across remounts; defaults to the shells.
- * @param probe reads the capture's size once a second while visible. Without one, the glyph
- *   follows whatever else reads the shell (its output sheet).
+ * @param probe reads the capture's size while visible: every second, every 3 s once all have sat
+ *   unchanged for half a minute. Without one, the glyph follows whatever else reads the shell (its
+ *   output sheet).
+ * @param outputEnd where that other reader has read the capture to: moving on wakes a glyph at rest.
  * @param isPaused hidden behind something that stands in for it: hold the pose, draw nothing new.
  */
 @Composable
@@ -61,6 +65,7 @@ fun ShellGlyph(
     probe: ShellGlyphProbe? = null,
     size: Dp = 18.dp,
     isPaused: Boolean = false,
+    outputEnd: Int? = null,
 ) {
     val modelKey = key ?: ("shell|" + shellIDs.joinToString(","))
     val model = remember(modelKey) { ShellGlyphModels.model(modelKey) }
@@ -69,6 +74,9 @@ fun ShellGlyph(
     val active = !isPaused && lifecycle.isAtLeast(Lifecycle.State.RESUMED) && !still
     val dark = OpenCodeTheme.colors.isDark
     val currentIDs by rememberUpdatedState(shellIDs)
+    val currentOutputEnd by rememberUpdatedState(outputEnd)
+    // Bumped when output starts again, so a glyph at rest steps on.
+    var wakes by remember { mutableIntStateOf(0) }
     var tick by remember { mutableLongStateOf(0L) }
     val field = remember(model) { arrayOfNulls<GyroField>(1) }
 
@@ -89,6 +97,10 @@ fun ShellGlyph(
             if (now - lastDrawn < GLYPH_FRAME_INTERVAL - 0.002) continue
             lastDrawn = now
             draw(now)
+            if (model.isResting(now, currentIDs)) {
+                val resting = Triple(wakes, currentIDs, currentOutputEnd)
+                snapshotFlow { Triple(wakes, currentIDs, currentOutputEnd) }.first { it != resting }
+            }
         }
     }
 
@@ -97,6 +109,7 @@ fun ShellGlyph(
         val client = dependency(OpenCodeClient.Key)
         val meter = ShellOutputMeter.shared
         val gone = HashSet<String>()
+        var wasQuiet = meter.reading(shellIDs, AgentActivityClock.now()).isQuiet
         while (isActive) {
             for (id in shellIDs) {
                 if (id in gone || !meter.needsProbe(id)) continue
@@ -110,7 +123,11 @@ fun ShellGlyph(
                     if (error.statusCode == 404) gone += id
                 }
             }
-            delay(ShellOutputMeter.probeInterval)
+            val now = AgentActivityClock.now()
+            val isQuiet = meter.reading(shellIDs, now).isQuiet
+            if (wasQuiet && !isQuiet) wakes += 1
+            wasQuiet = isQuiet
+            delay(meter.probeInterval(shellIDs.filter { it !in gone }, now))
         }
     }
 

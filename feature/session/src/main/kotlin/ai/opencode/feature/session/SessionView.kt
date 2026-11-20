@@ -207,6 +207,7 @@ fun SessionView(
         SessionCallTasks(store, callStore, hasCall = ownsCall || hostedCall != null, isCatchUpCard = onCatchUpOpen != null)
     }
     val isCovered by store.observe { it.isCovered }
+    val isTranscriptCovered by store.observe { it.isTranscriptCovered }
     // iOS `floatingCallCoverage(sessionLifecycle)`: what the Living Orb's card covers gives way.
     if (!isInertPreview) {
         SessionFloatingCallCoverage(store, callStore, composerHost, attachmentMenu)
@@ -288,6 +289,7 @@ fun SessionView(
             onOpenSubagent = { store.send(Action.SubagentTapped(it)) },
             onOpenShell = { store.send(Action.ShellOutputTapped(it)) },
             isCovered = composerHost.composerPanelCovers,
+            isPaused = isTranscriptCovered,
             inCall = work.inCall,
             transcript = scrollEdgeBridge.borrowedDrag,
             // The capsule draws above the + menu's dismiss area: tapping it closes the menu.

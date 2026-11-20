@@ -468,6 +468,7 @@ private class Retained {
  *   tap on the scrim, a drag, Back, or the work ending).
  * @param isCovered a panel grown out of the composer (the model list, the level picker) stands
  *   over the capsule's place, so it hides like the pills.
+ * @param isPaused the session is covered (a pushed page, Settings): the glyphs hold still and stop probing.
  * @param inCall a voice call starts: the panel closes.
  * @param onToggle before the capsule toggles the panel (the composer gives up focus).
  * @param onOpenSubagent a subagent row tapped (`.subagentTapped(id)`); the panel closes first.
@@ -491,6 +492,7 @@ fun BackgroundWorkPresentation(
     onStopSubagent: (String) -> Unit = {},
     stoppingIDs: Set<String> = emptySet(),
     isCovered: Boolean = false,
+    isPaused: Boolean = false,
     inCall: Boolean = false,
     transcript: TranscriptBorrowedDrag? = null,
     onToggle: () -> Unit = {},
@@ -863,7 +865,7 @@ fun BackgroundWorkPresentation(
                     contentAlignment = Alignment.CenterStart,
                 ) {
                     BackgroundWorkCapsuleLabel(rowAgents.size, rowShells.size, Modifier.clearAndSetSemantics { }, scripts = rowScripts.size) {
-                        BackgroundWorkGlyph(rowAgents, rowShells, waitingSessionIDs, probe, isPaused = !labelShown, scripts = rowScripts)
+                        BackgroundWorkGlyph(rowAgents, rowShells, waitingSessionIDs, probe, isPaused = !labelShown || isPaused, scripts = rowScripts)
                     }
                 }
             }
@@ -905,7 +907,7 @@ fun BackgroundWorkPresentation(
                         onStopSubagent = { id -> if (!dragController.drag.isDragging) onStopSubagent(id) },
                         probe = probe,
                         scrollState = scrollState,
-                        isLive = rowsOpen,
+                        isLive = rowsOpen && !isPaused,
                         // Landed open, TalkBack moves into the panel.
                         focusRequest = rememberAccessibilityFocusRequest(if (settled && !hidden) motion else null),
                         onContentHeight = ::measured,

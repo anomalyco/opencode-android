@@ -22,9 +22,14 @@ class ShellOutputMeter {
         val at: Double,
         val bytesPerSecond: Double = 0.0,
         val grewAt: Double? = null,
+        /** When it last grew, or was first read. */
+        val changedAt: Double = at,
     )
 
-    data class Reading(val bytesPerSecond: Double = 0.0, val isOutput: Boolean = false)
+    data class Reading(val bytesPerSecond: Double = 0.0, val isOutput: Boolean = false) {
+        /** Nothing for the glyph to show: no rate, no recent growth. */
+        val isQuiet: Boolean get() = bytesPerSecond == 0.0 && !isOutput
+    }
 
     private val lock = Any()
     private val samples = HashMap<String, Sample>()
@@ -45,8 +50,15 @@ class ShellOutputMeter {
                 at = now,
                 bytesPerSecond = grown.toDouble() / (now - previous.at),
                 grewAt = if (grown > 0) now else previous.grewAt,
+                changedAt = if (grown > 0) now else previous.changedAt,
             )
         }
+    }
+
+    /** How long the probe waits before reading [ids] again. */
+    fun probeInterval(ids: List<String>, now: Double): Duration = synchronized(lock) {
+        val idle = ids.all { id -> samples[id]?.let { now - it.changedAt >= IDLE_AFTER } ?: false }
+        if (idle) idleProbeInterval else probeInterval
     }
 
     /** No one has read the shell's size this past interval. */
@@ -79,6 +91,10 @@ class ShellOutputMeter {
         /** The process-wide meter, private to this module's glyphs and [ShellOutputMeterClient.liveValue]. */
         internal val shared = ShellOutputMeter()
         val probeInterval: Duration = 1.seconds
+
+        /** The probe's pace once every shell has sat unchanged for [IDLE_AFTER]: output that starts again shows within this. */
+        val idleProbeInterval: Duration = 3.seconds
+        const val IDLE_AFTER: Double = 30.0
 
         /** A rate this old no longer describes the shell. */
         const val STALE_AFTER: Double = 2.5
