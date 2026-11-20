@@ -104,6 +104,7 @@ class VoiceTimeline : Reducer<VoiceFeature.State, VoiceFeature.Action> {
             is VoiceFeature.Action.SessionRenamed,
             is VoiceFeature.Action.CompactionObserved, is VoiceFeature.Action.DelegatorExplained, is VoiceFeature.Action.DelegatorPinned,
             is VoiceFeature.Action.DelegatorOpenedDraft, VoiceFeature.Action.DelegatorRequestedEnd, is VoiceFeature.Action.DelegatorSettledRequest,
+            is VoiceFeature.Action.AppVisibilityChanged, is VoiceFeature.Action.DelegatorNotedLooking,
             is VoiceFeature.Action.PendingModelApplied, is VoiceFeature.Action.FloatingStage,
             is VoiceFeature.Action.DelegatorKeptPick, is VoiceFeature.Action.SessionDelegatorAutomaticResolved,
             is VoiceFeature.Action.SessionDelegatorTools, VoiceFeature.Action.SessionDelegatorStreamReconnected,

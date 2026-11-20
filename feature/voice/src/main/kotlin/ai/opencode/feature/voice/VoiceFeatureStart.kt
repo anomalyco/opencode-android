@@ -119,6 +119,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         previousCallTail = next.tail.lines,
         visitedSessionIDs = emptyList(),
         lastMove = null,
+        userLooking = false,
         startedTarget = target,
         startedViewing = next.viewing,
     )

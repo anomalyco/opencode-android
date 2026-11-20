@@ -84,12 +84,36 @@ internal fun retargetCall(state: VoiceFeature.State): Reduced<VoiceFeature.State
     return Reduced(next, update.merge(release))
 }
 
-private fun sendInstructions(state: VoiceFeature.State, delta: () -> String): Effect<VoiceFeature.Action> {
+/**
+ * The app came to the front or left it, or the delegator recorded the user
+ * saying they're looking at the screen (or have stopped).
+ */
+internal fun noteScreenVisibility(from: VoiceScreenVisibility, state: VoiceFeature.State): Effect<VoiceFeature.Action> {
+    val after = state.screenVisibility
+    if (after == from || state.phase != VoiceFeature.State.Phase.Live) return Effect.none()
+    // The voice model hears only a change in whether the user sees the screen.
+    val voiceModel = if (from.userSeesScreen != after.userSeesScreen) {
+        sendInstructions(state, VoiceFeature.CancelID.ScreenInstructions) { VoiceInstructions.screenUpdate(after) }
+    } else {
+        Effect.none()
+    }
+    // Every other route's delegator reads it with each request.
+    if (!state.activeRoute.usesBrokerDelegator || !state.usesDelegator) return voiceModel
+    val instructions = VoiceDelegator.serviceInstructions(context = delegatorContext(state, otherRequests = state.delegatorWork.size))
+    val voiceCall = dependency(VoiceCallClient)
+    return voiceModel.merge(Effect.run { voiceCall.updateDelegatorInstructions(instructions) })
+}
+
+private fun sendInstructions(
+    state: VoiceFeature.State,
+    cancelID: VoiceFeature.CancelID = VoiceFeature.CancelID.Instructions,
+    delta: () -> String,
+): Effect<VoiceFeature.Action> {
     val voiceCall = dependency(VoiceCallClient)
     val route = state.activeRoute
     val context = state.instructionsContext
     val resolvedDelta = if (route.sendsContextDelta) delta() else null
     return Effect.run<VoiceFeature.Action> {
         voiceCall.updateInstructions(VoiceInstructions.build(context, route = route), resolvedDelta)
-    }.cancellable(VoiceFeature.CancelID.Instructions, cancelInFlight = true)
+    }.cancellable(cancelID, cancelInFlight = true)
 }
