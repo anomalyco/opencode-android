@@ -145,8 +145,18 @@ class LocalCallCoordinator(
     }
 
     private suspend fun askSession(text: String): String {
-        val before = assistantIDs()
-        val messageID = openCode.sendPromptConfirming(server, sessionID, text, OpenCodeDelivery.Queue)
+        val before = try {
+            assistantIDs()
+        } catch (error: Exception) {
+            AppLog.voice.notice("Local call transcript failed: ${error.message}")
+            throw error
+        }
+        val messageID = try {
+            openCode.sendPromptConfirming(server, sessionID, text, OpenCodeDelivery.Queue)
+        } catch (error: Exception) {
+            AppLog.voice.notice("Local call send failed for $sessionID: ${error.message}")
+            throw error
+        }
         AppLog.voice.notice("Local call prompt sent")
         var waited = 0L
         var lastCount = 0
@@ -158,7 +168,8 @@ class LocalCallCoordinator(
                 openCode.transcriptWithContextUsageAndCursor(server, sessionID, 20).items
             } catch (cancelled: CancellationException) {
                 throw cancelled
-            } catch (_: Exception) {
+            } catch (error: Exception) {
+                AppLog.voice.notice("Local call reply read failed: ${error.message}")
                 continue
             }
             val replies = items.filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>().filter { it.id !in before && !it.inProgress }
