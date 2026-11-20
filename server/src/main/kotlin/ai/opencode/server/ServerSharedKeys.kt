@@ -32,6 +32,7 @@ import java.time.Instant
 import java.util.UUID
 import java.util.WeakHashMap
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executor
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -281,16 +282,20 @@ class TranscriptCachePersistence(
 
         override val testValue: TranscriptCachePersistence get() = make(Storage.inMemory())
 
-        fun make(storage: Storage, interval: Duration = 500.milliseconds): TranscriptCachePersistence {
+        fun make(
+            storage: Storage,
+            interval: Duration = 500.milliseconds,
+            prefetchOn: Executor = Dispatchers.IO.asExecutor(),
+        ): TranscriptCachePersistence {
             val writer = TranscriptCacheWriter(storage, interval)
             val read = {
-                storage.data()?.let { data ->
-                    runCatching {
+                runCatching {
+                    storage.data()?.let { data ->
                         CachedTranscriptSnapshots.persistenceJson.decodeFromString(CachedTranscriptSnapshots.serializer(), data.decodeToString())
-                    }.getOrNull()
-                }
+                    }
+                }.getOrNull()
             }
-            val prefetched = TranscriptCachePrefetch(read)
+            val prefetched = TranscriptCachePrefetch(read, prefetchOn)
             return TranscriptCachePersistence(
                 identity = storage.identity,
                 load = { prefetched.take() ?: read() },
@@ -314,7 +319,7 @@ class TranscriptCachePersistence(
  * and a read that found nothing isn't used, so a prefetch never hands back an older or emptier cache
  * than a direct read would.
  */
-private class TranscriptCachePrefetch(private val read: () -> CachedTranscriptSnapshots?) {
+private class TranscriptCachePrefetch(private val read: () -> CachedTranscriptSnapshots?, private val executor: Executor) {
     private val lock = Any()
     private var reading: CompletableFuture<CachedTranscriptSnapshots?>? = null
     private var spent = false
@@ -322,18 +327,22 @@ private class TranscriptCachePrefetch(private val read: () -> CachedTranscriptSn
     fun start() {
         synchronized(lock) {
             if (reading != null || spent) return
-            reading = CompletableFuture.supplyAsync(read, Dispatchers.IO.asExecutor())
+            reading = CompletableFuture.supplyAsync(read, executor)
         }
     }
 
     fun take(): CachedTranscriptSnapshots? {
         val early = synchronized(lock) {
-            val early = reading.takeIf { !spent }
+            if (reading == null) spent = true
+            reading
+        } ?: return null
+        val value = early.get()
+        synchronized(lock) {
+            val current = reading === early
             spent = true
             reading = null
-            early
+            return if (current) value else null
         }
-        return early?.get()
     }
 
     fun discard() {
