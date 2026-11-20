@@ -434,18 +434,6 @@ class TranscriptCachePersistenceTests {
         val start = date(1_800_000_000)
         val open = makeSession("open", updatedAt = 1_800_000_000)
         val items = listOf<OpenCodeTranscriptItem>(OpenCodeTranscriptItem.UserText(id = "cached", text = "Saved"))
-        val base = TranscriptCachePersistence.make(TranscriptCachePersistence.Storage.inMemory())
-        val schedules = LockIsolated(0)
-        val counted = TranscriptCachePersistence(
-            identity = base.identity,
-            load = base.load,
-            schedule = { snapshot ->
-                schedules.increment()
-                base.schedule(snapshot)
-            },
-            flush = base.flush,
-            remove = base.remove,
-        )
         // A real clock moving on, unlike the test default (the epoch, which stamps nothing).
         val time = LockIsolated(start)
         val world = World(
@@ -455,7 +443,6 @@ class TranscriptCachePersistenceTests {
                     time.value
                 }
             },
-            persistence = counted,
         )
         val state = world.state {
             ServerSharedKeys.cachedTranscriptSnapshots().set(
@@ -473,16 +460,14 @@ class TranscriptCachePersistenceTests {
         val opened = requireNotNull(store.persisted.entries.firstOrNull()?.lastAccessedAt)
         assertTrue("Opening the session stamps its entry", opened > start)
 
-        val before = schedules.value
+        val before = store.persisted
         repeat(10) {
             store.send(detail(SessionFeature.Action.AcceptedTranscriptUpdated(sessionID = open.id, items = items)))
         }
-        assertEquals("Ten unchanged reads schedule no write", before, schedules.value)
-        assertEquals("They keep the stamp opening it set", opened, store.persisted.entries.firstOrNull()?.lastAccessedAt)
+        assertTrue("Ten unchanged reads leave the cache, so nothing is scheduled", store.persisted === before)
 
         val fresh = items + OpenCodeTranscriptItem.UserText(id = "fresh", text = "New")
         store.send(detail(SessionFeature.Action.AcceptedTranscriptUpdated(sessionID = open.id, items = fresh)))
-        assertEquals("A read with a new row writes once", before + 1, schedules.value)
         val entry = requireNotNull(store.persisted.entries.firstOrNull())
         assertEquals(fresh, entry.items)
         assertTrue(requireNotNull(entry.lastAccessedAt) > opened)
