@@ -86,4 +86,31 @@ class LinkPreviewStoreFrameworkTests {
             store.close()
         }
     }
+
+    @Test
+    fun aMemoryWarningKeepsWhatRowsShow() = runTest {
+        onMain {
+            val center = MemoryWarningCenter()
+            val video = LinkPreviewTarget.of("https://www.youtube.com/watch?v=dQw4w9WgXcQ")!!
+            val metadata = LinkPreviewMetadata(
+                kind = LinkPreviewMetadata.Kind.Video,
+                title = "A talk",
+                text = "Example Talks",
+                site = "YouTube",
+                image = LinkPreviewFixtures.videoPoster,
+            )
+            val store = LinkPreviewStore(client = LinkPreviewClient(cached = { LinkPreviewResult.Loaded(metadata) }), memoryWarnings = center)
+            val blocks = listOf(LinkBlocks.paragraph(0, LinkBlocks.text("Watch https://www.youtube.com/watch?v=dQw4w9WgXcQ")))
+            val targets = store.targets(blocks, entryID = "reply")
+            val before = store.preview(video)
+            assertEquals(listOf(video), targets)
+            assertTrue(before.image != null)
+            assertTrue(store.retainedBitmaps == 1 && store.retainedReplies == 1)
+            center.post()
+            assertTrue(store.retainedBitmaps == 0 && store.retainedReplies == 0)
+            assertEquals("The row draws the same", before, store.preview(video))
+            assertEquals(targets, store.targets(blocks, entryID = "reply"))
+            store.close()
+        }
+    }
 }

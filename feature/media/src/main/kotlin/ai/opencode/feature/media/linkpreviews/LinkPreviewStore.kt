@@ -220,6 +220,7 @@ class LinkPreviewStore(
     client: LinkPreviewClient? = null,
     private val now: () -> Long = System::currentTimeMillis,
     pathUpdates: () -> Flow<NetworkPathMonitor.Snapshot> = { NetworkPathMonitor.shared?.updates() ?: emptyFlow() },
+    memoryWarnings: MemoryWarningCenter = MemoryWarningCenter.default,
 ) {
     /** Reloads rows (their list identities) once their metadata arrives. */
     var onArrival: ((List<String>) -> Unit)? = null
@@ -247,6 +248,7 @@ class LinkPreviewStore(
     private val targetsByEntry = HashMap<String, Pair<List<LinkTextBlock>, List<LinkPreviewTarget>>>()
     /** Per-row motion state. */
     private val presentations = HashMap<String, Any>()
+    private val stopObservingMemoryWarnings = memoryWarnings.observe(::purgeMemory)
 
     init {
         scope.launch {
@@ -260,7 +262,19 @@ class LinkPreviewStore(
     }
 
     /** Stops observing the path and drops pending loads. */
-    fun close() = scope.cancel()
+    fun close() {
+        scope.cancel()
+        stopObservingMemoryWarnings()
+    }
+
+    /** What a row redraws the same without: decoded pictures and the replies' remembered links. */
+    fun purgeMemory() {
+        bitmaps.clear()
+        targetsByEntry.clear()
+    }
+
+    val retainedBitmaps: Int get() = bitmaps.size
+    val retainedReplies: Int get() = targetsByEntry.size
 
     /**
      * The row's presentation, made once by [make]. `LinkPreviewRowPresentation` lives in
