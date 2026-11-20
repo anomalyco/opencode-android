@@ -1,5 +1,8 @@
 package ai.opencode.feature.voice
 
+import ai.opencode.server.model.OpenCodeJSONValue
+import ai.opencode.server.model.OpenCodeToolCall
+import ai.opencode.server.model.OpenCodeTranscriptItem
 import kotlinx.serialization.json.Json
 import okhttp3.Request
 import okio.Buffer
@@ -108,6 +111,39 @@ class LocalSpeechTests {
 
         assertNull(client.engage("Build a React app.") { })
         assertTrue(played.isEmpty())
+    }
+
+    @Test fun aRunningToolHoldsTheReply() {
+        val tool = OpenCodeTranscriptItem.Tool(
+            "t1",
+            OpenCodeToolCall(
+                callID = "c1",
+                name = "bash",
+                status = OpenCodeToolCall.Status.Running,
+                input = OpenCodeJSONValue.Null,
+                output = emptyList(),
+                metadata = emptyMap(),
+            ),
+        )
+
+        assertTrue(transcriptShowsWork(listOf(tool)))
+    }
+
+    @Test fun aFinishedToolAndTextLetTheReplyThrough() {
+        val tool = OpenCodeTranscriptItem.Tool(
+            "t1",
+            OpenCodeToolCall(
+                callID = "c1",
+                name = "bash",
+                status = OpenCodeToolCall.Status.Completed,
+                input = OpenCodeJSONValue.Null,
+                output = emptyList(),
+                metadata = emptyMap(),
+            ),
+        )
+        val text = OpenCodeTranscriptItem.AssistantMarkdown("m1", "I'll take a look.", inProgress = false)
+
+        assertTrue(!transcriptShowsWork(listOf(tool, text)))
     }
 
     private fun wav(pcm: ByteArray, sampleRate: Int): ByteArray {

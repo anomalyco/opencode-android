@@ -12,6 +12,8 @@ import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.holdsPrompt
 import ai.opencode.server.sendPromptConfirming
 import ai.opencode.server.transcriptWithContextUsageAndCursor
+import ai.opencode.server.model.OpenCodeCompaction
+import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import android.content.Intent
 import android.os.Handler
@@ -174,11 +176,11 @@ class LocalCallCoordinator(
         }
     }
 
-    /** Waits for the agent's answer: a new assistant message that has stopped growing. */
+    /** Waits for the agent's answer: the whole run must be over before anything is spoken. */
     private suspend fun awaitReply(before: Set<String>): String {
         var waited = 0L
-        var lastCount = 0
-        var quiet = 0L
+        var last = ""
+        var stable = 0L
         while (waited < 120_000 && !finished.get()) {
             clock.sleep(600.milliseconds)
             waited += 600
@@ -190,17 +192,36 @@ class LocalCallCoordinator(
                 AppLog.voice.notice("Local call reply read failed: ${error.message}")
                 continue
             }
-            val replies = items.filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>().filter { it.id !in before && !it.inProgress }
-            if (replies.isEmpty()) continue
-            quiet = if (replies.size == lastCount) quiet + 600 else 0
-            lastCount = replies.size
-            if (quiet >= 1_800) {
-                val reply = replies.joinToString("\n\n") { it.text }.trim()
-                AppLog.voice.notice("Local call reply ${reply.length} characters")
-                return reply
+            val replies = items
+                .filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>()
+                .filter { it.id !in before && !it.inProgress }
+            val text = replies.joinToString("\n\n") { it.text }.trim()
+            val working = stillWorking(items) || sessionRunning()
+            if (text.isBlank() || working) {
+                last = ""
+                stable = 0
+                continue
+            }
+            // Idle and unchanged for a moment: every part of the run has landed.
+            stable = if (text == last) stable + 600 else 0
+            last = text
+            if (stable >= 1_200) {
+                AppLog.voice.notice("Local call reply ${text.length} characters")
+                return text
             }
         }
         return ""
+    }
+
+    private fun stillWorking(items: List<OpenCodeTranscriptItem>): Boolean = transcriptShowsWork(items)
+
+    /** The server may report idle between steps; it is the final word on a finished run. */
+    private suspend fun sessionRunning(): Boolean = try {
+        openCode.isSessionActive(server, sessionID)
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (_: Exception) {
+        false
     }
 
     private suspend fun assistantIDs(): Set<String> = try {
@@ -208,6 +229,18 @@ class LocalCallCoordinator(
             .filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>().map { it.id }.toSet()
     } catch (_: Exception) {
         emptySet()
+    }
+}
+
+/** True while a tool, a compaction or a streaming message is still going. */
+internal fun transcriptShowsWork(items: List<OpenCodeTranscriptItem>): Boolean = items.any { item ->
+    when (item) {
+        is OpenCodeTranscriptItem.Tool ->
+            item.call.status == OpenCodeToolCall.Status.Running ||
+                item.call.status == OpenCodeToolCall.Status.Streaming
+        is OpenCodeTranscriptItem.Compaction ->
+            item.info?.status == OpenCodeCompaction.Status.Running
+        else -> item.isInProgressText
     }
 }
 

@@ -43,8 +43,10 @@ not the default.
    not used; a pause ends the utterance.
 2. **Caption** — `UserTranscript(final = true)`; the call screen shows the words.
 3. **Prompt** — `sendPromptConfirming` queues the text on the session on screen.
-4. **Reply** — the transcript is polled for a *new* assistant message; the reply
-   is taken once it stops growing for ~1.8 s.
+4. **Reply** — the transcript is polled for a *new* assistant message. The reply
+   is only taken once the whole run is over: no tool is running, no message is
+   still streaming, and the server no longer lists the session as active, so a
+   "let me take a look" said before a tool is not mistaken for the answer.
 5. **Speak** — the reply is split into sentences; the first is synthesized
    immediately, two more are fetched in parallel while it plays.
 6. **Wait out playback** — playback returns only when the audio has actually
@@ -53,6 +55,9 @@ not the default.
 
 Turns are sequential and push-to-talk in shape: the microphone is closed while
 the agent speaks.
+
+A run that starts a tool or a subagent keeps the call waiting: the interim line
+is spoken, and the real reply waits until every step of that run has settled.
 
 ## While the agent works
 
