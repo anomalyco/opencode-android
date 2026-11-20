@@ -1,6 +1,9 @@
 package ai.opencode.feature.session
 
+import ai.opencode.core.dependencies.withDependencies
 import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.feature.media.CachedImage
+import ai.opencode.feature.media.DecodedImageCache
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.State
 import ai.opencode.feature.session.SessionMedia.Content
@@ -26,6 +29,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 import java.time.Instant
 
 /** Under Robolectric: bare URLs are found with `Patterns.WEB_URL`. */
@@ -134,6 +138,22 @@ class SessionMediaTests {
         assertTrue(gallery.pages[0].original!!.contentEquals(byteArrayOf(1, 2)))
         assertNull(SessionMedia.gallery(all, all.first { it.id == "file:/project/docs/brief.pdf" }, server, dir))
         assertNull(SessionMedia.gallery(all, all.first { it.isLink }, server, dir))
+    }
+
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @Test fun aMediaCardOpensOnTheThumbnailItsTileShows() {
+        val stream = java.io.ByteArrayOutputStream()
+        android.graphics.Bitmap.createBitmap(3200, 1800, android.graphics.Bitmap.Config.ARGB_8888)
+            .compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
+        val data = stream.toByteArray()
+        withDependencies({ this[DecodedImageCache] = DecodedImageCache() }) {
+            val shown = CachedImage.thumbnail("att", data)
+            val all = SessionMedia.collect(listOf(OpenCodeTranscriptItem.UserImages("msg_1-images", listOf(OpenCodeImageAttachment("att", data)))), dir)
+            val page = SessionMedia.gallery(all, all.single(), server, dir)!!.pages.single()
+            assertTrue(page.image === shown)
+            assertTrue(page.original === data)
+            assertEquals(ai.opencode.feature.media.AgentImageSize(3200.0, 1800.0), page.placeholderSize)
+        }
     }
 
     @Test fun replyFileCardsShowOnlyOnceTheirCheckFindsThem() {

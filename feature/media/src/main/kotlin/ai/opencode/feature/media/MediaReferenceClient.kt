@@ -445,7 +445,7 @@ object CachedImage {
     }
 
     /** The encoded image's pixel size, read from its header alone. */
-    internal fun pixelSize(data: ByteArray): AgentImageSize? {
+    fun pixelSize(data: ByteArray): AgentImageSize? {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(data, 0, data.size, bounds)
         if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
