@@ -71,7 +71,7 @@ tests can't run here, even under Robolectric.
 
 Test-only support: `MediaTestSupport.kt` (`stubBitmap()` for code that only carries an image by
 identity, `stubSiteIcon`, `Locked`, `onMain`). Tests that need the Android framework run under
-Robolectric 4.16 (test-only; `sdk = 35`, native graphics where pixels are drawn, encoded or
+Robolectric 4.18.1 (test-only; `sdk = 35`, native graphics where pixels are drawn, encoded or
 decoded) in their own classes, so the rest stay plain JVM: `ImageLinkPreviewTests`,
 `AgentImagePreviewReadTests` (the previews' pixel cache is the framework's `LruCache`, weighing
 real bitmaps) and `SiteIconLoaderTests` whole; `SiteIconImageTests`
