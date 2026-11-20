@@ -83,6 +83,8 @@ data class LocalSpeechPayload(
     val voice: String,
     val input: String,
     val response_format: String = "wav",
+    /** Asks the server to answer with a model's line before speaking it. */
+    val new_generation: Boolean? = null,
 )
 
 object LocalSpeech {
@@ -106,13 +108,26 @@ object LocalSpeech {
         return parts.ifEmpty { listOf(text.trim()) }
     }
 
-    private val encoder = kotlinx.serialization.json.Json { encodeDefaults = true }
+    private val encoder = kotlinx.serialization.json.Json {
+        encodeDefaults = true
+        explicitNulls = false
+    }
 
-    fun request(text: String, voice: CallVoice, server: String, apiKey: String = ""): Request? {
+    fun request(
+        text: String,
+        voice: CallVoice,
+        server: String,
+        apiKey: String = "",
+        newGeneration: Boolean = false,
+    ): Request? {
         val url = VoicePreviewRequest.speechURL(server) ?: return null
         val body = encoder.encodeToString(
             LocalSpeechPayload.serializer(),
-            LocalSpeechPayload(voice = voice.synthesizedVoice, input = text),
+            LocalSpeechPayload(
+                voice = voice.synthesizedVoice,
+                input = text,
+                new_generation = if (newGeneration) true else null,
+            ),
         )
         val builder = Request.Builder().url(url).header("Content-Type", "application/json")
         val trimmedKey = apiKey.trim()
@@ -128,6 +143,12 @@ object LocalSpeech {
 class LocalSpeechClient(
     val speak: suspend (text: String) -> Boolean,
     val stop: suspend () -> Unit,
+    /**
+     * The line the server's own model answers with, spoken while the agent works. [onWords] is
+     * called with the words before they play, so a call can caption them. Null when no server is
+     * set, the server does not rewrite, or it answered without words.
+     */
+    val engage: suspend (text: String, onWords: (String) -> Unit) -> String? = { _, _ -> null },
 ) {
     companion object Key : DependencyKey<LocalSpeechClient> {
         override val liveValue: LocalSpeechClient by lazy { makeLive() }
@@ -182,9 +203,38 @@ class LocalSpeechClient(
                 }
             },
             stop = stopPlayback,
+            engage = engage@{ text, onWords ->
+                val address = server().trim()
+                if (address.isEmpty() || text.isBlank()) return@engage null
+                val request = LocalSpeech.request(text, voice(), address, newGeneration = true)
+                    ?: return@engage null
+                val response = try {
+                    send(request)
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (_: Exception) {
+                    return@engage null
+                }
+                if (response.statusCode !in 200..<300) return@engage null
+                val words = generatedWords(response) ?: return@engage null
+                onWords(words)
+                SpokenAudio.fromResponse(response.body)?.let { play(it) }
+                words
+            },
         )
     }
 }
+
+/** The words the server's model wrote, from the `X-Generated-Text` header it answers with. */
+internal fun generatedWords(response: VoiceHttpResponse): String? =
+    response.header("X-Generated-Text")
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
+        ?.let { encoded ->
+            runCatching { String(java.util.Base64.getDecoder().decode(encoded), Charsets.UTF_8) }.getOrNull()
+        }
+        ?.trim()
+        ?.takeIf { it.isNotEmpty() }
 
 sealed class LocalSpeechError : Exception("Couldn’t speak") {
     data object Failed : LocalSpeechError()

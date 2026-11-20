@@ -24,6 +24,8 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
@@ -107,14 +109,23 @@ class LocalCallCoordinator(
             val id = "local-${heard.hashCode()}"
             events.trySend(VoiceCallEvent.UserSpeechStarted)
             events.trySend(VoiceCallEvent.UserTranscript(id, heard, final = true))
-            val reply = try {
-                askSession(heard)
+            val before = assistantIDs()
+            try {
+                openCode.sendPromptConfirming(server, sessionID, heard, OpenCodeDelivery.Queue)
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
-                AppLog.voice.notice("Local call prompt failed: ${error.message}")
+                AppLog.voice.notice("Local call send failed for $sessionID: ${error.message}")
                 events.trySend(VoiceCallEvent.ServiceError(VoiceRoute.Reason.MissingPhoneKey(VoiceEngine.realtime).message))
                 continue
+            }
+            AppLog.voice.notice("Local call prompt sent")
+            // The agent and the server's model work at the same time: the model's short line is
+            // heard while the agent is busy, rather than silence followed by the answer.
+            val reply = coroutineScope {
+                val waiting = async { awaitReply(before) }
+                speakEngagement(heard)
+                waiting.await()
             }
             if (reply.isBlank() || finished.get()) continue
             events.trySend(VoiceCallEvent.AssistantDelta(null, reply))
@@ -144,20 +155,27 @@ class LocalCallCoordinator(
         return text.trim()
     }
 
-    private suspend fun askSession(text: String): String {
-        val before = try {
-            assistantIDs()
+    /** The server's model answers the same words while the agent works; its line is spoken. */
+    private suspend fun speakEngagement(heard: String) {
+        val words = try {
+            speech.engage(heard) { line ->
+                events.trySend(VoiceCallEvent.AssistantDelta(null, line))
+                events.trySend(VoiceCallEvent.AssistantDone(null, line))
+            }
+        } catch (cancelled: CancellationException) {
+            throw cancelled
         } catch (error: Exception) {
-            AppLog.voice.notice("Local call transcript failed: ${error.message}")
-            throw error
+            AppLog.voice.notice("Local call engagement failed: ${error.message}")
+            null
         }
-        val messageID = try {
-            openCode.sendPromptConfirming(server, sessionID, text, OpenCodeDelivery.Queue)
-        } catch (error: Exception) {
-            AppLog.voice.notice("Local call send failed for $sessionID: ${error.message}")
-            throw error
+        if (!words.isNullOrBlank()) {
+            AppLog.voice.notice("Local call engagement ${words.length} characters")
+            events.trySend(VoiceCallEvent.AssistantPlaybackFinished)
         }
-        AppLog.voice.notice("Local call prompt sent")
+    }
+
+    /** Waits for the agent's answer: a new assistant message that has stopped growing. */
+    private suspend fun awaitReply(before: Set<String>): String {
         var waited = 0L
         var lastCount = 0
         var quiet = 0L

@@ -54,6 +54,20 @@ not the default.
 Turns are sequential and push-to-talk in shape: the microphone is closed while
 the agent speaks.
 
+## While the agent works
+
+The words go to the session and to the speech server at the same time. The
+server runs the same text through its model (`new_generation`) and answers with
+a short line, which the app speaks and captions straight away; the agent's real
+answer follows when it arrives. A call is not silent while a long task runs.
+
+That line is one quick sentence naming the task back, or a question when the
+request is too vague ("Which status would you like me to check?"). Its length
+comes from the server's `GENERATION_MAX_CHARS`.
+
+A server without `new_generation` answers without an `X-Generated-Text` header;
+the app then says nothing and waits for the agent, exactly as before.
+
 ## Audio
 
 - Requests ask for `wav`; the server answers mono 24 kHz PCM16 — the call audio
@@ -79,9 +93,11 @@ the agent speaks.
 | --- | --- |
 | `Local call heard N characters` | recognition produced a final result |
 | `Local call prompt sent` | the prompt reached the session |
+| `Local call engagement N characters` | the server's model answered; that line is spoken first |
 | `Local call reply N characters` | the session answered |
 | `Local speech HTTP 200 N bytes` | the speech server answered |
 | `Local speech playing N bytes at 24000 Hz` | audio handed to the phone |
+| `Local call engagement failed: …` | the server could not make a line; the call carries on |
 | `Local call speech failed: …` | fetch or parse failed |
 | `Local call prompt failed: …` | the session rejected the prompt |
 

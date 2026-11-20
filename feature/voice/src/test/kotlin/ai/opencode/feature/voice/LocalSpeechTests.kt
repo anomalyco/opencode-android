@@ -66,6 +66,50 @@ class LocalSpeechTests {
         assertTrue(body.contains("af_heart"))
     }
 
+    @Test fun asksForANewLineOnlyWhenItWantsOne() {
+        val plain = LocalSpeech.request("Hi.", CallVoice.marin, "https://kokoro.example.com")
+        val rewritten = LocalSpeech.request("Hi.", CallVoice.marin, "https://kokoro.example.com", newGeneration = true)
+
+        val plainBody = Buffer().also { requireNotNull(plain?.body).writeTo(it) }.readUtf8()
+        val rewrittenBody = Buffer().also { requireNotNull(rewritten?.body).writeTo(it) }.readUtf8()
+        assertTrue(!plainBody.contains("new_generation"))
+        assertTrue(rewrittenBody.contains("\"new_generation\":true"))
+    }
+
+    @Test fun speaksTheServersOwnLineWhenItRewrites() = kotlinx.coroutines.runBlocking {
+        val words = "I'll build the React app you described. Checking the details now."
+        val encoded = java.util.Base64.getEncoder().encodeToString(words.toByteArray())
+        val played = mutableListOf<SpokenAudio>()
+        val client = LocalSpeechClient.makeLive(
+            server = { "https://kokoro.example.com" },
+            voice = { CallVoice.marin },
+            send = { VoiceHttpResponse(200, okhttp3.Headers.headersOf("X-Generated-Text", encoded), wav(byteArrayOf(1, 0, 2, 0), sampleRate = 24000)) },
+            play = { played += it },
+            stopPlayback = {},
+        )
+        var captioned = ""
+
+        val line = client.engage("Build a React app.") { captioned = it }
+
+        assertEquals(words, line)
+        assertEquals(words, captioned)
+        assertEquals(1, played.size)
+    }
+
+    @Test fun aServerThatDoesNotRewriteSaysNothing() = kotlinx.coroutines.runBlocking {
+        val played = mutableListOf<SpokenAudio>()
+        val client = LocalSpeechClient.makeLive(
+            server = { "https://kokoro.example.com" },
+            voice = { CallVoice.marin },
+            send = { VoiceHttpResponse(200, okhttp3.Headers.headersOf(), wav(byteArrayOf(1, 0, 2, 0), sampleRate = 24000)) },
+            play = { played += it },
+            stopPlayback = {},
+        )
+
+        assertNull(client.engage("Build a React app.") { })
+        assertTrue(played.isEmpty())
+    }
+
     private fun wav(pcm: ByteArray, sampleRate: Int): ByteArray {
         val header = Buffer()
         header.writeUtf8("RIFF")
