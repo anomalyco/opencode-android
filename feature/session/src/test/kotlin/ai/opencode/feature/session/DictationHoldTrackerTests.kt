@@ -1,9 +1,13 @@
 package ai.opencode.feature.session
 
+import ai.opencode.feature.composer.DictationClient
 import ai.opencode.feature.composer.DictationDrag
 import ai.opencode.feature.composer.DictationFeature
+import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.State.TaskIdentity
+import ai.opencode.feature.session.SessionTestSupport.receive
 import ai.opencode.feature.session.SessionTestSupport.sessionTest
+import kotlinx.coroutines.channels.Channel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -78,19 +82,35 @@ class DictationHoldTrackerTests {
 
     /**
      * Speaking while the mic is held or locked: each heard word changes the words the hold keeps
-     * for Send, which nothing draws, so the composer's snapshot stays equal and it doesn't recompose.
+     * for Send, which nothing draws, so nothing the session screen or the composer observes changes.
      */
     @Test fun heldDictationWordsRedrawNeitherSessionNorComposer() = sessionTest { h ->
-        var state = h.makeState()
-            .withDictationPhase(DictationFeature.Phase.Recording)
-            .withDictationHold(DictationFeature.Hold(text = "", isLocked = true))
-        val locked = ComposerSnapshot.of(state)
+        val transcripts = Channel<String>(Channel.UNLIMITED)
+        val store = h.store(h.makeState()) {
+            this[DictationClient] = DictationClient(start = { transcripts }, stop = {}, cancel = { transcripts.close() })
+        }
+        store.exhaustive = false
+        store.send(Action.micPressBegan)
+        store.receive({ it == Action.dictationReady }, "dictationReady")
+        store.send(Action.micPressLocked)
+
+        val locked = observed(store.state)
         var words = ""
         for (word in 1..30) {
             words += " word$word"
-            state = state.showDictation(words)
-            assertEquals(locked, ComposerSnapshot.of(state))
+            transcripts.send(words)
+            store.receive({ (it as? Action.Dictation)?.action is DictationFeature.Action.Updated }, "dictationUpdated")
+            assertEquals(locked, observed(store.state))
         }
-        assertEquals("The hold kept every word for Send", words, state.dictationHold?.text)
+        assertEquals("The hold kept every word for Send", words, store.state.dictationHold?.text)
+        store.send(Action.micPressCancelled)
+        h.skipInFlightEffects()
     }
+
+    private fun observed(state: SessionFeature.State): List<Any?> = listOf(
+        ComposerSnapshot.of(state),
+        SessionHeaderModel.from(state),
+        state.draft,
+        state.autocomplete,
+    )
 }

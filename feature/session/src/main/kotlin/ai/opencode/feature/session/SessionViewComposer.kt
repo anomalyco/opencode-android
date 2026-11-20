@@ -408,7 +408,7 @@ internal data class ComposerSnapshot(
     val hasFailedFiles: Boolean,
     val hasNonLocationAttachments: Boolean,
     val wantsLocationAttachment: Boolean,
-    /** Not the words, which change with every hypothesis (10–25 a second) and draw nothing here. */
+    /** Not the words, which change with every speech result and draw nothing here. */
     val dictationHold: DictationFeature.Hold.Pose?,
     val dictationPhase: DictationFeature.Phase,
     val isDictating: Boolean,
