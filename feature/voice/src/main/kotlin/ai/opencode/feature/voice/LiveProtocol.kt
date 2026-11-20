@@ -240,7 +240,7 @@ data class LiveSessionConfig(
     }
 
     companion object {
-        const val defaultModel = "gpt-live-1"
+        const val defaultModel = "gpt-live-1.1"
     }
 }
 
