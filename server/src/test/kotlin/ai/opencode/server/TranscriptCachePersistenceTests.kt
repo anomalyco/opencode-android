@@ -6,6 +6,7 @@ import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -105,5 +106,53 @@ class TranscriptCachePersistenceTests {
         assertTrue(data.size <= CachedTranscriptSnapshots.MAXIMUM_BYTES)
         assertTrue(decoded.entries.size < entries.size)
         assertEquals(entries.first().sessionID, decoded.entries.firstOrNull()?.sessionID)
+    }
+
+    private fun prefetchSnapshot(text: String) = CachedTranscriptSnapshots(
+        entries = listOf(
+            CachedTranscriptSnapshots.Entry(
+                serverID = "server",
+                sessionID = "open",
+                updatedAt = date(1_800_000_000),
+                items = listOf(OpenCodeTranscriptItem.UserText(id = "m", text = text)),
+            ),
+        ),
+    )
+
+    @Test
+    fun aPrefetchedReadMatchesADirectOneAndIsTakenOnce() {
+        val memory = TranscriptCachePersistence.Storage.Memory()
+        memory.value = prefetchSnapshot("first").encodedForPersistence()
+        val persistence = TranscriptCachePersistence.make(TranscriptCachePersistence.Storage.inMemory(memory))
+        persistence.prefetch()
+        assertEquals(prefetchSnapshot("first"), persistence.load())
+        memory.value = prefetchSnapshot("second").encodedForPersistence()
+        assertEquals("Later loads read the file again", prefetchSnapshot("second"), persistence.load())
+        persistence.prefetch()
+        assertEquals("Only the first load is prefetched", prefetchSnapshot("second"), persistence.load())
+    }
+
+    @Test
+    fun aPrefetchNeverHandsBackAnOlderOrEmptierCache() {
+        val written = TranscriptCachePersistence.Storage.Memory()
+        written.value = prefetchSnapshot("old").encodedForPersistence()
+        val rewritten = TranscriptCachePersistence.make(TranscriptCachePersistence.Storage.inMemory(written))
+        rewritten.prefetch()
+        rewritten.schedule(prefetchSnapshot("new"))
+        rewritten.flush()
+        assertEquals(prefetchSnapshot("new"), rewritten.load())
+
+        val removed = TranscriptCachePersistence.Storage.Memory()
+        removed.value = prefetchSnapshot("old").encodedForPersistence()
+        val cleared = TranscriptCachePersistence.make(TranscriptCachePersistence.Storage.inMemory(removed))
+        cleared.prefetch()
+        cleared.remove()
+        assertNull(cleared.load())
+
+        val late = TranscriptCachePersistence.Storage.Memory()
+        val unlocked = TranscriptCachePersistence.make(TranscriptCachePersistence.Storage.inMemory(late))
+        unlocked.prefetch()
+        late.value = prefetchSnapshot("readable").encodedForPersistence()
+        assertEquals(prefetchSnapshot("readable"), unlocked.load())
     }
 }

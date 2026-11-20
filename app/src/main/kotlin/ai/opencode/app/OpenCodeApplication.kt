@@ -10,6 +10,7 @@ import ai.opencode.feature.media.AgentImageSizeCache
 import ai.opencode.feature.session.AgentActivityLedger
 import ai.opencode.feature.transcript.markdown.withMarkdownStream
 import ai.opencode.server.EventBatcherHooks
+import ai.opencode.server.TranscriptCachePersistence
 import ai.opencode.server.retry.AppPhase
 import ai.opencode.server.retry.AppPhases
 import android.app.Application
@@ -79,6 +80,8 @@ class OpenCodeApplication : Application() {
         launchScope.launch(Dispatchers.IO) { voiceCallLog.recoverInterrupted() }
         // Remembered image shapes are read off the main thread.
         AgentImageSizeCache.live.warm()
+        // The transcript cache decodes off the main thread; the store's first read takes it.
+        dependency(TranscriptCachePersistence).prefetch()
         launchScope.launch {
             AppPhases.phases().collect { phase ->
                 if (phase == AppPhase.Background) launch(Dispatchers.IO) { voiceCallLog.persistOpenCalls() }

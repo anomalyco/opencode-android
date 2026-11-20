@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ import java.io.File
 import java.time.Instant
 import java.util.UUID
 import java.util.WeakHashMap
+import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -221,6 +223,8 @@ data class CachedTranscriptSnapshots(
 class TranscriptCachePersistence(
     val identity: String,
     val load: () -> CachedTranscriptSnapshots?,
+    /** Reads and decodes the file off the main thread for the next [load] (app start). */
+    val prefetch: () -> Unit = {},
     val schedule: (CachedTranscriptSnapshots) -> Unit,
     /** Writes whatever is pending now (backgrounding). */
     val flush: () -> Unit,
@@ -279,19 +283,63 @@ class TranscriptCachePersistence(
 
         fun make(storage: Storage, interval: Duration = 500.milliseconds): TranscriptCachePersistence {
             val writer = TranscriptCacheWriter(storage, interval)
+            val read = {
+                storage.data()?.let { data ->
+                    runCatching {
+                        CachedTranscriptSnapshots.persistenceJson.decodeFromString(CachedTranscriptSnapshots.serializer(), data.decodeToString())
+                    }.getOrNull()
+                }
+            }
+            val prefetched = TranscriptCachePrefetch(read)
             return TranscriptCachePersistence(
                 identity = storage.identity,
-                load = {
-                    storage.data()?.let { data ->
-                        runCatching {
-                            CachedTranscriptSnapshots.persistenceJson.decodeFromString(CachedTranscriptSnapshots.serializer(), data.decodeToString())
-                        }.getOrNull()
-                    }
+                load = { prefetched.take() ?: read() },
+                prefetch = prefetched::start,
+                schedule = { snapshot ->
+                    prefetched.discard()
+                    writer.schedule(snapshot)
                 },
-                schedule = writer::schedule,
                 flush = writer::flush,
-                remove = storage::remove,
+                remove = {
+                    prefetched.discard()
+                    storage.remove()
+                },
             )
+        }
+    }
+}
+
+/**
+ * One early read of the transcript cache, taken by the first load. A write or removal discards it,
+ * and a read that found nothing isn't used, so a prefetch never hands back an older or emptier cache
+ * than a direct read would.
+ */
+private class TranscriptCachePrefetch(private val read: () -> CachedTranscriptSnapshots?) {
+    private val lock = Any()
+    private var reading: CompletableFuture<CachedTranscriptSnapshots?>? = null
+    private var spent = false
+
+    fun start() {
+        synchronized(lock) {
+            if (reading != null || spent) return
+            reading = CompletableFuture.supplyAsync(read, Dispatchers.IO.asExecutor())
+        }
+    }
+
+    fun take(): CachedTranscriptSnapshots? {
+        val early = synchronized(lock) {
+            val early = reading.takeIf { !spent }
+            spent = true
+            reading = null
+            early
+        }
+        return early?.get()
+    }
+
+    fun discard() {
+        synchronized(lock) {
+            spent = true
+            reading = null
         }
     }
 }
