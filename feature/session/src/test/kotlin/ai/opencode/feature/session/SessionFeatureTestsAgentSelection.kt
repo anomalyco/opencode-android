@@ -459,6 +459,13 @@ class SessionFeatureTestsAgentSelection {
         store.send(Action.ModelsResponse(Result.success(catalog))) { it.catalogued().copy(currentModel = flash.ref("high")) }
     }
 
+    /** A level the agent's model doesn't offer is dropped. */
+    @Test fun anAgentsLevelTheModelDoesNotOfferIsDropped() = sessionTest { h ->
+        val build = OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = opus.ref("max"))
+        val store = h.store(h.modelDraft().withPrimaryAgents(listOf(build)))
+        store.send(Action.ModelsResponse(Result.success(catalog))) { it.catalogued().copy(currentModel = opus.ref) }
+    }
+
     /** An agent's model the server doesn't offer leaves the draft on the server's default. */
     @Test fun anAgentsModelTheServerDoesNotOfferFallsBackToTheDefault() = sessionTest { h ->
         val missing = OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = OpenCodeModelRef(id = "gone", providerID = "opencode"))

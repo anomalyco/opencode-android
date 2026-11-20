@@ -265,7 +265,7 @@ internal val State.draftDefaultModel: OpenCodeModelRef?
         if (configured != null) {
             val model = models.model(configured)
             if (model != null) {
-                val level = if (levels[model.id] != null) model.savedLevel(levels) else configured.variant
+                val level = if (levels[model.id] == null && configured.variant in model.variants) configured.variant else model.savedLevel(levels)
                 return model.ref(level)
             }
         }

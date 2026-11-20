@@ -8,6 +8,7 @@ import ai.opencode.server.R
 import ai.opencode.server.TaskLocal
 import ai.opencode.server.internal.ElementSerializer
 import ai.opencode.server.internal.WireJson
+import ai.opencode.server.internal.lenient
 import ai.opencode.server.internal.obj
 import ai.opencode.server.internal.opt
 import ai.opencode.server.internal.bool
@@ -466,7 +467,7 @@ internal object OpenCodeAutocompleteAgentSerializer : ElementSerializer<OpenCode
             description = o.opt("description") { it.str() },
             mode = o.opt("mode") { it.str() } ?: "subagent",
             hidden = o.opt("hidden") { it.bool() } ?: false,
-            model = o.opt("model") { WireJson.decodeFromJsonElement(OpenCodeModelRef.serializer(), it) },
+            model = o.lenient("model") { WireJson.decodeFromJsonElement(OpenCodeModelRef.serializer(), it) },
         )
     },
     encode = { agent ->
