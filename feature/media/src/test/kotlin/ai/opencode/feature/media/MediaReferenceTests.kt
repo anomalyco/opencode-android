@@ -533,6 +533,63 @@ class MediaReferenceTests {
         store.finish()
     }
 
+    private fun png(width: Int, height: Int): ByteArray = pngBytes(Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).apply { eraseColor(Color.BLUE) })
+
+    @Test
+    fun aFiveKThumbnailKeepsItsPointSizeDecodesOnceAndFitsTheCache() {
+        val data = png(5120, 2880)
+        withDependencies({ this[DecodedImageCache] = DecodedImageCache() }) {
+            val first = requireNotNull(CachedImage.thumbnail("shot", data))
+            assertEquals(1600 to 900, first.width to first.height)
+            assertTrue(first.byteCount <= 6 * 1024 * 1024)
+            // A second row showing it is a cache hit, not a second decode.
+            assertTrue(CachedImage.thumbnail("shot", data) === first)
+            assertTrue(CachedImage.cachedThumbnail("shot") === first)
+            assertNull(CachedImage.cached("shot"))
+        }
+    }
+
+    @Test
+    fun aTallThumbnailKeepsItsShortEdgeForASquareCrop() {
+        withDependencies({ this[DecodedImageCache] = DecodedImageCache() }) {
+            val tall = requireNotNull(CachedImage.thumbnail("tall", png(1000, 6000)))
+            assertEquals(800 to 4800, tall.width to tall.height)
+            // Small images keep every pixel, as their original.
+            val small = requireNotNull(CachedImage.thumbnail("small", png(400, 300)))
+            assertEquals(400 to 300, small.width to small.height)
+            assertTrue(CachedImage.cached("small") === small)
+        }
+    }
+
+    @Test
+    fun theViewerOpensOnTheThumbnailAndTakesTheOriginalOffTheMainActor() = runTest {
+        val data = png(3200, 1800)
+        val cache = DecodedImageCache()
+        val attachment = OpenCodeImageAttachment(id = "img", data = data, mime = "image/png")
+        val preview = requireNotNull(withDependencies({ this[DecodedImageCache] = cache }) {
+            // The row shows the thumbnail first, as a tap would find it.
+            MediaReferenceResolver.thumbnail(attachment)
+            TranscriptImagePreview.fromAttachments(listOf(attachment), selectedID = "img", label = "Attached image")
+        })
+        val shown = requireNotNull(preview.pages[0].image)
+        assertEquals(1600 to 900, shown.width to shown.height)
+        assertEquals(AgentImageSize(3200.0, 1800.0), preview.pages[0].placeholderSize)
+        assertTrue(preview.pages[0].original === data)
+        assertTrue(preview.pages[0].originalPending)
+
+        val store = TestStore(FullscreenViewerFeature.State(preview), FullscreenViewerFeature(), this) {
+            this[DecodedImageCache] = cache
+        }
+        store.send(FullscreenViewerFeature.Action.Task)
+        var original: Bitmap? = null
+        store.receive({ action -> (action as? FullscreenViewerFeature.Action.SourceLoaded)?.image?.also { original = it } != null }) {
+            it.withPage(0) { page -> page.copy(image = original, hasDecodedOriginal = true) }
+        }
+        val decoded = requireNotNull(original)
+        assertEquals(3200 to 1800, decoded.width to decoded.height)
+        store.finish()
+    }
+
     private fun FullscreenViewerFeature.State.withPage(
         index: Int,
         update: (TranscriptImagePreview.Page) -> TranscriptImagePreview.Page,

@@ -410,7 +410,7 @@ class FullscreenViewerFeature(
 
         Action.SaveTapped -> {
             val image = state.selectedPage?.image
-            if (state.isSaving || state.selectedPage?.isVideo == true || state.selectedPage?.file != null || image == null) {
+            if (state.isSaving || state.selectedPage?.isVideo == true || state.selectedPage?.file != null || state.selectedPage?.originalPending == true || image == null) {
                 Reduced(state)
             } else {
                 val photoSave = dependency(PhotoSaveClient)
@@ -455,7 +455,7 @@ class FullscreenViewerFeature(
                 Reduced(state, Effect.run<Action>(onError = { error, send -> send(Action.ShareFailed(AgentFileError.network(error))) }) {
                     share.share(page.videoURL, page.name ?: page.label)
                 }.cancellable(ExportSlot, cancelInFlight = true))
-            } else if (page == null || page.isVideo || page.file != null || image == null) {
+            } else if (page == null || page.isVideo || page.file != null || page.originalPending || image == null) {
                 Reduced(state)
             } else {
                 val imageShare = dependency(ImageShareClient)

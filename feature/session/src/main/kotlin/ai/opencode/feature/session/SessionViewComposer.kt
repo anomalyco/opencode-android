@@ -839,7 +839,7 @@ internal class SessionComposerEnv(
         for (queued in sent.queuedInputImages.values) images += queued
         for (image in images) {
             if (sentData.none { it === image.data }) continue
-            MediaReferenceResolver.decodedImage(image)
+            MediaReferenceResolver.thumbnail(image)
         }
     }
 
