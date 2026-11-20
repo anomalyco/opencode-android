@@ -369,6 +369,7 @@ fun CachedImage(
         retryState.failure == MediaAttachmentFailure.Unavailable ||
         MediaReferenceResolver.isUnavailable(attachment, server)
     val decoded = loadedImage ?: remember(id, data, mediaHash) { CachedImage.cachedThumbnail(id, mediaHash) }
+    val hasLocalData = data.isNotEmpty() || MediaReferenceResolver.cachedData(mediaHash) != null
     when {
         resolvedUnavailable -> MediaAttachmentUnavailableView(name, modifier, compact = compact)
         decoded != null -> Image(decoded.asImageBitmap(), contentDescription = null, modifier = modifier, contentScale = ContentScale.Crop)
@@ -379,9 +380,9 @@ fun CachedImage(
             onRetry = { retryState = retryState.retry() },
             isTransientFailure = true,
         )
-        data.isNotEmpty() || mediaHash != null -> {
+        hasLocalData || (mediaHash != null && server != null) -> {
             Box(modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh), contentAlignment = Alignment.Center) {
-                if (data.isEmpty()) {
+                if (!hasLocalData) {
                     CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = OpenCodeTheme.colors.secondaryText)
                 }
             }
@@ -418,14 +419,12 @@ object CachedImage {
      * leaves the short edge under 800 px, so a square crop stays sharp. A smaller image is its original.
      */
     fun thumbnail(id: String, data: ByteArray, mediaHash: String? = null): Bitmap? {
-        val cache = dependency(DecodedImageCache)
-        val key = "thumb:" + key(id, mediaHash)
-        cache.image(key)?.let { return it }
+        cachedThumbnail(id, mediaHash)?.let { return it }
         val resolved = if (data.isEmpty()) MediaReferenceResolver.cachedData(mediaHash) else data
         if (resolved == null || resolved.isEmpty()) return null
         val size = pixelSize(resolved) ?: return null
         val long = max(size.width, size.height)
-        val target = min(long, max(1600.0, ceil(800 * long / min(size.width, size.height))))
+        val target = thumbnailLongEdge(size.width, size.height)
         if (target >= long) return decoded(id, resolved, mediaHash)
         var sample = 1
         while (long / (sample * 2) >= target) sample *= 2
@@ -435,8 +434,14 @@ object CachedImage {
         val image = if (scale >= 1) sampled else {
             Bitmap.createScaledBitmap(sampled, max(1, (sampled.width * scale).roundToInt()), max(1, (sampled.height * scale).roundToInt()), true)
         }
-        cache.insert(image, key)
+        if (image !== sampled) sampled.recycle()
+        dependency(DecodedImageCache).insert(image, "thumb:" + key(id, mediaHash))
         return image
+    }
+
+    private fun thumbnailLongEdge(width: Double, height: Double): Double {
+        val long = max(width, height)
+        return min(long, max(1600.0, ceil(800 * long / min(width, height))))
     }
 
     /** The encoded image's pixel size, read from its header alone. */
@@ -455,8 +460,13 @@ object CachedImage {
      * [thumbnail]'s cache hit alone, without decoding: what a tile shows on its first frame while it
      * decodes off the main thread.
      */
-    fun cachedThumbnail(id: String, mediaHash: String? = null): Bitmap? =
-        dependency(DecodedImageCache).image("thumb:" + key(id, mediaHash)) ?: cached(id, mediaHash)
+    fun cachedThumbnail(id: String, mediaHash: String? = null): Bitmap? {
+        dependency(DecodedImageCache).image("thumb:" + key(id, mediaHash))?.let { return it }
+        val original = cached(id, mediaHash) ?: return null
+        val width = original.width.toDouble()
+        val height = original.height.toDouble()
+        return original.takeIf { thumbnailLongEdge(width, height) >= max(width, height) }
+    }
 
     private fun key(id: String, mediaHash: String?): String = mediaHash?.let { "media:$it" } ?: "attachment:$id"
 }

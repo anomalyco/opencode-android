@@ -546,6 +546,9 @@ class MediaReferenceTests {
             assertTrue(CachedImage.thumbnail("shot", data) === first)
             assertTrue(CachedImage.cachedThumbnail("shot") === first)
             assertNull(CachedImage.cached("shot"))
+            // A full-size original the viewer decoded never stands in for a tile's thumbnail.
+            CachedImage.decoded("viewer", data)
+            assertNull(CachedImage.cachedThumbnail("viewer"))
         }
     }
 
@@ -583,11 +586,36 @@ class MediaReferenceTests {
         store.send(FullscreenViewerFeature.Action.Task)
         var original: Bitmap? = null
         store.receive({ action -> (action as? FullscreenViewerFeature.Action.SourceLoaded)?.image?.also { original = it } != null }) {
-            it.withPage(0) { page -> page.copy(image = original, hasDecodedOriginal = true) }
+            it.withPage(0) { page -> page.copy(image = original, hasDecodedOriginal = true, placeholderSize = null) }
         }
         val decoded = requireNotNull(original)
         assertEquals(3200 to 1800, decoded.width to decoded.height)
         store.finish()
+    }
+
+    @Test
+    fun saveAndShareExportTheOriginalNeverTheThumbnail() = runTest {
+        val thumbnail = Bitmap.createBitmap(2, 1, Bitmap.Config.ARGB_8888)
+        val pending = TranscriptImagePreview.Page("photo", thumbnail, "Photo", original = png(40, 20))
+        val broken = TranscriptImagePreview.Page("broken", thumbnail, "Broken", original = byteArrayOf(0), originalFailed = true)
+        val saved = Collections.synchronizedList(mutableListOf<Bitmap>())
+        val shared = Collections.synchronizedList(mutableListOf<Bitmap>())
+        val store = TestStore(FullscreenViewerFeature.State(TranscriptImagePreview(pending.id, listOf(pending, broken))), FullscreenViewerFeature(), this) {
+            this[PhotoSaveClient] = PhotoSaveClient(saveImage = { saved += it })
+            this[ImageShareClient] = ImageShareClient(share = { image, _ -> shared += image })
+        }
+        store.send(FullscreenViewerFeature.Action.SaveTapped) { it.copy(isSaving = true) }
+        store.receive(FullscreenViewerFeature.Action.SaveFinished(true)) { it.copy(isSaving = false) }
+        store.send(FullscreenViewerFeature.Action.ShareTapped())
+        assertTrue(ai.opencode.core.testing.eventually(wallClock = true) { shared.size == 1 })
+        assertEquals(listOf(40 to 20, 40 to 20), (saved + shared).map { it.width to it.height })
+
+        store.send(FullscreenViewerFeature.Action.PageSelected("broken")) { it.copy(selectedID = "broken") }
+        store.send(FullscreenViewerFeature.Action.SaveTapped) { it.copy(isSaving = true) }
+        store.receive(FullscreenViewerFeature.Action.SaveFinished(false)) { it.copy(isSaving = false) }
+        store.send(FullscreenViewerFeature.Action.ShareTapped())
+        store.finish()
+        assertEquals(2, saved.size + shared.size)
     }
 
     private fun FullscreenViewerFeature.State.withPage(
