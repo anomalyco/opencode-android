@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Медиа сессии</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Все изображения, видео, голосовые сообщения, файлы и ссылки из сессии — в одном месте.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Просматривайте изображения, видео, аудио, файлы и общедоступные веб-ссылки из сессии.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Выберите «Медиа сессии» в меню ⋮ сессии. В разделе «Медиа» изображения, видео и аудио показаны плитками по месяцам или списком, а в разделах «Файлы» и «Ссылки» — документы, вставки и веб-ссылки.</string>
     <string name="settings_whatsnew_entry_session_media_example">Найдите снимок экрана, отправленный утром, не прокручивая всю сессию.</string>
 

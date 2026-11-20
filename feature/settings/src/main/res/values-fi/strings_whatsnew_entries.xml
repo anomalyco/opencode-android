@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Istunnon media</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Löydä kaikki istunnossa jaetut kuvat, videot, äänimuistiinpanot, tiedostot ja linkit samasta paikasta.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Selaa istunnon kuvia, videoita, ääniä, tiedostoja ja julkisia verkkolinkkejä.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Valitse istunnon ⋮-valikosta Istunnon media. Media näyttää kuvat, videot ja äänet kuukausittain ryhmiteltynä ruudukkona tai luettelona. Tiedostot ja Linkit näyttävät asiakirjat, liitetyt tekstit ja verkkolinkit.</string>
     <string name="settings_whatsnew_entry_session_media_example">Löydä aamulla lähettämäsi kuvakaappaus selaamatta koko istuntoa taaksepäin.</string>
 

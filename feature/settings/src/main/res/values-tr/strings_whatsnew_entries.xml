@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Oturum medyası</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Oturumda paylaşılan tüm görsel, video, sesli not, dosya ve bağlantıları tek yerde bulun.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Oturumdaki görsellere, videolara, seslere, dosyalara ve herkese açık web bağlantılarına göz atın.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Oturumun ⋮ menüsünden Oturum medyası\'nı seçin. Medya, görsel, video ve sesleri aya göre gruplanmış kutucuklar veya liste olarak gösterir. Dosyalar ve Bağlantılar ise belgeleri, yapıştırılan içerikleri ve web bağlantılarını listeler.</string>
     <string name="settings_whatsnew_entry_session_media_example">Bu sabah gönderdiğiniz ekran görüntüsünü tüm oturumu geriye kaydırmadan bulun.</string>
 

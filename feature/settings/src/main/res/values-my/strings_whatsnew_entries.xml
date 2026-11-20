@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">စက်ရှင် မီဒီယာ</string>
-    <string name="settings_whatsnew_entry_session_media_summary">စက်ရှင်တစ်ခုတွင် မျှဝေထားသည့် ပုံ၊ ဗီဒီယို၊ အသံမှတ်စု၊ ဖိုင်နှင့် လင့်ခ်အားလုံးကို တစ်နေရာတည်းတွင် ရှာပါ။</string>
+    <string name="settings_whatsnew_entry_session_media_summary">စက်ရှင်ထဲရှိ ပုံများ၊ ဗီဒီယိုများ၊ အသံများ၊ ဖိုင်များနှင့် အများသုံး ဝဘ်လင့်ခ်များကို ကြည့်ရှုပါ။</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">စက်ရှင်၏ ⋮ မီနူးမှ စက်ရှင် မီဒီယာကို ရွေးပါ။ မီဒီယာတွင် ပုံ၊ ဗီဒီယိုနှင့် အသံများကို လအလိုက် အကွက်များ သို့မဟုတ် စာရင်းအဖြစ် ပြပါမည်။ ဖိုင်များနှင့် လင့်ခ်များတွင် စာရွက်စာတမ်း၊ ကူးထည့်ထားသည့်စာနှင့် ဝဘ်လင့်ခ်များကို စာရင်းပြပါမည်။</string>
     <string name="settings_whatsnew_entry_session_media_example">စက်ရှင်တစ်ခုလုံးကို နောက်ပြန်လှိမ့်ကြည့်စရာမလိုဘဲ ဒီမနက် ပို့ခဲ့သည့် ဖန်သားပြင်ပုံကို ရှာပါ။</string>
 

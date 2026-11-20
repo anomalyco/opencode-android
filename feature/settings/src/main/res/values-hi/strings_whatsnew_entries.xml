@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">सेशन का मीडिया</string>
-    <string name="settings_whatsnew_entry_session_media_summary">सेशन में साझा की गई हर छवि, वीडियो, वॉइस नोट, फ़ाइल और लिंक एक ही जगह पाएँ।</string>
+    <string name="settings_whatsnew_entry_session_media_summary">सेशन की छवियाँ, वीडियो, ऑडियो, फ़ाइलें और सार्वजनिक वेब लिंक देखें।</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">सेशन के ⋮ मेन्यू से सेशन का मीडिया चुनें। मीडिया में छवियाँ, वीडियो और ऑडियो महीने के हिसाब से टाइलों में या सूची में दिखते हैं। फ़ाइलें और लिंक में दस्तावेज़, पेस्ट किया गया टेक्स्ट और वेब लिंक मिलते हैं।</string>
     <string name="settings_whatsnew_entry_session_media_example">पूरा सेशन वापस स्क्रॉल किए बिना आज सुबह भेजा गया स्क्रीनशॉट ढूँढ़ें।</string>
 

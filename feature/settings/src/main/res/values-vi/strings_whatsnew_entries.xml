@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Đa phương tiện trong phiên</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Tìm mọi hình ảnh, video, ghi âm, tệp và liên kết đã chia sẻ trong phiên ở cùng một chỗ.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Duyệt hình ảnh, video, âm thanh, tệp và liên kết web công khai trong phiên.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Chọn Đa phương tiện trong phiên từ menu ⋮ của phiên. Mục Đa phương tiện hiển thị hình ảnh, video và âm thanh dưới dạng ô nhóm theo tháng hoặc danh sách. Mục Tệp và Liên kết liệt kê tài liệu, nội dung đã dán và liên kết web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Tìm ảnh chụp màn hình bạn đã gửi sáng nay mà không cần cuộn lại toàn bộ phiên.</string>
 

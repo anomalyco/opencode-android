@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Médias de la session</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Retrouvez au même endroit toutes les images, vidéos, notes vocales, fichiers et liens partagés dans une session.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Parcourez les images, vidéos, fichiers audio, fichiers et liens web publics d’une session.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Choisissez Médias de la session dans le menu ⋮ d’une session. Médias affiche ses images, vidéos et fichiers audio en tuiles regroupées par mois ou en liste. Fichiers et Liens répertorient ses documents, textes collés et liens Web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Retrouvez la capture d’écran envoyée ce matin sans remonter toute la session.</string>
 

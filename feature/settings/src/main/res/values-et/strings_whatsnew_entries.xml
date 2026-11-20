@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Seansi meedia</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Leia kõik seansis jagatud pildid, videod, häälsõnumid, failid ja lingid ühest kohast.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Sirvi seansi pilte, videoid, heli, faile ja avalikke veebilinke.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Vali seansi ⋮ menüüst Seansi meedia. Meedia näitab pilte, videoid ja heli kuude kaupa rühmitatud paanidena või nimekirjana. Failid ja Lingid loetlevad dokumente, kleebitud tekste ja veebilinke.</string>
     <string name="settings_whatsnew_entry_session_media_example">Leia hommikul saadetud kuvatõmmis kogu seanssi tagasi kerimata.</string>
 

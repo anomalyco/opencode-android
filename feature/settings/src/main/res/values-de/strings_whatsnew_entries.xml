@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sitzungsmedien</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Finde alle Bilder, Videos, Sprachnotizen, Dateien und Links aus einer Sitzung an einem Ort.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Bilder, Videos, Audio, Dateien und öffentliche Weblinks einer Sitzung durchsuchen.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Wähle „Sitzungsmedien“ im ⋮-Menü einer Sitzung. „Medien“ zeigt Bilder, Videos und Audio als nach Monat gruppierte Kacheln oder als Liste. „Dateien“ und „Links“ listen Dokumente, eingefügte Texte und Weblinks auf.</string>
     <string name="settings_whatsnew_entry_session_media_example">Finde den Screenshot von heute Morgen, ohne durch die ganze Sitzung zurückzuscrollen.</string>
 

@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sessiya mediası</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Sessiyada paylaşılan bütün şəkilləri, videoları, səsli qeydləri, faylları və linkləri bir yerdə tapın.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Sessiyanın şəkillərinə, videolarına, səs yazılarına, fayllarına və açıq veb linklərinə baxın.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Sessiyanın ⋮ menyusundan Sessiya mediası seçin. Media bölməsi şəkil, video və səsləri aylar üzrə qruplaşdırılmış xanalar və ya siyahı şəklində göstərir. Fayllar və Linklər bölmələrində isə sənədlər, yapışdırılmış mətnlər və veb linklər sıralanır.</string>
     <string name="settings_whatsnew_entry_session_media_example">Bütün sessiyanı geriyə sürüşdürmədən bu səhər göndərdiyiniz ekran görüntüsünü tapın.</string>
 

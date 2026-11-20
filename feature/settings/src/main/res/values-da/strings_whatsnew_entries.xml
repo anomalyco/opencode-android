@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sessionsmedier</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Find alle billeder, videoer, talebeskeder, filer og links, der er delt i en session, ét sted.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Se en sessions billeder, videoer, lyd, filer og offentlige weblinks.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Vælg Sessionsmedier i sessionens ⋮-menu. Medier viser billeder, videoer og lyd som felter grupperet efter måned eller som en liste. Filer og Links viser dokumenter, indsat tekst og weblinks.</string>
     <string name="settings_whatsnew_entry_session_media_example">Find det skærmbillede, du sendte i morges, uden at rulle tilbage gennem hele sessionen.</string>
 

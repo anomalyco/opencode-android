@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">セッションのメディア</string>
-    <string name="settings_whatsnew_entry_session_media_summary">セッションで共有した画像、動画、音声メモ、ファイル、リンクを1か所で探せます。</string>
+    <string name="settings_whatsnew_entry_session_media_summary">セッション内の画像、動画、音声、ファイル、公開ウェブリンクをまとめて確認できます。</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">セッションの⋮メニューから「セッションのメディア」を選びます。「メディア」では画像、動画、音声を月別のタイルや一覧で表示できます。「ファイル」と「リンク」では、文書、貼り付けたテキスト、Webリンクを一覧で確認できます。</string>
     <string name="settings_whatsnew_entry_session_media_example">セッション全体をさかのぼらずに、今朝送ったスクリーンショットを探せます。</string>
 

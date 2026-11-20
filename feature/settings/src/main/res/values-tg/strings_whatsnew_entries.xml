@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Медиаи сессия</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Ҳамаи тасвирҳо, видеоҳо, паёмҳои овозӣ, файлҳо ва истинодҳои дар сессия мубодилашударо дар як ҷо ёбед.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Тасвирҳо, видео, аудио, файлҳо ва истинодҳои оммавии веби сессияро бинед.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Аз менюи ⋮-и сессия «Медиаи сессия»-ро интихоб кунед. «Медиа» тасвирҳо, видеоҳо ва аудиоро ҳамчун тугмаҳои аз рӯи моҳ гурӯҳбандишуда ё рӯйхат нишон медиҳад. «Файлҳо» ва «Истинодҳо» ҳуҷҷатҳо, матнҳои часбондашуда ва истинодҳои вебро рӯйхат мекунанд.</string>
     <string name="settings_whatsnew_entry_session_media_example">Акси экранеро, ки субҳи имрӯз фиристодед, бе варақ задани тамоми сессия ёбед.</string>
 

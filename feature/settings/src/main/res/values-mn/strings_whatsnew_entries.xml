@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Сессийн медиа</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Сесст хуваалцсан бүх зураг, видео, дуут тэмдэглэл, файл, холбоосыг нэг дороос олоорой.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Сессийн зураг, видео, аудио, файл болон нийтэд нээлттэй вэб холбоосуудыг үзэх.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Сессийн ⋮ цэснээс «Сессийн медиа»-г сонгоно уу. «Медиа» хэсэгт зураг, видео, аудиог сараар бүлэглэсэн хавтанцар эсвэл жагсаалтаар харуулна. «Файлууд», «Холбоосууд» хэсэгт баримт бичиг, буулгасан текст, вэб холбоосыг жагсаана.</string>
     <string name="settings_whatsnew_entry_session_media_example">Бүх сессийг буцааж гүйлгэхгүйгээр өглөө илгээсэн дэлгэцийн зургаа олоорой.</string>
 

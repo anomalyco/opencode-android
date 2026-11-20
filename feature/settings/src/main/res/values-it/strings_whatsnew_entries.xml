@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Media della sessione</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Trova in un unico posto tutte le immagini, i video, le note vocali, i file e i link condivisi in una sessione.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Sfoglia immagini, video, audio, file e link web pubblici di una sessione.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Scegli Media della sessione dal menu ⋮ di una sessione. Media mostra immagini, video e audio come riquadri raggruppati per mese o come elenco. File e Link elencano documenti, testi incollati e link web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Trova lo screenshot che hai inviato stamattina senza scorrere tutta la sessione.</string>
 

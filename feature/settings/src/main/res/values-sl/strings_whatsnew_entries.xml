@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Predstavnost seje</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Poiščite vse slike, videe, glasovne beležke, datoteke in povezave iz seje na enem mestu.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Brskajte po slikah, videoposnetkih, zvoku, datotekah in javnih spletnih povezavah v seji.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">V meniju ⋮ seje izberite Predstavnost seje. Razdelek Predstavnost prikazuje slike, videe in zvok kot ploščice, združene po mesecih, ali kot seznam. Razdelka Datoteke in Povezave prikazujeta dokumente, prilepljeno besedilo in spletne povezave.</string>
     <string name="settings_whatsnew_entry_session_media_example">Poiščite posnetek zaslona, ki ste ga poslali danes zjutraj, brez pomikanja po celotni seji.</string>
 

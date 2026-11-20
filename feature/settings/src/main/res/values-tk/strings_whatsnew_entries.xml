@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sessiýanyň mediasy</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Sessiýada paýlaşylan ähli suratlary, wideolary, sesli bellikleri, faýllary we baglanyşyklary bir ýerden tapyň.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Sessiýadaky suratlara, wideolara, seslere, faýllara we açyk web baglanyşyklaryna göz aýlaň.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Sessiýanyň ⋮ menýusyndan Sessiýanyň mediasy bölümini saýlaň. Media suratlary, wideolary we sesleri aýlar boýunça toparlanan düwmeler ýa-da sanaw görnüşinde görkezýär. Faýllar we Baglanyşyklar bölümlerinde resminamalar, goýlan tekstler we web baglanyşyklary sanalýar.</string>
     <string name="settings_whatsnew_entry_session_media_example">Bütin sessiýany yza süýşürmän, şu gün irden iberen ekran suratyňyzy tapyň.</string>
 

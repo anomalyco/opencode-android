@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">ལཱ་ཡུན་གྱི་བརྡ་བརྒྱུད།</string>
-    <string name="settings_whatsnew_entry_session_media_summary">ལཱ་ཡུན་ནང་བརྗེ་སོར་འབད་ཡོད་པའི་པར་ གློག་བརྙན་ སྐད་ཀྱི་དྲན་འཛིན་ ཡིག་སྣོད་དང་འབྲེལ་མཐུད་ཆ་མཉམ་ས་གནས་གཅིག་ནང་འཚོལ།</string>
+    <string name="settings_whatsnew_entry_session_media_summary">ལཱ་ཡུན་གྱི་པར་ གློག་བརྙན་ སྒྲ་ ཡིག་སྣོད་དང་མི་མང་གིས་ལྟ་ཚུགས་པའི་ཝེབ་འབྲེལ་མཐུད་ཚུ་བལྟ།</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">ལཱ་ཡུན་གྱི་ ⋮ དཀར་ཆག་ནང་ལས་ ལཱ་ཡུན་གྱི་བརྡ་བརྒྱུད་གདམ་ཁ་རྐྱབས། བརྡ་བརྒྱུད་ནང་ པར་དང་གློག་བརྙན་ སྒྲ་ཚུ་ ཟླཝ་རེ་བཞིན་སྡེ་ཚན་བཟོ་སྟེ་མགྱོགས་ཨེབ་སྦེ་ ཡང་ན་ཐོ་སྦེ་སྟོནམ་ཨིན། ཡིག་སྣོད་ཚུ་དང་འབྲེལ་མཐུད་ཚུ་ནང་ ཡིག་ཆ་དང་སྦྱར་ཡོད་པའི་ནང་དོན་ ཝེབ་འབྲེལ་མཐུད་ཚུ་ཐོ་བཀོད་འབདཝ་ཨིན།</string>
     <string name="settings_whatsnew_entry_session_media_example">ལཱ་ཡུན་ཆ་མཉམ་ནང་ལོག་བཤུད་མ་དགོ་པར་ ད་རིས་དྲོ་པ་ཁྱོད་ཀྱིས་བཏང་མི་གསལ་གཞིའི་པར་འདི་འཚོལ།</string>
 

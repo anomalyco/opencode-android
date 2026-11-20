@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">සැසි මාධ්‍ය</string>
-    <string name="settings_whatsnew_entry_session_media_summary">සැසියක බෙදාගත් සියලු රූප, වීඩියෝ, හඬ සටහන්, ගොනු හා සබැඳි එකම තැනක සොයාගන්න.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">සැසියක රූප, වීඩියෝ, ශ්රව්ය, ගොනු සහ පොදු වෙබ් සබැඳි බලන්න.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">සැසියේ ⋮ මෙනුවෙන් සැසි මාධ්‍ය තෝරන්න. මාධ්‍ය යටතේ රූප, වීඩියෝ හා ශ්රව්ය මාසය අනුව කාණ්ඩ කළ ටයිල් ලෙස හෝ ලැයිස්තුවක් ලෙස පෙන්වයි. ගොනු හා සබැඳි යටතේ ලේඛන, ඇලවූ පෙළ හා වෙබ් සබැඳි ලැයිස්තුගත කරයි.</string>
     <string name="settings_whatsnew_entry_session_media_example">මුළු සැසියම ආපස්සට අනුචලනය නොකර අද උදෑසන ඔබ යැවූ තිර රුව සොයාගන්න.</string>
 

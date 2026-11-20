@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sessionsmedia</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Hitta alla bilder, videor, röstanteckningar, filer och länkar som delats i en session på ett ställe.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Bläddra bland sessionens bilder, videor, ljud, filer och offentliga webblänkar.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Välj Sessionsmedia i sessionens ⋮-meny. Media visar bilder, videor och ljud som rutor grupperade per månad eller som en lista. Filer och Länkar listar dokument, inklistrat innehåll och webblänkar.</string>
     <string name="settings_whatsnew_entry_session_media_example">Hitta skärmbilden du skickade i morse utan att bläddra tillbaka genom hela sessionen.</string>
 

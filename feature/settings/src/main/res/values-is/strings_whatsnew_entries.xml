@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Margmiðlun setu</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Finndu allar myndir, myndbönd, raddskilaboð, skrár og tengla sem deilt var í setu á einum stað.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Skoðaðu myndir, myndbönd, hljóð, skrár og opinbera veftengla í setu.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Veldu Margmiðlun setu í ⋮ valmynd setunnar. Margmiðlun sýnir myndir, myndbönd og hljóð sem flýtihnappa flokkaða eftir mánuðum eða sem lista. Skrár og Tenglar sýna skjöl, innlímdan texta og veftengla.</string>
     <string name="settings_whatsnew_entry_session_media_example">Finndu skjámyndina sem þú sendir í morgun án þess að fletta til baka í gegnum alla setuna.</string>
 

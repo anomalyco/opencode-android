@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">সেশনের মিডিয়া</string>
-    <string name="settings_whatsnew_entry_session_media_summary">সেশনে শেয়ার করা সব ছবি, ভিডিও, ভয়েস নোট, ফাইল ও লিঙ্ক এক জায়গায় খুঁজে পান।</string>
+    <string name="settings_whatsnew_entry_session_media_summary">সেশনের ছবি, ভিডিও, অডিও, ফাইল ও সবার জন্য উন্মুক্ত ওয়েব লিঙ্ক দেখুন।</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">সেশনের ⋮ মেনু থেকে সেশনের মিডিয়া বেছে নিন। মিডিয়ায় ছবি, ভিডিও ও অডিও মাস অনুযায়ী সাজানো টাইল বা তালিকা হিসেবে দেখা যায়। ফাইল ও লিঙ্কে থাকে নথি, পেস্ট করা লেখা ও ওয়েব লিঙ্কের তালিকা।</string>
     <string name="settings_whatsnew_entry_session_media_example">পুরো সেশন পেছনে স্ক্রল না করেই আজ সকালে পাঠানো স্ক্রিনশটটি খুঁজে পান।</string>
 

@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Медия в сесията</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Намерете на едно място всички изображения, видеоклипове, гласови бележки, файлове и връзки, споделени в сесията.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Разглеждайте изображенията, видеата, аудиото, файловете и публичните уеб връзки в сесията.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Изберете „Медия в сесията“ от менюто ⋮ на сесията. „Медия“ показва изображенията, видеоклиповете и аудиото като плочки, групирани по месеци, или като списък, а „Файлове“ и „Връзки“ показват документите, поставения текст и уеб връзките.</string>
     <string name="settings_whatsnew_entry_session_media_example">Намерете екранната снимка, която изпратихте тази сутрин, без да превъртате назад през цялата сесия.</string>
 

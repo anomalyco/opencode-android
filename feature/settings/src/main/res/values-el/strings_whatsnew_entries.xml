@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Πολυμέσα συνεδρίας</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Βρείτε σε ένα σημείο όλες τις εικόνες, τα βίντεο, τις φωνητικές σημειώσεις, τα αρχεία και τους συνδέσμους που μοιραστήκατε σε μια συνεδρία.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Δείτε εικόνες, βίντεο, ήχο, αρχεία και δημόσιους συνδέσμους ιστού μιας συνεδρίας.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Επιλέξτε Πολυμέσα συνεδρίας από το μενού ⋮ μιας συνεδρίας. Τα Πολυμέσα εμφανίζουν εικόνες, βίντεο και ήχο ως πλακίδια ανά μήνα ή ως λίστα. Τα Αρχεία και οι Σύνδεσμοι εμφανίζουν έγγραφα, επικολλήσεις και συνδέσμους ιστού.</string>
     <string name="settings_whatsnew_entry_session_media_example">Βρείτε το στιγμιότυπο οθόνης που στείλατε το πρωί χωρίς να κάνετε κύλιση σε όλη τη συνεδρία.</string>
 

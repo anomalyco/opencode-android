@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Медіа сесії</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Усі зображення, відео, голосові нотатки, файли й посилання із сесії — в одному місці.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Переглядайте зображення, відео, аудіо, файли й загальнодоступні вебпосилання сесії.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Виберіть «Медіа сесії» в меню ⋮ сесії. У розділі «Медіа» зображення, відео й аудіо показано плитками за місяцями або списком, а в розділах «Файли» й «Посилання» — документи, вставлені фрагменти й вебпосилання.</string>
     <string name="settings_whatsnew_entry_session_media_example">Знайдіть знімок екрана, надісланий сьогодні вранці, не гортаючи всю сесію.</string>
 

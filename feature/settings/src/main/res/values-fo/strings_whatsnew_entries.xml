@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Setumiðlar</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Finn allar myndir, sjónbond, raddboð, fílur og leinkjur, sum eru deild í einari setu, á einum stað.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Sí myndir, sjónbond, ljóð, fílur og almennar vevleinkjur í eini setu.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Vel Setumiðlar í ⋮-valmyndini í einari setu. Miðlar vísir myndir, sjónbond og ljóð sum flísar bólkaðar eftir mánaði ella sum lista. Fílur og Leinkjur vísa skjøl, innsettan tekst og vevleinkjur.</string>
     <string name="settings_whatsnew_entry_session_media_example">Finn skíggjamyndina, tú sendi í morgun, uttan at rulla aftur gjøgnum alla setuna.</string>
 

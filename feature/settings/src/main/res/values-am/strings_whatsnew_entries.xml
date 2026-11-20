@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">የክፍለ ጊዜ ሚዲያ</string>
-    <string name="settings_whatsnew_entry_session_media_summary">በክፍለ ጊዜው የተጋራውን እያንዳንዱን ምስል፣ ቪዲዮ፣ የድምፅ ማስታወሻ፣ ፋይልና አገናኝ በአንድ ቦታ ያግኙ።</string>
+    <string name="settings_whatsnew_entry_session_media_summary">የክፍለ ጊዜ ምስሎችን፣ ቪዲዮዎችን፣ ድምጾችን፣ ፋይሎችንና ይፋዊ የድር አገናኞችን አስስ።</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">ከክፍለ ጊዜው ⋮ ምናሌ «የክፍለ ጊዜ ሚዲያ» ይምረጡ። «ሚዲያ» ምስሎችን፣ ቪዲዮዎችንና ድምጾችን በወር በተመደቡ አቋራጮች ወይም በዝርዝር ያሳያል። «ፋይሎች» እና «አገናኞች» ደግሞ ሰነዶችን፣ የተለጠፉ ጽሑፎችንና የድር አገናኞችን ይዘረዝራሉ።</string>
     <string name="settings_whatsnew_entry_session_media_example">መላውን ክፍለ ጊዜ ወደ ኋላ ሳያሸብልሉ ዛሬ ጠዋት የላኩትን የማያ ገጽ ፎቶ ያግኙ።</string>
 

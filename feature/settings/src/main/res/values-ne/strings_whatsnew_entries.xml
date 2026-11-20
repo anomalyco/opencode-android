@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">सत्रको मिडिया</string>
-    <string name="settings_whatsnew_entry_session_media_summary">सत्रमा साझा गरिएका सबै छवि, भिडियो, आवाज नोट, फाइल र लिङ्क एकै ठाउँमा फेला पार्नुहोस्।</string>
+    <string name="settings_whatsnew_entry_session_media_summary">सत्रका छवि, भिडियो, अडियो, फाइलहरू र सार्वजनिक वेब लिङ्कहरू हेर्नुहोस्।</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">सत्रको ⋮ मेनुबाट सत्रको मिडिया छान्नुहोस्। मिडियाले छवि, भिडियो र अडियोलाई महिनाअनुसार टाइलहरूमा वा सूचीमा देखाउँछ। फाइलहरू र लिङ्कहरूमा कागजात, टाँसिएका सामग्री र वेब लिङ्कहरूको सूची देखिन्छ।</string>
     <string name="settings_whatsnew_entry_session_media_example">पूरै सत्रमा पछाडि स्क्रोल नगरी आज बिहान पठाउनुभएको स्क्रिनसट फेला पार्नुहोस्।</string>
 

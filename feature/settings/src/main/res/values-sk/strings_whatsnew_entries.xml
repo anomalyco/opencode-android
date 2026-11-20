@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Médiá relácie</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Nájdite všetky obrázky, videá, hlasové poznámky, súbory a odkazy zdieľané v relácii na jednom mieste.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Prezerajte si obrázky, videá, zvuk, súbory a verejné webové odkazy v relácii.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">V ponuke ⋮ relácie vyberte Médiá relácie. Médiá zobrazujú obrázky, videá a zvuk ako dlaždice zoskupené podľa mesiacov alebo ako zoznam. V častiach Súbory a Odkazy nájdete dokumenty, vložené texty a webové odkazy.</string>
     <string name="settings_whatsnew_entry_session_media_example">Nájdite snímku obrazovky, ktorú ste poslali dnes ráno, bez prechádzania celej relácie.</string>
 

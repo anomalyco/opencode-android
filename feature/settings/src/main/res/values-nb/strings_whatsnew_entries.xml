@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Medier i sesjonen</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Finn alle bilder, videoer, talenotater, filer og lenker som er delt i en sesjon, på ett sted.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Bla gjennom bilder, videoer, lyd, filer og offentlige nettlenker i en sesjon.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Velg Medier i sesjonen fra sesjonens ⋮-meny. Medier viser bilder, videoer og lyd som fliser gruppert etter måned eller som en liste. Filer og Lenker viser dokumenter, innlimt innhold og nettlenker.</string>
     <string name="settings_whatsnew_entry_session_media_example">Finn skjermbildet du sendte i morges, uten å bla tilbake gjennom hele sesjonen.</string>
 

@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">ສື່ໃນເຊດຊັນ</string>
-    <string name="settings_whatsnew_entry_session_media_summary">ຊອກຫາທຸກຮູບພາບ, ວິດີໂອ, ບັນທຶກສຽງ, ໄຟລ໌ ແລະລິ້ງທີ່ແບ່ງປັນໃນເຊດຊັນໄດ້ໃນບ່ອນດຽວ.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">ເບິ່ງຮູບພາບ, ວິດີໂອ, ສຽງ, ໄຟລ໌ ແລະລິ້ງເວັບສາທາລະນະໃນເຊດຊັນ.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">ເລືອກ ສື່ໃນເຊດຊັນ ຈາກເມນູ ⋮ ຂອງເຊດຊັນ. ສື່ ສະແດງຮູບພາບ, ວິດີໂອ ແລະສຽງເປັນຕາຕະລາງຈັດກຸ່ມຕາມເດືອນ ຫຼືເປັນລາຍການ, ສ່ວນ ໄຟລ໌ ແລະ ລິ້ງ ສະແດງເອກະສານ, ຂໍ້ຄວາມທີ່ວາງ ແລະລິ້ງເວັບ.</string>
     <string name="settings_whatsnew_entry_session_media_example">ຊອກຫາຮູບໜ້າຈໍທີ່ສົ່ງເມື່ອເຊົ້ານີ້ໄດ້ ໂດຍບໍ່ຕ້ອງເລື່ອນຍ້ອນກັບໄປທົ່ວເຊດຊັນ.</string>
 

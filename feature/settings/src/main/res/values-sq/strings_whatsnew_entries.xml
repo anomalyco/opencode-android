@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Media e sesionit</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Gjej në një vend çdo imazh, video, shënim zanor, skedar dhe lidhje të ndarë në një sesion.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Shfleto imazhet, videot, audion, skedarët dhe lidhjet publike të uebit të një sesioni.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Zgjidh Media e sesionit nga menyja ⋮ e një sesioni. Media shfaq imazhet, videot dhe audion si butona të grupuar sipas muajit ose si listë, ndërsa Skedarët dhe Lidhjet renditin dokumentet, tekstet e ngjitura dhe lidhjet e uebit.</string>
     <string name="settings_whatsnew_entry_session_media_example">Gjej pamjen e ekranit që dërgove sot në mëngjes pa lëvizur nëpër gjithë sesionin.</string>
 

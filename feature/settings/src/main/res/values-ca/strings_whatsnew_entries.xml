@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Multimèdia de la sessió</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Troba totes les imatges, vídeos, notes de veu, fitxers i enllaços compartits en una sessió en un sol lloc.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Explora les imatges, els vídeos, l\'àudio, els fitxers i els enllaços web públics d\'una sessió.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Tria Multimèdia de la sessió al menú ⋮ d\'una sessió. Multimèdia mostra les imatges, els vídeos i l\'àudio en mosaics agrupats per mes o en una llista, i Fitxers i Enllaços mostren els documents, els textos enganxats i els enllaços web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Troba la captura de pantalla que has enviat aquest matí sense haver de recórrer tota la sessió.</string>
 

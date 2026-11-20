@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Conținut media al sesiunii</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Găsește într-un singur loc toate imaginile, videoclipurile, notele vocale, fișierele și linkurile partajate într-o sesiune.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Răsfoiește imaginile, videoclipurile, fișierele audio, fișierele și linkurile web publice dintr-o sesiune.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Alege Conținut media al sesiunii din meniul ⋮ al sesiunii. Media afișează imaginile, videoclipurile și înregistrările audio ca miniaturi grupate pe luni sau ca listă, iar Fișiere și Linkuri listează documentele, textele lipite și linkurile web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Găsește captura de ecran trimisă azi-dimineață fără să derulezi înapoi prin toată sesiunea.</string>
 

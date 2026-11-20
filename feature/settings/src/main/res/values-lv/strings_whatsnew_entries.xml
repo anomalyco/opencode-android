@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sesijas multivide</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Atrodi visus sesijā kopīgotos attēlus, video, balss piezīmes, failus un saites vienuviet.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Pārlūko sesijas attēlus, video, audio, failus un publiskās tīmekļa saites.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Sesijas izvēlnē ⋮ izvēlies Sesijas multivide. Sadaļā Multivide attēli, video un audio redzami pa mēnešiem grupētos elementos vai sarakstā, bet sadaļās Faili un Saites — dokumenti, ielīmētais saturs un tīmekļa saites.</string>
     <string name="settings_whatsnew_entry_session_media_example">Atrodi šorīt nosūtīto ekrānuzņēmumu, neritinot atpakaļ cauri visai sesijai.</string>
 

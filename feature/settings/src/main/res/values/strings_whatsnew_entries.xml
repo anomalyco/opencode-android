@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Session Media</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Find every image, video, voice note, file and link a session shared in one place.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Browse a session’s images, videos, audio, files and public web links.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Choose Session Media from a session’s ⋮ menu. Media shows its images, videos and audio as tiles grouped by month or as a list, and Files and Links list its documents, pastes and web links.</string>
     <string name="settings_whatsnew_entry_session_media_example">Find the screenshot you sent this morning without scrolling back through the whole session.</string>
 

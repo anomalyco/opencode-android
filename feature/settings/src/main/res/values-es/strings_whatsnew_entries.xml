@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Multimedia de la sesión</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Encuentra todas las imágenes, vídeos, notas de voz, archivos y enlaces compartidos en una sesión en un solo lugar.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Explora las imágenes, vídeos, audio, archivos y enlaces web públicos de una sesión.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Elige Multimedia de la sesión en el menú ⋮ de una sesión. Multimedia muestra sus imágenes, vídeos y audios en mosaicos agrupados por mes o en una lista. Archivos y Enlaces muestran sus documentos, textos pegados y enlaces web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Encuentra la captura de pantalla que enviaste esta mañana sin recorrer toda la sesión.</string>
 

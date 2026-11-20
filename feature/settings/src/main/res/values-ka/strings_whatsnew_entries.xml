@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">სესიის მედია</string>
-    <string name="settings_whatsnew_entry_session_media_summary">იპოვეთ სესიაში გაზიარებული ყველა სურათი, ვიდეო, ხმოვანი ჩანაწერი, ფაილი და ბმული ერთ ადგილას.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">დაათვალიერე სესიის სურათები, ვიდეოები, აუდიო, ფაილები და საჯარო ვებბმულები.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">სესიის ⋮ მენიუში აირჩიეთ „სესიის მედია“. „მედიაში“ სურათები, ვიდეოები და აუდიო ნაჩვენებია თვეების მიხედვით დაჯგუფებულ ფილებად ან სიად, ხოლო „ფაილებსა“ და „ბმულებში“ — დოკუმენტები, ჩასმული ტექსტები და ვებბმულები.</string>
     <string name="settings_whatsnew_entry_session_media_example">იპოვეთ დილით გაგზავნილი ეკრანის სურათი მთელი სესიის უკან გადახვევის გარეშე.</string>
 

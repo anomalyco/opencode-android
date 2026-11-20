@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Медиуми од сесијата</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Најди ги сите слики, видеа, гласовни белешки, датотеки и врски споделени во сесијата на едно место.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Прегледувај слики, видеа, аудио, датотеки и јавни веб-врски од сесијата.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Избери „Медиуми од сесијата“ од менито ⋮ на сесијата. „Медиуми“ ги прикажува сликите, видеата и аудиото како плочки групирани по месец или како список, а „Датотеки“ и „Врски“ ги наведуваат документите, залепените содржини и веб-врските.</string>
     <string name="settings_whatsnew_entry_session_media_example">Најди ја сликата од екранот што ја испрати утрово без да лизгаш назад низ целата сесија.</string>
 

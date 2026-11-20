@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Seanso medija</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Visus seanse bendrintus vaizdus, vaizdo įrašus, balso žinutes, failus ir nuorodas rasite vienoje vietoje.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Naršykite seanso vaizdus, vaizdo įrašus, garso įrašus, failus ir viešas žiniatinklio nuorodas.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Seanso meniu ⋮ pasirinkite „Seanso medija“. Skiltyje „Medija“ vaizdai, vaizdo ir garso įrašai rodomi pagal mėnesį sugrupuotomis plytelėmis arba sąrašu, o skiltyse „Failai“ ir „Nuorodos“ pateikiami dokumentai, įklijuotas turinys ir žiniatinklio nuorodos.</string>
     <string name="settings_whatsnew_entry_session_media_example">Raskite šįryt išsiųstą ekrano kopiją neslinkdami per visą seansą.</string>
 

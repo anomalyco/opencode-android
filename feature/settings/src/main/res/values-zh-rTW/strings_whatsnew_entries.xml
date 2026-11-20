@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">工作階段媒體</string>
-    <string name="settings_whatsnew_entry_session_media_summary">在同一處找到工作階段中分享的所有圖片、影片、語音訊息、檔案和連結。</string>
+    <string name="settings_whatsnew_entry_session_media_summary">瀏覽工作階段中的圖片、影片、音訊、檔案和公開網頁連結。</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">從工作階段的 ⋮ 選單選擇「工作階段媒體」。「媒體」會以按月分組的方塊或清單顯示圖片、影片和音訊；「檔案」和「連結」則會列出文件、貼上的內容和網頁連結。</string>
     <string name="settings_whatsnew_entry_session_media_example">不用往回捲動整個工作階段，就能找到今天早上傳送的螢幕截圖。</string>
 

@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Նիստի մեդիա</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Մեկ տեղում գտեք նիստում կիսված բոլոր պատկերները, տեսանյութերը, ձայնային նշումները, ֆայլերն ու հղումները։</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Դիտեք նիստի պատկերները, տեսանյութերը, ձայնը, ֆայլերն ու հանրային վեբ հղումները։</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Նիստի ⋮ ընտրացանկից ընտրեք «Նիստի մեդիա»։ «Մեդիա»-ում պատկերները, տեսանյութերն ու ձայնը ցուցադրվում են ըստ ամիսների խմբավորված սալիկներով կամ ցուցակով, իսկ «Ֆայլեր»-ում և «Հղումներ»-ում՝ փաստաթղթերը, տեղադրված տեքստերն ու վեբ հղումները։</string>
     <string name="settings_whatsnew_entry_session_media_example">Գտեք այս առավոտ ուղարկած էկրանակադրը՝ առանց ամբողջ նիստը հետ ոլորելու։</string>
 

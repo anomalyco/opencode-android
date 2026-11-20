@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">会话媒体</string>
-    <string name="settings_whatsnew_entry_session_media_summary">在同一处查找会话中分享的所有图片、视频、语音消息、文件和链接。</string>
+    <string name="settings_whatsnew_entry_session_media_summary">浏览会话中的图片、视频、音频、文件和公开网页链接。</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">从会话的 ⋮ 菜单中选择“会话媒体”。“媒体”以按月分组的图块或列表展示图片、视频和音频；“文件”和“链接”则列出文档、粘贴内容和网页链接。</string>
     <string name="settings_whatsnew_entry_session_media_example">不用翻遍整个会话，就能找到今天早上发送的截图。</string>
 

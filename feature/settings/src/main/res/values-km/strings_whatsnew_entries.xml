@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">មេឌៀក្នុងសម័យ</string>
-    <string name="settings_whatsnew_entry_session_media_summary">រករូបភាព វីដេអូ សារជាសំឡេង ឯកសារ និងតំណទាំងអស់ដែលបានចែករំលែកក្នុងសម័យ នៅកន្លែងតែមួយ។</string>
+    <string name="settings_whatsnew_entry_session_media_summary">រកមើលរូបភាព វីដេអូ សំឡេង ឯកសារ និងតំណគេហទំព័រសាធារណៈក្នុងសម័យ។</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">ជ្រើស មេឌៀក្នុងសម័យ ពីម៉ឺនុយ ⋮ របស់សម័យ។ មេឌៀ បង្ហាញរូបភាព វីដេអូ និងសំឡេងជាក្រឡាដាក់ជាក្រុមតាមខែ ឬជាបញ្ជី។ ឯកសារ និង តំណ បង្ហាញបញ្ជីឯកសារ អត្ថបទដែលបានបិទភ្ជាប់ និងតំណគេហទំព័រ។</string>
     <string name="settings_whatsnew_entry_session_media_example">រករូបថតអេក្រង់ដែលអ្នកបានផ្ញើព្រឹកនេះ ដោយមិនបាច់រមូរថយក្រោយពេញសម័យ។</string>
 

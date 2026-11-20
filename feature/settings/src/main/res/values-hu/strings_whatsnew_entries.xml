@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Munkamenet médiája</string>
-    <string name="settings_whatsnew_entry_session_media_summary">A munkamenetben megosztott összes kép, videó, hangjegyzet, fájl és link egy helyen.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Böngésszen a munkamenet képei, videói, hanganyagai, fájljai és nyilvános weblinkjei között.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Válassza a Munkamenet médiája lehetőséget a munkamenet ⋮ menüjében. A Média a képeket, videókat és hangokat havi csoportosítású csempékként vagy listaként mutatja, a Fájlok és a Linkek pedig a dokumentumokat, beillesztett tartalmakat és webes linkeket sorolja fel.</string>
     <string name="settings_whatsnew_entry_session_media_example">Keresse meg a ma reggel küldött képernyőképet a teljes munkamenet visszagörgetése nélkül.</string>
 

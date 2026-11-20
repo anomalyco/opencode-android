@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">สื่อในเซสชัน</string>
-    <string name="settings_whatsnew_entry_session_media_summary">ค้นหารูปภาพ วิดีโอ ข้อความเสียง ไฟล์ และลิงก์ทั้งหมดที่แชร์ในเซสชันได้ในที่เดียว</string>
+    <string name="settings_whatsnew_entry_session_media_summary">ดูรูปภาพ วิดีโอ เสียง ไฟล์ และลิงก์เว็บสาธารณะในเซสชัน</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">เลือกสื่อในเซสชันจากเมนู ⋮ ของเซสชัน ส่วนสื่อจะแสดงรูปภาพ วิดีโอ และเสียงเป็นไทล์แยกตามเดือนหรือเป็นรายการ ส่วนไฟล์และลิงก์จะแสดงเอกสาร ข้อความที่วาง และลิงก์เว็บ</string>
     <string name="settings_whatsnew_entry_session_media_example">หาภาพหน้าจอที่ส่งเมื่อเช้าได้โดยไม่ต้องเลื่อนย้อนดูทั้งเซสชัน</string>
 

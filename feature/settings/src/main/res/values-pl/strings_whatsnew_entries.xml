@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Multimedia sesji</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Znajdź w jednym miejscu wszystkie obrazy, filmy, notatki głosowe, pliki i linki udostępnione w sesji.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Przeglądaj obrazy, wideo, dźwięki, pliki i publiczne linki internetowe z sesji.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Wybierz Multimedia sesji z menu ⋮ sesji. Sekcja Multimedia pokazuje obrazy, filmy i dźwięk jako kafelki pogrupowane według miesięcy lub listę. Sekcje Pliki i Linki zawierają dokumenty, wklejone treści i linki do stron.</string>
     <string name="settings_whatsnew_entry_session_media_example">Znajdź zrzut ekranu wysłany dziś rano bez przewijania całej sesji.</string>
 

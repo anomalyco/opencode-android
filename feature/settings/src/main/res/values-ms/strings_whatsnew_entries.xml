@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Media sesi</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Cari semua imej, video, nota suara, fail dan pautan yang dikongsi dalam sesi di satu tempat.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Lihat imej, video, audio, fail dan pautan web awam dalam sesi.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Pilih Media sesi daripada menu ⋮ sesi. Media memaparkan imej, video dan audio sebagai jubin mengikut bulan atau sebagai senarai, manakala Fail dan Pautan menyenaraikan dokumen, teks yang ditampal dan pautan web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Cari tangkapan skrin yang anda hantar pagi tadi tanpa menatal semula seluruh sesi.</string>
 

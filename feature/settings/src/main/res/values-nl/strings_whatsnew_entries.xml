@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Sessiemedia</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Vind alle afbeeldingen, video\'s, spraaknotities, bestanden en links die in een sessie zijn gedeeld op één plek.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Bekijk afbeeldingen, video\'s, audio, bestanden en openbare weblinks van een sessie.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Kies Sessiemedia in het ⋮-menu van een sessie. Media toont de afbeeldingen, video\'s en audio als tegels per maand of als lijst. Bestanden en Links tonen de documenten, geplakte teksten en weblinks.</string>
     <string name="settings_whatsnew_entry_session_media_example">Vind de schermafbeelding die je vanochtend stuurde zonder door de hele sessie terug te scrollen.</string>
 

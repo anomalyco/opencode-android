@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Mediji sesije</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Pronađite sve slike, videozapise, glasovne bilješke, datoteke i veze podijeljene u sesiji na jednom mjestu.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Pregledajte slike, videozapise, zvuk, datoteke i javne web-veze iz sesije.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Odaberite Mediji sesije u izborniku ⋮ sesije. Mediji prikazuju slike, videozapise i zvuk kao pločice grupirane po mjesecima ili kao popis, a Datoteke i Veze prikazuju dokumente, zalijepljene sadržaje i web-veze.</string>
     <string name="settings_whatsnew_entry_session_media_example">Pronađite snimku zaslona koju ste jutros poslali bez pomicanja kroz cijelu sesiju.</string>
 

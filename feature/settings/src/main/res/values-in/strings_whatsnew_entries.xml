@@ -924,7 +924,7 @@
 
     <!-- 2026-11-17-01-session-media -->
     <string name="settings_whatsnew_entry_session_media_title">Media sesi</string>
-    <string name="settings_whatsnew_entry_session_media_summary">Temukan semua gambar, video, pesan suara, berkas, dan tautan yang dibagikan dalam sesi di satu tempat.</string>
+    <string name="settings_whatsnew_entry_session_media_summary">Jelajahi gambar, video, audio, berkas, dan tautan web publik dalam sesi.</string>
     <string name="settings_whatsnew_entry_session_media_detail_1">Pilih Media sesi dari menu ⋮ sesi. Media menampilkan gambar, video, dan audio sebagai ubin yang dikelompokkan per bulan atau sebagai daftar. Berkas dan Tautan memuat dokumen, teks tempelan, dan tautan web.</string>
     <string name="settings_whatsnew_entry_session_media_example">Temukan tangkapan layar yang Anda kirim tadi pagi tanpa menggulir seluruh sesi ke belakang.</string>
 
