@@ -26,6 +26,7 @@ import ai.opencode.server.model.OpenCodeModelCatalog
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
 import ai.opencode.server.model.OpenCodeSession
+import ai.opencode.server.model.OpenCodeSessionFamily
 import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeShellOutputPage
 import ai.opencode.server.model.OpenCodeToolCall
@@ -1153,12 +1154,32 @@ class BackgroundWorkTests {
         store.send(Action.JobUpdated(job("other", OpenCodeJob.Kind.CodeMode, owner = "ses_elsewhere")))
     }
 
+    /** A child's job that started before the family walk found the child shows once it does. */
+    @Test fun aNewSubagentsEarlyJobShowsOnceTheFamilyFindsIt() = sessionTest { h ->
+        val early = job("cm_child", OpenCodeJob.Kind.CodeMode, owner = child.id)
+        val state = h.state().copy(familyRootID = session.id, familySessions = listOf(session))
+        val store = h.store(state) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                runningJobs = { _, _ -> listOf(early) },
+                familyPendingRequests = { _, _, _ -> OpenCodePendingRequests(permissions = emptyList(), forms = emptyList()) },
+                pendingInputs = { _, _ -> emptyList() },
+            )
+        }
+        store.exhaustive = false
+
+        store.send(Action.JobUpdated(early))
+        assertTrue(store.state.jobs.isEmpty())
+        store.send(Action.FamilyResponse(Result.success(OpenCodeSessionFamily(sessions = listOf(session, child), activeSessionIDs = setOf(child.id)))))
+        store.receive(Action.JobsResponse(session.id, listOf(early)))
+        assertEquals(setOf(early.id), store.state.jobs.keys)
+        h.skipInFlightEffects()
+    }
+
     /** A new stream's re-list drops a settle the stream missed. */
     @Test fun aSettleMissedWhileTheStreamWasDownIsGoneAfterTheReconnect() = sessionTest { h ->
         val stale = job("cm_1", OpenCodeJob.Kind.CodeMode)
         val store = h.store(reconnecting(h).copy(jobs = mapOf(stale.id to stale))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
-                sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },
                 runningJobs = { _, _ -> emptyList() },
             )
@@ -1178,7 +1199,6 @@ class BackgroundWorkTests {
         val listed = Channel<List<OpenCodeJob>>(Channel.UNLIMITED)
         val store = h.store(reconnecting(h).copy(jobs = mapOf(settled.id to settled))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
-                sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },
                 runningJobs = { _, _ -> listed.receive() },
             )

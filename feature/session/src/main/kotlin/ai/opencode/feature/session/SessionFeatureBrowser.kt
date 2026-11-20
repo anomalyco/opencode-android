@@ -445,6 +445,12 @@ private fun SessionFeature.familyResponse(
         next = polled.state
         poll = polled.effect
     }
+    // A new member's jobs that started before it was known were dropped as another tree's.
+    if (members.any { it.id !in previousFamilyIDs }) {
+        val jobs = refreshJobs(next)
+        next = jobs.state
+        poll = Effect.merge(poll, jobs.effect)
+    }
     return if (selectedIsActive == selectedWasActive) {
         Reduced(next, poll)
     } else {
@@ -559,12 +565,5 @@ fun State.forgetSessionLinks(ids: List<String>): State {
 
 // endregion
 
-/**
- * One background read at a time: asking while one is in flight queues a single read after it,
- * instead of cancelling it and starting over. Effect bookkeeping, never compared: tests assert the
- * reads themselves.
- */
-class CoalescedRead(val isInFlight: Boolean = false, val isQueued: Boolean = false) {
-    override fun equals(other: Any?): Boolean = other is CoalescedRead
-    override fun hashCode(): Int = 0
-}
+/** One background read at a time: asking while one is in flight queues a single read after it, instead of cancelling it and starting over. */
+data class CoalescedRead(val isInFlight: Boolean = false, val isQueued: Boolean = false)

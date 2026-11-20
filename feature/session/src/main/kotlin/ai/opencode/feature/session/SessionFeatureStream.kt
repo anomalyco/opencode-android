@@ -739,7 +739,7 @@ private fun SessionFeature.task(state: SessionFeature.State): Reduced<SessionFea
         if (sessionTimers.watchdog || s.watchdogSchedule != null) {
             s = s.copy(watchdogSchedule = null, watchdogGeneration = s.watchdogGeneration + 1)
         }
-        s = s.copy(isUndoingLastMessage = false).supersedeRunWork()
+        s = s.copy(isUndoingLastMessage = false, familyRead = CoalescedRead()).supersedeRunWork()
     }
     s = s.copy(inheritsLiveWork = false)
     val dictation = dictation

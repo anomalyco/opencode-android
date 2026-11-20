@@ -21,7 +21,8 @@ import kotlinx.coroutines.coroutineScope
 import java.time.Instant
 
 // Background jobs, as the desktop's activity pill reads them: listed when the session opens, comes
-// back, or rereads its family, then kept by `experimental.job.updated` events. Never polled.
+// back, reconnects or finds a new subagent, then kept by `experimental.job.updated` events. Never
+// polled.
 
 /** A script the session moved to the background, while its job runs. */
 data class BackgroundScript(val id: String, val label: String, val startedAt: Instant?)

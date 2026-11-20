@@ -576,6 +576,7 @@ class SelectedTranscriptCancellationTests {
                     nextRefreshID = 2,
                     refresh = SessionFeature.State.Refresh(id = 2, reason = RefreshReason.Resume),
                     resync = SessionFeature.State.ResyncState(refreshID = 2, isShown = false, responseReceived = false, minimumElapsed = false),
+                    familyRead = CoalescedRead(isInFlight = true),
                 )
             }
         }
@@ -590,7 +591,7 @@ class SelectedTranscriptCancellationTests {
         }
         assertTrue(store.state.isInitialTranscriptInFlight)
         store.send(Action.detail(SessionFeature.Action.VisibilityChanged(false))) {
-            it.updatingDetail { d -> d.copy(isVisible = false, refresh = null, resync = null) }
+            it.updatingDetail { d -> d.copy(isVisible = false, refresh = null, resync = null, familyRead = CoalescedRead()) }
         }
         assertFalse(store.state.isInitialTranscriptInFlight)
 

@@ -989,3 +989,42 @@ class SessionFeatureTests {
         h.skipInFlightEffects()
     }
 }
+
+/** The flags change nothing the screen shows, but the app's `Store` must still keep them. */
+@org.junit.runner.RunWith(org.robolectric.RobolectricTestRunner::class)
+@org.robolectric.annotation.Config(sdk = [35])
+class SessionFeatureStoreTests {
+    @get:org.junit.Rule val isolation = ai.opencode.core.testing.TestIsolationRule()
+
+    @Test fun aBurstOfSubagentsQueuesOneFamilyReadInTheAppStore() {
+        val started = java.util.concurrent.atomic.AtomicInteger(0)
+        val cancelled = java.util.concurrent.atomic.AtomicInteger(0)
+        val values = ai.opencode.core.dependencies.DependencyValues.testing().update {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(sessionFamily = { _, _ ->
+                started.incrementAndGet()
+                try {
+                    kotlinx.coroutines.awaitCancellation()
+                } catch (error: CancellationException) {
+                    cancelled.incrementAndGet()
+                    throw error
+                }
+            })
+        }
+        ai.opencode.core.dependencies.DependencyValues.withValues(values) {
+            val root = testSession(id = "root", title = "Main")
+            val state = State.session(testServer, root).copy(familyRootID = root.id, familySessions = listOf(root))
+            val store = ai.opencode.core.store.Store(state, SessionFeature(), dependencies = values)
+            try {
+                store.send(Action.FamilyRefreshRequested)
+                store.send(Action.FamilyRefreshRequested)
+                org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+                assertEquals(1, started.get())
+                assertEquals(0, cancelled.get())
+                assertTrue(store.state.familyRead.isQueued)
+            } finally {
+                store.close()
+                org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper()).idle()
+            }
+        }
+    }
+}
