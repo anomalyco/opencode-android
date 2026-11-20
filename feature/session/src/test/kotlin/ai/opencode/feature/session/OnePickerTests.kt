@@ -64,7 +64,9 @@ class OnePickerTests {
 
         // 1. Entry point `ModelButtonTapped` sets `.model` and refreshes catalog.
         store.send(Action.ModelButtonTapped) { it.copy(activePicker = State.ActivePicker.model) }
-        store.receive(Action.ModelsResponse::class)
+        store.receive(Action.ModelsResponse::class) {
+            it.copy(agentSelection = it.agentSelection.copy(defaultModel = opusZen))
+        }
         store.state.assertRemembersModelNames(catalogSnapshot)
 
         // 2. Favorite a model (swipe or hold): plays `.selection`.

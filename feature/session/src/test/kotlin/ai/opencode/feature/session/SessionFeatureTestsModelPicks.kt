@@ -531,7 +531,12 @@ class SessionFeatureTestsModelPicks {
             it.copy(activePicker = SessionFeature.State.ActivePicker.model, isLoadingModels = true)
         }
         store.receive(Action.ModelsResponse::class) {
-            it.copy(isLoadingModels = false, models = listOf(defaultModel), currentModel = defaultModel.ref)
+            it.copy(
+                isLoadingModels = false,
+                models = listOf(defaultModel),
+                currentModel = defaultModel.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = defaultModel),
+            )
         }
         store.state.assertRemembersModelNames(listOf(defaultModel))
         assertEquals(listOf<String?>("/tmp/demo"), directories.value)
@@ -563,7 +568,12 @@ class SessionFeatureTestsModelPicks {
                 it.copy(activePicker = SessionFeature.State.ActivePicker.model, isLoadingModels = true)
             }
             store.receive(Action.ModelsResponse::class) {
-                it.copy(isLoadingModels = false, models = listOf(other, opus), currentModel = opus.ref(remembered))
+                it.copy(
+                    isLoadingModels = false,
+                    models = listOf(other, opus),
+                    currentModel = opus.ref(remembered),
+                    agentSelection = it.agentSelection.copy(defaultModel = bareDefault),
+                )
             }
             store.state.assertRemembersModelNames(listOf(other, opus))
         }
@@ -586,10 +596,21 @@ class SessionFeatureTestsModelPicks {
             it.copy(activePicker = SessionFeature.State.ActivePicker.model, isLoadingModels = true)
         }
         store.receive(Action.ModelsResponse::class) {
-            it.copy(isLoadingModels = false, models = listOf(opus, other), currentModel = opus.ref)
+            it.copy(
+                isLoadingModels = false,
+                models = listOf(opus, other),
+                currentModel = opus.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = opus),
+            )
         }
         store.state.assertRemembersModelNames(listOf(opus, other))
-        store.send(Action.ModelPicked(other)) { it.copy(currentModel = other.ref, activePicker = null) }
+        store.send(Action.ModelPicked(other)) {
+            it.copy(
+                currentModel = other.ref,
+                activePicker = null,
+                agentSelection = it.agentSelection.copy(hasPickedModel = true),
+            )
+        }
         store.send(Action.ModelButtonTapped) { it.copy(activePicker = SessionFeature.State.ActivePicker.model) }
         store.receive(Action.ModelsResponse::class)
         assertEquals(other.ref, store.state.currentModel)

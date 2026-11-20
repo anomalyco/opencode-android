@@ -25,6 +25,9 @@ import ai.opencode.feature.session.SessionTestSupport.testSession
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.model.OpenCodeAutocompleteAgent
+import ai.opencode.server.model.OpenCodeModel
+import ai.opencode.server.model.OpenCodeModelCatalog
+import ai.opencode.server.model.OpenCodeModelRef
 import ai.opencode.server.model.OpenCodePendingRequests
 import ai.opencode.server.model.OpenCodeProject
 import ai.opencode.server.model.OpenCodeSession
@@ -412,6 +415,179 @@ class SessionFeatureTestsAgentSelection {
         store.receive(Action.PendingInputsRequested(sessionID = "ses_new"))
         assertEquals(listOf("agent ses_new plan", "prompt hello steer"), calls.value)
         h.skipInFlightEffects()
+    }
+
+    /**
+     * A new session starts on its current agent's configured model, not the server's global
+     * default, and an explicit variant in the agent's config wins.
+     */
+    @Test fun aDraftStartsOnItsAgentsConfiguredModel() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(
+            modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash",
+            variants = listOf("high", "max"),
+        )
+        val agents = listOf(
+            OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref("max")),
+            OpenCodeAutocompleteAgent(id = "plan", name = "plan", mode = "primary"),
+        )
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+            .withPrimaryAgents(agents)
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = deepseek.ref("max"),
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        assertEquals(deepseek.ref("max"), store.state.currentModel)
+    }
+
+    /** The last known agents list seeds the model before this folder's agents list arrives. */
+    @Test fun aDraftUsesTheLastKnownAgentsModelBeforeTheListArrives() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash")
+        val agent = OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref)
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+        state.agentSelection.knownPrimaryAgents.set(listOf(agent))
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = deepseek.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        assertEquals(deepseek.ref, store.state.currentModel)
+    }
+
+    /** Without an explicit variant, the agent's model uses the level last picked for it. */
+    @Test fun anAgentsModelUsesItsRememberedLevel() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(
+            modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash",
+            variants = listOf("high", "max"),
+        )
+        val agent = OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref)
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+            .withPrimaryAgents(listOf(agent))
+        state.modelVariants.set(mapOf(deepseek.id to "high"))
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = deepseek.ref("high"),
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        assertEquals(deepseek.ref("high"), store.state.currentModel)
+    }
+
+    /**
+     * The catalog can land before the agents list: the agents answer then replaces the server's
+     * global default with the current agent's configured model.
+     */
+    @Test fun anAgentsResponseAfterTheCatalogReplacesTheServersDefaultOnADraft() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash")
+        val agents = listOf(
+            OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref),
+            OpenCodeAutocompleteAgent(id = "plan", name = "plan", mode = "primary"),
+        )
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = free.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        store.send(Action.AgentsResponse(Result.success(agents))) {
+            it.withPrimaryAgents(agents).listed().copy(currentModel = deepseek.ref)
+        }
+        assertEquals(deepseek.ref, store.state.currentModel)
+        assertEquals(agents, store.state.knownPrimaryAgents)
+    }
+
+    /** A model picked by hand on the draft isn't replaced when the agents list arrives. */
+    @Test fun anAgentsResponseKeepsAModelPickedOnTheDraft() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash")
+        val picked = OpenCodeModel(modelID = "gpt-6-astra", providerID = "openai", name = "GPT-6 Astra")
+        val agents = listOf(
+            OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref),
+            OpenCodeAutocompleteAgent(id = "plan", name = "plan", mode = "primary"),
+        )
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek, picked), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = free.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        store.send(Action.ModelPicked(picked)) {
+            it.copy(
+                currentModel = picked.ref,
+                activePicker = null,
+                agentSelection = it.agentSelection.copy(hasPickedModel = true),
+            )
+        }
+        store.send(Action.AgentsResponse(Result.success(agents))) { it.withPrimaryAgents(agents).listed() }
+        assertEquals(picked.ref, store.state.currentModel)
+        assertEquals(agents, store.state.knownPrimaryAgents)
+    }
+
+    /** Picking another agent on a draft brings that agent's model, or the server's default. */
+    @Test fun switchingAgentsOnADraftSwitchesToTheirModels() = sessionTest { h ->
+        val free = OpenCodeModel(modelID = "tidepool-alpha-free", providerID = "opencode", name = "Tidepool Alpha Free")
+        val deepseek = OpenCodeModel(modelID = "deepseek-v4.1-flash", providerID = "opencode-go", name = "DeepSeek V4.1 Flash")
+        val gpt = OpenCodeModel(modelID = "gpt-5.6-terra", providerID = "openai", name = "GPT-5.6 Terra")
+        val agents = listOf(
+            OpenCodeAutocompleteAgent(id = "build", name = "build", mode = "primary", model = deepseek.ref),
+            OpenCodeAutocompleteAgent(id = "plan", name = "plan", mode = "primary", model = gpt.ref),
+            OpenCodeAutocompleteAgent(id = "review", name = "review", mode = "primary"),
+        )
+        val project = OpenCodeProject(id = "proj_1", name = "demo", directory = "/tmp/demo")
+        val state = h.state { State.draft(server = testServer, draftProject = project, projects = listOf(project)) }
+            .withPrimaryAgents(agents)
+        val catalog = OpenCodeModelCatalog(models = listOf(free, deepseek, gpt), defaultModel = free)
+        val store = h.store(state)
+
+        store.send(Action.ModelsResponse(Result.success(catalog))) {
+            it.copy(
+                isLoadingModels = false,
+                models = catalog.models,
+                currentModel = deepseek.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = free),
+            )
+        }
+        store.send(Action.AgentPicked("plan")) { it.withDraftAgent("plan").copy(currentModel = gpt.ref) }
+        store.send(Action.AgentPicked("review")) { it.withDraftAgent("review").copy(currentModel = free.ref) }
+        store.send(Action.AgentPicked("build")) { it.withDraftAgent("build").copy(currentModel = deepseek.ref) }
     }
 }
 

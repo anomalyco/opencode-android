@@ -202,7 +202,12 @@ class ModelPickerTests {
         // request cleanly rather than returning `.none`.
         store.send(Action.ModelButtonTapped) { it.copy(activePicker = State.ActivePicker.model) }
         store.receive(Action.ModelsResponse::class) {
-            it.copy(isLoadingModels = false, models = listOf(cirrusZen, basalt), currentModel = cirrusZen.ref)
+            it.copy(
+                isLoadingModels = false,
+                models = listOf(cirrusZen, basalt),
+                currentModel = cirrusZen.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = cirrusZen),
+            )
         }
         store.state.assertRemembersModelNames(listOf(cirrusZen, basalt))
         assertEquals(2, attempts.value)
@@ -241,7 +246,9 @@ class ModelPickerTests {
         store.send(Action.ModelsChanged)
         firstStarted.await()
         store.send(Action.ModelsChanged)
-        store.receive(Action.ModelsResponse::class) { it.copy(models = listOf(cirrusZen, basalt)) }
+        store.receive(Action.ModelsResponse::class) {
+            it.copy(models = listOf(cirrusZen, basalt), agentSelection = it.agentSelection.copy(defaultModel = cirrusZen))
+        }
         store.state.assertRemembersModelNames(listOf(cirrusZen, basalt))
         assertEquals(2, attempts.value)
         assertTrue(firstCancelled.value)
@@ -271,7 +278,12 @@ class ModelPickerTests {
         shouldFail.setValue(false)
         store.send(Action.ModelListOpened) { it.copy(isLoadingModels = true, modelsLoadError = null) }
         store.receive(Action.ModelsResponse::class) {
-            it.copy(isLoadingModels = false, models = listOf(cirrusZen), currentModel = cirrusZen.ref)
+            it.copy(
+                isLoadingModels = false,
+                models = listOf(cirrusZen),
+                currentModel = cirrusZen.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = cirrusZen),
+            )
         }
         store.state.assertRemembersModelNames(listOf(cirrusZen))
     }

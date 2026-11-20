@@ -627,7 +627,11 @@ internal fun releaseAutoBackgroundClaim(messageID: String, state: State): State 
 /** A pick waits for the next send. A draft's model goes with every send until its session exists (`sendModel`). */
 internal fun pick(model: OpenCodeModelRef, state: State): State {
     val next = state.copy(currentModel = model)
-    return if (next.session != null) next.copy(pendingModel = model) else next
+    return if (next.session != null) {
+        next.copy(pendingModel = model)
+    } else {
+        next.copy(agentSelection = next.agentSelection.copy(hasPickedModel = true))
+    }
 }
 
 /**

@@ -61,7 +61,12 @@ class SessionStatePersistenceTests {
         assertEquals(pick, detail.pendingModel)
         val store = h.sessionStore(detail) { this[ComposerPersistence] = persistence }
         store.send(SessionFeature.Action.ModelsResponse(Result.success(OpenCodeModelCatalog(listOf(sessionModel), sessionModel)))) {
-            it.copy(models = listOf(sessionModel), pendingModel = null, currentModel = sessionModel.ref)
+            it.copy(
+                models = listOf(sessionModel),
+                pendingModel = null,
+                currentModel = sessionModel.ref,
+                agentSelection = it.agentSelection.copy(defaultModel = sessionModel),
+            )
         }
         assertEquals(ModelDisplayNames(listOf(sessionModel)), store.state.modelDisplayNamesByServer.value[server.persistenceID])
         assertNull(persistence.loadSessionState(server.persistenceID, session.id))

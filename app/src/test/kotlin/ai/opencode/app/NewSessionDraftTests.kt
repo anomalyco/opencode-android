@@ -94,7 +94,16 @@ class NewSessionDraftTests {
         store.receive(
             { it == detailAction(SessionFeature.Action.ModelsResponse(Result.success(OpenCodeModelCatalog(models = listOf(laptopModel), defaultModel = laptopModel)))) },
             "home.sessionDetail.presented.modelsResponse.success",
-        ) { it.detail { d -> d.copy(isLoadingModels = false, models = listOf(laptopModel), currentModel = laptopModel.ref) } }
+        ) {
+            it.detail { d ->
+                d.copy(
+                    isLoadingModels = false,
+                    models = listOf(laptopModel),
+                    currentModel = laptopModel.ref,
+                    agentSelection = d.agentSelection.copy(defaultModel = laptopModel),
+                )
+            }
+        }
         assertEquals(ModelDisplayNames(listOf(laptopModel)), store.state.home?.sessionDetail?.modelDisplayNamesByServer?.value?.get(laptop.persistenceID))
         assertEquals("Laptop 4", store.state.home?.sessionDetail?.currentModelName)
 
@@ -136,7 +145,16 @@ class NewSessionDraftTests {
         store.receive(
             { it == detailAction(SessionFeature.Action.ModelsResponse(Result.success(OpenCodeModelCatalog(models = listOf(studioModel), defaultModel = studioModel)))) },
             "home.sessionDetail.presented.modelsResponse.success",
-        ) { it.detail { d -> d.copy(isLoadingModels = false, models = listOf(studioModel), currentModel = studioModel.ref) } }
+        ) {
+            it.detail { d ->
+                d.copy(
+                    isLoadingModels = false,
+                    models = listOf(studioModel),
+                    currentModel = studioModel.ref,
+                    agentSelection = d.agentSelection.copy(defaultModel = studioModel),
+                )
+            }
+        }
         assertEquals(ModelDisplayNames(listOf(studioModel)), store.state.home?.sessionDetail?.modelDisplayNamesByServer?.value?.get(studio.persistenceID))
         assertEquals("Studio 4", store.state.home?.sessionDetail?.currentModelName)
         assertNotNull(store.state.home?.sessionDetail?.currentLevelScale)

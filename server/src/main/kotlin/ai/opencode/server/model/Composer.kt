@@ -7,9 +7,11 @@ import ai.opencode.core.ui.appFormattingLocale
 import ai.opencode.server.R
 import ai.opencode.server.TaskLocal
 import ai.opencode.server.internal.ElementSerializer
+import ai.opencode.server.internal.WireJson
 import ai.opencode.server.internal.obj
 import ai.opencode.server.internal.opt
 import ai.opencode.server.internal.bool
+import ai.opencode.server.internal.lenient
 import ai.opencode.server.internal.str
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -370,13 +372,20 @@ data class OpenCodeAutocompleteAgent(
     val description: String? = null,
     val mode: String = "subagent",
     val hidden: Boolean = false,
+    /** The model configured for this agent, when it names one. */
+    val model: OpenCodeModelRef? = null,
 ) {
     /** “build” → “Build”: servers name built-in agents in lowercase. */
     val displayName: String get() = if (name == id) AgentDisplayName.titleCased(name) else name
 
     companion object {
-        fun named(name: String, description: String? = null, mode: String = "subagent", hidden: Boolean = false) =
-            OpenCodeAutocompleteAgent(name, name, description, mode, hidden)
+        fun named(
+            name: String,
+            description: String? = null,
+            mode: String = "subagent",
+            hidden: Boolean = false,
+            model: OpenCodeModelRef? = null,
+        ) = OpenCodeAutocompleteAgent(name, name, description, mode, hidden, model)
 
         /** Primary agents a person can choose (`mode` primary or all, not hidden). */
         fun choosable(agents: List<OpenCodeAutocompleteAgent>) =
@@ -463,6 +472,7 @@ internal object OpenCodeAutocompleteAgentSerializer : ElementSerializer<OpenCode
             description = o.opt("description") { it.str() },
             mode = o.opt("mode") { it.str() } ?: "subagent",
             hidden = o.opt("hidden") { it.bool() } ?: false,
+            model = o.lenient("model") { WireJson.decodeFromJsonElement(OpenCodeModelRef.serializer(), it) },
         )
     },
     encode = { agent ->
@@ -472,6 +482,7 @@ internal object OpenCodeAutocompleteAgentSerializer : ElementSerializer<OpenCode
             agent.description?.let { put("description", JsonPrimitive(it)) }
             put("mode", JsonPrimitive(agent.mode))
             put("hidden", JsonPrimitive(agent.hidden))
+            agent.model?.let { put("model", WireJson.encodeToJsonElement(OpenCodeModelRef.serializer(), it)) }
         })
     },
 )

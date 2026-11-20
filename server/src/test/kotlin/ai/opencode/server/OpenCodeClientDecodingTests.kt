@@ -6,8 +6,10 @@ import ai.opencode.core.diagnostics.DiagnosticsRecorder
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.server.live.ACTIVE_ANCESTRY_CONCURRENCY
 import ai.opencode.server.live.OpenCodeReadCache
+import ai.opencode.server.internal.WireJson
 import ai.opencode.server.live.decodeTranscript
 import ai.opencode.server.live.decodeTranscriptPage
+import ai.opencode.server.model.OpenCodeAutocompleteAgent
 import ai.opencode.server.model.OpenCodeCompaction
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodeFormRequest
@@ -15,6 +17,7 @@ import ai.opencode.server.model.OpenCodeFormValue
 import ai.opencode.server.model.OpenCodeJSONValue
 import ai.opencode.server.model.OpenCodeModel
 import ai.opencode.server.model.OpenCodeModelCatalog
+import ai.opencode.server.model.OpenCodeModelRef
 import ai.opencode.server.model.OpenCodePermissionReply
 import ai.opencode.server.model.OpenCodePermissionRequest
 import ai.opencode.server.model.OpenCodePromptSource
@@ -463,6 +466,44 @@ class OpenCodeClientDecodingTests {
             )
         } finally {
             retry.close()
+        }
+    }
+
+    @Test
+    fun agentsCarryTheirConfiguredModels() = runTest {
+        val fixture = WireFixture { request ->
+            if (request.route == "GET /api/agent") {
+                Reply.Json(
+                    200,
+                    """
+                    {"data":[
+                      {"id":"build","name":"build","mode":"primary","model":{"id":"deepseek-v4.1-flash","providerID":"opencode-go","variant":"max"}},
+                      {"id":"plan","name":"plan","mode":"primary"},
+                      {"id":"slow","name":"slow","mode":"primary","model":{"id":"gpt-5.6-terra","providerID":"openai"}}
+                    ]}
+                    """.trimIndent(),
+                )
+            } else {
+                Reply.Json(404, "{}")
+            }
+        }
+        withFixture(fixture) {
+            val agents = OpenCodeClient.liveValue.primaryAgents(fixture.server, "/work/models")
+            assertEquals(
+                OpenCodeModelRef(id = "deepseek-v4.1-flash", providerID = "opencode-go", variant = "max"),
+                agents.first { it.id == "build" }.model,
+            )
+            assertNull(agents.first { it.id == "plan" }.model)
+            assertEquals(
+                OpenCodeModelRef(id = "gpt-5.6-terra", providerID = "openai"),
+                agents.first { it.id == "slow" }.model,
+            )
+            val decoded = agents.first { it.id == "build" }
+            val roundTrip = WireJson.decodeFromString(
+                OpenCodeAutocompleteAgent.serializer(),
+                WireJson.encodeToString(OpenCodeAutocompleteAgent.serializer(), decoded),
+            )
+            assertEquals(decoded, roundTrip)
         }
     }
 

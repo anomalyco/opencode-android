@@ -55,21 +55,21 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
             if ((catalog.models.isNotEmpty() || next.models.isEmpty()) && next.models != catalog.models) {
                 next = next.copy(models = catalog.models)
             }
+            next = next.withDefaultModel(catalog.defaultModel)
             // A pick whose provider or model went away (often one saved before a relaunch) falls
             // back to the session's model rather than fail the send.
             val pending = next.pendingModel
             if (pending != null && next.models.isNotEmpty() && !SessionFeature.catalog(next.models, offers = pending)) {
-                next = next.copy(pendingModel = null, currentModel = next.session?.model ?: catalog.defaultModel?.ref)
+                next = next.copy(pendingModel = null, currentModel = next.session?.model ?: next.resolvedDefaultModel())
             }
-            // A draft starts on the server's default at the level last picked for it; until the
-            // catalog lands it has none, and a send leaves the choice to the server.
+            // A draft starts on its agent's model or the server's default at the level last picked
+            // for it; until the catalog lands it has none, and a send leaves the choice to the server.
             if (next.currentModel == null) {
-                val model = if (next.session == null) {
-                    catalog.newSessionModel(next.modelVariants.value)
-                } else {
-                    catalog.defaultModel?.ref
+                next = next.copy(currentModel = next.resolvedDefaultModel())
+            } else if (next.session == null && !next.agentSelection.hasPickedModel) {
+                next.resolvedDefaultModel()?.let { model ->
+                    if (model != next.currentModel) next = next.copy(currentModel = model)
                 }
-                next = next.copy(currentModel = model)
             }
             Reduced(next)
         } else {

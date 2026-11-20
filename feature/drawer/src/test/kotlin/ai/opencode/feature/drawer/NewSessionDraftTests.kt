@@ -119,7 +119,16 @@ class NewSessionDraftTests {
             store.receive(
                 { it == HomeFeature.Action.detail(SessionFeature.Action.ModelsResponse(Result.success(catalog))) },
                 "modelsResponse.success",
-            ) { it.detail { d -> d.copy(isLoadingModels = false, models = listOf(model), currentModel = model.ref) } }
+            ) {
+                it.detail { d ->
+                    d.copy(
+                        isLoadingModels = false,
+                        models = listOf(model),
+                        currentModel = model.ref,
+                        agentSelection = d.agentSelection.copy(defaultModel = model),
+                    )
+                }
+            }
             assertEquals(ModelDisplayNames(listOf(model)), store.state.sessionDetail?.modelDisplayNamesByServer?.value?.get(server.persistenceID))
             assertEquals("Cirrus 4", store.state.sessionDetail?.currentModelName)
             assertNotNull(store.state.sessionDetail?.currentLevelScale)
