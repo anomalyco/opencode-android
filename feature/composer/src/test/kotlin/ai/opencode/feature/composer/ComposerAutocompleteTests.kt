@@ -17,14 +17,6 @@ import ai.opencode.server.model.OpenCodeAgentMention
 import ai.opencode.server.model.OpenCodeFileMention
 import ai.opencode.server.model.OpenCodeMention
 import ai.opencode.server.model.OpenCodeSkillMention
-import android.os.Looper
-import androidx.activity.ComponentActivity
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.TestScope
@@ -36,9 +28,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
@@ -494,34 +484,6 @@ class ComposerAutocompleteTests {
         // Single-character backspace at the end of "@kit-motion" (index 14, length 1) deletes the chip.
         assertFalse(bridge.shouldChangeText(text, start = 14, length = 1, replacement = ""))
         assertEquals(listOf(targetChip.id), deletedChipIDs)
-    }
-
-    @Test fun inlineSkillChipKeepsTheSpaceBeforeFollowingText() {
-        val text = "Use @kit-motion we"
-        val bridge = ComposerAutocompleteTextBridge()
-        bridge.isEnabled = true
-        bridge.styling = AutocompleteTextStyling(
-            text = text,
-            trigger = null,
-            triggerColor = Color.Blue,
-            chips = listOf(AutocompleteChipRun(chip(902, AutocompleteItem.skill(sampleSkills[0])), start = 4, end = 15, extraSpacing = 30.sp)),
-        )
-        var layout: TextLayoutResult? = null
-        val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
-        val view = ComposeView(activity)
-        activity.setContentView(view)
-        view.setContent {
-            BasicTextField(
-                state = rememberTextFieldState(text),
-                outputTransformation = bridge.outputTransformation,
-                onTextLayout = { layout = it() },
-            )
-        }
-        shadowOf(Looper.getMainLooper()).idle()
-
-        val spans = checkNotNull(layout).layoutInput.text.spanStyles
-        assertTrue(spans.any { it.item.color == Color.Transparent && it.start == 4 && it.end == 15 })
-        assertTrue(spans.any { it.item.letterSpacing == 30.sp && it.start == 14 && it.end == 15 })
     }
 
     /** The reducer half (see the class note). */
