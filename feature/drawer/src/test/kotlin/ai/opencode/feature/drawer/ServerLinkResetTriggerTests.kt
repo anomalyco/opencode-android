@@ -41,6 +41,31 @@ class ServerLinkResetTriggerTests {
         assertEquals(listOf("reset reroute", "forget any"), calls.toList())
     }
 
+    /** Home's snapshot and an open screen's resume reads start in the same turn, so the reset can't wait for the stream's effect. */
+    @Test fun eachTriggerStartsConnectionsOverWhileReducing() = runTest {
+        val cases = listOf(
+            HomeConnectionFeature.Action.NetworkRerouted to ServerLinkReset.Reroute,
+            HomeConnectionFeature.Action.RetryConnectionTapped to ServerLinkReset.Retry,
+            HomeConnectionFeature.Action.SceneBecameActive to ServerLinkReset.Foreground,
+        )
+        for ((action, reason) in cases) {
+            val calls = mutableListOf<String>()
+            val state = HomeConnectionFeature.State(
+                server = server,
+                isStreaming = true,
+                isInBackground = action == HomeConnectionFeature.Action.SceneBecameActive,
+            )
+            val store = TestStore(state, HomeConnectionFeature(), this) {
+                this[ServerLinkClient] = this[ServerLinkClient].copy(
+                    resetConnections = { received -> calls += "reset ${received.rawValue}" },
+                    invalidate = { _, failing -> calls += "forget ${failing ?: "any"}" },
+                )
+            }
+            store.withDependencies { HomeConnectionFeature().reduce(state, action) }
+            assertEquals("$action", listOf("reset ${reason.rawValue}", "forget any"), calls)
+        }
+    }
+
     @Test fun eachTriggerResetsBeforeTheStreamReconnects() = runTest {
         val cases = listOf(
             HomeConnectionFeature.Action.NetworkRerouted to ServerLinkReset.Reroute,
