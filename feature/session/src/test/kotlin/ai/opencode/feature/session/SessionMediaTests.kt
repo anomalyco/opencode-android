@@ -37,8 +37,8 @@ class SessionMediaTests {
     private val dir = "/project"
     private val hash = "c".repeat(64)
 
-    private fun tool(id: String, path: String, images: List<OpenCodeImageAttachment> = emptyList(), videos: List<OpenCodeTranscriptFile> = emptyList()) =
-        OpenCodeTranscriptItem.Tool(id, OpenCodeToolCall("call-$id", name = "read", status = OpenCodeToolCall.Status.Completed,
+    private fun tool(id: String, path: String, images: List<OpenCodeImageAttachment> = emptyList(), videos: List<OpenCodeTranscriptFile> = emptyList(), status: OpenCodeToolCall.Status = OpenCodeToolCall.Status.Completed) =
+        OpenCodeTranscriptItem.Tool(id, OpenCodeToolCall("call-$id", name = "read", status = status,
             input = OpenCodeJSONValue.Object(mapOf("path" to OpenCodeJSONValue.Str(path))), output = emptyList(), metadata = emptyMap(),
             images = images, videos = videos))
 
@@ -92,6 +92,17 @@ class SessionMediaTests {
         assertEquals("report.pdf", SessionMedia.title(media[3].content))
         assertTrue(media[4].content is Content.PastedText)
         assertEquals("read-pixels", (media[2].content as Content.File).thumbnail?.id)
+    }
+
+    @Test fun privateLinksAndRunningToolsStayOut() {
+        val items = listOf(
+            OpenCodeTranscriptItem.UserText("msg_1", "Preview at http://localhost:5173 and https://box.tail1234.ts.net/app, token https://example.com/a?token=secret"),
+            tool("tool_running", "/project/docs/spec.pdf", status = OpenCodeToolCall.Status.Running),
+        )
+        assertEquals(emptyList<SessionMedia.Item>(), SessionMedia.collect(items, dir))
+        // Once done, a document a tool read earns a card; a code file it read doesn't.
+        val done = listOf(tool("tool_code", "src/App.kt"), tool("tool_spec", "/project/docs/spec.pdf"))
+        assertEquals(listOf("file:/project/docs/spec.pdf"), ids(SessionMedia.collect(done, dir)))
     }
 
     @Test fun filtersSplitMediaFilesAndLinksWithNoMixedView() {
