@@ -194,8 +194,8 @@ class AgentFileViewerModel(
             phase = Phase.Failed(AgentFileError.Unreadable)
             return
         }
-        // Pixels already on screen while the server is asked: a check never blanks them.
-        var shown: Bitmap? = null
+        // A copy already on screen while the server is asked: a check never blanks it.
+        var shown: Phase.Ready? = null
         try {
             val identity = identity
             val destination = AgentFileLoader.cacheURL(server, original.cacheKey, reference.name, context.cacheDir)
@@ -206,10 +206,14 @@ class AgentFileViewerModel(
                 val resident = resident(identity)
                 val image = resident ?: if (destination.isFile) images.decodeFile(identity, destination) else null
                 if (image != null) {
-                    phase = Phase.Ready(Content.Image(image), destination.takeIf { it.isFile })
+                    shown = Phase.Ready(Content.Image(image), destination.takeIf { it.isFile })
+                    phase = shown
                     if (fresh) return
-                    shown = image
                 }
+            }
+            if (identity == null && !confirmed && !reference.kind.isTimeBased && reference.media == null && destination.isFile) {
+                present(destination)
+                shown = phase as? Phase.Ready
             }
             // A copy on screen with validators is checked by the conditional GET alone.
             val checksCopy = shown != null && withContext(Dispatchers.IO) { AgentFileLoader.storedValidators(destination) } != null
@@ -248,11 +252,12 @@ class AgentFileViewerModel(
             if (identity != null) {
                 images.validated(identity)
                 // Unchanged (304): the pixels already resident stay; changed (200): decoded once, for every reader.
-                val resident = if (status == 304) shown ?: resident(identity) else null
+                val resident = if (status == 304) (shown?.content as? Content.Image)?.image ?: resident(identity) else null
                 val image = resident ?: images.decodeFile(identity, file, replacing = status != 304)
                 phase = Phase.Ready(image?.let(Content::Image) ?: quickLook(file), file)
-            } else {
+            } else if (shown == null || status != 304) {
                 present(file)
+                (shown?.content as? Content.QuickLook)?.pdf?.close()
             }
         } catch (error: CancellationException) {
             throw error
