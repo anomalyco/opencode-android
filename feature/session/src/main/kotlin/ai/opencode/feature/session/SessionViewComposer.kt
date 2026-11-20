@@ -408,7 +408,8 @@ internal data class ComposerSnapshot(
     val hasFailedFiles: Boolean,
     val hasNonLocationAttachments: Boolean,
     val wantsLocationAttachment: Boolean,
-    val dictationHold: DictationFeature.Hold?,
+    /** Not the words, which change with every hypothesis (10–25 a second) and draw nothing here. */
+    val dictationHold: DictationFeature.Hold.Pose?,
     val dictationPhase: DictationFeature.Phase,
     val isDictating: Boolean,
     val isFinishingDictation: Boolean,
@@ -461,7 +462,7 @@ internal data class ComposerSnapshot(
                 hasFailedFiles = state.pendingFiles.any { it.isFailed },
                 hasNonLocationAttachments = state.pendingAttachments.isNotEmpty() || state.pendingFiles.isNotEmpty() || state.pendingQuotes.isNotEmpty(),
                 wantsLocationAttachment = state.pendingLocation != null || state.isLocating,
-                dictationHold = state.dictationHold,
+                dictationHold = state.dictationHold?.pose,
                 dictationPhase = state.dictationPhase,
                 isDictating = state.isDictating,
                 isFinishingDictation = state.isFinishingDictation,
@@ -729,9 +730,9 @@ internal class SessionComposerEnv(
     val settledRecording: Boolean? get() = view.dictationRetention.settledRecording(s.dictationHold != null, s.taskIdentity)
 
     /** The recording's hold, or the last one while its bar fades out. */
-    val shownDictationHold: DictationFeature.Hold? get() = view.dictationRetention.shownHold(s.dictationHold, s.taskIdentity)
+    val shownDictationHold: DictationFeature.Hold.Pose? get() = view.dictationRetention.shownHold(s.dictationHold, s.taskIdentity)
 
-    fun dictationPose(hold: DictationFeature.Hold) = DictationBarPose(
+    fun dictationPose(hold: DictationFeature.Hold.Pose) = DictationBarPose(
         hold = hold,
         phase = s.dictationPhase,
         drag = view.dictationDrag,
@@ -928,7 +929,7 @@ internal class SessionComposerEnv(
          * control's, never the keyboard's dismissal.
          */
         fun composerSwipeYields(
-            dictationHold: DictationFeature.Hold? = null,
+            dictationHold: DictationFeature.Hold.Pose? = null,
             attachmentMenuOpen: Boolean = false,
             panelsShown: Boolean = false,
             requestPanelTracking: Boolean = false,
