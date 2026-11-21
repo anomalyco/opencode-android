@@ -17,6 +17,7 @@ import ai.opencode.feature.transcript.markdown.OpenCodeMarkdownBlock.Kind
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.AgentFileReference
 import ai.opencode.server.model.OpenCodeImageAttachment
+import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptFile
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import ai.opencode.server.model.PastedTextSummary
@@ -157,10 +158,15 @@ object SessionMedia {
                 is OpenCodeTranscriptItem.UserFiles -> item.files.forEach { transcriptFile(it, Origin.user) }
                 is OpenCodeTranscriptItem.UserText -> links(listOf(LinkTextBlock(0, prose = listOf(LinkTextRun(item.text)))), Origin.user)
                 is OpenCodeTranscriptItem.Tool -> {
-                    val read = item.call.fileReference?.takeIf { it.kind.isVisual }
+                    val read = item.call.fileReference?.takeIf { item.call.status == OpenCodeToolCall.Status.Completed && it.kind.showsCard }
                     // An image read returns the same pixels as an attachment: one card, the file.
                     val pixels = item.call.imageAttachments.filter { !it.isUnavailable && (it.mediaHash != null || it.data.isNotEmpty()) }
-                    if (read != null) file(read, Origin.agent, thumbnail = pixels.firstOrNull()) else pixels.forEach { image(it, Origin.agent) }
+                    if (read != null && read.kind.isVisual) {
+                        file(read, Origin.agent, thumbnail = pixels.firstOrNull())
+                    } else {
+                        pixels.forEach { image(it, Origin.agent) }
+                        if (read != null) file(read, Origin.agent)
+                    }
                     item.call.videos.orEmpty().forEach { transcriptFile(it, Origin.agent) }
                 }
                 is OpenCodeTranscriptItem.AssistantMarkdown -> {
@@ -168,7 +174,7 @@ object SessionMedia {
                     for (block in blocks) {
                         when (val kind = block.kind) {
                             is Kind.Files -> kind.files.forEach { ref -> shownFile(ref)?.let { file(it, Origin.agent) } }
-                            is Kind.Image -> AgentFileReference.fromLink(kind.source)?.let { file(it, Origin.agent) }
+                            is Kind.Image -> AgentFileReference.fromLink(kind.source)?.takeIf { it.kind.showsCard }?.let { file(it, Origin.agent) }
                             else -> Unit
                         }
                     }
