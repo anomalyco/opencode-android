@@ -182,7 +182,7 @@ private fun BlockText(
     secondary: Boolean = false,
     headingLevel: Int? = null,
     tonesBody: Boolean = true,
-    onTextLayout: (TextLayoutResult) -> Unit = {},
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val style = currentMarkdownStyle()
     val muted = LocalMarkdownSecondary.current
@@ -253,6 +253,7 @@ private fun ListItem(
     val isTask = done || marker == OpenCodeMarkdownBlock.openTask
     val bodyStyle = style.bodyStyle
     val iconSize = with(LocalDensity.current) { (style.tuning.bodySize * 1.2f).sp.toDp() }
+    // alignByBaseline() crashes Compose UI 1.12 here (b/549552303); restore it on 1.13.
     val markerBaseline = remember { mutableIntStateOf(0) }
     val bodyBaseline = remember { mutableIntStateOf(0) }
     val onMarkerLayout = { layout: TextLayoutResult -> markerBaseline.intValue = layout.firstBaseline.roundToInt() }
