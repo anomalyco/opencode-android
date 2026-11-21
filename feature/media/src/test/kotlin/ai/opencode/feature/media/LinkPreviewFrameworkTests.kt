@@ -99,7 +99,8 @@ class LinkPreviewStoreFrameworkTests {
                 site = "YouTube",
                 image = LinkPreviewFixtures.videoPoster,
             )
-            val store = LinkPreviewStore(client = LinkPreviewClient(cached = { LinkPreviewResult.Loaded(metadata) }), memoryWarnings = center)
+            val cache = Locked<LinkPreviewResult?>(LinkPreviewResult.Loaded(metadata))
+            val store = LinkPreviewStore(client = LinkPreviewClient(cached = { cache.current }), memoryWarnings = center)
             val blocks = listOf(LinkBlocks.paragraph(0, LinkBlocks.text("Watch https://www.youtube.com/watch?v=dQw4w9WgXcQ")))
             val targets = store.targets(blocks, entryID = "reply")
             val before = store.preview(video)
@@ -107,9 +108,23 @@ class LinkPreviewStoreFrameworkTests {
             assertTrue(before.image != null)
             assertTrue(store.retainedBitmaps == 1 && store.retainedReplies == 1)
             center.post()
+            cache.update { null }
             assertTrue(store.retainedBitmaps == 0 && store.retainedReplies == 0)
             assertEquals("The row draws the same", before, store.preview(video))
             assertEquals(targets, store.targets(blocks, entryID = "reply"))
+            store.close()
+            center.post()
+            assertTrue("A closed store stops listening", store.retainedBitmaps == 1 && store.retainedReplies == 1)
+        }
+    }
+
+    @Test
+    fun rememberedRepliesAreBounded() = runTest {
+        onMain {
+            val store = LinkPreviewStore(client = LinkPreviewClient(), memoryWarnings = MemoryWarningCenter())
+            val blocks = listOf(LinkBlocks.paragraph(0, LinkBlocks.text("See https://example.com/docs")))
+            for (index in 0 until 300) store.targets(blocks, entryID = "reply-$index")
+            assertTrue(store.retainedReplies <= LinkPreviewStore.MAXIMUM_REMEMBERED_REPLIES)
             store.close()
         }
     }

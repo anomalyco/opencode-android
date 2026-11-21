@@ -25,10 +25,10 @@ class MarkdownStreamClient(
     )
 
     companion object Key : DependencyKey<MarkdownStreamClient> {
-        override val liveValue: MarkdownStreamClient by lazy { MarkdownStreamClient(MarkdownStreamStore()) }
+        override val liveValue: MarkdownStreamClient by lazy { MarkdownStreamClient(MarkdownStreamStore(memoryWarnings = MemoryWarningCenter.default)) }
 
         /** Each test gets its own store, so one test's parts never answer another's. */
-        override val testValue: MarkdownStreamClient get() = MarkdownStreamClient(MarkdownStreamStore(memoryWarnings = MemoryWarningCenter()))
+        override val testValue: MarkdownStreamClient get() = MarkdownStreamClient(MarkdownStreamStore())
     }
 }
 
@@ -58,7 +58,7 @@ fun EventBatcherHooks.withMarkdownStream(client: MarkdownStreamClient = dependen
  */
 class MarkdownStreamStore(
     private val maximumParts: Int = 16,
-    memoryWarnings: MemoryWarningCenter = MemoryWarningCenter.default,
+    memoryWarnings: MemoryWarningCenter? = null,
     private val makeStream: () -> MarkdownStream = { MarkdownStream() },
 ) {
     private class Projection(val text: String, val streaming: Boolean, val blocks: List<OpenCodeMarkdownBlock>)
@@ -77,7 +77,7 @@ class MarkdownStreamStore(
     private var clock = 0
 
     init {
-        memoryWarnings.observe(::clear)
+        memoryWarnings?.observe(::clear)
     }
 
     val partCount: Int get() = synchronized(lock) { parts.size }

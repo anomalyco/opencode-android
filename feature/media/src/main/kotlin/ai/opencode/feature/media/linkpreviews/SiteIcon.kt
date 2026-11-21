@@ -242,7 +242,7 @@ class SiteIconLoader(
     directory: File?,
     now: () -> Long = System::currentTimeMillis,
     private val isConstrained: () -> Boolean = { false },
-    memoryWarnings: MemoryWarningCenter = MemoryWarningCenter.default,
+    memoryWarnings: MemoryWarningCenter? = null,
 ) : CoalescedLoaderActor<SiteIconResult>() {
     @Serializable
     class Record(
@@ -303,6 +303,7 @@ class SiteIconLoader(
                 fetch = LinkPreviewTransport::fetch,
                 directory = LinkPreviewLoader.cachesDirectory("site-icons"),
                 isConstrained = { NetworkPathMonitor.shared?.isConstrained == true },
+                memoryWarnings = MemoryWarningCenter.default,
             ).also { loader -> CoroutineScope(SupervisorJob() + Dispatchers.IO).launch { loader.sweep() } }
         }
     }

@@ -95,11 +95,10 @@ data class OpenCodeMarkdownBlock(val id: Int, val kind: Kind) {
     class InlineCache(
         private val maximumEntries: Int = 512,
         private val maximumSourceBytes: Int = 128 * 1024,
-        memoryWarnings: MemoryWarningCenter = MemoryWarningCenter.default,
+        memoryWarnings: MemoryWarningCenter? = null,
     ) {
         init {
             require(maximumEntries >= 0 && maximumSourceBytes >= 0)
-            memoryWarnings.observe(::clear)
         }
 
         data class Entry(val attributed: InlineText, val cardFiles: List<AgentFileReference>)
@@ -139,6 +138,10 @@ data class OpenCodeMarkdownBlock(val id: Int, val kind: Kind) {
         private val inlines = Table<Entry>()
         private val segments = Table<List<SegmentItem>>()
         private val tableRows = Table<TableRowEntry>()
+
+        init {
+            memoryWarnings?.observe(::clear)
+        }
 
         val entryCount: Int get() = synchronized(lock) { inlines.values.size }
         val retainedSourceBytes: Int get() = synchronized(lock) { inlines.bytes }
@@ -183,7 +186,7 @@ data class OpenCodeMarkdownBlock(val id: Int, val kind: Kind) {
 
         companion object {
             /** The process-wide cache: pure parse results, no business state. */
-            val shared: InlineCache = InlineCache()
+            val shared: InlineCache = InlineCache(memoryWarnings = MemoryWarningCenter.default)
         }
     }
 

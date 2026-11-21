@@ -289,6 +289,7 @@ class LinkPreviewStore(
     fun targets(blocks: List<LinkTextBlock>, entryID: String): List<LinkPreviewTarget> {
         targetsByEntry[entryID]?.let { (cachedBlocks, targets) -> if (cachedBlocks == blocks) return targets }
         val targets = LinkPreviewExtractor.targets(blocks)
+        if (targetsByEntry.size >= MAXIMUM_REMEMBERED_REPLIES) targetsByEntry.clear()
         targetsByEntry[entryID] = blocks to targets
         return targets
     }
@@ -510,6 +511,7 @@ class LinkPreviewStore(
     companion object {
         const val MAXIMUM_DEFERRED_ENTRIES = 64
         const val MAXIMUM_PATH_RETRIES = 3
+        const val MAXIMUM_REMEMBERED_REPLIES = 256
         /** A failed refresh waits at least 30 s, and is retried only by a later appearance. */
         const val RETRY_FLOOR: Long = 30_000
     }

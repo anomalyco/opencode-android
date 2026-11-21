@@ -123,14 +123,21 @@ class SiteIconLoaderTests {
 
     @Test
     fun aMemoryWarningEmptiesSiteIconMemory() = runTest {
-        val center = MemoryWarningCenter()
-        val service = Service()
-        val loader = SiteIconLoader(fetch = service.fetch, directory = null, memoryWarnings = center)
-        val icon = loader.load("exe.dev")
-        assertEquals(1, loader.memoryCount)
-        center.post()
-        assertEquals(0, loader.memoryCount)
-        assertEquals(icon, loader.load("exe.dev"))
+        val directory = temporaryDirectory("site-icon-tests")
+        try {
+            val center = MemoryWarningCenter()
+            val service = Service()
+            val loader = SiteIconLoader(fetch = service.fetch, directory = directory, memoryWarnings = center)
+            val icon = loader.load("exe.dev")
+            assertEquals(1, loader.memoryCount)
+            center.post()
+            assertEquals(0, loader.memoryCount)
+            assertNull(loader.cached("exe.dev"))
+            assertEquals(icon, loader.load("exe.dev"))
+            assertEquals("Read back from disk, not fetched", 1, service.count)
+        } finally {
+            directory.deleteRecursively()
+        }
     }
 
     @Test
