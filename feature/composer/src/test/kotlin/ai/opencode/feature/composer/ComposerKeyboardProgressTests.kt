@@ -1,14 +1,19 @@
 package ai.opencode.feature.composer
 
+import ai.opencode.core.ui.OpenCodeAppTheme
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Insets
+import android.graphics.Point
 import android.os.Looper
 import android.os.SystemClock
 import android.view.MotionEvent
+import android.view.SurfaceControl
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -99,6 +104,42 @@ class ComposerKeyboardProgressTests {
             view.draw(Canvas(bitmap))
             assertEquals("passes=$passes: the controls draw in place", android.graphics.Color.RED, bitmap.getPixel(90, 25))
         }
+    }
+
+    @Test fun twoFieldsSurviveTheWindowGainingControlOfTheKeys() {
+        val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
+        val view = ComposeView(activity)
+        activity.setContentView(view)
+        view.setContent {
+            OpenCodeAppTheme {
+                Column {
+                    ComposerTextInput(text = "", onTextChange = {}, isFocused = false, onFocusedChange = {}, expanded = false, onImagePaste = {})
+                    ComposerTextInput(text = "", onTextChange = {}, isFocused = false, onFocusedChange = {}, expanded = false, onImagePaste = {})
+                }
+            }
+        }
+        shadowOf(Looper.getMainLooper()).idle()
+        val controller = view.windowInsetsController!!
+        val listeners = controller.javaClass.getDeclaredField("mControllableInsetsChangedListeners")
+        listeners.isAccessible = true
+        assertEquals(2, (listeners.get(controller) as List<*>).size)
+
+        val ime = android.view.WindowInsets.Type.ime()
+        val imeId = Class.forName("android.view.InsetsSource").getDeclaredField("ID_IME").getInt(null)
+        val stateField = controller.javaClass.getDeclaredField("mState")
+        stateField.isAccessible = true
+        val state = stateField.get(controller)
+        state.javaClass.getMethod("getOrCreateSource", Int::class.java, Int::class.java).invoke(state, imeId, ime)
+        val controlClass = Class.forName("android.view.InsetsSourceControl")
+        val control = controlClass
+            .getConstructor(Int::class.java, Int::class.java, SurfaceControl::class.java, Boolean::class.java, Point::class.java, Insets::class.java)
+            .newInstance(imeId, ime, null, false, Point(), Insets.NONE)
+        val controls = java.lang.reflect.Array.newInstance(controlClass, 1)
+        java.lang.reflect.Array.set(controls, 0, control)
+        controller.javaClass.getMethod("onControlsChanged", controls.javaClass).invoke(controller, controls)
+
+        view.disposeComposition()
+        assertEquals(0, (listeners.get(controller) as List<*>).size)
     }
 
     private fun tap(view: ComposeView, x: Float, y: Float) {
