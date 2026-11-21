@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Berjalan</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Tampilkan subagen dan shell yang berjalan</string>
+    <string name="session_background_work_show_label">Tampilkan subagen, skrip, dan shell yang berjalan</string>
     <string name="session_background_work_collapsed_description">Diciutkan</string>
     <string name="session_background_work_subagents_title">Subagen</string>
     <string name="session_background_work_open_subagent_label">Buka sesi subagen</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Tidak diketahui</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Biaya</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Berkas dan tautan</string>
     <string name="session_always_notify">Selalu beri notifikasi</string>
     <string name="session_always_notify_message_phone">Beri notifikasi di ponsel ini setiap balasan selesai, meski pesannya tidak dikirim dari sini.</string>
     <string name="session_always_notify_message_tablet">Beri notifikasi di tablet ini setiap balasan selesai, meski pesannya tidak dikirim dari sini.</string>
@@ -192,7 +194,15 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d skrip</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skrip</string>
+    <string name="session_background_work_stop_script_label">Hentikan skrip</string>
+    <string name="session_background_work_stop_subagent_label">Hentikan subagen</string>
+    <string name="session_background_work_stop_script_failed">Gagal menghentikan skrip</string>
+    <string name="session_background_work_stop_subagent_failed">Gagal menghentikan subagen</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Kirim pesan</string>

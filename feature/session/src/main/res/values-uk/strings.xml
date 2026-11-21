@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Виконується</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Показати активні субагенти й команди</string>
+    <string name="session_background_work_show_label">Показати активні субагенти, скрипти й команди</string>
     <string name="session_background_work_collapsed_description">Згорнуто</string>
     <string name="session_background_work_subagents_title">Субагенти</string>
     <string name="session_background_work_open_subagent_label">Відкрити сесію субагента</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Невідомо</string>
     <string name="session_sheet_context_tokens">%1$s токенів</string>
     <string name="session_sheet_cost">Вартість</string>
+    <string name="session_sheet_media">Медіа</string>
+    <string name="session_sheet_media_value">Файли й посилання</string>
     <string name="session_always_notify">Завжди сповіщати</string>
     <string name="session_always_notify_message_phone">Сповіщати на цьому телефоні про кожну готову відповідь, навіть на запити з інших пристроїв.</string>
     <string name="session_always_notify_message_tablet">Сповіщати на цьому планшеті про кожну готову відповідь, навіть на запити з інших пристроїв.</string>
@@ -213,7 +215,18 @@
         <item quantity="many">%1$d команд</item>
         <item quantity="other">%1$d команди</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="few">%1$d скрипти</item>
+        <item quantity="many">%1$d скриптів</item>
+        <item quantity="other">%1$d скрипту</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скрипти</string>
+    <string name="session_background_work_stop_script_label">Зупинити скрипт</string>
+    <string name="session_background_work_stop_subagent_label">Зупинити субагента</string>
+    <string name="session_background_work_stop_script_failed">Не вдалося зупинити скрипт</string>
+    <string name="session_background_work_stop_subagent_failed">Не вдалося зупинити субагента</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Надіслати повідомлення</string>

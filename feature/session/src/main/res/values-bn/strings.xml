@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">চলছে</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">চলমান সাবএজেন্ট ও শেল দেখান</string>
+    <string name="session_background_work_show_label">চলমান সাবএজেন্ট, স্ক্রিপ্ট ও শেল দেখান</string>
     <string name="session_background_work_collapsed_description">সঙ্কুচিত</string>
     <string name="session_background_work_subagents_title">সাবএজেন্ট</string>
     <string name="session_background_work_open_subagent_label">সাবএজেন্টের সেশন খুলুন</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">অজানা</string>
     <string name="session_sheet_context_tokens">%1$s টোকেন</string>
     <string name="session_sheet_cost">খরচ</string>
+    <string name="session_sheet_media">মিডিয়া</string>
+    <string name="session_sheet_media_value">ফাইল ও লিঙ্ক</string>
     <string name="session_always_notify">সবসময় জানান</string>
     <string name="session_always_notify_message_phone">প্রতিটি জবাব শেষ হলে এই ফোনে জানান, এমনকি বার্তা এখান থেকে না পাঠালেও।</string>
     <string name="session_always_notify_message_tablet">প্রতিটি জবাব শেষ হলে এই ট্যাবলেটে জানান, এমনকি বার্তা এখান থেকে না পাঠালেও।</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$dটি শেল</item>
         <item quantity="other">%1$dটি শেল</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$dটি স্ক্রিপ্ট</item>
+        <item quantity="other">%1$dটি স্ক্রিপ্ট</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">স্ক্রিপ্ট</string>
+    <string name="session_background_work_stop_script_label">স্ক্রিপ্ট থামান</string>
+    <string name="session_background_work_stop_subagent_label">সাবএজেন্ট থামান</string>
+    <string name="session_background_work_stop_script_failed">স্ক্রিপ্ট থামানো যায়নি</string>
+    <string name="session_background_work_stop_subagent_failed">সাবএজেন্ট থামানো যায়নি</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">বার্তা পাঠান</string>

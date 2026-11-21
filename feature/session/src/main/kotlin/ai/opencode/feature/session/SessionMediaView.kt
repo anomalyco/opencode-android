@@ -276,8 +276,6 @@ private fun SessionMediaContent(store: StoreOf<State, Action>, filter: SessionMe
     val tabs = SessionMedia.Filter.entries
     val pager = rememberPagerState(initialPage = tabs.indexOf(filter)) { tabs.size }
     val scope = rememberCoroutineScope()
-    val reducedMotion = rememberReduceMotion()
-    val pageAlpha = remember { Animatable(1f) }
     // Each tab keeps its own place while the page is open, swiped away or covered by the viewer.
     val gridState = rememberLazyGridState()
     val mediaListState = rememberLazyListState()
@@ -289,15 +287,7 @@ private fun SessionMediaContent(store: StoreOf<State, Action>, filter: SessionMe
     val pickTab: (SessionMedia.Filter) -> Unit = { picked ->
         store.send(Action.SessionMediaFilterPicked(picked))
         val page = tabs.indexOf(picked)
-        scope.launch {
-            if (reducedMotion) {
-                pageAlpha.snapTo(0f)
-                pager.scrollToPage(page)
-                pageAlpha.animateTo(1f, Motion.reducedFadeSpec())
-            } else {
-                pager.animateScrollToPage(page)
-            }
-        }
+        scope.launch { pager.scrollToPage(page) }
     }
 
     Column(
@@ -328,7 +318,6 @@ private fun SessionMediaContent(store: StoreOf<State, Action>, filter: SessionMe
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .graphicsLayer { alpha = pageAlpha.value }
                 // The drawer still opens from Media; on the other tabs a rightward swipe goes back a tab.
                 .drawerPanHorizontalScroller({ pager.canScrollBackward }, { pager.canScrollForward })
                 .testTag("session-media-pager"),
@@ -788,7 +777,7 @@ private fun SessionMediaCard(
                 style = OpenCodeTextStyles.callout.copy(fontWeight = FontWeight.Medium),
                 color = OpenCodeTheme.colors.text,
                 maxLines = 1,
-                overflow = TextOverflow.MiddleEllipsis,
+                overflow = if (item.isLink) TextOverflow.Ellipsis else TextOverflow.MiddleEllipsis,
             )
             Text(
                 detail,

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">កំពុងដំណើរការ</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">បង្ហាញភ្នាក់ងាររង និងសែលដែលកំពុងដំណើរការ</string>
+    <string name="session_background_work_show_label">បង្ហាញភ្នាក់ងាររង ស្គ្រីប និងសែលដែលកំពុងដំណើរការ</string>
     <string name="session_background_work_collapsed_description">បានបង្រួម</string>
     <string name="session_background_work_subagents_title">ភ្នាក់ងាររង</string>
     <string name="session_background_work_open_subagent_label">បើកសម័យរបស់ភ្នាក់ងាររង</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">មិនស្គាល់</string>
     <string name="session_sheet_context_tokens">%1$s ថូខិន</string>
     <string name="session_sheet_cost">តម្លៃ</string>
+    <string name="session_sheet_media">មេឌៀ</string>
+    <string name="session_sheet_media_value">ឯកសារ និងតំណ</string>
     <string name="session_always_notify">ជូនដំណឹងជានិច្ច</string>
     <string name="session_always_notify_message_phone">ជូនដំណឹងលើទូរសព្ទនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>
     <string name="session_always_notify_message_tablet">ជូនដំណឹងលើថេប្លេតនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>
@@ -192,7 +194,15 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">សែល %1$d</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">ស្គ្រីប %1$d</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">ស្គ្រីប</string>
+    <string name="session_background_work_stop_script_label">ឈប់ស្គ្រីប</string>
+    <string name="session_background_work_stop_subagent_label">ឈប់ភ្នាក់ងាររង</string>
+    <string name="session_background_work_stop_script_failed">មិនអាចឈប់ស្គ្រីបបាន</string>
+    <string name="session_background_work_stop_subagent_failed">មិនអាចឈប់ភ្នាក់ងាររងបាន</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">ផ្ញើសារ</string>

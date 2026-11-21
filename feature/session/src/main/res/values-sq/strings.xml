@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Në ekzekutim</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Trego nënagjentët dhe guaskat në ekzekutim</string>
+    <string name="session_background_work_show_label">Trego nënagjentët, skriptet dhe guaskat në ekzekutim</string>
     <string name="session_background_work_collapsed_description">E palosur</string>
     <string name="session_background_work_subagents_title">Nënagjentë</string>
     <string name="session_background_work_open_subagent_label">Hap sesionin e nënagjentit</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">I panjohur</string>
     <string name="session_sheet_context_tokens">%1$s tokenë</string>
     <string name="session_sheet_cost">Kostoja</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Skedarët dhe lidhjet</string>
     <string name="session_always_notify">Njofto gjithmonë</string>
     <string name="session_always_notify_message_phone">Njofto këtë telefon sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>
     <string name="session_always_notify_message_tablet">Njofto këtë tablet sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d guaskë</item>
         <item quantity="other">%1$d guaska</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skripte</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriptet</string>
+    <string name="session_background_work_stop_script_label">Ndalo skriptin</string>
+    <string name="session_background_work_stop_subagent_label">Ndalo nënagjentin</string>
+    <string name="session_background_work_stop_script_failed">Skripti nuk u ndal dot</string>
+    <string name="session_background_work_stop_subagent_failed">Nënagjenti nuk u ndal dot</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Dërgo mesazhin</string>

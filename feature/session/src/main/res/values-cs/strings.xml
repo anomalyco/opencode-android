@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Probíhá</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Zobrazit běžící subagenty a shelly</string>
+    <string name="session_background_work_show_label">Zobrazit běžící subagenty, skripty a shelly</string>
     <string name="session_background_work_collapsed_description">Sbaleno</string>
     <string name="session_background_work_subagents_title">Subagenty</string>
     <string name="session_background_work_open_subagent_label">Otevřít relaci subagenta</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Neznámý</string>
     <string name="session_sheet_context_tokens">%1$s tokenů</string>
     <string name="session_sheet_cost">Cena</string>
+    <string name="session_sheet_media">Média</string>
+    <string name="session_sheet_media_value">Soubory a odkazy</string>
     <string name="session_always_notify">Vždy upozornit</string>
     <string name="session_always_notify_message_phone">Upozornit na tomto telefonu po dokončení každé odpovědi, i na zprávy odeslané odjinud.</string>
     <string name="session_always_notify_message_tablet">Upozornit na tomto tabletu po dokončení každé odpovědi, i na zprávy odeslané odjinud.</string>
@@ -213,7 +215,18 @@
         <item quantity="many">%1$d shellu</item>
         <item quantity="other">%1$d shellů</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="few">%1$d skripty</item>
+        <item quantity="many">%1$d skriptu</item>
+        <item quantity="other">%1$d skriptů</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripty</string>
+    <string name="session_background_work_stop_script_label">Zastavit skript</string>
+    <string name="session_background_work_stop_subagent_label">Zastavit subagenta</string>
+    <string name="session_background_work_stop_script_failed">Nepodařilo se zastavit skript</string>
+    <string name="session_background_work_stop_subagent_failed">Nepodařilo se zastavit subagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Odeslat zprávu</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Koyrir</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Vís koyrandi undirumboð og shellar</string>
+    <string name="session_background_work_show_label">Vís koyrandi undirumboð, skript og shellar</string>
     <string name="session_background_work_collapsed_description">Samanlagt</string>
     <string name="session_background_work_subagents_title">Undirumboð</string>
     <string name="session_background_work_open_subagent_label">Opna setuna hjá undirumboðinum</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Ókent</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Kostnaður</string>
+    <string name="session_sheet_media">Miðlar</string>
+    <string name="session_sheet_media_value">Fílur og leinkjur</string>
     <string name="session_always_notify">Boða altíð frá</string>
     <string name="session_always_notify_message_phone">Boða frá á hesi telefonini, tá ið eitt svar er liðugt, eisini tá ið boðini ikki vórðu send hiðani.</string>
     <string name="session_always_notify_message_tablet">Boða frá á hesum teldlinum, tá ið eitt svar er liðugt, eisini tá ið boðini ikki vórðu send hiðani.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d shell</item>
         <item quantity="other">%1$d shellar</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skript</string>
+    <string name="session_background_work_stop_script_label">Steðga skripti</string>
+    <string name="session_background_work_stop_subagent_label">Steðga undirumboði</string>
+    <string name="session_background_work_stop_script_failed">Kundi ikki steðga skripti</string>
+    <string name="session_background_work_stop_subagent_failed">Kundi ikki steðga undirumboði</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Send boð</string>

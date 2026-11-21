@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Đang chạy</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Hiện chất phụ và vỏ bọc đang chạy</string>
+    <string name="session_background_work_show_label">Hiện chất phụ, script và vỏ bọc đang chạy</string>
     <string name="session_background_work_collapsed_description">Đã thu gọn</string>
     <string name="session_background_work_subagents_title">Chất phụ</string>
     <string name="session_background_work_open_subagent_label">Mở phiên của chất phụ</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Không rõ</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Chi phí</string>
+    <string name="session_sheet_media">Đa phương tiện</string>
+    <string name="session_sheet_media_value">Tệp và liên kết</string>
     <string name="session_always_notify">Luôn thông báo</string>
     <string name="session_always_notify_message_phone">Thông báo trên điện thoại này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>
     <string name="session_always_notify_message_tablet">Thông báo trên máy tính bảng này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>
@@ -192,7 +194,15 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">%1$d vỏ bọc</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d script</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Script</string>
+    <string name="session_background_work_stop_script_label">Dừng script</string>
+    <string name="session_background_work_stop_subagent_label">Dừng chất phụ</string>
+    <string name="session_background_work_stop_script_failed">Không thể dừng script</string>
+    <string name="session_background_work_stop_subagent_failed">Không thể dừng chất phụ</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Gửi tin nhắn</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">İşləyir</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">İşləyən alt-agentləri və Shell-ləri göstər</string>
+    <string name="session_background_work_show_label">İşləyən alt-agentləri, skriptləri və shell-ləri göstər</string>
     <string name="session_background_work_collapsed_description">Yığılıb</string>
     <string name="session_background_work_subagents_title">Alt-agentlər</string>
     <string name="session_background_work_open_subagent_label">Alt-agentin sessiyasını aç</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Naməlum</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Xərc</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Fayllar və linklər</string>
     <string name="session_always_notify">Həmişə bildir</string>
     <string name="session_always_notify_message_phone">Mesajı buradan göndərməsəniz belə, hər cavab tamamlananda bu telefona bildiriş göndər.</string>
     <string name="session_always_notify_message_tablet">Mesajı buradan göndərməsəniz belə, hər cavab tamamlananda bu planşetə bildiriş göndər.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d Shell</item>
         <item quantity="other">%1$d Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriptlər</string>
+    <string name="session_background_work_stop_script_label">Skripti dayandır</string>
+    <string name="session_background_work_stop_subagent_label">Alt-agenti dayandır</string>
+    <string name="session_background_work_stop_script_failed">Skripti dayandırmaq mümkün olmadı</string>
+    <string name="session_background_work_stop_subagent_failed">Alt-agenti dayandırmaq mümkün olmadı</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Mesaj göndər</string>

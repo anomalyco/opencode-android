@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Em execução</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Mostrar subagentes e shells em execução</string>
+    <string name="session_background_work_show_label">Mostrar subagentes, scripts e shells em execução</string>
     <string name="session_background_work_collapsed_description">Recolhido</string>
     <string name="session_background_work_subagents_title">Subagentes</string>
     <string name="session_background_work_open_subagent_label">Abrir a sessão do subagente</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Desconhecido</string>
     <string name="session_sheet_context_tokens">%1$s tokens</string>
     <string name="session_sheet_cost">Custo</string>
+    <string name="session_sheet_media">Mídia</string>
+    <string name="session_sheet_media_value">Arquivos e links</string>
     <string name="session_always_notify">Notificar sempre</string>
     <string name="session_always_notify_message_phone">Notificar neste celular sempre que uma resposta ficar pronta, mesmo para mensagens enviadas de outro dispositivo.</string>
     <string name="session_always_notify_message_tablet">Notificar neste tablet sempre que uma resposta ficar pronta, mesmo para mensagens enviadas de outro dispositivo.</string>
@@ -206,7 +208,17 @@
         <item quantity="many">%1$d shells</item>
         <item quantity="other">%1$d shells</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d script</item>
+        <item quantity="many">%1$d scripts</item>
+        <item quantity="other">%1$d scripts</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Scripts</string>
+    <string name="session_background_work_stop_script_label">Parar script</string>
+    <string name="session_background_work_stop_subagent_label">Parar subagente</string>
+    <string name="session_background_work_stop_script_failed">Não foi possível parar o script</string>
+    <string name="session_background_work_stop_subagent_failed">Não foi possível parar o subagente</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Enviar mensagem</string>

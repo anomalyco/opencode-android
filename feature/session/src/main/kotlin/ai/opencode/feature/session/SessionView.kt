@@ -207,6 +207,7 @@ fun SessionView(
         SessionCallTasks(store, callStore, hasCall = ownsCall || hostedCall != null, isCatchUpCard = onCatchUpOpen != null)
     }
     val isCovered by store.observe { it.isCovered }
+    val isTranscriptCovered by store.observe { it.isTranscriptCovered }
     // iOS `floatingCallCoverage(sessionLifecycle)`: what the Living Orb's card covers gives way.
     if (!isInertPreview) {
         SessionFloatingCallCoverage(store, callStore, composerHost, attachmentMenu)
@@ -277,6 +278,10 @@ fun SessionView(
             sessionID = work.sessionID,
             agents = work.agents,
             shells = work.shells,
+            scripts = work.scripts,
+            onStopScript = { store.send(Action.BackgroundScriptStopTapped(it)) },
+            onStopSubagent = { store.send(Action.BackgroundSubagentStopTapped(it)) },
+            stoppingIDs = work.stoppingIDs,
             waitingSessionIDs = work.waitingSessionIDs,
             probe = work.probe,
             isPresented = showsBackgroundWork,
@@ -284,6 +289,7 @@ fun SessionView(
             onOpenSubagent = { store.send(Action.SubagentTapped(it)) },
             onOpenShell = { store.send(Action.ShellOutputTapped(it)) },
             isCovered = composerHost.composerPanelCovers,
+            isPaused = isTranscriptCovered,
             inCall = work.inCall,
             transcript = scrollEdgeBridge.borrowedDrag,
             // The capsule draws above the + menu's dismiss area: tapping it closes the menu.
@@ -471,6 +477,8 @@ private data class BackgroundWorkModel(
     val sessionID: String?,
     val agents: List<OpenCodeSession>,
     val shells: List<OpenCodeShell>,
+    val scripts: List<BackgroundScript>,
+    val stoppingIDs: Set<String>,
     val waitingSessionIDs: Set<String>,
     val probe: ShellGlyphProbe?,
     val inCall: Boolean,
@@ -480,6 +488,8 @@ private data class BackgroundWorkModel(
             sessionID = state.session?.id,
             agents = state.activeSubagents,
             shells = state.backgroundShells,
+            scripts = state.backgroundScripts,
+            stoppingIDs = state.stoppingIDs,
             waitingSessionIDs = state.waitingSessionIDs,
             probe = state.shellGlyphProbe,
             inCall = state.voice != null,
@@ -974,6 +984,7 @@ private fun SessionSheets(store: StoreOf<State, Action>, listContext: SessionLis
                 context = listContext,
                 details = details,
                 onModelTapped = { store.send(Action.ModelButtonTapped) },
+                onMediaTapped = { store.send(Action.SessionMediaTapped) },
                 onDismissRequest = dismiss,
                 providerIcon = { providerID, canonical, size -> ProviderIcon(providerID, Modifier.size(size), canonical) },
                 statusOrb = { status, size ->

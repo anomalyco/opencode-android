@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">ກຳລັງເຮັດວຽກ</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">ສະແດງຕົວແທນຍ່ອຍ ແລະ shell ທີ່ກຳລັງເຮັດວຽກ</string>
+    <string name="session_background_work_show_label">ສະແດງຕົວແທນຍ່ອຍ, ສະຄຣິບ ແລະ shell ທີ່ກຳລັງເຮັດວຽກ</string>
     <string name="session_background_work_collapsed_description">ຫຍໍ້ແລ້ວ</string>
     <string name="session_background_work_subagents_title">ຕົວແທນຍ່ອຍ</string>
     <string name="session_background_work_open_subagent_label">ເປີດເຊດຊັນຂອງຕົວແທນຍ່ອຍ</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">ບໍ່ຮູ້ຈັກ</string>
     <string name="session_sheet_context_tokens">%1$s ໂທເຄັນ</string>
     <string name="session_sheet_cost">ຄ່າໃຊ້ຈ່າຍ</string>
+    <string name="session_sheet_media">ສື່</string>
+    <string name="session_sheet_media_value">ໄຟລ໌ ແລະລິ້ງ</string>
     <string name="session_always_notify">ແຈ້ງເຕືອນສະເໝີ</string>
     <string name="session_always_notify_message_phone">ແຈ້ງເຕືອນໂທລະສັບນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>
     <string name="session_always_notify_message_tablet">ແຈ້ງເຕືອນແທັບເລັດນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>
@@ -192,7 +194,15 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d ສະຄຣິບ</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">ສະຄຣິບ</string>
+    <string name="session_background_work_stop_script_label">ຢຸດສະຄຣິບ</string>
+    <string name="session_background_work_stop_subagent_label">ຢຸດຕົວແທນຍ່ອຍ</string>
+    <string name="session_background_work_stop_script_failed">ຢຸດສະຄຣິບບໍ່ໄດ້</string>
+    <string name="session_background_work_stop_subagent_failed">ຢຸດຕົວແທນຍ່ອຍບໍ່ໄດ້</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">ສົ່ງຂໍ້ຄວາມ</string>

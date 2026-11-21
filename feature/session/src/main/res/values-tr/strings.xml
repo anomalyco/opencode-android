@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Çalışıyor</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Çalışan alt temsilcileri ve kabukları göster</string>
+    <string name="session_background_work_show_label">Çalışan alt temsilcileri, betikleri ve kabukları göster</string>
     <string name="session_background_work_collapsed_description">Daraltıldı</string>
     <string name="session_background_work_subagents_title">Alt temsilciler</string>
     <string name="session_background_work_open_subagent_label">Alt temsilcinin oturumunu aç</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Bilinmiyor</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Maliyet</string>
+    <string name="session_sheet_media">Medya</string>
+    <string name="session_sheet_media_value">Dosyalar ve bağlantılar</string>
     <string name="session_always_notify">Her zaman bildir</string>
     <string name="session_always_notify_message_phone">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu telefona bildirim gönder.</string>
     <string name="session_always_notify_message_tablet">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu tablete bildirim gönder.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d kabuk</item>
         <item quantity="other">%1$d kabuk</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d betik</item>
+        <item quantity="other">%1$d betik</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Betikler</string>
+    <string name="session_background_work_stop_script_label">Betiği durdur</string>
+    <string name="session_background_work_stop_subagent_label">Alt temsilciyi durdur</string>
+    <string name="session_background_work_stop_script_failed">Betik durdurulamadı</string>
+    <string name="session_background_work_stop_subagent_failed">Alt temsilci durdurulamadı</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Mesaj gönder</string>

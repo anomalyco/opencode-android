@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Во тек</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Прикажи активни субагенси и школки</string>
+    <string name="session_background_work_show_label">Прикажи активни субагенси, скрипти и школки</string>
     <string name="session_background_work_collapsed_description">Склопено</string>
     <string name="session_background_work_subagents_title">Субагенси</string>
     <string name="session_background_work_open_subagent_label">Отвори ја сесијата на субагенсот</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Непознат</string>
     <string name="session_sheet_context_tokens">%1$s токени</string>
     <string name="session_sheet_cost">Трошок</string>
+    <string name="session_sheet_media">Медиуми</string>
+    <string name="session_sheet_media_value">Датотеки и врски</string>
     <string name="session_always_notify">Секогаш известувај</string>
     <string name="session_always_notify_message_phone">Известувај на овој телефон кога е готов одговор, дури и за пораки што не се испратени оттука.</string>
     <string name="session_always_notify_message_tablet">Известувај на овој таблет кога е готов одговор, дури и за пораки што не се испратени оттука.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d школка</item>
         <item quantity="other">%1$d школки</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипта</item>
+        <item quantity="other">%1$d скрипти</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скрипти</string>
+    <string name="session_background_work_stop_script_label">Запри ја скриптата</string>
+    <string name="session_background_work_stop_subagent_label">Запри го субагенсот</string>
+    <string name="session_background_work_stop_script_failed">Не успеа запирањето на скриптата</string>
+    <string name="session_background_work_stop_subagent_failed">Не успеа запирањето на субагенсот</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Испрати порака</string>

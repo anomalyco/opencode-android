@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Pracuje</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Pokaż pracujących podagentów i terminale</string>
+    <string name="session_background_work_show_label">Pokaż pracujących podagentów, skrypty i terminale</string>
     <string name="session_background_work_collapsed_description">Zwinięte</string>
     <string name="session_background_work_subagents_title">Podagenci</string>
     <string name="session_background_work_open_subagent_label">Otwórz sesję podagenta</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nieznany</string>
     <string name="session_sheet_context_tokens">%1$s tokenów</string>
     <string name="session_sheet_cost">Koszt</string>
+    <string name="session_sheet_media">Multimedia</string>
+    <string name="session_sheet_media_value">Pliki i linki</string>
     <string name="session_always_notify">Zawsze powiadamiaj</string>
     <string name="session_always_notify_message_phone">Powiadamiaj ten telefon o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
     <string name="session_always_notify_message_tablet">Powiadamiaj ten tablet o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
@@ -213,7 +215,18 @@
         <item quantity="many">%1$d terminali</item>
         <item quantity="other">%1$d terminala</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skrypt</item>
+        <item quantity="few">%1$d skrypty</item>
+        <item quantity="many">%1$d skryptów</item>
+        <item quantity="other">%1$d skryptu</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skrypty</string>
+    <string name="session_background_work_stop_script_label">Zatrzymaj skrypt</string>
+    <string name="session_background_work_stop_subagent_label">Zatrzymaj podagenta</string>
+    <string name="session_background_work_stop_script_failed">Nie udało się zatrzymać skryptu</string>
+    <string name="session_background_work_stop_subagent_failed">Nie udało się zatrzymać podagenta</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Wyślij wiadomość</string>

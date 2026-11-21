@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">En execució</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Mostra els subagents i intèrprets d\'ordres en execució</string>
+    <string name="session_background_work_show_label">Mostra els subagents, scripts i intèrprets d\'ordres en execució</string>
     <string name="session_background_work_collapsed_description">Replegat</string>
     <string name="session_background_work_subagents_title">Subagents</string>
     <string name="session_background_work_open_subagent_label">Obre la sessió del subagent</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Desconegut</string>
     <string name="session_sheet_context_tokens">%1$s tokens</string>
     <string name="session_sheet_cost">Cost</string>
+    <string name="session_sheet_media">Multimèdia</string>
+    <string name="session_sheet_media_value">Fitxers i enllaços</string>
     <string name="session_always_notify">Notifica sempre</string>
     <string name="session_always_notify_message_phone">Notifica en aquest mòbil quan s\'acabi una resposta, encara que no l\'hagis demanat des d\'aquí.</string>
     <string name="session_always_notify_message_tablet">Notifica en aquesta tauleta quan s\'acabi una resposta, encara que no l\'hagis demanat des d\'aquí.</string>
@@ -206,7 +208,17 @@
         <item quantity="many">%1$d intèrprets d\'ordres</item>
         <item quantity="other">%1$d intèrprets d\'ordres</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d script</item>
+        <item quantity="many">%1$d scripts</item>
+        <item quantity="other">%1$d scripts</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Scripts</string>
+    <string name="session_background_work_stop_script_label">Atura l\'script</string>
+    <string name="session_background_work_stop_subagent_label">Atura el subagent</string>
+    <string name="session_background_work_stop_script_failed">No s\'ha pogut aturar l\'script</string>
+    <string name="session_background_work_stop_subagent_failed">No s\'ha pogut aturar el subagent</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Envia el missatge</string>

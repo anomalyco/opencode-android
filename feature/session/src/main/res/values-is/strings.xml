@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Í gangi</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Sýna virka undirfulltrúa og skeljar</string>
+    <string name="session_background_work_show_label">Sýna virka undirfulltrúa, skriftur og skeljar</string>
     <string name="session_background_work_collapsed_description">Samandregið</string>
     <string name="session_background_work_subagents_title">Undirfulltrúar</string>
     <string name="session_background_work_open_subagent_label">Opna setu undirfulltrúans</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Óþekkt</string>
     <string name="session_sheet_context_tokens">%1$s tákn</string>
     <string name="session_sheet_cost">Kostnaður</string>
+    <string name="session_sheet_media">Margmiðlun</string>
+    <string name="session_sheet_media_value">Skrár og tenglar</string>
     <string name="session_always_notify">Alltaf tilkynna</string>
     <string name="session_always_notify_message_phone">Tilkynna í þessum síma þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>
     <string name="session_always_notify_message_tablet">Tilkynna í þessari spjaldtölvu þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d skel</item>
         <item quantity="other">%1$d skeljar</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skrifta</item>
+        <item quantity="other">%1$d skriftur</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skriftur</string>
+    <string name="session_background_work_stop_script_label">Stöðva skriftu</string>
+    <string name="session_background_work_stop_subagent_label">Stöðva undirfulltrúa</string>
+    <string name="session_background_work_stop_script_failed">Ekki tókst að stöðva skriftu</string>
+    <string name="session_background_work_stop_subagent_failed">Ekki tókst að stöðva undirfulltrúa</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Senda skilaboð</string>

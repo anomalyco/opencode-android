@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Изпълнява се</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Показване на работещите субагенти и черупки</string>
+    <string name="session_background_work_show_label">Показване на работещите субагенти, скриптове и shell процеси</string>
     <string name="session_background_work_collapsed_description">Свито</string>
     <string name="session_background_work_subagents_title">Субагенти</string>
     <string name="session_background_work_open_subagent_label">Отворете сесията на субагента</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Неизвестен</string>
     <string name="session_sheet_context_tokens">%1$s токена</string>
     <string name="session_sheet_cost">Цена</string>
+    <string name="session_sheet_media">Медия</string>
+    <string name="session_sheet_media_value">Файлове и връзки</string>
     <string name="session_always_notify">Винаги известявай</string>
     <string name="session_always_notify_message_phone">Известяване на този телефон при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>
     <string name="session_always_notify_message_tablet">Известяване на този таблет при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d черупка</item>
         <item quantity="other">%1$d черупки</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="other">%1$d скрипта</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скриптове</string>
+    <string name="session_background_work_stop_script_label">Спиране на скрипта</string>
+    <string name="session_background_work_stop_subagent_label">Спиране на субагента</string>
+    <string name="session_background_work_stop_script_failed">Неуспешно спиране на скрипта</string>
+    <string name="session_background_work_stop_subagent_failed">Неуспешно спиране на субагента</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Изпрати съобщение</string>

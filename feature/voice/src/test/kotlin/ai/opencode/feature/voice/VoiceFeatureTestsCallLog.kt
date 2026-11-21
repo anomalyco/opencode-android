@@ -286,7 +286,7 @@ class VoiceFeatureTestsCallLog {
         store.receive(Action.DelegatorFinished::class)
 
         val firstRequest = capturedRequests.value.firstOrNull() ?: throw AssertionError("No request")
-        assertTrue(firstRequest.contains("The user is viewing session \"Voice lab\" (id ses_voice, project project, working)."))
+        assertTrue(firstRequest.contains("The call is attached to session \"Voice lab\" (id ses_voice, project project, working)."))
         assertTrue(firstRequest.contains("Tracked session work from this call:"))
         assertTrue(firstRequest.contains("- \"Blog game\" (id ses_blog, prompt msg_blog): finished — replied: Finished the scoring loop."))
         assertTrue(firstRequest.contains("Other voice delegator requests currently in flight: 1."))
@@ -298,7 +298,7 @@ class VoiceFeatureTestsCallLog {
         store.receive(Action.DelegatorFinished::class)
 
         val secondRequest = capturedRequests.value.lastOrNull() ?: throw AssertionError("No request")
-        assertTrue(secondRequest.contains("The user is viewing session \"Voice lab\" (id ses_voice, project project, idle)."))
+        assertTrue(secondRequest.contains("The call is attached to session \"Voice lab\" (id ses_voice, project project, idle)."))
         store.finish()
     }
 

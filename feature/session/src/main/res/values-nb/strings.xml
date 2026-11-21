@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Kjører</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Vis kjørende underagenter og skall</string>
+    <string name="session_background_work_show_label">Vis kjørende underagenter, skript og skall</string>
     <string name="session_background_work_collapsed_description">Sammenfoldet</string>
     <string name="session_background_work_subagents_title">Underagenter</string>
     <string name="session_background_work_open_subagent_label">Åpne underagentens sesjon</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Ukjent</string>
     <string name="session_sheet_context_tokens">%1$s tokener</string>
     <string name="session_sheet_cost">Kostnad</string>
+    <string name="session_sheet_media">Medier</string>
+    <string name="session_sheet_media_value">Filer og lenker</string>
     <string name="session_always_notify">Varsle alltid</string>
     <string name="session_always_notify_message_phone">Varsle denne telefonen når et svar er klart, også når meldingen ikke ble sendt herfra.</string>
     <string name="session_always_notify_message_tablet">Varsle dette nettbrettet når et svar er klart, også når meldingen ikke ble sendt herfra.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d skall</item>
         <item quantity="other">%1$d skall</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skript</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skript</string>
+    <string name="session_background_work_stop_script_label">Stopp skript</string>
+    <string name="session_background_work_stop_subagent_label">Stopp underagent</string>
+    <string name="session_background_work_stop_script_failed">Kunne ikke stoppe skriptet</string>
+    <string name="session_background_work_stop_subagent_failed">Kunne ikke stoppe underagenten</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Send melding</string>

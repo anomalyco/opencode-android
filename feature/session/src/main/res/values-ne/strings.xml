@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">चलिरहेको</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">चलिरहेका उप-एजेन्ट र शेलहरू देखाउनुहोस्</string>
+    <string name="session_background_work_show_label">चलिरहेका उप-एजेन्टहरू, स्क्रिप्टहरू र शेलहरू देखाउनुहोस्</string>
     <string name="session_background_work_collapsed_description">संक्षिप्त</string>
     <string name="session_background_work_subagents_title">उप-एजेन्टहरू</string>
     <string name="session_background_work_open_subagent_label">उप-एजेन्टको सत्र खोल्नुहोस्</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">अज्ञात</string>
     <string name="session_sheet_context_tokens">%1$s टोकन</string>
     <string name="session_sheet_cost">खर्च</string>
+    <string name="session_sheet_media">मिडिया</string>
+    <string name="session_sheet_media_value">फाइलहरू र लिङ्कहरू</string>
     <string name="session_always_notify">सधैं सूचना दिनुहोस्</string>
     <string name="session_always_notify_message_phone">हरेक जवाफ तयार हुँदा यो फोनमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>
     <string name="session_always_notify_message_tablet">हरेक जवाफ तयार हुँदा यो ट्याब्लेटमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d शेल</item>
         <item quantity="other">%1$d शेलहरू</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d स्क्रिप्ट</item>
+        <item quantity="other">%1$d स्क्रिप्टहरू</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">स्क्रिप्टहरू</string>
+    <string name="session_background_work_stop_script_label">स्क्रिप्ट रोक्नुहोस्</string>
+    <string name="session_background_work_stop_subagent_label">उप-एजेन्ट रोक्नुहोस्</string>
+    <string name="session_background_work_stop_script_failed">स्क्रिप्ट रोक्न सकिएन</string>
+    <string name="session_background_work_stop_subagent_failed">उप-एजेन्ट रोक्न सकिएन</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">सन्देश पठाउनुहोस्</string>

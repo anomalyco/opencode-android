@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">執行中</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">顯示執行中的子代理與 Shell</string>
+    <string name="session_background_work_show_label">顯示執行中的子代理、腳本與 Shell</string>
     <string name="session_background_work_collapsed_description">已摺疊</string>
     <string name="session_background_work_subagents_title">子代理</string>
     <string name="session_background_work_open_subagent_label">開啟子代理的工作階段</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">未知</string>
     <string name="session_sheet_context_tokens">%1$s 詞元</string>
     <string name="session_sheet_cost">費用</string>
+    <string name="session_sheet_media">媒體</string>
+    <string name="session_sheet_media_value">檔案與連結</string>
     <string name="session_always_notify">一律通知</string>
     <string name="session_always_notify_message_phone">每次回覆完成時都通知這支手機，即使訊息不是從這裡傳送的。</string>
     <string name="session_always_notify_message_tablet">每次回覆完成時都通知這台平板，即使訊息不是從這裡傳送的。</string>
@@ -192,7 +194,15 @@
     <plurals name="session_background_work_shell_count">
         <item quantity="other">%1$d 個 Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="other">%1$d 個腳本</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">腳本</string>
+    <string name="session_background_work_stop_script_label">停止腳本</string>
+    <string name="session_background_work_stop_subagent_label">停止子代理</string>
+    <string name="session_background_work_stop_script_failed">無法停止腳本</string>
+    <string name="session_background_work_stop_subagent_failed">無法停止子代理</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">傳送訊息</string>

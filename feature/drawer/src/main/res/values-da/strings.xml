@@ -38,6 +38,8 @@
     <string name="drawer_mark_as_unread">Markér som ulæst</string>
     <string name="drawer_mute">Slå notifikationer fra</string>
     <string name="drawer_unmute">Slå notifikationer til</string>
+    <string name="drawer_hide">Skjul</string>
+    <string name="drawer_unhide">Vis igen</string>
     <string name="drawer_move_up">Flyt op</string>
     <string name="drawer_move_down">Flyt ned</string>
 
@@ -121,6 +123,7 @@
     <!-- Session row state for TalkBack -->
     <string name="drawer_row_pinned_state">Fastgjort</string>
     <string name="drawer_row_muted_state">Lydløs</string>
+    <string name="drawer_row_hidden_state">Skjult</string>
     <string name="drawer_row_needs_input_state">Dit input er nødvendigt</string>
     <string name="drawer_row_working_state">Arbejder</string>
     <string name="drawer_row_unread_state">Ulæst</string>

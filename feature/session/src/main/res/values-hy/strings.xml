@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Աշխատում է</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Ցույց տալ աշխատող ենթագործակալներն ու Shell-երը</string>
+    <string name="session_background_work_show_label">Ցույց տալ աշխատող ենթագործակալները, սկրիպտներն ու Shell-երը</string>
     <string name="session_background_work_collapsed_description">Ծալված</string>
     <string name="session_background_work_subagents_title">Ենթագործակալներ</string>
     <string name="session_background_work_open_subagent_label">Բացել ենթագործակալի նիստը</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Անհայտ</string>
     <string name="session_sheet_context_tokens">%1$s թոքեն</string>
     <string name="session_sheet_cost">Արժեք</string>
+    <string name="session_sheet_media">Մեդիա</string>
+    <string name="session_sheet_media_value">Ֆայլեր և հղումներ</string>
     <string name="session_always_notify">Միշտ ծանուցել</string>
     <string name="session_always_notify_message_phone">Ծանուցել այս հեռախոսին, երբ պատասխանը պատրաստ է, նույնիսկ եթե հարցումն այստեղից չի ուղարկվել։</string>
     <string name="session_always_notify_message_tablet">Ծանուցել այս պլանշետին, երբ պատասխանը պատրաստ է, նույնիսկ եթե հարցումն այստեղից չի ուղարկվել։</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d Shell</item>
         <item quantity="other">%1$d Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d սկրիպտ</item>
+        <item quantity="other">%1$d սկրիպտ</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Սկրիպտներ</string>
+    <string name="session_background_work_stop_script_label">Կանգնեցնել սկրիպտը</string>
+    <string name="session_background_work_stop_subagent_label">Կանգնեցնել ենթագործակալը</string>
+    <string name="session_background_work_stop_script_failed">Չհաջողվեց կանգնեցնել սկրիպտը</string>
+    <string name="session_background_work_stop_subagent_failed">Չհաջողվեց կանգնեցնել ենթագործակալը</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Ուղարկել հաղորդագրություն</string>

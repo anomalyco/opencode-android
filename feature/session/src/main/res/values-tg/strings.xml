@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Иҷро мешавад</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Зер-агентҳо ва shell-ҳои фаъолро нишон диҳед</string>
+    <string name="session_background_work_show_label">Зер-агентҳо, скриптҳо ва shell-ҳои фаъолро нишон диҳед</string>
     <string name="session_background_work_collapsed_description">Ҷамъшуда</string>
     <string name="session_background_work_subagents_title">Зер-агентҳо</string>
     <string name="session_background_work_open_subagent_label">Сессияи зер-агентро кушоед</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">номаълум</string>
     <string name="session_sheet_context_tokens">%1$s токен</string>
     <string name="session_sheet_cost">Арзиш</string>
+    <string name="session_sheet_media">Медиа</string>
+    <string name="session_sheet_media_value">Файлҳо ва истинодҳо</string>
     <string name="session_always_notify">Ҳамеша огоҳ кунед</string>
     <string name="session_always_notify_message_phone">Ҳар боре ки ҷавоб омода шуд, ин телефонро огоҳ кунед, ҳатто агар паёмро аз ин ҷо нафиристода бошед.</string>
     <string name="session_always_notify_message_tablet">Ҳар боре ки ҷавоб омода шуд, ин планшетро огоҳ кунед, ҳатто агар паёмро аз ин ҷо нафиристода бошед.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d shell</item>
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="other">%1$d скрипт</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скриптҳо</string>
+    <string name="session_background_work_stop_script_label">Скриптро қатъ кунед</string>
+    <string name="session_background_work_stop_subagent_label">Зер-агентро қатъ кунед</string>
+    <string name="session_background_work_stop_script_failed">Скрипт қатъ нашуд</string>
+    <string name="session_background_work_stop_subagent_failed">Зер-агент қатъ нашуд</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Паёмро фиристед</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Vykdoma</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Rodyti veikiančius subagentus ir apvalkalus</string>
+    <string name="session_background_work_show_label">Rodyti veikiančius subagentus, scenarijus ir apvalkalus</string>
     <string name="session_background_work_collapsed_description">Sutraukta</string>
     <string name="session_background_work_subagents_title">Subagentai</string>
     <string name="session_background_work_open_subagent_label">Atidaryti subagento seansą</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nežinomas</string>
     <string name="session_sheet_context_tokens">%1$s žetonų</string>
     <string name="session_sheet_cost">Kaina</string>
+    <string name="session_sheet_media">Medija</string>
+    <string name="session_sheet_media_value">Failai ir nuorodos</string>
     <string name="session_always_notify">Visada pranešti</string>
     <string name="session_always_notify_message_phone">Pranešti šiame telefone, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>
     <string name="session_always_notify_message_tablet">Pranešti šioje planšetėje, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>
@@ -213,7 +215,18 @@
         <item quantity="many">%1$d apvalkalo</item>
         <item quantity="other">%1$d apvalkalų</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d scenarijus</item>
+        <item quantity="few">%1$d scenarijai</item>
+        <item quantity="many">%1$d scenarijaus</item>
+        <item quantity="other">%1$d scenarijų</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Scenarijai</string>
+    <string name="session_background_work_stop_script_label">Stabdyti scenarijų</string>
+    <string name="session_background_work_stop_subagent_label">Stabdyti subagentą</string>
+    <string name="session_background_work_stop_script_failed">Nepavyko sustabdyti scenarijaus</string>
+    <string name="session_background_work_stop_subagent_failed">Nepavyko sustabdyti subagento</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Siųsti žinutę</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">V teku</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Pokaži subagente in lupine v teku</string>
+    <string name="session_background_work_show_label">Pokaži subagente, skripte in lupine v teku</string>
     <string name="session_background_work_collapsed_description">Strnjeno</string>
     <string name="session_background_work_subagents_title">Subagenti</string>
     <string name="session_background_work_open_subagent_label">Odpri sejo subagenta</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Neznano</string>
     <string name="session_sheet_context_tokens">%1$s žetonov</string>
     <string name="session_sheet_cost">Strošek</string>
+    <string name="session_sheet_media">Predstavnost</string>
+    <string name="session_sheet_media_value">Datoteke in povezave</string>
     <string name="session_always_notify">Vedno obvesti</string>
     <string name="session_always_notify_message_phone">Obvesti ta telefon ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
     <string name="session_always_notify_message_tablet">Obvesti to tablico ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
@@ -213,7 +215,18 @@
         <item quantity="few">%1$d lupine</item>
         <item quantity="other">%1$d lupin</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d skripta</item>
+        <item quantity="two">%1$d skripti</item>
+        <item quantity="few">%1$d skripte</item>
+        <item quantity="other">%1$d skript</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripte</string>
+    <string name="session_background_work_stop_script_label">Ustavi skripto</string>
+    <string name="session_background_work_stop_subagent_label">Ustavi subagenta</string>
+    <string name="session_background_work_stop_script_failed">Skripte ni bilo mogoče ustaviti</string>
+    <string name="session_background_work_stop_subagent_failed">Subagenta ni bilo mogoče ustaviti</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Pošlji sporočilo</string>

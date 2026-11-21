@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">მიმდინარეობს</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">მოქმედი ქვეაგენტებისა და გარსების ჩვენება</string>
+    <string name="session_background_work_show_label">მოქმედი ქვეაგენტების, სკრიპტებისა და გარსების ჩვენება</string>
     <string name="session_background_work_collapsed_description">ჩაკეცილი</string>
     <string name="session_background_work_subagents_title">ქვეაგენტები</string>
     <string name="session_background_work_open_subagent_label">ქვეაგენტის სესიის გახსნა</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">უცნობი</string>
     <string name="session_sheet_context_tokens">%1$s ტოკენი</string>
     <string name="session_sheet_cost">ღირებულება</string>
+    <string name="session_sheet_media">მედია</string>
+    <string name="session_sheet_media_value">ფაილები და ბმულები</string>
     <string name="session_always_notify">ყოველთვის შემატყობინე</string>
     <string name="session_always_notify_message_phone">ამ ტელეფონზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>
     <string name="session_always_notify_message_tablet">ამ პლანშეტზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d გარსი</item>
         <item quantity="other">%1$d გარსი</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d სკრიპტი</item>
+        <item quantity="other">%1$d სკრიპტი</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">სკრიპტები</string>
+    <string name="session_background_work_stop_script_label">სკრიპტის შეჩერება</string>
+    <string name="session_background_work_stop_subagent_label">ქვეაგენტის შეჩერება</string>
+    <string name="session_background_work_stop_script_failed">სკრიპტის შეჩერება ვერ მოხერხდა</string>
+    <string name="session_background_work_stop_subagent_failed">ქვეაგენტის შეჩერება ვერ მოხერხდა</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">შეტყობინების გაგზავნა</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Ажиллаж байна</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Ажиллаж буй дэд агентууд болон Shell-үүдийг харуулах</string>
+    <string name="session_background_work_show_label">Ажиллаж буй дэд агентууд, скриптүүд болон Shell-үүдийг харуулах</string>
     <string name="session_background_work_collapsed_description">Хураасан</string>
     <string name="session_background_work_subagents_title">Дэд агентууд</string>
     <string name="session_background_work_open_subagent_label">Дэд агентийн сессийг нээх</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">үл мэдэгдэх</string>
     <string name="session_sheet_context_tokens">%1$s токен</string>
     <string name="session_sheet_cost">Зардал</string>
+    <string name="session_sheet_media">Медиа</string>
+    <string name="session_sheet_media_value">Файлууд ба холбоосууд</string>
     <string name="session_always_notify">Үргэлж мэдэгдэх</string>
     <string name="session_always_notify_message_phone">Өөр газраас илгээсэн ч хариулт бэлэн болох бүрд энэ утсанд мэдэгдэнэ.</string>
     <string name="session_always_notify_message_tablet">Өөр газраас илгээсэн ч хариулт бэлэн болох бүрд энэ таблетад мэдэгдэнэ.</string>
@@ -199,7 +201,16 @@
         <item quantity="one">%1$d Shell</item>
         <item quantity="other">%1$d Shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="other">%1$d скрипт</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скриптүүд</string>
+    <string name="session_background_work_stop_script_label">Скриптийг зогсоох</string>
+    <string name="session_background_work_stop_subagent_label">Дэд агентыг зогсоох</string>
+    <string name="session_background_work_stop_script_failed">Скриптийг зогсоож чадсангүй</string>
+    <string name="session_background_work_stop_subagent_failed">Дэд агентыг зогсоож чадсангүй</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Мессеж илгээх</string>

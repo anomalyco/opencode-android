@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Выполняется</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Показать работающие субагенты и оболочки</string>
+    <string name="session_background_work_show_label">Показать работающие субагенты, скрипты и оболочки</string>
     <string name="session_background_work_collapsed_description">Свёрнуто</string>
     <string name="session_background_work_subagents_title">Субагенты</string>
     <string name="session_background_work_open_subagent_label">Открыть сессию субагента</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Неизвестно</string>
     <string name="session_sheet_context_tokens">Токены: %1$s</string>
     <string name="session_sheet_cost">Стоимость</string>
+    <string name="session_sheet_media">Медиа</string>
+    <string name="session_sheet_media_value">Файлы и ссылки</string>
     <string name="session_always_notify">Всегда уведомлять</string>
     <string name="session_always_notify_message_phone">Уведомлять на этом телефоне о каждом готовом ответе, даже на запросы с других устройств.</string>
     <string name="session_always_notify_message_tablet">Уведомлять на этом планшете о каждом готовом ответе, даже на запросы с других устройств.</string>
@@ -213,7 +215,18 @@
         <item quantity="many">%1$d оболочек</item>
         <item quantity="other">%1$d оболочки</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d скрипт</item>
+        <item quantity="few">%1$d скрипта</item>
+        <item quantity="many">%1$d скриптов</item>
+        <item quantity="other">%1$d скрипта</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Скрипты</string>
+    <string name="session_background_work_stop_script_label">Остановить скрипт</string>
+    <string name="session_background_work_stop_subagent_label">Остановить субагента</string>
+    <string name="session_background_work_stop_script_failed">Не удалось остановить скрипт</string>
+    <string name="session_background_work_stop_subagent_failed">Не удалось остановить субагента</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Отправить сообщение</string>

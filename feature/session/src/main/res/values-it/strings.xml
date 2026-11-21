@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">In esecuzione</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Mostra subagenti e shell in esecuzione</string>
+    <string name="session_background_work_show_label">Mostra subagenti, script e shell in esecuzione</string>
     <string name="session_background_work_collapsed_description">Compresso</string>
     <string name="session_background_work_subagents_title">Subagenti</string>
     <string name="session_background_work_open_subagent_label">Apri la sessione del subagente</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Sconosciuto</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Costo</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">File e link</string>
     <string name="session_always_notify">Notifica sempre</string>
     <string name="session_always_notify_message_phone">Ricevi una notifica su questo telefono al termine di ogni risposta, anche ai messaggi inviati da altri dispositivi.</string>
     <string name="session_always_notify_message_tablet">Ricevi una notifica su questo tablet al termine di ogni risposta, anche ai messaggi inviati da altri dispositivi.</string>
@@ -206,7 +208,17 @@
         <item quantity="many">%1$d shell</item>
         <item quantity="other">%1$d shell</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="one">%1$d script</item>
+        <item quantity="many">%1$d script</item>
+        <item quantity="other">%1$d script</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Script</string>
+    <string name="session_background_work_stop_script_label">Interrompi script</string>
+    <string name="session_background_work_stop_subagent_label">Interrompi subagente</string>
+    <string name="session_background_work_stop_script_failed">Impossibile interrompere lo script</string>
+    <string name="session_background_work_stop_subagent_failed">Impossibile interrompere il subagente</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Invia messaggio</string>

@@ -3,7 +3,7 @@
     <!-- Agent activity glyph -->
     <string name="session_activity_running_description">Darbojas</string>
     <!-- Background work panel -->
-    <string name="session_background_work_show_label">Rādīt aktīvos apakšaģentus un čaulas</string>
+    <string name="session_background_work_show_label">Rādīt aktīvos apakšaģentus, skriptus un čaulas</string>
     <string name="session_background_work_collapsed_description">Sakļauts</string>
     <string name="session_background_work_subagents_title">Apakšaģenti</string>
     <string name="session_background_work_open_subagent_label">Atvērt apakšaģenta sesiju</string>
@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nezināms</string>
     <string name="session_sheet_context_tokens">%1$s tokeni</string>
     <string name="session_sheet_cost">Izmaksas</string>
+    <string name="session_sheet_media">Multivide</string>
+    <string name="session_sheet_media_value">Faili un saites</string>
     <string name="session_always_notify">Vienmēr paziņot</string>
     <string name="session_always_notify_message_phone">Paziņot šajā tālrunī par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>
     <string name="session_always_notify_message_tablet">Paziņot šajā planšetdatorā par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>
@@ -206,7 +208,17 @@
         <item quantity="one">%1$d čaula</item>
         <item quantity="other">%1$d čaulas</item>
     </plurals>
+    <plurals name="session_background_work_script_count">
+        <item quantity="zero">%1$d skriptu</item>
+        <item quantity="one">%1$d skripts</item>
+        <item quantity="other">%1$d skripti</item>
+    </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
+    <string name="session_background_work_scripts_title">Skripti</string>
+    <string name="session_background_work_stop_script_label">Apturēt skriptu</string>
+    <string name="session_background_work_stop_subagent_label">Apturēt apakšaģentu</string>
+    <string name="session_background_work_stop_script_failed">Neizdevās apturēt skriptu</string>
+    <string name="session_background_work_stop_subagent_failed">Neizdevās apturēt apakšaģentu</string>
 
     <!-- Composer buttons -->
     <string name="session_send_message_description">Sūtīt ziņu</string>
