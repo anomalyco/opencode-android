@@ -1,0 +1,62 @@
+# Opens and updates GitHub issues for the crashes Google Play collected, once a day or when
+# dispatched from dev (docs/releasing.md "Crash reports").
+#
+# The job checks out only scripts/play-crashes.py and .github/release/, and runs the script with a
+# Play key that can only read crash data. Its AWS role trusts only this file at refs/heads/dev in
+# the automation environment and reads only opencode-android/automation/*, so it can't reach the
+# release secrets. Issues are written with the built-in token.
+name: Crashes
+
+on:
+  schedule:
+    - cron: "0 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crashes
+  cancel-in-progress: false
+
+jobs:
+  issues:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: automation
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.sha }}
+          sparse-checkout: |
+            /.github/release/
+            /scripts/play-crashes.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+
+      - id: aws
+        name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: arn:aws:iam::604439173067:role/github/opencode-android-automation
+          role-session-name: opencode-android-crashes-${{ github.run_id }}
+          role-duration-seconds: 900
+          aws-region: us-east-1
+          output-env-credentials: false
+          output-credentials: true
+
+      - name: Open issues for new crashes
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.aws.outputs.aws-access-key-id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.aws.outputs.aws-secret-access-key }}
+          AWS_SESSION_TOKEN: ${{ steps.aws.outputs.aws-session-token }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          bash .github/release/with-secrets.sh \
+            PLAY_VITALS_SERVICE_ACCOUNT_JSON=opencode-android/automation/PLAY_VITALS_SERVICE_ACCOUNT_JSON \
+            -- python3 scripts/play-crashes.py issues --create

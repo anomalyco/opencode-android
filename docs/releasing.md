@@ -103,5 +103,10 @@ prints what it would do.
 It reads a key for `play-vitals-reader@opencode-android-vitals.iam.gserviceaccount.com` (Google
 Cloud project `opencode-android-vitals` in the anoma.ly org), invited in Play Console with only
 *View app quality information* on OpenCode, from `$PLAY_VITALS_KEY` or
-`~/.config/opencode-android/play-vitals-reader.json`. The key isn't in AWS, so nothing runs this
-on a schedule yet.
+`~/.config/opencode-android/play-vitals-reader.json`.
+
+`.github/workflows/crashes.yml` runs `issues --create` once a day. It assumes
+`arn:aws:iam::604439173067:role/github/opencode-android-automation` over GitHub OIDC, trusted
+only for `crashes.yml` on `refs/heads/dev` in the `automation` environment, and reads a second
+key for the same account from `opencode-android/automation/PLAY_VITALS_SERVICE_ACCOUNT_JSON`. That
+role can't read `opencode-android/release/*`.

@@ -18,8 +18,8 @@ group gets one issue. When the group shows up in a newer version, the issue gets
 traces are posted without exception messages, which can contain what the user typed.
 
 It reads a Google service account key that has "View app quality information" in Play Console,
-from $PLAY_VITALS_KEY or ~/.config/opencode-android/play-vitals-reader.json. It needs Python 3 and
-openssl, and `gh` for `issues`.
+from $PLAY_VITALS_KEY or ~/.config/opencode-android/play-vitals-reader.json, or the key itself from
+$PLAY_VITALS_SERVICE_ACCOUNT_JSON. It needs Python 3 and openssl, and `gh` for `issues`.
 """
 import argparse
 import base64
@@ -52,10 +52,14 @@ def base64url(data):
 
 
 def access_token():
-    path = Path(os.environ.get("PLAY_VITALS_KEY") or DEFAULT_KEY)
-    if not path.exists():
-        sys.exit(f"No service account key at {path}. Set PLAY_VITALS_KEY to its path.")
-    key = json.loads(path.read_text())
+    inline = os.environ.get("PLAY_VITALS_SERVICE_ACCOUNT_JSON")
+    if inline:
+        key = json.loads(inline)
+    else:
+        path = Path(os.environ.get("PLAY_VITALS_KEY") or DEFAULT_KEY)
+        if not path.exists():
+            sys.exit(f"No service account key at {path}. Set PLAY_VITALS_KEY to its path.")
+        key = json.loads(path.read_text())
     now = int(time.time())
     header = base64url(json.dumps({"alg": "RS256", "typ": "JWT"}).encode())
     claims = base64url(json.dumps({
