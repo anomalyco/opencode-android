@@ -741,7 +741,13 @@ private fun SessionFeature.task(state: SessionFeature.State): Reduced<SessionFea
         val loadModels = loadModelsIfNeeded(s)
         return Reduced(
             loadModels.state,
-            Effect.merge(stopSessionWork, loadModels.effect, outbox.effect, Effect.run<Action> { dictation.prepare() }),
+            Effect.merge(
+                stopSessionWork,
+                loadModels.effect,
+                Effect.send(Action.AgentsRequested),
+                outbox.effect,
+                Effect.run<Action> { dictation.prepare() },
+            ),
         )
     }
     if (s.loadError != null && s.items.isEmpty()) s = s.copy(isLoading = true)

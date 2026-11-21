@@ -115,8 +115,10 @@ class MediaReferenceClient(
 class MemoryWarningCenter {
     private val observers = CopyOnWriteArrayList<() -> Unit>()
 
-    fun observe(observer: () -> Unit) {
+    /** Returns a call that stops [observer]. */
+    fun observe(observer: () -> Unit): () -> Unit {
         observers += observer
+        return { observers -= observer }
     }
 
     fun post() = observers.forEach { it() }

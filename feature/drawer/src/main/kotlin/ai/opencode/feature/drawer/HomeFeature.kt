@@ -233,6 +233,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val noticeReadiness: NoticeReadiness = NoticeReadiness.unsettled,
         /** Counts opened details so each presented screen has its own identity. */
         val detailGeneration: Int = 0,
+        /** [detailGeneration] when the app left: anything opened since (a notification, a link) wins over the new session a long absence opens. */
+        val detailGenerationWhenLeft: Int? = null,
         /** Pushed subagents' identities, counted apart (and negative). */
         val pushedDetailCount: Int = 0,
         /** Why the next screen change happens, when the action that asks for it isn't the one that makes it. */
@@ -864,6 +866,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** Bounds the in-memory transcripts. */
         const val transcriptMemoryLimit = 8
 
+        /** How long the app stays in the background before coming back opens a new session instead of the last one viewed. */
+        val newSessionAfterAway: java.time.Duration = java.time.Duration.ofMinutes(30)
+
         /** Bound of [State.dirtyCachedTranscriptIDs]. */
         const val dirtyCachedTranscriptLimit = 16
 
@@ -877,6 +882,12 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
  * reconnecting. Tests read a fixed instant unless they set one.
  */
 object HomeSnapshotDate : DependencyKey<DateClient> {
+    override val liveValue: DateClient = DateClient { Instant.now() }
+    override val testValue: DateClient = DateClient.constant(Instant.EPOCH)
+}
+
+/** Times leaving the app and coming back. Fixed in tests, so a return there never reads as a long absence unless a test sets it. */
+object AppAwayDate : DependencyKey<DateClient> {
     override val liveValue: DateClient = DateClient { Instant.now() }
     override val testValue: DateClient = DateClient.constant(Instant.EPOCH)
 }
@@ -948,6 +959,7 @@ internal fun HomeFeature.State.syncAbsorbedDraft(detail: SessionFeature.State) {
 
 /** Opens the remembered session for this server, else a draft. */
 fun HomeFeature.State.restoringInitialSession(): HomeFeature.State {
+    if (!isWindowLocal && wasAwayLongEnoughForNewSession(dependency(AppAwayDate).now())) return openingDraft(reason = "you came back after a while")
     val rememberedID = lastViewedSessionIDs[server.persistenceID]
     val session = rememberedID?.let { id -> sessions.firstOrNull { it.id == id } }
     if (session != null) {
