@@ -38,7 +38,7 @@ class OpenCodeApplication : Application() {
     @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate() {
         super.onCreate()
-        // Compose 1.12 crashes on a mouse press past the last Text in a SelectionContainer.
+        // Compose Foundation 1.12.1 crashes on mouse presses after the last of multiple selectable texts.
         ComposeFoundationFlags.isMouseSelectionBetweenTextEnabled = false
         DependencyValues.installRoot { this[AppContext] = applicationContext }
         // The batcher prepares streaming Markdown and records every event into the agent activity
