@@ -246,7 +246,9 @@ fun SessionTranscriptView(
         onDispose {
             host?.showsJumpButton = false
             host?.veilsJumpButton = false
+            host?.showsPreviousMessageButton = false
             scrollEdgeBridge.reportedShowsJumpButton = false
+            scrollEdgeBridge.reportedShowsPreviousMessageButton = false
         }
     }
 
@@ -270,6 +272,11 @@ fun SessionTranscriptView(
             onScrolledUnderHeader = { scrollEdgeBridge.scrolled(underHeader = it, revealDistance = top.revealDistance) },
             borrowedDrag = scrollEdgeBridge.borrowedDrag,
             onHidesChanged = { host?.veilsJumpButton = it },
+            previousMessageRequest = scrollEdgeBridge.previousMessageRequest,
+            onShowsPreviousMessageButtonChanged = {
+                host?.showsPreviousMessageButton = it
+                scrollEdgeBridge.reportedShowsPreviousMessageButton = it
+            },
         )
     }
 

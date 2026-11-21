@@ -23,6 +23,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 /** The scrolls the transcript list makes itself. The list is reversed: index 0 is the newest row. */
 internal class TranscriptListScroller(
@@ -93,8 +94,14 @@ internal class TranscriptListScroller(
     }
 
     private suspend fun glideToEnd(start: Int, exact: Boolean) {
+        glide(start, towardEnd = true, measured = ::distanceToEnd, estimated = { if (exact) null else estimatedDistanceToEnd() })
+    }
+
+    /** Glides [start] pixels, re-aimed each frame at what's [measured] or else [estimated] to go. */
+    private suspend fun glide(start: Int, towardEnd: Boolean, measured: () -> Int?, estimated: () -> Int? = { null }) {
+        val direction = if (towardEnd) -1f else 1f
         val screen = visibleHeight().coerceAtLeast(1)
-        val share = (start.toFloat() / screen).coerceIn(0f, 1f)
+        val share = (abs(start).toFloat() / screen).coerceIn(0f, 1f)
         val seconds = JUMP_MIN_SECONDS + (JUMP_MAX_SECONDS - JUMP_MIN_SECONDS) * share
         val duration = Motion.millis(seconds) * 1_000_000L
         val limit = Motion.millis(JUMP_LIMIT_SECONDS) * 1_000_000L
@@ -103,13 +110,67 @@ internal class TranscriptListScroller(
             var travelled = 0f
             while (true) {
                 val now = withFrameNanos { it }
-                val target = distanceToEnd()?.let { travelled + it } ?: if (exact) start.toFloat() else travelled + estimatedDistanceToEnd()
+                val target = (measured() ?: estimated())?.let { travelled + it } ?: start.toFloat()
                 val fraction = ((now - begin).toFloat() / duration).coerceIn(0f, 1f)
                 val position = target * JUMP_EASING.transform(fraction)
-                travelled -= scrollBy(-(position - travelled))
-                if (fraction >= 1f || distanceToEnd() == 0 || now - begin > limit) break
+                travelled += direction * scrollBy(direction * (position - travelled))
+                if (fraction >= 1f || measured() == 0 || now - begin > limit) break
             }
-            distanceToEnd()?.let { if (it > 0) scrollBy(-it.toFloat()) }
+            val left = measured()
+            if (left != null && left != 0) scrollBy(direction * left)
+        }
+    }
+
+    /** Set each composition: indices of the rows that are user messages, oldest last. */
+    var userMessageIndices: List<Int> = emptyList()
+
+    /** The nearest user message whose top is above the visible area. */
+    fun previousUserMessageIndex(): Int? {
+        val rows = state.layoutInfo.visibleItemsInfo
+        val top = rows.lastOrNull() ?: return null
+        for (index in userMessageIndices) {
+            if (index > top.index) return index
+            val row = rows.firstOrNull { it.index == index } ?: continue
+            if (rowTop(row.offset, row.size) < -LANDED_SLACK_PX) return index
+        }
+        return null
+    }
+
+    fun scrollToPreviousUserMessage() {
+        val index = previousUserMessageIndex() ?: return
+        val key = keys().getOrNull(index) ?: return
+        if (selection.isSelected) selection.clear()
+        selectionHoldsEnd = false
+        cancelBorrowedDrag()
+        glide?.cancel()
+        glidingToEnd = false
+        glide = scope.launch {
+            val screen = visibleHeight()
+            if (reduceMotion) {
+                placeRowTop(index, above = 0)
+                return@launch
+            }
+            val measured = distanceToRowTop(key)
+            val far = measured == null || measured > screen * CUT_SCREENS
+            val cutTo = (screen * GLIDE_SCREENS).toInt()
+            if (far) placeRowTop(index, above = cutTo)
+            glide(if (far) cutTo else measured ?: 0, towardEnd = false, measured = { distanceToRowTop(key) })
+        }
+    }
+
+    /** How far the row's top is above the visible area's top; null while it isn't laid out. */
+    private fun distanceToRowTop(key: Any): Int? {
+        val row = state.layoutInfo.visibleItemsInfo.firstOrNull { it.key == key } ?: return null
+        return -rowTop(row.offset, row.size)
+    }
+
+    private suspend fun placeRowTop(index: Int, above: Int) {
+        if (index + 1 < state.layoutInfo.totalItemsCount) {
+            state.scrollToItem(index + 1, -(visibleHeight() + above))
+        } else {
+            state.scrollToItem(index)
+            val row = state.layoutInfo.visibleItemsInfo.firstOrNull { it.index == index } ?: return
+            state.scrollBy((-rowTop(row.offset, row.size) - above).toFloat())
         }
     }
 
@@ -361,6 +422,8 @@ internal class TranscriptListScroller(
         val JUMP_EASING = CubicBezierEasing(0.2f, 0f, 0f, 1f)
 
         const val JUMP_LIMIT_SECONDS = 1.5
+
+        const val LANDED_SLACK_PX = 2
 
         const val RESIZE_START_MILLIS = 100L
         const val SETTLED_FRAMES = 3

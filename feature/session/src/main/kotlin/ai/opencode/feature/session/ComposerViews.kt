@@ -9,6 +9,7 @@ import ai.opencode.core.motion.motionBlurReveal
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeShape
+import ai.opencode.core.ui.OpenCodeSpacing
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.RollingNumber
@@ -79,6 +80,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layoutId
@@ -787,22 +789,82 @@ fun JumpToLatestPill(
     isShown: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showsPrevious: Boolean = false,
+    onPrevious: () -> Unit = {},
     collapsesSlot: Boolean = false,
     veiled: () -> Boolean = { false },
 ) {
     val reduceMotion = rememberReduceMotion()
-    val scrollToLatestDescription = stringResource(R.string.session_scroll_to_latest_description)
-    val presence = remember { Animatable(if (isShown) 1f else 0f) }
-    var mounted by remember { mutableStateOf(isShown) }
-    LaunchedEffect(isShown, reduceMotion) {
-        if (isShown) mounted = true
-        val spec = Motion.microIn.animation<Float>(if (isShown) MotionPhase.Enter else MotionPhase.Exit, reduceMotion)
-        presence.animateTo(if (isShown) 1f else 0f, spec)
-        if (!isShown) mounted = false
-    }
-    val slotOpen = if (reduceMotion) (if (isShown) 1f else 0f) else presence.value.coerceIn(0f, 1f)
-    val interactions = remember { MutableInteractionSource() }
+    val presence = rememberJumpButtonPresence(isShown, reduceMotion)
+    val slotOpen = if (reduceMotion) (if (isShown) 1f else 0f) else presence.progress.value.coerceIn(0f, 1f)
     val slotWidth = if (collapsesSlot) (48f + JumpToLatestPillMotion.gap) * slotOpen else 48f
+    val previousShown = isShown && showsPrevious
+    val previousPresence = rememberJumpButtonPresence(previousShown, reduceMotion)
+    Box(Modifier.width(slotWidth.dp).heightIn(min = 48.dp), contentAlignment = Alignment.CenterEnd) {
+        JumpButton(
+            presence = presence,
+            isShown = isShown,
+            onClick = onClick,
+            symbol = SFSymbol.ArrowDown,
+            description = stringResource(R.string.session_scroll_to_latest_description),
+            testTag = "scroll-to-latest",
+            veiled = veiled,
+            reduceMotion = reduceMotion,
+            modifier = modifier,
+        )
+        // Above the down arrow without taking layout space, so the down arrow never moves.
+        Box(
+            Modifier.align(Alignment.CenterEnd).layout { measurable, _ ->
+                val button = measurable.measure(Constraints())
+                val rise = (34.dp + OpenCodeSpacing.stack).roundToPx()
+                layout(0, 0) { button.place(-button.width, -rise - button.height / 2) }
+            },
+        ) {
+            JumpButton(
+                presence = previousPresence,
+                isShown = previousShown,
+                onClick = onPrevious,
+                symbol = SFSymbol.ArrowUp,
+                description = stringResource(R.string.session_scroll_to_previous_message_description),
+                testTag = "scroll-to-previous-message",
+                veiled = veiled,
+                reduceMotion = reduceMotion,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+private class JumpButtonPresence(shown: Boolean) {
+    val progress = Animatable(if (shown) 1f else 0f)
+    var mounted by mutableStateOf(shown)
+}
+
+@Composable
+private fun rememberJumpButtonPresence(isShown: Boolean, reduceMotion: Boolean): JumpButtonPresence {
+    val presence = remember { JumpButtonPresence(isShown) }
+    LaunchedEffect(isShown, reduceMotion) {
+        if (isShown) presence.mounted = true
+        val spec = Motion.microIn.animation<Float>(if (isShown) MotionPhase.Enter else MotionPhase.Exit, reduceMotion)
+        presence.progress.animateTo(if (isShown) 1f else 0f, spec)
+        if (!isShown) presence.mounted = false
+    }
+    return presence
+}
+
+@Composable
+private fun JumpButton(
+    presence: JumpButtonPresence,
+    isShown: Boolean,
+    onClick: () -> Unit,
+    symbol: SFSymbol,
+    description: String,
+    testTag: String,
+    veiled: () -> Boolean,
+    reduceMotion: Boolean,
+    modifier: Modifier,
+) {
+    val interactions = remember { MutableInteractionSource() }
     // Only a shown pill takes touches. Leaving (its fade-out) or gone, a tap or a drag reaches the
     // transcript under it; the 48 dp slot never takes any. A finger already down on the pill keeps
     // [modifier] (the borrowed drag) to release as the pill leaves under it.
@@ -822,45 +884,41 @@ fun JumpToLatestPill(
             }
         }
     }
-    Box(Modifier.width(slotWidth.dp).heightIn(min = 48.dp), contentAlignment = Alignment.CenterEnd) {
-        Box(if (isShown || touched) modifier.then(tracksTouch) else Modifier) {
-            if (mounted) {
-                val p = presence.value
+    Box(if (isShown || touched) modifier.then(tracksTouch) else Modifier) {
+        if (presence.mounted) {
+            val p = presence.progress.value
+            Box(
+                Modifier
+                    .graphicsLayer { if (veiled()) alpha = 0f }
+                    .scale(if (reduceMotion) 1f else 0.5f + 0.5f * p)
+                    .alpha(p.coerceIn(0f, 1f))
+                    .coveredByBackgroundWork()
+                    .then(
+                        if (isShown && !veiled()) {
+                            Modifier
+                                .clickable(interactionSource = interactions, indication = null, role = Role.Button, onClick = onClick)
+                                .semantics { contentDescription = description }
+                                .testTag(testTag)
+                        } else {
+                            Modifier.clearAndSetSemantics { }
+                        },
+                    )
+                    .openCodeTapTarget(accessibility = false),
+                contentAlignment = Alignment.Center,
+            ) {
+                // Not an M3 Surface: a plain one swallows every touch on it, fading or not.
                 Box(
                     Modifier
-                        .graphicsLayer { if (veiled()) alpha = 0f }
-                        .scale(if (reduceMotion) 1f else 0.5f + 0.5f * p)
-                        .alpha(p.coerceIn(0f, 1f))
-                        .coveredByBackgroundWork()
-                        .then(
-                            if (isShown && !veiled()) {
-                                Modifier
-                                    .clickable(interactionSource = interactions, indication = null, role = Role.Button, onClick = onClick)
-                                    .semantics { contentDescription = scrollToLatestDescription }
-                                    .testTag("scroll-to-latest")
-                            } else {
-                                Modifier.clearAndSetSemantics { }
-                            },
-                        )
-                        .openCodeTapTarget(accessibility = false),
+                        .size(34.dp)
+                        // The desktop's floating icon button: rounded square, hairline ring.
+                        .shadow(OpenCodeSurfaces.raisedShadow, OpenCodeShape.control)
+                        .clip(OpenCodeShape.control)
+                        .background(OpenCodeSurfaces.color)
+                        .openCodeHairline(OpenCodeShape.control)
+                        .indication(interactions, ripple()),
                     contentAlignment = Alignment.Center,
                 ) {
-                    // Not an M3 Surface: a plain one swallows every touch on it, fading or not.
-                    Box(
-                        Modifier
-                            .size(34.dp)
-                            // The desktop's floating icon button: rounded square, hairline ring.
-                            .shadow(OpenCodeSurfaces.raisedShadow, OpenCodeShape.control)
-                            .clip(OpenCodeShape.control)
-                            .background(OpenCodeSurfaces.color)
-                            .openCodeHairline(OpenCodeShape.control)
-                            .indication(interactions, ripple()),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            OpenCodeIcon(SFSymbol.ArrowDown, contentDescription = null, size = 18.dp, tint = OpenCodeTheme.colors.text)
-                        }
-                    }
+                    OpenCodeIcon(symbol, contentDescription = null, size = 18.dp, tint = OpenCodeTheme.colors.text)
                 }
             }
         }

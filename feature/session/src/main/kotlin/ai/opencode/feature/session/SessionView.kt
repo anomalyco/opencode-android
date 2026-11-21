@@ -177,6 +177,7 @@ fun SessionView(
         SessionComposerHost().apply {
             connection = listContext.connection
             showsJumpButton = scrollEdgeBridge.reportedShowsJumpButton
+            showsPreviousMessageButton = scrollEdgeBridge.reportedShowsPreviousMessageButton
         }
     }
     val importer = rememberSessionAttachmentImporter(store)
@@ -250,6 +251,7 @@ fun SessionView(
         composerHost.connection = listContext.connection
         composerHost.onConnectionAction = onConnectionAction
         composerHost.onJumpToLatest = { scrollEdgeBridge.jumpRequest += 1 }
+        composerHost.onJumpToPreviousMessage = { scrollEdgeBridge.previousMessageRequest += 1 }
         composerHost.borrowedDrag = scrollEdgeBridge.borrowedDrag
         composerHost.isImportingAttachments = isImportingAttachments
         composerHost.isImportingImages = isImportingImages

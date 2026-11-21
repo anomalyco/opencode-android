@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">圖表，%1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">跳到最新</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">捲動至上一則訊息</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">正在完成聽寫</string>
     <string name="session_dictation_stop_recording_description">停止錄音</string>

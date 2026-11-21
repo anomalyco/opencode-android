@@ -24,6 +24,7 @@ import ai.opencode.feature.transcript.NewMessagesPlacement
 import ai.opencode.feature.transcript.TranscriptAction
 import ai.opencode.feature.transcript.TranscriptConfiguration
 import ai.opencode.feature.transcript.TranscriptDisclosureState
+import ai.opencode.feature.transcript.TranscriptEntry
 import ai.opencode.feature.transcript.TranscriptLayoutTuning
 import ai.opencode.feature.transcript.TranscriptRowContext
 import ai.opencode.feature.transcript.TranscriptTunables
@@ -238,10 +239,15 @@ fun TranscriptList(
     onScrolledUnderHeader: (Float) -> Unit = {},
     borrowedDrag: TranscriptBorrowedDrag? = null,
     onHidesChanged: (Boolean) -> Unit = {},
+    previousMessageRequest: Int = 0,
+    onShowsPreviousMessageButtonChanged: (Boolean) -> Unit = {},
 ) {
     // A new session is a new list (iOS resets the controller; the draft becoming its session keeps it).
     key(configuration.sessionID ?: "draft", configuration.historyGeneration) {
-        TranscriptListContent(configuration, send, modifier, contentPadding, jumpRequest, onShowsJumpButtonChanged, slots, layoutTuning, onScrolledUnderHeader, borrowedDrag, onHidesChanged)
+        TranscriptListContent(
+            configuration, send, modifier, contentPadding, jumpRequest, onShowsJumpButtonChanged, slots, layoutTuning, onScrolledUnderHeader, borrowedDrag, onHidesChanged,
+            previousMessageRequest, onShowsPreviousMessageButtonChanged,
+        )
     }
 }
 
@@ -258,6 +264,8 @@ private fun TranscriptListContent(
     onScrolledUnderHeader: (Float) -> Unit,
     borrowedDrag: TranscriptBorrowedDrag?,
     onHidesChanged: (Boolean) -> Unit,
+    previousMessageRequest: Int,
+    onShowsPreviousMessageButtonChanged: (Boolean) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
@@ -321,6 +329,7 @@ private fun TranscriptListContent(
 
     // Not following: the top row holds still (the reversed list would hold the bottom one). Read without observing.
     scroller.keys = { currentItems(builder).map { it.key } }
+    scroller.userMessageIndices = userMessageIndices(items, snapshot)
     scroller.reduceMotion = reduceMotion
     if (!scroller.isFollowing && !listState.isScrollInProgress && position.anchor == null) {
         val keys = items.map { it.key }
@@ -346,6 +355,13 @@ private fun TranscriptListContent(
         if (jumpRequest != lastJump) {
             lastJump = jumpRequest
             scroller.scrollToEnd()
+        }
+    }
+    var lastPreviousMessage by remember { mutableIntStateOf(previousMessageRequest) }
+    LaunchedEffect(previousMessageRequest) {
+        if (previousMessageRequest != lastPreviousMessage) {
+            lastPreviousMessage = previousMessageRequest
+            scroller.scrollToPreviousUserMessage()
         }
     }
 
@@ -516,6 +532,13 @@ private fun TranscriptListContent(
             val awayFromEnd = listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > jumpThreshold
             awayFromEnd && !scroller.glidingToEnd
         }.collect { currentShowsJump(it) }
+    }
+    val currentShowsPreviousMessage by rememberUpdatedState(onShowsPreviousMessageButtonChanged)
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            val awayFromEnd = listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > jumpThreshold
+            awayFromEnd && !scroller.glidingToEnd && scroller.previousUserMessageIndex() != null
+        }.collect { currentShowsPreviousMessage(it) }
     }
     LaunchedEffect(listState) {
         snapshotFlow { scroller.isAtEnd }.collect { currentSend(TranscriptAction.TranscriptBrowsingChanged(!it)) }
@@ -747,6 +770,16 @@ private fun TranscriptListContent(
 }
 
 private fun currentItems(builder: TranscriptSnapshotBuilder): List<TranscriptItemID> = builder.snapshot.items.asReversed()
+
+private fun userMessageIndices(items: List<TranscriptItemID>, snapshot: TranscriptListSnapshot): List<Int> {
+    val indices = ArrayList<Int>()
+    for ((index, item) in items.withIndex()) {
+        if (item !is TranscriptItemID.Message) continue
+        val row = snapshot.rows[item.stableID] as? MessageRow.Entry ?: continue
+        if (row.entry is TranscriptEntry.UserGroup) indices.add(index)
+    }
+    return indices
+}
 
 private fun decideNewMessages(
     entryID: String,

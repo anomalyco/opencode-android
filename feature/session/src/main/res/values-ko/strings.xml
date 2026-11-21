@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">다이어그램, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">최신으로 이동</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">이전 메시지로 이동</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">음성 입력 마무리 중</string>
     <string name="session_dictation_stop_recording_description">녹음 중지</string>

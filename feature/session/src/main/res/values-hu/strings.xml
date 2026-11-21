@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">Diagram, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">Ugrás a legújabbra</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">Görgetés az előző üzenethez</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">Diktálás befejezése</string>
     <string name="session_dictation_stop_recording_description">Felvétel leállítása</string>

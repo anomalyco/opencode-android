@@ -197,6 +197,9 @@ class SessionComposerHost {
     var veilsJumpButton by mutableStateOf(false)
     /** iOS `scrollEdgeBridge.jumpRequest += 1`. */
     var onJumpToLatest: () -> Unit by mutableStateOf({})
+    /** Android: the up arrow above the jump button, while a user message starts above the view. */
+    var showsPreviousMessageButton by mutableStateOf(false)
+    var onJumpToPreviousMessage: () -> Unit by mutableStateOf({})
     /** iOS `passesDragsToTranscript(scrollEdgeBridge)`: the transcript a pill's drag scrolls. */
     var borrowedDrag: TranscriptBorrowedDrag? by mutableStateOf(null)
     /** Where [BackgroundWorkPresentation] draws the capsule (iOS `backgroundActivityAnchor()`). */
@@ -1043,6 +1046,8 @@ private fun SessionComposerEnv.ComposerAreaContent(modifier: Modifier) {
                 JumpToLatestPill(
                     isShown = jumpShown,
                     onClick = host.onJumpToLatest,
+                    showsPrevious = host.showsPreviousMessageButton && !holdsClientToolCard,
+                    onPrevious = host.onJumpToPreviousMessage,
                     veiled = { host.veilsJumpButton },
                     modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = jumpShown && !host.veilsJumpButton),
                 )
@@ -1152,7 +1157,7 @@ private fun SessionComposerEnv.ComposerPills() {
             // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
             Row(verticalAlignment = Alignment.CenterVertically) {
                 QueuedActivity(hasQueued)
-                JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
+                JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, showsPrevious = host.showsPreviousMessageButton && !holdsClientToolCard, onPrevious = host.onJumpToPreviousMessage, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
             }
         }
     } else {
@@ -1161,7 +1166,7 @@ private fun SessionComposerEnv.ComposerPills() {
             if (hasQueued || showsJump) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     QueuedActivity(hasQueued)
-                    JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
+                    JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, showsPrevious = host.showsPreviousMessageButton && !holdsClientToolCard, onPrevious = host.onJumpToPreviousMessage, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
                 }
             }
         }

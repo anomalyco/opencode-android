@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">ដ្យាក្រាម, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">រំកិលទៅចុងក្រោយ</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">រំកិលទៅសារពីមុន</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">កំពុងបញ្ចប់ការបញ្ចូលអត្ថបទដោយសំឡេង</string>
     <string name="session_dictation_stop_recording_description">ឈប់ថតសំឡេង</string>

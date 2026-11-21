@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">आरेख, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">पछिल्लोमा जानुहोस्</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">अघिल्लो सन्देशमा जानुहोस्</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">बोलेर लेख्ने काम सकिँदै</string>
     <string name="session_dictation_stop_recording_description">रेकर्ड गर्न रोक्नुहोस्</string>

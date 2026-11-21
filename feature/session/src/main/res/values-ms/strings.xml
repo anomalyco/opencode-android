@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">Rajah, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">Tatal ke terkini</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">Tatal ke mesej sebelumnya</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">Menyelesaikan imlak</string>
     <string name="session_dictation_stop_recording_description">Henti rakaman</string>

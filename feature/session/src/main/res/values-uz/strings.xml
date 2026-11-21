@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">Diagramma, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">Eng oxirgisiga oʻtish</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">Oldingi xabarga o‘tish</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">Ovozli kiritish yakunlanmoqda</string>
     <string name="session_dictation_stop_recording_description">Yozib olishni to‘xtatish</string>

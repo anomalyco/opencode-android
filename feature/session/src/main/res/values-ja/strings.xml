@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">図、%1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">最新へスクロール</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">前のメッセージへスクロール</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">音声入力を終了中</string>
     <string name="session_dictation_stop_recording_description">録音を停止</string>

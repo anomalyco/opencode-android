@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">Diagram, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">Kalo tek e fundit</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">Kalo te mesazhi i mëparshëm</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">Po përfundon diktimi</string>
     <string name="session_dictation_stop_recording_description">Ndalo regjistrimin</string>

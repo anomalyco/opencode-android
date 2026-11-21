@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">ডায়াগ্রাম, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">সর্বশেষে স্ক্রল করুন</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">আগের বার্তায় স্ক্রল করুন</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">শ্রুতিলিখন শেষ হচ্ছে</string>
     <string name="session_dictation_stop_recording_description">রেকর্ডিং বন্ধ করুন</string>

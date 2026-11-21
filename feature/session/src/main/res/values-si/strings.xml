@@ -19,6 +19,8 @@
     <string name="session_visual_diagram_label">රූපසටහන, %1$s</string>
     <!-- Jump to latest -->
     <string name="session_scroll_to_latest_description">නවතම වෙත අනුචලනය කරන්න</string>
+    <!-- The up arrow above Jump to latest: scrolls up to the person's previous message -->
+    <string name="session_scroll_to_previous_message_description">පෙර පණිවිඩයට අනුචලනය කරන්න</string>
     <!-- Dictation bar -->
     <string name="session_dictation_finishing_description">හඬින් ලිවීම අවසන් කරමින්</string>
     <string name="session_dictation_stop_recording_description">පටිගත කිරීම නවත්වන්න</string>

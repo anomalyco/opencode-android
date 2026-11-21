@@ -35,12 +35,18 @@ class SessionScrollEdgeBridge {
      */
     var reportedShowsJumpButton = false
 
+    /** The same for the previous message button above it. */
+    var reportedShowsPreviousMessageButton = false
+
     /** Content scrolled under the header (dp), capped at the reveal distance and rounded. */
     var scrolledUnderHeader by mutableFloatStateOf(0f)
         private set
 
     /** Bumped to scroll the list to its latest row. */
     var jumpRequest by mutableIntStateOf(0)
+
+    /** Bumped to scroll the list to the user message above what's shown. */
+    var previousMessageRequest by mutableIntStateOf(0)
 
     /** iOS `onBorrowedDrag`: drags on the controls over the list (Jump to latest, queued, capsule) scroll it. */
     val borrowedDrag = TranscriptBorrowedDrag()
@@ -78,11 +84,13 @@ class SessionScrollEdgeBridge {
          * Jump to latest's last state goes with it within the same process.
          */
         val Saver: Saver<SessionScrollEdgeBridge, Any> = listSaver(
-            save = { listOf(it.composerHeight, it.reportedShowsJumpButton, process) },
+            save = { listOf(it.composerHeight, it.reportedShowsJumpButton, process, it.reportedShowsPreviousMessageButton) },
             restore = {
                 SessionScrollEdgeBridge().apply {
                     composerHeight = it[0] as Float
-                    reportedShowsJumpButton = it[1] as Boolean && it.getOrNull(2) == process
+                    val sameProcess = it.getOrNull(2) == process
+                    reportedShowsJumpButton = it[1] as Boolean && sameProcess
+                    reportedShowsPreviousMessageButton = it.getOrNull(3) == true && sameProcess
                 }
             },
         )
