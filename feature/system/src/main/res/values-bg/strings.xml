@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Изпълнения на сесии</string>
     <string name="system_channel_session_updates">Актуализации на сесии</string>
     <string name="system_channel_shared_items">Споделени елементи</string>
+    <string name="system_channel_background_connection">Връзка във фонов режим</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Връзката се поддържа, докато агентите ви работят</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Докоснете, за да продължите в OpenCode</string>

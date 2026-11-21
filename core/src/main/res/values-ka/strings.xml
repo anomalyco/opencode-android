@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">ეკრანის გაზიარება აგენტებთან</string>
     <string name="core_experiment_inbox_sidebar_title">შემოსულების გვერდითი პანელი</string>
     <string name="core_experiment_session_live_activity_title">სესიის განახლებები რეალურ დროში</string>
+    <string name="core_experiment_background_runs_title">შესრულებისას დარჩით დაკავშირებული</string>
     <string name="core_experiment_sound_effects_title">ხმოვანი ეფექტები</string>
     <string name="core_experiment_server_address_links_title">ბმულების გახსნა სერვერის მისამართით</string>
     <string name="core_experiment_in_app_browser_title">ჩაშენებული ბრაუზერი</string>

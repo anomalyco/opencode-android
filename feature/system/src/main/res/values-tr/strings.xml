@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Oturum çalıştırmaları</string>
     <string name="system_channel_session_updates">Oturum güncellemeleri</string>
     <string name="system_channel_shared_items">Paylaşılan öğeler</string>
+    <string name="system_channel_background_connection">Arka plan bağlantısı</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Ajanlarınız çalışırken bağlantı korunuyor</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode\'da devam etmek için dokunun</string>

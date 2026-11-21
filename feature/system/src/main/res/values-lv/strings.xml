@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Sesiju izpilde</string>
     <string name="system_channel_session_updates">Sesiju atjauninājumi</string>
     <string name="system_channel_shared_items">Kopīgotie vienumi</string>
+    <string name="system_channel_background_connection">Fona savienojums</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Saglabā savienojumu, kamēr tavi aģenti strādā</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Pieskaries, lai turpinātu OpenCode</string>

@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">एजेन्टहरूसँग स्क्रिन साझा गर्नुहोस्</string>
     <string name="core_experiment_inbox_sidebar_title">इनबक्स साइडबार</string>
     <string name="core_experiment_session_live_activity_title">सत्रका प्रत्यक्ष अपडेटहरू</string>
+    <string name="core_experiment_background_runs_title">काम चल्दा जडान कायम राख्नुहोस्</string>
     <string name="core_experiment_sound_effects_title">ध्वनि प्रभावहरू</string>
     <string name="core_experiment_server_address_links_title">सर्भर ठेगानाअनुसार लिङ्क खोल्नुहोस्</string>
     <string name="core_experiment_in_app_browser_title">एपभित्रको ब्राउजर</string>

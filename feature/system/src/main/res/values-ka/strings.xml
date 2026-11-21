@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">სესიების გაშვება</string>
     <string name="system_channel_session_updates">სესიების განახლებები</string>
     <string name="system_channel_shared_items">გაზიარებული ელემენტები</string>
+    <string name="system_channel_background_connection">ფონური კავშირი</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">კავშირი ნარჩუნდება, სანამ თქვენი აგენტები მუშაობენ</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">შეეხეთ OpenCode-ში გასაგრძელებლად</string>

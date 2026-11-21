@@ -153,7 +153,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
     Action.LastKnownActivityExpired -> Reduced(state)
 
     Action.NetworkRerouted ->
-        if (!state.isStreaming || state.credentialsRejected || state.connection.isInBackground) {
+        if (!state.isStreaming || state.credentialsRejected || (state.connection.isInBackground && !state.connection.isBackgroundHeld)) {
             Reduced(state)
         } else {
             refreshSnapshot(state.unsettlingNotices())
@@ -169,7 +169,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         if (!s.connection.resyncsWhenActive(silence)) Reduced(s) else refreshSnapshot(s.unsettlingNotices())
     }
 
-    Action.ReconnectingGraceElapsed, is Action.OfflineGraceElapsed -> Reduced(state)
+    Action.ReconnectingGraceElapsed, is Action.OfflineGraceElapsed, is Action.BackgroundHoldChanged -> Reduced(state)
 
     is Action.SnapshotRefreshed -> snapshotRefreshed(state, action)
 

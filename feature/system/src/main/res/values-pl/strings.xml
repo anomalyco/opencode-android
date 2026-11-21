@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Uruchomienia sesji</string>
     <string name="system_channel_session_updates">Aktualizacje sesji</string>
     <string name="system_channel_shared_items">Udostępnione elementy</string>
+    <string name="system_channel_background_connection">Połączenie w tle</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Utrzymywanie połączenia podczas pracy agentów</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Dotknij, aby kontynuować w OpenCode</string>

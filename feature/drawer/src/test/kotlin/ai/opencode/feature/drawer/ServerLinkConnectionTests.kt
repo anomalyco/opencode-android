@@ -305,6 +305,30 @@ class ServerLinkConnectionTests {
         }
     }
 
+    @Test fun returningFromAHeldBackgroundStayLeavesALiveStreamAlone() = runTest {
+        val state = HomeConnectionFeature.State(
+            server = server,
+            isStreaming = true,
+            isEventStreamLive = true,
+            hasConnected = true,
+            isBackgroundHeld = true,
+        )
+        val store = TestStore(state, HomeConnectionFeature(), this) {
+            this[ServerLinkClient] = this[ServerLinkClient].copy(streamSilence = { 5.seconds })
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                events = { throw AssertionError("A held stream must not be restarted") },
+            )
+            this[BackgroundTimeClient] = BackgroundTimeClient { _, _ -> throw AssertionError("A held stream needs no background time") }
+        }
+        store.send(HomeConnectionFeature.Action.SceneEnteredBackground) {
+            it.copy(isInBackground = true, stayedLiveInBackground = true)
+        }
+        store.send(HomeConnectionFeature.Action.SceneBecameActive) {
+            it.copy(isInBackground = false, stayedLiveInBackground = false)
+        }
+        store.finish()
+    }
+
     @Test fun becomingActiveWhileOfflineStartsAQuietReconnect() = runTest {
         val clock = TestClock()
         val state = HomeConnectionFeature.State(

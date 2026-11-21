@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Ekranı ajanlarla paylaş</string>
     <string name="core_experiment_inbox_sidebar_title">Gelen kutusu yan paneli</string>
     <string name="core_experiment_session_live_activity_title">Canlı oturum güncellemeleri</string>
+    <string name="core_experiment_background_runs_title">Çalışırken bağlı kal</string>
     <string name="core_experiment_sound_effects_title">Ses efektleri</string>
     <string name="core_experiment_server_address_links_title">Sunucu URL\'sine göre bağlantıları aç</string>
     <string name="core_experiment_in_app_browser_title">Uygulama içi tarayıcı</string>

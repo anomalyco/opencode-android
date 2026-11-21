@@ -677,6 +677,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object ServerSwitchNoteActionTapped : Action
         /** The network path came back or moved to another interface. */
         data object NetworkRerouted : Action
+        data class BackgroundHoldChanged(val held: Boolean) : Action
         data class ServerEvent(val event: OpenCodeServerEvent) : Action
         /** Handled by `AppFeature`. */
         data class Delegate(val action: DelegateAction) : Action
@@ -809,6 +810,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object ConnectionGrace : CancelID
         data object InAppNotice : CancelID
         data object LiveUpdatesAfterLeaving : CancelID
+        data object BackgroundHold : CancelID
         data object SessionActivityWait : CancelID
         data class CachedTranscript(val sessionID: String) : CancelID
         data object LinkedSessionOpen : CancelID

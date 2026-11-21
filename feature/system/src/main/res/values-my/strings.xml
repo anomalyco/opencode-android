@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">စက်ရှင် လုပ်ဆောင်မှုများ</string>
     <string name="system_channel_session_updates">စက်ရှင် အပ်ဒိတ်များ</string>
     <string name="system_channel_shared_items">မျှဝေထားသော အရာများ</string>
+    <string name="system_channel_background_connection">နောက်ခံ ချိတ်ဆက်မှု</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">သင့်အေးဂျင့်များ အလုပ်လုပ်နေစဉ် ဆက်ချိတ်ထားသည်</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode တွင် ဆက်လုပ်ရန် နှိပ်ပါ</string>

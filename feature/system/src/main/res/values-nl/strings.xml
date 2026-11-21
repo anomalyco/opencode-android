@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Sessie-uitvoeringen</string>
     <string name="system_channel_session_updates">Sessie-updates</string>
     <string name="system_channel_shared_items">Gedeelde items</string>
+    <string name="system_channel_background_connection">Achtergrondverbinding</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Blijft verbonden terwijl je agenten werken</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tik om door te gaan in OpenCode</string>

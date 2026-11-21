@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Képernyő megosztása ügynökökkel</string>
     <string name="core_experiment_inbox_sidebar_title">Beérkezett üzenetek oldalsávja</string>
     <string name="core_experiment_session_live_activity_title">Munkamenet élő frissítései</string>
+    <string name="core_experiment_background_runs_title">Maradjon csatlakoztatva futás közben</string>
     <string name="core_experiment_sound_effects_title">Hangeffektusok</string>
     <string name="core_experiment_server_address_links_title">Linkek megnyitása szervercím alapján</string>
     <string name="core_experiment_in_app_browser_title">Beépített böngésző</string>

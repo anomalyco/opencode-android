@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Keyrslur setna</string>
     <string name="system_channel_session_updates">Uppfærslur setna</string>
     <string name="system_channel_shared_items">Deilt efni</string>
+    <string name="system_channel_background_connection">Tenging í bakgrunni</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Heldur tengingu meðan fulltrúarnir þínir vinna</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Pikkaðu til að halda áfram í OpenCode</string>

@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Κοινοποίηση οθόνης σε πράκτορες</string>
     <string name="core_experiment_inbox_sidebar_title">Πλαϊνή στήλη εισερχομένων</string>
     <string name="core_experiment_session_live_activity_title">Ζωντανές ενημερώσεις συνεδρίας</string>
+    <string name="core_experiment_background_runs_title">Παραμονή σε σύνδεση κατά τις εκτελέσεις</string>
     <string name="core_experiment_sound_effects_title">Ηχητικά εφέ</string>
     <string name="core_experiment_server_address_links_title">Άνοιγμα συνδέσμων βάσει διεύθυνσης διακομιστή</string>
     <string name="core_experiment_in_app_browser_title">Πρόγραμμα περιήγησης εντός εφαρμογής</string>

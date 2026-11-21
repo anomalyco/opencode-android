@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Sessionskørsler</string>
     <string name="system_channel_session_updates">Sessionsopdateringer</string>
     <string name="system_channel_shared_items">Delte elementer</string>
+    <string name="system_channel_background_connection">Baggrundsforbindelse</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Bevarer forbindelsen, mens dine agenter arbejder</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tryk for at fortsætte i OpenCode</string>

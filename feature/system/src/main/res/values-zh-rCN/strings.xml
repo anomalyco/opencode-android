@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">会话运行</string>
     <string name="system_channel_session_updates">会话更新</string>
     <string name="system_channel_shared_items">分享的内容</string>
+    <string name="system_channel_background_connection">后台连接</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">智能体工作时保持连接</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">点击在 OpenCode 中继续</string>
