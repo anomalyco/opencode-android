@@ -38,6 +38,8 @@
     <string name="drawer_mark_as_unread">Նշել որպես չընթերցված</string>
     <string name="drawer_mute">Լռեցնել</string>
     <string name="drawer_unmute">Միացնել ծանուցումները</string>
+    <string name="drawer_hide">Թաքցնել</string>
+    <string name="drawer_unhide">Ցուցադրել</string>
     <string name="drawer_move_up">Տեղափոխել վերև</string>
     <string name="drawer_move_down">Տեղափոխել ներքև</string>
 
@@ -121,6 +123,7 @@
     <!-- Session row state for TalkBack -->
     <string name="drawer_row_pinned_state">Ամրացված</string>
     <string name="drawer_row_muted_state">Լռեցված</string>
+    <string name="drawer_row_hidden_state">Թաքցված</string>
     <string name="drawer_row_needs_input_state">Ձեր արձագանքն է պետք</string>
     <string name="drawer_row_working_state">Աշխատում է</string>
     <string name="drawer_row_unread_state">Չընթերցված</string>

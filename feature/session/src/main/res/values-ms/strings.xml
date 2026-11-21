@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Tidak diketahui</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Kos</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Fail dan pautan</string>
     <string name="session_always_notify">Sentiasa maklumkan</string>
     <string name="session_always_notify_message_phone">Maklumkan pada telefon ini setiap kali balasan selesai, walaupun mesej dihantar dari peranti lain.</string>
     <string name="session_always_notify_message_tablet">Maklumkan pada tablet ini setiap kali balasan selesai, walaupun mesej dihantar dari peranti lain.</string>

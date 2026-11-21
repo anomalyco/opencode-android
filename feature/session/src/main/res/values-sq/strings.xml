@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">I panjohur</string>
     <string name="session_sheet_context_tokens">%1$s tokenë</string>
     <string name="session_sheet_cost">Kostoja</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Skedarët dhe lidhjet</string>
     <string name="session_always_notify">Njofto gjithmonë</string>
     <string name="session_always_notify_message_phone">Njofto këtë telefon sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>
     <string name="session_always_notify_message_tablet">Njofto këtë tablet sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>

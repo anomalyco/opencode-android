@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">未知</string>
     <string name="session_sheet_context_tokens">%1$s 詞元</string>
     <string name="session_sheet_cost">費用</string>
+    <string name="session_sheet_media">媒體</string>
+    <string name="session_sheet_media_value">檔案與連結</string>
     <string name="session_always_notify">一律通知</string>
     <string name="session_always_notify_message_phone">每次回覆完成時都通知這支手機，即使訊息不是從這裡傳送的。</string>
     <string name="session_always_notify_message_tablet">每次回覆完成時都通知這台平板，即使訊息不是從這裡傳送的。</string>

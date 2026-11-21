@@ -21,6 +21,7 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
@@ -30,6 +31,8 @@ import java.io.File
 import java.time.Instant
 import java.util.UUID
 import java.util.WeakHashMap
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.Executor
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -221,6 +224,8 @@ data class CachedTranscriptSnapshots(
 class TranscriptCachePersistence(
     val identity: String,
     val load: () -> CachedTranscriptSnapshots?,
+    /** Reads and decodes the file off the main thread for the next [load] (app start). */
+    val prefetch: () -> Unit = {},
     val schedule: (CachedTranscriptSnapshots) -> Unit,
     /** Writes whatever is pending now (backgrounding). */
     val flush: () -> Unit,
@@ -277,21 +282,73 @@ class TranscriptCachePersistence(
 
         override val testValue: TranscriptCachePersistence get() = make(Storage.inMemory())
 
-        fun make(storage: Storage, interval: Duration = 500.milliseconds): TranscriptCachePersistence {
+        fun make(
+            storage: Storage,
+            interval: Duration = 500.milliseconds,
+            prefetchOn: Executor = Dispatchers.IO.asExecutor(),
+        ): TranscriptCachePersistence {
             val writer = TranscriptCacheWriter(storage, interval)
+            val read = {
+                runCatching {
+                    storage.data()?.let { data ->
+                        CachedTranscriptSnapshots.persistenceJson.decodeFromString(CachedTranscriptSnapshots.serializer(), data.decodeToString())
+                    }
+                }.getOrNull()
+            }
+            val prefetched = TranscriptCachePrefetch(read, prefetchOn)
             return TranscriptCachePersistence(
                 identity = storage.identity,
-                load = {
-                    storage.data()?.let { data ->
-                        runCatching {
-                            CachedTranscriptSnapshots.persistenceJson.decodeFromString(CachedTranscriptSnapshots.serializer(), data.decodeToString())
-                        }.getOrNull()
-                    }
+                load = { prefetched.take() ?: read() },
+                prefetch = prefetched::start,
+                schedule = { snapshot ->
+                    prefetched.discard()
+                    writer.schedule(snapshot)
                 },
-                schedule = writer::schedule,
                 flush = writer::flush,
-                remove = storage::remove,
+                remove = {
+                    prefetched.discard()
+                    storage.remove()
+                },
             )
+        }
+    }
+}
+
+/**
+ * One early read of the transcript cache, taken by the first load. A write or removal discards it,
+ * and a read that found nothing isn't used, so a prefetch never hands back an older or emptier cache
+ * than a direct read would.
+ */
+private class TranscriptCachePrefetch(private val read: () -> CachedTranscriptSnapshots?, private val executor: Executor) {
+    private val lock = Any()
+    private var reading: CompletableFuture<CachedTranscriptSnapshots?>? = null
+    private var spent = false
+
+    fun start() {
+        synchronized(lock) {
+            if (reading != null || spent) return
+            reading = CompletableFuture.supplyAsync(read, executor)
+        }
+    }
+
+    fun take(): CachedTranscriptSnapshots? {
+        val early = synchronized(lock) {
+            if (reading == null) spent = true
+            reading
+        } ?: return null
+        val value = early.get()
+        synchronized(lock) {
+            val current = reading === early
+            spent = true
+            reading = null
+            return if (current) value else null
+        }
+    }
+
+    fun discard() {
+        synchronized(lock) {
+            spent = true
+            reading = null
         }
     }
 }

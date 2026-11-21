@@ -38,6 +38,8 @@
     <string name="drawer_mark_as_unread">Merk som ulest</string>
     <string name="drawer_mute">Demp</string>
     <string name="drawer_unmute">Opphev demping</string>
+    <string name="drawer_hide">Skjul</string>
+    <string name="drawer_unhide">Vis igjen</string>
     <string name="drawer_move_up">Flytt opp</string>
     <string name="drawer_move_down">Flytt ned</string>
 
@@ -121,6 +123,7 @@
     <!-- Session row state for TalkBack -->
     <string name="drawer_row_pinned_state">Festet</string>
     <string name="drawer_row_muted_state">Dempet</string>
+    <string name="drawer_row_hidden_state">Skjult</string>
     <string name="drawer_row_needs_input_state">Trenger svar fra deg</string>
     <string name="drawer_row_working_state">Arbeider</string>
     <string name="drawer_row_unread_state">Ulest</string>

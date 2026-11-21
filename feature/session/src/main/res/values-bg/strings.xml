@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Неизвестен</string>
     <string name="session_sheet_context_tokens">%1$s токена</string>
     <string name="session_sheet_cost">Цена</string>
+    <string name="session_sheet_media">Медия</string>
+    <string name="session_sheet_media_value">Файлове и връзки</string>
     <string name="session_always_notify">Винаги известявай</string>
     <string name="session_always_notify_message_phone">Известяване на този телефон при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>
     <string name="session_always_notify_message_tablet">Известяване на този таблет при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>

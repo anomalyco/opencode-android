@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Ukendt</string>
     <string name="session_sheet_context_tokens">%1$s tokens</string>
     <string name="session_sheet_cost">Pris</string>
+    <string name="session_sheet_media">Medier</string>
+    <string name="session_sheet_media_value">Filer og links</string>
     <string name="session_always_notify">Giv altid besked</string>
     <string name="session_always_notify_message_phone">Giv besked på denne telefon, når et svar er klar, også hvis du ikke skrev herfra.</string>
     <string name="session_always_notify_message_tablet">Giv besked på denne tablet, når et svar er klar, også hvis du ikke skrev herfra.</string>

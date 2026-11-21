@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Непознат</string>
     <string name="session_sheet_context_tokens">%1$s токена</string>
     <string name="session_sheet_cost">Трошак</string>
+    <string name="session_sheet_media">Медији</string>
+    <string name="session_sheet_media_value">Датотеке и везе</string>
     <string name="session_always_notify">Увек обавести</string>
     <string name="session_always_notify_message_phone">Обавести овај телефон кад год је одговор спреман, чак и ако порука није послата одавде.</string>
     <string name="session_always_notify_message_tablet">Обавести овај таблет кад год је одговор спреман, чак и ако порука није послата одавде.</string>

@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">अज्ञात</string>
     <string name="session_sheet_context_tokens">%1$s टोकन</string>
     <string name="session_sheet_cost">खर्च</string>
+    <string name="session_sheet_media">मिडिया</string>
+    <string name="session_sheet_media_value">फाइलहरू र लिङ्कहरू</string>
     <string name="session_always_notify">सधैं सूचना दिनुहोस्</string>
     <string name="session_always_notify_message_phone">हरेक जवाफ तयार हुँदा यो फोनमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>
     <string name="session_always_notify_message_tablet">हरेक जवाफ तयार हुँदा यो ट्याब्लेटमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>

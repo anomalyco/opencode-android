@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Näbelli</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Çykdajy</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Faýllar we baglanyşyklar</string>
     <string name="session_always_notify">Elmydama habar ber</string>
     <string name="session_always_notify_message_phone">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu telefona bildiriş iber.</string>
     <string name="session_always_notify_message_tablet">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu planşete bildiriş iber.</string>

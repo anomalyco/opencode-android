@@ -446,6 +446,79 @@ class MediaReferenceTests {
         }
 
     @Test
+    fun aDownloadedImageOrDocumentOpensFromItsCopy() {
+        val offline = ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET)
+        assertEquals("cached notes", text(openCopy("docs/notes.txt", offline).first))
+        // Unchanged: one conditional GET, no range probe, and the copy stays.
+        val (kept, requests) = openCopy("docs/notes.txt", ai.opencode.server.testing.WireFixture.Reply.status(304))
+        assertEquals("cached notes", text(kept))
+        assertEquals(1, requests.size)
+        assertEquals("\"v1\"", requests[0].header("If-None-Match"))
+        assertNull(requests[0].header("Range"))
+        val changed = openCopy("docs/notes.txt", ai.opencode.server.testing.WireFixture.Reply.Json(200, "new notes", mapOf("ETag" to "\"v2\""))) { text(it) == "new notes" }.first
+        assertEquals("new notes", text(changed))
+        val gone = openCopy("docs/notes.txt", ai.opencode.server.testing.WireFixture.Reply.status(404)) { it is AgentFileViewerModel.Phase.Failed }.first
+        assertEquals(AgentFileError.NotFound, (gone as AgentFileViewerModel.Phase.Failed).error)
+    }
+
+    @Test
+    fun streamedMediaAndMissingCopiesOpenAsBefore() {
+        val offline = ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET)
+        val failed = { phase: AgentFileViewerModel.Phase -> phase is AgentFileViewerModel.Phase.Failed }
+        assertTrue(failed(openCopy("recordings/clip.mp4", offline, settled = failed).first))
+        assertTrue(failed(openCopy("docs/never.txt", offline, stored = false, settled = failed).first))
+    }
+
+    @Test
+    fun aCopyLeftBeforeTheServerAnsweredIsCheckedAgainOnReturn() {
+        // Following a link stops the page mid-check; coming back asks again rather than trusting the copy.
+        val changed = openCopy("docs/notes.txt", ai.opencode.server.testing.WireFixture.Reply.Json(200, "new notes", mapOf("ETag" to "\"v2\"")), meanwhile = { it.stop(); it.open() }) { text(it) == "new notes" }.first
+        assertEquals("new notes", text(changed))
+    }
+
+    private fun text(phase: AgentFileViewerModel.Phase): String? =
+        ((phase as? AgentFileViewerModel.Phase.Ready)?.content as? AgentFileViewerModel.Content.Text)?.document?.text
+
+    /**
+     * Opens [path] with a downloaded copy (unless not [stored]) while the server's [reply] is held,
+     * runs [meanwhile], then releases the reply and waits until the page is [settled].
+     */
+    private fun openCopy(
+        path: String,
+        reply: ai.opencode.server.testing.WireFixture.Reply,
+        stored: Boolean = true,
+        meanwhile: (AgentFileViewerModel) -> Unit = {},
+        settled: (AgentFileViewerModel.Phase) -> Boolean = { true },
+    ): Pair<AgentFileViewerModel.Phase, List<ai.opencode.server.testing.WireFixture.Request>> {
+        val held = java.util.concurrent.CountDownLatch(1)
+        return ai.opencode.server.testing.WireFixture { held.await(5, java.util.concurrent.TimeUnit.SECONDS); reply }.use { fixture ->
+            val server = fixture.server
+            val reference = ai.opencode.server.model.AgentFileReference(path = path)
+            val context = org.robolectric.RuntimeEnvironment.getApplication()
+            val copy = AgentFileLoader.cacheURL(server, AgentFileLoader.original(server, reference, "/fixture")!!.cacheKey, reference.name, context.cacheDir)
+            if (stored) AgentFileLoader.store(copy, "cached notes".toByteArray(), "\"v1\"", null)
+            val model = AgentFileViewerModel(reference, server, "/fixture", context = context)
+            val looper = org.robolectric.Shadows.shadowOf(android.os.Looper.getMainLooper())
+            fun waitFor(condition: () -> Boolean) {
+                var waited = 0
+                while (!condition() && ++waited < 250) { looper.idle(); Thread.sleep(20) }
+            }
+            model.open()
+            waitFor { fixture.requests.isNotEmpty() }
+            // The copy is on screen before the server answers.
+            if (stored && reference.kind == ai.opencode.server.model.AgentFileReference.Kind.Text) assertEquals("cached notes", text(model.phase))
+            meanwhile(model)
+            held.countDown()
+            waitFor { settled(model.phase) }
+            repeat(10) { looper.idle(); Thread.sleep(20) }
+            val phase = model.phase
+            model.release()
+            copy.parentFile?.deleteRecursively()
+            phase to fixture.requests
+        }
+    }
+
+    @Test
     fun selectingAPageDecodesItsNeighboursFromTheirDiskCopiesAhead(): Unit = kotlinx.coroutines.runBlocking {
         ai.opencode.server.testing.WireFixture { ai.opencode.server.testing.WireFixture.Reply.Failure(ai.opencode.server.UrlErrorCode.NOT_CONNECTED_TO_INTERNET) }.use { fixture ->
             val server = fixture.server
