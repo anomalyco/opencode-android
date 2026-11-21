@@ -90,7 +90,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -137,6 +136,7 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
@@ -408,7 +408,8 @@ internal data class ComposerSnapshot(
     val hasFailedFiles: Boolean,
     val hasNonLocationAttachments: Boolean,
     val wantsLocationAttachment: Boolean,
-    val dictationHold: DictationFeature.Hold?,
+    /** Not the words, which change with every speech result and draw nothing here. */
+    val dictationHold: DictationFeature.Hold.Pose?,
     val dictationPhase: DictationFeature.Phase,
     val isDictating: Boolean,
     val isFinishingDictation: Boolean,
@@ -461,7 +462,7 @@ internal data class ComposerSnapshot(
                 hasFailedFiles = state.pendingFiles.any { it.isFailed },
                 hasNonLocationAttachments = state.pendingAttachments.isNotEmpty() || state.pendingFiles.isNotEmpty() || state.pendingQuotes.isNotEmpty(),
                 wantsLocationAttachment = state.pendingLocation != null || state.isLocating,
-                dictationHold = state.dictationHold,
+                dictationHold = state.dictationHold?.pose,
                 dictationPhase = state.dictationPhase,
                 isDictating = state.isDictating,
                 isFinishingDictation = state.isFinishingDictation,
@@ -729,9 +730,9 @@ internal class SessionComposerEnv(
     val settledRecording: Boolean? get() = view.dictationRetention.settledRecording(s.dictationHold != null, s.taskIdentity)
 
     /** The recording's hold, or the last one while its bar fades out. */
-    val shownDictationHold: DictationFeature.Hold? get() = view.dictationRetention.shownHold(s.dictationHold, s.taskIdentity)
+    val shownDictationHold: DictationFeature.Hold.Pose? get() = view.dictationRetention.shownHold(s.dictationHold, s.taskIdentity)
 
-    fun dictationPose(hold: DictationFeature.Hold) = DictationBarPose(
+    fun dictationPose(hold: DictationFeature.Hold.Pose) = DictationBarPose(
         hold = hold,
         phase = s.dictationPhase,
         drag = view.dictationDrag,
@@ -839,7 +840,7 @@ internal class SessionComposerEnv(
         for (queued in sent.queuedInputImages.values) images += queued
         for (image in images) {
             if (sentData.none { it === image.data }) continue
-            MediaReferenceResolver.decodedImage(image)
+            MediaReferenceResolver.thumbnail(image)
         }
     }
 
@@ -928,7 +929,7 @@ internal class SessionComposerEnv(
          * control's, never the keyboard's dismissal.
          */
         fun composerSwipeYields(
-            dictationHold: DictationFeature.Hold? = null,
+            dictationHold: DictationFeature.Hold.Pose? = null,
             attachmentMenuOpen: Boolean = false,
             panelsShown: Boolean = false,
             requestPanelTracking: Boolean = false,
@@ -1133,38 +1134,73 @@ private fun SessionComposerEnv.DraftProjectsOverlay(modifier: Modifier) {
 // region Pills
 
 /**
- * iOS `composerPillStack`: one row (background work on the left; queued messages and the jump
- * button on the right), stacking only when the row can't fit (large text).
+ * One row (background work on the left; queued messages and the jump button on the right), stacking
+ * only when the two pills overflow it at full width. The jump button never decides that: it joins the
+ * queued pill's row when its slot fits too, and otherwise floats above the rows' top end, so its coming
+ * and going never changes their height.
  */
 @Composable
 private fun SessionComposerEnv.ComposerPills() {
     val hasActivity = s.hasBackgroundWork
     val hasQueued = s.queuedMessages.isNotEmpty()
     if (!hasActivity && !hasQueued) return
-    val fontScale = LocalDensity.current.fontScale
-    // iOS `ViewThatFits`: the row unless large text makes it overflow.
-    val stacks = fontScale >= 1.8f
     val showsJump = host.showsJumpButton && !holdsClientToolCard
-    if (!stacks) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            if (hasActivity) BackgroundActivity()
-            Spacer(Modifier.weight(1f))
-            // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                QueuedActivity(hasQueued)
-                JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
+    val activity: @Composable () -> Unit = { if (hasActivity) BackgroundActivity() }
+    val queued: @Composable () -> Unit = { QueuedActivity(hasQueued) }
+    // Beside the queued pill the jump slot carries its own gap, so the queued pill slides over as it closes.
+    val jump: @Composable (Boolean) -> Unit = { collapsesSlot ->
+        JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = collapsesSlot, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
+    }
+    val jumpInRow: @Composable () -> Unit = { jump(true) }
+    val jumpAlone: @Composable () -> Unit = { jump(false) }
+    val height = remember { PillRowsHeight() }
+    val scope = rememberCoroutineScope()
+    SubcomposeLayout(Modifier.fillMaxWidth()) { constraints ->
+        val width = constraints.maxWidth
+        val loose = constraints.copy(minWidth = 0, minHeight = 0)
+        val activityPill = subcompose(PillSlot.Activity, activity).firstOrNull()?.measure(loose)
+        val queuedPill = subcompose(PillSlot.Queued, queued).firstOrNull()?.measure(loose)
+        val activityWidth = if (activityPill != null) activityPill.width + 8.dp.roundToPx() else 0
+        val queuedWidth = queuedPill?.width ?: 0
+        // The slot fully open, so the jump button showing or not never changes where it stands.
+        val jumpSlot = (if (queuedPill != null) 48f + JumpToLatestPillMotion.gap else 48f).dp.roundToPx()
+        val stacks = activityPill != null && queuedPill != null && activityWidth + queuedWidth > width
+        val jumpFits = if (stacks) queuedWidth + jumpSlot <= width else activityWidth + queuedWidth + jumpSlot <= width
+        val jumpContent = if (queuedPill != null && jumpFits) jumpInRow else jumpAlone
+        val jumpPill = subcompose(PillSlot.Jump, jumpContent).single().measure(loose)
+        val jumpWidth = if (jumpFits) jumpPill.width else 0
+        // The row that holds the queued pill (and the jump button when it fits); background work stands above it when stacked.
+        val bottomRow = maxOf(queuedPill?.height ?: 0, if (jumpFits) jumpPill.height else 0, if (stacks) 0 else activityPill?.height ?: 0)
+        val target = if (stacks) activityPill.height + 10.dp.roundToPx() + bottomRow else bottomRow
+        val shown = height.measure(target, scope) { opening -> composerColumnAnimation(opening, Int.VisibilityThreshold) }
+        val floatingY = -(48 + ComposerTunables.pillGap + host.orbClearance).dp.roundToPx()
+        layout(width, shown) {
+            val bottomRowTop = shown - bottomRow
+            if (activityPill != null) {
+                activityPill.placeRelative(0, if (stacks) 0 else (bottomRow - activityPill.height) / 2)
             }
+            queuedPill?.placeRelative(width - jumpWidth - queuedPill.width, bottomRowTop + (bottomRow - queuedPill.height) / 2)
+            jumpPill.placeRelative(width - jumpPill.width, if (jumpFits) bottomRowTop + (bottomRow - jumpPill.height) / 2 else floatingY)
         }
-    } else {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            if (hasActivity) Box(Modifier.fillMaxWidth()) { BackgroundActivity() }
-            if (hasQueued || showsJump) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    QueuedActivity(hasQueued)
-                    JumpToLatestPill(isShown = showsJump, onClick = host.onJumpToLatest, collapsesSlot = hasQueued, veiled = { host.veilsJumpButton }, modifier = Modifier.passesDragsToTranscript(host.borrowedDrag, isEnabled = showsJump && !host.veilsJumpButton))
-                }
-            }
+    }
+}
+
+private enum class PillSlot { Activity, Queued, Jump }
+
+/** The pill rows' height, moving on the composer column's curve when they stack or unstack, and at rest at first. */
+private class PillRowsHeight {
+    private var animation: Animatable<Int, AnimationVector1D>? = null
+
+    fun measure(target: Int, scope: CoroutineScope, spec: (opening: Boolean) -> AnimationSpec<Int>): Int {
+        val current = animation
+        if (current == null) {
+            animation = Animatable(target, Int.VectorConverter)
+            return target
         }
+        if (current.targetValue != target) {
+            scope.launch { current.animateTo(target, spec(target > current.value)) }
+        }
+        return current.value
     }
 }
 

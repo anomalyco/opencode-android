@@ -279,6 +279,8 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val requestDock: RequestDockFeature.State<DraftState> = RequestDockFeature.State(),
         val familySessions: List<OpenCodeSession> = emptyList(),
         val familyReadAt: Instant? = null,
+        /** The family read in flight, and whether another waits behind it. */
+        val familyRead: CoalescedRead = CoalescedRead(),
         val familyRootID: String? = null,
         val activeFamilySessionIDs: Set<String> = emptySet(),
         /** Runs that started or ended since the latest family read began. */
