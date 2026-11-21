@@ -39,6 +39,8 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * A call with no voice model in it: this phone listens with its own speech recognition, sends
@@ -176,36 +178,52 @@ class LocalCallCoordinator(
         }
     }
 
-    /** Waits for the agent's answer: the whole run must be over before anything is spoken. */
+    /**
+     * Waits for the agent's answer: the whole run must be over before anything is spoken. A run
+     * that keeps working (a long task, a subagent's) is waited out however long it takes, so the
+     * call never listens over it; only a run that ends without an answer or a server that can't
+     * be read ends the wait.
+     */
     private suspend fun awaitReply(before: Set<String>): String {
-        var waited = 0L
         var last = ""
         var stable = 0L
-        while (waited < 120_000 && !finished.get()) {
-            clock.sleep(600.milliseconds)
-            waited += 600
+        // Idle with no answer yet: a prompt queued behind another run gets a moment to start.
+        var pending = 0L
+        // The server can't be read: with no run state to go on, this is the only limit.
+        var unreadable = 0L
+        while (!finished.get()) {
+            clock.sleep(pollInterval)
             val items = try {
                 openCode.transcriptWithContextUsageAndCursor(server, sessionID, 20).items
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (error: Exception) {
                 AppLog.voice.notice("Local call reply read failed: ${error.message}")
+                unreadable = if (sessionRunning()) 0 else unreadable + pollInterval.inWholeMilliseconds
+                if (unreadable >= unreadableLimit.inWholeMilliseconds) return ""
                 continue
             }
+            unreadable = 0
             val replies = items
                 .filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>()
                 .filter { it.id !in before && !it.inProgress }
             val text = replies.joinToString("\n\n") { it.text }.trim()
-            val working = stillWorking(items) || sessionRunning()
-            if (text.isBlank() || working) {
+            if (stillWorking(items) || sessionRunning()) {
                 last = ""
                 stable = 0
+                pending = 0
                 continue
             }
+            if (text.isBlank()) {
+                pending += pollInterval.inWholeMilliseconds
+                if (pending >= pendingLimit.inWholeMilliseconds) return ""
+                continue
+            }
+            pending = 0
             // Idle and unchanged for a moment: every part of the run has landed.
-            stable = if (text == last) stable + 600 else 0
+            stable = if (text == last) stable + pollInterval.inWholeMilliseconds else 0
             last = text
-            if (stable >= 1_200) {
+            if (stable >= replySettle.inWholeMilliseconds) {
                 AppLog.voice.notice("Local call reply ${text.length} characters")
                 return text
             }
@@ -229,6 +247,17 @@ class LocalCallCoordinator(
             .filterIsInstance<OpenCodeTranscriptItem.AssistantMarkdown>().map { it.id }.toSet()
     } catch (_: Exception) {
         emptySet()
+    }
+
+    private companion object {
+        /** How often the call reads the run while it waits. */
+        val pollInterval = 600.milliseconds
+        /** Idle with no answer yet: long enough for a queued prompt to start. */
+        val pendingLimit = 15.seconds
+        /** The answer's text holds still this long: every part of the run has landed. */
+        val replySettle = 1_200.milliseconds
+        /** A server that can't be read is given up on after this long, so the call can listen. */
+        val unreadableLimit = 2.minutes
     }
 }
 
