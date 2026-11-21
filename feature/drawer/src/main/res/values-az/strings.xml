@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiya ekranını yaxşılaşdırmağa kömək et. Tapdıqlarını göstər və dəyişiklikləri izah et.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faylında düzülüş problemini tapdım. Transkript və mesaj yazma sahəsi mövcud hündürlüyü bölüşür, buna görə klaviatura ilə bunu yaxşı sınaqdan keçirmək olar.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Cavab ver</string>
 </resources>

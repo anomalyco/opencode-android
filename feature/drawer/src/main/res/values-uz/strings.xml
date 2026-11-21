@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiya ekranini yaxshilashga yordam bering. Topganlaringizni ko‘rsating va o‘zgarishlarni tushuntiring.</string>
     <string name="drawer_appearance_preview_assistant_text">Joylashuvdagi muammoni `SessionView.swift` faylida topdim. Suhbat matni va xabar yozish maydoni mavjud balandlikni bo‘lishadi, shuning uchun klaviatura bilan sinash foydali.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Javob berish</string>
 </resources>

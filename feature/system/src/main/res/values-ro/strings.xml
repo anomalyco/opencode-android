@@ -72,6 +72,7 @@
     <string name="system_session_input">Intrare</string>
     <string name="system_session_done">Gata</string>
     <string name="system_session_failed">Eroare</string>
+    <string name="system_session_answer_unsent">Nu s-a putut trimite răspunsul tău. Deschide sesiunea pentru a încerca din nou.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Activitate nouă</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Rulări de sesiuni</string>
     <string name="system_channel_session_updates">Actualizări ale sesiunilor</string>
     <string name="system_channel_shared_items">Elemente distribuite</string>
+    <string name="system_channel_background_connection">Conexiune în fundal</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Conexiunea rămâne activă cât timp agenții tăi lucrează</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Atinge pentru a continua în OpenCode</string>

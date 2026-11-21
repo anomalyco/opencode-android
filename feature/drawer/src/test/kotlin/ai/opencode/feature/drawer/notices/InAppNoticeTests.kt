@@ -5,21 +5,36 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.core.haptics.HapticsClient
+import ai.opencode.core.sharing.ExperimentalFeature
+import ai.opencode.core.sharing.ExperimentalFeatures
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeConnectionFeature
 import ai.opencode.feature.drawer.HomeFeature
 import ai.opencode.feature.drawer.HomeFeature.Action
+import ai.opencode.feature.drawer.formNotification
 import ai.opencode.feature.drawer.openingDraft
+import ai.opencode.feature.drawer.runOutcomeStatus
 import ai.opencode.feature.drawer.sessionKey
 import ai.opencode.feature.session.*
 import ai.opencode.feature.settings.SettingsFeature
+import ai.opencode.feature.system.notifications.SessionNotificationReply
+import ai.opencode.feature.system.notifications.SessionNotificationRequest
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
+import ai.opencode.server.model.OpenCodeFormField
+import ai.opencode.server.model.OpenCodeFormFieldType
+import ai.opencode.server.model.OpenCodeFormOption
+import ai.opencode.server.model.OpenCodeFormRequest
 import ai.opencode.server.model.OpenCodeHomeSnapshot
+import ai.opencode.server.model.OpenCodePendingRequests
+import ai.opencode.server.model.OpenCodePermissionRequest
+import ai.opencode.server.model.OpenCodeRunError
 import ai.opencode.server.model.OpenCodeSession
+import ai.opencode.server.model.OpenCodeSessionFamily
+import ai.opencode.server.model.OpenCodeTranscriptItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -68,6 +83,10 @@ class InAppNoticeTests {
         val announcements: MutableList<String> = Collections.synchronizedList(mutableListOf())
         val cleared: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
         val clearedNeedsInput: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
+        val posted: MutableList<String> = Collections.synchronizedList(mutableListOf())
+        val offered: MutableList<SessionNotificationRequest?> = Collections.synchronizedList(mutableListOf())
+        val sent: MutableList<String> = Collections.synchronizedList(mutableListOf())
+        val cancelled: MutableList<String> = Collections.synchronizedList(mutableListOf())
     }
 
     private fun CoroutineScope.store(
@@ -77,6 +96,10 @@ class InAppNoticeTests {
         recorded: Recorded = Recorded(),
         attention: Set<String> = emptySet(),
         snapshot: () -> OpenCodeHomeSnapshot? = { null },
+        staysConnected: Boolean = false,
+        transcript: List<OpenCodeTranscriptItem> = emptyList(),
+        pending: () -> OpenCodePendingRequests = { OpenCodePendingRequests(emptyList()) },
+        replyFails: Boolean = false,
     ): TestStore<HomeFeature.State, Action> {
         val store = TestStore(state, HomeFeature(), this) {
             this[Clock] = clock
@@ -89,12 +112,34 @@ class InAppNoticeTests {
             this[DeliveredNotificationsClient] = DeliveredNotificationsClient(
                 removeAll = { ids -> recorded.cleared += ids },
                 removeNeedsInput = { ids -> recorded.clearedNeedsInput += ids },
+                post = { _, sessionID, title, status -> recorded.posted += "$sessionID $title $status" },
+                postRequest = { _, sessionID, title, request, failure ->
+                    if (failure != null) {
+                        recorded.posted += "$sessionID $title $failure"
+                    } else {
+                        recorded.posted += "$sessionID $title needs-input"
+                        recorded.offered += request
+                    }
+                },
+                cancel = { sessionID -> recorded.cancelled += sessionID },
             )
+            if (staysConnected) this[ExperimentalFeatures] = ExperimentalFeatures.enabling(setOf(ExperimentalFeature.backgroundRuns))
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 viewSession = { _, _, _ -> },
-                transcript = { _, _, _ -> emptyList() },
+                transcript = { _, _, _ -> transcript },
                 homeAttention = { _, _, _ -> attention },
                 homeSnapshot = { snapshot() ?: throw OpenCodeClientError("offline") },
+                sessionFamily = { _, _ -> OpenCodeSessionFamily(listOf(session("sub", "UI checks", parent = "login")), emptySet()) },
+                familyPendingRequests = { _, _, _ -> pending() },
+                message = { _, _, _ -> emptyList() },
+                replyPermission = { _, sessionID, requestID, reply, _ ->
+                    if (replyFails) throw OpenCodeClientError("offline")
+                    recorded.sent += "$sessionID $requestID $reply"
+                },
+                replyForm = { _, sessionID, formID, answer ->
+                    if (replyFails) throw OpenCodeClientError("offline")
+                    recorded.sent += "$sessionID $formID $answer"
+                },
             )
         }
         // The mirror the fixture seeded, in the store's own shared storage too.
@@ -409,5 +454,132 @@ class InAppNoticeTests {
         store.send(Action.AttentionRefreshed(setOf("login")))
         store.finish()
         assertEquals(listOf(setOf("upload")), recorded.clearedNeedsInput.toList())
+    }
+
+    // Stay Connected During Runs
+
+    /** Held by the background service, left with Upload tests already waiting. */
+    private suspend fun leaveHeld(store: TestStore<HomeFeature.State, Action>) {
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        store.send(Action.BackgroundHoldChanged(true))
+        store.send(Action.SceneEnteredBackground)
+    }
+
+    @Test fun stayConnectedNotifiesWhatChangesWhileAwayOnce() = runTest {
+        val recorded = Recorded()
+        val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true)
+        leaveHeld(store)
+        store.send(Action.AttentionRefreshed(setOf("upload", "login")))
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        finish("login", store)
+        store.skipInFlightEffects()
+        assertEquals(listOf("login Fix login flow needs-input", "login Fix login flow succeeded"), recorded.posted.toList())
+    }
+
+    @Test fun stayConnectedNamesFailuresAndSkipsRunsTheUserStopped() = runTest {
+        val failed = OpenCodeTranscriptItem.RunError("e1", OpenCodeRunError(type = "provider", message = "Rate limit"))
+        val stopped = OpenCodeTranscriptItem.RunError("e2", OpenCodeRunError(type = "aborted", message = "Aborted"))
+        val prompt = OpenCodeTranscriptItem.UserText(id = "u1", text = "Go")
+        assertEquals("failed", runOutcomeStatus(listOf(prompt, failed)))
+        assertNull(runOutcomeStatus(listOf(prompt, stopped)))
+        assertEquals("succeeded", runOutcomeStatus(listOf(failed, prompt)))
+        assertEquals("succeeded", runOutcomeStatus(null))
+
+        val recorded = Recorded()
+        val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true, transcript = listOf(prompt, stopped))
+        leaveHeld(store)
+        finish("login", store)
+        store.skipInFlightEffects()
+        assertTrue(recorded.posted.isEmpty())
+    }
+
+    @Test fun stayConnectedIsQuietOnScreenAndWhenItsOff() = runTest {
+        for (case in listOf("on screen", "switch off")) {
+            val recorded = Recorded()
+            val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = case == "on screen")
+            store.send(Action.BackgroundHoldChanged(true))
+            if (case == "switch off") store.send(Action.SceneEnteredBackground)
+            store.send(Action.AttentionRefreshed(setOf("upload")))
+            finish("login", store)
+            store.skipInFlightEffects()
+            assertTrue(case, recorded.posted.isEmpty())
+        }
+    }
+
+    private val shellRequest = OpenCodePermissionRequest(id = "per", sessionID = "sub", action = "bash", resources = listOf("make test"))
+
+    @Test fun stayConnectedOffersAnswersOnlyForALoneRequest() = runTest {
+        for (count in listOf(1, 2)) {
+            val recorded = Recorded()
+            val requests = List(count) { shellRequest.copy(id = "per$it") }
+            val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true, pending = { OpenCodePendingRequests(requests) })
+            leaveHeld(store)
+            store.send(Action.AttentionRefreshed(setOf("upload", "login")))
+            store.skipInFlightEffects()
+            assertEquals(listOf("login Fix login flow needs-input"), recorded.posted.toList())
+            val offered = recorded.offered.single()
+            if (count == 1) {
+                assertEquals("per0", offered?.requestID)
+                assertEquals(listOf("once", "reject"), offered?.choices?.map { it.value })
+            } else {
+                assertNull(offered)
+            }
+        }
+    }
+
+    @Test fun aQuestionOffersItsChoicesOrAReplyOnlyWhenTheyFit() {
+        fun question(vararg fields: OpenCodeFormField) = OpenCodeFormRequest(id = "frm", sessionID = "sub", title = "Questions", fields = fields.toList())
+        fun options(vararg labels: String) = labels.map { OpenCodeFormOption(value = it, label = it) }
+        val slack = OpenCodeFormField(key = "q0", type = OpenCodeFormFieldType.String, title = "Slack", description = "Send it now?", options = options("Send", "Draft"), custom = true)
+        val choices = formNotification(question(slack))
+        assertEquals("Slack", choices.heading)
+        assertEquals("Send it now?", choices.detail)
+        assertEquals(listOf("Send", "Draft"), choices.choices.map { it.value })
+        assertNotNull(choices.textReply)
+
+        val eta = formNotification(question(OpenCodeFormField(key = "q0", type = OpenCodeFormFieldType.String, title = "ETA")))
+        assertTrue(eta.choices.isEmpty())
+        assertNotNull(eta.textReply)
+
+        val many = formNotification(question(slack.copy(options = options("A", "B", "C", "D"), custom = false)))
+        assertTrue(many.choices.isEmpty())
+        assertNull(many.textReply)
+
+        val two = formNotification(question(slack, slack.copy(key = "q1")))
+        assertTrue(two.choices.isEmpty())
+        assertNull(two.textReply)
+    }
+
+    @Test fun answeringFromTheNotificationSendsOrSaysWhyNot() = runTest {
+        val form = OpenCodeFormRequest(
+            id = "frm", sessionID = "sub", title = "Questions",
+            fields = listOf(OpenCodeFormField(key = "q0", type = OpenCodeFormFieldType.String, title = "ETA")),
+        )
+        fun reply(requestID: String, isPermission: Boolean, value: String) =
+            SessionNotificationReply(server.persistenceID, "login", "Fix login flow", "sub", requestID, isPermission, value)
+        val cases = listOf(
+            Triple("allow", reply("per", true, "once"), "sub per Once"),
+            Triple("deny", reply("per", true, "reject"), "sub per Reject"),
+            Triple("text", reply("frm", false, "7:45"), "sub frm {q0=Str(value=7:45)}"),
+            Triple("answered elsewhere", reply("gone", true, "once"), "login Fix login flow No longer waiting"),
+            Triple("server down", reply("per", true, "once"), "login Fix login flow Couldn’t send your answer. Open the session to try again."),
+        )
+        for ((case, notificationReply, expected) in cases) {
+            val recorded = Recorded()
+            val store = store(
+                home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true,
+                pending = { OpenCodePendingRequests(listOf(shellRequest), listOf(form)) },
+                replyFails = case == "server down",
+            )
+            store.send(Action.NotificationReplied(notificationReply))
+            store.skipInFlightEffects()
+            if (recorded.sent.isNotEmpty()) {
+                assertEquals(case, listOf(expected), recorded.sent.toList())
+                assertEquals(case, listOf("login"), recorded.cancelled.toList())
+            } else {
+                assertEquals(case, listOf(expected), recorded.posted.toList())
+                assertTrue(case, recorded.cancelled.isEmpty())
+            }
+        }
     }
 }

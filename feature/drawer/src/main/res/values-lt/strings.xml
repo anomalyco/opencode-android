@@ -191,4 +191,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Padėk patobulinti seanso ekraną. Parodyk, ką rasi, ir paaiškink pakeitimus.</string>
     <string name="drawer_appearance_preview_assistant_text">Faile `SessionView.swift` radau išdėstymo problemą. Pokalbio išrašas ir rašymo laukas dalijasi turima vieta pagal aukštį, tad klaviatūra padeda patikrinti, kaip jie telpa, kai vietos mažai.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Atsakyti</string>
 </resources>

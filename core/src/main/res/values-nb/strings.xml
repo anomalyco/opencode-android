@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Del skjerm med agenter</string>
     <string name="core_experiment_inbox_sidebar_title">Sidepanel for innboks</string>
     <string name="core_experiment_session_live_activity_title">Sesjonsoppdateringer i sanntid</string>
+    <string name="core_experiment_background_runs_title">Forbli tilkoblet under kjøringer</string>
     <string name="core_experiment_sound_effects_title">Lydeffekter</string>
     <string name="core_experiment_server_address_links_title">Åpne lenker basert på server-URL</string>
     <string name="core_experiment_in_app_browser_title">Nettleser i appen</string>

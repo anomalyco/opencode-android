@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Kopīgot ekrānu ar aģentiem</string>
     <string name="core_experiment_inbox_sidebar_title">Iesūtnes sānjosla</string>
     <string name="core_experiment_session_live_activity_title">Sesijas atjauninājumi reāllaikā</string>
+    <string name="core_experiment_background_runs_title">Saglabāt savienojumu izpildes laikā</string>
     <string name="core_experiment_sound_effects_title">Skaņas efekti</string>
     <string name="core_experiment_server_address_links_title">Atvērt saites pēc servera adreses</string>
     <string name="core_experiment_in_app_browser_title">Lietotnes pārlūkprogramma</string>

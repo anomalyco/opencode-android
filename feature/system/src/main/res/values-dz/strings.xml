@@ -72,6 +72,7 @@
     <string name="system_session_input">ཨིན་པུཊི།</string>
     <string name="system_session_done">འབད་ཚར།</string>
     <string name="system_session_failed">མཐར་མ་འཁྱོལ་བ</string>
+    <string name="system_session_answer_unsent">ཁྱོད་ཀྱི་ལན་གཏང་མ་ཚུགས། ལཱ་ཡུན་ཁ་ཕྱེ་སྟེ་ལོག་ཚོད་ལྟ་འབད།</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">ལས་རིམ་གསརཔ།</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">ལཱ་ཡུན་གཡོག་བཀོལ།</string>
     <string name="system_channel_session_updates">ལཱ་ཡུན་གྱི་དུས་མཐུན་ཚུ།</string>
     <string name="system_channel_shared_items">བགོ་བཤའ་རྐྱབ་མི་ཅ་ལ་ཚུ།</string>
+    <string name="system_channel_background_connection">རྒྱབ་ཁའི་མཐུད་ལམ།</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">ཁྱོད་ཀྱི་ལས་ཚབ་ཚུ་ལཱ་འབད་བའི་སྐབས་མཐུད་དེ་སྡོད་དོ།</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode ནང་འཕྲོ་མཐུད་ནི་ལུ་ཨེབ།</string>

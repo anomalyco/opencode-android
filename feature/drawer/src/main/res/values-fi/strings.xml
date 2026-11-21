@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Auta minua parantamaan istuntonäkymää. Näytä, mitä löydät, ja selitä muutokset.</string>
     <string name="drawer_appearance_preview_assistant_text">Löysin asetteluongelman tiedostosta `SessionView.swift`. Keskusteluloki ja viestikenttä jakavat käytettävissä olevan korkeuden, joten näppäimistö on hyvä rasitustesti.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Vastaa</string>
 </resources>

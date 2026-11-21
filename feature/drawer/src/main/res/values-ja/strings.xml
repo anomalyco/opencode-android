@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">セッション画面の改善を手伝って。気づいた点を教えて、変更内容を説明して。</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`にレイアウトの問題が見つかりました。会話履歴と入力欄が画面の高さを分け合うため、キーボードを表示するとレイアウトの崩れを確認しやすくなります。</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">回答</string>
 </resources>

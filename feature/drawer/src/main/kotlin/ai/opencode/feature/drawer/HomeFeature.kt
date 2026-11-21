@@ -12,6 +12,8 @@ import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
 import ai.opencode.feature.drawer.catchup.CatchUpFeature
+import ai.opencode.feature.drawer.notices.InAppNoticeSignal
+import ai.opencode.feature.system.notifications.SessionNotificationReply
 import ai.opencode.devtools.traces.TraceUploadsFeature
 import ai.opencode.feature.session.InAppNotice
 import ai.opencode.feature.composer.ComposerPersistence
@@ -227,6 +229,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val inAppNoticeGeneration: Int = 0,
         /** Events already shown or passed over, newest last, so a repeat never shows again. */
         val noticedEvents: List<String> = emptyList(),
+        /** Stay Connected During Runs: the last live reading its notifications compare against. */
+        val backgroundNoticeBaseline: InAppNoticeSignal = InAppNoticeSignal.none,
         /** Whether the drawer last arrived open. */
         val isDrawerOpen: Boolean = false,
         /** Whether the drawer button can show its label: not beside a wide window's sidebar. */
@@ -677,6 +681,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object ServerSwitchNoteActionTapped : Action
         /** The network path came back or moved to another interface. */
         data object NetworkRerouted : Action
+        data class BackgroundHoldChanged(val held: Boolean) : Action
+        /** An answer given from a session's needs-input notification. */
+        data class NotificationReplied(val reply: SessionNotificationReply) : Action
         data class ServerEvent(val event: OpenCodeServerEvent) : Action
         /** Handled by `AppFeature`. */
         data class Delegate(val action: DelegateAction) : Action
@@ -809,6 +816,10 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object ConnectionGrace : CancelID
         data object InAppNotice : CancelID
         data object LiveUpdatesAfterLeaving : CancelID
+        data object BackgroundHold : CancelID
+        data class BackgroundNotice(val sessionID: String) : CancelID
+        data object NotificationReplies : CancelID
+        data class NotificationReply(val requestID: String) : CancelID
         data object SessionActivityWait : CancelID
         data class CachedTranscript(val sessionID: String) : CancelID
         data object LinkedSessionOpen : CancelID

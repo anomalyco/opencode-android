@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjälp mig förbättra sessionsvyn. Visa vad du hittar och förklara ändringarna.</string>
     <string name="drawer_appearance_preview_assistant_text">Jag hittade layoutproblemet i `SessionView.swift`. Transkriptionen och meddelandefältet delar på den tillgängliga höjden, så tangentbordet är ett bra stresstest.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Svara</string>
 </resources>

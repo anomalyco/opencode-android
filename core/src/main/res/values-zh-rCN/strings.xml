@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">与智能体共享屏幕</string>
     <string name="core_experiment_inbox_sidebar_title">收件箱侧边栏</string>
     <string name="core_experiment_session_live_activity_title">会话实时更新</string>
+    <string name="core_experiment_background_runs_title">运行时保持连接</string>
     <string name="core_experiment_sound_effects_title">音效</string>
     <string name="core_experiment_server_address_links_title">按服务器地址打开链接</string>
     <string name="core_experiment_in_app_browser_title">应用内浏览器</string>

@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Deil skíggja við agentar</string>
     <string name="core_experiment_inbox_sidebar_title">Innbakki í síðustiku</string>
     <string name="core_experiment_session_live_activity_title">Beinleiðis setudagføringar</string>
+    <string name="core_experiment_background_runs_title">Varðveit sambandið undir koyrslum</string>
     <string name="core_experiment_sound_effects_title">Ljóðeffektir</string>
     <string name="core_experiment_server_address_links_title">Opna leinkjur eftir ambætaraadressu</string>
     <string name="core_experiment_in_app_browser_title">Kagi í forritinum</string>

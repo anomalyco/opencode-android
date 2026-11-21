@@ -191,4 +191,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomoz mi vylepšit obrazovku relace. Ukaž mi, co najdeš, a vysvětli změny.</string>
     <string name="drawer_appearance_preview_assistant_text">Našel jsem problém s rozložením v `SessionView.swift`. Přepis a editor zpráv sdílejí dostupnou výšku, takže klávesnice dobře prověří, jak rozložení funguje.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Odpovědět</string>
 </resources>

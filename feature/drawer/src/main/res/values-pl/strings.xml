@@ -191,4 +191,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomóż mi ulepszyć ekran sesji. Pokaż, co znajdziesz, i wyjaśnij zmiany.</string>
     <string name="drawer_appearance_preview_assistant_text">Problem z układem jest w `SessionView.swift`. Transkrypcja i pole wiadomości dzielą dostępną wysokość, więc klawiatura dobrze sprawdza, jak układ radzi sobie z brakiem miejsca.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Odpowiedz</string>
 </resources>

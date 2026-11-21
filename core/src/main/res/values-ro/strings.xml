@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Distribuie ecranul agenților</string>
     <string name="core_experiment_inbox_sidebar_title">Panou lateral de mesaje</string>
     <string name="core_experiment_session_live_activity_title">Actualizări live ale sesiunii</string>
+    <string name="core_experiment_background_runs_title">Rămâi conectat în timpul rulărilor</string>
     <string name="core_experiment_sound_effects_title">Efecte sonore</string>
     <string name="core_experiment_server_address_links_title">Deschide linkuri după adresa serverului</string>
     <string name="core_experiment_in_app_browser_title">Browser în aplicație</string>

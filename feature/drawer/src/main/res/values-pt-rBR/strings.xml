@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Me ajude a melhorar a tela da sessão. Mostre o que encontrar e explique as alterações.</string>
     <string name="drawer_appearance_preview_assistant_text">Encontrei o problema de layout em `SessionView.swift`. A transcrição e o editor de mensagens dividem a altura disponível, então o teclado é um bom teste para esse limite.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Responder</string>
 </resources>

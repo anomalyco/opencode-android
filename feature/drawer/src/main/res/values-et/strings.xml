@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aita mul seansikuva paremaks teha. Näita, mida leiad, ja selgita muudatusi.</string>
     <string name="drawer_appearance_preview_assistant_text">Leidsin paigutusvea failist `SessionView.swift`. Vestluse tekst ja sõnumiredaktor jagavad saadaolevat kõrgust, nii et klaviatuur aitab paigutust proovile panna.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Vasta</string>
 </resources>

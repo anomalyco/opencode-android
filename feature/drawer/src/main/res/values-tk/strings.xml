@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiýa ekranyny gowulandyrmaga kömek et. Tapan zatlaryňy görkez we üýtgeşmeleri düşündir.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faýlynda ýerleşiş meselesini tapdym. Ýazgy we habar ýazmak meýdany elýeterli beýikligi paýlaşýar, şonuň üçin klawiatura munuň oňat synagydyr.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Jogap beriň</string>
 </resources>

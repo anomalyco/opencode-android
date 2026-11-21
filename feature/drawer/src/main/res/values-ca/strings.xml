@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajuda\'m a millorar la pantalla de la sessió. Mostra\'m què hi trobes i explica els canvis.</string>
     <string name="drawer_appearance_preview_assistant_text">He trobat el problema de disposició a `SessionView.swift`. La transcripció i el redactor comparteixen l\'alçada disponible, així que el teclat és una bona prova d\'estrès.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Respon</string>
 </resources>

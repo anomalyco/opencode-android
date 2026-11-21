@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Показувати екран агентам</string>
     <string name="core_experiment_inbox_sidebar_title">Бічна панель вхідних</string>
     <string name="core_experiment_session_live_activity_title">Оновлення сесії наживо</string>
+    <string name="core_experiment_background_runs_title">Зберігати підключення під час виконання</string>
     <string name="core_experiment_sound_effects_title">Звукові ефекти</string>
     <string name="core_experiment_server_address_links_title">Відкриття посилань за адресою сервера</string>
     <string name="core_experiment_in_app_browser_title">Вбудований веббраузер</string>

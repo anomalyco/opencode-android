@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aiutami a migliorare la schermata della sessione. Mostrami cosa trovi e spiega le modifiche.</string>
     <string name="drawer_appearance_preview_assistant_text">Ho trovato il problema di impaginazione in `SessionView.swift`. La trascrizione e il campo di composizione condividono l\'altezza disponibile, quindi la tastiera è un buon banco di prova.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Rispondi</string>
 </resources>

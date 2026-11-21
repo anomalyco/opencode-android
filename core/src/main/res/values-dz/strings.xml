@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">ལས་ཚབ་ཚུ་ལུ་གསལ་གཞི་བགོ་བཤའ་རྐྱབས།</string>
     <string name="core_experiment_inbox_sidebar_title">འབྱོར་སྒྲོམ་གྱི་ཟུར་ཐོ།</string>
     <string name="core_experiment_session_live_activity_title">ལཱ་ཡུན་གྱི་འཕྲལ་མགྱོགས་དུས་མཐུན་ཚུ།</string>
+    <string name="core_experiment_background_runs_title">གཡོག་བཀོལ་སྐབས་མཐུད་དེ་རང་སྡོད།</string>
     <string name="core_experiment_sound_effects_title">སྒྲའི་ནུས་པ།</string>
     <string name="core_experiment_server_address_links_title">སར་བར་ཁ་བྱང་ལྟར་འབྲེལ་མཐུད་ཁ་ཕྱེ།</string>
     <string name="core_experiment_in_app_browser_title">གློག་རིམ་ནང་གི་བརའུ་ཟར།</string>

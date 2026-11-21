@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Më ndihmo të përmirësoj ekranin e sesionit. Më trego çfarë gjen dhe shpjego ndryshimet.</string>
     <string name="drawer_appearance_preview_assistant_text">E gjeta problemin e paraqitjes në `SessionView.swift`. Transkripti dhe zona e shkrimit të mesazheve ndajnë lartësinë e disponueshme, ndaj tastiera është një provë e mirë për këtë.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Përgjigju</string>
 </resources>

@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Segítsen javítani a munkamenet képernyőjén. Mutassa meg, mit talál, és magyarázza el a változtatásokat.</string>
     <string name="drawer_appearance_preview_assistant_text">Megtaláltam az elrendezési hibát a `SessionView.swift` fájlban. Az átirat és az üzenetszerkesztő osztozik a rendelkezésre álló magasságon, így a billentyűzettel jól tesztelhető az elrendezés.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Válaszadás</string>
 </resources>

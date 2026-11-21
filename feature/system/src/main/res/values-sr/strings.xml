@@ -72,6 +72,7 @@
     <string name="system_session_input">Унос</string>
     <string name="system_session_done">Готово</string>
     <string name="system_session_failed">Неуспешно</string>
+    <string name="system_session_answer_unsent">Није могуће послати одговор. Отворите сесију и покушајте поново.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Нова активност</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Покретања сесија</string>
     <string name="system_channel_session_updates">Ажурирања сесија</string>
     <string name="system_channel_shared_items">Дељене ставке</string>
+    <string name="system_channel_background_connection">Веза у позадини</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Веза остаје активна док ваши агенти раде</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Додирни за наставак у OpenCode</string>

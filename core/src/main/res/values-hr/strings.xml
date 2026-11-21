@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Podijeli zaslon s agentima</string>
     <string name="core_experiment_inbox_sidebar_title">Bočna traka pristigle pošte</string>
     <string name="core_experiment_session_live_activity_title">Ažuriranja sesije uživo</string>
+    <string name="core_experiment_background_runs_title">Ostani povezan tijekom izvršavanja</string>
     <string name="core_experiment_sound_effects_title">Zvučni efekti</string>
     <string name="core_experiment_server_address_links_title">Otvaranje veza prema adresi poslužitelja</string>
     <string name="core_experiment_in_app_browser_title">Preglednik u aplikaciji</string>

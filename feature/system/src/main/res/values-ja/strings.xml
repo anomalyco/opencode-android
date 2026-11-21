@@ -72,6 +72,7 @@
     <string name="system_session_input">入力</string>
     <string name="system_session_done">完了</string>
     <string name="system_session_failed">失敗</string>
+    <string name="system_session_answer_unsent">回答を送信できませんでした。セッションを開いてもう一度試してください。</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">新しいアクティビティ</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">セッションの実行</string>
     <string name="system_channel_session_updates">セッションの更新</string>
     <string name="system_channel_shared_items">共有アイテム</string>
+    <string name="system_channel_background_connection">バックグラウンド接続</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">エージェントの作業中も接続を維持</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">タップしてOpenCodeで続行</string>

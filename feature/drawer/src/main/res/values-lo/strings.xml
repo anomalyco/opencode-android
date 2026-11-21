@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ຊ່ວຍຂ້ອຍປັບປຸງໜ້າຈໍເຊດຊັນ. ສະແດງສິ່ງທີ່ພົບ ແລະອະທິບາຍການປ່ຽນແປງ.</string>
     <string name="drawer_appearance_preview_assistant_text">ຂ້ອຍພົບບັນຫາການຈັດວາງໃນ `SessionView.swift`. ບົດຖອດສຽງ ແລະຊ່ອງຂຽນຂໍ້ຄວາມແບ່ງຄວາມສູງທີ່ມີຢູ່ຮ່ວມກັນ, ດັ່ງນັ້ນການເປີດແປ້ນພິມຈຶ່ງຊ່ວຍທົດສອບເມື່ອພື້ນທີ່ຈຳກັດໄດ້ດີ.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">ຕອບ</string>
 </resources>

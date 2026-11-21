@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Барои беҳтар кардани экрани сессия кӯмак кун. Он чизеро, ки ёфтӣ, нишон деҳ ва тағйиротро шарҳ деҳ.</string>
     <string name="drawer_appearance_preview_assistant_text">Мушкили тарҳбандиро дар `SessionView.swift` ёфтам. Матни суҳбат ва майдони паём баландии дастрасро тақсим мекунанд, бинобар ин клавиатура барои санҷиши тарҳ дар фазои маҳдуд муфид аст.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Ҷавоб додан</string>
 </resources>

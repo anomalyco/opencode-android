@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">የክፍለ ጊዜውን ማያ ገጽ ለማሻሻል እርዳኝ። ያገኘኸውን አሳየኝና ለውጦቹን አብራራ።</string>
     <string name="drawer_appearance_preview_assistant_text">የአቀማመጡን ችግር በ`SessionView.swift` ውስጥ አግኝቻለሁ። የውይይት ጽሑፉና የመልዕክት መጻፊያው ያለውን ቁመት ስለሚጋሩ፣ የቁልፍ ሰሌዳውን መክፈት አቀማመጡን ለመፈተሽ ይጠቅማል።</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">ይመልሱ</string>
 </resources>

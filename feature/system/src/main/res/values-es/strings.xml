@@ -72,6 +72,7 @@
     <string name="system_session_input">Entrada</string>
     <string name="system_session_done">Listo</string>
     <string name="system_session_failed">Falló</string>
+    <string name="system_session_answer_unsent">No se pudo enviar tu respuesta. Abre la sesión para volver a intentarlo.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nueva actividad</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Ejecuciones de sesiones</string>
     <string name="system_channel_session_updates">Actualizaciones de sesiones</string>
     <string name="system_channel_shared_items">Elementos compartidos</string>
+    <string name="system_channel_background_connection">Conexión en segundo plano</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Manteniendo la conexión mientras tus agentes trabajan</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Toca para continuar en OpenCode</string>

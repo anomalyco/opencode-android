@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomozi mi poboljšati zaslon sesije. Pokaži mi što pronađeš i objasni promjene.</string>
     <string name="drawer_appearance_preview_assistant_text">Pronašao sam problem s rasporedom u datoteci `SessionView.swift`. Transkript i unos poruke dijele dostupnu visinu, pa je tipkovnica dobar test za provjeru rasporeda.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Odgovori</string>
 </resources>

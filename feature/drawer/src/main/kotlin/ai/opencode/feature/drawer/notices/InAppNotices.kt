@@ -6,10 +6,15 @@ import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.core.sharing.shared
 import ai.opencode.feature.session.InAppNotice
+import ai.opencode.feature.system.notifications.SessionNotificationActionReceiver
+import ai.opencode.feature.system.notifications.SessionNotificationReply
+import ai.opencode.feature.system.notifications.SessionNotificationRequest
 import ai.opencode.feature.system.notifications.SessionPushNotifications
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.withContext
 
 // The rules half: the mode (the notice itself, [InAppNotice], moved down to `:feature:session`,
@@ -110,6 +115,14 @@ class DeliveredNotificationsClient(
     val removeAll: suspend (sessionIDs: Set<String>) -> Unit,
     /** Only their needs-input notifications, once the request is answered. */
     val removeNeedsInput: suspend (sessionIDs: Set<String>) -> Unit,
+    /** One session's notification from the live stream, by server persistence ID and status. */
+    val post: suspend (serverKey: String, sessionID: String, title: String, status: String) -> Unit = { _, _, _, _ -> },
+    /** A needs-input notification that says what's asked and offers answers, or a line saying one didn't send. */
+    val postRequest: suspend (serverKey: String, sessionID: String, title: String, request: SessionNotificationRequest?, failure: String?) -> Unit = { _, _, _, _, _ -> },
+    /** Clears one session's notification once an answer from it went through. */
+    val cancel: suspend (sessionID: String) -> Unit = {},
+    /** Answers given from needs-input notifications. */
+    val replies: () -> Flow<SessionNotificationReply> = { emptyFlow() },
 ) {
     companion object Key : DependencyKey<DeliveredNotificationsClient> {
         override val liveValue: DeliveredNotificationsClient by lazy {
@@ -117,6 +130,18 @@ class DeliveredNotificationsClient(
             DeliveredNotificationsClient(
                 removeAll = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = false) } },
                 removeNeedsInput = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = true) } },
+                post = { serverKey, sessionID, title, status ->
+                    withContext(Dispatchers.Default) { SessionPushNotifications.postLocal(context, serverKey, sessionID, title, status) }
+                },
+                postRequest = { serverKey, sessionID, title, request, failure ->
+                    withContext(Dispatchers.Default) {
+                        SessionPushNotifications.postLocal(
+                            context, serverKey, sessionID, title, SessionPushNotifications.STATUS_NEEDS_INPUT, request = request, failure = failure,
+                        )
+                    }
+                },
+                cancel = { sessionID -> withContext(Dispatchers.Default) { SessionPushNotifications.cancel(context, sessionID) } },
+                replies = { SessionNotificationActionReceiver.replies.stream() },
             )
         }
         override val testValue = DeliveredNotificationsClient(removeAll = {}, removeNeedsInput = {})
