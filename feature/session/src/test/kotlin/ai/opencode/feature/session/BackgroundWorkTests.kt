@@ -1075,7 +1075,7 @@ class BackgroundWorkTests {
 
     @Test fun backgroundScriptsAreTheSessionsOwnCodeModeJobsNamedByTheirFirstLine() = sessionTest { h ->
         val state = h.state().copy(
-            items = listOf(execute("cm_1", "\n  const a = 1\nreturn a")),
+            items = listOf(execute("cm_1", "\n  const a = 1\nreturn a"), execute("cm_2", "  ")),
             familySessions = listOf(session, child),
             jobs = listOf(
                 job("cm_1", OpenCodeJob.Kind.CodeMode),
@@ -1086,6 +1086,16 @@ class BackgroundWorkTests {
         )
         assertEquals(listOf("const a = 1", "cm_2"), state.backgroundScripts.map { it.label })
         assertTrue(state.hasBackgroundWork)
+    }
+
+    @Test fun aScriptStillBlockingTheTurnIsNotBackgroundWork() = sessionTest { h ->
+        // Every script runs as a job; its execute call only ends with the job's ID once it moves to the background.
+        val blocking = h.state().copy(jobs = mapOf("cm_1" to job("cm_1", OpenCodeJob.Kind.CodeMode)))
+        assertTrue(blocking.backgroundScripts.isEmpty())
+        assertFalse(blocking.hasBackgroundWork)
+        val moved = blocking.copy(items = listOf(execute("cm_1", "await build()")))
+        assertEquals(listOf("cm_1"), moved.backgroundScripts.map { it.id })
+        assertTrue(moved.hasBackgroundWork)
     }
 
     @Test fun anIdleSubagentStaysListedWhileItsTreeRunsAJob() = sessionTest { h ->
@@ -1153,7 +1163,7 @@ class BackgroundWorkTests {
     /** Home sends `FamilyRefreshRequested` on every new stream; its re-list drops a settle the stream missed. */
     @Test fun aSettleMissedWhileTheStreamWasDownIsGoneAfterTheReconnect() = sessionTest { h ->
         val stale = job("cm_1", OpenCodeJob.Kind.CodeMode)
-        val store = h.store(h.state().copy(jobs = mapOf(stale.id to stale))) {
+        val store = h.store(h.state().copy(items = listOf(execute(stale.id, "await build()")), jobs = mapOf(stale.id to stale))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },
@@ -1173,7 +1183,8 @@ class BackgroundWorkTests {
         val settled = job("cm_old", OpenCodeJob.Kind.CodeMode)
         val started = job("cm_new", OpenCodeJob.Kind.CodeMode)
         val listed = Channel<List<OpenCodeJob>>(Channel.UNLIMITED)
-        val store = h.store(h.state().copy(jobs = mapOf(settled.id to settled))) {
+        val moved = listOf(execute(settled.id, "await old()"), execute(started.id, "await new()"))
+        val store = h.store(h.state().copy(items = moved, jobs = mapOf(settled.id to settled))) {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 sessionFamily = { _, _ -> awaitCancellation() },
                 runningShells = { _, _ -> emptyList() },

@@ -162,7 +162,11 @@ internal fun State.pruningJobs(ownedBy: String): State {
     return copy(jobs = jobs.filterValues { it.ownerSessionID != ownedBy })
 }
 
-/** The session's own Code Mode scripts running in the background, named by their first line. */
+/**
+ * The session's own Code Mode scripts running in the background, named by their first line. Every script runs as a
+ * job, so one still blocking the turn has a running job too; only one whose `execute` call ended with the job's ID
+ * has moved to the background.
+ */
 val State.backgroundScripts: List<BackgroundScript>
     get() {
         val sessionID = session?.id ?: return emptyList()
@@ -175,7 +179,9 @@ val State.backgroundScripts: List<BackgroundScript>
             val jobID = call.metadata["jobID"]?.string?.takeIf { it.isNotEmpty() } ?: continue
             labels[jobID] = firstLine((call.input as? OpenCodeJSONValue.Object)?.values?.get("code")?.string)
         }
-        return running.map { BackgroundScript(it.id, labels[it.id] ?: it.id, it.startedAt) }.sortedBy { it.startedAt }
+        return running.filter { it.id in labels }
+            .map { BackgroundScript(it.id, labels[it.id] ?: it.id, it.startedAt) }
+            .sortedBy { it.startedAt }
     }
 
 private fun firstLine(code: String?): String? = code?.lineSequence()?.map { it.trim() }?.firstOrNull { it.isNotEmpty() }
