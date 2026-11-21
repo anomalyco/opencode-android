@@ -91,3 +91,17 @@ It reads `opencode-android/release/*` from AWS Secrets Manager, step by step
   then leaves the build as the open testing track's draft and the job warns: send it for review
   in Play Console (Publishing overview → Send changes for review). v0.2.2 (33) was the first,
   sent for review on 2026-11-08.
+
+## Crash reports
+
+Google Play collects crashes and freezes from Play installs whose users share diagnostics
+(Play Console → Android vitals). `scripts/play-crashes.py` lists them, `show <id>` prints one
+group's stack trace, and `issues --create` opens a GitHub issue labelled `crash` for each new
+group and comments when a known one shows up in a newer version. Without `--create` it only
+prints what it would do.
+
+It reads a key for `play-vitals-reader@opencode-android-vitals.iam.gserviceaccount.com` (Google
+Cloud project `opencode-android-vitals` in the anoma.ly org), invited in Play Console with only
+*View app quality information* on OpenCode, from `$PLAY_VITALS_KEY` or
+`~/.config/opencode-android/play-vitals-reader.json`. The key isn't in AWS, so nothing runs this
+on a schedule yet.
