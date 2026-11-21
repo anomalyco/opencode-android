@@ -1,6 +1,23 @@
 package ai.opencode.feature.transcript.selection
 
 import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.core.ui.OpenCodeAppTheme
+import ai.opencode.feature.transcript.user.TranscriptUserBubble
+import android.os.Looper
+import android.os.SystemClock
+import android.view.MotionEvent
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.node.RootForTest
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsNode
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.text.TextLayoutResult
+import org.robolectric.Robolectric
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.GraphicsMode
+import java.time.Duration
 import ai.opencode.core.ui.AppTheme
 import ai.opencode.core.ui.OpenCodeColors
 import ai.opencode.feature.transcript.SessionLinkTarget
@@ -88,6 +105,56 @@ A second line in the same paragraph.
         val start = document.string.indexOf(text)
         assertTrue("\"$text\" is in the document", start >= 0)
         return TextRange(start, text.length)
+    }
+
+    @Test
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    fun tripleTapOnSentTextSelectsOnlyItsParagraph() {
+        val paragraph = "Middle 👩🏽‍💻 paragraph."
+        val text = "Above.\n\n$paragraph\n\nBelow."
+        val controller = Robolectric.buildActivity(ComponentActivity::class.java).setup()
+        try {
+            val activity = controller.get()
+            val view = ComposeView(activity)
+            activity.setContentView(view)
+            view.setContent { OpenCodeAppTheme { TranscriptUserBubble(text) } }
+            val main = shadowOf(Looper.getMainLooper())
+            main.idleFor(Duration.ofMillis(80))
+            val root = view.getChildAt(0) as RootForTest
+            fun nodes(node: SemanticsNode): List<SemanticsNode> = listOf(node) + node.children.flatMap(::nodes)
+            fun tree() = nodes(root.semanticsOwner.unmergedRootSemanticsNode)
+            val body = tree().first { it.config.getOrNull(SemanticsProperties.Text)?.firstOrNull()?.text == text }
+            val layouts = mutableListOf<TextLayoutResult>()
+            body.config[SemanticsActions.GetTextLayoutResult].action!!.invoke(layouts)
+            val point = body.boundsInRoot.topLeft + layouts.single().getBoundingBox(text.indexOf("paragraph")).center
+            fun tap() {
+                val now = SystemClock.uptimeMillis()
+                for (action in listOf(MotionEvent.ACTION_DOWN, MotionEvent.ACTION_UP)) {
+                    val event = MotionEvent.obtain(now, SystemClock.uptimeMillis(), action, point.x, point.y, 0)
+                    view.dispatchTouchEvent(event)
+                    event.recycle()
+                    main.idleFor(Duration.ofMillis(20))
+                }
+            }
+            fun selection() = tree().firstNotNullOfOrNull { it.config.getOrNull(SemanticsProperties.TextSelectionRange) }
+            tap(); tap()
+            assertNull(selection())
+            tap()
+            main.idleFor(Duration.ofMillis(600)) // Also verify the toolbar's settle does not select all.
+            val selected = requireNotNull(selection())
+            assertEquals(paragraph, text.substring(selected.min, selected.max))
+        } finally {
+            controller.pause().stop().destroy()
+        }
+    }
+
+    @Test
+    fun paragraphSelectionStopsAtMarkdownBoundaries() {
+        val document = document("Above.\n\nFirst 👩🏽‍💻 sentence.\nSecond sentence.\n\n```swift\nfirst\nsecond\n```\n\nBelow.")
+        val paragraph = TextRange(range("First", document).start, range("Second sentence.", document).end - range("First", document).start)
+        assertEquals(paragraph, document.paragraphRange(range("Second", document).start))
+        val codeLine = range("second", document)
+        assertEquals(codeLine, document.paragraphRange(codeLine.end))
     }
 
     @Test

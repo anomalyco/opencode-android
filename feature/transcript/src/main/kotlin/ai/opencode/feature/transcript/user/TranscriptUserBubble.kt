@@ -45,6 +45,8 @@ import kotlinx.coroutines.delay
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -72,6 +74,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -93,6 +98,9 @@ import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.coerceIn
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -126,6 +134,7 @@ internal fun TranscriptUserBubble(
     modifier: Modifier = Modifier,
 ) {
     var isSelecting by remember { mutableStateOf(false) }
+    var selectedParagraph by remember { mutableStateOf<TextRange?>(null) }
     var menu by remember { mutableStateOf(false) }
     val folds = remember { BooleanArray(1) }
     val reduceMotion = rememberReduceMotion()
@@ -135,6 +144,7 @@ internal fun TranscriptUserBubble(
     LaunchedEffect(fold.isExpanded) { if (!fold.isExpanded) isSelecting = false }
 
     fun beginSelection() {
+        selectedParagraph = null // Select in the menu still selects the whole message.
         if (folds[0] && !fold.isExpanded) fold.toggle()
         isSelecting = true
     }
@@ -148,6 +158,11 @@ internal fun TranscriptUserBubble(
                     text = text,
                     isPending = isPending,
                     isSelecting = isSelecting,
+                    selectedParagraph = selectedParagraph,
+                    onParagraph = if (isSelecting || isPending || pendingActions != null || failedSend != null) null else { range ->
+                        beginSelection()
+                        selectedParagraph = range
+                    },
                     reveal = reveal,
                     corners = corners,
                     fold = fold,
@@ -203,6 +218,8 @@ private fun UserBubbleFace(
     text: String,
     isPending: Boolean,
     isSelecting: Boolean,
+    selectedParagraph: TextRange?,
+    onParagraph: ((TextRange) -> Unit)?,
     reveal: AgentMessageReveal.Frame,
     corners: UserSurfaceCorners,
     fold: UserBubbleFold.State,
@@ -228,10 +245,12 @@ private fun UserBubbleFace(
                     Modifier
                         .graphicsLayer { alpha = (if (isSelecting) 0f else pendingAlpha) * reveal.text.toFloat() }
                         .then(if (isSelecting) Modifier.clearAndSetSemantics { } else Modifier),
+                    onParagraph,
                 )
                 if (isSelecting) {
                     UserBubbleSelectableText(
                         text = SessionMentions.shown(text, LocalSessionLinks.current),
+                        paragraph = selectedParagraph,
                         isPending = isPending,
                         onCopy = onCopy,
                         onEndSelection = onEndSelection,
@@ -415,11 +434,52 @@ private fun UserBubbleFoldView(
  * it mentions none.
  */
 @Composable
-private fun UserBubbleText(text: String, modifier: Modifier) {
+private fun UserBubbleText(text: String, modifier: Modifier, onParagraph: ((TextRange) -> Unit)?) {
     val colors = OpenCodeTheme.colors
+    var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
+    val select by rememberUpdatedState(onParagraph)
+    val gestures = if (onParagraph == null) modifier else modifier.pointerInput(text) {
+        var count = 0
+        var lastTime = 0L
+        var lastPoint = Offset.Zero
+        awaitEachGesture {
+            // Observe taps without taking the down from scrolling, links or the bubble's lift.
+            val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+            val point = down.position
+            val next = if (down.uptimeMillis - lastTime <= viewConfiguration.doubleTapTimeoutMillis &&
+                (point - lastPoint).getDistance() <= viewConfiguration.touchSlop * 4
+            ) count + 1 else 1
+            count = 0
+            while (true) {
+                val event = awaitPointerEvent(PointerEventPass.Initial)
+                val change = event.changes.singleOrNull() ?: return@awaitEachGesture
+                if (change.id != down.id || change.isConsumed ||
+                    change.uptimeMillis - down.uptimeMillis >= viewConfiguration.longPressTimeoutMillis ||
+                    (change.position - point).getDistance() > viewConfiguration.touchSlop
+                ) return@awaitEachGesture
+                if (!change.pressed) {
+                    if (next == 3) {
+                        val result = layout ?: return@awaitEachGesture
+                        val line = result.getLineForVerticalPosition(point.y)
+                        if (point.y !in result.getLineTop(line)..result.getLineBottom(line) ||
+                            point.x !in result.getLineLeft(line)..result.getLineRight(line)
+                        ) return@awaitEachGesture
+                        val range = bubbleParagraphRange(result.layoutInput.text.text, result.getOffsetForPosition(point))
+                        if (!range.collapsed) {
+                            change.consume()
+                            select?.invoke(range)
+                        }
+                    } else count = next
+                    lastTime = down.uptimeMillis
+                    lastPoint = point
+                    break
+                }
+            }
+        }
+    }
     val marked = remember(text) { SessionLink.marked(text) }
     if (marked == null) {
-        Text(text, style = UserBubbleTextStyle, color = colors.text, modifier = modifier)
+        Text(text, style = UserBubbleTextStyle, color = colors.text, modifier = gestures, onTextLayout = { layout = it })
         return
     }
     val style = currentMarkdownStyle()
@@ -433,8 +493,16 @@ private fun UserBubbleText(text: String, modifier: Modifier) {
             style, targets, density, listener, siteIcon = null,
         )
     }
-    ArrivingText(presented, emptyList(), UserBubbleTextStyle, colors.text, modifier)
+    ArrivingText(presented, emptyList(), UserBubbleTextStyle, colors.text, gestures, onTextLayout = { layout = it })
     ReportsSessionLinks(presented.sessionIDs)
+}
+
+/** Text layout and the selectable field both use offsets into the shown text, including chip titles. */
+internal fun bubbleParagraphRange(text: String, offset: Int): TextRange {
+    val breaks = charArrayOf('\n', '\r', '\u2029', '\u2028')
+    val start = text.lastIndexOfAny(breaks, offset - 1) + 1
+    val end = text.indexOfAny(breaks, offset).let { if (it < 0) text.length else it }
+    return TextRange(start, end)
 }
 
 /** iOS's selection settles for this long after Select: a collapse within it is the system's, and is undone. */
@@ -452,8 +520,9 @@ private const val SELECTION_MENU_DELAY_MILLIS = 480L
  * [onCopy], `CopyTextTapped`).
  */
 @Composable
-private fun UserBubbleSelectableText(text: String, isPending: Boolean, onCopy: (String) -> Unit, onEndSelection: () -> Unit, modifier: Modifier) {
+private fun UserBubbleSelectableText(text: String, paragraph: TextRange?, isPending: Boolean, onCopy: (String) -> Unit, onEndSelection: () -> Unit, modifier: Modifier) {
     val state: TextFieldState = rememberTextFieldState(text)
+    val initial = paragraph?.coerceIn(0, text.length) ?: TextRange(0, text.length)
     val focus = remember { FocusRequester() }
     val end by rememberUpdatedState(onEndSelection)
     val copy by rememberUpdatedState(onCopy)
@@ -486,22 +555,21 @@ private fun UserBubbleSelectableText(text: String, isPending: Boolean, onCopy: (
 
     LaunchedEffect(text) {
         if (state.text.toString() != text) state.edit { replace(0, length, text) }
-        state.edit { selectAll() }
+        state.edit { selection = initial }
         focus.requestFocus()
         delay(SELECTION_MENU_DELAY_MILLIS)
         if (!adjusted) {
-            state.edit { selectAll() }
+            state.edit { selection = initial }
             presentMenu()
         }
     }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(initial) {
         val activatedAt = System.nanoTime()
         snapshotFlow { state.selection }.collect { selection ->
-            val full = state.text.length
             if (selection.collapsed) {
-                // A collapse while it settles is the system's: select it all again.
-                if ((System.nanoTime() - activatedAt) / 1e9 < SELECTION_SETTLE_SECONDS && !adjusted) state.edit { selectAll() } else end()
-            } else if (selection.min != 0 || selection.max != full) {
+                // A collapse while it settles is the system's: restore the requested range.
+                if ((System.nanoTime() - activatedAt) / 1e9 < SELECTION_SETTLE_SECONDS && !adjusted) state.edit { this.selection = initial } else end()
+            } else if (selection != initial) {
                 // The reader moved a handle: the field's own toolbar follows the new range.
                 if (!adjusted) toolbar.dismiss()
                 adjusted = true

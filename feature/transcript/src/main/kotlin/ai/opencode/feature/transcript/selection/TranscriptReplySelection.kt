@@ -428,13 +428,13 @@ class TranscriptReplySelection {
         return true
     }
 
-    /** A double tap: the word under it, with the menu. */
-    fun selectWord(hit: Hit) {
+    /** Double tap for the word, triple tap for the paragraph; both use the same menu. */
+    fun selectAtTap(hit: Hit, paragraph: Boolean) {
         adopt(hit.document)
         val document = document ?: return
-        val word = document.wordRange(hit.offset)
-        if (word.length == 0) return
-        select(word)
+        val range = if (paragraph) document.paragraphRange(hit.offset) else document.wordRange(hit.offset)
+        if (range.length == 0) return
+        select(range)
         movesEnd = true
         presentMenu()
     }
@@ -686,7 +686,7 @@ internal class TranscriptReplySelectionOverlayNode(private var selection: Transc
 
 /**
  * A hold (0.4 s) on reply text selects its word and sweeps as the finger moves; a double tap
- * selects a word with the menu; a touch on a handle drags it; a tap elsewhere clears the selection
+ * selects a word with the menu and a third tap expands to its paragraph; a touch on a handle drags it; a tap elsewhere clears the selection
  * (and still reaches what it tapped). A touch under the header, or one that catches the list
  * coasting, only does what it would have done.
  */
@@ -694,19 +694,31 @@ internal fun Modifier.transcriptReplySelectionGestures(selection: TranscriptRepl
     pointerInput(selection) {
         var lastTapUptime = 0L
         var lastTapPoint = Offset.Unspecified
+        var tapCount = 0
         awaitEachGesture {
             val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
             val point = down.position
+            val now = down.uptimeMillis
+            val count = if (tapCount > 0 && now - lastTapUptime <= viewConfiguration.doubleTapTimeoutMillis &&
+                (point - lastTapPoint).getDistance() <= viewConfiguration.touchSlop * 4
+            ) tapCount + 1 else 1
+            tapCount = 0 // Only a completed tap continues the sequence.
             val host = selection.host
             if (host == null || point.y < host.visibleTop || host.isCoasting) return@awaitEachGesture
 
             val handle = selection.handleAt(point)
             if (handle != null) {
+                // On short words even a tap in the middle can be within a handle's hit target.
+                var thirdTap = count == 3
                 down.consume()
                 selection.beginHandleDrag(handle, point)
                 while (true) {
                     val event = awaitPointerEvent(PointerEventPass.Initial)
                     val change = event.changes.firstOrNull { it.id == down.id }
+                    if (change == null || event.changes.size != 1 ||
+                        change.uptimeMillis - now >= TranscriptReplySelection.HOLD_MILLIS ||
+                        (change.position - point).getDistance() > viewConfiguration.touchSlop
+                    ) thirdTap = false
                     if (change == null || !change.pressed) {
                         change?.consume()
                         break
@@ -715,6 +727,7 @@ internal fun Modifier.transcriptReplySelectionGestures(selection: TranscriptRepl
                     change.consume()
                 }
                 selection.endDrag()
+                if (thirdTap) selection.hit(point)?.takeUnless { it.isLink }?.let { selection.selectAtTap(it, paragraph = true) }
                 return@awaitEachGesture
             }
 
@@ -740,20 +753,16 @@ internal fun Modifier.transcriptReplySelectionGestures(selection: TranscriptRepl
             }
             if (!lifted) return@awaitEachGesture
 
-            val now = down.uptimeMillis
-            val isDoubleTap = lastTapPoint != Offset.Unspecified &&
-                now - lastTapUptime <= viewConfiguration.doubleTapTimeoutMillis &&
-                (point - lastTapPoint).getDistance() <= viewConfiguration.touchSlop * 4
             lastTapUptime = now
             lastTapPoint = point
-            if (isDoubleTap) {
-                lastTapPoint = Offset.Unspecified
+            if (count > 1) {
                 val hit = selection.hit(point)
                 if (hit != null && !hit.isLink) {
-                    selection.selectWord(hit)
+                    selection.selectAtTap(hit, paragraph = count == 3)
+                    if (count == 2) tapCount = count
                     return@awaitEachGesture
                 }
-            }
+            } else tapCount = 1
             if (selection.isSelected) selection.clear(byReader = true)
         }
     }

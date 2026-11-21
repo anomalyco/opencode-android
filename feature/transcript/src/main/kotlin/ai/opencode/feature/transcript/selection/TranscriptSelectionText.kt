@@ -281,6 +281,18 @@ class TranscriptSelectionDocument(val leaves: List<TranscriptSelectionLeaf>) {
         return TextRange(start, widenedEnd - start)
     }
 
+    /** Markdown leaves include soft breaks; in a code block each source line is a paragraph. */
+    fun paragraphRange(offset: Int): TextRange {
+        val (index, local) = locate(offset) ?: return TextRange(0, 0)
+        val leaf = leaves[index]
+        if (leaf.role is TranscriptSelectionLeaf.Role.Code) {
+            val start = leaf.text.lastIndexOf('\n', local - 1) + 1
+            val end = leaf.text.indexOf('\n', local).let { if (it < 0) leaf.length else it }
+            return TextRange(starts[index] + start, end - start)
+        }
+        return TextRange(starts[index], leaf.length)
+    }
+
     /** The word around [offset], or the character there when it isn't in one. */
     fun wordRange(offset: Int): TextRange {
         val (leafIndex, local) = locate(offset) ?: return TextRange(0, 0)

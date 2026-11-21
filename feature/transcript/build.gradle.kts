@@ -14,4 +14,5 @@ dependencies {
     implementation(libs.jlatexmath.android)
     // android.icu (time stamps), MimeTypeMap/Uri/ClipData (drag payloads) in JVM tests.
     testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.activity.compose) // Hosts the sent-bubble touch test.
 }
