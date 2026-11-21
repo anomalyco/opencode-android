@@ -705,7 +705,10 @@ class VoiceAudioEngine(
             externalControl?.interrupted(true)
             callAudio?.interrupted(id, true)
             note(VoiceCallLog.Note.Kind.audio, "⚠︎ Audio interrupted (another app or call took it)")
-            levels.reset(); events.trySend(VoiceAudioEvent.interrupted)
+            val wasMuted = levels.isMuted
+            levels.reset()
+            levels.isMuted = wasMuted
+            events.trySend(VoiceAudioEvent.interrupted)
         } else {
             interruptionInProgress = false
             if (!interrupted) return@withLock
