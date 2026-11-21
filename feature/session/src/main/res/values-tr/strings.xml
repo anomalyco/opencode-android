@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Bilinmiyor</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Maliyet</string>
+    <string name="session_sheet_media">Medya</string>
+    <string name="session_sheet_media_value">Dosyalar ve bağlantılar</string>
     <string name="session_always_notify">Her zaman bildir</string>
     <string name="session_always_notify_message_phone">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu telefona bildirim gönder.</string>
     <string name="session_always_notify_message_tablet">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu tablete bildirim gönder.</string>

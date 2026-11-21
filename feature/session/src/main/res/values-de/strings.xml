@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">unbekannt</string>
     <string name="session_sheet_context_tokens">%1$s Tokens</string>
     <string name="session_sheet_cost">Kosten</string>
+    <string name="session_sheet_media">Medien</string>
+    <string name="session_sheet_media_value">Dateien und Links</string>
     <string name="session_always_notify">Immer benachrichtigen</string>
     <string name="session_always_notify_message_phone">Dieses Handy bei jeder fertigen Antwort benachrichtigen, auch auf Nachrichten von anderen Geräten.</string>
     <string name="session_always_notify_message_tablet">Dieses Tablet bei jeder fertigen Antwort benachrichtigen, auch auf Nachrichten von anderen Geräten.</string>

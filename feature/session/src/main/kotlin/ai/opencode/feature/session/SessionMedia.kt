@@ -5,6 +5,7 @@ import ai.opencode.core.strings.localized
 import ai.opencode.feature.media.AgentFileDestination
 import ai.opencode.feature.media.AgentImageKey
 import ai.opencode.feature.media.AgentImageRequest
+import ai.opencode.feature.media.LinkPreview
 import ai.opencode.feature.media.LinkPreviewExtractor
 import ai.opencode.feature.media.LinkPreviewPolicy
 import ai.opencode.feature.media.LinkTextBlock
@@ -104,7 +105,7 @@ object SessionMedia {
         /** A long paste sent as a file. */
         data class PastedText(val text: String, val summary: PastedTextSummary) : Content
 
-        data class Link(val url: String) : Content
+        data class Link(val url: String, val label: String?) : Content
     }
 
     /**
@@ -120,6 +121,7 @@ object SessionMedia {
         var date: Instant? = null
         val rows = mutableListOf<List<Item>>()
         val seen = HashSet<String>()
+        val linkLabels = HashMap<String, String?>()
         // Each item where it was first shared, by whoever shared it; the newest row first.
         for ((index, item) in items.withIndex()) {
             // The app's own `msg_<UUID>` rows carry no time: they take the last one seen.
@@ -146,7 +148,10 @@ object SessionMedia {
                 file(ref, origin, file.name, file.mime)
             }
             fun links(blocks: List<LinkTextBlock>, origin: Origin) {
-                for (target in LinkPreviewExtractor.targets(blocks, limit = Int.MAX_VALUE)) add("link:${target.key}", Content.Link(target.url), origin)
+                for ((target, label) in LinkPreviewExtractor.labeledTargets(blocks, limit = Int.MAX_VALUE)) {
+                    linkLabels["link:${target.key}"] = label
+                    add("link:${target.key}", Content.Link(target.url, label), origin)
+                }
             }
             when (item) {
                 is OpenCodeTranscriptItem.UserImages -> item.images.forEach { image(it, Origin.user) }
@@ -179,7 +184,13 @@ object SessionMedia {
             }
             if (row.isNotEmpty()) rows += row
         }
-        return rows.asReversed().flatten()
+        // A link is titled by its newest mention's label.
+        val result = mutableListOf<Item>()
+        for (item in rows.asReversed().flatten()) {
+            val content = item.content
+            result += if (content is Content.Link) item.copy(content = content.copy(label = linkLabels[item.id])) else item
+        }
+        return result
     }
 
     /** The files replies name as cards, which are checked before their cards show. */
@@ -308,7 +319,7 @@ object SessionMedia {
         is Content.Image -> content.attachment.name ?: localized(R.string.session_visual_image)
         is Content.File -> content.name
         is Content.PastedText -> ai.opencode.server.model.PastedText.title
-        is Content.Link -> LinkPreviewPolicy.displayHost(content.url)
+        is Content.Link -> content.label ?: LinkPreview.readableTitle(content.url) ?: LinkPreviewPolicy.displayHost(content.url)
     }
 
     /** The card's type line: the file type, a paste's length, or a link's address. */

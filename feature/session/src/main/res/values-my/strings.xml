@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">အမည်မသိ</string>
     <string name="session_sheet_context_tokens">တိုကင် %1$s</string>
     <string name="session_sheet_cost">ကုန်ကျစရိတ်</string>
+    <string name="session_sheet_media">မီဒီယာ</string>
+    <string name="session_sheet_media_value">ဖိုင်များနှင့် လင့်ခ်များ</string>
     <string name="session_always_notify">အမြဲအသိပေးပါ</string>
     <string name="session_always_notify_message_phone">ဤဖုန်းမှ မပို့ထားသည့် မက်ဆေ့ဂျ်များအတွက်ပါ ပြန်စာပြီးတိုင်း ဤဖုန်းကို အသိပေးပါ။</string>
     <string name="session_always_notify_message_tablet">ဤတက်ဘလက်မှ မပို့ထားသည့် မက်ဆေ့ဂျ်များအတွက်ပါ ပြန်စာပြီးတိုင်း ဤတက်ဘလက်ကို အသိပေးပါ။</string>

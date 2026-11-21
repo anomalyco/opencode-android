@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nieznany</string>
     <string name="session_sheet_context_tokens">%1$s tokenów</string>
     <string name="session_sheet_cost">Koszt</string>
+    <string name="session_sheet_media">Multimedia</string>
+    <string name="session_sheet_media_value">Pliki i linki</string>
     <string name="session_always_notify">Zawsze powiadamiaj</string>
     <string name="session_always_notify_message_phone">Powiadamiaj ten telefon o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
     <string name="session_always_notify_message_tablet">Powiadamiaj ten tablet o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>

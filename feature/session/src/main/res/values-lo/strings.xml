@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">ບໍ່ຮູ້ຈັກ</string>
     <string name="session_sheet_context_tokens">%1$s ໂທເຄັນ</string>
     <string name="session_sheet_cost">ຄ່າໃຊ້ຈ່າຍ</string>
+    <string name="session_sheet_media">ສື່</string>
+    <string name="session_sheet_media_value">ໄຟລ໌ ແລະລິ້ງ</string>
     <string name="session_always_notify">ແຈ້ງເຕືອນສະເໝີ</string>
     <string name="session_always_notify_message_phone">ແຈ້ງເຕືອນໂທລະສັບນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>
     <string name="session_always_notify_message_tablet">ແຈ້ງເຕືອນແທັບເລັດນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>

@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">ไม่ทราบ</string>
     <string name="session_sheet_context_tokens">%1$s โทเค็น</string>
     <string name="session_sheet_cost">ค่าใช้จ่าย</string>
+    <string name="session_sheet_media">สื่อ</string>
+    <string name="session_sheet_media_value">ไฟล์และลิงก์</string>
     <string name="session_always_notify">แจ้งเตือนเสมอ</string>
     <string name="session_always_notify_message_phone">แจ้งเตือนบนมือถือนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>
     <string name="session_always_notify_message_tablet">แจ้งเตือนบนแท็บเล็ตนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>

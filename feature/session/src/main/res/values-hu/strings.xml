@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">ismeretlen</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Költség</string>
+    <string name="session_sheet_media">Média</string>
+    <string name="session_sheet_media_value">Fájlok és linkek</string>
     <string name="session_always_notify">Mindig értesítsen</string>
     <string name="session_always_notify_message_phone">Értesítés ezen a telefonon minden elkészült válaszról, akkor is, ha az üzenetet nem innen küldte.</string>
     <string name="session_always_notify_message_tablet">Értesítés ezen a táblagépen minden elkészült válaszról, akkor is, ha az üzenetet nem innen küldte.</string>

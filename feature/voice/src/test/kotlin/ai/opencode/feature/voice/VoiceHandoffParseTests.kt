@@ -218,7 +218,7 @@ class VoiceSteeringInstructionsTests {
             assertTrue(text.contains("Never invent content, moralize, or rewrite it into counseling or therapeutic language"))
             assertTrue(text.contains("Ordinary profanity or criticism isn't a reason to refuse"))
             assertTrue(text.contains("If the dictation is incomplete, ask for the missing words"))
-            assertTrue(text.contains("Drafting is not sending: delegate the user's exact words to the session and say they'll see the draft and destination before anything is sent"))
+            assertTrue(text.contains("Drafting is not sending: delegate the user's exact words to the session and say the draft and its destination come back to them before anything is sent"))
             assertTrue(text.contains("Only if a real safety limit applies, name the narrow issue and offer a clearly labeled adjustment for the user's approval, never a silent substitution"))
         }
     }

@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Neznáme</string>
     <string name="session_sheet_context_tokens">%1$s tokenov</string>
     <string name="session_sheet_cost">Náklady</string>
+    <string name="session_sheet_media">Médiá</string>
+    <string name="session_sheet_media_value">Súbory a odkazy</string>
     <string name="session_always_notify">Vždy upozorniť</string>
     <string name="session_always_notify_message_phone">Upozorniť tento telefón po dokončení každej odpovede, aj na správy odoslané odinakiaľ.</string>
     <string name="session_always_notify_message_tablet">Upozorniť tento tablet po dokončení každej odpovede, aj na správy odoslané odinakiaľ.</string>

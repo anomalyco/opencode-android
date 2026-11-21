@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nežinomas</string>
     <string name="session_sheet_context_tokens">%1$s žetonų</string>
     <string name="session_sheet_cost">Kaina</string>
+    <string name="session_sheet_media">Medija</string>
+    <string name="session_sheet_media_value">Failai ir nuorodos</string>
     <string name="session_always_notify">Visada pranešti</string>
     <string name="session_always_notify_message_phone">Pranešti šiame telefone, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>
     <string name="session_always_notify_message_tablet">Pranešti šioje planšetėje, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>

@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">མ་ཤེསཔ་</string>
     <string name="session_sheet_context_tokens">ཊོ་ཀེན་ %1$s</string>
     <string name="session_sheet_cost">ཟད་འགྲོ།</string>
+    <string name="session_sheet_media">བརྡ་བརྒྱུད།</string>
+    <string name="session_sheet_media_value">ཡིག་སྣོད་དང་འབྲེལ་མཐུད་ཚུ།</string>
     <string name="session_always_notify">ཨ་རྟག་ར་བརྡ་བསྐུལ་འབད།</string>
     <string name="session_always_notify_message_phone">ནཱ་ལས་མ་བཏང་མི་ཚུ་ཨིན་རུང་ ལན་འདེབས་རེ་མཇུག་བསྡུཝ་ད་ འགྲུལ་འཕྲིན་འདི་ལུ་བརྡ་བསྐུལ་འབད།</string>
     <string name="session_always_notify_message_tablet">ནཱ་ལས་མ་བཏང་མི་ཚུ་ཨིན་རུང་ ལན་འདེབས་རེ་མཇུག་བསྡུཝ་ད་ ཊེབ་ལེཊ་འདི་ལུ་བརྡ་བསྐུལ་འབད།</string>

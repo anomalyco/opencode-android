@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">უცნობი</string>
     <string name="session_sheet_context_tokens">%1$s ტოკენი</string>
     <string name="session_sheet_cost">ღირებულება</string>
+    <string name="session_sheet_media">მედია</string>
+    <string name="session_sheet_media_value">ფაილები და ბმულები</string>
     <string name="session_always_notify">ყოველთვის შემატყობინე</string>
     <string name="session_always_notify_message_phone">ამ ტელეფონზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>
     <string name="session_always_notify_message_tablet">ამ პლანშეტზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>

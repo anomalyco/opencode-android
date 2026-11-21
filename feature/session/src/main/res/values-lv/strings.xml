@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Nezināms</string>
     <string name="session_sheet_context_tokens">%1$s tokeni</string>
     <string name="session_sheet_cost">Izmaksas</string>
+    <string name="session_sheet_media">Multivide</string>
+    <string name="session_sheet_media_value">Faili un saites</string>
     <string name="session_always_notify">Vienmēr paziņot</string>
     <string name="session_always_notify_message_phone">Paziņot šajā tālrunī par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>
     <string name="session_always_notify_message_tablet">Paziņot šajā planšetdatorā par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>

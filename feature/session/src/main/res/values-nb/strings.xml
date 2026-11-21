@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Ukjent</string>
     <string name="session_sheet_context_tokens">%1$s tokener</string>
     <string name="session_sheet_cost">Kostnad</string>
+    <string name="session_sheet_media">Medier</string>
+    <string name="session_sheet_media_value">Filer og lenker</string>
     <string name="session_always_notify">Varsle alltid</string>
     <string name="session_always_notify_message_phone">Varsle denne telefonen når et svar er klart, også når meldingen ikke ble sendt herfra.</string>
     <string name="session_always_notify_message_tablet">Varsle dette nettbrettet når et svar er klart, også når meldingen ikke ble sendt herfra.</string>

@@ -38,6 +38,8 @@
     <string name="drawer_mark_as_unread">እንዳልተነበበ ምልክት አድርግ</string>
     <string name="drawer_mute">ድምፅ አጥፋ</string>
     <string name="drawer_unmute">ድምፅ ክፈት</string>
+    <string name="drawer_hide">ደብቅ</string>
+    <string name="drawer_unhide">አትደብቅ</string>
     <string name="drawer_move_up">ወደ ላይ አንቀሳቅስ</string>
     <string name="drawer_move_down">ወደ ታች አንቀሳቅስ</string>
 
@@ -121,6 +123,7 @@
     <!-- Session row state for TalkBack -->
     <string name="drawer_row_pinned_state">የተሰኩ</string>
     <string name="drawer_row_muted_state">ድምፀ ከል የተደረገ</string>
+    <string name="drawer_row_hidden_state">የተደበቁ</string>
     <string name="drawer_row_needs_input_state">የእርስዎን ግቤት ይፈልጋል</string>
     <string name="drawer_row_working_state">በመስራት ላይ</string>
     <string name="drawer_row_unread_state">ያልተነበቡ</string>

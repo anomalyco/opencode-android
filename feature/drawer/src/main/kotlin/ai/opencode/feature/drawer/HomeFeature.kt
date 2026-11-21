@@ -106,6 +106,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val transcriptCache: Map<String, List<OpenCodeTranscriptItem>> = emptyMap(),
         /** Cached transcripts being read again (`refreshCachedTranscript`). */
         val refreshingTranscripts: Set<String> = emptySet(),
+        /** Those of [refreshingTranscripts] sent at once rather than after a delay, so a read wanted now joins them. */
+        val fetchingTranscripts: Set<String> = emptySet(),
         /**
          * Cached sessions whose background refresh was cancelled or skipped while a foreground
          * transcript read had the connection, oldest first, bounded to [dirtyCachedTranscriptLimit].
@@ -143,6 +145,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val pendingOpenReadState: Map<String, PendingOpenReadState> = emptyMap(),
         /** Mirror of `SharedKeys.mutedSessionKeys`. */
         val mutedSessionKeys: Set<String> = emptySet(),
+        /** Mirror of `SharedKeys.hiddenSessionKeys`. */
+        val hiddenSessionKeys: Set<String> = emptySet(),
         /** Mirror of `SharedKeys.sidebarShown`: beside a wide window's sidebar, whether it shows. */
         val isSidebarShown: Boolean = true,
         /**
@@ -575,6 +579,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
                     sessionSeenWatermarks = shared(SharedKeys.sessionSeenWatermarks).value,
                     manuallyUnreadSessionKeys = shared(SharedKeys.manuallyUnreadSessionKeys).value,
                     mutedSessionKeys = shared(SharedKeys.mutedSessionKeys).value,
+                    hiddenSessionKeys = shared(SharedKeys.hiddenSessionKeys).value,
                     isSidebarShown = shared(SharedKeys.sidebarShown).value,
                     showsWhatsNewButton = WhatsNewFeature.State().showsButton,
                     initializedInboxServerIDs = shared(SharedKeys.initializedInboxServerIDs).value,
@@ -706,6 +711,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object UnsentDraftsChanged : Action
         data class TogglePin(val sessionID: String) : Action
         data class ToggleMute(val sessionID: String) : Action
+        data class ToggleHidden(val sessionID: String) : Action
         data class MovePinUp(val sessionID: String) : Action
         data class MovePinDown(val sessionID: String) : Action
         data class DrawerPinZoneCrossed(val entered: Boolean) : Action
