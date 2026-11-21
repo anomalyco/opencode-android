@@ -8,6 +8,7 @@ import ai.opencode.server.live.ACTIVE_ANCESTRY_CONCURRENCY
 import ai.opencode.server.live.OpenCodeReadCache
 import ai.opencode.server.live.decodeTranscript
 import ai.opencode.server.live.decodeTranscriptPage
+import ai.opencode.server.model.OpenCodeAutocompleteAgent
 import ai.opencode.server.model.OpenCodeCompaction
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodeFormRequest
@@ -15,6 +16,7 @@ import ai.opencode.server.model.OpenCodeFormValue
 import ai.opencode.server.model.OpenCodeJSONValue
 import ai.opencode.server.model.OpenCodeModel
 import ai.opencode.server.model.OpenCodeModelCatalog
+import ai.opencode.server.model.OpenCodeModelRef
 import ai.opencode.server.model.OpenCodePermissionReply
 import ai.opencode.server.model.OpenCodePermissionRequest
 import ai.opencode.server.model.OpenCodePromptSource
@@ -36,6 +38,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import okhttp3.Interceptor
@@ -824,6 +827,14 @@ class OpenCodeClientDecodingTests {
             assertEquals("Skip for now", fixture.requests[1].queryValue("message"))
             assertNull(fixture.requests[2].queryValue("location[directory]"))
         }
+    }
+
+    @Test
+    fun anAgentsMalformedModelDecodesAsNoModel() {
+        val text = """[{"name":"build","mode":"primary","model":"opencode/flash"},{"name":"plan","mode":"primary","model":{"providerID":"opencode","id":"opus"}}]"""
+        val agents = WIRE_JSON.decodeFromString(ListSerializer(OpenCodeAutocompleteAgent.serializer()), text)
+        assertNull(agents[0].model)
+        assertEquals(OpenCodeModelRef(id = "opus", providerID = "opencode"), agents[1].model)
     }
 
     @Test
