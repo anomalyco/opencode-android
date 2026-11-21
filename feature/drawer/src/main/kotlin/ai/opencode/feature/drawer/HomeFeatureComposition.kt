@@ -121,6 +121,11 @@ private fun HomeFeature.fullBody(): Reducer<State, Action> =
             dependency(EventStreamFocusClient).publish(streamFocusOwner, new)
             Reduced(state)
         }
+        // The call's delegator reads what the drawer shows from here, watched over all of Home too.
+        .onChange({ it.voiceSessionBoardInput }) { _, _, state ->
+            dependency(VoiceSessionBoardClient).publish(state.voiceSessionBoard)
+            Reduced(state)
+        }
         .onChange({ it.settingsHomeInput }) { old, new, state ->
             if (old == null || new == null) {
                 Reduced(state)
@@ -464,11 +469,6 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
         // Shortcuts, launcher actions and search offer what the drawer does.
         .onChange({ it.systemPublication }) { _, _, state ->
             feature.publishToSystem(state)
-            Reduced(state)
-        }
-        // The call's delegator reads what the drawer shows from here.
-        .onChange({ it.voiceSessionBoard }) { _, new, state ->
-            dependency(VoiceSessionBoardClient).publish(new)
             Reduced(state)
         }
         // Whoever moves a live call (the drawer, New Session, a draft's project) only edits its

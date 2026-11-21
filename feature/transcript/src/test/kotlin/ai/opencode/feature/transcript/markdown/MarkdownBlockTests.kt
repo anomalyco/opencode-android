@@ -8,6 +8,7 @@ import ai.opencode.core.ui.AppTheme
 import ai.opencode.core.ui.OpenCodeColors
 import ai.opencode.core.ui.OpenCodeFonts
 import ai.opencode.core.ui.OpenCodeTextStyles
+import ai.opencode.feature.media.MemoryWarningCenter
 import ai.opencode.feature.media.SyntaxHighlighter
 import ai.opencode.feature.transcript.TranscriptFontWeight
 import ai.opencode.feature.transcript.TranscriptLayoutTuning
@@ -172,6 +173,18 @@ class MarkdownBlockTests {
             assertEquals(fresh, cached)
             assertEquals(OpenCodeMarkdownBlock.markdown(fresh).toByteArray().toList(), OpenCodeMarkdownBlock.markdown(cached).toByteArray().toList())
         }
+    }
+
+    @Test fun inlineCacheEmptiesEveryTableOnAMemoryWarning() {
+        val center = MemoryWarningCenter()
+        val cache = OpenCodeMarkdownBlock.InlineCache(memoryWarnings = center)
+        cache.parse("Some **bold** text")
+        cache.parseCompletedSegment("A paragraph with `code`.\n\n")
+        cache.parseTableRow("| a | **b** |")
+        assertTrue(cache.allEntryCount >= 3)
+        center.post()
+        assertEquals(0, cache.allEntryCount)
+        assertEquals(0, cache.retainedSourceBytes)
     }
 
     @Test fun inlineReuseHasHardEntryAndUTF8SourceBounds() {

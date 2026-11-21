@@ -217,6 +217,42 @@ class LinkPreviewLoaderTests {
     }
 
     @Test
+    fun diskHitsStayWithinTheMemoryLimit() = runTest {
+        val directory = temporaryDirectory("link-preview-tests")
+        try {
+            val posts = (0 until 100).map { LinkPreviewTarget.XPost(handle = "example_dev", id = "$it") }
+            val server = Server()
+            val first = LinkPreviewLoader(fetch = server.fetch, directory = directory, memoryWarnings = MemoryWarningCenter())
+            for (post in posts) first.load(post)
+            assertEquals(64, first.memoryCount)
+            val restarted = LinkPreviewLoader(fetch = server.fetch, directory = directory, memoryWarnings = MemoryWarningCenter())
+            for (post in posts) restarted.load(post)
+            assertEquals("The restarted loader read every record from disk", 100, server.count)
+            assertEquals("Records read from disk keep the limit too", 64, restarted.memoryCount)
+        } finally {
+            directory.deleteRecursively()
+        }
+    }
+
+    @Test
+    fun aMemoryWarningEmptiesTheLoaderButNotTheDisk() = runTest {
+        val directory = temporaryDirectory("link-preview-tests")
+        try {
+            val center = MemoryWarningCenter()
+            val server = Server()
+            val loader = LinkPreviewLoader(fetch = server.fetch, directory = directory, memoryWarnings = center)
+            val result = loader.load(post)
+            assertEquals(result, loader.cached(post))
+            center.post()
+            assertNull(loader.cached(post))
+            assertEquals(result, loader.load(post))
+            assertEquals("Read back from disk, not fetched", 1, server.count)
+        } finally {
+            directory.deleteRecursively()
+        }
+    }
+
+    @Test
     fun diskOutlivesTheLoader() = runTest {
         val directory = temporaryDirectory("link-preview-tests")
         try {

@@ -335,7 +335,8 @@ private fun HomeFeature.sessionTapped(state: State, sessionID: String): HomeRedu
     // Navigation and cached transcripts do not require a live event stream.
     val session = state.sessions.firstOrNull { it.id == sessionID } ?: return Reduced(state)
     val moveReason = state.nextMoveReason
-    var s = state
+    // A session opened on the way back (a notification, a link) is what the return shows.
+    var s = state.forgettingAppLeft()
     if (s.pendingSubagentPush?.parentID != sessionID) s = s.copy(pendingSubagentPush = null)
     // A subagent (a link, a notification, the voice agent) lands pushed over its parent when the
     // parent is at hand; otherwise on its own. Already pushed: go back to it.
