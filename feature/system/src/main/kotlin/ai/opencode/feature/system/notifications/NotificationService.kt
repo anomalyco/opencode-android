@@ -85,6 +85,51 @@ object SessionPushNotifications {
             .onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
     }
 
+    const val STATUS_NEEDS_INPUT = "needs-input"
+    const val STATUS_SUCCEEDED = "succeeded"
+    const val STATUS_FAILED = "failed"
+
+    /**
+     * A session's notification from the app's own live stream (Stay Connected During Runs), in the
+     * same slot a push for that session takes, so the two replace each other rather than stack.
+     */
+    @SuppressLint("MissingPermission")
+    fun postLocal(context: Context, serverKey: String, sessionID: String, title: String, status: String) {
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        for (shown in manager.activeNotifications) {
+            if (shown.id != NOTIFICATION_ID || shown.tag != sessionID) continue
+            if (shown.notification.extras.getString(EXTRA_STATUS) == status) return
+        }
+        SystemNotificationChannels.ensure(context)
+        val ref = SessionNotifications.shared.ref(serverKey)
+        val body = when (status) {
+            STATUS_NEEDS_INPUT -> context.getString(R.string.system_session_needs_input)
+            STATUS_FAILED -> context.getString(R.string.system_session_failed)
+            else -> context.getString(R.string.system_session_done)
+        }
+        val builder = NotificationCompat.Builder(context, SystemNotificationChannels.SESSIONS)
+            .setSmallIcon(R.drawable.ic_opencode_mark)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setAutoCancel(true)
+            .setOnlyAlertOnce(true)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setGroup("$ref:$sessionID")
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    context, sessionID.hashCode(),
+                    SystemActionActivity.pushIntent(context, ref, sessionID),
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+                ),
+            )
+        builder.extras.putString(EXTRA_SESSION, sessionID)
+        builder.extras.putString(EXTRA_STATUS, status)
+        runCatching { NotificationManagerCompat.from(context).notify(sessionID, NOTIFICATION_ID, builder.build()) }
+            .onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
+    }
+
     /**
      * Every notification for these sessions, or only their needs-input ones once the request is
      * answered. The drawer's `DeliveredNotificationsClient` calls this.

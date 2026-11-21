@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">エージェントと画面を共有</string>
     <string name="core_experiment_inbox_sidebar_title">受信トレイのサイドバー</string>
     <string name="core_experiment_session_live_activity_title">セッションのリアルタイム更新</string>
+    <string name="core_experiment_background_runs_title">実行中も接続を維持</string>
     <string name="core_experiment_sound_effects_title">効果音</string>
     <string name="core_experiment_server_address_links_title">サーバーURLでリンクを開く</string>
     <string name="core_experiment_in_app_browser_title">アプリ内ブラウザー</string>

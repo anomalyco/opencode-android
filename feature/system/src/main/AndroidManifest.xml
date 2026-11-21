@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
     <!-- Ask OpenCode hides other apps' overlays while its Send shows (setHideOverlayWindows). -->
     <uses-permission android:name="android.permission.HIDE_OVERLAY_WINDOWS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
     <!-- The assistant AppActionActivity.isVerifiedAssistant checks the signature of. -->
     <queries>
@@ -114,6 +116,12 @@
         </service>
         <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
         <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
+
+        <!-- Stay Connected During Runs (experimental): holds the event stream while an agent runs. -->
+        <service
+            android:name=".background.BackgroundRunService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <!-- Live Update buttons: End, Mute or Unmute, Stop Recording; and a swiped-away Live Update. -->
         <receiver

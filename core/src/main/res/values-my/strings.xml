@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">အေးဂျင့်များနှင့် မျက်နှာပြင် မျှဝေပါ</string>
     <string name="core_experiment_inbox_sidebar_title">ဝင်စာ ဘေးအကန့်</string>
     <string name="core_experiment_session_live_activity_title">စက်ရှင် တိုက်ရိုက်အပ်ဒိတ်များ</string>
+    <string name="core_experiment_background_runs_title">လုပ်ဆောင်နေစဉ် ဆက်ချိတ်ထားပါ</string>
     <string name="core_experiment_sound_effects_title">အသံသက်ရောက်မှု</string>
     <string name="core_experiment_server_address_links_title">ဆာဗာလိပ်စာအလိုက် လင့်ခ်များကို ဖွင့်ပါ</string>
     <string name="core_experiment_in_app_browser_title">အက်ပ်တွင်း ဘရောက်ဇာ</string>

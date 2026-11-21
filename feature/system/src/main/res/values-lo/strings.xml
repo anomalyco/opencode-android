@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">ການເຮັດວຽກຂອງເຊດຊັນ</string>
     <string name="system_channel_session_updates">ອັບເດດເຊດຊັນ</string>
     <string name="system_channel_shared_items">ລາຍການທີ່ແບ່ງປັນ</string>
+    <string name="system_channel_background_connection">ການເຊື່ອມຕໍ່ເບື້ອງຫຼັງ</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">ເຊື່ອມຕໍ່ໄວ້ຂະນະຕົວແທນຂອງເຈົ້າເຮັດວຽກ</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">ແຕະເພື່ອສືບຕໍ່ໃນ OpenCode</string>

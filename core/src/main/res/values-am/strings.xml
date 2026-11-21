@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">ማያ ገጹን ለወኪሎች አጋራ</string>
     <string name="core_experiment_inbox_sidebar_title">የገቢ መልዕክቶች የጎን አሞሌ</string>
     <string name="core_experiment_session_live_activity_title">የክፍለ ጊዜ ቀጥታ ዝማኔዎች</string>
+    <string name="core_experiment_background_runs_title">ሂደቶች ሲካሄዱ ተገናኝቶ መቆየት</string>
     <string name="core_experiment_sound_effects_title">የድምጽ ተጽዕኖዎች</string>
     <string name="core_experiment_server_address_links_title">በአገልጋይ አድራሻ አገናኞችን ክፈት</string>
     <string name="core_experiment_in_app_browser_title">የመተግበሪያ ውስጥ አሳሽ</string>

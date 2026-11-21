@@ -54,7 +54,7 @@ class AllExperimentsTests {
             return result
         }
 
-    /** On turns on every experiment in the pane, except the ones that ask for a permission or share data, and runs what each switch does. */
+    /** On turns on every experiment in the pane, except the ones that ask for a permission, share data or run a foreground service, and runs what each switch does. */
     @Test fun onTurnsOnEveryExperimentThatJoinsAll() = runTest {
         val shared = SettingsTestShared()
         shared.set(allExperimentsSkips(ExperimentalFeature.inboxSidebar), true)
@@ -62,12 +62,18 @@ class AllExperimentsTests {
         val store = store(shared, log)
         store.send(HomeSettingsFeature.Action.AllExperimentsChanged(true))
         store.finish()
-        val left = setOf(ExperimentalFeature.backgroundCallIntent, ExperimentalFeature.shareScreenWithAgents, ExperimentalFeature.inboxSidebar)
+        val left = setOf(
+            ExperimentalFeature.backgroundCallIntent,
+            ExperimentalFeature.shareScreenWithAgents,
+            ExperimentalFeature.backgroundRuns,
+            ExperimentalFeature.inboxSidebar,
+        )
         for (feature in listed) {
             assertEquals("$feature", feature !in left, shared.on(feature))
         }
         assertFalse(ExperimentalFeature.backgroundCallIntent.joinsAll)
         assertFalse(ExperimentalFeature.shareScreenWithAgents.joinsAll)
+        assertFalse(ExperimentalFeature.backgroundRuns.joinsAll)
         assertFalse("switches outside the pane aren't in it", ExperimentalFeature.welcomePreview.joinsAll)
         assertFalse(shared.on(ExperimentalFeature.welcomePreview))
         assertEquals("Sound Effects preloads as All turns it on", listOf("sound.prepare"), log.value)

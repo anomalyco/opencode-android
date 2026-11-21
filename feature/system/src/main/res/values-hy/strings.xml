@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Նիստերի գործարկումներ</string>
     <string name="system_channel_session_updates">Նիստերի թարմացումներ</string>
     <string name="system_channel_shared_items">Կիսված տարրեր</string>
+    <string name="system_channel_background_connection">Ֆոնային կապ</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Կապը պահպանվում է, մինչ ձեր գործակալներն աշխատում են</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Հպեք՝ OpenCode-ում շարունակելու համար</string>

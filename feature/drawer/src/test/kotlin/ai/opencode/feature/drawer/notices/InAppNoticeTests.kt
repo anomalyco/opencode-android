@@ -5,12 +5,15 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.core.haptics.HapticsClient
+import ai.opencode.core.sharing.ExperimentalFeature
+import ai.opencode.core.sharing.ExperimentalFeatures
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeConnectionFeature
 import ai.opencode.feature.drawer.HomeFeature
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.openingDraft
+import ai.opencode.feature.drawer.runOutcomeStatus
 import ai.opencode.feature.drawer.sessionKey
 import ai.opencode.feature.session.*
 import ai.opencode.feature.settings.SettingsFeature
@@ -19,7 +22,9 @@ import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.model.OpenCodeHomeSnapshot
+import ai.opencode.server.model.OpenCodeRunError
 import ai.opencode.server.model.OpenCodeSession
+import ai.opencode.server.model.OpenCodeTranscriptItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -68,6 +73,7 @@ class InAppNoticeTests {
         val announcements: MutableList<String> = Collections.synchronizedList(mutableListOf())
         val cleared: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
         val clearedNeedsInput: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
+        val posted: MutableList<String> = Collections.synchronizedList(mutableListOf())
     }
 
     private fun CoroutineScope.store(
@@ -77,6 +83,8 @@ class InAppNoticeTests {
         recorded: Recorded = Recorded(),
         attention: Set<String> = emptySet(),
         snapshot: () -> OpenCodeHomeSnapshot? = { null },
+        staysConnected: Boolean = false,
+        transcript: List<OpenCodeTranscriptItem> = emptyList(),
     ): TestStore<HomeFeature.State, Action> {
         val store = TestStore(state, HomeFeature(), this) {
             this[Clock] = clock
@@ -89,10 +97,12 @@ class InAppNoticeTests {
             this[DeliveredNotificationsClient] = DeliveredNotificationsClient(
                 removeAll = { ids -> recorded.cleared += ids },
                 removeNeedsInput = { ids -> recorded.clearedNeedsInput += ids },
+                post = { _, sessionID, title, status -> recorded.posted += "$sessionID $title $status" },
             )
+            if (staysConnected) this[ExperimentalFeatures] = ExperimentalFeatures.enabling(setOf(ExperimentalFeature.backgroundRuns))
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 viewSession = { _, _, _ -> },
-                transcript = { _, _, _ -> emptyList() },
+                transcript = { _, _, _ -> transcript },
                 homeAttention = { _, _, _ -> attention },
                 homeSnapshot = { snapshot() ?: throw OpenCodeClientError("offline") },
             )
@@ -409,5 +419,55 @@ class InAppNoticeTests {
         store.send(Action.AttentionRefreshed(setOf("login")))
         store.finish()
         assertEquals(listOf(setOf("upload")), recorded.clearedNeedsInput.toList())
+    }
+
+    // Stay Connected During Runs
+
+    /** Held by the background service, left with Upload tests already waiting. */
+    private suspend fun leaveHeld(store: TestStore<HomeFeature.State, Action>) {
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        store.send(Action.BackgroundHoldChanged(true))
+        store.send(Action.SceneEnteredBackground)
+    }
+
+    @Test fun stayConnectedNotifiesWhatChangesWhileAwayOnce() = runTest {
+        val recorded = Recorded()
+        val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true)
+        leaveHeld(store)
+        store.send(Action.AttentionRefreshed(setOf("upload", "login")))
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        finish("login", store)
+        store.skipInFlightEffects()
+        assertEquals(listOf("login Fix login flow needs-input", "login Fix login flow succeeded"), recorded.posted.toList())
+    }
+
+    @Test fun stayConnectedNamesFailuresAndSkipsRunsTheUserStopped() = runTest {
+        val failed = OpenCodeTranscriptItem.RunError("e1", OpenCodeRunError(type = "provider", message = "Rate limit"))
+        val stopped = OpenCodeTranscriptItem.RunError("e2", OpenCodeRunError(type = "aborted", message = "Aborted"))
+        val prompt = OpenCodeTranscriptItem.UserText(id = "u1", text = "Go")
+        assertEquals("failed", runOutcomeStatus(listOf(prompt, failed)))
+        assertNull(runOutcomeStatus(listOf(prompt, stopped)))
+        assertEquals("succeeded", runOutcomeStatus(listOf(failed, prompt)))
+        assertEquals("succeeded", runOutcomeStatus(null))
+
+        val recorded = Recorded()
+        val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = true, transcript = listOf(prompt, stopped))
+        leaveHeld(store)
+        finish("login", store)
+        store.skipInFlightEffects()
+        assertTrue(recorded.posted.isEmpty())
+    }
+
+    @Test fun stayConnectedIsQuietOnScreenAndWhenItsOff() = runTest {
+        for (case in listOf("on screen", "switch off")) {
+            val recorded = Recorded()
+            val store = store(home(), InAppNoticeMode.off, recorded = recorded, staysConnected = case == "on screen")
+            store.send(Action.BackgroundHoldChanged(true))
+            if (case == "switch off") store.send(Action.SceneEnteredBackground)
+            store.send(Action.AttentionRefreshed(setOf("upload")))
+            finish("login", store)
+            store.skipInFlightEffects()
+            assertTrue(case, recorded.posted.isEmpty())
+        }
     }
 }

@@ -110,6 +110,8 @@ class DeliveredNotificationsClient(
     val removeAll: suspend (sessionIDs: Set<String>) -> Unit,
     /** Only their needs-input notifications, once the request is answered. */
     val removeNeedsInput: suspend (sessionIDs: Set<String>) -> Unit,
+    /** One session's notification from the live stream, by server persistence ID and status. */
+    val post: suspend (serverKey: String, sessionID: String, title: String, status: String) -> Unit = { _, _, _, _ -> },
 ) {
     companion object Key : DependencyKey<DeliveredNotificationsClient> {
         override val liveValue: DeliveredNotificationsClient by lazy {
@@ -117,6 +119,9 @@ class DeliveredNotificationsClient(
             DeliveredNotificationsClient(
                 removeAll = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = false) } },
                 removeNeedsInput = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = true) } },
+                post = { serverKey, sessionID, title, status ->
+                    withContext(Dispatchers.Default) { SessionPushNotifications.postLocal(context, serverKey, sessionID, title, status) }
+                },
             )
         }
         override val testValue = DeliveredNotificationsClient(removeAll = {}, removeNeedsInput = {})

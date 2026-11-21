@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Spustenia relácií</string>
     <string name="system_channel_session_updates">Aktualizácie relácií</string>
     <string name="system_channel_shared_items">Zdieľané položky</string>
+    <string name="system_channel_background_connection">Pripojenie na pozadí</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Pripojenie zostáva aktívne, kým vaši agenti pracujú</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Ťuknutím pokračujte v OpenCode</string>

@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">सेशन का संचालन</string>
     <string name="system_channel_session_updates">सेशन अपडेट</string>
     <string name="system_channel_shared_items">शेयर किए गए आइटम</string>
+    <string name="system_channel_background_connection">बैकग्राउंड कनेक्शन</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">आपके एजेंट के काम करते समय कनेक्टेड हैं</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode में जारी रखने के लिए टैप करें</string>

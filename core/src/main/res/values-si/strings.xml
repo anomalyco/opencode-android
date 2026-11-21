@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">නියෝජිතයන් සමඟ තිරය බෙදාගන්න</string>
     <string name="core_experiment_inbox_sidebar_title">එන ලිපි පැති පැනලය</string>
     <string name="core_experiment_session_live_activity_title">සැසියේ සජීවී යාවත්කාලීන</string>
+    <string name="core_experiment_background_runs_title">ධාවන අතරතුර සම්බන්ධව සිටින්න</string>
     <string name="core_experiment_sound_effects_title">ශබ්ද ප්රයෝග</string>
     <string name="core_experiment_server_address_links_title">සේවාදායක ලිපිනය අනුව සබැඳි විවෘත කරන්න</string>
     <string name="core_experiment_in_app_browser_title">යෙදුම තුළ බ්‍රවුසරය</string>

@@ -144,7 +144,7 @@ and `ellipsis` (every overflow menu) is the vertical `more_vert`, as on other An
 
 | SF Symbol | Material Symbol (Rounded) | Drawable | Kotlin | iOS files |
 | --- | --- | --- | --- | --- |
-| `antenna.radiowaves.left.and.right` | `cell_tower` | `ms_cell_tower` | `SFSymbol.AntennaRadiowavesLeftAndRight` | WhatsNewList |
+| `antenna.radiowaves.left.and.right` | `cell_tower` | `ms_cell_tower` | `SFSymbol.AntennaRadiowavesLeftAndRight` | ExperimentalFeatures, WhatsNewList |
 | `antenna.radiowaves.left.and.right.slash` | `signal_disconnected` | `ms_signal_disconnected` | `SFSymbol.AntennaRadiowavesLeftAndRightSlash` | TuningPanelView |
 | `app` | `square` | `ms_square` | `SFSymbol.App` | AppLog, WhatsNewList |
 | `app.badge` | `app_badging` | `ms_app_badging` | `SFSymbol.AppBadge` | WhatsNewList |

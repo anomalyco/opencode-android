@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Иҷрои сессияҳо</string>
     <string name="system_channel_session_updates">Навсозиҳои сессия</string>
     <string name="system_channel_shared_items">Маводҳои мубодилашуда</string>
+    <string name="system_channel_background_connection">Пайвастшавӣ дар пасзамина</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Ҳангоми кори агентҳои шумо пайваст мемонад</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Барои идома дар OpenCode ламс кунед</string>

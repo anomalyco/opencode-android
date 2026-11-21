@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Извршувања на сесии</string>
     <string name="system_channel_session_updates">Ажурирања на сесии</string>
     <string name="system_channel_shared_items">Споделени ставки</string>
+    <string name="system_channel_background_connection">Врска во заднина</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Врската се одржува додека твоите агенти работат</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Допрете за да продолжите во OpenCode</string>
