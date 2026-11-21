@@ -13,6 +13,8 @@ import ai.opencode.server.EventBatcherHooks
 import ai.opencode.server.retry.AppPhase
 import ai.opencode.server.retry.AppPhases
 import android.app.Application
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.devtools.DevToolsClient
 import ai.opencode.feature.settings.AppVersion
@@ -33,8 +35,11 @@ import android.util.Log
 class OpenCodeApplication : Application() {
     private val launchScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate() {
         super.onCreate()
+        // Compose 1.12 crashes on a mouse press past the last Text in a SelectionContainer.
+        ComposeFoundationFlags.isMouseSelectionBetweenTextEnabled = false
         DependencyValues.installRoot { this[AppContext] = applicationContext }
         // The batcher prepares streaming Markdown and records every event into the agent activity
         // ledger.
