@@ -3661,11 +3661,6 @@ data class LiveOptions (
     var `sliceBudgetMs`: kotlin.ULong = 50uL 
     , 
     /**
-     * Posts beyond this many in a second are dropped, with one `on_warning` per second.
-     */
-    var `maxPostsPerSecond`: kotlin.UInt = 240u 
-    , 
-    /**
      * The `https` capability: hosts `__host.fetch` may reach (exact names, `*.` suffixes, `*` for any). `None`:
      * every fetch is rejected with `CapabilityDenied`.
      */
@@ -3700,7 +3695,6 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
     override fun read(buf: ByteBuffer): LiveOptions {
         return LiveOptions(
             FfiConverterULong.read(buf),
-            FfiConverterUInt.read(buf),
             FfiConverterOptionalSequenceString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalULong.read(buf),
@@ -3709,7 +3703,6 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
 
     override fun allocationSize(value: LiveOptions) = (
             FfiConverterULong.allocationSize(value.`sliceBudgetMs`) +
-            FfiConverterUInt.allocationSize(value.`maxPostsPerSecond`) +
             FfiConverterOptionalSequenceString.allocationSize(value.`httpsHosts`) +
             FfiConverterBoolean.allocationSize(value.`allowLocalNetwork`) +
             FfiConverterOptionalULong.allocationSize(value.`maxHeapBytes`)
@@ -3717,7 +3710,6 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
 
     override fun write(value: LiveOptions, buf: ByteBuffer) {
             FfiConverterULong.write(value.`sliceBudgetMs`, buf)
-            FfiConverterUInt.write(value.`maxPostsPerSecond`, buf)
             FfiConverterOptionalSequenceString.write(value.`httpsHosts`, buf)
             FfiConverterBoolean.write(value.`allowLocalNetwork`, buf)
             FfiConverterOptionalULong.write(value.`maxHeapBytes`, buf)

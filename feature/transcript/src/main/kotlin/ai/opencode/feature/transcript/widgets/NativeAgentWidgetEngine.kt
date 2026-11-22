@@ -64,7 +64,6 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                 }
                 val options = LiveOptions(
                     sliceBudgetMs = 50uL,
-                    maxPostsPerSecond = 240u,
                     httpsHosts = httpsHosts,
                     allowLocalNetwork = AgentWidgetCapabilities.allowsLocalNetwork,
                     maxHeapBytes = HEAP_BYTES,

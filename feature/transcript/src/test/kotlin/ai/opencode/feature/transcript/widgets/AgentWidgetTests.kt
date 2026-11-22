@@ -561,6 +561,70 @@ class AgentWidgetTests {
         main.close()
     }
 
+    /**
+     * widgets-live.md, Post rate: renders and draws the runtime held back arrive in a later wake-up, and all of them at
+     * the run's end ahead of its submit. The app keeps the latest render and each canvas's latest draw, asks for a
+     * frame for each request, and the last view is in place when the submit lands.
+     */
+    @Test
+    fun heldBackPostsKeepTheLatestViewAndDrawings() = runBlocking {
+        val main = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+        val scope = CoroutineScope(SupervisorJob() + main)
+        val log = CopyOnWriteArrayList<String>()
+        fun render(n: Int) = AgentWidgetWireEncoder.post("""{"type":"render","node":{"type":"text","text":"Frame $n"}}""")
+        fun draw(id: String, x: Int) = AgentWidgetWireEncoder.post("""{"type":"draw","id":"$id","commands":[["rect",$x,0,1,1,{"fill":"accent"}]]}""")
+        val frame = AgentWidgetWireEncoder.post("""{"type":"frame"}""")
+        val program = object : AgentWidgetLiveProgram {
+            override fun start(inputJson: String, listener: AgentWidgetLiveListener, httpsHosts: List<String>?): AgentWidgetLiveRun {
+                thread {
+                    listener.posted(listOf(render(1), draw("0/:a", 1), frame))
+                    Thread.sleep(50)
+                    listener.posted(listOf(frame))
+                    Thread.sleep(50)
+                    // The run ends: what it held back, then the submit.
+                    listener.posted(listOf(render(2), draw("0/:a", 2), render(3), draw("0/:b", 7), draw("0/:a", 3)))
+                    listener.posted(listOf(AgentWidgetWireEncoder.post("""{"type":"submit","value":{"score":3}}""")))
+                    listener.exited(null)
+                }
+                return object : AgentWidgetLiveRun {
+                    override fun deliver(messageJson: String) = Unit
+                    override fun pause() = Unit
+                    override fun resume() = Unit
+                    override fun snapshot() = true
+                    override fun stop() = Unit
+                }
+            }
+        }
+        val events = object : AgentWidgetLiveDriver.Events {
+            override fun rendered(view: AgentWidgetNode, fullscreen: Boolean?) { log += "render ${(view as AgentWidgetNode.Text).text}" }
+            override fun drew(draw: AgentWidgetWire.Post.Draw) {
+                val list = AgentWidgetDrawList().also { AgentWidgetWire.draw(draw.message, draw.section, palette, it) }
+                log += "draw ${draw.id} ${list.floats[0].toInt()}"
+            }
+            override fun wantsFrame() { log += "frame" }
+            override fun answered(response: OpenCodeWidgetResponse) { log += "answered" }
+            override fun sent(message: OpenCodeWidgetMessageValue) = Unit
+            override fun failed(error: AgentWidgetEngineException) { log += "failed" }
+            override fun reported(phase: String, message: String) { log += "reported" }
+            override fun malformed(message: String) { log += "malformed" }
+            override fun ended() { log += "ended" }
+        }
+        val driver = AgentWidgetLiveDriver(program, "{}", null, scope, events)
+        withContext(main) { driver.setVisible(true) }
+        assertTrue(eventually(wallClock = true) { "answered" in log })
+        withContext(Dispatchers.IO) { Thread.sleep(200) }
+        val seen = log.toList()
+        assertEquals(seen.toString(), 2, seen.count { it == "frame" })
+        assertEquals(seen.toString(), "render Frame 3", seen.last { it.startsWith("render") })
+        assertEquals(seen.toString(), "draw 0/:a 3", seen.last { it.startsWith("draw 0/:a") })
+        assertEquals(seen.toString(), "draw 0/:b 7", seen.last { it.startsWith("draw 0/:b") })
+        assertTrue(seen.toString(), seen.indexOf("render Frame 3") < seen.indexOf("answered"))
+        assertEquals(seen.toString(), "answered", seen.last())
+        assertTrue(seen.toString(), seen.none { it == "failed" || it == "reported" || it == "malformed" })
+        scope.cancel()
+        main.close()
+    }
+
     /** A restarted draw effect leaves its cancelled decode running; the next one must not share its list. */
     @Test
     fun canvasDecodeCancelledMidWayNeverWritesTheShownList() = runBlocking {

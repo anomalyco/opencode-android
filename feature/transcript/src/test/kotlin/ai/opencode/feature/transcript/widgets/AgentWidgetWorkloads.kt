@@ -43,7 +43,7 @@ internal object AgentWidgetWorkloads {
 
     private val json = Json { ignoreUnknownKeys = true }
     private val STEP = RunOptions(250uL, 4uL * 1024uL * 1024uL, 33_554_432uL)
-    private val OPTIONS = LiveOptions(50uL, 1_000_000u, null, false, 33_554_432uL)
+    private val OPTIONS = LiveOptions(50uL, null, false, 33_554_432uL)
     private val encoder by lazy { ValueEncoder.widget() }
     private val workloads by lazy { json.parseToJsonElement(File(dir, "workloads.json").readText()).jsonObject }
     private val prelude by lazy { File(dir, "prelude.js").readText() }
