@@ -5,11 +5,13 @@ import ai.opencode.core.strings.localized
 import ai.opencode.feature.media.AgentFileDestination
 import ai.opencode.feature.media.AgentImageKey
 import ai.opencode.feature.media.AgentImageRequest
+import ai.opencode.feature.media.CachedImage
 import ai.opencode.feature.media.LinkPreview
 import ai.opencode.feature.media.LinkPreviewExtractor
 import ai.opencode.feature.media.LinkPreviewPolicy
 import ai.opencode.feature.media.LinkTextBlock
 import ai.opencode.feature.media.LinkTextRun
+import ai.opencode.feature.media.MediaReferenceResolver
 import ai.opencode.feature.media.TranscriptImagePreview
 import ai.opencode.feature.transcript.links.linkTextBlocks
 import ai.opencode.feature.transcript.markdown.OpenCodeMarkdownBlock
@@ -275,9 +277,12 @@ object SessionMedia {
     private fun page(item: Item, directory: String?): TranscriptImagePreview.Page? = when (val content = item.content) {
         is Content.Image -> {
             val image = content.attachment
+            val bytes = MediaReferenceResolver.resolvedData(image)
+            val thumbnail = if (bytes != null) CachedImage.cachedThumbnail(image.id, image.mediaHash) else null
             TranscriptImagePreview.Page(
-                zoomSourceID(item), null, image.name ?: localized(R.string.session_visual_image), mediaHash = image.mediaHash, name = image.name,
-                original = image.data.takeIf { it.isNotEmpty() }, labelIsPlaceholder = image.name == null,
+                zoomSourceID(item), thumbnail, image.name ?: localized(R.string.session_visual_image), mediaHash = image.mediaHash, name = image.name,
+                original = if (thumbnail != null) bytes else image.data.takeIf { it.isNotEmpty() }, labelIsPlaceholder = image.name == null,
+                placeholderSize = if (thumbnail != null && bytes != null) CachedImage.pixelSize(bytes) else null,
             )
         }
         is Content.File -> {

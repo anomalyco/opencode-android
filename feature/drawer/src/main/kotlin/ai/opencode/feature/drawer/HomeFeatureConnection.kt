@@ -87,9 +87,11 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         val persistence = dependency(TranscriptCachePersistence)
         val sharedStore = dependency(SharedStore)
         val flush = Effect.run<Action> {
-            persistence.flush()
-            // Home's snapshots and read dates still waiting for the writer land too.
-            withContext(Dispatchers.IO) { sharedStore.flush() }
+            withContext(Dispatchers.IO) {
+                persistence.flush()
+                // Home's snapshots and read dates still waiting for the writer land too.
+                sharedStore.flush()
+            }
         }
         Reduced(state, Effect.merge(flush, flushPersistedComposer(state)))
     }
@@ -233,7 +235,7 @@ private fun HomeFeature.snapshotRefreshed(state: State, action: Action.SnapshotR
     s = s.copy(
         localActivity = localActivity,
         locallyViewedMilliseconds = locallyViewed,
-        projects = incoming.projects,
+        projects = if (s.projects == incoming.projects) s.projects else incoming.projects,
         snapshotLoaded = true,
     )
     // The list is one page of the newest roots, not the whole server. Whatever is open or pinned

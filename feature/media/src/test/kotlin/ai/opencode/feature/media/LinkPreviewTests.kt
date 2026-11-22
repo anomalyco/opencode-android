@@ -86,6 +86,21 @@ class LinkPreviewTests {
         assertEquals("https://www.youtube.com/watch?v=abc&t=42", LinkPreviewPolicy.normalized("https://www.youtube.com/watch?v=abc&t=42"))
     }
 
+    @Test
+    fun hostsOkHttpCantReadBackAreNotPreviewed() {
+        assertEquals("https://xn--bcher-kva.de/", LinkPreviewPolicy.normalized("https://bücher.de./"))
+        for (url in listOf(
+            "https://example.com，然后运行命令",
+            "https://example.com，然后运行命令。",
+            "https://example.com%EF%BC%8C%E7%84%B6%E5%90%8E",
+            "https://example.com）里有说明",
+            "https://bücher_x.de/",
+        )) {
+            assertNull(url, LinkPreviewPolicy.normalized(url))
+            assertNull(url, target(url))
+        }
+    }
+
     // oEmbed
 
     @Test
