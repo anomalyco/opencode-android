@@ -77,7 +77,12 @@ class AgentWidgetEngineException(
     val isProgramError: Boolean = true,
     /** The phase the runtime named for an output it couldn't write (`view`, `draw`, `gpu`, `main`), if it did. */
     val phase: String? = null,
-) : Exception(message)
+    /** The program is of another widget protocol: it isn't run, and no retry can run it. */
+    val protocol: Protocol? = null,
+) : Exception(message) {
+    /** Older: the program's error (post it again); newer: the app's (update it). */
+    enum class Protocol { Older, Newer }
+}
 
 /** The runtime's message without the position it appends, "(line N, col M)", which counts the prelude's lines. */
 internal fun programMessage(message: String): String = message.replace(RUNTIME_POSITION, "")

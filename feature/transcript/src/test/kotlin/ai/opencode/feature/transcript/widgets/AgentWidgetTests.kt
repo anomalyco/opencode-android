@@ -211,6 +211,49 @@ class AgentWidgetTests {
         assertEquals("main", phase("InvalidDataValue").phase)
         assertNull(phase("TypeError").phase)
         assertTrue(phase("InvalidView").isProgramError())
+        // Another widget protocol: an older program is its own error (reported in the refused phase), a newer one the
+        // app's; neither can be retried.
+        val older = phase("OlderProtocol")
+        assertEquals(AgentWidgetEngineException.Protocol.Older, older.protocol)
+        assertNull(older.phase)
+        assertTrue(older.isProgramError())
+        val newer = phase("NewerProtocol")
+        assertEquals(AgentWidgetEngineException.Protocol.Newer, newer.protocol)
+        assertFalse(newer.isProgramError())
+        assertEquals("This widget was built with an older widget runtime; ask the agent to post it again", AgentWidgetMachine.message(older))
+        assertEquals("This widget needs a newer version of this app", AgentWidgetMachine.message(newer))
+        val (failed, _) = AgentWidgetMachine.Machine("{}", Phase.Starting(Status.Open)).handle(Event.Ran(Result.failure(older)))
+        assertEquals(Phase.Failed("This widget was built with an older widget runtime; ask the agent to post it again", Status.Open, retryable = false), failed.phase)
+        val (plain, _) = AgentWidgetMachine.Machine("{}", Phase.Starting(Status.Open)).handle(Event.Ran(Result.failure(AgentWidgetEngineException("boom"))))
+        assertEquals(true, (plain.phase as Phase.Failed).retryable)
+    }
+
+    /**
+     * Views go 100 levels deep (widgets.md, Keys and depth): a 100-level view crosses, is written and decodes; the
+     * 101-level fixtures (widget-wire `tests/fixtures/wire`) fail in phase view. Skipped without the desktop runtime.
+     */
+    @Test
+    fun viewsGoOneHundredLevelsDeep() {
+        org.junit.Assume.assumeTrue(AgentWidgetWorkloads.missing ?: "", AgentWidgetWorkloads.missing == null)
+        val (source, input, error) = AgentWidgetWorkloads.fixture("depth-101")
+        assertEquals("The view nests more than 100 levels", (error?.get("message") as kotlinx.serialization.json.JsonPrimitive).content)
+        val hundred = source.replace("level < 101", "level < 100")
+        assertTrue(hundred != source)
+        var node = AgentWidgetWire.output(AgentWidgetWorkloads.nativeStep(hundred, input)).view
+        var levels = 1
+        while (node is AgentWidgetNode.Column) {
+            node = node.children.single()
+            levels++
+        }
+        assertEquals(100, levels)
+        assertTrue(node is AgentWidgetNode.Button)
+        for (name in listOf("depth-101", "depth-101-in-arrays")) {
+            val (deep, deepInput, _) = AgentWidgetWorkloads.fixture(name)
+            val failure = runCatching { AgentWidgetWorkloads.nativeStep(deep, deepInput) }.exceptionOrNull()
+            val mapped = NativeAgentWidgetEngine.mapped(failure as PsychoScriptException, draw = false)
+            assertEquals(name, "view", mapped.phase)
+            assertEquals(name, "The view nests more than 100 levels", programMessage(mapped.message!!))
+        }
     }
 
     /** A step output stated as JSON, written as the runtime's encoder would and read by the app. */

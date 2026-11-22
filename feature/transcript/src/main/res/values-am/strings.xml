@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">በሙሉ ማያ ክፈት</string>
     <string name="transcript_widget_network">አውታረ መረብ: %1$s</string>
     <string name="transcript_widget_restart">ዳግም አስጀምር</string>
+    <string name="transcript_widget_older_runtime">ይህ ዊጀት በቆየ ዊጀት አሂድ ተሰርቷል፤ ወኪሉን እንደገና እንዲለጥፈው ጠይቅ</string>
+    <string name="transcript_widget_newer_app">ይህ ዊጀት የዚህ መተግበሪያን አዲስ ስሪት ይፈልጋል</string>
     <string name="transcript_widget_failed_on">በ%1$s ላይ አልተሳካም፦ %2$s፦ %3$s</string>
     <string name="transcript_widget_failed_on_at">በ%1$s ላይ አልተሳካም፦ %2$s፦ %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">እንዲያስተካክለው ወኪሉን ጠይቅ</string>

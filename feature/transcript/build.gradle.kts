@@ -37,5 +37,6 @@ tasks.withType<Test>().configureEach {
     val host = rootProject.file("vendor/psychoscript/host")
     systemProperty("jna.library.path", host.path)
     systemProperty("opencode.widgetWorkloads", rootProject.file(".psychoscript/rust/crates/psychoscript-mobile/tests/fixtures/workloads").path)
+    systemProperty("opencode.widgetWireFixtures", rootProject.file(".psychoscript/rust/crates/widget-wire/tests/fixtures/wire").path)
     inputs.property("widgetRuntime", providers.provider { host.resolve("REVISION").takeIf { it.isFile }?.readText() ?: "" })
 }

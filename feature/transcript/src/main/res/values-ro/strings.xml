@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Deschide pe ecran întreg</string>
     <string name="transcript_widget_network">Rețea: %1$s</string>
     <string name="transcript_widget_restart">Repornește</string>
+    <string name="transcript_widget_older_runtime">Acest widget a fost construit cu un runtime de widget mai vechi; roagă agentul să îl posteze din nou</string>
+    <string name="transcript_widget_newer_app">Acest widget are nevoie de o versiune mai nouă a acestei aplicații</string>
     <string name="transcript_widget_failed_on">Eșuat pe %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Eșuat pe %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Cere agentului să o repare</string>

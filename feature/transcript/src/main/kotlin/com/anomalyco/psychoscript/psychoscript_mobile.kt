@@ -1050,13 +1050,13 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_program_run() and 0xFFFF) != 29645) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_program_run_bytes() and 0xFFFF) != 7142) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_program_run_bytes() and 0xFFFF) != 39219) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_program_session() and 0xFFFF) != 57577) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_program_start_live() and 0xFFFF) != 17983) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_program_start_live() and 0xFFFF) != 24852) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_runsession_run() and 0xFFFF) != 48700) {
@@ -1065,7 +1065,7 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_runsession_run_bytes() and 0xFFFF) != 44317) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget() and 0xFFFF) != 21312) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget() and 0xFFFF) != 51763) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_constructor_liverun_restore() and 0xFFFF) != 27560) {
@@ -2608,11 +2608,11 @@ public interface ProgramInterface {
     fun `run`(`inputJson`: kotlin.String, `options`: RunOptions = RunOptions()): kotlin.String
     
     /**
-     * Runs the program as [`Program::run`] does, with `encoder`'s emit global (`encoder.emit_name()`), and returns
-     * the bytes `encoder` wrote for the value the program passed to it (its last call's) instead of the completion
-     * value. Program functions in that value come as markers. Fails with `Runtime` of the encoder's kind, located
-     * at the call, when it can't write the value, and with `InvalidDataValue` when the program never called the
-     * global; `max_output_bytes` limits the bytes.
+     * Runs the program as [`Program::run`] does, with `encoder`'s emit global (`encoder.emit_name()`) beside the
+     * input function, and returns the bytes `encoder` makes of what the program passed to the global and of its
+     * result, instead of the result's JSON. Program functions cross as markers. A program the encoder refuses
+     * isn't run (`Runtime` of the encoder's kind); a value it can't write fails with `Runtime` of its kind (at the
+     * emit call when it throws there); `max_output_bytes` limits the bytes.
      */
     fun `runBytes`(`inputJson`: kotlin.String, `encoder`: ValueEncoder, `options`: RunOptions = RunOptions()): kotlin.ByteArray
     
@@ -2626,9 +2626,10 @@ public interface ProgramInterface {
     /**
      * Starts the program as a [`LiveRun`] on a thread of its own, with `input_json` behind its input function and
      * `__host` (`post`, `receive`, `sleep`, `now`, `fetch`) to talk to `handler`; `fetch` goes through `transport`
-     * to the hosts `options.https_hosts` allows. With `encoder`, program functions in posts come as markers, posts
-     * reach `handler.on_posts_bytes` as its bytes (never `on_posts`), `post` returns what the encoder says, and a
-     * post it can't write throws at the post. Fails with `InvalidInput`.
+     * to the hosts `options.https_hosts` allows. With `encoder`, the encoder checks the program first (a refused one
+     * isn't started: `Runtime` of its kind), program functions in posts come as markers, posts reach
+     * `handler.on_posts_bytes` as its bytes (never `on_posts`), `post` returns what the encoder says, and a post it
+     * can't write throws at the post. Fails with `InvalidInput`.
      */
     fun `startLive`(`inputJson`: kotlin.String, `handler`: LiveHandler, `options`: LiveOptions = LiveOptions(), `transport`: FetchTransport? = null, `encoder`: ValueEncoder? = null): LiveRun
     
@@ -2777,11 +2778,11 @@ open class Program: Disposable, AutoCloseable, ProgramInterface
 
     
     /**
-     * Runs the program as [`Program::run`] does, with `encoder`'s emit global (`encoder.emit_name()`), and returns
-     * the bytes `encoder` wrote for the value the program passed to it (its last call's) instead of the completion
-     * value. Program functions in that value come as markers. Fails with `Runtime` of the encoder's kind, located
-     * at the call, when it can't write the value, and with `InvalidDataValue` when the program never called the
-     * global; `max_output_bytes` limits the bytes.
+     * Runs the program as [`Program::run`] does, with `encoder`'s emit global (`encoder.emit_name()`) beside the
+     * input function, and returns the bytes `encoder` makes of what the program passed to the global and of its
+     * result, instead of the result's JSON. Program functions cross as markers. A program the encoder refuses
+     * isn't run (`Runtime` of the encoder's kind); a value it can't write fails with `Runtime` of its kind (at the
+     * emit call when it throws there); `max_output_bytes` limits the bytes.
      */
     @Throws(PsychoScriptException::class)override fun `runBytes`(`inputJson`: kotlin.String, `encoder`: ValueEncoder, `options`: RunOptions): kotlin.ByteArray {
             return FfiConverterByteArray.lift(
@@ -2823,9 +2824,10 @@ open class Program: Disposable, AutoCloseable, ProgramInterface
     /**
      * Starts the program as a [`LiveRun`] on a thread of its own, with `input_json` behind its input function and
      * `__host` (`post`, `receive`, `sleep`, `now`, `fetch`) to talk to `handler`; `fetch` goes through `transport`
-     * to the hosts `options.https_hosts` allows. With `encoder`, program functions in posts come as markers, posts
-     * reach `handler.on_posts_bytes` as its bytes (never `on_posts`), `post` returns what the encoder says, and a
-     * post it can't write throws at the post. Fails with `InvalidInput`.
+     * to the hosts `options.https_hosts` allows. With `encoder`, the encoder checks the program first (a refused one
+     * isn't started: `Runtime` of its kind), program functions in posts come as markers, posts reach
+     * `handler.on_posts_bytes` as its bytes (never `on_posts`), `post` returns what the encoder says, and a post it
+     * can't write throws at the post. Fails with `InvalidInput`.
      */
     @Throws(PsychoScriptException::class)override fun `startLive`(`inputJson`: kotlin.String, `handler`: LiveHandler, `options`: LiveOptions, `transport`: FetchTransport?, `encoder`: ValueEncoder?): LiveRun {
             return FfiConverterTypeLiveRun.lift(
@@ -3421,10 +3423,12 @@ open class ValueEncoder: Disposable, AutoCloseable, ValueEncoderInterface
         
     /**
      * OpenCode widgets' binary format (`widget-wire`, opencode `specs/v2/widgets-binary.md`) for a native host
-     * (`widgets.md`, Native hosts): steps run `<program>\n__widget_emit(__widget_step(__input(), true))` with
-     * `run_bytes`, live runs `<program>\nreturn await __widget_live(__input(), true)`. A value it can't write fails with `Runtime`
-     * of kind `InvalidView`, `InvalidDraw` or `InvalidGpu` (the spec's phase `view`, `draw` or `gpu`), else
-     * `InvalidDataValue`.
+     * of widget protocol 2 (`widgets.md`, Native hosts): steps run `<program>\nreturn
+     * __widget_native_step(__input())` with `run_bytes`, live runs `<program>\nreturn await
+     * __widget_live(__input(), true)`. A program of another protocol isn't run: `Runtime` of kind
+     * `OlderProtocol` (a program error) or `NewerProtocol` (a client error). A value it can't write fails with
+     * `Runtime` of kind `InvalidView`, `InvalidDraw` or `InvalidGpu` (the spec's phase `view`, `draw` or `gpu`),
+     * else `InvalidDataValue`.
      */ fun `widget`(): ValueEncoder {
             return FfiConverterTypeValueEncoder.lift(
     uniffiRustCall() { _status ->

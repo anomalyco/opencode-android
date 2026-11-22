@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">မျက်နှာပြင်အပြည့် ဖွင့်ပါ</string>
     <string name="transcript_widget_network">ကွန်ရက်: %1$s</string>
     <string name="transcript_widget_restart">ပြန်လည်စတင်ပါ</string>
+    <string name="transcript_widget_older_runtime">ဤဝစ်ဂျက်ကို widget runtime အဟောင်းဖြင့် တည်ဆောက်ထားသည်၊ အေးဂျင့်ကို ပြန်တင်ခိုင်းပါ။</string>
+    <string name="transcript_widget_newer_app">ဤဝစ်ဂျက်သည် ဤအက်ပ်၏ ဗားရှင်းအသစ် လိုအပ်သည်။</string>
     <string name="transcript_widget_failed_on">%1$s တွင် မအောင်မြင်ပါ: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s တွင် မအောင်မြင်ပါ: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">အေးဂျင့်ကို ပြင်ဆင်ခိုင်းပါ</string>

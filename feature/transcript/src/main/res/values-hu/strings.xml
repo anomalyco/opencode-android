@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Megnyitás teljes képernyőn</string>
     <string name="transcript_widget_network">Hálózat: %1$s</string>
     <string name="transcript_widget_restart">Újraindítás</string>
+    <string name="transcript_widget_older_runtime">Ez a widget régebbi futtatókörnyezettel készült; kérje meg az ügynököt, hogy tegye közzé újra.</string>
+    <string name="transcript_widget_newer_app">Ez a widget az alkalmazás újabb verzióját igényli.</string>
     <string name="transcript_widget_failed_on">Sikertelen: %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Sikertelen: %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Kérje meg az ügynököt a javításra</string>

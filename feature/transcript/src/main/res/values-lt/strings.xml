@@ -198,6 +198,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Atidaryti visame ekrane</string>
     <string name="transcript_widget_network">Tinklas: %1$s</string>
     <string name="transcript_widget_restart">Paleisti iš naujo</string>
+    <string name="transcript_widget_older_runtime">Šis valdiklis sukurtas su senesne valdiklių vykdymo aplinka; paprašykite agento paskelbti jį iš naujo</string>
+    <string name="transcript_widget_newer_app">Šiam valdikliui reikia naujesnės šios programos versijos</string>
     <string name="transcript_widget_failed_on">Nepavyko: %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Nepavyko: %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Prašyti agentą pataisyti</string>

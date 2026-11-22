@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">পূর্ণ স্ক্রিনে খুলুন</string>
     <string name="transcript_widget_network">নেটওয়ার্ক: %1$s</string>
     <string name="transcript_widget_restart">রিস্টার্ট করুন</string>
+    <string name="transcript_widget_older_runtime">এই উইজেটটি পুরোনো উইজেট রানটাইম দিয়ে তৈরি; এজেন্টকে আবার পোস্ট করতে বলুন</string>
+    <string name="transcript_widget_newer_app">এই উইজেটটির জন্য অ্যাপের নতুন সংস্করণ প্রয়োজন</string>
     <string name="transcript_widget_failed_on">%1$s-এ ব্যর্থ হয়েছে: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s-এ ব্যর্থ হয়েছে: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">এজেন্টকে ঠিক করতে বলুন</string>

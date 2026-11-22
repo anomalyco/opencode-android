@@ -198,6 +198,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Открыть на весь экран</string>
     <string name="transcript_widget_network">Сеть: %1$s</string>
     <string name="transcript_widget_restart">Перезапустить</string>
+    <string name="transcript_widget_older_runtime">Этот виджет создан в более старой среде выполнения виджетов; попросите агента опубликовать его снова</string>
+    <string name="transcript_widget_newer_app">Для этого виджета нужна более новая версия приложения</string>
     <string name="transcript_widget_failed_on">Ошибка на %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Ошибка на %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Попросить агента исправить</string>

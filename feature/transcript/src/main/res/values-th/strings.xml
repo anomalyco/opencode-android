@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">เปิดแบบเต็มจอ</string>
     <string name="transcript_widget_network">เครือข่าย: %1$s</string>
     <string name="transcript_widget_restart">รีสตาร์ท</string>
+    <string name="transcript_widget_older_runtime">วิดเจ็ตนี้สร้างด้วยรันไทม์วิดเจ็ตรุ่นเก่า ขอให้เอเจนต์โพสต์อีกครั้ง</string>
+    <string name="transcript_widget_newer_app">วิดเจ็ตนี้ต้องใช้แอปเวอร์ชันใหม่กว่า</string>
     <string name="transcript_widget_failed_on">ล้มเหลวบน %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">ล้มเหลวบน %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">ขอให้เอเจนต์แก้ไข</string>

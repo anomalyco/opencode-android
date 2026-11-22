@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Ava täisekraanil</string>
     <string name="transcript_widget_network">Võrk: %1$s</string>
     <string name="transcript_widget_restart">Taaskäivita</string>
+    <string name="transcript_widget_older_runtime">See vidin loodi vanema vidinakäitusajaga; palu agentil see uuesti postitada.</string>
+    <string name="transcript_widget_newer_app">See vidin vajab selle rakenduse uuemat versiooni.</string>
     <string name="transcript_widget_failed_on">Ebaõnnestus %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Ebaõnnestus %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Palu agendil parandada</string>

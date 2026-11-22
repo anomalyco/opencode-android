@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">全屏打开</string>
     <string name="transcript_widget_network">网络：%1$s</string>
     <string name="transcript_widget_restart">重启</string>
+    <string name="transcript_widget_older_runtime">此小部件使用旧版运行时构建，请让智能体重新发布</string>
+    <string name="transcript_widget_newer_app">此小部件需要更新版本的应用</string>
     <string name="transcript_widget_failed_on">在 %1$s 上失败：%2$s：%3$s</string>
     <string name="transcript_widget_failed_on_at">在 %1$s 上失败：%2$s：%3$s（%4$s）</string>
     <string name="transcript_widget_ask_agent">让智能体修复</string>

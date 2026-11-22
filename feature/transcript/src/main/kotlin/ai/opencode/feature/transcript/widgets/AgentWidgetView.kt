@@ -166,7 +166,7 @@ fun AgentWidgetFrame(
                     SelectionContainer {
                         Text(phase.message, style = OpenCodeTextStyles.footnote.copy(fontFamily = FontFamily.Monospace), color = colors.secondaryText)
                     }
-                    if (controller != null) {
+                    if (controller != null && phase.retryable) {
                         Row {
                             val label = if (controller.isLiveMode) R.string.transcript_widget_restart else CoreR.string.common_try_again
                             OpenCodeSecondaryButton(stringResource(label), onClick = controller::retry)

@@ -198,6 +198,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Otevřít na celou obrazovku</string>
     <string name="transcript_widget_network">Síť: %1$s</string>
     <string name="transcript_widget_restart">Restartovat</string>
+    <string name="transcript_widget_older_runtime">Tento widget byl vytvořen ve starším běhovém prostředí; požádejte agenta, aby ho zveřejnil znovu</string>
+    <string name="transcript_widget_newer_app">Tento widget vyžaduje novější verzi této aplikace</string>
     <string name="transcript_widget_failed_on">Nepodařilo se na %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Nepodařilo se na %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Požádat agenta o opravu</string>

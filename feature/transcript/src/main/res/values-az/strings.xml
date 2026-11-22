@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Tam ekranda aç</string>
     <string name="transcript_widget_network">Şəbəkə: %1$s</string>
     <string name="transcript_widget_restart">Yenidən başlat</string>
+    <string name="transcript_widget_older_runtime">Bu vidcet köhnə vidcet işləmə mühiti ilə qurulub; agentdən onu yenidən paylaşmasını istəyin.</string>
+    <string name="transcript_widget_newer_app">Bu vidcet tətbiqin daha yeni versiyasını tələb edir.</string>
     <string name="transcript_widget_failed_on">%1$s üzərində uğursuz oldu: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s üzərində uğursuz oldu: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Agentdən düzəltməsini istə</string>

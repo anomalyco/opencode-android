@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Mở toàn màn hình</string>
     <string name="transcript_widget_network">Mạng: %1$s</string>
     <string name="transcript_widget_restart">Khởi động lại</string>
+    <string name="transcript_widget_older_runtime">Widget này được tạo bằng runtime widget cũ hơn; hãy yêu cầu tác nhân đăng lại</string>
+    <string name="transcript_widget_newer_app">Widget này cần phiên bản ứng dụng mới hơn</string>
     <string name="transcript_widget_failed_on">Thất bại tại %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Thất bại tại %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Nhờ tác nhân sửa lỗi</string>

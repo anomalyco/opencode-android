@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Atvērt pilnekrānā</string>
     <string name="transcript_widget_network">Tīkls: %1$s</string>
     <string name="transcript_widget_restart">Restartēt</string>
+    <string name="transcript_widget_older_runtime">Šis logrīks veidots ar vecāku logrīku izpildvidi; palūdz aģentam to publicēt vēlreiz</string>
+    <string name="transcript_widget_newer_app">Šim logrīkam vajadzīga jaunāka šīs lietotnes versija</string>
     <string name="transcript_widget_failed_on">Neizdevās — %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Neizdevās — %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Lūgt aģentam novērst</string>

@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Отвори преко целог екрана</string>
     <string name="transcript_widget_network">Мрежа: %1$s</string>
     <string name="transcript_widget_restart">Поново покрени</string>
+    <string name="transcript_widget_older_runtime">Овај виџет је направљен са старијим извршним окружењем за виџете; замолите агента да га поново објави.</string>
+    <string name="transcript_widget_newer_app">Овом виџету је потребна новија верзија ове апликације.</string>
     <string name="transcript_widget_failed_on">Неуспешно на %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Неуспешно на %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Замоли агента да то поправи</string>

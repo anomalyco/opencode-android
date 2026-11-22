@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Отворете на цял екран</string>
     <string name="transcript_widget_network">Мрежа: %1$s</string>
     <string name="transcript_widget_restart">Рестартирайте</string>
+    <string name="transcript_widget_older_runtime">Този уиджет е създаден с по-стара среда за изпълнение на уиджети; помолете агента да го публикува отново</string>
+    <string name="transcript_widget_newer_app">Този уиджет изисква по-нова версия на това приложение</string>
     <string name="transcript_widget_failed_on">Неуспешно в %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Неуспешно в %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Помолете агента да го поправи</string>

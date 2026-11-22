@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Бүтэн дэлгэцээр нээх</string>
     <string name="transcript_widget_network">Сүлжээ: %1$s</string>
     <string name="transcript_widget_restart">Дахин эхлүүлэх</string>
+    <string name="transcript_widget_older_runtime">Энэ виджетийг хуучин ажиллах орчиноор бүтээсэн; агентаас дахин нийтлүүлэхийг хүс</string>
+    <string name="transcript_widget_newer_app">Энэ виджетэд аппын шинэ хувилбар хэрэгтэй</string>
     <string name="transcript_widget_failed_on">%1$s дээр амжилтгүй: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s дээр амжилтгүй: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Агентаар засуулах</string>

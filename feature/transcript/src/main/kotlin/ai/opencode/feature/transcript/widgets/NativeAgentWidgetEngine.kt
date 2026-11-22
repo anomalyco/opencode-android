@@ -144,9 +144,16 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             is PsychoScriptException.Runtime -> error.line to error.column
             else -> null to null
         }
-        val client = error is PsychoScriptException.Snapshot || error is PsychoScriptException.InvalidState || error is PsychoScriptException.InvalidInput
+        val kind = (error as? PsychoScriptException.Runtime)?.kind
+        val protocol = when (kind) {
+            "OlderProtocol" -> AgentWidgetEngineException.Protocol.Older
+            "NewerProtocol" -> AgentWidgetEngineException.Protocol.Newer
+            else -> null
+        }
+        val client = error is PsychoScriptException.Snapshot || error is PsychoScriptException.InvalidState || error is PsychoScriptException.InvalidInput ||
+            protocol == AgentWidgetEngineException.Protocol.Newer
         // The encoder's failures name their phase (specs/v2/widgets-binary.md, Errors).
-        val phase = when ((error as? PsychoScriptException.Runtime)?.kind) {
+        val phase = when (kind) {
             "InvalidView" -> "view"
             "InvalidDraw" -> "draw"
             "InvalidGpu" -> "gpu"
@@ -161,6 +168,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             column = column?.toInt(),
             isProgramError = !client,
             phase = phase,
+            protocol = protocol,
         )
     }
 
@@ -179,8 +187,8 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     private const val HEAP_BYTES: ULong = 33_554_432uL
     /** Writes the binary format: steps hand their output to its global, live posts go through it. */
     private val encoder: ValueEncoder by lazy { ValueEncoder.widget() }
-    // `true`: the host builds the view tree natively (widgets.md, Native hosts).
-    private val ENTRY: String by lazy { "\n${encoder.emitName()}(__widget_step(__input(), true))" }
+    // Widget protocol 2 (widgets.md, Native hosts): the encoder builds the view tree from what the prelude emits.
+    private const val ENTRY = "\nreturn __widget_native_step(__input())"
     private const val LIVE_ENTRY = "\nreturn await __widget_live(__input(), true)"
     internal val STEP = RunOptions(timeoutMs = 250uL, maxOutputBytes = 4uL * 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)
     internal val DRAW = RunOptions(timeoutMs = 8uL, maxOutputBytes = 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Doly ekranda açyň</string>
     <string name="transcript_widget_network">Tor: %1$s</string>
     <string name="transcript_widget_restart">Gaýtadan açyň</string>
+    <string name="transcript_widget_older_runtime">Bu widget köne widget işleýiş wagty bilen guruldy; agentden täzeden paýlaşmagyny soraň</string>
+    <string name="transcript_widget_newer_app">Bu widget üçin bu programmanyň has täze wersiýasy gerek</string>
     <string name="transcript_widget_failed_on">%1$s-de şowsuz: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s-de şowsuz: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Agentden düzetmegini sora</string>

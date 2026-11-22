@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Дар экрани пурра кушоед</string>
     <string name="transcript_widget_network">Шабака: %1$s</string>
     <string name="transcript_widget_restart">Оғози дубора</string>
+    <string name="transcript_widget_older_runtime">Ин виджет бо муҳити иҷрои кӯҳнаи виджет сохта шудааст; аз агент хоҳиш кунед онро аз нав нашр кунад</string>
+    <string name="transcript_widget_newer_app">Барои ин виджет версияи навтари ин барнома лозим аст</string>
     <string name="transcript_widget_failed_on">Дар %1$s ноком шуд: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Дар %1$s ноком шуд: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Аз агент хоҳиш кунед, ки ислоҳ кунад</string>

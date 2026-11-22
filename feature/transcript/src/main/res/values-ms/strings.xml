@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Buka dalam skrin penuh</string>
     <string name="transcript_widget_network">Rangkaian: %1$s</string>
     <string name="transcript_widget_restart">Mulakan semula</string>
+    <string name="transcript_widget_older_runtime">Widget ini dibina dengan runtime widget yang lebih lama; minta ejen menyiarkannya semula</string>
+    <string name="transcript_widget_newer_app">Widget ini memerlukan versi aplikasi yang lebih baharu</string>
     <string name="transcript_widget_failed_on">Gagal pada %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Gagal pada %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Minta Ejen Baiki</string>

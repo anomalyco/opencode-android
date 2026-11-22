@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Opna í fullum skjá</string>
     <string name="transcript_widget_network">Net: %1$s</string>
     <string name="transcript_widget_restart">Endurræstu</string>
+    <string name="transcript_widget_older_runtime">Þessi græja var búin til með eldra keyrsluumhverfi; biddu fulltrúann um að birta hana aftur</string>
+    <string name="transcript_widget_newer_app">Þessi græja þarf nýrri útgáfu af þessu forriti</string>
     <string name="transcript_widget_failed_on">Mistókst á %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Mistókst á %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Biðja fulltrúa að laga þetta</string>

@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Obre a pantalla completa</string>
     <string name="transcript_widget_network">Xarxa: %1$s</string>
     <string name="transcript_widget_restart">Reinicia</string>
+    <string name="transcript_widget_older_runtime">Aquest giny s\'ha creat amb un entorn d\'execució de ginys antic; demana a l\'agent que el torni a publicar</string>
+    <string name="transcript_widget_newer_app">Aquest giny necessita una versió més recent d\'aquesta aplicació</string>
     <string name="transcript_widget_failed_on">Ha fallat a %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Ha fallat a %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Demana a l\'agent que ho arregli</string>

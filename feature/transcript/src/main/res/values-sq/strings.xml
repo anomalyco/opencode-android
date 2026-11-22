@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Hap në ekran të plotë</string>
     <string name="transcript_widget_network">Rrjeti: %1$s</string>
     <string name="transcript_widget_restart">Rinis</string>
+    <string name="transcript_widget_older_runtime">Ky widget u ndërtua me një runtime widget-i më të vjetër; kërkoji agjentit ta postojë përsëri</string>
+    <string name="transcript_widget_newer_app">Ky widget kërkon një version më të ri të këtij aplikacioni</string>
     <string name="transcript_widget_failed_on">Dështoi në %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Dështoi në %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Kërkoji agjentit ta rregullojë</string>

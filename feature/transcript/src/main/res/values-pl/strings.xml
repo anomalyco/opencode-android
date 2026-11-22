@@ -198,6 +198,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Otwórz na pełnym ekranie</string>
     <string name="transcript_widget_network">Sieć: %1$s</string>
     <string name="transcript_widget_restart">Uruchom ponownie</string>
+    <string name="transcript_widget_older_runtime">Ten widżet używa starszego środowiska wykonawczego; poproś agenta o ponowne opublikowanie go</string>
+    <string name="transcript_widget_newer_app">Ten widżet wymaga nowszej wersji tej aplikacji</string>
     <string name="transcript_widget_failed_on">Błąd w %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Błąd w %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Poproś agenta o naprawę</string>

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Avaa koko näytössä</string>
     <string name="transcript_widget_network">Verkko: %1$s</string>
     <string name="transcript_widget_restart">Käynnistä uudelleen</string>
+    <string name="transcript_widget_older_runtime">Tämä widgetti on rakennettu vanhemmalla widgetti-ajoympäristöllä; pyydä agenttia julkaisemaan se uudelleen</string>
+    <string name="transcript_widget_newer_app">Tämä widgetti vaatii sovelluksen uudemman version</string>
     <string name="transcript_widget_failed_on">Epäonnistui: %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Epäonnistui: %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Pyydä agenttia korjaamaan</string>

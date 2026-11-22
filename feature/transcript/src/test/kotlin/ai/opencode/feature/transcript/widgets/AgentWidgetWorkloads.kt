@@ -18,8 +18,9 @@ import java.util.concurrent.TimeUnit
 
 /**
  * psychoscript-mobile's committed workloads (`tests/fixtures/workloads` in the `.psychoscript` checkout), run on the
- * runtime's desktop build (`scripts/psychoscript.sh --host`): each step's output as JSON and as the binary format, and a
- * live workload's first posts both ways. [missing] says why they can't run.
+ * runtime's desktop build (`scripts/psychoscript.sh --host`): each step's output as JSON (the scripted prelude, which
+ * still builds the tree in the program) and as the binary format (widget protocol 2, the native host), and a live
+ * workload's first posts both ways. [missing] says why they can't run.
  */
 internal object AgentWidgetWorkloads {
     class Step(val name: String, val draw: Boolean, val json: String, val bytes: ByteArray)
@@ -46,8 +47,23 @@ internal object AgentWidgetWorkloads {
     private val encoder by lazy { ValueEncoder.widget() }
     private val workloads by lazy { json.parseToJsonElement(File(dir, "workloads.json").readText()).jsonObject }
     private val prelude by lazy { File(dir, "prelude.js").readText() }
+    private val scripted by lazy { File(dir, "prelude-scripted.js").readText() }
+    private val wire = System.getProperty("opencode.widgetWireFixtures")?.let(::File)
 
-    private fun template(name: String) = prelude + File(dir, "templates/$name.js").readText()
+    /** The protocol 2 step entry (widgets.md, Native hosts). */
+    const val STEP_ENTRY = "\nreturn __widget_native_step(__input())"
+
+    private fun source(name: String) = File(dir, "templates/$name.js").readText()
+
+    /** A wire fixture's `source` and `input` (widget-wire `tests/fixtures/wire`), and its expected `error`, if any. */
+    fun fixture(name: String): Triple<String, String, JsonObject?> {
+        val o = json.parseToJsonElement(File(wire, "$name.json").readText()).jsonObject
+        return Triple(o.getValue("source").jsonPrimitive.content, o.getValue("input").toString(), o["error"] as? JsonObject)
+    }
+
+    /** A step of [source] on the native host: its output's bytes. */
+    fun nativeStep(source: String, input: String): ByteArray =
+        Program(prelude + "\n" + source + STEP_ENTRY, "__input").runBytes(input, encoder, STEP)
 
     val steps: List<Step> by lazy {
         workloads.getValue("step").jsonArray.map { it.jsonObject }.map { w ->
@@ -55,12 +71,12 @@ internal object AgentWidgetWorkloads {
             val input = json.parseToJsonElement(File(dir, "inputs/$name.json").readText()).jsonObject
             val own = JsonObject(input.filterKeys { it != "data" }).toString()
             val fields = "{\"data\":${input["data"]}}"
-            val source = template(w.getValue("program").jsonPrimitive.content)
+            val source = source(w.getValue("program").jsonPrimitive.content)
             Step(
                 name,
                 w.getValue("phase").jsonPrimitive.content == "draw",
-                Program(source + "\nreturn __widget_step(__input())", "__input").session(fields).run(own, STEP),
-                Program(source + "\n${encoder.emitName()}(__widget_step(__input(), true))", "__input").session(fields).runBytes(own, encoder, STEP),
+                Program(scripted + source + "\nreturn __widget_step(__input())", "__input").session(fields).run(own, STEP),
+                Program(prelude + source + STEP_ENTRY, "__input").session(fields).runBytes(own, encoder, STEP),
             )
         }
     }
@@ -73,11 +89,11 @@ internal object AgentWidgetWorkloads {
     val live: List<Live> by lazy {
         workloads.getValue("live").jsonArray.map { it.jsonObject }.map { w ->
             val name = w.getValue("name").jsonPrimitive.content
-            val source = template(w.getValue("program").jsonPrimitive.content)
+            val source = source(w.getValue("program").jsonPrimitive.content)
             val input = File(dir, "inputs/$name.json").readText()
             fun run(native: Boolean): Posts {
                 val posts = Posts()
-                val program = Program(source + "\nreturn await __widget_live(__input()${if (native) ", true" else ""})", "__input")
+                val program = Program((if (native) prelude else scripted) + source + "\nreturn await __widget_live(__input()${if (native) ", true" else ""})", "__input")
                 val run = program.startLive(input, posts, OPTIONS, null, if (native) encoder else null)
                 posts.await()
                 repeat(2) {

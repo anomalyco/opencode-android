@@ -198,6 +198,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Odpri čez cel zaslon</string>
     <string name="transcript_widget_network">Omrežje: %1$s</string>
     <string name="transcript_widget_restart">Znova zaženite</string>
+    <string name="transcript_widget_older_runtime">Ta gradnik je bil narejen s starejšim izvajalnim okoljem gradnikov; prosite agenta, naj ga znova objavi.</string>
+    <string name="transcript_widget_newer_app">Ta gradnik potrebuje novejšo različico te aplikacije.</string>
     <string name="transcript_widget_failed_on">Na %1$s ni uspelo: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Na %1$s ni uspelo: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Prosite agenta, naj to odpravi</string>

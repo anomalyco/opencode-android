@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Open in full screen</string>
     <string name="transcript_widget_network">Network: %1$s</string>
     <string name="transcript_widget_restart">Restart</string>
+    <string name="transcript_widget_older_runtime">This widget was built with an older widget runtime; ask the agent to post it again</string>
+    <string name="transcript_widget_newer_app">This widget needs a newer version of this app</string>
     <string name="transcript_widget_failed_on">Failed on %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Failed on %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Ask Agent to Fix It</string>

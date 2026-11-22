@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Åpne i fullskjerm</string>
     <string name="transcript_widget_network">Nettverk: %1$s</string>
     <string name="transcript_widget_restart">Start på nytt</string>
+    <string name="transcript_widget_older_runtime">Denne widgeten ble laget med et eldre widget-kjøremiljø; be agenten om å legge den ut på nytt</string>
+    <string name="transcript_widget_newer_app">Denne widgeten trenger en nyere versjon av denne appen</string>
     <string name="transcript_widget_failed_on">Mislyktes på %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Mislyktes på %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Spør agenten om å fikse det</string>

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Öppna i helskärm</string>
     <string name="transcript_widget_network">Nätverk: %1$s</string>
     <string name="transcript_widget_restart">Starta om</string>
+    <string name="transcript_widget_older_runtime">Den här widgeten byggdes med en äldre körtid – be agenten att posta den igen.</string>
+    <string name="transcript_widget_newer_app">Den här widgeten behöver en nyare version av den här appen.</string>
     <string name="transcript_widget_failed_on">Misslyckades på %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Misslyckades på %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Be agenten fixa det</string>

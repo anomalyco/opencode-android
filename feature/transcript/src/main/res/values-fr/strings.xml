@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Ouvrir en plein écran</string>
     <string name="transcript_widget_network">Réseau : %1$s</string>
     <string name="transcript_widget_restart">Redémarrer</string>
+    <string name="transcript_widget_older_runtime">Ce widget a été créé avec un ancien moteur de widgets ; demandez à l’agent de le publier à nouveau.</string>
+    <string name="transcript_widget_newer_app">Ce widget nécessite une version plus récente de cette application.</string>
     <string name="transcript_widget_failed_on">Échec sur %1$s : %2$s : %3$s</string>
     <string name="transcript_widget_failed_on_at">Échec sur %1$s : %2$s : %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Demander à l’agent de corriger</string>

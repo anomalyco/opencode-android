@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">གསལ་གཞི་ཆ་ཚང་ནང་ཁ་ཕྱེ།</string>
     <string name="transcript_widget_network">ཡོངས་འབྲེལ།: %1$s</string>
     <string name="transcript_widget_restart">ལོག་འགོ་བཙུགས།</string>
+    <string name="transcript_widget_older_runtime">ཝི་ཇེཊི་འདི་ རཱན་ཊའིམ་རྙིངམ་གྱིས་བཟོ་ཡོདཔ། ལས་ཚབ་ལུ་ལོག་འཛུལ་ཡིག་རྐྱབ་ཞུ།</string>
+    <string name="transcript_widget_newer_app">ཝི་ཇེཊི་འདི་ལུ་ གློག་རིམ་འདིའི་ཐོན་རིམ་གསརཔ་དགོ</string>
     <string name="transcript_widget_failed_on">%1$s ནང་མཐར་མ་འཁྱོལ་བ། %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s ནང་མཐར་མ་འཁྱོལ་བ། %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">ལས་ཚབ་ལུ་ནོར་བཅོས་ཞུ།</string>

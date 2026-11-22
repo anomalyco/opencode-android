@@ -52,7 +52,8 @@ object AgentWidgetMachine {
         data class Stepping(override val state: String, override val view: AgentWidgetNode) : Phase
         data class Responding(override val state: String, override val view: AgentWidgetNode, val response: OpenCodeWidgetResponse, val attempt: Int) : Phase
         data class Closed(override val view: AgentWidgetNode?, val how: AgentWidgetMachine.Closed, override val state: String? = null) : Phase
-        data class Failed(val message: String, val status: Status) : Phase
+        /** [retryable]: Try again (or Restart) can help; not for a program of another widget protocol. */
+        data class Failed(val message: String, val status: Status, val retryable: Boolean = true) : Phase
 
         /** The view drawn now, live or final. */
         val view: AgentWidgetNode? get() = null
@@ -120,7 +121,7 @@ object AgentWidgetMachine {
                 when (val status = phase.status) {
                     Status.Open ->
                         if (out != null) Phase.Ready(out.state, out.view) to none
-                        else Phase.Failed(message(event.result.exceptionOrNull()), Status.Open) to none
+                        else event.result.exceptionOrNull().let { Phase.Failed(message(it), Status.Open, retryable(it)) } to none
                     is Status.Answered -> Phase.Closed(out?.view, status.how, out?.state) to none
                 }
             }
@@ -150,6 +151,11 @@ object AgentWidgetMachine {
         }
     }
 
-    private fun message(error: Throwable?): String =
-        error?.message?.takeIf { it.isNotBlank() } ?: localized(R.string.transcript_widget_step_failed)
+    fun message(error: Throwable?): String = when ((error as? AgentWidgetEngineException)?.protocol) {
+        AgentWidgetEngineException.Protocol.Older -> localized(R.string.transcript_widget_older_runtime)
+        AgentWidgetEngineException.Protocol.Newer -> localized(R.string.transcript_widget_newer_app)
+        null -> error?.message?.takeIf { it.isNotBlank() } ?: localized(R.string.transcript_widget_step_failed)
+    }
+
+    fun retryable(error: Throwable?): Boolean = (error as? AgentWidgetEngineException)?.protocol == null
 }

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">To‘liq ekranda ochish</string>
     <string name="transcript_widget_network">Tarmoq: %1$s</string>
     <string name="transcript_widget_restart">Qayta ishga tushirish</string>
+    <string name="transcript_widget_older_runtime">Bu vidjet eskiroq vidjet runtime bilan yaratilgan; agentdan uni qayta post qilishni so‘rang.</string>
+    <string name="transcript_widget_newer_app">Bu vidjetga ushbu ilovaning yangiroq versiyasi kerak.</string>
     <string name="transcript_widget_failed_on">%1$s da muvaffaqiyatsiz: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s da muvaffaqiyatsiz: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Agentdan tuzatishni soʻrash</string>

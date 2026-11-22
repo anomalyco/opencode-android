@@ -408,7 +408,7 @@ class AgentWidgetController internal constructor(
         }
 
         override fun failed(error: AgentWidgetEngineException) {
-            phase = Phase.Failed(error.message ?: localized(R.string.transcript_widget_step_failed), Status.Open)
+            phase = Phase.Failed(AgentWidgetMachine.message(error), Status.Open, AgentWidgetMachine.retryable(error))
             reportError(error.phase ?: "main", error)
         }
 

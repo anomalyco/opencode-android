@@ -192,6 +192,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Otvori na cijelom zaslonu</string>
     <string name="transcript_widget_network">Mreža: %1$s</string>
     <string name="transcript_widget_restart">Ponovno pokretanje</string>
+    <string name="transcript_widget_older_runtime">Ovaj widget je napravljen sa starijim widget runtime-om; zamolite agenta da ga ponovno objavi</string>
+    <string name="transcript_widget_newer_app">Ovaj widget zahtijeva noviju verziju ove aplikacije</string>
     <string name="transcript_widget_failed_on">Neuspješno na %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Neuspješno na %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Pitaj agenta da popravi</string>

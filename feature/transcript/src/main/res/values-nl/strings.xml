@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Openen in volledig scherm</string>
     <string name="transcript_widget_network">Netwerk: %1$s</string>
     <string name="transcript_widget_restart">Opnieuw opstarten</string>
+    <string name="transcript_widget_older_runtime">Deze widget is gebouwd met een oudere widget-runtime; vraag de agent om hem opnieuw te plaatsen</string>
+    <string name="transcript_widget_newer_app">Deze widget heeft een nieuwere versie van deze app nodig</string>
     <string name="transcript_widget_failed_on">Mislukt op %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Mislukt op %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Vraag agent om het op te lossen</string>

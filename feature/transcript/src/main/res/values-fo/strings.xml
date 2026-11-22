@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Opna í fullum skíggja</string>
     <string name="transcript_widget_network">Net: %1$s</string>
     <string name="transcript_widget_restart">Endurbyrja</string>
+    <string name="transcript_widget_older_runtime">Hesin widgeturin varð bygdur við eldri widget-runtime; bið agentin leggja hann út aftur.</string>
+    <string name="transcript_widget_newer_app">Hesin widgeturin krevur nýggjari útgáva av hesum forritinum.</string>
     <string name="transcript_widget_failed_on">Mistókst á %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Mistókst á %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Spyr agentin at rætta tað</string>

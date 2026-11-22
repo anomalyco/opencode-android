@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">បើកពេញអេក្រង់</string>
     <string name="transcript_widget_network">បណ្តាញ៖ %1$s</string>
     <string name="transcript_widget_restart">ចាប់ផ្ដើមឡើងវិញ</string>
+    <string name="transcript_widget_older_runtime">វីជេតនេះប្រើ runtime ជំនាន់ចាស់ សូមឲ្យភ្នាក់ងារបង្ហោះវាម្តងទៀត</string>
+    <string name="transcript_widget_newer_app">វីជេតនេះត្រូវការកម្មវិធីកំណែថ្មីជាង</string>
     <string name="transcript_widget_failed_on">បរាជ័យលើ %1$s៖ %2$s៖ %3$s</string>
     <string name="transcript_widget_failed_on_at">បរាជ័យលើ %1$s៖ %2$s៖ %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">សួរភ្នាក់ងារឲ្យជួសជុល</string>

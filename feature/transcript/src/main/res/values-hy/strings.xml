@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Բացել ամբողջ էկրանով</string>
     <string name="transcript_widget_network">Ցանց՝ %1$s</string>
     <string name="transcript_widget_restart">Վերագործարկեք</string>
+    <string name="transcript_widget_older_runtime">Այս վիջեթը ստեղծվել է վիջեթի ավելի հին գործարկիչով․ խնդրեք գործակալին նորից տեղադրել այն</string>
+    <string name="transcript_widget_newer_app">Այս վիջեթի համար անհրաժեշտ է հավելվածի ավելի նոր տարբերակ</string>
     <string name="transcript_widget_failed_on">Ձախողվեց %1$s-ում՝ %2$s՝ %3$s</string>
     <string name="transcript_widget_failed_on_at">Ձախողվեց %1$s-ում՝ %2$s՝ %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Խնդրել գործակալին շտկել այն</string>

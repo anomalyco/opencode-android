@@ -180,6 +180,8 @@
     <string name="transcript_widget_fullscreen_placeholder">在全螢幕開啟</string>
     <string name="transcript_widget_network">網路：%1$s</string>
     <string name="transcript_widget_restart">重新啟動</string>
+    <string name="transcript_widget_older_runtime">此小工具以舊版小工具執行階段建立，請代理程式重新貼文</string>
+    <string name="transcript_widget_newer_app">此小工具需要較新版本的應用程式</string>
     <string name="transcript_widget_failed_on">在 %1$s 失敗：%2$s：%3$s</string>
     <string name="transcript_widget_failed_on_at">在 %1$s 失敗：%2$s：%3$s（%4$s）</string>
     <string name="transcript_widget_ask_agent">要求代理程式修復</string>

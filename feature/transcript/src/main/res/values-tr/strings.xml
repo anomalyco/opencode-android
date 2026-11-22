@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Tam ekranda aç</string>
     <string name="transcript_widget_network">Ağ: %1$s</string>
     <string name="transcript_widget_restart">Yeniden Başlat</string>
+    <string name="transcript_widget_older_runtime">Bu pencere öğesi daha eski bir çalışma zamanıyla oluşturulmuş; ajandan tekrar göndermesini isteyin</string>
+    <string name="transcript_widget_newer_app">Bu pencere öğesi bu uygulamanın daha yeni bir sürümünü gerektiriyor</string>
     <string name="transcript_widget_failed_on">%1$s üzerinde başarısız: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">%1$s üzerinde başarısız: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Ajandan düzeltmesini iste</string>

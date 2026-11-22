@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Im Vollbild öffnen</string>
     <string name="transcript_widget_network">Netzwerk: %1$s</string>
     <string name="transcript_widget_restart">Neustart</string>
+    <string name="transcript_widget_older_runtime">Dieses Widget wurde mit einer älteren Widget-Runtime erstellt; bitte den Agenten, es erneut zu posten.</string>
+    <string name="transcript_widget_newer_app">Dieses Widget benötigt eine neuere Version dieser App.</string>
     <string name="transcript_widget_failed_on">Fehlgeschlagen bei %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Fehlgeschlagen bei %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Agenten bitten, das zu beheben</string>

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Άνοιγμα σε πλήρη οθόνη</string>
     <string name="transcript_widget_network">Δίκτυο: %1$s</string>
     <string name="transcript_widget_restart">Επανεκκίνηση</string>
+    <string name="transcript_widget_older_runtime">Αυτό το widget φτιάχτηκε με παλαιότερο περιβάλλον εκτέλεσης. Ζητήστε από τον πράκτορα να το αναρτήσει ξανά.</string>
+    <string name="transcript_widget_newer_app">Αυτό το widget χρειάζεται νεότερη έκδοση αυτής της εφαρμογής.</string>
     <string name="transcript_widget_failed_on">Απέτυχε στο %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Απέτυχε στο %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Διόρθωση από τον πράκτορα</string>

@@ -186,6 +186,8 @@
     <string name="transcript_widget_fullscreen_placeholder">Отвори на цел екран</string>
     <string name="transcript_widget_network">Мрежа: %1$s</string>
     <string name="transcript_widget_restart">Рестартирај</string>
+    <string name="transcript_widget_older_runtime">Овој виџет е направен со постара извршна околина за виџети; замолете го агентот да го објави повторно.</string>
+    <string name="transcript_widget_newer_app">Овој виџет бара понова верзија на апликацијава.</string>
     <string name="transcript_widget_failed_on">Не успеа на %1$s: %2$s: %3$s</string>
     <string name="transcript_widget_failed_on_at">Не успеа на %1$s: %2$s: %3$s (%4$s)</string>
     <string name="transcript_widget_ask_agent">Побарај од агентот да го поправи</string>
