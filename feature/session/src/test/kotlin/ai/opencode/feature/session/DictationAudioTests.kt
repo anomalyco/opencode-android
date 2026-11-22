@@ -13,6 +13,7 @@ import ai.opencode.feature.session.SessionTestSupport.receive
 import ai.opencode.feature.session.SessionTestSupport.sessionTest
 import ai.opencode.feature.voice.VoiceCallClient
 import ai.opencode.feature.voice.VoiceFeature
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeSession
 import kotlinx.coroutines.CompletableDeferred
@@ -87,6 +88,7 @@ class DictationHoldReportingTests {
     /** Raise to Talk waits the same way, and the call hears it's at the ear. */
     @Test fun raiseToTalkWaitsForDictationToo() = sessionTest { h ->
         h.sharedStore.reference(SharedKeys.voiceModeEnabled).set(true)
+        h.sharedStore.reference(VoiceSharedKeys.voiceModelsByServer).set(SessionTestSupport.voiceModels(server))
         val routes = LockIsolated(listOf<Boolean>())
         val store = h.store(h.screen()) {
             this[UuidClient] = UuidClient.incrementing()

@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">El format d\'àudio del dispositiu no és compatible.</string>
     <string name="voice_error_audio_engine_rejected">No s\'ha pogut iniciar l\'àudio de la trucada. Torna-ho a provar d\'aquí a un moment.</string>
     <string name="voice_error_server_unsupported">Aquest servidor necessita una versió més recent d\'OpenCode per a les trucades de veu</string>
+    <string name="voice_error_no_voice_models">El teu servidor no té models de veu. Connecta\'l a OpenCode Console o a un proveïdor de veu per fer trucades.</string>
     <string name="voice_error_invalid_server_url">No s\'ha pogut iniciar la veu: introdueix un URL de servidor HTTP o HTTPS vàlid.</string>
     <string name="voice_error_invalid_response">No s\'ha pogut iniciar la veu: el servidor ha retornat una resposta no vàlida.</string>
     <string name="voice_error_start_voice_detail">No s\'ha pogut iniciar la veu: %1$s</string>

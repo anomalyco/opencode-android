@@ -25,7 +25,7 @@ class LiveProtocolTests {
     private fun s(value: String) = RealtimeJSONs.string(value)
 
     @Test fun sessionStartEncodesClientDelegationAudioFormatAndSeededInput() {
-        val config = LiveSessionConfig(
+        val config = LiveSessionConfig(model = "gpt-live-1", 
             instructions = "Be concise.",
             input = listOf(
                 LiveInputMessage(LiveInputMessage.Role.developer, "Continuing an earlier call."),
@@ -444,7 +444,7 @@ private class LiveRTCLinkWatchTester {
 }
 
 class RealtimeRTCTests {
-    private val config = RealtimeSessionConfig(instructions = "Be brief.", tools = emptyList())
+    private val config = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "Be brief.", tools = emptyList())
 
     @Test fun updatesOverWebRTCLeaveTheAudioFormatOut() {
         val rtc = config.sessionUpdate(includeAudioFormat = false)
@@ -540,13 +540,10 @@ class VoiceEnginePersistenceTests {
     private val server = OpenCodeServer(url = "http://localhost:4096", username = "", password = "")
     private val session = OpenCodeSession(id = "ses_voice", serverTitle = "Voice lab", projectID = "p", directory = "/Users/kit/project", updatedAt = Instant.EPOCH)
 
-    @Test fun defaultsToGPTLiveAndPersistsSelectionAcrossCalls() = runTest {
+    @Test fun defaultsToTheServersFirstModelAndPersistsSelectionAcrossCalls() = runTest {
         val shared = VoiceTestShared()
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
-        var voiceEngine = shared.get(VoiceSharedKeys.voiceEngine)
-        assertEquals(VoiceEngine.gptLive, voiceEngine)
-        assertEquals("GPT-Live", voiceEngine.title)
-        assertEquals("gpt-live-1", voiceEngine.modelID)
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
+        assertEquals("", shared.get(VoiceSharedKeys.voiceModel))
 
         val startedConfigs = mutableListOf<RealtimeSessionConfig>()
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
@@ -562,14 +559,11 @@ class VoiceEnginePersistenceTests {
         store.receive(::isCallEnded)
         assertEquals(VoiceEngine.gptLive, startedConfigs.first().engine)
         assertEquals("gpt-live-1", startedConfigs.first().model)
+        assertTrue(startedConfigs.first().instructions.contains("You are GPT-Live (gpt-live-1)"))
         assertTrue(startedConfigs.first().tools.isEmpty())
 
-        // Switching to Realtime persists and starts the next call with Realtime's model and tools.
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.realtime)
-        voiceEngine = shared.get(VoiceSharedKeys.voiceEngine)
-        assertEquals(VoiceEngine.realtime, voiceEngine)
-        assertEquals("Realtime", voiceEngine.title)
-        assertEquals("gpt-realtime-2.1", voiceEngine.modelID)
+        // Picking a Realtime model persists and starts the next call with Realtime's model and tools.
+        shared.set(VoiceSharedKeys.voiceModel, "gpt-realtime-2.1")
 
         store.send(VoiceFeature.Action.Start)
         store.receive(::isCallEnded)
@@ -578,6 +572,10 @@ class VoiceEnginePersistenceTests {
         assertEquals(listOf("delegate", "end_voice_session"), startedConfigs.last().tools.map { it.name })
 
 
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
+        // A pick the server no longer lists falls back to its first model.
+        shared.set(VoiceSharedKeys.voiceModel, "gpt-realtime-1")
+        store.send(VoiceFeature.Action.Start)
+        store.receive(::isCallEnded)
+        assertEquals("gpt-live-1", startedConfigs.last().model)
     }
 }

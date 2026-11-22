@@ -117,7 +117,6 @@ class VoiceSessionDelegatorTests {
             shared.set(VoiceSharedKeys.voiceDelegatorChoice, VoiceDelegatorChoice.AutomaticSession)
 
             // 1. Server Voice brokered GPT-Live -> uses OpenCode Session Delegator with client delegation (no phone key needed).
-            shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.openAI)
             shared.set(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
 
             val serverState = shared.read { VoiceFeature.State(server, session) }.copy(serverVoiceSupport = ServerVoiceSupport.supported)

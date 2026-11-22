@@ -427,10 +427,10 @@ private fun WhatsNewTryBar(store: SettingsStore, entry: WhatsNewEntry) {
 @Composable
 private fun rememberWhatsNewVoiceAvailable(server: OpenCodeServer?): Boolean {
     val enabled by remember { shared(SharedKeys.voiceModeEnabled).flow }.collectAsState()
-    val engine by remember { shared(VoiceSharedKeys.voiceEngine).flow }.collectAsState()
-    val provider by remember { shared(VoiceSharedKeys.serverVoiceProvider).flow }.collectAsState()
+    val voiceModel by remember { shared(VoiceSharedKeys.voiceModel).flow }.collectAsState()
+    val voiceModels by remember { shared(VoiceSharedKeys.voiceModelsByServer).flow }.collectAsState()
     val support by remember { shared(VoiceSharedKeys.serverVoiceSupportByServer).flow }.collectAsState()
-    return remember(server, enabled, engine, provider, support) {
+    return remember(server, enabled, voiceModel, voiceModels, support) {
         whatsNewVoiceAvailable(server)
     }
 }

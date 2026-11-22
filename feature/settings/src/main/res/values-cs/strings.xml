@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Povolit hlasové hovory</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Hlasový model</string>
+    <string name="settings_voice_model_automatic">Automaticky</string>
     <string name="settings_voice_call_voice">Hlas</string>
     <string name="settings_voice_raise_to_talk">Přiložením zahájit hovor</string>
     <string name="settings_voice_call_sounds">Zvuky hovorů</string>

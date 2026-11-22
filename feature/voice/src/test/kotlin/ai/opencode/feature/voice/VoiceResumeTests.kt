@@ -178,7 +178,7 @@ class VoiceResumeTests {
                 )
             })
             return coordinator.start(
-                config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
+                config = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "", tools = emptyList()),
                 realtime = realtime,
                 audio = audio,
             )
@@ -607,7 +607,7 @@ class VoiceResumeTests {
 
         val startTask = async {
             coordinator.start(
-                config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
+                config = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "", tools = emptyList()),
                 realtime = realtime,
                 audio = audio,
             )

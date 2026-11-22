@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">ບໍ່ຮອງຮັບຮູບແບບສຽງຂອງອຸປະກອນ.</string>
     <string name="voice_error_audio_engine_rejected">ເລີ່ມສຽງການໂທບໍ່ໄດ້. ລໍຖ້າຈັກໜ້ອຍແລ້ວລອງໃໝ່.</string>
     <string name="voice_error_server_unsupported">ເຊີບເວີນີ້ຕ້ອງໃຊ້ OpenCode ລຸ້ນໃໝ່ກວ່າເພື່ອໂທດ້ວຍສຽງ</string>
+    <string name="voice_error_no_voice_models">ເຊີບເວີຂອງເຈົ້າບໍ່ມີຕົວແບບສຽງ. ເຊື່ອມຕໍ່ກັບ OpenCode Console ຫຼື ຜູ້ໃຫ້ບໍລິການສຽງເພື່ອໂທ.</string>
     <string name="voice_error_invalid_server_url">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້: ໃສ່ URL ເຊີບເວີ HTTP ຫຼື HTTPS ທີ່ຖືກຕ້ອງ.</string>
     <string name="voice_error_invalid_response">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້: ເຊີບເວີສົ່ງຄຳຕອບທີ່ບໍ່ຖືກຕ້ອງກັບມາ.</string>
     <string name="voice_error_start_voice_detail">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້: %1$s</string>

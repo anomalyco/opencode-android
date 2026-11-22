@@ -70,7 +70,7 @@ class RealtimeProtocolTests {
     }
 
     @Test fun sessionUpdateUsesGAShapeWithServerDrivenTurns() {
-        val config = RealtimeSessionConfig(instructions = "Be brief.", tools = VoiceInstructions.tools)
+        val config = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "Be brief.", tools = VoiceInstructions.tools)
         val json = decode(RealtimeCommand.SessionUpdate(config).encoded())
         val session = json["session"] ?: return fail("session missing")
         assertEquals(s("realtime"), session["type"])
@@ -87,7 +87,7 @@ class RealtimeProtocolTests {
     }
 
     @Test fun sessionUpdateWaitsForAFinishedThoughtInEnglish() {
-        val update = RealtimeSessionConfig(instructions = "Be brief.", tools = emptyList()).sessionUpdate
+        val update = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "Be brief.", tools = emptyList()).sessionUpdate
         val input = update["session"]?.get("audio")?.get("input")
         assertEquals(s("semantic_vad"), input?.get("turn_detection")?.get("type"))
         assertEquals(s("low"), input?.get("turn_detection")?.get("eagerness"))
@@ -375,7 +375,7 @@ class RealtimeProtocolTests {
                     )
                 })
                 val events = harness.coordinator.start(
-                    config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
+                    config = RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "", tools = emptyList()),
                     realtime = realtime,
                     audio = audio,
                 )

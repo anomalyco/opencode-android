@@ -25,12 +25,10 @@ import ai.opencode.core.ui.AppearanceColorScheme
 import ai.opencode.core.ui.ThemeSharedKeys
 import ai.opencode.feature.voice.CallVoice
 import ai.opencode.feature.voice.ServerVoiceClient
-import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.VoiceBroker
 import ai.opencode.feature.voice.VoiceDelegatorChoice
-import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceModelsCache
 import ai.opencode.feature.voice.VoiceReadiness
@@ -63,8 +61,6 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
         data class SoundEffectsSendChanged(val on: Boolean) : Action
         data class VoiceModeEnabledChanged(val on: Boolean) : Action
         data class RaiseToTalkChanged(val on: Boolean) : Action
-        data class VoiceEngineChanged(val engine: VoiceEngine) : Action
-        data class ServerVoiceProviderChanged(val provider: ServerVoiceProvider) : Action
         /** Settings › Voice › Voice Provider. */
         data class VoiceServerChanged(val choice: VoiceServerChoice) : Action
         /** Settings › Voice › Delegator (OpenCode Session Delegator). */
@@ -143,49 +139,38 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
             is Action.SoundEffectsSendChanged -> setShared(SharedKeys.soundEffectsSend, action.on)
             is Action.VoiceModeEnabledChanged -> setShared(SharedKeys.voiceModeEnabled, action.on)
             is Action.RaiseToTalkChanged -> setShared(SharedKeys.raiseToTalk, action.on)
-            is Action.VoiceEngineChanged -> {
-                setShared(SharedKeys.voiceEngineMigratedToGPTLive, true)
-                setShared(VoiceSharedKeys.voiceEngine, action.engine)
-            }
-            is Action.ServerVoiceProviderChanged -> setShared(VoiceSharedKeys.serverVoiceProvider, action.provider)
             is Action.VoiceServerChanged -> setShared(VoiceSharedKeys.voiceServerChoice, action.choice)
             is Action.VoiceDelegatorChoiceChanged -> setShared(VoiceSharedKeys.voiceDelegatorChoice, action.choice)
             Action.CheckServerVoiceSupport -> {
                 val choice = shared(VoiceSharedKeys.voiceServerChoice)
                 if (choice.value == VoiceServerChoice.Connected) choice.update { it.pinningConnected(state.server) }
-                val provider = shared(VoiceSharedKeys.serverVoiceProvider).value
                 val readiness = VoiceReadiness(
                     answers = shared(VoiceSharedKeys.voiceModelsByServer).value,
                     support = shared(VoiceSharedKeys.serverVoiceSupportByServer).value,
-                    engine = shared(VoiceSharedKeys.voiceEngine).value,
+                    pick = shared(VoiceSharedKeys.voiceModel).value,
                 )
                 val pick = VoiceBroker(
                     choice = choice.value,
-                    provider = provider,
                     connected = state.server,
                     saved = VoiceFeature.savedServers,
                     readiness = readiness,
                 )
-                // The state can be empty before a server connects.
-                val home = state.server
-                val asksModels = home != null && pick.isAutomatic && provider == ServerVoiceProvider.openAI
                 val broker = pick.server
-                if (!asksModels && broker == null) return Reduced(state)
-                val epoch = home?.let { VoiceModelsCache.epoch(it.persistenceID) } ?: 0
+                // The state can be empty before a server connects.
+                val listServer = broker ?: state.server ?: return Reduced(state)
+                val epoch = VoiceModelsCache.epoch(listServer.persistenceID)
                 val client = serverVoice
                 return Reduced(
                     state,
                     Effect.run { send ->
-                        if (asksModels && home != null) {
-                            val models = client.models(home)
-                            send(
-                                Action.VoiceModelsLoaded(
-                                    serverID = home.persistenceID,
-                                    asked = epoch,
-                                    answer = models?.let(ServerVoiceModelsAnswer::Listed) ?: ServerVoiceModelsAnswer.NoAnswer,
-                                ),
-                            )
-                        }
+                        val models = client.models(listServer)
+                        send(
+                            Action.VoiceModelsLoaded(
+                                serverID = listServer.persistenceID,
+                                asked = epoch,
+                                answer = models?.let(ServerVoiceModelsAnswer::Listed) ?: ServerVoiceModelsAnswer.NoAnswer,
+                            ),
+                        )
                         if (broker == null) return@run
                         val support = client.checkSupport(broker)
                         send(Action.ServerVoiceSupportLoaded(serverID = broker.persistenceID, support = support))

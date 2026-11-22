@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Дуу хоолойг идэвхжүүлэх</string>
     <string name="settings_voice_model">Загвар</string>
     <string name="settings_voice_model_description">Дуу хоолойн загвар</string>
+    <string name="settings_voice_model_automatic">Автомат</string>
     <string name="settings_voice_call_voice">Дуу хоолой</string>
     <string name="settings_voice_raise_to_talk">Чихэндээ ойртуулж ярих</string>
     <string name="settings_voice_call_sounds">Дуудлагын дуу</string>

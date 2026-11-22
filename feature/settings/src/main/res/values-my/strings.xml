@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">အသံကို ဖွင့်ပါ။</string>
     <string name="settings_voice_model">မော်ဒယ်</string>
     <string name="settings_voice_model_description">အသံမော်ဒယ်</string>
+    <string name="settings_voice_model_automatic">အလိုအလျောက်</string>
     <string name="settings_voice_call_voice">အသံ</string>
     <string name="settings_voice_raise_to_talk">ဖုန်းကို မြှောက်ပြီး ပြောပါ</string>
     <string name="settings_voice_call_sounds">ခေါ်ဆိုမှုအသံများ</string>

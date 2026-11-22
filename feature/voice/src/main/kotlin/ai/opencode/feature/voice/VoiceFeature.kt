@@ -314,8 +314,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val supportServer: OpenCodeServer get() = serverVoiceBroker ?: target.server
 
         // Read where they're used, never stored in the state.
-        val voiceEngine: VoiceEngine get() = shared(VoiceSharedKeys.voiceEngine).value
-        val serverVoiceProvider: ServerVoiceProvider get() = shared(VoiceSharedKeys.serverVoiceProvider).value
+        val voiceModel: String get() = shared(VoiceSharedKeys.voiceModel).value
         val voiceServer: VoiceServerChoice get() = shared(VoiceSharedKeys.voiceServerChoice).value
         val serverVoiceSupportByServer: Map<String, ServerVoiceSupport>
             get() = shared(VoiceSharedKeys.serverVoiceSupportByServer).value
@@ -346,8 +345,6 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val transcriptKey: String? get() = target.sessionID?.let { "${target.server.id}:$it" }
         val isOnDraft: Boolean get() = target.sessionID == null
 
-        val resolvedEngine: VoiceEngine get() = VoiceLabFlags.overrideEngine ?: voiceEngine
-
         val appContextSummary: String
             get() {
                 if (isOnDraft) return "New session draft in project \"$directoryName\"."
@@ -368,6 +365,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 viewing = viewing,
                 userSeesScreen = screenVisibility.userSeesScreen,
                 recordsLooking = usesDelegator,
+                model = ServerVoiceModels.chosen(voiceModelsByServer[supportServer.persistenceID]?.models ?: emptyList(), voiceModel)?.model ?: "",
             )
 
         val isWorking: Boolean

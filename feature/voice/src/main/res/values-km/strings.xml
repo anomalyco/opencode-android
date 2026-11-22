@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">មិនគាំទ្រទម្រង់សំឡេងរបស់ឧបករណ៍នេះទេ។</string>
     <string name="voice_error_audio_engine_rejected">មិនអាចចាប់ផ្ដើមសំឡេងការហៅបានទេ។ សូមព្យាយាមម្តងទៀតបន្តិចទៀត។</string>
     <string name="voice_error_server_unsupported">ម៉ាស៊ីនមេនេះត្រូវការ OpenCode កំណែថ្មីជាងនេះសម្រាប់ការហៅជាសំឡេង</string>
+    <string name="voice_error_no_voice_models">ម៉ាស៊ីនមេរបស់អ្នកគ្មានម៉ូដែលសំឡេងទេ។ ភ្ជាប់វាទៅ OpenCode Console ឬអ្នកផ្តល់សេវាសំឡេង ដើម្បីធ្វើការហៅ។</string>
     <string name="voice_error_invalid_server_url">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ៖ បញ្ចូល URL ម៉ាស៊ីនមេ HTTP ឬ HTTPS ដែលត្រឹមត្រូវ។</string>
     <string name="voice_error_invalid_response">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ៖ ម៉ាស៊ីនមេបានផ្ញើការឆ្លើយតបមិនត្រឹមត្រូវ។</string>
     <string name="voice_error_start_voice_detail">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ៖ %1$s</string>

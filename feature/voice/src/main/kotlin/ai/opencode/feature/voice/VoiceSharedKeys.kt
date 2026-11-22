@@ -8,16 +8,10 @@ import ai.opencode.core.sharing.SharedKey
  * [VoiceEngine] (`LiveProtocol.kt`), [ServerVoiceProvider], [ServerVoiceSupport] and
  * [VoiceServerChoice] (`ServerVoiceClient.kt`), [CallVoice] (`CallVoice.kt`),
  * [VoiceTranscriptRecord] (`VoiceTranscript.kt`). Bool and key-chain voice keys
- * (`voiceModeEnabled`, `voiceEngineMigratedToGPTLive`, …) live in
+ * (`voiceModeEnabled`, …) live in
  * `:core`'s `SharedKeys`.
  */
 object VoiceSharedKeys {
-    /** Voice engine for new calls. Defaults to GPT-Live, including for users upgrading from builds that only had Realtime. */
-    val voiceEngine = SharedKey.appStorage("voice-engine", VoiceEngine.gptLive)
-
-    /** The provider a server brokers calls on (Voice Provider). Defaults to OpenAI. */
-    val serverVoiceProvider = SharedKey.appStorage("server-voice-provider", ServerVoiceProvider.openAI)
-
     /** Whether each connected server (by `persistenceID`) offers `POST /api/experimental/voice/session`. */
     val serverVoiceSupportByServer =
         SharedKey.inMemory<Map<String, ServerVoiceSupport>>("server-voice-support", emptyMap())
@@ -42,11 +36,14 @@ object VoiceSharedKeys {
     )
 
     /**
-     * Each saved server's last voice models answer, by `persistenceID`. Settings › Voice asks;
-     * calls read it to choose automatically.
+     * Each saved server's last voice models answer, by `persistenceID`. Asked on each connect, and
+     * kept until the next answer lands so the call button and the model list draw from it at once.
      */
     val voiceModelsByServer =
-        SharedKey.inMemory<Map<String, ServerVoiceModelsAnswer>>("voice-models-by-server", emptyMap())
+        SharedKey.appStorage<Map<String, ServerVoiceModelsAnswer>>("voice-models-by-server", emptyMap())
+
+    /** The voice model new calls ask for, by id; empty for Automatic, the first usable one the server lists. */
+    val voiceModel = SharedKey.appStorage("voice-model", "")
 
     /**
      * How many times each server (by `persistenceID`) reconnected: an answer asked before the

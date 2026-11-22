@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Sesi işlet</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Ses modeli</string>
+    <string name="settings_voice_model_automatic">Awtomatik</string>
     <string name="settings_voice_call_voice">Ses</string>
     <string name="settings_voice_raise_to_talk">Geplemek üçin galdyr</string>
     <string name="settings_voice_call_sounds">Jaň sesleri</string>

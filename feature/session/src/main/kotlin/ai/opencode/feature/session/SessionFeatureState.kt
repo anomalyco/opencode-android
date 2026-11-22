@@ -334,16 +334,15 @@ val State.voiceRoute: VoiceRoute
     get() {
         val broker = VoiceBroker(
             choice = voiceServer.value,
-            provider = serverVoiceProvider.value,
             connected = server,
             saved = VoiceFeature.savedServers,
             readiness = VoiceReadiness(
                 answers = voiceModelsByServer.value,
                 support = serverVoiceSupportByServer.value,
-                engine = voiceEngine.value,
+                pick = voiceModel.value,
             ),
         )
-        return broker.route(engine = voiceEngine.value, support = broker.support(serverVoiceSupportByServer.value))
+        return broker.route(support = broker.support(serverVoiceSupportByServer.value))
     }
 
 val State.isVoiceAvailable: Boolean get() = voiceLabOverride || (voiceModeEnabled.value && voiceRoute.isAvailable)

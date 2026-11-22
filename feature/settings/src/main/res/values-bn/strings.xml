@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">ভয়েস সক্রিয় করুন</string>
     <string name="settings_voice_model">মডেল</string>
     <string name="settings_voice_model_description">ভয়েস মডেল</string>
+    <string name="settings_voice_model_automatic">স্বয়ংক্রিয়</string>
     <string name="settings_voice_call_voice">কণ্ঠস্বর</string>
     <string name="settings_voice_raise_to_talk">কানে তুলে কথা বলুন</string>
     <string name="settings_voice_call_sounds">কলের শব্দ</string>

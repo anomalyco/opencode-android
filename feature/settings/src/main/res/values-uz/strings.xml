@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Ovozni yoqish</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Ovoz modeli</string>
+    <string name="settings_voice_model_automatic">Avtomatik</string>
     <string name="settings_voice_call_voice">Ovoz</string>
     <string name="settings_voice_raise_to_talk">Quloqqa tutib gaplashish</string>
     <string name="settings_voice_call_sounds">Qo‘ng‘iroq ovozlari</string>

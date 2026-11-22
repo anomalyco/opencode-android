@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">སྐད་ལྕོགས་ཅན་བཟོ།</string>
     <string name="settings_voice_model">དཔེ་ཚད།</string>
     <string name="settings_voice_model_description">སྐད་ཀྱི་དཔེ་ཚད།</string>
+    <string name="settings_voice_model_automatic">རང་བཞིན།</string>
     <string name="settings_voice_call_voice">སྐད།</string>
     <string name="settings_voice_raise_to_talk">ཁ་སླབ་ནི་ལུ་བཏེག</string>
     <string name="settings_voice_call_sounds">བོད་བརྡའི་སྒྲ།</string>

@@ -126,6 +126,10 @@ internal object VoiceFeatureTestSupport {
         /** Builds a value that reads shared keys (a `VoiceFeature.State`) in this world. */
         fun <R> state(block: () -> R): R = DependencyValues.withValues(values, block)
 
+        init {
+            state { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels)) }
+        }
+
         fun store(
             state: VoiceFeature.State,
             dependencies: DependencyValues.Builder.() -> Unit = {},

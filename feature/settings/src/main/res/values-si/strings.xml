@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">හඬ සක්‍රිය කරන්න</string>
     <string name="settings_voice_model">ආකෘතිය</string>
     <string name="settings_voice_model_description">හඬ ආකෘතිය</string>
+    <string name="settings_voice_model_automatic">ස්වයංක්‍රීය</string>
     <string name="settings_voice_call_voice">හඬ</string>
     <string name="settings_voice_raise_to_talk">කතා කිරීමට කනට ළං කරන්න</string>
     <string name="settings_voice_call_sounds">ඇමතුම් ශබ්ද</string>

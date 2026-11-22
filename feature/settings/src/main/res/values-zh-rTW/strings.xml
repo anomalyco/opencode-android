@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">啓用語音</string>
     <string name="settings_voice_model">模型</string>
     <string name="settings_voice_model_description">語音模型</string>
+    <string name="settings_voice_model_automatic">自動</string>
     <string name="settings_voice_call_voice">音色</string>
     <string name="settings_voice_raise_to_talk">舉起通話</string>
     <string name="settings_voice_call_sounds">通話音效</string>

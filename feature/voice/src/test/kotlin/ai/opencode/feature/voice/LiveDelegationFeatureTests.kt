@@ -32,7 +32,7 @@ class LiveDelegationFeatureTests {
     ): TestStore<VoiceFeature.State, VoiceFeature.Action> {
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }, dependencies = dependencies)
         store.exhaustive = false
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
         return store
     }
 
@@ -391,7 +391,7 @@ class LiveDelegationFeatureTests {
     @Test fun aFailedFirstDelegationLeavesTheHeaderForTheNext() = runTest {
         val events = CallEvents()
         val submitted = mutableListOf<String>()
-        val shared = VoiceTestShared()
+        val shared = VoiceTestShared().listVoiceModels(server)
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
             this[VoiceCallClient] = testVoiceCall(start = { _ -> events.flow })
             this[VoiceWorkClient] = testVoiceWork(

@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">음성 기능 사용</string>
     <string name="settings_voice_model">모델</string>
     <string name="settings_voice_model_description">음성 모델</string>
+    <string name="settings_voice_model_automatic">자동</string>
     <string name="settings_voice_call_voice">목소리</string>
     <string name="settings_voice_raise_to_talk">귀에 대고 말하기</string>
     <string name="settings_voice_call_sounds">통화 소리</string>

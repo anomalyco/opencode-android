@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">Cho phép dùng giọng nói</string>
     <string name="settings_voice_model">Mô hình</string>
     <string name="settings_voice_model_description">Mô hình giọng nói</string>
+    <string name="settings_voice_model_automatic">Tự động</string>
     <string name="settings_voice_call_voice">Giọng nói</string>
     <string name="settings_voice_raise_to_talk">Đưa lên tai để nói</string>
     <string name="settings_voice_call_sounds">Âm thanh cuộc gọi</string>

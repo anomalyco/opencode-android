@@ -161,7 +161,6 @@ class VoiceSessionDelegatorServerVoiceTests {
 
         // 1. Server Voice + Built-in -> `delegation: {type: "responses", ...}`, `unboundSpeechUsesInstructions: false`, handled by `VoiceDelegator.runOnCall`.
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
-        shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.openAI)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
         shared.set(VoiceSharedKeys.voiceDelegatorChoice, VoiceDelegatorChoice.BuiltIn)
 
@@ -258,11 +257,10 @@ class VoiceSessionDelegatorServerVoiceTests {
         val at = 9_500L
         val now = Instant.ofEpochSecond(at)
 
-        shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.openAI)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
         shared.set(
             VoiceSharedKeys.voiceModelsByServer,
-            mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true)))),
+            mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))),
         )
         shared.set(VoiceSharedKeys.voiceDelegatorChoice, VoiceDelegatorChoice.AutomaticSession)
 
@@ -368,6 +366,7 @@ class VoiceSessionDelegatorServerVoiceTests {
             viewing = null,
         )
         val realtimeConfig = route.sessionConfig(
+            model = "gpt-live-1",
             voice = CallVoice.marin,
             context = context,
             isAtEar = false,

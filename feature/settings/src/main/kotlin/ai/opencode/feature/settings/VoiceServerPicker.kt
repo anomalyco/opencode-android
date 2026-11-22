@@ -2,12 +2,12 @@ package ai.opencode.feature.settings
 
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.cancellable
-import ai.opencode.feature.voice.ServerVoiceModels
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.VoiceBroker
 import ai.opencode.feature.voice.VoiceKeySource
 import ai.opencode.feature.voice.VoiceModelsCache
 import ai.opencode.feature.voice.VoiceProviderCatalog
+import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.server.OpenCodeServer
@@ -23,13 +23,12 @@ val VoiceSettingsFeature.State.readiness: VoiceReadiness
     get() = VoiceReadiness(
         answers = voiceModelsByServer,
         support = serverVoiceSupportByServer,
-        engine = voiceEngine,
+        pick = voiceModel,
     )
 
 val VoiceSettingsFeature.State.broker: VoiceBroker
     get() = VoiceBroker(
         choice = voiceServer,
-        provider = serverVoiceProvider,
         connected = connectedServer,
         saved = savedServers + listOfNotNull(savedServer),
         readiness = readiness,
@@ -46,7 +45,6 @@ val VoiceSettingsFeature.State.otherSavedServers: List<OpenCodeServer>
 val VoiceSettingsFeature.State.providerCatalog: VoiceProviderCatalog
     get() = VoiceProviderCatalog(
         choice = voiceServer,
-        provider = serverVoiceProvider,
         connected = connectedServer,
         others = otherSavedServers,
         readiness = readiness,
@@ -59,11 +57,8 @@ val VoiceSettingsFeature.State.providerCatalog: VoiceProviderCatalog
 val VoiceSettingsFeature.State.keySource: VoiceKeySource
     get() {
         val route = route
-        if (route is VoiceRoute.Unavailable) return VoiceKeySource.Server(providerName = serverVoiceProvider.title)
         val brokerServer = broker.server
-        if (route is VoiceRoute.Server && brokerServer != null &&
-            ServerVoiceModels.hostedByOpenCode(route.server, voiceModelsByServer[brokerServer.persistenceID]?.models.orEmpty())
-        ) {
+        if (route is VoiceRoute.Server && brokerServer != null && readiness.brand(brokerServer) == VoiceProviderOption.Brand.openCode) {
             return VoiceKeySource.OpenCode
         }
         return route.keySource

@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">ไม่รองรับรูปแบบเสียงของฮาร์ดแวร์</string>
     <string name="voice_error_audio_engine_rejected">เริ่มเสียงการโทรไม่ได้ ลองอีกครั้งในอีกสักครู่</string>
     <string name="voice_error_server_unsupported">เซิร์ฟเวอร์นี้ต้องใช้ OpenCode เวอร์ชันใหม่กว่านี้เพื่อโทรด้วยเสียง</string>
+    <string name="voice_error_no_voice_models">เซิร์ฟเวอร์ของคุณไม่มีโมเดลเสียง เชื่อมต่อกับ OpenCode Console หรือผู้ให้บริการเสียงเพื่อให้โทรได้</string>
     <string name="voice_error_invalid_server_url">เริ่มใช้เสียงไม่ได้: ป้อน URL เซิร์ฟเวอร์แบบ HTTP หรือ HTTPS ที่ถูกต้อง</string>
     <string name="voice_error_invalid_response">เริ่มใช้เสียงไม่ได้: เซิร์ฟเวอร์ส่งคำตอบที่ไม่ถูกต้องกลับมา</string>
     <string name="voice_error_start_voice_detail">เริ่มใช้เสียงไม่ได้: %1$s</string>

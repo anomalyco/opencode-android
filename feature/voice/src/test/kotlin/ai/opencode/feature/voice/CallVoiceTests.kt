@@ -66,18 +66,18 @@ class CallVoiceTests {
     }
 
     @Test fun startConfigsCarryTheVoice() {
-        val live = LiveSessionConfig(voice = CallVoice.quartz, instructions = "Be concise.")
+        val live = LiveSessionConfig(model = "gpt-live-1", voice = CallVoice.quartz, instructions = "Be concise.")
         val start = Json.parseToJsonElement(LiveCommand.SessionStart(live).encoded().decodeToString())
         assertEquals(JsonPrimitive("quartz"), start["session"]?.get("audio")?.get("output")?.get("voice"))
         assertEquals(JsonPrimitive("quartz"), live.sessionPayload(includeAudioFormat = false)["audio"]?.get("output")?.get("voice"))
 
-        val realtime = RealtimeSessionConfig(voice = CallVoice.cedar, instructions = "Be brief.", tools = emptyList())
+        val realtime = RealtimeSessionConfig(model = "gpt-realtime-2.1", voice = CallVoice.cedar, instructions = "Be brief.", tools = emptyList())
         assertEquals(JsonPrimitive("cedar"), realtime.sessionUpdate["session"]?.get("audio")?.get("output")?.get("voice"))
         assertEquals(JsonPrimitive("cedar"), realtime.sessionUpdate(includeAudioFormat = false)["session"]?.get("audio")?.get("output")?.get("voice"))
         assertEquals("GPT-Live's start is built from the same config", CallVoice.cedar, realtime.liveSessionConfig().voice)
 
-        assertEquals(CallVoice.marin, LiveSessionConfig(instructions = "").voice)
-        assertEquals(CallVoice.marin, RealtimeSessionConfig(instructions = "", tools = emptyList()).voice)
+        assertEquals(CallVoice.marin, LiveSessionConfig(model = "gpt-live-1", instructions = "").voice)
+        assertEquals(CallVoice.marin, RealtimeSessionConfig(model = "gpt-realtime-2.1", instructions = "", tools = emptyList()).voice)
     }
 
     @Test fun callsStartWithTheChosenVoiceForTheirEngine() = runTest {
@@ -94,12 +94,13 @@ class CallVoiceTests {
             })
         }
         store.exhaustive = false
-        val voiceEngine = store.withDependencies { shared(VoiceSharedKeys.voiceEngine) }
+        store.withDependencies { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels)) }
+        val voiceModel = store.withDependencies { shared(VoiceSharedKeys.voiceModel) }
         val callVoice = store.withDependencies { shared(VoiceSharedKeys.callVoice) }
         val callEnded = { action: VoiceFeature.Action -> action is VoiceFeature.Action.CallEnded }
 
         // GPT-Live speaks with its own regional voice.
-        voiceEngine.set(VoiceEngine.gptLive)
+        voiceModel.set("gpt-live-1")
         callVoice.set(CallVoice.quartz)
         store.send(VoiceFeature.Action.Start)
         store.receive(callEnded, timeout = 1.seconds)
@@ -109,7 +110,7 @@ class CallVoiceTests {
         assertEquals(CallVoice.quartz, store.state.activeVoice)
 
         // Realtime doesn't offer it: the call uses the default, and the choice stays saved.
-        voiceEngine.set(VoiceEngine.realtime)
+        voiceModel.set("gpt-realtime-2.1")
         store.send(VoiceFeature.Action.Start)
         store.receive(callEnded, timeout = 1.seconds)
         assertEquals(VoiceEngine.realtime, started.value.lastOrNull()?.engine)
@@ -123,7 +124,7 @@ class CallVoiceTests {
         assertEquals(CallVoice.cedar, started.value.lastOrNull()?.voice)
         assertEquals(JsonPrimitive("cedar"), started.value.lastOrNull()?.sessionUpdate?.get("session")?.get("audio")?.get("output")?.get("voice"))
 
-        voiceEngine.set(VoiceEngine.gptLive)
+        voiceModel.set("")
         callVoice.set(CallVoice.default)
         store.skipReceivedActions()
     }
@@ -131,7 +132,7 @@ class CallVoiceTests {
     @Test fun theCallLogNamesTheVoice() = runTest {
         val shared = SpeechTestShared()
         shared.run {
-            shared(VoiceSharedKeys.voiceEngine).set(VoiceEngine.gptLive)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels))
             shared(VoiceSharedKeys.callVoice).set(CallVoice.cedar)
         }
         val directory = Files.createTempDirectory("call-voice-").toFile()

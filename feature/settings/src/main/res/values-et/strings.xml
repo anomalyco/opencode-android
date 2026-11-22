@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Luba hääl</string>
     <string name="settings_voice_model">Mudel</string>
     <string name="settings_voice_model_description">Häälemudel</string>
+    <string name="settings_voice_model_automatic">Automaatne</string>
     <string name="settings_voice_call_voice">Hääl</string>
     <string name="settings_voice_raise_to_talk">Tõsta rääkimiseks</string>
     <string name="settings_voice_call_sounds">Kõnehelid</string>

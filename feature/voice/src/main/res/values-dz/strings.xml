@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">སྒྲའི་སྲ་ཆས་ཀྱི་རྣམ་གཞག་ལུ་རྒྱབ་སྐྱོར་མེད།</string>
     <string name="voice_error_audio_engine_rejected">བོད་བརྡའི་སྒྲ་འགོ་བཙུགས་མ་ཚུགས། དུམ་གྲ་ཅིག་ལས་ལོག་ཚོད་ལྟ་འབད།</string>
     <string name="voice_error_server_unsupported">སར་བར་འདི་ལུ་ སྐད་ཀྱི་བོད་བརྡའི་དོན་ལུ་ OpenCode གསརཔ་ཅིག་དགོཔ་ཨིན།</string>
+    <string name="voice_error_no_voice_models">ཁྱོད་ཀྱི་སར་བར་ནང་སྐད་ཀྱི་དཔེ་ཚད་མེད། བོད་བརྡ་གཏང་ནིའི་དོན་ལུ་ འདི་ OpenCode Console ཡང་ན་སྐད་བྱིན་མི་ཅིག་ལུ་མཐུད།</string>
     <string name="voice_error_invalid_server_url">སྐད་འགོ་བཙུགས་མ་ཚུགས། ནུས་ཅན་གྱི་ HTTP ཡང་ན་ HTTPS སར་བར་ URL བཙུགས།</string>
     <string name="voice_error_invalid_response">སྐད་འགོ་བཙུགས་མ་ཚུགས། སར་བར་གྱིས་ལན་གསལ་ནུས་མེད་ཅིག་བཏང་ཡོདཔ།</string>
     <string name="voice_error_start_voice_detail">སྐད་འགོ་བཙུགས་མ་ཚུགས། %1$s</string>

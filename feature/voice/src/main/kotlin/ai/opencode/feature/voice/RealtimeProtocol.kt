@@ -73,7 +73,7 @@ internal fun instantOfEpochSeconds(seconds: Double): Instant = Instant.ofEpochMi
 
 data class RealtimeSessionConfig(
     val engine: VoiceEngine? = VoiceEngine.realtime,
-    val model: String = defaultModel,
+    val model: String,
     val voice: CallVoice = CallVoice.default,
     val instructions: String,
     val tools: List<RealtimeFunctionTool>,
@@ -103,7 +103,7 @@ data class RealtimeSessionConfig(
     val unboundSpeechUsesInstructions: Boolean = false,
 ) {
     fun liveSessionConfig(input: List<LiveInputMessage> = emptyList()): LiveSessionConfig = LiveSessionConfig(
-        model = if (model == defaultModel) LiveSessionConfig.defaultModel else model,
+        model = model,
         voice = voice,
         instructions = instructions,
         input = input,
@@ -157,8 +157,6 @@ data class RealtimeSessionConfig(
     }
 
     companion object {
-        const val defaultModel = "gpt-realtime-2.1"
-
         private fun toolJSON(tool: RealtimeFunctionTool): RealtimeJSON = RealtimeJSONs.obj(
             "type" to RealtimeJSONs.string("function"),
             "name" to RealtimeJSONs.string(tool.name),

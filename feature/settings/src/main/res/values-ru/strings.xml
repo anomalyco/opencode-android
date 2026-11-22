@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Включить голосовой режим</string>
     <string name="settings_voice_model">Модель</string>
     <string name="settings_voice_model_description">Голосовая модель</string>
+    <string name="settings_voice_model_automatic">Автоматически</string>
     <string name="settings_voice_call_voice">Голос</string>
     <string name="settings_voice_raise_to_talk">Поднести к уху для разговора</string>
     <string name="settings_voice_call_sounds">Звуки звонков</string>

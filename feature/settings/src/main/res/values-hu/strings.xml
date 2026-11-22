@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Hang engedélyezése</string>
     <string name="settings_voice_model">Modell</string>
     <string name="settings_voice_model_description">Hangmodell</string>
+    <string name="settings_voice_model_automatic">Automatikus</string>
     <string name="settings_voice_call_voice">Hang</string>
     <string name="settings_voice_raise_to_talk">Beszéd felemeléskor</string>
     <string name="settings_voice_call_sounds">Híváshangok</string>

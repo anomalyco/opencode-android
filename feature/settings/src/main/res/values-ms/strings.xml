@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">Dayakan suara</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Model suara</string>
+    <string name="settings_voice_model_automatic">Automatik</string>
     <string name="settings_voice_call_voice">Suara</string>
     <string name="settings_voice_raise_to_talk">Angkat untuk bercakap</string>
     <string name="settings_voice_call_sounds">Bunyi panggilan</string>

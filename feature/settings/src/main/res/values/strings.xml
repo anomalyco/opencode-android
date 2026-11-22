@@ -136,6 +136,7 @@
     <string name="settings_voice_enable">Enable Voice</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Voice Model</string>
+    <string name="settings_voice_model_automatic">Automatic</string>
     <string name="settings_voice_call_voice">Voice</string>
     <string name="settings_voice_raise_to_talk">Raise to Talk</string>
     <string name="settings_voice_call_sounds">Call Sounds</string>

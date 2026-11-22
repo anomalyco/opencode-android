@@ -13,6 +13,7 @@ import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.voice.VoiceFeature
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeHomeSnapshot
@@ -51,6 +52,7 @@ class DrawerCallTests {
 
     private fun voiceSetUp(on: Boolean) = context.read {
         shared(SharedKeys.voiceModeEnabled).set(on)
+        shared(VoiceSharedKeys.voiceModelsByServer).set(VoiceHomeTestSupport.voiceModels(server))
     }
 
     private fun home(

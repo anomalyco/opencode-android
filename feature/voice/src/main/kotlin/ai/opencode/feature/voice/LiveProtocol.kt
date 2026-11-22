@@ -23,26 +23,13 @@ enum class VoiceEngine(val rawValue: String) {
             realtime -> "Realtime"
         }
 
-    val modelID: String
-        get() = when (this) {
-            gptLive -> LiveSessionConfig.defaultModel
-            realtime -> RealtimeSessionConfig.defaultModel
-        }
-
     val provider: VoiceProvider get() = VoiceProvider.openAI
 
-    /**
-     * How the voice model names itself when asked (Realtime; GPT-Live's
-     * instructions have their own).
-     */
-    val selfDescription: String
-        get() = when (this) {
-            gptLive -> "GPT-Live ($modelID)"
-            realtime -> "the Realtime model ($modelID)"
-        }
-
-    /** Provider and model shown on the Settings › Voice Model row. */
-    val providerModelTitle: String get() = "${provider.displayName} · $title"
+    /** How the voice model names itself when asked, with the model the call asked for. */
+    fun selfDescription(model: String): String = when (this) {
+        gptLive -> "GPT-Live ($model)"
+        realtime -> "the Realtime model ($model)"
+    }
 
     companion object {
         val allCases: List<VoiceEngine> get() = entries
@@ -140,7 +127,7 @@ data class LiveResponsesDelegation(
 
 /** OpenAI GPT-Live session startup configuration (`wss://api.openai.com/v1/live/sessions`). */
 data class LiveSessionConfig(
-    val model: String = defaultModel,
+    val model: String,
     val voice: CallVoice = CallVoice.default,
     val instructions: String,
     val input: List<LiveInputMessage> = emptyList(),
@@ -182,10 +169,6 @@ data class LiveSessionConfig(
             session["input"] = RealtimeJSONs.array(input.take(128).map { it.json })
         }
         return RealtimeJSONs.obj(session)
-    }
-
-    companion object {
-        const val defaultModel = "gpt-live-1"
     }
 }
 

@@ -19,6 +19,8 @@ import ai.opencode.feature.voice.LiveDelegation
 import ai.opencode.feature.voice.LiveInputMessage
 import ai.opencode.feature.voice.LiveServerEvent
 import ai.opencode.feature.voice.LiveSessionConfig
+import ai.opencode.feature.voice.ServerVoiceModel
+import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.VoiceAudioClient
 import ai.opencode.feature.voice.VoiceAudioEvent
 import ai.opencode.feature.voice.VoiceAudioSession
@@ -26,7 +28,6 @@ import ai.opencode.feature.voice.VoiceCallClient
 import ai.opencode.feature.voice.VoiceCallDiagnostics
 import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceCallTiming
-import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.feature.voice.VoiceWorkAdmission
@@ -134,7 +135,7 @@ class LiveDelegationFeatureTestsSession {
                     stop = { },
                 )
             })
-            return coordinator.start(config = LiveSessionConfig(instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
+            return coordinator.start(config = LiveSessionConfig(model = "gpt-live-1", instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
         }
     }
 
@@ -144,7 +145,8 @@ class LiveDelegationFeatureTestsSession {
     fun aDelegationKeepsRunningAcrossASessionSwitchAndAReconnect() = homeTest { h ->
         val other = OpenCodeSession(id = "ses_other", serverTitle = "Other session", projectID = "p", directory = "/Users/kit/project", updatedAt = HomeFeatureTestSupport.distantPast)
         val project = OpenCodeProject(id = "p", name = "project", directory = "/Users/kit/project")
-        h.setShared(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
+        val gptLive = ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live")
+        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = listOf(project), sessions = listOf(session, other), activeSessionIDs = emptySet()))
             home = home.openingDetail(session)

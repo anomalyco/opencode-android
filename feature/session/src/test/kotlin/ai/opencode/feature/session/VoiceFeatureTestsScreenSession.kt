@@ -30,6 +30,7 @@ import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.feature.voice.VoiceWorkAdmission
 import ai.opencode.feature.voice.VoiceWorkClient
 import ai.opencode.feature.voice.VoiceWorkTarget
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
@@ -293,6 +294,7 @@ class VoiceFeatureTestsScreenSession {
     }
 
     @Test fun aCallOnADraftCreatesAnEmptySessionAndMovesOntoIt() = sessionTest { h ->
+        h.sharedStore.reference(VoiceSharedKeys.voiceModelsByServer).set(SessionTestSupport.voiceModels(server))
         val project = OpenCodeProject(id = "p", name = "project", directory = "/project")
         val creates = LockIsolated(listOf<Pair<String, String?>>())
         val created = CompletableDeferred<Unit>()

@@ -35,19 +35,17 @@ fun VoiceFeature.State.setActiveRoute(
 internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFeature.State, VoiceFeature.Action> {
     var next = state
     val target = next.target
-    val selectedEngine = next.resolvedEngine
     if (next.voiceServer == VoiceServerChoice.Connected) {
         shared(VoiceSharedKeys.voiceServerChoice).update { it.pinningConnected(target.server) }
     }
     val saved = VoiceFeature.savedServers
     val (broker, readiness) = VoiceBroker.resolve(
         choice = next.voiceServer,
-        provider = next.serverVoiceProvider,
         connected = target.server,
         saved = saved,
         answers = next.voiceModelsByServer,
         support = next.serverVoiceSupportByServer,
-        engine = selectedEngine,
+        pick = next.voiceModel,
     )
     val serverVoiceEnabled = broker.isEnabled
     // Only the broker moves; the call's session, context and tools stay on its own server.
@@ -63,7 +61,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     val previousCached = next.serverVoiceSupportByServer[brokerServer.persistenceID]
     val initialSupport = if (previousSupport != ServerVoiceSupport.unknown) previousSupport else previousCached ?: ServerVoiceSupport.unknown
     val resolve: (VoiceBroker, ServerVoiceSupport) -> VoiceRoute = { routeBroker, support ->
-        routeBroker.route(selectedEngine, support)
+        routeBroker.route(support)
     }
 
     /** Automatic, once `server` turns out to have no voice routes: the next provider that can place the call. A pick never moves. */
@@ -78,7 +76,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     }
     val place: (VoiceBroker) -> VoiceCallPlace? = place@{ placeBroker ->
         val server = placeBroker.server ?: return@place null
-        VoiceCallPlace(name = server.friendlyName, brand = readiness.brand(server, placeBroker.provider))
+        VoiceCallPlace(name = server.friendlyName, brand = readiness.brand(server))
     }
     val route = resolve(broker, initialSupport)
     next = next.copy(diagnosesFailure = true, callPlace = null)
@@ -131,7 +129,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         usesDelegator = usesBuiltInDelegatorForRoute(route),
         usesSessionDelegator = usesSessionDelegatorForRoute(route),
     ).copy(callPlace = if (route.isServer) place(broker) else null)
-    val voice = next.callVoice.resolved(selectedEngine)
+    val voice = next.callVoice.resolved(route.engine ?: VoiceEngine.gptLive)
     // On Server Voice with Built-in, OpenAI runs the delegator on the server's
     // key (Responses delegation); with OpenCode Session, the phone runs client
     // delegation.
@@ -141,11 +139,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         callPresenceID = uuid.next(),
     )
     val initialContext = next.instructionsContext
-    val responsesDelegation: LiveDelegation? = if (selectedEngine == VoiceEngine.gptLive) {
-        LiveDelegation.responses(VoiceDelegator.responsesDelegation(context = delegatorContext(next, otherRequests = 0)))
-    } else {
-        null
-    }
+    val responsesDelegation = LiveDelegation.responses(VoiceDelegator.responsesDelegation(context = delegatorContext(next, otherRequests = 0)))
     next.atEarBox.current = next.isAtEar
     val atEarBox = next.atEarBox
     val startsAtEar = next.isAtEar
@@ -213,13 +207,10 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
 
             suspend fun startOnServer(route: VoiceRoute, server: OpenCodeServer): Flow<VoiceCallEvent> {
                 val useSession = usesSessionDelegatorForRoute(route)
-                val delegation = if (!useSession && usesBuiltInDelegatorForRoute(route)) {
-                    responsesDelegation ?: LiveDelegation.client
-                } else {
-                    LiveDelegation.client
-                }
+                val delegation = if (!useSession && usesBuiltInDelegatorForRoute(route)) responsesDelegation else LiveDelegation.client
+                val model = readiness.chosen(server)?.model ?: throw IllegalStateException(VoiceRoute.Reason.NoVoiceModels.message)
                 val config = route.sessionConfig(
-                    voice = voice, context = context, isAtEar = atEarBox.current,
+                    model = model, voice = voice, context = context, isAtEar = atEarBox.current,
                     server = server, delegation = delegation,
                     unboundSpeechUsesInstructions = useSession,
                 )
@@ -229,12 +220,9 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     throw error
                 } catch (error: Exception) {
                     currentCoroutineContext().ensureActive()
-                    val hostedByOpenCode = readiness.brand(server, route.provider) ==
-                        VoiceProviderOption.Brand.openCode
-                    val fallbackDelegation = responsesDelegation
+                    val hostedByOpenCode = readiness.brand(server) == VoiceProviderOption.Brand.openCode
                     if (!useSession ||
                         route != VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.gptLive) ||
-                        fallbackDelegation == null ||
                         !VoiceFeature.shouldFallBackFromClientDelegation(error, hostedByOpenCode)
                     ) {
                         throw error
@@ -250,8 +238,8 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     )
                     context = context.copy(managesSessions = true, recordsLooking = true)
                     val fallbackConfig = route.sessionConfig(
-                        voice = voice, context = context, isAtEar = atEarBox.current,
-                        server = server, delegation = fallbackDelegation,
+                        model = model, voice = voice, context = context, isAtEar = atEarBox.current,
+                        server = server, delegation = responsesDelegation,
                         unboundSpeechUsesInstructions = false,
                     )
                     return voiceCall.start(fallbackConfig)
@@ -270,7 +258,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                             } catch (error: CancellationException) {
                                 throw error
                             } catch (error: Exception) {
-                                if (chosen.provider != ServerVoiceProvider.openAI || !broker.isAutomatic ||
+                                if (!broker.isAutomatic ||
                                     (error.localizedMessage ?: error.message) != ServerVoiceError.unsupportedServerNotice
                                 ) {
                                     throw error

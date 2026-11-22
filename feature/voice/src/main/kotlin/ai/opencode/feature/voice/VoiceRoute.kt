@@ -23,9 +23,13 @@ sealed interface VoiceRoute {
     sealed interface Reason {
         data object ServerUnsupported : Reason
 
+        /** The server lists voice models, but none it's signed in to that the app can speak. */
+        data object NoVoiceModels : Reason
+
         val message: String
             get() = when (this) {
                 ServerUnsupported -> ServerVoiceError.unsupportedServerNotice
+                NoVoiceModels -> localized(R.string.voice_error_no_voice_models)
             }
     }
 
@@ -48,7 +52,7 @@ sealed interface VoiceRoute {
 
     val logEngine: String get() = engine?.rawValue ?: if (this == serverGeminiLive) "gemini-live" else "unavailable"
     val provider: ServerVoiceProvider get() = if (this == serverGeminiLive) ServerVoiceProvider.geminiLive else ServerVoiceProvider.openAI
-    val modelID: String get() = engine?.modelID ?: GeminiLiveSessionConfig.defaultModel
+    val title: String get() = engine?.title ?: "Gemini Live"
 
     val keySource: VoiceKeySource
         get() = when (this) {
@@ -56,12 +60,11 @@ sealed interface VoiceRoute {
                 is ServerRoute.OpenAI -> VoiceKeySource.Server(providerName = "OpenAI")
                 ServerRoute.GeminiLive -> VoiceKeySource.Server(providerName = "Gemini Live")
             }
-            is Unavailable -> when (reason) {
-                Reason.ServerUnsupported -> VoiceKeySource.Server(providerName = "Gemini Live")
-            }
+            is Unavailable -> VoiceKeySource.Server(providerName = "Gemini Live")
         }
 
     fun sessionConfig(
+        model: String,
         voice: CallVoice,
         context: VoiceInstructions.Context,
         isAtEar: Boolean,
@@ -70,9 +73,9 @@ sealed interface VoiceRoute {
         unboundSpeechUsesInstructions: Boolean = false,
     ): RealtimeSessionConfig = RealtimeSessionConfig(
         engine = engine,
-        model = modelID,
+        model = model,
         voice = voice,
-        instructions = VoiceInstructions.build(context, route = this),
+        instructions = VoiceInstructions.build(context.copy(model = model), route = this),
         tools = if (engine == VoiceEngine.gptLive) emptyList() else VoiceInstructions.tools,
         isAtEar = isAtEar,
         serverVoice = if (isServer) server else null,
@@ -86,19 +89,16 @@ sealed interface VoiceRoute {
 
         val serverGeminiLive: VoiceRoute = Server(ServerRoute.GeminiLive)
 
+        /** The call `model` starts, or why there's none: `missing` when the server lists nothing usable. */
         fun resolve(
-            selectedEngine: VoiceEngine,
+            model: ServerVoiceModel?,
             serverVoiceEnabled: Boolean,
-            serverVoiceProvider: ServerVoiceProvider,
             serverVoiceSupport: ServerVoiceSupport,
+            missing: Reason = Reason.NoVoiceModels,
         ): VoiceRoute {
-            if (serverVoiceEnabled && serverVoiceProvider == ServerVoiceProvider.geminiLive) {
-                return if (serverVoiceSupport == ServerVoiceSupport.unsupported) Unavailable(Reason.ServerUnsupported) else serverGeminiLive
-            }
-            if (serverVoiceEnabled && serverVoiceSupport != ServerVoiceSupport.unsupported) {
-                return serverOpenAI(if (selectedEngine == VoiceEngine.gptLive) OpenAI.gptLive else OpenAI.realtime)
-            }
-            return Unavailable(Reason.ServerUnsupported)
+            if (!serverVoiceEnabled || serverVoiceSupport == ServerVoiceSupport.unsupported) return Unavailable(Reason.ServerUnsupported)
+            val route = model?.let { ServerVoiceModels.brokered(it) } ?: return Unavailable(missing)
+            return Server(route)
         }
     }
 }
@@ -133,10 +133,9 @@ sealed interface VoiceKeySource {
  */
 class VoiceBroker(
     choice: VoiceServerChoice,
-    provider: ServerVoiceProvider = ServerVoiceProvider.openAI,
     connected: OpenCodeServer?,
     saved: List<OpenCodeServer>,
-    readiness: VoiceReadiness = VoiceReadiness(),
+    private val readiness: VoiceReadiness = VoiceReadiness(),
 ) {
     /** A server brokers new calls: the pick, or Automatic's choice, is a server. */
     val isEnabled: Boolean
@@ -147,30 +146,25 @@ class VoiceBroker(
     /** Chosen automatically: a server without the voice routes moves on to the next ready one. A pick never does. */
     val isAutomatic: Boolean
 
-    /** The provider the broker runs: the picked one, OpenAI automatically. */
-    val provider: ServerVoiceProvider
-
     init {
-        val pick = VoicePick.resolve(choice, provider, connected, saved, readiness)
+        val pick = VoicePick.resolve(choice, connected, saved, readiness)
         server = pick.server
         isEnabled = server != null
         isAutomatic = pick.isAutomatic
-        this.provider = pick.provider
     }
 
     companion object {
         /** The broker and the readiness it was resolved with. */
         fun resolve(
             choice: VoiceServerChoice,
-            provider: ServerVoiceProvider = ServerVoiceProvider.openAI,
             connected: OpenCodeServer?,
             saved: List<OpenCodeServer>,
             answers: Map<String, ServerVoiceModelsAnswer>,
             support: Map<String, ServerVoiceSupport>,
-            engine: VoiceEngine,
+            pick: String,
         ): Pair<VoiceBroker, VoiceReadiness> {
-            val readiness = VoiceReadiness(answers = answers, support = support, engine = engine)
-            val broker = VoiceBroker(choice, provider, connected, saved, readiness)
+            val readiness = VoiceReadiness(answers = answers, support = support, pick = pick)
+            val broker = VoiceBroker(choice, connected, saved, readiness)
             return broker to readiness
         }
     }
@@ -179,19 +173,24 @@ class VoiceBroker(
     fun support(supportByServer: Map<String, ServerVoiceSupport>): ServerVoiceSupport =
         server?.let { supportByServer[it.persistenceID] } ?: ServerVoiceSupport.unknown
 
-    /** The route a new call on `engine` takes through this broker. */
-    fun route(engine: VoiceEngine, support: ServerVoiceSupport): VoiceRoute =
-        VoiceRoute.resolve(
-            selectedEngine = engine,
+    /** The route a new call takes through this broker: the model it picks there. */
+    fun route(support: ServerVoiceSupport): VoiceRoute {
+        val server = server
+        return VoiceRoute.resolve(
+            model = server?.let { readiness.chosen(it) },
             serverVoiceEnabled = isEnabled,
-            serverVoiceProvider = provider,
             serverVoiceSupport = support,
+            missing = if (server != null && readiness.state(server) == VoiceProviderState.needsUpdate) {
+                VoiceRoute.Reason.ServerUnsupported
+            } else {
+                VoiceRoute.Reason.NoVoiceModels
+            },
         )
+    }
 
     override fun equals(other: Any?): Boolean =
-        other is VoiceBroker && other.isEnabled == isEnabled && other.server == server &&
-            other.isAutomatic == isAutomatic && other.provider == provider
-    override fun hashCode(): Int = listOf(isEnabled, server, isAutomatic, provider).hashCode()
+        other is VoiceBroker && other.isEnabled == isEnabled && other.server == server && other.isAutomatic == isAutomatic
+    override fun hashCode(): Int = listOf(isEnabled, server, isAutomatic).hashCode()
     override fun toString(): String =
-        "VoiceBroker(isEnabled=$isEnabled, server=${server?.persistenceID?.let { "set" }}, isAutomatic=$isAutomatic, provider=$provider)"
+        "VoiceBroker(isEnabled=$isEnabled, server=${server?.persistenceID?.let { "set" }}, isAutomatic=$isAutomatic)"
 }

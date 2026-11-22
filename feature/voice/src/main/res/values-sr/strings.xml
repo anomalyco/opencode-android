@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">Аудио формат уређаја није подржан.</string>
     <string name="voice_error_audio_engine_rejected">Покретање звука позива није успело. Покушајте поново за тренутак.</string>
     <string name="voice_error_server_unsupported">За гласовне позиве на овом серверу потребан је новији OpenCode</string>
+    <string name="voice_error_no_voice_models">Ваш сервер нема гласовне моделе. Повежите га са OpenCode Console или добављачем гласа да бисте обављали позиве.</string>
     <string name="voice_error_invalid_server_url">Покретање гласа није успело: унесите важећи HTTP или HTTPS URL сервера.</string>
     <string name="voice_error_invalid_response">Покретање гласа није успело: сервер је вратио неважећи одговор.</string>
     <string name="voice_error_start_voice_detail">Покретање гласа није успело: %1$s</string>

@@ -105,7 +105,7 @@ fun FloatingCallStageContent(
 ) {
     val currentLayout by rememberUpdatedState(layout)
     val detailsHidden by remember { derivedStateOf { currentLayout().fullness < 0.5f } }
-    val details by store.observe { "${it.resolvedEngine.title} · ${it.directoryName}" }
+    val details by store.observe { "${it.activeRoute.title} · ${it.directoryName}" }
     Layout(
         content = {
             // It drags: up to the sheet, down to the orb.

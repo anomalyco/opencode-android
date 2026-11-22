@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">เปิดใช้งานเสียง</string>
     <string name="settings_voice_model">โมเดล</string>
     <string name="settings_voice_model_description">โมเดลเสียง</string>
+    <string name="settings_voice_model_automatic">อัตโนมัติ</string>
     <string name="settings_voice_call_voice">เสียง</string>
     <string name="settings_voice_raise_to_talk">ยกขึ้นเพื่อพูด</string>
     <string name="settings_voice_call_sounds">เสียงการโทร</string>

@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">Memungkinkan suara</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Model suara</string>
+    <string name="settings_voice_model_automatic">Otomatis</string>
     <string name="settings_voice_call_voice">Suara</string>
     <string name="settings_voice_raise_to_talk">Angkat untuk bicara</string>
     <string name="settings_voice_call_sounds">Suara panggilan</string>

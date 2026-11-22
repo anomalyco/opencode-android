@@ -2,7 +2,9 @@ package ai.opencode.feature.voice
 
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.sharing.SharedStore
+import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
+import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -46,6 +48,11 @@ class SpeechTestShared {
 
     fun <R> run(block: () -> R): R =
         DependencyValues.withValues(DependencyValues.testing().update { this[SharedStore] = store }, block)
+
+    /** Each of `servers` lists [testVoiceModels]. */
+    fun listVoiceModels(vararg servers: OpenCodeServer): SpeechTestShared = apply {
+        run { shared(VoiceSharedKeys.voiceModelsByServer).set(servers.associate { it.persistenceID to testVoiceModels }) }
+    }
 }
 
 class Locked<T>(initial: T) {

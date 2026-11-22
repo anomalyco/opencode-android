@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">Аудиоформатът на устройството не се поддържа.</string>
     <string name="voice_error_audio_engine_rejected">Неуспешно стартиране на аудиото за обаждането. Опитайте отново след малко.</string>
     <string name="voice_error_server_unsupported">Този сървър се нуждае от по-нова версия на OpenCode за гласови обаждания</string>
+    <string name="voice_error_no_voice_models">Вашият сървър няма гласови модели. Свържете го с OpenCode Console или доставчик на глас, за да провеждате обаждания.</string>
     <string name="voice_error_invalid_server_url">Неуспешно стартиране на гласа: въведете валиден HTTP или HTTPS URL на сървъра.</string>
     <string name="voice_error_invalid_response">Неуспешно стартиране на гласа: сървърът върна невалиден отговор.</string>
     <string name="voice_error_start_voice_detail">Неуспешно стартиране на гласа: %1$s</string>

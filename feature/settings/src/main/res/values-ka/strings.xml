@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">ხმის ჩართვა</string>
     <string name="settings_voice_model">მოდელი</string>
     <string name="settings_voice_model_description">ხმის მოდელი</string>
+    <string name="settings_voice_model_automatic">ავტომატური</string>
     <string name="settings_voice_call_voice">ხმა</string>
     <string name="settings_voice_raise_to_talk">ყურთან მიტანით საუბარი</string>
     <string name="settings_voice_call_sounds">ზარის ხმები</string>

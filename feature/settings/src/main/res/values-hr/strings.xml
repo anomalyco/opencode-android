@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Omogući glas</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Glasovni model</string>
+    <string name="settings_voice_model_automatic">Automatski</string>
     <string name="settings_voice_call_voice">Glas</string>
     <string name="settings_voice_raise_to_talk">Podigni za razgovor</string>
     <string name="settings_voice_call_sounds">Zvukovi poziva</string>

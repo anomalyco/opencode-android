@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Увімкнути голос</string>
     <string name="settings_voice_model">Модель</string>
     <string name="settings_voice_model_description">Голосова модель</string>
+    <string name="settings_voice_model_automatic">Автоматично</string>
     <string name="settings_voice_call_voice">Голос</string>
     <string name="settings_voice_raise_to_talk">Піднести, щоб говорити</string>
     <string name="settings_voice_call_sounds">Звуки дзвінків</string>

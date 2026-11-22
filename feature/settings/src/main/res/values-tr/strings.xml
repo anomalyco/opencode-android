@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Sesi etkinleştir</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Ses modeli</string>
+    <string name="settings_voice_model_automatic">Otomatik</string>
     <string name="settings_voice_call_voice">Ses</string>
     <string name="settings_voice_raise_to_talk">Konuşmak için kaldır</string>
     <string name="settings_voice_call_sounds">Arama sesleri</string>

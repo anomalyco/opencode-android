@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">अडियो हार्डवेयरको ढाँचा समर्थित छैन।</string>
     <string name="voice_error_audio_engine_rejected">कलको अडियो सुरु गर्न सकिएन। केही बेरमा फेरि प्रयास गर्नुहोस्।</string>
     <string name="voice_error_server_unsupported">आवाज कलका लागि यो सर्भरमा OpenCode को नयाँ संस्करण चाहिन्छ</string>
+    <string name="voice_error_no_voice_models">तपाईंको सर्भरमा कुनै भ्वाइस मोडेल छैन। कल गर्न यसलाई OpenCode Console वा भ्वाइस प्रदायकसँग जडान गर्नुहोस्।</string>
     <string name="voice_error_invalid_server_url">भ्वाइस सुरु गर्न सकिएन: मान्य HTTP वा HTTPS सर्भर URL लेख्नुहोस्।</string>
     <string name="voice_error_invalid_response">भ्वाइस सुरु गर्न सकिएन: सर्भरले अवैध प्रतिक्रिया दियो।</string>
     <string name="voice_error_start_voice_detail">भ्वाइस सुरु गर्न सकिएन: %1$s</string>

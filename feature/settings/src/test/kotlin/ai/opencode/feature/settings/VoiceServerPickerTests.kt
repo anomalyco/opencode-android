@@ -33,9 +33,9 @@ class VoiceServerPickerTests {
     private val studio = OpenCodeServer(url = "http://studio.local:4096", username = "opencode", password = "studio", name = "Studio")
     private val grokBox = OpenCodeServer(url = "http://grok.local:4096", username = "opencode", password = "grok", name = "Grok Box")
     private val oldBox = OpenCodeServer(url = "http://old.local:4096", username = "opencode", password = "old", name = "Old Box")
-    private val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true)
-    private val grok = ServerVoiceModel(model = "grok-voice-1", provider = "xai", available = true)
-    private val geminiLive = ServerVoiceModel(model = "gemini-3.8-live", provider = "google", available = true)
+    private val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true, engine = "openai-live")
+    private val grok = ServerVoiceModel(model = "grok-voice-1", provider = "xai", available = true, engine = "xai-realtime")
+    private val geminiLive = ServerVoiceModel(model = "gemini-3.8-live", provider = "google", available = true, engine = "gemini-live")
 
     /** `servers` saved and `server` the one in use, with `choice` in Voice Provider. */
     private fun SettingsTestShared.save(servers: List<OpenCodeServer>, choice: VoiceServerChoice = VoiceServerChoice.Automatic) {
@@ -172,7 +172,7 @@ class VoiceServerPickerTests {
     @Test fun theKeyRowNamesOpenCodeWhenTheBrokerHostsTheCallThroughIt() {
         val shared = SettingsTestShared()
         shared.save(listOf(server, studio))
-        val hosted = ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true)
+        val hosted = ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")
         val settings = VoiceSettingsFeature.State(server = server)
         shared.set(
             VoiceSharedKeys.voiceModelsByServer,
@@ -185,7 +185,7 @@ class VoiceServerPickerTests {
         shared.set(
             VoiceSharedKeys.voiceModelsByServer,
             shared.get(VoiceSharedKeys.voiceModelsByServer) +
-                (server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = false)))),
+                (server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = false, engine = "openai-live")))),
         )
         shared.read { assertEquals("A listing without the connection", VoiceKeySource.Server(providerName = "OpenAI"), settings.keySource) }
         shared.set(
@@ -193,12 +193,17 @@ class VoiceServerPickerTests {
             shared.get(VoiceSharedKeys.voiceModelsByServer) + (server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(hosted))),
         )
 
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.realtime)
+        val realtime = ServerVoiceModel(model = "gpt-realtime-2.1", provider = "openai", available = true, engine = "openai-realtime")
+        shared.set(
+            VoiceSharedKeys.voiceModelsByServer,
+            shared.get(VoiceSharedKeys.voiceModelsByServer) + (server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(hosted, realtime))),
+        )
+        shared.set(VoiceSharedKeys.voiceModel, "gpt-realtime-2.1")
         shared.read {
-            assertEquals("OpenCode hosts only GPT-Live there", VoiceKeySource.Server(providerName = "OpenAI"), settings.keySource)
+            assertEquals("A picked model on the server's own key", VoiceKeySource.Server(providerName = "OpenAI"), settings.keySource)
             assertEquals("Calls use your server’s OpenAI key.", settings.keySource.footer)
         }
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
+        shared.set(VoiceSharedKeys.voiceModel, "")
 
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.of(studio))
         shared.read {
@@ -229,6 +234,7 @@ class VoiceServerPickerTests {
         store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.of(studio)))
         assertEquals(VoiceServerChoice.of(studio), shared.get(VoiceSharedKeys.voiceServerChoice))
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(studio.persistenceID, 0, ServerVoiceModelsAnswer.NoAnswer))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(studio.persistenceID, ServerVoiceSupport.supported))
         assertEquals(mapOf(studio.persistenceID to ServerVoiceSupport.supported), shared.get(VoiceSharedKeys.serverVoiceSupportByServer))
 
@@ -253,6 +259,7 @@ class VoiceServerPickerTests {
         val shared = SettingsTestShared()
         shared.save(listOf(server, studio), choice = VoiceServerChoice.of(studio))
         shared.set(SharedKeys.voiceModeEnabled, true)
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
         val settings = VoiceSettingsFeature.State(server = server)
 
         shared.setSupport(mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.unsupported))

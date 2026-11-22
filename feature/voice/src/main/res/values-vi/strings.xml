@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">Định dạng âm thanh của phần cứng không được hỗ trợ.</string>
     <string name="voice_error_audio_engine_rejected">Không thể bật âm thanh cuộc gọi. Hãy thử lại sau giây lát.</string>
     <string name="voice_error_server_unsupported">Máy chủ này cần OpenCode mới hơn để gọi thoại</string>
+    <string name="voice_error_no_voice_models">Máy chủ của bạn không có mô hình giọng nói. Hãy kết nối với OpenCode Console hoặc nhà cung cấp giọng nói để thực hiện cuộc gọi.</string>
     <string name="voice_error_invalid_server_url">Không thể bắt đầu gọi thoại: Nhập URL máy chủ HTTP hoặc HTTPS hợp lệ.</string>
     <string name="voice_error_invalid_response">Không thể bắt đầu gọi thoại: Máy chủ trả về phản hồi không hợp lệ.</string>
     <string name="voice_error_start_voice_detail">Không thể bắt đầu gọi thoại: %1$s</string>

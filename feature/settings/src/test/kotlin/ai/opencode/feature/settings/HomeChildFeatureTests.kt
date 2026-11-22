@@ -22,7 +22,7 @@ class HomeChildFeatureTests {
     /** Automatic also asks the connected server's voice models, so a call knows before it starts whether the server or this phone takes it. */
     @Test fun settingsChecksSupportForItsScopedServer() = runTest {
         val shared = SettingsTestShared()
-        val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true)
+        val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true, engine = "openai-live")
         val store = TestStore(HomeSettingsFeature.State(server = server), HomeSettingsFeature(), this) {
             this[SharedStore] = shared.store
             this[ServerVoiceClient] = ServerVoiceClient(

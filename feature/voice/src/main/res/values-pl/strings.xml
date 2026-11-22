@@ -126,6 +126,7 @@
     <string name="voice_error_audio_format_unavailable">Format dźwięku urządzenia nie jest obsługiwany.</string>
     <string name="voice_error_audio_engine_rejected">Nie udało się uruchomić dźwięku rozmowy. Spróbuj ponownie za chwilę.</string>
     <string name="voice_error_server_unsupported">Ten serwer wymaga nowszej wersji OpenCode do rozmów głosowych</string>
+    <string name="voice_error_no_voice_models">Twój serwer nie ma modeli głosowych. Połącz go z OpenCode Console lub dostawcą głosu, aby prowadzić rozmowy.</string>
     <string name="voice_error_invalid_server_url">Nie udało się uruchomić głosu: wpisz prawidłowy adres URL serwera HTTP lub HTTPS.</string>
     <string name="voice_error_invalid_response">Nie udało się uruchomić głosu: serwer zwrócił nieprawidłową odpowiedź.</string>
     <string name="voice_error_start_voice_detail">Nie udało się uruchomić głosu: %1$s</string>

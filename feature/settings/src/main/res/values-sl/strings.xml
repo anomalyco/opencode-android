@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Omogoči glasovne pogovore</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Glasovni model</string>
+    <string name="settings_voice_model_automatic">Samodejno</string>
     <string name="settings_voice_call_voice">Glas</string>
     <string name="settings_voice_raise_to_talk">Dvigni za pogovor</string>
     <string name="settings_voice_call_sounds">Zvoki klicev</string>

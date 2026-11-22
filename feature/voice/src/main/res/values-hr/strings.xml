@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">Zvučni format uređaja nije podržan.</string>
     <string name="voice_error_audio_engine_rejected">Nije moguće pokrenuti zvuk poziva. Pokušajte ponovno za trenutak.</string>
     <string name="voice_error_server_unsupported">Ovaj poslužitelj treba noviji OpenCode za glasovne pozive</string>
+    <string name="voice_error_no_voice_models">Vaš poslužitelj nema glasovnih modela. Povežite ga s OpenCode Console ili pružateljem glasovnih usluga za upućivanje poziva.</string>
     <string name="voice_error_invalid_server_url">Nije moguće pokrenuti glasovni razgovor: unesite valjani HTTP ili HTTPS URL poslužitelja.</string>
     <string name="voice_error_invalid_response">Nije moguće pokrenuti glasovni razgovor: poslužitelj je vratio nevažeći odgovor.</string>
     <string name="voice_error_start_voice_detail">Nije moguće pokrenuti glasovni razgovor: %1$s</string>

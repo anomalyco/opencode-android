@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Səsi aktivləşdir</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Səs modeli</string>
+    <string name="settings_voice_model_automatic">Avtomatik</string>
     <string name="settings_voice_call_voice">Səs</string>
     <string name="settings_voice_raise_to_talk">Danışmaq üçün qaldır</string>
     <string name="settings_voice_call_sounds">Zəng səsləri</string>

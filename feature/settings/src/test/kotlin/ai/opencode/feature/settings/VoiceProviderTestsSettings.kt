@@ -6,7 +6,6 @@ import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.voice.ServerVoiceClient
 import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
-import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoicePick
 import ai.opencode.feature.voice.VoiceProviderOption
@@ -55,22 +54,22 @@ class VoiceProviderTestsSettings {
                     assertEquals(server, requested)
                     ServerVoiceSupport.supported
                 },
-                models = { throw AssertionError("A pick doesn't ask the models list") },
+                models = { emptyList() },
                 createSession = { _, _ -> throw AssertionError("Unused") },
             )
         }
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(server.persistenceID, 0, ServerVoiceModelsAnswer.Listed(emptyList())))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(server.persistenceID, ServerVoiceSupport.supported))
         val choice = shared.get(VoiceSharedKeys.voiceServerChoice)
         assertEquals(VoiceServerChoice.of(server), choice)
         val pick = VoicePick.resolve(
             choice = choice,
-            provider = ServerVoiceProvider.openAI,
             connected = studio,
             saved = listOf(server, studio),
             readiness = VoiceReadiness(),
         )
-        assertEquals(VoicePick(VoiceProviderOption.Place.Server(server), ServerVoiceProvider.openAI, isAutomatic = false), pick)
+        assertEquals(VoicePick(VoiceProviderOption.Place.Server(server), isAutomatic = false), pick)
         assertEquals(VoiceServerChoice.Automatic, VoiceServerChoice.Automatic.pinningConnected(server))
         store.finish()
     }
@@ -88,7 +87,7 @@ class VoiceProviderTestsSettings {
             assertEquals(VoiceProviderState.unknown, settings.providerCatalog.active?.state)
         }
 
-        shared.know(models = mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true)))))
+        shared.know(models = mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))))
         shared.read {
             assertEquals("OpenCode on My Mac", settings.providerCatalog.active?.name)
             assertEquals(VoiceProviderState.ready, settings.providerCatalog.active?.state)

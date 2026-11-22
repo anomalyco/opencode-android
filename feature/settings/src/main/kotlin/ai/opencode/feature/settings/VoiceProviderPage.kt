@@ -5,7 +5,6 @@ import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
-import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceProviderState
 import ai.opencode.feature.voice.VoiceProviderTunables
@@ -95,17 +94,7 @@ internal fun VoiceProviderDetailPage(store: SettingsStore) {
 
     /** Stores [option] as the person's pick, or Automatic when null. */
     fun use(option: VoiceProviderOption?) {
-        if (option == null) {
-            if (state.serverVoiceProvider != ServerVoiceProvider.openAI) {
-                settings(HomeSettingsFeature.Action.ServerVoiceProviderChanged(ServerVoiceProvider.openAI))
-            }
-            settings(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Automatic))
-            return
-        }
-        if (option.provider != state.serverVoiceProvider) {
-            settings(HomeSettingsFeature.Action.ServerVoiceProviderChanged(option.provider))
-        }
-        settings(HomeSettingsFeature.Action.VoiceServerChanged(option.choice))
+        settings(HomeSettingsFeature.Action.VoiceServerChanged(option?.choice ?: VoiceServerChoice.Automatic))
     }
 
     val automaticFooter = stringResource(R.string.settings_voice_provider_automatic_footer, active.placeName)

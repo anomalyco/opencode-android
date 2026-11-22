@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Abilita voce</string>
     <string name="settings_voice_model">Modello</string>
     <string name="settings_voice_model_description">Modello vocale</string>
+    <string name="settings_voice_model_automatic">Automatico</string>
     <string name="settings_voice_call_voice">Voce</string>
     <string name="settings_voice_raise_to_talk">Solleva per parlare</string>
     <string name="settings_voice_call_sounds">Suoni delle chiamate</string>

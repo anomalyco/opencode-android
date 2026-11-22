@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">Lydformatet til maskinvaren støttes ikke.</string>
     <string name="voice_error_audio_engine_rejected">Kunne ikke starte samtalelyden. Prøv igjen om litt.</string>
     <string name="voice_error_server_unsupported">Denne serveren trenger en nyere versjon av OpenCode for talesamtaler</string>
+    <string name="voice_error_no_voice_models">Serveren din har ingen talemodeller. Koble den til OpenCode Console eller en taleleverandør for å starte samtaler.</string>
     <string name="voice_error_invalid_server_url">Kunne ikke starte tale: Skriv inn en gyldig HTTP- eller HTTPS-URL for serveren.</string>
     <string name="voice_error_invalid_response">Kunne ikke starte tale: Serveren returnerte et ugyldig svar.</string>
     <string name="voice_error_start_voice_detail">Kunne ikke starte tale: %1$s</string>

@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">Format zvuka koji koristi uređaj nije podržan.</string>
     <string name="voice_error_audio_engine_rejected">Pokretanje zvuka poziva nije uspjelo. Pokušaj ponovo za trenutak.</string>
     <string name="voice_error_server_unsupported">Ovaj server treba noviju verziju OpenCode za glasovne pozive</string>
+    <string name="voice_error_no_voice_models">Tvoj server nema glasovnih modela. Poveži ga sa OpenCode Console ili glasovnim provajderom da možeš obavljati pozive.</string>
     <string name="voice_error_invalid_server_url">Pokretanje glasovnog poziva nije uspjelo: unesi važeći HTTP ili HTTPS URL servera.</string>
     <string name="voice_error_invalid_response">Pokretanje glasovnog poziva nije uspjelo: server je vratio nevažeći odgovor.</string>
     <string name="voice_error_start_voice_detail">Pokretanje glasovnog poziva nije uspjelo: %1$s</string>

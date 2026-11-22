@@ -105,7 +105,7 @@ class RaiseToTalkRoutingTests {
         { fake -> fake.events.filterIsInstance<Event.VolumeChanged>().map { it.volume } }
 
     private fun liveConfig(isAtEar: Boolean) = RealtimeSessionConfig(
-        engine = VoiceEngine.gptLive, model = LiveSessionConfig.defaultModel, instructions = "test", tools = emptyList(), isAtEar = isAtEar,
+        engine = VoiceEngine.gptLive, model = "gpt-live-1", instructions = "test", tools = emptyList(), isAtEar = isAtEar,
     )
 
     @Test fun setAtEarBeforeRunningIsNotLost() = routingTest {

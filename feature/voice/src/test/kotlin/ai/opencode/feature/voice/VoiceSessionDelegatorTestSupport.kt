@@ -40,11 +40,9 @@ internal object VoiceSessionDelegatorTestSupport {
     fun preserveSettings(): VoiceTestShared {
         val shared = VoiceTestShared()
         shared.set(SharedKeys.voiceModeEnabled, true)
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
-        shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.openAI)
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, emptyMap())
-        shared.set(VoiceSharedKeys.voiceModelsByServer, emptyMap())
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
         shared.set(experimental(ExperimentalFeature.voiceSessionDelegator), false)
         shared.set(ServerSharedKeys.savedServer, null)
         shared.set(ServerSharedKeys.savedServers, emptyList())

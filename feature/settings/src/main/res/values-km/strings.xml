@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">បើកសំឡេង</string>
     <string name="settings_voice_model">ម៉ូដែល</string>
     <string name="settings_voice_model_description">ម៉ូដែលសំឡេង</string>
+    <string name="settings_voice_model_automatic">ស្វ័យប្រវត្តិ</string>
     <string name="settings_voice_call_voice">សំឡេង</string>
     <string name="settings_voice_raise_to_talk">លើកដើម្បីនិយាយ</string>
     <string name="settings_voice_call_sounds">សំឡេងពេលហៅ</string>

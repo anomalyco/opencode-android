@@ -49,9 +49,7 @@ class AppFeatureTestsMigrations {
         for (key in retiredVoiceKeys) assertFalse(shared.store.contains(key))
         store.finish()
 
-        // A saved phone pick reads as Automatic; a saved Grok engine doesn't decode, so it reads as the default.
         assertEquals(VoiceServerChoice.Automatic, Json.decodeFromString(VoiceSharedKeys.voiceServerChoice.serializer, "\"phone\""))
-        assertTrue(runCatching { Json.decodeFromString(VoiceSharedKeys.voiceEngine.serializer, "\"grok\"") }.isFailure)
     }
 
     /**

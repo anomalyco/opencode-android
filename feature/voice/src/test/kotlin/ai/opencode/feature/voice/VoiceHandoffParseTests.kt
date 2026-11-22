@@ -266,7 +266,7 @@ class VoiceSteeringInstructionsTests {
         // One place for what's said around a delegation.
         assertEquals(2, live.split("What you say around a delegation:").size)
         assertFalse(live.contains("Never say the same thing twice"))
-        val realtime = VoiceInstructions.build(context, engine = VoiceEngine.realtime)
+        val realtime = VoiceInstructions.build(context.copy(model = "gpt-realtime-2.1"), engine = VoiceEngine.realtime)
         assertTrue(realtime.contains("for a quick follow-up a simple yeah is enough. Never start work in silence."))
     }
 
@@ -356,16 +356,16 @@ class VoiceSteeringInstructionsTests {
     }
 
     @Test fun modelIdentityNamesTheActiveVoiceEngineAndAvoidsGuessing() {
-        val live = VoiceInstructions.build(context, engine = VoiceEngine.gptLive)
+        val live = VoiceInstructions.build(context.copy(model = "gpt-live-1"), engine = VoiceEngine.gptLive)
         assertTrue(live.contains("You are GPT-Live (gpt-live-1)"))
         assertTrue(live.contains("that is your voice layer, inside OpenCode, whose sessions do the coding"))
         assertTrue(live.contains("Questions about GPT-Live, Realtime, or which voice model or provider you are refer to this voice engine: answer directly that you are GPT-Live (gpt-live-1)"))
         assertTrue(live.contains("say unknown rather than guessing"))
 
-        val realtime = VoiceInstructions.build(context, engine = VoiceEngine.realtime)
+        val realtime = VoiceInstructions.build(context.copy(model = "gpt-realtime-2.1"), engine = VoiceEngine.realtime)
         assertTrue(realtime.contains("the Realtime model (gpt-realtime-2.1)"))
         assertTrue(realtime.contains("(gpt-realtime-2.1), inside OpenCode, whose sessions do the coding"))
-        assertTrue(realtime.contains("Questions about GPT-Live, Realtime, Grok, or which voice model or provider you are refer to this voice engine: answer directly that you are the Realtime model (gpt-realtime-2.1)"))
+        assertTrue(realtime.contains("Questions about GPT-Live, Realtime, or which voice model or provider you are refer to this voice engine: answer directly that you are the Realtime model (gpt-realtime-2.1)"))
         assertTrue(realtime.contains("say unknown rather than guessing"))
     }
 

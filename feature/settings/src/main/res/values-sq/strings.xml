@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Aktivizo zërin</string>
     <string name="settings_voice_model">Modeli</string>
     <string name="settings_voice_model_description">Modeli i zërit</string>
+    <string name="settings_voice_model_automatic">Automatik</string>
     <string name="settings_voice_call_voice">Zëri</string>
     <string name="settings_voice_raise_to_talk">Ngrije për të folur</string>
     <string name="settings_voice_call_sounds">Tingujt e thirrjeve</string>

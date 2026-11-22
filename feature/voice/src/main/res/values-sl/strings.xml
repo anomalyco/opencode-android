@@ -126,6 +126,7 @@
     <string name="voice_error_audio_format_unavailable">Zvočna oblika strojne opreme ni podprta.</string>
     <string name="voice_error_audio_engine_rejected">Zvoka klica ni bilo mogoče zagnati. Poskusite znova čez trenutek.</string>
     <string name="voice_error_server_unsupported">Ta strežnik za glasovne klice potrebuje novejši OpenCode</string>
+    <string name="voice_error_no_voice_models">Vaš strežnik nima glasovnih modelov. Povežite ga z OpenCode Console ali s ponudnikom glasovnih storitev, da boste lahko klicali.</string>
     <string name="voice_error_invalid_server_url">Glasovnega pogovora ni bilo mogoče začeti: vnesite veljaven URL strežnika HTTP ali HTTPS.</string>
     <string name="voice_error_invalid_response">Glasovnega pogovora ni bilo mogoče začeti: strežnik je vrnil neveljaven odziv.</string>
     <string name="voice_error_start_voice_detail">Glasovnega pogovora ni bilo mogoče začeti: %1$s</string>

@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">Formatul audio al dispozitivului nu este acceptat.</string>
     <string name="voice_error_audio_engine_rejected">Sunetul apelului nu a putut fi pornit. Încearcă din nou în câteva clipe.</string>
     <string name="voice_error_server_unsupported">Acest server are nevoie de o versiune mai nouă de OpenCode pentru apeluri vocale</string>
+    <string name="voice_error_no_voice_models">Serverul tău nu are modele vocale. Conectează-l la OpenCode Console sau la un furnizor de voce pentru a efectua apeluri.</string>
     <string name="voice_error_invalid_server_url">Apelul vocal nu a putut fi pornit: introdu un URL de server HTTP sau HTTPS valid.</string>
     <string name="voice_error_invalid_response">Apelul vocal nu a putut fi pornit: serverul a returnat un răspuns invalid.</string>
     <string name="voice_error_start_voice_detail">Apelul vocal nu a putut fi pornit: %1$s</string>

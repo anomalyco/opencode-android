@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Włącz głos</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Model głosowy</string>
+    <string name="settings_voice_model_automatic">Automatycznie</string>
     <string name="settings_voice_call_voice">Głos</string>
     <string name="settings_voice_raise_to_talk">Podnieś, by rozmawiać</string>
     <string name="settings_voice_call_sounds">Dźwięki rozmów</string>

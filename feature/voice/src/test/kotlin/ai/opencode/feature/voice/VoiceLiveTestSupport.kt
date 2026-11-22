@@ -256,7 +256,7 @@ class LiveHarness(
             )
         })
         return coordinator.start(
-            config = LiveSessionConfig(
+            config = LiveSessionConfig(model = "gpt-live-1",
                 instructions = instructions,
                 delegation = delegation,
                 unboundSpeechUsesInstructions = unboundSpeechUsesInstructions,
@@ -308,10 +308,24 @@ fun FakeLiveSocket.spoken(): List<String> = commands.mapNotNull { (it as? LiveCo
  * One in-memory `@Shared` store for a test: the state's initializer and the store read the
  * same values (each test container would otherwise get its own).
  */
+/** What a server signed in to OpenAI and Google lists from `/voice/models`. */
+val testVoiceModels = ServerVoiceModelsAnswer.Listed(
+    listOf(
+        ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live"),
+        ServerVoiceModel(model = "gpt-realtime-2.1", available = true, engine = "openai-realtime"),
+        ServerVoiceModel(model = "gemini-3.8-live", available = true, engine = "gemini-live"),
+    ),
+)
+
 class VoiceTestShared(val store: SharedStore = SharedStore.inMemory()) {
     fun <R> read(block: () -> R): R = DependencyValues.withValues(DependencyValues.testing().update { this[SharedStore] = store }, block)
     fun <T> set(key: SharedKey<T>, value: T) = read { shared(key).set(value) }
     fun <T> get(key: SharedKey<T>): T = read { shared(key).value }
+
+    /** Each of `servers` lists [testVoiceModels]. */
+    fun listVoiceModels(vararg servers: OpenCodeServer): VoiceTestShared = apply {
+        set(VoiceSharedKeys.voiceModelsByServer, servers.associate { it.persistenceID to testVoiceModels })
+    }
 }
 
 /** A [TestStore] of [VoiceFeature] whose initial state is built with the store's own dependencies. */

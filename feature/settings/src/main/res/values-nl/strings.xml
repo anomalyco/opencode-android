@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Spraak inschakelen</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Spraakmodel</string>
+    <string name="settings_voice_model_automatic">Automatisch</string>
     <string name="settings_voice_call_voice">Stem</string>
     <string name="settings_voice_raise_to_talk">Optillen om te praten</string>
     <string name="settings_voice_call_sounds">Oproepgeluiden</string>

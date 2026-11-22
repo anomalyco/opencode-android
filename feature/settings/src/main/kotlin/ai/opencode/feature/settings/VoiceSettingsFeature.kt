@@ -12,7 +12,7 @@ import ai.opencode.core.store.cancellable
 import ai.opencode.feature.voice.CallVoice
 import ai.opencode.feature.voice.ServerVoiceClient
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
-import ai.opencode.feature.voice.ServerVoiceProvider
+import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoiceCallSoundPack
 import ai.opencode.feature.voice.VoiceDelegatorChoice
@@ -47,22 +47,26 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
         /** Each saved server's voice models, the connected one's too, by `persistenceID`, as it last answered. */
         val voiceModelsByServer: Map<String, ServerVoiceModelsAnswer> get() = shared(VoiceSharedKeys.voiceModelsByServer).value
         val callSoundPack: VoiceCallSoundPack get() = shared(VoiceSharedKeys.callSoundPack).value
-        val serverVoiceProvider: ServerVoiceProvider get() = shared(VoiceSharedKeys.serverVoiceProvider).value
         val voiceServer: VoiceServerChoice get() = shared(VoiceSharedKeys.voiceServerChoice).value
         val voiceModeEnabled: Boolean get() = shared(SharedKeys.voiceModeEnabled).value
-        val voiceEngine: VoiceEngine get() = shared(VoiceSharedKeys.voiceEngine).value
+        /** The picked voice model's id; empty for Automatic (the server's default). */
+        val voiceModel: String get() = shared(VoiceSharedKeys.voiceModel).value
         val callVoice: CallVoice get() = shared(VoiceSharedKeys.callVoice).value
         val raiseToTalk: Boolean get() = shared(SharedKeys.raiseToTalk).value
 
         val serverVoiceSupport: ServerVoiceSupport get() = broker.support(serverVoiceSupportByServer)
 
-        val route: VoiceRoute get() = broker.route(engine = voiceEngine, support = serverVoiceSupport)
+        val route: VoiceRoute get() = broker.route(support = serverVoiceSupport)
+
+        /** The server whose voice models the Model row lists: the one calls go through, else the connected one. */
+        val voiceModels: List<ServerVoiceModel>
+            get() = (broker.server ?: connectedServer)?.let { voiceModelsByServer[it.persistenceID]?.models }.orEmpty()
     }
 
     sealed interface Action {
         data object Task : Action
         data class VoiceModeEnabledChanged(val on: Boolean) : Action
-        data class VoiceEngineChanged(val engine: VoiceEngine) : Action
+        data class VoiceModelChanged(val model: String) : Action
         data class CallVoiceSelected(val voice: CallVoice) : Action
         data class RaiseToTalkChanged(val on: Boolean) : Action
         data class CallSoundPackSelected(val pack: VoiceCallSoundPack) : Action
@@ -82,14 +86,13 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
     private val openCodeClient by Dependency(OpenCodeClient)
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> = when (action) {
-        Action.Task -> Reduced(state, checkVoiceServers(listOfNotNull(state.connectedServer)))
+        Action.Task -> Reduced(state, checkVoiceServers(listOfNotNull(state.connectedServer, state.broker.server).distinct()))
         is Action.VoiceModeEnabledChanged -> {
             shared(SharedKeys.voiceModeEnabled).set(action.on)
             Reduced(state)
         }
-        is Action.VoiceEngineChanged -> {
-            shared(SharedKeys.voiceEngineMigratedToGPTLive).set(true)
-            shared(VoiceSharedKeys.voiceEngine).set(action.engine)
+        is Action.VoiceModelChanged -> {
+            if (state.voiceModel != action.model) shared(VoiceSharedKeys.voiceModel).set(action.model)
             Reduced(state)
         }
         is Action.CallVoiceSelected -> {

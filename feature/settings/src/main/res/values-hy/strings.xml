@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Միացնել ձայնը</string>
     <string name="settings_voice_model">Մոդել</string>
     <string name="settings_voice_model_description">Ձայնային մոդել</string>
+    <string name="settings_voice_model_automatic">Ավտոմատ</string>
     <string name="settings_voice_call_voice">Ձայն</string>
     <string name="settings_voice_raise_to_talk">Մոտեցնել ականջին՝ խոսելու համար</string>
     <string name="settings_voice_call_sounds">Զանգի ձայներ</string>
