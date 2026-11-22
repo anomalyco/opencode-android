@@ -201,6 +201,18 @@ class AgentWidgetTests {
         assertEquals(name, a.strings, b.strings)
     }
 
+    /** The runtime's encoder names the phase of an output it can't write (widgets-binary.md, Errors). */
+    @Test
+    fun theEncodersFailuresNameTheirPhase() {
+        fun phase(kind: String) = NativeAgentWidgetEngine.mapped(PsychoScriptException.Runtime(kind, "invalid view: missing field `label`", 3u, 5u), draw = false)
+        assertEquals("view", phase("InvalidView").phase)
+        assertEquals("draw", phase("InvalidDraw").phase)
+        assertEquals("gpu", phase("InvalidGpu").phase)
+        assertEquals("main", phase("InvalidDataValue").phase)
+        assertNull(phase("TypeError").phase)
+        assertTrue(phase("InvalidView").isProgramError())
+    }
+
     /** A step output stated as JSON, written as the runtime's encoder would and read by the app. */
     private fun stepOutput(text: String): AgentWidgetOutput = AgentWidgetWire.output(AgentWidgetWireEncoder.output(text))
 
@@ -208,9 +220,10 @@ class AgentWidgetTests {
     private fun drawOutput(text: String, list: AgentWidgetDrawList) = AgentWidgetWire.drawOutput(AgentWidgetWireEncoder.output(text), palette, list)
 
     /**
-     * psychoscript-mobile's committed workloads, run on its desktop build: the runtime's bytes decode, and the tests'
-     * encoder writes the same values from the JSON the same run gave (every node and prop, step field, draw stream and
-     * live post). Skipped without the desktop build or the workloads (scripts/psychoscript.sh --host).
+     * psychoscript-mobile's committed workloads, run on its desktop build: the runtime's bytes (the native tree) decode
+     * to the values the tests' encoder writes from the same program's JSON output (every node and prop, step field, draw
+     * stream, and the live posts of workloads that run the same twice). Skipped without the desktop build or the
+     * workloads (scripts/psychoscript.sh --host).
      */
     @Test
     fun binaryWorkloadsMatchTheRuntimesEncoder() {
@@ -234,7 +247,13 @@ class AgentWidgetTests {
                 assertEquals(name, a.fullscreen, b.fullscreen)
             }
         }
+        assertTrue(AgentWidgetWorkloads.live.any { it.deterministic })
         for (live in AgentWidgetWorkloads.live) {
+            if (!live.deterministic) {
+                // Random or timed content: the native run's posts decode, draws too.
+                for (b in live.bytes) decodeAny(b, post = true)
+                continue
+            }
             assertEquals(live.name, live.posts.size, live.bytes.size)
             live.posts.zip(live.bytes).forEachIndexed { i, (text, b) ->
                 val at = "${live.name} post $i"

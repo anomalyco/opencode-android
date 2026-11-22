@@ -145,7 +145,14 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             else -> null to null
         }
         val client = error is PsychoScriptException.Snapshot || error is PsychoScriptException.InvalidState || error is PsychoScriptException.InvalidInput
-        val invalidOutput = error is PsychoScriptException.Runtime && error.kind == "InvalidDataValue"
+        // The encoder's failures name their phase (specs/v2/widgets-binary.md, Errors).
+        val phase = when ((error as? PsychoScriptException.Runtime)?.kind) {
+            "InvalidView" -> "view"
+            "InvalidDraw" -> "draw"
+            "InvalidGpu" -> "gpu"
+            "InvalidDataValue" -> "main"
+            else -> null
+        }
         return AgentWidgetEngineException(
             reason(error),
             isTimeout = timeout && !draw,
@@ -153,7 +160,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             line = line?.toInt(),
             column = column?.toInt(),
             isProgramError = !client,
-            isInvalidOutput = invalidOutput,
+            phase = phase,
         )
     }
 
@@ -172,8 +179,9 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     private const val HEAP_BYTES: ULong = 33_554_432uL
     /** Writes the binary format: steps hand their output to its global, live posts go through it. */
     private val encoder: ValueEncoder by lazy { ValueEncoder.widget() }
-    private val ENTRY: String by lazy { "\n${encoder.emitName()}(__widget_step(__input()))" }
-    private const val LIVE_ENTRY = "\nreturn await __widget_live(__input())"
+    // `true`: the host builds the view tree natively (widgets.md, Native hosts).
+    private val ENTRY: String by lazy { "\n${encoder.emitName()}(__widget_step(__input(), true))" }
+    private const val LIVE_ENTRY = "\nreturn await __widget_live(__input(), true)"
     internal val STEP = RunOptions(timeoutMs = 250uL, maxOutputBytes = 4uL * 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)
     internal val DRAW = RunOptions(timeoutMs = 8uL, maxOutputBytes = 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)
 

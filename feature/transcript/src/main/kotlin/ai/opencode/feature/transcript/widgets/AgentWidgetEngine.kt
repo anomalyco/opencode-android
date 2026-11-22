@@ -75,8 +75,8 @@ class AgentWidgetEngineException(
     val line: Int? = null,
     val column: Int? = null,
     val isProgramError: Boolean = true,
-    /** The output was a value the binary format can't hold (an invalid view or draw): the program's error. */
-    val isInvalidOutput: Boolean = false,
+    /** The phase the runtime named for an output it couldn't write (`view`, `draw`, `gpu`, `main`), if it did. */
+    val phase: String? = null,
 ) : Exception(message)
 
 /** The runtime's message without the position it appends, "(line N, col M)", which counts the prelude's lines. */

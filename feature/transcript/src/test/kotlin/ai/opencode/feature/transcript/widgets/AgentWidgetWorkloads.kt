@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit
  */
 internal object AgentWidgetWorkloads {
     class Step(val name: String, val draw: Boolean, val json: String, val bytes: ByteArray)
-    class Live(val name: String, val posts: List<String>, val bytes: List<ByteArray>)
+    /** [posts] from a JSON run, [bytes] from a native one; [deterministic] when two JSON runs posted the same. */
+    class Live(val name: String, val posts: List<String>, val bytes: List<ByteArray>, val deterministic: Boolean)
 
     private val dir = System.getProperty("opencode.widgetWorkloads")?.let(::File)
 
@@ -59,32 +60,36 @@ internal object AgentWidgetWorkloads {
                 name,
                 w.getValue("phase").jsonPrimitive.content == "draw",
                 Program(source + "\nreturn __widget_step(__input())", "__input").session(fields).run(own, STEP),
-                Program(source + "\n${encoder.emitName()}(__widget_step(__input()))", "__input").session(fields).runBytes(own, encoder, STEP),
+                Program(source + "\n${encoder.emitName()}(__widget_step(__input(), true))", "__input").session(fields).runBytes(own, encoder, STEP),
             )
         }
     }
 
     /**
-     * The first two frames' posts as JSON; live programs use `Math.random` and the clock, so the bytes are the same
-     * values posted again through the encoder rather than a second run.
+     * The first two frames' posts, from a JSON run and from a native one (`__widget_live(__input(), true)`, where the
+     * encoder builds the tree). Some programs use `Math.random` or the clock, so the two runs agree only when two JSON
+     * runs do.
      */
     val live: List<Live> by lazy {
         workloads.getValue("live").jsonArray.map { it.jsonObject }.map { w ->
             val name = w.getValue("name").jsonPrimitive.content
-            val program = Program(template(w.getValue("program").jsonPrimitive.content) + "\nreturn await __widget_live(__input())", "__input")
-            val texts = Posts()
-            val run = program.startLive(File(dir, "inputs/$name.json").readText(), texts, OPTIONS, null, null)
-            texts.await()
-            repeat(2) {
-                run.deliver(frame(1 + it / 60.0))
-                texts.await()
+            val source = template(w.getValue("program").jsonPrimitive.content)
+            val input = File(dir, "inputs/$name.json").readText()
+            fun run(native: Boolean): Posts {
+                val posts = Posts()
+                val program = Program(source + "\nreturn await __widget_live(__input()${if (native) ", true" else ""})", "__input")
+                val run = program.startLive(input, posts, OPTIONS, null, if (native) encoder else null)
+                posts.await()
+                repeat(2) {
+                    run.deliver(frame(1 + it / 60.0))
+                    posts.await()
+                }
+                run.stop()
+                return posts
             }
-            run.stop()
-            val bytes = Posts()
-            Program("for (const p of __input()) __host.post(p)\n__host.post({ type: \"frame\" })\nreturn null", "__input")
-                .startLive(texts.texts.joinToString(",", "[", "]"), bytes, OPTIONS, null, encoder)
-            bytes.await()
-            Live(name, texts.texts.toList(), bytes.bytes.dropLast(1))
+            val texts = run(native = false).texts.toList()
+            val again = run(native = false).texts.toList()
+            Live(name, texts, run(native = true).bytes.toList(), deterministic = texts == again)
         }
     }
 

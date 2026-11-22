@@ -409,7 +409,7 @@ class AgentWidgetController internal constructor(
 
         override fun failed(error: AgentWidgetEngineException) {
             phase = Phase.Failed(error.message ?: localized(R.string.transcript_widget_step_failed), Status.Open)
-            reportError("main", error)
+            reportError(error.phase ?: "main", error)
         }
 
         override fun reported(phase: String, message: String) {
@@ -598,9 +598,8 @@ class AgentWidgetController internal constructor(
                     }
                     result.getOrNull()?.let { rootFullscreen = it.fullscreen }
                     result.exceptionOrNull()?.let { error ->
-                        val phase = when {
+                        val phase = (error as? AgentWidgetEngineException)?.phase ?: when {
                             error is AgentWidgetNode.InvalidView -> "view"
-                            (error as? AgentWidgetEngineException)?.isInvalidOutput == true -> "view"
                             effect.input.startsWith("{\"phase\":\"init\"") -> "init"
                             else -> "event"
                         }
