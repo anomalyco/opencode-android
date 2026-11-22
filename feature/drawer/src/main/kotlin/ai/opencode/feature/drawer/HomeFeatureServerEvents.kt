@@ -18,6 +18,7 @@ import ai.opencode.feature.drawer.HomeFeature.State
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.session.waitingSessionIDs
 import ai.opencode.feature.voice.ServerVoiceSupport
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeLiveContentEvent
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.model.OpenCodeProject
@@ -59,7 +60,7 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
             }
             // It may have been set up, updated or come back since: what Voice Provider knew of it,
             // and anything still being asked, no longer counts.
-            VoiceModelsCache.invalidate(serverID)
+            VoiceModelsCache.invalidate(voiceServerID(state.server))
             val voiceReconnect: Effect<Action> = if (s.sessionDetail?.voice?.hasActiveSessionDelegatorTurn == true) {
                 Effect.send(Action.detail(SessionFeature.Action.voicePresented(VoiceFeature.Action.SessionDelegatorStreamReconnected)))
             } else {

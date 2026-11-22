@@ -542,7 +542,7 @@ class VoiceEnginePersistenceTests {
 
     @Test fun defaultsToTheServersFirstModelAndPersistsSelectionAcrossCalls() = runTest {
         val shared = VoiceTestShared()
-        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to testVoiceModels))
         assertEquals("", shared.get(VoiceSharedKeys.voiceModel))
 
         val startedConfigs = mutableListOf<RealtimeSessionConfig>()

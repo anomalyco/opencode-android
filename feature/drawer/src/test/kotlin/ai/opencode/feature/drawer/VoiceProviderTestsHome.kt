@@ -14,6 +14,7 @@ import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
@@ -38,7 +39,7 @@ class VoiceProviderTestsHome {
         h.setShared(ServerSharedKeys.savedServer, server)
         h.setShared(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         h.setShared(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
-        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf<String, ServerVoiceModelsAnswer>(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(keyless))))
+        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf<String, ServerVoiceModelsAnswer>(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(keyless))))
         fun models() = h.shared(VoiceSharedKeys.voiceModelsByServer)
         fun pick() = VoicePick.resolve(
             choice = VoiceServerChoice.Automatic,
@@ -46,7 +47,7 @@ class VoiceProviderTestsHome {
             saved = listOf(server),
             readiness = VoiceReadiness(answers = models(), support = mapOf(server.persistenceID to ServerVoiceSupport.supported)),
         )
-        assertEquals(listOf(keyless), (models()[server.persistenceID] as? ServerVoiceModelsAnswer.Listed)?.models)
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
 
         val ready = keyless.copy(available = true)
         val gate = CompletableDeferred<Unit>()
@@ -70,13 +71,13 @@ class VoiceProviderTestsHome {
         // Asked before the reconnect…
         store.send(HomeFeature.Action.Settings(HomeSettingsFeature.Action.CheckServerVoiceSupport))
         store.send(HomeFeature.Action.ServerEvent(OpenCodeServerEvent.Connected))
-        assertEquals(listOf(keyless), (models()[server.persistenceID] as? ServerVoiceModelsAnswer.Listed)?.models)
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
         assertEquals(VoicePick(VoiceProviderOption.Place.Server(server), isAutomatic = true), pick())
 
         // …answered after it: the server may have changed since, so it's dropped.
         gate.complete(Unit)
-        store.receive(HomeFeature.Action.Settings(HomeSettingsFeature.Action.VoiceModelsLoaded(server.persistenceID, 0, ServerVoiceModelsAnswer.Listed(listOf(ready)))))
-        assertEquals(listOf(keyless), (models()[server.persistenceID] as? ServerVoiceModelsAnswer.Listed)?.models)
+        store.receive(HomeFeature.Action.Settings(HomeSettingsFeature.Action.VoiceModelsLoaded(voiceServerID(server), 0, ServerVoiceModelsAnswer.Listed(listOf(ready)))))
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
         assertEquals(VoiceProviderOption.Place.Server(server), pick().place)
         h.skipInFlightEffects()
     }

@@ -77,7 +77,7 @@ class VoiceSessionDelegatorServerVoiceTests {
 
     private fun VoiceFeature.State.serverStarted(brand: VoiceProviderOption.Brand, usesDelegator: Boolean, usesSessionDelegator: Boolean) =
         started(VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.gptLive), usesDelegator, usesSessionDelegator)
-            .copy(diagnosesFailure = true, callPlace = VoiceCallPlace(server.friendlyName, brand))
+            .copy(diagnosesFailure = true, callPlace = VoiceCallPlace(server.friendlyName, brand), activeModel = "gpt-live-1")
 
     private fun connected(now: Instant): VoiceFeature.State.() -> VoiceFeature.State = {
         withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = now)
@@ -260,7 +260,7 @@ class VoiceSessionDelegatorServerVoiceTests {
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
         shared.set(
             VoiceSharedKeys.voiceModelsByServer,
-            mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))),
+            mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))),
         )
         shared.set(VoiceSharedKeys.voiceDelegatorChoice, VoiceDelegatorChoice.AutomaticSession)
 

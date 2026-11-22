@@ -13,6 +13,7 @@ import ai.opencode.feature.voice.VoiceProviderState
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import kotlinx.coroutines.test.runTest
@@ -59,7 +60,7 @@ class VoiceProviderTestsSettings {
             )
         }
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
-        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(server.persistenceID, 0, ServerVoiceModelsAnswer.Listed(emptyList())))
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(voiceServerID(server), 0, ServerVoiceModelsAnswer.Listed(emptyList())))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(server.persistenceID, ServerVoiceSupport.supported))
         val choice = shared.get(VoiceSharedKeys.voiceServerChoice)
         assertEquals(VoiceServerChoice.of(server), choice)
@@ -87,13 +88,13 @@ class VoiceProviderTestsSettings {
             assertEquals(VoiceProviderState.unknown, settings.providerCatalog.active?.state)
         }
 
-        shared.know(models = mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))))
+        shared.know(models = mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", provider = "opencode", available = true, engine = "openai-live")))))
         shared.read {
             assertEquals("OpenCode on My Mac", settings.providerCatalog.active?.name)
             assertEquals(VoiceProviderState.ready, settings.providerCatalog.active?.state)
         }
 
-        shared.know(models = mapOf(server.persistenceID to ServerVoiceModelsAnswer.NoAnswer))
+        shared.know(models = mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.NoAnswer))
         shared.read {
             assertEquals("My Mac", settings.providerCatalog.active?.name)
             assertEquals(VoiceProviderState.offline, settings.providerCatalog.active?.state)

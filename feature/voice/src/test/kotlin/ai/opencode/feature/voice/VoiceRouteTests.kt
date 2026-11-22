@@ -55,7 +55,7 @@ class VoiceRouteTests {
     private fun preserveSettings(): VoiceTestShared {
         val shared = VoiceTestShared()
         shared.set(SharedKeys.voiceModeEnabled, true)
-        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to testVoiceModels))
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, emptyMap())
         shared.set(VoiceSharedKeys.voiceTranscripts, emptyMap())
@@ -104,6 +104,7 @@ class VoiceRouteTests {
                     activeVoice = activeVoice,
                     diagnosesFailure = true,
                     callPlace = VoiceCallPlace("Localhost", VoiceProviderOption.Brand.gemini),
+                    activeModel = "gemini-3.8-live",
                     // Android: the call's ongoing notification, started with the call.
                     callPresenceID = logID,
                 )
@@ -162,6 +163,7 @@ class VoiceRouteTests {
                 activeVoice = CallVoice.marin,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Localhost", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 // Android: the call's ongoing notification, started with the call.
                 callPresenceID = UUID(0, 0),
             )

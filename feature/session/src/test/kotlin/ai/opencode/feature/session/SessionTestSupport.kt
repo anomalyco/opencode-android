@@ -12,6 +12,7 @@ import ai.opencode.core.store.TestStore
 import ai.opencode.feature.composer.modelpicker.ModelDisplayNames
 import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeModel
 import ai.opencode.server.model.OpenCodeModelRef
@@ -34,7 +35,7 @@ import kotlinx.coroutines.yield
 internal object SessionTestSupport {
     /** `server` lists one GPT-Live model, so calls on it are available. */
     fun voiceModels(server: OpenCodeServer): Map<String, ServerVoiceModelsAnswer> =
-        mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live"))))
+        mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live"))))
     val testServer = OpenCodeServer(url = "http://localhost:9", username = "", password = "")
 
     val distantPast: Instant = Instant.parse("0001-01-01T00:00:00Z")

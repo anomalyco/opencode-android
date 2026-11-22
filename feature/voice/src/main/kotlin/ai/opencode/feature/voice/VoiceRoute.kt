@@ -2,6 +2,7 @@ package ai.opencode.feature.voice
 
 import ai.opencode.core.strings.localized
 import ai.opencode.server.OpenCodeServer
+import ai.opencode.server.friendlyName
 
 /** The only precedence table for a new call. */
 sealed interface VoiceRoute {
@@ -26,10 +27,14 @@ sealed interface VoiceRoute {
         /** The server lists voice models, but none it's signed in to that the app can speak. */
         data object NoVoiceModels : Reason
 
+        /** The server hasn't answered for its voice models, and none are known from before. */
+        data class Unreachable(val serverName: String) : Reason
+
         val message: String
             get() = when (this) {
                 ServerUnsupported -> ServerVoiceError.unsupportedServerNotice
                 NoVoiceModels -> localized(R.string.voice_error_no_voice_models)
+                is Unreachable -> localized(R.string.voice_diagnosis_unreachable, serverName)
             }
     }
 
@@ -54,13 +59,14 @@ sealed interface VoiceRoute {
     val provider: ServerVoiceProvider get() = if (this == serverGeminiLive) ServerVoiceProvider.geminiLive else ServerVoiceProvider.openAI
     val title: String get() = engine?.title ?: "Gemini Live"
 
-    val keySource: VoiceKeySource
+    /** Null when no call can be placed: nobody's key would pay. */
+    val keySource: VoiceKeySource?
         get() = when (this) {
             is Server -> when (server) {
                 is ServerRoute.OpenAI -> VoiceKeySource.Server(providerName = "OpenAI")
                 ServerRoute.GeminiLive -> VoiceKeySource.Server(providerName = "Gemini Live")
             }
-            is Unavailable -> VoiceKeySource.Server(providerName = "Gemini Live")
+            is Unavailable -> null
         }
 
     fun sessionConfig(
@@ -180,10 +186,14 @@ class VoiceBroker(
             model = server?.let { readiness.chosen(it) },
             serverVoiceEnabled = isEnabled,
             serverVoiceSupport = support,
-            missing = if (server != null && readiness.state(server) == VoiceProviderState.needsUpdate) {
-                VoiceRoute.Reason.ServerUnsupported
-            } else {
+            missing = if (server == null) {
                 VoiceRoute.Reason.NoVoiceModels
+            } else {
+                when (readiness.state(server)) {
+                    VoiceProviderState.needsUpdate -> VoiceRoute.Reason.ServerUnsupported
+                    VoiceProviderState.offline -> VoiceRoute.Reason.Unreachable(server.friendlyName)
+                    else -> VoiceRoute.Reason.NoVoiceModels
+                }
             },
         )
     }

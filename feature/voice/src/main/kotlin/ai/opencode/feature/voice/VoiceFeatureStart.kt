@@ -128,7 +128,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         route,
         usesDelegator = usesBuiltInDelegatorForRoute(route),
         usesSessionDelegator = usesSessionDelegatorForRoute(route),
-    ).copy(callPlace = if (route.isServer) place(broker) else null)
+    ).copy(callPlace = if (route.isServer) place(broker) else null, activeModel = readiness.chosen(brokerServer)?.model ?: "")
     val voice = next.callVoice.resolved(route.engine ?: VoiceEngine.gptLive)
     // On Server Voice with Built-in, OpenAI runs the delegator on the server's
     // key (Responses delegation); with OpenCode Session, the phone runs client
@@ -178,6 +178,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     VoiceFeature.Action.CallBrokerMoved(
                         server = if (nextServer.persistenceID == target.server.persistenceID) null else nextServer,
                         place = place(moved),
+                        model = readiness.chosen(nextServer)?.model ?: "",
                     ),
                 )
             }

@@ -32,6 +32,7 @@ import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.feature.voice.VoiceWorkAdmission
 import ai.opencode.feature.voice.VoiceWorkClient
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeHomeSnapshot
@@ -146,7 +147,7 @@ class LiveDelegationFeatureTestsSession {
         val other = OpenCodeSession(id = "ses_other", serverTitle = "Other session", projectID = "p", directory = "/Users/kit/project", updatedAt = HomeFeatureTestSupport.distantPast)
         val project = OpenCodeProject(id = "p", name = "project", directory = "/Users/kit/project")
         val gptLive = ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live")
-        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
+        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = listOf(project), sessions = listOf(session, other), activeSessionIDs = emptySet()))
             home = home.openingDetail(session)

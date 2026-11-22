@@ -124,8 +124,8 @@ class VoiceProviderTests {
         fun pick(readiness: VoiceReadiness): VoicePick =
             VoicePick.resolve(VoiceServerChoice.Automatic, connected = server, saved = listOf(server, studio), readiness = readiness)
         val ready = mapOf(
-            server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
-            studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
+            voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
+            voiceServerID(studio) to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
         )
         assertEquals("Not heard from yet: its probe decides", server, pick(VoiceReadiness()).server)
         assertEquals(server, pick(VoiceReadiness(answers = ready)).server)
@@ -137,19 +137,19 @@ class VoiceProviderTests {
             pick(
                 VoiceReadiness(
                     answers = mapOf(
-                        server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(keyless)),
-                        studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
+                        voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(keyless)),
+                        voiceServerID(studio) to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
                     ),
                 ),
             ).server,
         )
-        val silent = mapOf(server.persistenceID to ServerVoiceModelsAnswer.NoAnswer, studio.persistenceID to ServerVoiceModelsAnswer.NoAnswer)
+        val silent = mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.NoAnswer, voiceServerID(studio) to ServerVoiceModelsAnswer.NoAnswer)
         assertEquals(server, pick(VoiceReadiness(answers = silent)).server)
         assertTrue(pick(VoiceReadiness(answers = silent)).isAutomatic)
 
         val picked = VoicePick.resolve(
             VoiceServerChoice.of(studio), connected = server, saved = listOf(server, studio),
-            readiness = VoiceReadiness(answers = mapOf(studio.persistenceID to ServerVoiceModelsAnswer.NoAnswer)),
+            readiness = VoiceReadiness(answers = mapOf(voiceServerID(studio) to ServerVoiceModelsAnswer.NoAnswer)),
         )
         assertTrue("A pick stays, ready or not", picked.server == studio && !picked.isAutomatic)
     }
@@ -163,7 +163,7 @@ class VoiceProviderTests {
         shared.save(listOf(server, studio))
         shared.know(
             support = mapOf(server.persistenceID to ServerVoiceSupport.unsupported, studio.persistenceID to ServerVoiceSupport.supported),
-            models = mapOf(studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive))),
+            models = mapOf(voiceServerID(studio) to ServerVoiceModelsAnswer.Listed(listOf(gptLive))),
         )
         val brokers = Locked(listOf<OpenCodeServer?>())
         val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
@@ -192,6 +192,7 @@ class VoiceProviderTests {
                 serverVoiceBroker = studio,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Studio", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = gptLiveServerRoute,
                 activeVoice = CallVoice.marin,
@@ -239,6 +240,7 @@ class VoiceProviderTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = gptLiveServerRoute,
                 activeVoice = CallVoice.marin,
@@ -275,8 +277,8 @@ class VoiceProviderTests {
         val shared = reset()
         val readiness = VoiceReadiness(
             answers = mapOf(
-                server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
-                studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
+                voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
+                voiceServerID(studio) to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
             ),
             support = mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.supported),
         )
@@ -309,6 +311,7 @@ class VoiceProviderTests {
                 serverVoiceBroker = server,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = studio, sessionID = session.id, directory = session.directory),
                 activeRoute = gptLiveServerRoute,
                 activeVoice = CallVoice.marin,

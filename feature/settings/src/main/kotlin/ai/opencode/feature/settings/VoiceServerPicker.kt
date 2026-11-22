@@ -10,6 +10,7 @@ import ai.opencode.feature.voice.VoiceProviderCatalog
 import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceRoute
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 
 // Settings › Voice › Voice Provider, which provider calls use. Automatic by default (the connected
@@ -54,7 +55,7 @@ val VoiceSettingsFeature.State.providerCatalog: VoiceProviderCatalog
  * Where calls' credentials live. A broker that lists the call's model as OpenCode's starts it
  * through its OpenCode Console connection.
  */
-val VoiceSettingsFeature.State.keySource: VoiceKeySource
+val VoiceSettingsFeature.State.keySource: VoiceKeySource?
     get() {
         val route = route
         val brokerServer = broker.server
@@ -76,12 +77,13 @@ internal fun VoiceSettingsFeature.checkVoiceServers(
 ): Effect<VoiceSettingsFeature.Action> {
     val client = serverVoice
     return Effect.merge(servers.map { server ->
-        val epoch = VoiceModelsCache.epoch(server.persistenceID)
+        val serverID = voiceServerID(server)
+        val epoch = VoiceModelsCache.epoch(serverID)
         Effect.run<VoiceSettingsFeature.Action> { send ->
             val models = client.models(server)
             send(
                 VoiceSettingsFeature.Action.VoiceModelsLoaded(
-                    server.persistenceID,
+                    serverID,
                     epoch,
                     models?.let { ServerVoiceModelsAnswer.Listed(it) } ?: ServerVoiceModelsAnswer.NoAnswer,
                 ),

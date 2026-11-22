@@ -34,6 +34,7 @@ import ai.opencode.feature.voice.VoiceModelsCache
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 import java.util.Locale
 
@@ -156,21 +157,24 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
                     readiness = readiness,
                 )
                 val broker = pick.server
-                // The state can be empty before a server connects.
-                val listServer = broker ?: state.server ?: return Reduced(state)
-                val epoch = VoiceModelsCache.epoch(listServer.persistenceID)
+                // The connected server's list, and the one calls go through when that's another.
+                val listServers = listOfNotNull(state.server, broker).distinctBy { it.persistenceID }
+                if (listServers.isEmpty()) return Reduced(state)
+                val epochs = listServers.map { VoiceModelsCache.epoch(voiceServerID(it)) }
                 val client = serverVoice
                 return Reduced(
                     state,
                     Effect.run { send ->
-                        val models = client.models(listServer)
-                        send(
-                            Action.VoiceModelsLoaded(
-                                serverID = listServer.persistenceID,
-                                asked = epoch,
-                                answer = models?.let(ServerVoiceModelsAnswer::Listed) ?: ServerVoiceModelsAnswer.NoAnswer,
-                            ),
-                        )
+                        for ((index, server) in listServers.withIndex()) {
+                            val models = client.models(server)
+                            send(
+                                Action.VoiceModelsLoaded(
+                                    serverID = voiceServerID(server),
+                                    asked = epochs[index],
+                                    answer = models?.let(ServerVoiceModelsAnswer::Listed) ?: ServerVoiceModelsAnswer.NoAnswer,
+                                ),
+                            )
+                        }
                         if (broker == null) return@run
                         val support = client.checkSupport(broker)
                         send(Action.ServerVoiceSupportLoaded(serverID = broker.persistenceID, support = support))

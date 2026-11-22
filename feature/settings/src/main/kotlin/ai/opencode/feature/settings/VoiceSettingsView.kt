@@ -129,7 +129,7 @@ fun VoiceSettingsView(store: SettingsStore) {
         }
         settingsSection(
             key = "enable",
-            footer = if (!state.voiceModeEnabled) footerText(keySource.footer) else null,
+            footer = if (!state.voiceModeEnabled) keySource?.let { footerText(it.footer) } else null,
         ) {
             SettingsToggleRow(
                 stringResource(R.string.settings_voice_enable),
@@ -144,7 +144,7 @@ fun VoiceSettingsView(store: SettingsStore) {
             settingsSection(
                 key = "configuration",
                 header = callSetupHeader,
-                description = keySource.footer.removeSuffix("."),
+                description = keySource?.footer?.removeSuffix("."),
             ) {
                 var first = true
                 fun divider() = if (first) { first = false; false } else true
@@ -156,7 +156,6 @@ fun VoiceSettingsView(store: SettingsStore) {
                 val chosen = ServerVoiceModels.chosen(state.voiceModels, state.voiceModel)
                 if (chosen != null) {
                     if (divider()) SettingsDivider()
-                    val picked = if (usable.any { it.model == state.voiceModel }) state.voiceModel else ""
                     val automatic = SettingsMenuOption("", stringResource(R.string.settings_voice_model_automatic), caption = usable.first().title)
                     val sections = mutableListOf<Pair<String?, List<SettingsMenuOption<String>>>>(null to listOf(automatic))
                     for ((route, models) in usable.groupBy { ServerVoiceModels.brokered(it) }) {
@@ -166,7 +165,7 @@ fun VoiceSettingsView(store: SettingsStore) {
                     SettingsMenuRow(
                         title = stringResource(R.string.settings_voice_model),
                         value = chosen.title,
-                        selection = picked,
+                        selection = if (chosen.model == state.voiceModel) chosen.model else "",
                         sections = sections,
                         onSelect = { voice.send(VoiceSettingsFeature.Action.VoiceModelChanged(it)) },
                         accessibilityLabel = stringResource(R.string.settings_voice_model_description),

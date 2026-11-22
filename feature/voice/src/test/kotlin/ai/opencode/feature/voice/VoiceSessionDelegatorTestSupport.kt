@@ -42,7 +42,7 @@ internal object VoiceSessionDelegatorTestSupport {
         shared.set(SharedKeys.voiceModeEnabled, true)
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, emptyMap())
-        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to testVoiceModels))
         shared.set(experimental(ExperimentalFeature.voiceSessionDelegator), false)
         shared.set(ServerSharedKeys.savedServer, null)
         shared.set(ServerSharedKeys.savedServers, emptyList())

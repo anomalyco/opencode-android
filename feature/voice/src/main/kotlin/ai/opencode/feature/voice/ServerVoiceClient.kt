@@ -127,7 +127,7 @@ data class ServerVoiceModel(
     val provider: String? = null,
     val available: Boolean,
     val name: String? = null,
-    /** The protocol it speaks: "openai-live", "openai-realtime", "xai-realtime" or "gemini-live". */
+    /** The protocol it speaks, such as "openai-live"; the app offers the ones it can speak. */
     val engine: String? = null,
 ) {
     val title: String get() = name ?: model

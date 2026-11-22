@@ -38,9 +38,9 @@ sealed interface ServerVoiceModelsAnswer {
 }
 
 /**
- * Voice models answers kept across reconnects only while still true: reducers ask with
- * [epoch], record with [record], and a reconnect [invalidate]s the server's answer and any
- * request still in flight.
+ * Each server's voice models answer, by [voiceServerID]: reducers ask with [epoch], record with
+ * [record], and a reconnect [invalidate]s any request still in flight. A server that doesn't
+ * answer keeps the list it last gave.
  */
 object VoiceModelsCache {
     fun epoch(serverID: String): Int = shared(VoiceSharedKeys.voiceModelsEpochs).value[serverID] ?: 0
@@ -48,12 +48,14 @@ object VoiceModelsCache {
     /** Whether the answer landed: one asked before a reconnect doesn't. */
     fun record(answer: ServerVoiceModelsAnswer, serverID: String, asked: Int): Boolean {
         val answers = shared(VoiceSharedKeys.voiceModelsByServer)
-        if (asked != epoch(serverID) || answers.value[serverID] == answer) return false
+        val current = answers.value[serverID]
+        if (asked != epoch(serverID) || current == answer) return false
+        if (answer == ServerVoiceModelsAnswer.NoAnswer && current is ServerVoiceModelsAnswer.Listed) return false
         answers.update { it + (serverID to answer) }
         return true
     }
 
-    /** The server reconnected: an answer still being asked no longer counts, so it's asked again. */
+    /** The server reconnected: an answer still being asked no longer counts. */
     fun invalidate(serverID: String) {
         shared(VoiceSharedKeys.voiceModelsEpochs).update { it + (serverID to ((it[serverID] ?: 0) + 1)) }
     }
@@ -120,10 +122,10 @@ data class VoiceReadiness(
 ) {
     /** The model a call through `server` asks for. */
     fun chosen(server: OpenCodeServer): ServerVoiceModel? =
-        ServerVoiceModels.chosen(answers[server.persistenceID]?.models ?: emptyList(), pick)
+        ServerVoiceModels.chosen(answers[voiceServerID(server)]?.models ?: emptyList(), pick)
 
     fun state(server: OpenCodeServer): VoiceProviderState =
-        VoiceProviderState.server(answers[server.persistenceID], support[server.persistenceID])
+        VoiceProviderState.server(answers[voiceServerID(server)], support[server.persistenceID])
 
     /** Who'd run calls on `server`: OpenCode when its Console connection hosts the chosen model. */
     fun brand(server: OpenCodeServer): VoiceProviderOption.Brand {

@@ -94,7 +94,7 @@ class CallVoiceTests {
             })
         }
         store.exhaustive = false
-        store.withDependencies { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels)) }
+        store.withDependencies { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels)) }
         val voiceModel = store.withDependencies { shared(VoiceSharedKeys.voiceModel) }
         val callVoice = store.withDependencies { shared(VoiceSharedKeys.callVoice) }
         val callEnded = { action: VoiceFeature.Action -> action is VoiceFeature.Action.CallEnded }
@@ -132,7 +132,7 @@ class CallVoiceTests {
     @Test fun theCallLogNamesTheVoice() = runTest {
         val shared = SpeechTestShared()
         shared.run {
-            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels))
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels))
             shared(VoiceSharedKeys.callVoice).set(CallVoice.cedar)
         }
         val directory = Files.createTempDirectory("call-voice-").toFile()

@@ -324,7 +324,7 @@ class VoiceTestShared(val store: SharedStore = SharedStore.inMemory()) {
 
     /** Each of `servers` lists [testVoiceModels]. */
     fun listVoiceModels(vararg servers: OpenCodeServer): VoiceTestShared = apply {
-        set(VoiceSharedKeys.voiceModelsByServer, servers.associate { it.persistenceID to testVoiceModels })
+        set(VoiceSharedKeys.voiceModelsByServer, servers.associate { voiceServerID(it) to testVoiceModels })
     }
 }
 

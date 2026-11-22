@@ -127,7 +127,7 @@ internal object VoiceFeatureTestSupport {
         fun <R> state(block: () -> R): R = DependencyValues.withValues(values, block)
 
         init {
-            state { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(server.persistenceID to testVoiceModels)) }
+            state { shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels)) }
         }
 
         fun store(

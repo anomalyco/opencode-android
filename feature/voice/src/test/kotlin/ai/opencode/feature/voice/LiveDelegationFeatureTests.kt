@@ -32,7 +32,7 @@ class LiveDelegationFeatureTests {
     ): TestStore<VoiceFeature.State, VoiceFeature.Action> {
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }, dependencies = dependencies)
         store.exhaustive = false
-        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(server.persistenceID to testVoiceModels))
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to testVoiceModels))
         return store
     }
 

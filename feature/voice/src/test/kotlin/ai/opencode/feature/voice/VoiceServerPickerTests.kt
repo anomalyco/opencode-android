@@ -214,6 +214,7 @@ class VoiceServerPickerTests {
                 serverVoiceBroker = studio,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Studio", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,
@@ -277,6 +278,7 @@ class VoiceServerPickerTests {
                 serverVoiceSupport = ServerVoiceSupport.unknown,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,
@@ -335,6 +337,7 @@ class VoiceServerPickerTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,

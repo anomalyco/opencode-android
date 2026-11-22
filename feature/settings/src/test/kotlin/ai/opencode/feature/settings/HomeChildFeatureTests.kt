@@ -8,6 +8,7 @@ import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -38,10 +39,10 @@ class HomeChildFeatureTests {
             )
         }
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
-        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(server.persistenceID, 0, ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(voiceServerID(server), 0, ServerVoiceModelsAnswer.Listed(listOf(gptLive))))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(server.persistenceID, ServerVoiceSupport.supported))
         assertEquals(ServerVoiceSupport.supported, shared.get(VoiceSharedKeys.serverVoiceSupportByServer)[server.persistenceID])
-        assertEquals(ServerVoiceModelsAnswer.Listed(listOf(gptLive)), shared.get(VoiceSharedKeys.voiceModelsByServer)[server.persistenceID])
+        assertEquals(ServerVoiceModelsAnswer.Listed(listOf(gptLive)), shared.get(VoiceSharedKeys.voiceModelsByServer)[voiceServerID(server)])
         store.finish()
     }
 }

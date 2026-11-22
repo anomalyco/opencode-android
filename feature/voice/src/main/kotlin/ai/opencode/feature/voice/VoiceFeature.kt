@@ -133,6 +133,8 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val pendingModel: OpenCodeModelRef? = null,
         /** The route locked in when the call starts: its engine and provider are what the call runs on. */
         val activeRoute: VoiceRoute = VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.gptLive),
+        /** The voice model the call asked for when it started. */
+        val activeModel: String = "",
         /** Whether [supportServer] supports `POST /api/experimental/voice/session`. */
         val serverVoiceSupport: ServerVoiceSupport = ServerVoiceSupport.unknown,
         /**
@@ -365,7 +367,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 viewing = viewing,
                 userSeesScreen = screenVisibility.userSeesScreen,
                 recordsLooking = usesDelegator,
-                model = ServerVoiceModels.chosen(voiceModelsByServer[supportServer.persistenceID]?.models ?: emptyList(), voiceModel)?.model ?: "",
+                model = activeModel,
             )
 
         val isWorking: Boolean
@@ -679,7 +681,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         data class CallPlaceChanged(val place: VoiceCallPlace?) : Action
 
         /** Automatic moved the call to another server (null: the session's own). */
-        data class CallBrokerMoved(val server: OpenCodeServer?, val place: VoiceCallPlace?) : Action
+        data class CallBrokerMoved(val server: OpenCodeServer?, val place: VoiceCallPlace?, val model: String) : Action
 
         /** The failure card's one fix. */
         data class FailureFixTapped(val fix: VoiceCallFix) : Action
@@ -853,6 +855,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                     serverVoiceSupport = state.serverVoiceSupportByServer[action.server?.persistenceID ?: state.target.server.persistenceID]
                         ?: ServerVoiceSupport.unknown,
                     callPlace = action.place,
+                    activeModel = action.model,
                 ),
             )
 

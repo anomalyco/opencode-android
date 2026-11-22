@@ -51,7 +51,7 @@ class SpeechTestShared {
 
     /** Each of `servers` lists [testVoiceModels]. */
     fun listVoiceModels(vararg servers: OpenCodeServer): SpeechTestShared = apply {
-        run { shared(VoiceSharedKeys.voiceModelsByServer).set(servers.associate { it.persistenceID to testVoiceModels }) }
+        run { shared(VoiceSharedKeys.voiceModelsByServer).set(servers.associate { voiceServerID(it) to testVoiceModels }) }
     }
 }
 

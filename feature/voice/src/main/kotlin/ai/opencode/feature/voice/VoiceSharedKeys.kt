@@ -36,8 +36,8 @@ object VoiceSharedKeys {
     )
 
     /**
-     * Each saved server's last voice models answer, by `persistenceID`. Asked on each connect, and
-     * kept until the next answer lands so the call button and the model list draw from it at once.
+     * Each saved server's last voice models answer, by [voiceServerID]. Asked on each connect, and
+     * kept until the server answers again so the call button and the model list draw from it at once.
      */
     val voiceModelsByServer =
         SharedKey.appStorage<Map<String, ServerVoiceModelsAnswer>>("voice-models-by-server", emptyMap())
@@ -46,7 +46,7 @@ object VoiceSharedKeys {
     val voiceModel = SharedKey.appStorage("voice-model", "")
 
     /**
-     * How many times each server (by `persistenceID`) reconnected: an answer asked before the
+     * How many times each server (by [voiceServerID]) reconnected: an answer asked before the
      * latest says nothing of the server now.
      */
     val voiceModelsEpochs = SharedKey.inMemory<Map<String, Int>>("voice-models-epochs", emptyMap())

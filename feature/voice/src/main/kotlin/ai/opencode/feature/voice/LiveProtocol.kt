@@ -23,8 +23,6 @@ enum class VoiceEngine(val rawValue: String) {
             realtime -> "Realtime"
         }
 
-    val provider: VoiceProvider get() = VoiceProvider.openAI
-
     /** How the voice model names itself when asked, with the model the call asked for. */
     fun selfDescription(model: String): String = when (this) {
         gptLive -> "GPT-Live ($model)"
@@ -32,27 +30,7 @@ enum class VoiceEngine(val rawValue: String) {
     }
 
     companion object {
-        val allCases: List<VoiceEngine> get() = entries
         fun ofRawValue(rawValue: String): VoiceEngine? = entries.firstOrNull { it.rawValue == rawValue }
-    }
-}
-
-/** Who runs a voice engine. */
-@Serializable
-enum class VoiceProvider(val rawValue: String) {
-    @SerialName("openAI") openAI("openAI");
-
-    /** Kotlin enums reserve `name`, so it is `displayName` here. */
-    val displayName: String
-        get() = when (this) {
-            openAI -> "OpenAI"
-        }
-
-    val id: VoiceProvider get() = this
-    val engines: List<VoiceEngine> get() = VoiceEngine.entries.filter { it.provider == this }
-
-    companion object {
-        val allCases: List<VoiceProvider> get() = listOf(openAI)
     }
 }
 

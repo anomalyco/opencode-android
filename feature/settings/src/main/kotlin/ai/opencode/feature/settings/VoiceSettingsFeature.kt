@@ -21,6 +21,7 @@ import ai.opencode.feature.voice.VoiceModelsCache
 import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.CachedHomeSnapshot
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
@@ -60,7 +61,7 @@ class VoiceSettingsFeature : Reducer<VoiceSettingsFeature.State, VoiceSettingsFe
 
         /** The server whose voice models the Model row lists: the one calls go through, else the connected one. */
         val voiceModels: List<ServerVoiceModel>
-            get() = (broker.server ?: connectedServer)?.let { voiceModelsByServer[it.persistenceID]?.models }.orEmpty()
+            get() = (broker.server ?: connectedServer)?.let { voiceModelsByServer[voiceServerID(it)]?.models }.orEmpty()
     }
 
     sealed interface Action {
