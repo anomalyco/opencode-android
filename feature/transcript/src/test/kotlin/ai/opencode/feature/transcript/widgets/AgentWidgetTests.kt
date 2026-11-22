@@ -194,24 +194,6 @@ class AgentWidgetTests {
 
     // Binary format (specs/v2/widgets-binary.md)
 
-    private fun fixture(name: String): ByteArray =
-        java.util.zip.GZIPInputStream(checkNotNull(javaClass.getResourceAsStream("/widget-wire/$name.gz")) { name }).use { it.readBytes() }
-
-    private val stepWorkloads = listOf("suggestions", "form", "table-50", "table-200", "shader-view", "grid-200-view", "draw-chart", "draw-scatter", "draw-heatmap")
-    private val liveWorkloads = listOf("live-shader", "live-table-50", "live-grid-200", "live-minigame", "live-canvas-heavy")
-
-    private fun posts(name: String): List<ByteArray> {
-        val b = fixture("$name.posts.bin")
-        val out = ArrayList<ByteArray>()
-        var at = 0
-        while (at < b.size) {
-            val n = (b[at].toInt() and 0xff) or ((b[at + 1].toInt() and 0xff) shl 8) or ((b[at + 2].toInt() and 0xff) shl 16) or ((b[at + 3].toInt() and 0xff) shl 24)
-            out += b.copyOfRange(at + 4, at + 4 + n)
-            at += 4 + n
-        }
-        return out
-    }
-
     private fun assertSameDrawing(name: String, a: AgentWidgetDrawList, b: AgentWidgetDrawList) {
         assertEquals(name, a.commandCount, b.commandCount)
         assertEquals(name, a.ints.copyOf(a.intCount).toList(), b.ints.copyOf(b.intCount).toList())
@@ -226,23 +208,25 @@ class AgentWidgetTests {
     private fun drawOutput(text: String, list: AgentWidgetDrawList) = AgentWidgetWire.drawOutput(AgentWidgetWireEncoder.output(text), palette, list)
 
     /**
-     * The committed workloads (psychoscript-mobile 6d49474) decode from the runtime's bytes, and the tests' encoder
-     * writes the same values from their JSON: every node and prop, step field, draw stream and live post.
+     * psychoscript-mobile's committed workloads, run on its desktop build: the runtime's bytes decode, and the tests'
+     * encoder writes the same values from the JSON the same run gave (every node and prop, step field, draw stream and
+     * live post). Skipped without the desktop build or the workloads (scripts/psychoscript.sh --host).
      */
     @Test
     fun binaryWorkloadsMatchTheRuntimesEncoder() {
+        org.junit.Assume.assumeTrue(AgentWidgetWorkloads.missing ?: "", AgentWidgetWorkloads.missing == null)
+        assertTrue(AgentWidgetWorkloads.steps.any { it.draw } && AgentWidgetWorkloads.steps.any { !it.draw } && AgentWidgetWorkloads.live.isNotEmpty())
         val json = Json { ignoreUnknownKeys = true }
-        for (name in stepWorkloads) {
-            val text = fixture("$name.json").decodeToString()
-            val bytes = fixture("$name.bin")
-            if (name.startsWith("draw-")) {
-                val a = AgentWidgetDrawList().also { AgentWidgetWire.drawOutput(bytes, palette, it) }
-                val b = AgentWidgetDrawList().also { drawOutput(text, it) }
+        for (step in AgentWidgetWorkloads.steps) {
+            val name = step.name
+            if (step.draw) {
+                val a = AgentWidgetDrawList().also { AgentWidgetWire.drawOutput(step.bytes, palette, it) }
+                val b = AgentWidgetDrawList().also { drawOutput(step.json, it) }
                 assertTrue(name, a.commandCount > 0)
                 assertSameDrawing(name, a, b)
             } else {
-                val a = AgentWidgetWire.output(bytes)
-                val b = stepOutput(text)
+                val a = AgentWidgetWire.output(step.bytes)
+                val b = stepOutput(step.json)
                 assertEquals(name, a.view, b.view)
                 assertEquals(name, json.parseToJsonElement(a.state), json.parseToJsonElement(b.state))
                 assertEquals(name, a.response, b.response)
@@ -250,12 +234,10 @@ class AgentWidgetTests {
                 assertEquals(name, a.fullscreen, b.fullscreen)
             }
         }
-        for (name in liveWorkloads) {
-            val texts = (json.parseToJsonElement(fixture("$name.posts.json").decodeToString()) as kotlinx.serialization.json.JsonArray).map { it.toString() }
-            val bytes = posts(name)
-            assertEquals(name, texts.size, bytes.size)
-            texts.zip(bytes).forEachIndexed { i, (text, b) ->
-                val at = "$name post $i"
+        for (live in AgentWidgetWorkloads.live) {
+            assertEquals(live.name, live.posts.size, live.bytes.size)
+            live.posts.zip(live.bytes).forEachIndexed { i, (text, b) ->
+                val at = "${live.name} post $i"
                 val ours = AgentWidgetWire.post(AgentWidgetWireEncoder.post(text))
                 when (val post = AgentWidgetWire.post(b)) {
                     is AgentWidgetWire.Post.Render -> assertEquals(at, post.view, (ours as AgentWidgetWire.Post.Render).view)
@@ -272,6 +254,48 @@ class AgentWidgetTests {
         }
     }
 
+    /** Messages that use every node type, prop kind, draw op, paint and post kind, written by the tests' encoder. */
+    private val wireSamples: List<Pair<ByteArray, Boolean>> by lazy {
+        val view = """
+            {"type":"column","gap":2,"align":"stretch","fullscreen":true,"children":[
+              {"type":"row","wrap":true,"align":"center","children":[{"type":"text","text":"Hi ✓","style":"title","tone":"accent"},{"type":"markdown","text":"**b**"}]},
+              {"type":"image","src":"a.png","alt":"A","aspect":1.5},
+              {"type":"carousel","id":"0/2","index":1,"children":[{"type":"card","id":"0/2/0","selected":true,"children":[{"type":"divider"}]}]},
+              {"type":"button","id":"0/3","label":"Go","variant":"danger","disabled":true},
+              {"type":"checkbox","id":"0/4","label":"On","checked":true},
+              {"type":"slider","id":"0/5","label":"S","value":3,"min":0,"max":10,"step":0.5},
+              {"type":"select","id":"0/6","options":[{"value":"a","label":"A","description":"d"},{"value":"b","label":"B"}],"value":["a","b"],"multiple":true},
+              {"type":"input","id":"0/7","value":"x","placeholder":"p","multiline":true},
+              {"type":"stack","children":[
+                {"type":"canvas","id":"0/8/0","pointer":true,"height":120,"width":200,"fps":30,"duration":2,"alt":"c","poster":"p.png","wgsl":"fn shade(frag: vec2f) -> vec4f { return vec4f(1.0); }","values":[1,2,3],"fill":false,"place":"fill"},
+                {"type":"text","text":"HUD","place":"bottom-right","inset":{"top":1,"right":2,"bottom":3,"left":4}},
+                {"type":"canvas","height":20,"inset":5}
+              ]}
+            ]}
+        """.trimIndent()
+        val commands = """
+            [["save"],["translate",1,2],["rotate",0.5],["scale",2,2],["alpha",0.5],
+             ["rect",0,0,10,20,{"fill":"#f00","stroke":"muted","width":2,"cap":"round"}],
+             ["rrect",0,0,10,20,3,{"fill":{"linear":[0,0,10,0],"stops":[[0,"#000"],[1,"accent"]]}}],
+             ["circle",5,5,4,{"fill":{"radial":[5,5,4],"stops":[[0,"#ffffff80"],[0.5,"bg"],[1,"error"]]}}],
+             ["line",0,0,5,5,{"stroke":"text"}],
+             ["path",[["M",0,0],["L",1,1],["Q",1,2,3,4],["C",1,2,3,4,5,6],["Z"]],{"fill":"surface"}],
+             ["text",1,2,"Mon",{"size":11,"weight":700,"align":"right","color":"success","mono":true}],
+             ["image","a.png",0,0,4,4],["restore"]]
+        """.trimIndent()
+        listOf(
+            AgentWidgetWireEncoder.output("""{"state":{"n":[1,"two"]},"view":$view,"submit":{"ok":true},"send":{"value":"m","wake":false}}""") to false,
+            AgentWidgetWireEncoder.output("""{"commands":$commands}""") to false,
+            AgentWidgetWireEncoder.post("""{"type":"render","node":$view}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"draw","id":"0/:board","commands":$commands}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"frame"}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"submit","value":{"score":4}}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"dismiss"}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"send","value":[1],"wake":false}""") to true,
+            AgentWidgetWireEncoder.post("""{"type":"capture","value":true}""") to true,
+        )
+    }
+
     /** Decodes [bytes] the way the app reads them: a step or draw output, or a live post (a draw's commands too). */
     private fun decodeAny(bytes: ByteArray, post: Boolean) {
         if (post) {
@@ -285,14 +309,18 @@ class AgentWidgetTests {
     }
 
     /**
-     * Malformed bytes are a client error and nothing else: every truncation of each workload message fails as
+     * Malformed bytes are a client error and nothing else: every truncation of each message (the samples, and the
+     * workloads when the desktop runtime is here) fails as
      * [AgentWidgetWire.Malformed], and random corruptions either decode or fail as malformed or as an invalid view
      * (a corrupted but well-formed message), never with another exception.
      */
     @Test
     fun malformedBytesAreAClientErrorUnderFuzzing() {
         val random = java.util.Random(0x51DE)
-        val messages = stepWorkloads.map { fixture("$it.bin") to false } + liveWorkloads.flatMap { name -> posts(name).map { it to true } }
+        val workloads = if (AgentWidgetWorkloads.missing == null) {
+            AgentWidgetWorkloads.steps.map { it.bytes to false } + AgentWidgetWorkloads.live.flatMap { live -> live.bytes.map { it to true } }
+        } else emptyList()
+        val messages = wireSamples + workloads
         var corrupted = 0
         for ((bytes, post) in messages) {
             decodeAny(bytes, post)

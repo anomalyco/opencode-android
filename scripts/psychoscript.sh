@@ -5,6 +5,9 @@
 #
 #   scripts/psychoscript.sh                     fetch REV into .psychoscript/ (gitignored) and build
 #   scripts/psychoscript.sh --prebuilt <dir>    use a build of REV made elsewhere (<dir>/jniLibs, kotlin, REVISION)
+#   scripts/psychoscript.sh --host              also build it for this machine into vendor/psychoscript/host/, for the
+#                                               JVM tests that run widget workloads (they read them from .psychoscript/
+#                                               and skip without either); needs cargo
 #
 # Building needs the NDK (r28+; ANDROID_NDK_HOME, else the newest under $ANDROID_HOME/ndk),
 # `cargo install cargo-ndk` and `rustup target add --toolchain 1.100.0 aarch64-linux-android
@@ -18,10 +21,26 @@ cd "$(dirname "$0")/.."
 out=vendor/psychoscript
 bindings=feature/transcript/src/main/kotlin/com/anomalyco/psychoscript
 
+if [[ "${1:-}" == "--host" ]]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+  [[ -d .psychoscript ]] || git clone https://github.com/anomalyco/psychoscript .psychoscript
+  git -C .psychoscript fetch -q origin "$REV"
+  git -C .psychoscript checkout -q --detach "$REV"
+  target="$PWD/.psychoscript/rust/target/host"
+  (cd .psychoscript/rust && CARGO_TARGET_DIR="$target" cargo rustc -q --release -p psychoscript-mobile --lib --crate-type cdylib)
+  rm -rf "$out/host"
+  mkdir -p "$out/host"
+  cp "$target"/release/libpsychoscript_mobile.{dylib,so} "$out/host/" 2>/dev/null || true
+  ls "$out"/host/libpsychoscript_mobile.* >/dev/null 2>&1 || { echo "No host library in $target/release" >&2; exit 1; }
+  echo "anomalyco/psychoscript $REV" > "$out/host/REVISION"
+  echo "psychoscript $REV for this machine in $out/host"
+  exit 0
+fi
+
 if [[ "${1:-}" == "--prebuilt" ]]; then
   src="${2:?usage: scripts/psychoscript.sh --prebuilt <dir>}"
   grep -q "$REV" "$src/REVISION" || { echo "$src is $(cat "$src/REVISION" 2>/dev/null || echo unknown), not $REV" >&2; exit 1; }
-  rm -rf "$out"
+  rm -rf "$out/jniLibs" "$out/kotlin" "$out/REVISION"
   mkdir -p "$out"
   cp -R "$src/jniLibs" "$src/kotlin" "$src/REVISION" "$out/"
   rm -f "$out"/jniLibs/*/libopencode_widget_ffi.so

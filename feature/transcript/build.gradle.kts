@@ -27,4 +27,15 @@ dependencies {
     implementation(libs.jna) { artifact { type = "aar" } }
     // android.icu (time stamps), MimeTypeMap/Uri/ClipData (drag payloads) in JVM tests.
     testImplementation(libs.robolectric)
+    // JNA's desktop dispatch library, for the widget runtime's desktop build in JVM tests.
+    testImplementation(libs.jna)
+}
+
+// JVM tests run the committed widget workloads on the runtime built for this machine (scripts/psychoscript.sh --host),
+// and skip them without it.
+tasks.withType<Test>().configureEach {
+    val host = rootProject.file("vendor/psychoscript/host")
+    systemProperty("jna.library.path", host.path)
+    systemProperty("opencode.widgetWorkloads", rootProject.file(".psychoscript/rust/crates/psychoscript-mobile/tests/fixtures/workloads").path)
+    inputs.property("widgetRuntime", providers.provider { host.resolve("REVISION").takeIf { it.isFile }?.readText() ?: "" })
 }
