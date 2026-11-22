@@ -62,7 +62,8 @@ import kotlin.math.abs
  * its state changes, then every frame while `fps > 0` (and `duration` hasn't run out) and the
  * row is on screen; frames come from `withFrameNanos`, so a hidden or stopped screen draws
  * nothing. Its commands are decoded into flat arrays and replayed on the native canvas. Three
- * frames over budget (8 ms or 2,000 commands) in a row stop the animation on its last frame.
+ * frames over the 8 ms budget in a row stop the animation on its last frame; more than 2,000
+ * commands fail the draw (the runtime's encoder refuses them).
  */
 @Composable
 fun AgentWidgetCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, modifier: Modifier = Modifier) {
@@ -319,7 +320,7 @@ private class CanvasState {
             return null
         }
         noteFrame(micros, decodeMicros)
-        return Step(drawn = decoded, overBudget = micros > DRAW_BUDGET_MICROS || (decoded && buffers.shown.truncated))
+        return Step(drawn = decoded, overBudget = micros > DRAW_BUDGET_MICROS)
     }
 
     fun frameJSON(id: String?, t: Double, dt: Double, scale: Float, dark: Boolean, fullscreen: Boolean, close: AgentWidgetRect?): String {

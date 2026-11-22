@@ -108,26 +108,6 @@ object AgentWidgetStep {
     fun draw(data: String, state: String, frame: String): String =
         "{\"phase\":\"draw\",\"state\":$state,\"frame\":$frame}"
 
-    /** Reads a step's output, or throws [AgentWidgetNode.InvalidView] saying why it isn't one. */
-    fun output(text: String): AgentWidgetOutput {
-        val element = try { json.parseToJsonElement(text) } catch (_: Exception) {
-            throw AgentWidgetNode.InvalidView("a step must return an object with state and view")
-        }
-        val o = element as? JsonObject ?: throw AgentWidgetNode.InvalidView("a step must return an object with state and view")
-        val view = AgentWidgetNode.parse(o["view"] ?: throw AgentWidgetNode.InvalidView("a step must return a view"))
-        val state = (o["state"] ?: JsonNull).toString()
-        val response = when {
-            o.containsKey("submit") -> OpenCodeWidgetResponse.Submit((o["submit"] ?: JsonNull).toString())
-            (o["dismiss"] as? JsonPrimitive)?.content == "true" -> OpenCodeWidgetResponse.Dismiss
-            else -> null
-        }
-        val message = (o["send"] as? JsonObject)?.let { send ->
-            OpenCodeWidgetMessageValue((send["value"] ?: JsonNull).toString(), (send["wake"] as? JsonPrimitive)?.content != "false")
-        }
-        val fullscreen = ((o["view"] as? JsonObject)?.get("fullscreen") as? JsonPrimitive)?.takeIf { !it.isString }?.content?.toBooleanStrictOrNull()
-        return AgentWidgetOutput(state, view, response, if (response == null) message else null, fullscreen)
-    }
-
     /** A submitted value in one line: an object's fields as `key: value`, lists joined, at most 160 characters. */
     fun summary(responseJSON: String?): String {
         val value = responseJSON?.let { runCatching { json.parseToJsonElement(it) }.getOrNull() } ?: return ""

@@ -1,19 +1,12 @@
 package ai.opencode.feature.transcript.widgets
 
 import androidx.compose.runtime.Immutable
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.doubleOrNull
 
 /**
- * The view tree a step returns (the contract's Nodes): every node is `{ type, ...props }`.
- * Unknown props are ignored and unknown node types are dropped from their parent; a known node
- * with a missing or mistyped required prop fails the whole view. An unknown value of an
- * enumerated prop (a tone, a style) falls back to its default.
+ * The view tree a step returns (the contract's Nodes): every node is `{ type, ...props }`, read from the binary
+ * format ([AgentWidgetWire]). Unknown props are ignored and unknown node types are dropped from their parent; a known
+ * node with a missing or mistyped required prop fails the whole view. An unknown value of an enumerated prop (a tone,
+ * a style) falls back to its default.
  */
 @Immutable
 sealed interface AgentWidgetNode {
@@ -85,10 +78,6 @@ sealed interface AgentWidgetNode {
         const val MAX_FPS = 60
         const val MAX_WGSL_BYTES = 16 * 1024
 
-        /** Reads a view, or throws [InvalidView] saying why it isn't one. */
-        fun parse(element: JsonElement): AgentWidgetNode =
-            node(element) ?: throw InvalidView("invalid view: unknown root node type")
-
         /** Whether [node] or one under it is a `canvas`: such a view offers full screen unless it says not to. */
         fun drawsPixels(node: AgentWidgetNode): Boolean =
             node is Canvas || node.children.any(::drawsPixels)
@@ -118,30 +107,11 @@ sealed interface AgentWidgetNode {
             for (child in node.children) walk(child, visit)
         }
 
-        private fun node(element: JsonElement): AgentWidgetNode? {
-            val o = element as? JsonObject ?: throw InvalidView("invalid view: a node must be an object")
-            val fields = JsonFields(o)
-            val type = fields.string("type") ?: throw InvalidView("invalid view: a node needs a type")
-            if (type !in TYPES) return null
-            if (type == "stack") {
-                val raws = ArrayList<JsonObject>()
-                val children = o.children(raws)
-                return build(type, fields, children, raws.map { layer(JsonFields(it)) })
-            }
-            return build(type, fields, if (type in CONTAINERS) o.children() else emptyList(), emptyList())
-        }
-
-        /** The node types this client knows; others are dropped from their parent. */
-        internal val TYPES = setOf(
-            "column", "row", "text", "markdown", "image", "carousel", "card", "button", "checkbox", "slider", "select",
-            "input", "divider", "canvas", "stack",
-        )
         internal val CONTAINERS = setOf("column", "row", "carousel", "card", "stack")
 
         /**
-         * A node of a known [type] from its props, however they were read (JSON, the binary format): every default,
-         * clamp and required prop is here, so both readers give the same node. A missing or mistyped required prop
-         * fails the view.
+         * A node of a known [type] from its props: every default, clamp and required prop. A missing or mistyped
+         * required prop fails the view.
          */
         internal fun build(type: String, f: Fields, children: List<AgentWidgetNode>, layers: List<Layer>): AgentWidgetNode = when (type) {
             "column" -> Column(children, f.gap(), f.enum("align", Align.Stretch))
@@ -193,31 +163,6 @@ sealed interface AgentWidgetNode {
             return Layer(place, sides[0].coerceAtLeast(0f), sides[1].coerceAtLeast(0f), sides[2].coerceAtLeast(0f), sides[3].coerceAtLeast(0f))
         }
 
-        /** The children, and into [raws] (when given) each kept child's own object. */
-        private fun JsonObject.children(raws: MutableList<JsonObject>? = null): List<AgentWidgetNode> {
-            val raw = this["children"] ?: return emptyList()
-            if (raw is JsonNull) return emptyList()
-            val list = raw as? JsonArray ?: throw InvalidView("invalid view: children must be an array")
-            val out = ArrayList<AgentWidgetNode>(list.size)
-            flatten(list, out, raws)
-            return out
-        }
-
-        /** Nested arrays flatten; `null` and `false` (a `cond && node` that didn't hold) drop out. */
-        private fun flatten(list: JsonArray, out: MutableList<AgentWidgetNode>, raws: MutableList<JsonObject>?) {
-            for (element in list) {
-                when {
-                    element is JsonArray -> flatten(element, out, raws)
-                    element is JsonNull -> Unit
-                    element is JsonPrimitive && !element.isString && element.booleanOrNull == false -> Unit
-                    else -> node(element)?.let {
-                        out.add(it)
-                        raws?.add(element as JsonObject)
-                    }
-                }
-            }
-        }
-
         private fun Fields.gap(): Int? = number("gap")?.toInt()?.coerceIn(0, 3)
 
         private fun Fields.bool(key: String, default: Boolean = false): Boolean = boolean(key) ?: default
@@ -239,10 +184,7 @@ sealed interface AgentWidgetNode {
 
     class InvalidView(message: String) : Exception(message)
 
-    /**
-     * A node's props as a reader has them. Enumerated props come back as their wire strings (`"top-left"`), so
-     * [build] reads every format alike.
-     */
+    /** A node's props as the reader has them; enumerated props come back as their wire strings (`"top-left"`). */
     interface Fields {
         /** A string prop; null when absent or not a string. */
         fun string(key: String): String?
@@ -260,48 +202,5 @@ sealed interface AgentWidgetNode {
         fun options(): List<Select.Option>?
         /** `inset` as top, right, bottom, left (unclamped), or null when absent. */
         fun inset(): FloatArray?
-    }
-
-    /** A node's JSON object, read with the rules the JSON form always had. */
-    class JsonFields(private val o: JsonObject) : Fields {
-        override fun string(key: String): String? = (o[key] as? JsonPrimitive)?.takeIf { it.isString }?.content
-
-        override fun number(key: String): Double? = o.number(key)
-
-        override fun boolean(key: String): Boolean? = (o[key] as? JsonPrimitive)?.takeIf { !it.isString }?.booleanOrNull
-
-        override fun has(key: String): Boolean = o[key].let { it != null && it !is JsonNull }
-
-        override fun strings(key: String): List<String> = when (val raw = o[key]) {
-            is JsonPrimitive -> listOfNotNull(raw.takeIf { it.isString }?.content)
-            is JsonArray -> raw.mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content }
-            else -> emptyList()
-        }
-
-        override fun values(into: FloatArray) {
-            (o["values"] as? JsonArray)?.take(into.size)?.forEachIndexed { index, value ->
-                into[index] = (value as? JsonPrimitive)?.doubleOrNull?.toFloat() ?: 0f
-            }
-        }
-
-        override fun options(): List<Select.Option>? = (o["options"] as? JsonArray)?.map { option ->
-            val p = option as? JsonObject ?: throw InvalidView("invalid view: a select option must be an object")
-            val fields = JsonFields(p)
-            Select.Option(
-                fields.string("value") ?: throw InvalidView("invalid view: option needs a string value"),
-                fields.string("label") ?: throw InvalidView("invalid view: option needs a string label"),
-                fields.string("description"),
-            )
-        }
-
-        override fun inset(): FloatArray? {
-            o.number("inset")?.toFloat()?.let { return floatArrayOf(it, it, it, it) }
-            val sides = o["inset"] as? JsonObject ?: return null
-            fun side(key: String) = sides.number(key)?.toFloat() ?: 0f
-            return floatArrayOf(side("top"), side("right"), side("bottom"), side("left"))
-        }
-
-        private fun JsonObject.number(key: String): Double? =
-            (this[key] as? JsonPrimitive)?.takeIf { !it.isString }?.doubleOrNull?.takeIf { it.isFinite() }
     }
 }

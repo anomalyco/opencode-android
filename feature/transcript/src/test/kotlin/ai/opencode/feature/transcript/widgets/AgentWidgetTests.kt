@@ -49,7 +49,7 @@ class AgentWidgetTests {
 
     @Test
     fun readsAStepOutputAndDropsUnknownNodes() {
-        val out = AgentWidgetStep.output(
+        val out = stepOutput(
             """
             {"state":{"picked":1},"view":{"type":"column","gap":2,"children":[
               {"type":"text","text":"Hi","style":"title","tone":"accent"},
@@ -73,10 +73,10 @@ class AgentWidgetTests {
     @Test
     fun readsSubmitDismissAndSend() {
         val view = """"view":{"type":"divider"}"""
-        assertEquals(OpenCodeWidgetResponse.Submit("""{"ok":true}"""), AgentWidgetStep.output("""{"state":{},$view,"submit":{"ok":true}}""").response)
-        assertEquals(OpenCodeWidgetResponse.Submit("null"), AgentWidgetStep.output("""{"state":{},$view,"submit":null}""").response)
-        assertEquals(OpenCodeWidgetResponse.Dismiss, AgentWidgetStep.output("""{"state":{},$view,"dismiss":true}""").response)
-        val sent = AgentWidgetStep.output("""{"state":{},$view,"send":{"value":2,"wake":false}}""")
+        assertEquals(OpenCodeWidgetResponse.Submit("""{"ok":true}"""), stepOutput("""{"state":{},$view,"submit":{"ok":true}}""").response)
+        assertEquals(OpenCodeWidgetResponse.Submit("null"), stepOutput("""{"state":{},$view,"submit":null}""").response)
+        assertEquals(OpenCodeWidgetResponse.Dismiss, stepOutput("""{"state":{},$view,"dismiss":true}""").response)
+        val sent = stepOutput("""{"state":{},$view,"send":{"value":2,"wake":false}}""")
         assertNull(sent.response)
         assertEquals(OpenCodeWidgetMessageValue("2", wake = false), sent.message)
     }
@@ -84,7 +84,7 @@ class AgentWidgetTests {
     @Test
     fun rejectsAnInvalidView() {
         for (text in listOf("""{"state":{},"view":{"type":"sparkle"}}""", """{"state":{},"view":{"type":"button","id":"x"}}""", """{"state":{}}""")) {
-            val failure = runCatching { AgentWidgetStep.output(text) }.exceptionOrNull()
+            val failure = runCatching { stepOutput(text) }.exceptionOrNull()
             assertTrue(text, failure is AgentWidgetNode.InvalidView)
         }
     }
@@ -92,7 +92,7 @@ class AgentWidgetTests {
     /** widgets.md, Canvas: drawn one way; `wgsl` makes it a GPU canvas (fps 60 by default), `values` need `wgsl`. */
     @Test
     fun readsACanvasDrawnOneWay() {
-        fun canvas(props: String) = AgentWidgetStep.output("""{"state":{},"view":{"type":"canvas","height":120$props}}""").view as AgentWidgetNode.Canvas
+        fun canvas(props: String) = stepOutput("""{"state":{},"view":{"type":"canvas","height":120$props}}""").view as AgentWidgetNode.Canvas
         val flat = canvas("")
         assertTrue(!flat.gpu)
         assertTrue(!flat.pointer)
@@ -115,7 +115,7 @@ class AgentWidgetTests {
             assertTrue(props.take(40), failure is AgentWidgetNode.InvalidView)
         }
         // The node type is gone.
-        assertTrue(runCatching { AgentWidgetStep.output("""{"state":{},"view":{"type":"shader","height":1,"wgsl":""}}""") }.exceptionOrNull() is AgentWidgetNode.InvalidView)
+        assertTrue(runCatching { stepOutput("""{"state":{},"view":{"type":"shader","height":1,"wgsl":""}}""") }.exceptionOrNull() is AgentWidgetNode.InvalidView)
     }
 
     /**
@@ -125,7 +125,7 @@ class AgentWidgetTests {
      */
     @Test
     fun readsAStackWithPlaceAndInset() {
-        val view = AgentWidgetStep.output(
+        val view = stepOutput(
             """
             {"state":{},"view":{"type":"stack","children":[
               {"type":"canvas","id":"0/:sky","pointer":true,"height":200,"wgsl":"fn shade(frag: vec2f) -> vec4f { return vec4f(1.0); }","place":"fill"},
@@ -151,7 +151,7 @@ class AgentWidgetTests {
         assertTrue(AgentWidgetNode.drawsPixels(view))
         assertEquals(listOf(true, false, true, false, false), view.children.map(AgentWidgetNode::takesPointer))
         // Every canvas child with `fill: false` keeps the stack at its height.
-        val fixed = AgentWidgetStep.output("""{"state":{},"view":{"type":"stack","children":[{"type":"canvas","height":90,"fill":false},{"type":"text","text":"Hi"}]}}""").view
+        val fixed = stepOutput("""{"state":{},"view":{"type":"stack","children":[{"type":"canvas","height":90,"fill":false},{"type":"text","text":"Hi"}]}}""").view
         assertTrue(!AgentWidgetNode.fills(fixed))
         assertTrue(AgentWidgetNode.drawsPixels(fixed))
     }
@@ -219,24 +219,30 @@ class AgentWidgetTests {
         assertEquals(name, a.strings, b.strings)
     }
 
+    /** A step output stated as JSON, written as the runtime's encoder would and read by the app. */
+    private fun stepOutput(text: String): AgentWidgetOutput = AgentWidgetWire.output(AgentWidgetWireEncoder.output(text))
+
+    /** A draw step's `{ commands }` stated as JSON, read into [list]. */
+    private fun drawOutput(text: String, list: AgentWidgetDrawList) = AgentWidgetWire.drawOutput(AgentWidgetWireEncoder.output(text), palette, list)
+
     /**
-     * The committed workloads (psychoscript-mobile 6d49474) decode from the bytes its encoder wrote to the same values
-     * the JSON form gives: every node and prop, step field, draw stream and live post.
+     * The committed workloads (psychoscript-mobile 6d49474) decode from the runtime's bytes, and the tests' encoder
+     * writes the same values from their JSON: every node and prop, step field, draw stream and live post.
      */
     @Test
-    fun binaryWorkloadsDecodeAsTheirJson() {
+    fun binaryWorkloadsMatchTheRuntimesEncoder() {
         val json = Json { ignoreUnknownKeys = true }
         for (name in stepWorkloads) {
             val text = fixture("$name.json").decodeToString()
             val bytes = fixture("$name.bin")
             if (name.startsWith("draw-")) {
-                val a = AgentWidgetDrawList().also { AgentWidgetDrawList.decode(text, palette, it) }
-                val b = AgentWidgetDrawList().also { AgentWidgetWire.drawOutput(bytes, palette, it) }
+                val a = AgentWidgetDrawList().also { AgentWidgetWire.drawOutput(bytes, palette, it) }
+                val b = AgentWidgetDrawList().also { drawOutput(text, it) }
                 assertTrue(name, a.commandCount > 0)
                 assertSameDrawing(name, a, b)
             } else {
-                val a = AgentWidgetStep.output(text)
-                val b = AgentWidgetWire.output(bytes)
+                val a = AgentWidgetWire.output(bytes)
+                val b = stepOutput(text)
                 assertEquals(name, a.view, b.view)
                 assertEquals(name, json.parseToJsonElement(a.state), json.parseToJsonElement(b.state))
                 assertEquals(name, a.response, b.response)
@@ -245,21 +251,21 @@ class AgentWidgetTests {
             }
         }
         for (name in liveWorkloads) {
-            val texts = (json.parseToJsonElement(fixture("$name.posts.json").decodeToString()) as kotlinx.serialization.json.JsonArray)
-                .map { it as kotlinx.serialization.json.JsonObject }
+            val texts = (json.parseToJsonElement(fixture("$name.posts.json").decodeToString()) as kotlinx.serialization.json.JsonArray).map { it.toString() }
             val bytes = posts(name)
             assertEquals(name, texts.size, bytes.size)
-            texts.zip(bytes).forEachIndexed { i, (o, b) ->
+            texts.zip(bytes).forEachIndexed { i, (text, b) ->
                 val at = "$name post $i"
+                val ours = AgentWidgetWire.post(AgentWidgetWireEncoder.post(text))
                 when (val post = AgentWidgetWire.post(b)) {
-                    is AgentWidgetWire.Post.Render -> assertEquals(at, AgentWidgetNode.parse(o.getValue("node")), post.view)
+                    is AgentWidgetWire.Post.Render -> assertEquals(at, post.view, (ours as AgentWidgetWire.Post.Render).view)
                     is AgentWidgetWire.Post.Draw -> {
-                        assertEquals(at, (o.getValue("id") as kotlinx.serialization.json.JsonPrimitive).content, post.id)
-                        val a = AgentWidgetDrawList().also { AgentWidgetDrawList.decode("{\"commands\":${o.getValue("commands")}}", palette, it) }
-                        val d = AgentWidgetDrawList().also { AgentWidgetWire.draw(post.message, post.section, palette, it) }
+                        assertEquals(at, post.id, (ours as AgentWidgetWire.Post.Draw).id)
+                        val a = AgentWidgetDrawList().also { AgentWidgetWire.draw(post.message, post.section, palette, it) }
+                        val d = AgentWidgetDrawList().also { AgentWidgetWire.draw(ours.message, ours.section, palette, it) }
                         assertSameDrawing(at, a, d)
                     }
-                    AgentWidgetWire.Post.Frame -> assertEquals(at, "\"frame\"", o.getValue("type").toString())
+                    AgentWidgetWire.Post.Frame -> assertEquals(at, AgentWidgetWire.Post.Frame, ours)
                     else -> throw AssertionError("$at: $post")
                 }
             }
@@ -389,12 +395,11 @@ class AgentWidgetTests {
     @Test
     fun readsDrawCommands() {
         val list = AgentWidgetDrawList()
-        AgentWidgetDrawList.decode(
+        drawOutput(
             """
-            {"commands":[["save"],["rect",0,0,10,20,"#f00"],["line",0,0,5,5,"muted"],
-              ["text",1,2,"Mon",{"size":11,"align":"center","weight":600}],["image","a.png",0,0,4,4],["bogus"],["restore"]]}
+            {"commands":[["save"],["rect",0,0,10,20,{"fill":"#f00"}],["line",0,0,5,5,{"stroke":"muted"}],
+              ["text",1,2,"Mon",{"size":11,"align":"center","weight":600}],["image","a.png",0,0,4,4],["restore"]]}
             """.trimIndent(),
-            palette,
             list,
         )
         assertEquals(6, list.commandCount)
@@ -409,14 +414,16 @@ class AgentWidgetTests {
         assertEquals(palette.tokens[AgentWidgetDrawList.Token.Muted.ordinal], list.ints[11])
     }
 
-    /** Android: the runner already rejects such a draw (`Budget`); the reader keeps the first 2,000 and marks it truncated, which counts as over budget. */
+    /** More than 2,000 commands is an invalid draw: the runtime's encoder refuses it, a program error in phase `draw`. */
     @Test
     fun rejectsTooManyDrawCommands() {
-        val many = (0..AgentWidgetDrawList.MAX_COMMANDS).joinToString(",", """{"commands":[""", "]}") { """["save"]""" }
+        fun saves(n: Int) = (1..n).joinToString(",", """{"commands":[""", "]}") { """["save"]""" }
         val list = AgentWidgetDrawList()
-        AgentWidgetDrawList.decode(many, palette, list)
-        assertTrue(list.truncated)
+        drawOutput(saves(AgentWidgetDrawList.MAX_COMMANDS), list)
         assertEquals(AgentWidgetDrawList.MAX_COMMANDS, list.commandCount)
+        assertTrue(runCatching { AgentWidgetWireEncoder.output(saves(AgentWidgetDrawList.MAX_COMMANDS + 1)) }.exceptionOrNull() is AgentWidgetWireEncoder.Invalid)
+        // An invalid command fails the draw too, rather than being skipped.
+        assertTrue(runCatching { AgentWidgetWireEncoder.output("""{"commands":[["save"],["bogus"]]}""") }.exceptionOrNull() is AgentWidgetWireEncoder.Invalid)
     }
 
     /** A game awaiting `widget.frame()` when its Done handler submits ends in a deadlock exit right after the submit. */
@@ -574,12 +581,19 @@ class AgentWidgetTests {
         assertEquals(0f, opacity.value)
     }
 
+    /** Colours as the runtime resolves them (`#rgb`, `#rrggbb`, `#rrggbbaa`, the tokens), against the app's palette. */
     @Test
     fun readsColours() {
-        assertEquals(0xFFFFFFFF.toInt(), AgentWidgetDrawList.color("#fff", palette))
-        assertEquals(0x80000000.toInt(), AgentWidgetDrawList.color("#00000080", palette))
-        assertEquals(palette.tokens[AgentWidgetDrawList.Token.Accent.ordinal], AgentWidgetDrawList.color("accent", palette))
-        assertNull(AgentWidgetDrawList.color("red", palette))
+        fun fill(color: String): Int {
+            val list = AgentWidgetDrawList()
+            drawOutput("""{"commands":[["rect",0,0,1,1,{"fill":"$color"}]]}""", list)
+            return list.ints[2]
+        }
+        assertEquals(0xFFFFFFFF.toInt(), fill("#fff"))
+        assertEquals(0x80000000.toInt(), fill("#00000080"))
+        assertEquals(0xFF336699.toInt(), fill("#336699"))
+        assertEquals(palette.tokens[AgentWidgetDrawList.Token.Accent.ordinal], fill("accent"))
+        assertTrue(runCatching { fill("red") }.exceptionOrNull() is AgentWidgetWireEncoder.Invalid)
     }
 
     // Machine
@@ -742,14 +756,14 @@ class AgentWidgetTests {
     /** Android: specs/v2/widgets-fullscreen.md: the root's `fullscreen`, `fill` canvases, and the event a widget template hears. */
     @Test
     fun readsFullScreenOffersFillAndTheEvent() {
-        val asked = AgentWidgetStep.output("""{"state":{},"view":{"type":"column","fullscreen":true,"children":[{"type":"canvas","height":120,"fill":true}]}}""")
+        val asked = stepOutput("""{"state":{},"view":{"type":"column","fullscreen":true,"children":[{"type":"canvas","height":120,"fill":true}]}}""")
         assertEquals(true, asked.fullscreen)
         assertTrue(AgentWidgetNode.fills(asked.view))
         assertTrue(AgentWidgetNode.drawsPixels(asked.view))
-        val plain = AgentWidgetStep.output("""{"state":{},"view":{"type":"column","children":[{"type":"text","text":"Hi"}]}}""")
+        val plain = stepOutput("""{"state":{},"view":{"type":"column","children":[{"type":"text","text":"Hi"}]}}""")
         assertNull(plain.fullscreen)
         assertTrue(!AgentWidgetNode.drawsPixels(plain.view))
-        assertEquals(false, AgentWidgetStep.output("""{"state":{},"view":{"type":"divider","fullscreen":false}}""").fullscreen)
+        assertEquals(false, stepOutput("""{"state":{},"view":{"type":"divider","fullscreen":false}}""").fullscreen)
         // widgets-fullscreen.md, Telling the program: the close button's area in root coordinates, null on leaving.
         assertEquals(
             """{"id":"","type":"fullscreen","value":true,"close":{"x":339,"y":8,"width":44,"height":44}}""",
