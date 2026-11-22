@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Necunoscut</string>
     <string name="session_sheet_context_tokens">%1$s tokeni</string>
     <string name="session_sheet_cost">Cost</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Fișiere și linkuri</string>
     <string name="session_always_notify">Notifică mereu</string>
     <string name="session_always_notify_message_phone">Primește notificări pe acest telefon când un răspuns e gata, chiar și pentru mesajele trimise de pe alt dispozitiv.</string>
     <string name="session_always_notify_message_tablet">Primește notificări pe această tabletă când un răspuns e gata, chiar și pentru mesajele trimise de pe alt dispozitiv.</string>

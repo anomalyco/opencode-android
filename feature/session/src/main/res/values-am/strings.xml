@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">ያልታወቀ</string>
     <string name="session_sheet_context_tokens">%1$s ቶከኖች</string>
     <string name="session_sheet_cost">ወጪ</string>
+    <string name="session_sheet_media">ሚዲያ</string>
+    <string name="session_sheet_media_value">ፋይሎች እና አገናኞች</string>
     <string name="session_always_notify">ሁልጊዜ አሳውቅ</string>
     <string name="session_always_notify_message_phone">ከዚህ ያልተላኩ መልእክቶችንም ጨምሮ፣ ምላሽ ባለቀ ቁጥር በዚህ ስልክ አሳውቅ።</string>
     <string name="session_always_notify_message_tablet">ከዚህ ያልተላኩ መልእክቶችንም ጨምሮ፣ ምላሽ ባለቀ ቁጥር በዚህ ታብሌት አሳውቅ።</string>

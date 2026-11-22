@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Neznano</string>
     <string name="session_sheet_context_tokens">%1$s žetonov</string>
     <string name="session_sheet_cost">Strošek</string>
+    <string name="session_sheet_media">Predstavnost</string>
+    <string name="session_sheet_media_value">Datoteke in povezave</string>
     <string name="session_always_notify">Vedno obvesti</string>
     <string name="session_always_notify_message_phone">Obvesti ta telefon ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
     <string name="session_always_notify_message_tablet">Obvesti to tablico ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>

@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Onbekend</string>
     <string name="session_sheet_context_tokens">%1$s tokens</string>
     <string name="session_sheet_cost">Kosten</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Bestanden en links</string>
     <string name="session_always_notify">Altijd melden</string>
     <string name="session_always_notify_message_phone">Stuur een melding naar deze telefoon wanneer een antwoord klaar is, ook als je het bericht niet vanaf hier hebt verstuurd.</string>
     <string name="session_always_notify_message_tablet">Stuur een melding naar deze tablet wanneer een antwoord klaar is, ook als je het bericht niet vanaf hier hebt verstuurd.</string>

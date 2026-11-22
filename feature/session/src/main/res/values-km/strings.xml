@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">មិនស្គាល់</string>
     <string name="session_sheet_context_tokens">%1$s ថូខិន</string>
     <string name="session_sheet_cost">តម្លៃ</string>
+    <string name="session_sheet_media">មេឌៀ</string>
+    <string name="session_sheet_media_value">ឯកសារ និងតំណ</string>
     <string name="session_always_notify">ជូនដំណឹងជានិច្ច</string>
     <string name="session_always_notify_message_phone">ជូនដំណឹងលើទូរសព្ទនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>
     <string name="session_always_notify_message_tablet">ជូនដំណឹងលើថេប្លេតនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>

@@ -279,6 +279,8 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         val requestDock: RequestDockFeature.State<DraftState> = RequestDockFeature.State(),
         val familySessions: List<OpenCodeSession> = emptyList(),
         val familyReadAt: Instant? = null,
+        /** The family read in flight, and whether another waits behind it. */
+        val familyRead: CoalescedRead = CoalescedRead(),
         val familyRootID: String? = null,
         val activeFamilySessionIDs: Set<String> = emptySet(),
         /** Runs that started or ended since the latest family read began. */
@@ -496,8 +498,7 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
                 isLoading = false,
                 // A draft has no history to page; the flag stays true once created.
                 earlierHistory = EarlierHistory.Exhausted,
-                // The model comes with the catalog: the server's default
-                // (`OpenCodeModelCatalog.newSessionModel`).
+                // The model comes with the catalog and the agents (`draftDefaultModel`).
             )
 
             internal fun shellToolStatuses(items: List<OpenCodeTranscriptItem>): Map<String, OpenCodeToolCall.Status> {

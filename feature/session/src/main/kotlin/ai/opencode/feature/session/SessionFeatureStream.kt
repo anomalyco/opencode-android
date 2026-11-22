@@ -305,14 +305,19 @@ private fun SessionFeature.eventStreamConnected(
     // last-known display names.
     val models = if (s.modelsLoadError != null) loadModelsIfNeeded(s) else Reduced(s)
     s = models.state
+    // Shell and job events may have been missed while the stream was down.
+    val shells = refreshShells(s)
+    val jobs = refreshJobs(shells.state)
+    s = jobs.state
     // A resume read that beat the socket handshake is already the REST hydration for this epoch.
     // Do not cancel it and start the same bytes again; subsequent events are buffered against
     // that in-flight read.
     val watched = watchdog(s)
-    if (watched.state.refresh != null) return Reduced(watched.state, Effect.merge(models.effect, retune.effect, watched.effect))
+    val relists = Effect.merge(shells.effect, jobs.effect)
+    if (watched.state.refresh != null) return Reduced(watched.state, Effect.merge(models.effect, retune.effect, relists, watched.effect))
     return Reduced(
         watched.state,
-        Effect.merge(models.effect, Effect.send(Action.RefreshRequested(RefreshReason.Reconnect)), retune.effect, watched.effect),
+        Effect.merge(models.effect, Effect.send(Action.RefreshRequested(RefreshReason.Reconnect)), retune.effect, relists, watched.effect),
     )
 }
 
@@ -645,6 +650,7 @@ private fun SessionFeature.visibilityChanged(state: SessionFeature.State, visibl
         // leaving, but going on into the background is.
         if (s.hasRenderedFirstContentFrame && s.isSceneActive) s = s.noteLeaving()
         if (!s.initialTranscriptRequestIsExternal) s = s.copy(isLoading = false)
+        s = s.copy(familyRead = CoalescedRead())
         val abandoned = abandonRefresh(s)
         return Reduced(
             abandoned.state,
@@ -733,7 +739,7 @@ private fun SessionFeature.task(state: SessionFeature.State): Reduced<SessionFea
         if (sessionTimers.watchdog || s.watchdogSchedule != null) {
             s = s.copy(watchdogSchedule = null, watchdogGeneration = s.watchdogGeneration + 1)
         }
-        s = s.copy(isUndoingLastMessage = false).supersedeRunWork()
+        s = s.copy(isUndoingLastMessage = false, familyRead = CoalescedRead()).supersedeRunWork()
     }
     s = s.copy(inheritsLiveWork = false)
     val dictation = dictation
@@ -741,7 +747,13 @@ private fun SessionFeature.task(state: SessionFeature.State): Reduced<SessionFea
         val loadModels = loadModelsIfNeeded(s)
         return Reduced(
             loadModels.state,
-            Effect.merge(stopSessionWork, loadModels.effect, outbox.effect, Effect.run<Action> { dictation.prepare() }),
+            Effect.merge(
+                stopSessionWork,
+                loadModels.effect,
+                Effect.send(Action.AgentsRequested),
+                outbox.effect,
+                Effect.run<Action> { dictation.prepare() },
+            ),
         )
     }
     if (s.loadError != null && s.items.isEmpty()) s = s.copy(isLoading = true)

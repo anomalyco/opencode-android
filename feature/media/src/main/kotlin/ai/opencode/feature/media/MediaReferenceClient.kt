@@ -58,6 +58,10 @@ import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 /** What a `media:<hash>` load gave. */
 sealed interface MediaReferenceLoadResult {
@@ -115,8 +119,10 @@ class MediaReferenceClient(
 class MemoryWarningCenter {
     private val observers = CopyOnWriteArrayList<() -> Unit>()
 
-    fun observe(observer: () -> Unit) {
+    /** Returns a call that stops [observer]. */
+    fun observe(observer: () -> Unit): () -> Unit {
         observers += observer
+        return { observers -= observer }
     }
 
     fun post() = observers.forEach { it() }
@@ -408,7 +414,8 @@ fun CachedImage(
     val resolvedUnavailable = isUnavailable ||
         retryState.failure == MediaAttachmentFailure.Unavailable ||
         MediaReferenceResolver.isUnavailable(attachment, server)
-    val decoded = loadedImage ?: remember(id, data, mediaHash) { CachedImage.decoded(id, data, mediaHash) }
+    val decoded = loadedImage ?: remember(id, data, mediaHash) { CachedImage.cachedThumbnail(id, mediaHash) }
+    val hasLocalData = data.isNotEmpty() || MediaReferenceResolver.cachedData(mediaHash) != null
     when {
         resolvedUnavailable -> MediaAttachmentUnavailableView(name, modifier, compact = compact)
         decoded != null -> Image(decoded.asImageBitmap(), contentDescription = null, modifier = modifier, contentScale = ContentScale.Crop)
@@ -419,11 +426,13 @@ fun CachedImage(
             onRetry = { retryState = retryState.retry() },
             isTransientFailure = true,
         )
-        mediaHash != null && server != null -> {
+        hasLocalData || (mediaHash != null && server != null) -> {
             Box(modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = OpenCodeTheme.colors.secondaryText)
+                if (!hasLocalData) {
+                    CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp, color = OpenCodeTheme.colors.secondaryText)
+                }
             }
-            LaunchedEffect("${server.persistenceID}|$mediaHash#${retryState.attempt}") {
+            LaunchedEffect("${server?.persistenceID}|${mediaHash ?: id}#${retryState.attempt}") {
                 retryState = retryState.beginLoad()
                 when (val result = withContext(Dispatchers.Default) { MediaReferenceResolver.loadImage(server, attachment) }) {
                     is MediaImageResult.Success -> loadedImage = result.image
@@ -442,7 +451,7 @@ fun CachedImage(
 object CachedImage {
     fun decoded(id: String, data: ByteArray, mediaHash: String? = null): Bitmap? {
         val cache = dependency(DecodedImageCache)
-        val key = mediaHash?.let { "media:$it" } ?: "attachment:$id"
+        val key = key(id, mediaHash)
         cache.image(key)?.let { return it }
         val resolved = if (data.isEmpty()) MediaReferenceResolver.cachedData(mediaHash) else data
         if (resolved == null || resolved.isEmpty()) return null
@@ -452,11 +461,60 @@ object CachedImage {
     }
 
     /**
-     * [decoded]'s cache hit alone, without decoding: what a tile shows on its first frame while it
+     * [decoded] at the size rows and tiles show: at most 1600 px on the long edge, unless that
+     * leaves the short edge under 800 px, so a square crop stays sharp. A smaller image is its original.
+     */
+    fun thumbnail(id: String, data: ByteArray, mediaHash: String? = null): Bitmap? {
+        cachedThumbnail(id, mediaHash)?.let { return it }
+        val resolved = if (data.isEmpty()) MediaReferenceResolver.cachedData(mediaHash) else data
+        if (resolved == null || resolved.isEmpty()) return null
+        val size = pixelSize(resolved) ?: return null
+        val long = max(size.width, size.height)
+        val target = thumbnailLongEdge(size.width, size.height)
+        if (target >= long) return decoded(id, resolved, mediaHash)
+        var sample = 1
+        while (long / (sample * 2) >= target) sample *= 2
+        val options = BitmapFactory.Options().apply { inSampleSize = sample }
+        val sampled = BitmapFactory.decodeByteArray(resolved, 0, resolved.size, options) ?: return null
+        val scale = target / max(sampled.width, sampled.height)
+        val image = if (scale >= 1) sampled else {
+            Bitmap.createScaledBitmap(sampled, max(1, (sampled.width * scale).roundToInt()), max(1, (sampled.height * scale).roundToInt()), true)
+        }
+        if (image !== sampled) sampled.recycle()
+        dependency(DecodedImageCache).insert(image, "thumb:" + key(id, mediaHash))
+        return image
+    }
+
+    private fun thumbnailLongEdge(width: Double, height: Double): Double {
+        val long = max(width, height)
+        return min(long, max(1600.0, ceil(800 * long / min(width, height))))
+    }
+
+    /** The encoded image's pixel size, read from its header alone. */
+    fun pixelSize(data: ByteArray): AgentImageSize? {
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeByteArray(data, 0, data.size, bounds)
+        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
+        return AgentImageSize(bounds.outWidth.toDouble(), bounds.outHeight.toDouble())
+    }
+
+    /** [decoded]'s cache hit alone, without decoding. */
+    fun cached(id: String, mediaHash: String? = null): Bitmap? =
+        dependency(DecodedImageCache).image(key(id, mediaHash))
+
+    /**
+     * [thumbnail]'s cache hit alone, without decoding: what a tile shows on its first frame while it
      * decodes off the main thread.
      */
-    fun cached(id: String, mediaHash: String? = null): Bitmap? =
-        dependency(DecodedImageCache).image(mediaHash?.let { "media:$it" } ?: "attachment:$id")
+    fun cachedThumbnail(id: String, mediaHash: String? = null): Bitmap? {
+        dependency(DecodedImageCache).image("thumb:" + key(id, mediaHash))?.let { return it }
+        val original = cached(id, mediaHash) ?: return null
+        val width = original.width.toDouble()
+        val height = original.height.toDouble()
+        return original.takeIf { thumbnailLongEdge(width, height) >= max(width, height) }
+    }
+
+    private fun key(id: String, mediaHash: String?): String = mediaHash?.let { "media:$it" } ?: "attachment:$id"
 }
 
 /** Reads and loads `media:<hash>` blobs for views without each holding the client. */
@@ -488,8 +546,8 @@ object MediaReferenceResolver {
     fun resolvedData(attachment: OpenCodeImageAttachment): ByteArray? =
         attachment.data.takeIf { it.isNotEmpty() } ?: cachedData(attachment.mediaHash)
 
-    fun decodedImage(attachment: OpenCodeImageAttachment): Bitmap? =
-        CachedImage.decoded(attachment.id, attachment.data, attachment.mediaHash)
+    fun thumbnail(attachment: OpenCodeImageAttachment): Bitmap? =
+        CachedImage.thumbnail(attachment.id, attachment.data, attachment.mediaHash)
 
     suspend fun loadData(server: OpenCodeServer, hash: String): MediaReferenceLoadResult =
         dependency(MediaReferenceClient).load(server, hash)
@@ -497,12 +555,12 @@ object MediaReferenceResolver {
     /** The attachment's image, or why there is none. */
     suspend fun loadImage(server: OpenCodeServer?, attachment: OpenCodeImageAttachment): MediaImageResult {
         if (attachment.isUnavailable) return MediaImageResult.Failure(MediaAttachmentFailure.Unavailable)
-        decodedImage(attachment)?.let { return MediaImageResult.Success(it) }
+        thumbnail(attachment)?.let { return MediaImageResult.Success(it) }
         val hash = attachment.mediaHash
         if (server == null || hash == null) return MediaImageResult.Failure(MediaAttachmentFailure.Unavailable)
         return when (val result = dependency(MediaReferenceClient).load(server, hash)) {
             is MediaReferenceLoadResult.Loaded ->
-                CachedImage.decoded(attachment.id, result.data, hash)?.let { MediaImageResult.Success(it) }
+                CachedImage.thumbnail(attachment.id, result.data, hash)?.let { MediaImageResult.Success(it) }
                     ?: MediaImageResult.Failure(MediaAttachmentFailure.Failed)
             MediaReferenceLoadResult.Unavailable -> MediaImageResult.Failure(MediaAttachmentFailure.Unavailable)
             is MediaReferenceLoadResult.Failed -> MediaImageResult.Failure(MediaAttachmentFailure.Failed)

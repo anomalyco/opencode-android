@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Tuntematon</string>
     <string name="session_sheet_context_tokens">%1$s tokenia</string>
     <string name="session_sheet_cost">Kustannus</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Tiedostot ja linkit</string>
     <string name="session_always_notify">Ilmoita aina</string>
     <string name="session_always_notify_message_phone">Ilmoita tähän puhelimeen aina, kun vastaus valmistuu, myös muualla lähetettyihin viesteihin.</string>
     <string name="session_always_notify_message_tablet">Ilmoita tähän tablettiin aina, kun vastaus valmistuu, myös muualla lähetettyihin viesteihin.</string>

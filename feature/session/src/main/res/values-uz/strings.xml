@@ -70,6 +70,8 @@
     <string name="session_sheet_unknown_description">Noma\'lum</string>
     <string name="session_sheet_context_tokens">%1$s token</string>
     <string name="session_sheet_cost">Xarajat</string>
+    <string name="session_sheet_media">Media</string>
+    <string name="session_sheet_media_value">Fayllar va havolalar</string>
     <string name="session_always_notify">Doim bildirish</string>
     <string name="session_always_notify_message_phone">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu telefonga bildirishnoma yuborilsin.</string>
     <string name="session_always_notify_message_tablet">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu planshetga bildirishnoma yuborilsin.</string>

@@ -61,11 +61,13 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
             if (pending != null && next.models.isNotEmpty() && !SessionFeature.catalog(next.models, offers = pending)) {
                 next = next.copy(pendingModel = null, currentModel = next.session?.model ?: catalog.defaultModel?.ref)
             }
-            // A draft starts on the server's default at the level last picked for it; until the
-            // catalog lands it has none, and a send leaves the choice to the server.
+            if (next.session == null && next.agentSelection.defaultModel != catalog.defaultModel) {
+                next = next.copy(agentSelection = next.agentSelection.copy(defaultModel = catalog.defaultModel))
+            }
+            // Until the catalog lands a draft has no model, and a send leaves the choice to the server.
             if (next.currentModel == null) {
                 val model = if (next.session == null) {
-                    catalog.newSessionModel(next.modelVariants.value)
+                    next.draftDefaultModel
                 } else {
                     catalog.defaultModel?.ref
                 }
@@ -143,13 +145,8 @@ internal fun SessionFeature.reduceModelsAndFamily(state: State, action: Action):
 
     is Action.FamilyPicked -> familyPicked(action.sessionID, state)
 
-    Action.FamilyRefreshRequested -> {
-        val family = refreshFamily(state)
-        val shells = refreshShells(family.state)
-        // Home asks for this on reconnect too, when job events may have been missed.
-        val jobs = refreshJobs(shells.state)
-        Reduced(jobs.state, Effect.merge(family.effect, shells.effect, jobs.effect))
-    }
+    // Subagents starting in a burst each ask. Shells and jobs aren't family: a new stream relists them.
+    Action.FamilyRefreshRequested -> refreshFamily(state, coalescing = true)
 
     is Action.ShellsResponse -> {
         val listed = action.result.getOrNull()
@@ -462,7 +459,7 @@ private fun SessionFeature.pickProject(project: OpenCodeProject, byHand: Boolean
     var next = state.copy(draftProject = project, activePicker = null, voice = state.voice?.moveDraft(project.directory))
     // Each folder has its own agents: the last folder's list isn't this one's, so it's dropped and
     // asked for again from the new folder.
-    if (!movesFolder || !next.agentSelection.isEnabled.value) return Reduced(next)
+    if (!movesFolder) return Reduced(next)
     if (next.primaryAgents.isNotEmpty()) next = next.withPrimaryAgents(emptyList())
     return Reduced(next, Effect.send(Action.AgentsRequested))
 }
