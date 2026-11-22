@@ -98,6 +98,19 @@ the OpenCode desktop design system (`packages/ui`, theme `oc-2`), not iOS's SF /
   44 dp arms, following the 16 dp window radius just outside the window, scene dimmed outside it). Their bars, panels and hint text use the desktop tokens.
 - Welcome illustration: the phone mock depicts the restyled Android app (flat header, desktop
   greys, hairline composer) rather than the iOS app's glass chrome.
+- Display layer (`ui/OpenCodeDisplay.kt`, Android-only): the bigger, roomier scale the Overview and
+  the drawer's summary card use — 26 dp card corners, 18 dp tiles, a 6/10/16/22/30/40 spacing
+  scale, a long soft card shadow and the display type scale (hero 35/40 tightly tracked, page title
+  29, section 17, a widely tracked uppercase eyebrow). It is **new tokens**, not changed ones: the
+  transcript, composer and settings keep `OpenCodeSpacing`/`OpenCodeRadius`/`OpenCodeTextStyles`,
+  because a chat surface is denser than a dashboard and the two never mix.
+- Brand colour: `OpenCodeColors.brand` (the theme's link blue, which every theme keeps readable
+  against its own canvas), `brandSoft` (a 14 % wash of it over the canvas) and `onBrand`. The
+  default theme's brand is the desktop's `--v2-background-bg-accent` blue. The desktop's own
+  surfaces stay neutral: the brand colours the display layer and the drawer's selection.
+- `OpenCodeAppearanceControl` (`ui/OpenCodeAppearanceControl.kt`): the Light / Dark / System
+  choice as a tinted well with the chosen segment in the brand. The control only reports the
+  choice; the reducer writes the shared key.
 Paths below are relative to `core/src/main/kotlin/ai/opencode/core/`.
 
 ## Files
@@ -126,7 +139,7 @@ Paths below are relative to `core/src/main/kotlin/ai/opencode/core/`.
 
 - Theme: wrap each window's root in `OpenCodeAppTheme { }` (reads the persisted choice); previews use `OpenCodeTheme(theme, appearance) { }`. Colours: `OpenCodeTheme.colors.<iOS name>` (e.g. `groupedCard`, `secondaryText`, `bodyText(0.92)`, `syntaxKeyword`); Material roles: `MaterialTheme.colorScheme` (mapping table in `OpenCodeColors.kt`).
 - Type: `MaterialTheme.typography.*` (role mapping in `OpenCodeTypography.kt`) or the iOS names in `OpenCodeTextStyles` (`footnote`, `subheadline`, …), Inter at desktop sizes; code in `OpenCodeFonts.monospace` (OpenMono), the app's one mono family.
-- Shapes and spacing: `OpenCodeShape.control` for controls, `capsule/circle` for true capsules, `card/panel/sheet`, `OpenCodeRadius.*`, `OpenCodeSpacing.*`.
+- Shapes and spacing: `OpenCodeShape.control` for controls, `capsule/circle` for true capsules, `card/panel/sheet`, `OpenCodeRadius.*`, `OpenCodeSpacing.*`. The display layer's own scale: `OpenCodeDisplay.*` (radii, spacing, shadow) and `OpenCodeDisplayTextStyles.*` (hero, page title, section title, eyebrow, metric) — for new dashboard surfaces only, never mixed into the transcript's density.
 - Surfaces: `OpenCodeSurfaces.color/border/dialogShape/popoverShape/raisedShadow/popoverShadow`, `Modifier.openCodeHairline(shape)`, `OpenCodeAlertDialog` instead of `AlertDialog`; Material `Button`s take `shape = OpenCodeShape.control`. Failures outside a form or dialog: `OpenCodeNotice` in an `OpenCodeNoticePresence`.
 - Motion: `Motion.<name>.spec()` / `.animation(reduceMotion)`, `Motion.easeOut(Motion.fadeStandard, …)`, `rememberReduceMotion()`, `SpringSolver` + `motionFrameLoop {}` for custom drivers, `MotionPresence`, `Modifier.motionBlurReveal`.
 - Title bars: `OpenCodeTopBar(title = { Text(...) }, navigation = { OpenCodeTopBarBackButton(onBack) }, actions = { ... }, centerTitle, scrollBehavior)` or `OpenCodeLargeTopBar("Title", rememberOpenCodeLargeTopBarScrollBehavior(listState))` (lists also take `overscrollEffect = rememberOverscrollIfContentScrolls(listState)`) instead of Material `TopAppBar`s; put the behaviour's `nestedScrollConnection` on the `Scaffold`.

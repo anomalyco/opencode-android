@@ -88,6 +88,8 @@ class DrawerListActions(
     val openWhatsNew: () -> Unit,
     val hideWhatsNew: () -> Unit,
     val openArchived: () -> Unit,
+    /** The Overview card: the Overview opens over the session. */
+    val openOverview: () -> Unit,
 )
 
 @Stable
@@ -428,6 +430,19 @@ fun DrawerListView(
                 val isDragged = item is DrawerListItem.Session && pinDrag.draggingID == item.id
                 Box(Modifier.zIndex(if (isDragged) 1f else 0f)) {
                 when (item) {
+                    DrawerListItem.Overview -> DrawerListShortcutRow(
+                        kind = DrawerListShortcutKind.Overview,
+                        motion = shortcutMotion,
+                        shortcuts = current.shortcuts,
+                        animates = shortcutsAnimate,
+                        exitDelay = 0.0,
+                        reducedMotion = current.reducedMotion,
+                        openCatchUp = { currentActions.openCatchUp() },
+                        markAllRead = {},
+                        openWhatsNew = { currentActions.openWhatsNew() },
+                        hideWhatsNew = { currentActions.hideWhatsNew() },
+                        openOverview = { currentActions.openOverview() },
+                    )
                     DrawerListItem.CatchUp, DrawerListItem.WhatsNew -> DrawerListShortcutRow(
                         kind = if (item == DrawerListItem.CatchUp) DrawerListShortcutKind.CatchUp else DrawerListShortcutKind.WhatsNew,
                         motion = shortcutMotion,
@@ -439,6 +454,7 @@ fun DrawerListView(
                         markAllRead = { store.send(HomeFeature.Action.CatchUp(ai.opencode.feature.drawer.catchup.CatchUpFeature.Action.MarkAllReadTapped)) },
                         openWhatsNew = { currentActions.openWhatsNew() },
                         hideWhatsNew = { currentActions.hideWhatsNew() },
+                        openOverview = { currentActions.openOverview() },
                         returnFocus = returnFocus.takeIf { item == DrawerListItem.CatchUp },
                     )
                     DrawerListItem.Archived -> ArchivedEntryRow(current.archivedCount, regularList = true, onClick = { currentActions.openArchived() })
@@ -570,7 +586,7 @@ private fun stabilized(previous: DrawerListModel, next: DrawerListModel): Drawer
 }
 
 private fun contentType(item: DrawerListItem): Int = when (item) {
-    DrawerListItem.CatchUp, DrawerListItem.WhatsNew, DrawerListItem.Archived -> 0
+    DrawerListItem.Overview, DrawerListItem.CatchUp, DrawerListItem.WhatsNew, DrawerListItem.Archived -> 0
     is DrawerListItem.Header -> 2
     is DrawerListItem.Session -> 3
     DrawerListItem.Empty -> 4

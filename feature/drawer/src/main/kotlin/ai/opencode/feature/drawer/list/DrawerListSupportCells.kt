@@ -6,7 +6,10 @@ import ai.opencode.core.motion.MotionPhase
 import ai.opencode.core.motion.MotionRole
 
 import ai.opencode.core.ui.AccessibilityFocusRequest
+import ai.opencode.core.ui.OpenCodeDisplay
+import ai.opencode.core.ui.OpenCodeDisplayTextStyles
 import ai.opencode.core.ui.OpenCodeIcon
+import ai.opencode.core.ui.OpenCodeIconSize
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.RollingNumber
@@ -18,6 +21,7 @@ import ai.opencode.feature.drawer.R
 import ai.opencode.feature.drawer.catchup.DrawerCatchUpFinishedLabel
 import ai.opencode.feature.drawer.motion.DrawerMotionTunables
 import ai.opencode.feature.drawer.motion.DrawerShortcutMotion
+import ai.opencode.feature.drawer.overview.OverviewFormat
 import ai.opencode.feature.drawer.style.DrawerMetrics
 import ai.opencode.feature.drawer.style.DrawerSectionBreak
 import ai.opencode.feature.drawer.style.DrawerSectionHeaderKind
@@ -39,15 +43,18 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -57,6 +64,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
@@ -81,6 +89,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -145,11 +154,12 @@ fun DrawerListHeaderCell(kind: DrawerSectionHeaderKind, pinDrag: DrawerPinDrag, 
 }
 
 /** Which shortcut a [DrawerListShortcutRow] is. */
-enum class DrawerListShortcutKind { CatchUp, WhatsNew }
+enum class DrawerListShortcutKind { Overview, CatchUp, WhatsNew }
 
 /**
- * Catch Up or What’s New above the sections. Each stays in the list while search is empty and
- * folds in and out with [AnimatedVisibility]; [animates] off lands the change in place.
+ * The Overview, Catch Up or What’s New above the sections. Catch Up and What’s New each stay in
+ * the list while search is empty and fold in and out with [AnimatedVisibility]; [animates] off
+ * lands the change in place. The Overview always leads the list.
  */
 @Composable
 fun DrawerListShortcutRow(
@@ -163,10 +173,18 @@ fun DrawerListShortcutRow(
     markAllRead: () -> Unit,
     openWhatsNew: () -> Unit,
     hideWhatsNew: () -> Unit,
+    openOverview: () -> Unit,
     modifier: Modifier = Modifier,
     returnFocus: AccessibilityFocusRequest? = null,
 ) {
     when (kind) {
+        DrawerListShortcutKind.Overview -> {
+            DrawerOverviewCard(
+                shortcuts = shortcuts,
+                onClick = openOverview,
+                modifier = modifier.padding(top = DrawerTunables.shortcutsTop, bottom = DrawerTunables.shortcutsGap),
+            )
+        }
         DrawerListShortcutKind.CatchUp -> {
             val count = if (shortcuts.catchUpCount > 0) shortcuts.catchUpCount else max(motion.displayedCatchUpCount, 1)
             val canMarkAllRead = if (shortcuts.catchUpCount > 0) shortcuts.canMarkAllRead else motion.displayedCanMarkAllRead
@@ -190,6 +208,81 @@ fun DrawerListShortcutRow(
             val top by animateDpAsState(if (shortcuts.showsCatchUp) DrawerTunables.shortcutsGap else DrawerTunables.shortcutsTop, topSpec)
             Collapse(shortcuts.showsWhatsNew, animates, exitDelay, reducedMotion, modifier.padding(top = top, bottom = DrawerTunables.shortcutsBelow)) {
                 DrawerWhatsNewButton(action = openWhatsNew, onHide = hideWhatsNew)
+            }
+        }
+    }
+}
+
+/**
+ * The Overview card, at the head of the list: the totals behind the Overview, and the way into
+ * it. Tinted with the theme's brand so it reads as the list's one card.
+ */
+@Composable
+fun DrawerOverviewCard(
+    shortcuts: DrawerListShortcuts,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = OpenCodeTheme.colors
+    val shape = RoundedCornerShape(OpenCodeDisplay.cardRadius)
+    val title = stringResource(R.string.drawer_overview_title)
+    val running = pluralStringResource(R.plurals.drawer_overview_running_count, shortcuts.overviewRunning, shortcuts.overviewRunning)
+    val sessions = pluralStringResource(R.plurals.drawer_overview_session_count, shortcuts.overviewSessions, shortcuts.overviewSessions)
+    Box(
+        modifier
+            .fillMaxWidth()
+            .padding(horizontal = DrawerMetrics.rowEdge)
+            .testTag("drawer-overview")
+            .clip(shape)
+            .background(colors.brandSoft)
+            .clickable(role = Role.Button, onClick = onClick)
+            .clearAndSetSemantics {
+                contentDescription = title
+                stateDescription = "$running, $sessions"
+                role = Role.Button
+                onClick { onClick(); true }
+            }
+            .padding(horizontal = 14.dp, vertical = 12.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OpenCodeIcon(
+                SFSymbol.SquareGrid2x2,
+                contentDescription = null,
+                size = OpenCodeIconSize.medium,
+                tint = colors.brand,
+            )
+            Spacer(Modifier.width(10.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    title.uppercase(),
+                    style = OpenCodeDisplayTextStyles.eyebrow.copy(fontSize = 10.sp),
+                    color = colors.brand,
+                )
+                Text(
+                    running,
+                    style = OpenCodeDisplayTextStyles.rowTitle,
+                    color = colors.text,
+                    modifier = Modifier.padding(top = 2.dp),
+                )
+                Text(
+                    sessions,
+                    style = OpenCodeDisplayTextStyles.rowDetail,
+                    color = colors.secondaryText,
+                )
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    OverviewFormat.cost(shortcuts.overviewSpend),
+                    style = OpenCodeDisplayTextStyles.rowTitle,
+                    color = colors.text,
+                )
+                Spacer(Modifier.height(2.dp))
+                OpenCodeIcon(
+                    SFSymbol.ChevronRight,
+                    contentDescription = null,
+                    size = OpenCodeIconSize.small,
+                    tint = colors.tertiaryText,
+                )
             }
         }
     }

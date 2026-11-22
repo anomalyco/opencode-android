@@ -33,6 +33,7 @@ import ai.opencode.feature.drawer.list.LocalDrawerSelection
 import ai.opencode.feature.drawer.motion.DrawerButton
 import ai.opencode.feature.drawer.motion.rememberDrawerKeyboardHold
 import ai.opencode.feature.drawer.motion.rememberDrawerShortcutMotion
+import ai.opencode.feature.drawer.overview.OverviewHost
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.feature.session.InAppNotice
 import ai.opencode.feature.drawer.notices.InAppNoticeSettings
@@ -130,6 +131,7 @@ fun HomeView(
     view.keyboardHold = rememberDrawerKeyboardHold(view.keyboardMonitor)
     view.shortcutMotion = rememberDrawerShortcutMotion()
     val hasDetail by store.observe { it.sessionDetail != null }
+    val showsOverview by store.observe { it.showsOverview }
 
     val settingsShown by store.observe { it.settings != null }
     val settingsAtRoot by store.observe { it.settings?.path?.isEmpty() ?: true }
@@ -152,6 +154,8 @@ fun HomeView(
                 val containerWidth = maxWidth
                 SideEffect { view.usesSidebar = usesSidebar }
                 if (hasDetail) HomeLayout(store, view, usesSidebar, drawerWidth, containerWidth, reducedMotion)
+                // The Overview is over the session: the drawer closes as it opens.
+                if (showsOverview) OverviewHost(store)
                 HomeSidebarEffects(store, view, usesSidebar)
             }
         }

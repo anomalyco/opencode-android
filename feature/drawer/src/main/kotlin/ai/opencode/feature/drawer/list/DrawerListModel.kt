@@ -29,6 +29,8 @@ import java.time.Instant
 enum class DrawerListSection { top, pinned, recents }
 
 sealed interface DrawerListItem {
+    /** The Overview: the totals, the projects and the recent sessions. */
+    data object Overview : DrawerListItem
     data object CatchUp : DrawerListItem
     data object WhatsNew : DrawerListItem
     /** Under Catch Up while the server has archived sessions. */
@@ -46,6 +48,7 @@ sealed interface DrawerListItem {
     /** A stable `LazyColumn` key. */
     val key: String
         get() = when (this) {
+            Overview -> "overview"
             CatchUp -> "catch-up"
             WhatsNew -> "whats-new"
             Archived -> "archived"
@@ -109,6 +112,10 @@ data class DrawerListShortcuts(
     val catchUpFinish: Int? = null,
     val canMarkAllRead: Boolean = false,
     val showsWhatsNew: Boolean = false,
+    /** The Overview's totals, on the card that opens it. */
+    val overviewSessions: Int = 0,
+    val overviewRunning: Int = 0,
+    val overviewSpend: Double = 0.0,
 ) {
     val catchUpFinished: Boolean get() = catchUpFinish != null
     val showsCatchUp: Boolean get() = catchUpCount > 0 || catchUpFinished
@@ -169,7 +176,7 @@ data class DrawerListModel(
                     // Ghost rows hold the other server's place until it answers.
                     return DrawerListModel(
                         sections = mapOf(
-                            DrawerListSection.top to emptyList(),
+                            DrawerListSection.top to listOf(DrawerListItem.Overview),
                             DrawerListSection.pinned to emptyList(),
                             DrawerListSection.recents to listOf(DrawerListItem.Header(DrawerSectionHeaderKind.Recents)) +
                                 (0 until ghostCount).map { DrawerListItem.Ghost(it) },
@@ -185,18 +192,31 @@ data class DrawerListModel(
             val status = state.statusSnapshot()
             val catchUpSessions = state.sessions.filter { status.needsCatchUp(it) }
             val catchUpCount = catchUpSessions.size
+            val live = state.sessions.filter { !it.isArchived }
+            var overviewRunning = 0
+            var overviewSpend = 0.0
+            for (session in live) {
+                if (status.indicator(session) == HomeFeature.State.Indicator.running) overviewRunning++
+                session.cost?.let { overviewSpend += it }
+            }
             val shortcuts = DrawerListShortcuts(
                 catchUpCount = catchUpCount,
                 catchUpFinish = if (state.catchUpState.justFinished && catchUpCount == 0) state.catchUpState.finishes else null,
                 canMarkAllRead = catchUpSessions.any { status.indicator(it) == Indicator.unread },
                 showsWhatsNew = state.showsWhatsNewButton,
+                overviewSessions = live.size,
+                overviewRunning = overviewRunning,
+                overviewSpend = overviewSpend,
             )
             val archivedCount = if (state.search.isEmpty()) state.inboxSidebarStatus.archived.size else 0
-            val showsShortcuts = state.search.isEmpty() && (shortcuts.showsCatchUp || shortcuts.showsWhatsNew) || archivedCount > 0
+            // The Overview card always leads the list, so the headers follow it.
+            val showsShortcuts = state.search.isEmpty() || archivedCount > 0
 
             val top = buildList {
                 if (serverNote != null && state.search.isEmpty()) add(DrawerListItem.ServerNote)
                 if (state.search.isEmpty()) {
+                    // The Overview leads the list: it is where the totals live.
+                    add(DrawerListItem.Overview)
                     add(DrawerListItem.CatchUp)
                     add(DrawerListItem.WhatsNew)
                 }

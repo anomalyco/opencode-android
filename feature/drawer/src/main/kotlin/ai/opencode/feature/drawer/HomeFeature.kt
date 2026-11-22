@@ -206,6 +206,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val showsWhatsNewButton: Boolean = false,
         /** Bumped when an action takes the screen to the session from over the open drawer; the drawer closes as it changes. */
         val drawerCloseRequests: Int = 0,
+        /** The Overview is up over the session: the totals, the projects and the recent sessions. */
+        val showsOverview: Boolean = false,
         /** A computer just paired: the drawer opens on its sessions. Holds the [detailGeneration] it was asked on. */
         val drawerOpenRequest: Int? = null,
         /**
@@ -690,6 +692,18 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** Opens a draft whose prompt asks OpenCode to install the plugin. */
         data object NotifyPluginSetUpTapped : Action
         data object SettingsTapped : Action
+        /** The drawer's Overview card: the Overview opens over the session. */
+        data object OverviewTapped : Action
+        /** The Overview closed (its back button, or Back). */
+        data object OverviewClosed : Action
+        /** The Overview's a session: it closes and the session opens. */
+        data class OverviewSessionTapped(val sessionID: String) : Action
+        /** The Overview's New Session: it closes and a new session opens. */
+        data object OverviewNewSessionTapped : Action
+        /** The Overview's Catch Up: it closes and Catch Up opens. */
+        data object OverviewCatchUpTapped : Action
+        /** The Overview's Settings: it closes and Settings opens. */
+        data object OverviewSettingsTapped : Action
 
         /** The drawer's call button: a call on the session behind the drawer. */
         data object DrawerCallTapped : Action

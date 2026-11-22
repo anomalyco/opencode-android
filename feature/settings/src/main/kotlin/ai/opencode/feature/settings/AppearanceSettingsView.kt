@@ -2,6 +2,9 @@ package ai.opencode.feature.settings
 
 import ai.opencode.core.motion.MotionPresence
 import ai.opencode.core.motion.MotionRole
+import ai.opencode.core.ui.OpenCodeAppearanceControl
+import ai.opencode.core.ui.OpenCodeDisplay
+import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTopBar
 import ai.opencode.core.ui.OpenCodeTopBarBackButton
 import ai.opencode.core.ui.rememberOverscrollIfContentScrolls
@@ -19,6 +22,7 @@ import ai.opencode.core.ui.ThemeSharedKeys
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -96,15 +100,22 @@ fun AppearanceSettingsView(store: SettingsStore) {
     // Back from the Theme picker puts TalkBack back on the Theme row.
     val returnFocus = rememberSettingsReturnFocus(store, page = SettingsPage.Appearance)
     val modeHeader = stringResource(R.string.settings_appearance_mode_header)
+    val paletteHeader = stringResource(R.string.settings_appearance_palette_header)
 
     SettingsPageScaffold(title = stringResource(R.string.settings_appearance_title), store = store) {
         settingsSection(key = "mode", header = modeHeader) {
-            SettingsSegmentedControl(
-                options = AppearanceColorScheme.entries,
-                selected = scheme,
-                title = { it.title },
-                onSelect = { send(HomeSettingsFeature.Action.AppearanceColorSchemeChanged(it)) },
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            Box(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+                OpenCodeAppearanceControl(
+                    selected = scheme,
+                    onSelect = { send(HomeSettingsFeature.Action.AppearanceColorSchemeChanged(it)) },
+                )
+            }
+        }
+        settingsSection(key = "palette", header = paletteHeader) {
+            ThemeChipRow(
+                appTheme = appTheme,
+                isDark = isDark,
+                onSelect = { send(HomeSettingsFeature.Action.AppThemeChanged(it)) },
             )
         }
         settingsSection(key = "theme") {
@@ -142,6 +153,57 @@ fun AppearanceSettingsView(store: SettingsStore) {
                         SettingsDropdownChevron()
                     }
                 }
+            }
+        }
+    }
+}
+
+/**
+ * The palettes, as chips: each theme's swatch over its name, the chosen one in the theme's brand.
+ * The row scrolls, so every palette is one tap away without opening the Themes page.
+ */
+@Composable
+private fun ThemeChipRow(
+    appTheme: AppTheme,
+    isDark: Boolean,
+    onSelect: (AppTheme) -> Unit,
+) {
+    val colors = OpenCodeTheme.colors
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        for (theme in AppTheme.entries) {
+            val selected = theme == appTheme
+            val shape = RoundedCornerShape(OpenCodeDisplay.tileRadius)
+            val fill = if (selected) colors.brandSoft else colors.groupedCard
+            Column(
+                Modifier
+                    .clip(shape)
+                    .background(fill)
+                    .border(1.dp, if (selected) colors.brand else colors.border, shape)
+                    .clickable(role = Role.RadioButton) { onSelect(theme) }
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                ThemeSwatchTile(
+                    rememberThemeDefinition(theme),
+                    isDark,
+                    ThemeSwatchTile.Size.Regular,
+                    cardBackground = fill,
+                )
+                Text(
+                    theme.title,
+                    style = OpenCodeTextStyles.caption1.copy(
+                        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                    ),
+                    color = if (selected) colors.brand else colors.secondaryText,
+                    maxLines = 1,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
             }
         }
     }

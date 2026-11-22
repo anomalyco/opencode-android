@@ -72,6 +72,19 @@ class OpenCodeColors(
      * 10%), so it reads on [groupedCard] in light and dark. The strong border under Increase Contrast.
      */
     val rowDivider: Color,
+    /**
+     * The theme's accent hue, for the display layer: filled buttons, icon tints, selected rows and
+     * the Overview's banner seed. The theme's link blue, which every theme keeps readable against
+     * its own canvas.
+     */
+    val brand: Color,
+    /**
+     * A pale wash of [brand] over the canvas: selected rows, icon tiles, soft buttons. Where the
+     * display layer wants a tinted surface without a border.
+     */
+    val brandSoft: Color,
+    /** Content drawn on a [brand] fill. */
+    val onBrand: Color,
     val syntaxKeyword: Color,
     val syntaxString: Color,
     val syntaxNumber: Color,
@@ -157,6 +170,9 @@ class OpenCodeColors(
                     isDark -> DesktopAccent.borderBaseDark
                     else -> DesktopAccent.borderBaseLight
                 },
+                brand = v.link.color,
+                brandSoft = v.link.withAlpha(0.14).composited(v.canvas).color,
+                onBrand = v.link.highContrastForeground.color,
                 syntaxKeyword = v.syntaxKeyword.color,
                 syntaxString = v.syntaxString.color,
                 syntaxNumber = v.syntaxNumber.color,

@@ -171,4 +171,56 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Help me improve the session screen. Show me what you find and explain the changes.</string>
     <string name="drawer_appearance_preview_assistant_text">I found the layout issue in `SessionView.swift`. The transcript and composer share the available height, so the keyboard is a useful stress test.</string>
+
+    <!-- The Overview: the totals, the projects and the recent sessions -->
+    <string name="drawer_overview_title">Overview</string>
+    <string name="drawer_overview_kicker">Your workspace</string>
+    <string name="drawer_overview_live">Live</string>
+    <string name="drawer_overview_connecting">Connecting</string>
+    <string name="drawer_overview_banner_quiet">All quiet</string>
+    <string name="drawer_overview_headline_waiting">Something needs you</string>
+    <string name="drawer_overview_headline_quiet">Nothing running</string>
+    <string name="drawer_overview_body_empty">Start a session and it shows up here.</string>
+    <string name="drawer_overview_metric_sessions">sessions</string>
+    <string name="drawer_overview_metric_running">running</string>
+    <string name="drawer_overview_metric_spend">spend</string>
+    <string name="drawer_overview_action_new_session">New Session</string>
+    <string name="drawer_overview_action_projects">Projects</string>
+    <string name="drawer_overview_action_catch_up">Catch Up</string>
+    <string name="drawer_overview_action_settings">Settings</string>
+    <string name="drawer_overview_projects_title">Projects</string>
+    <string name="drawer_overview_sessions_title">Recent Sessions</string>
+    <string name="drawer_overview_no_projects">No projects yet</string>
+    <string name="drawer_overview_no_sessions">No sessions yet</string>
+    <string name="drawer_overview_state_working">Working</string>
+    <string name="drawer_overview_state_waiting">Needs input</string>
+    <string name="drawer_overview_state_unread">Unread</string>
+    <plurals name="drawer_overview_running_count">
+        <item quantity="one">%1$d running</item>
+        <item quantity="other">%1$d running</item>
+    </plurals>
+    <plurals name="drawer_overview_session_count">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d sessions</item>
+    </plurals>
+    <plurals name="drawer_overview_banner_running">
+        <item quantity="one">%1$d running</item>
+        <item quantity="other">%1$d running</item>
+    </plurals>
+    <plurals name="drawer_overview_banner_waiting">
+        <item quantity="one">%1$d waiting</item>
+        <item quantity="other">%1$d waiting</item>
+    </plurals>
+    <plurals name="drawer_overview_headline_running">
+        <item quantity="one">%1$d session working</item>
+        <item quantity="other">%1$d sessions working</item>
+    </plurals>
+    <plurals name="drawer_overview_body_sessions">
+        <item quantity="one">%1$d session on this server</item>
+        <item quantity="other">%1$d sessions on this server</item>
+    </plurals>
+    <plurals name="drawer_overview_project_sessions">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d sessions</item>
+    </plurals>
 </resources>

@@ -7,6 +7,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 
@@ -109,6 +110,9 @@ object DynamicSystemTheme {
             onSelection = scheme.onPrimary,
             focusRing = scheme.primary,
             rowDivider = if (highContrast || strongBorders) scheme.outline else onSurface.copy(alpha = 0.12f),
+            brand = scheme.primary,
+            brandSoft = scheme.primary.copy(alpha = 0.14f).compositeOver(scheme.surface),
+            onBrand = scheme.onPrimary,
             syntaxKeyword = fixed.syntaxKeyword.color,
             syntaxString = fixed.syntaxString.color,
             syntaxNumber = fixed.syntaxNumber.color,

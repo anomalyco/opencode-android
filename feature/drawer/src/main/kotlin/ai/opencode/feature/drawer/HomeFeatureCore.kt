@@ -7,6 +7,7 @@ import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.Reduced
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
+import ai.opencode.feature.drawer.catchup.CatchUpFeature
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.session.InAppNotice
 import ai.opencode.feature.settings.HomeSettingsFeature
@@ -232,6 +233,33 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     is Action.SearchChanged -> Reduced(state.copy(search = action.text))
     is Action.SettingsShownChanged ->
         Reduced(if (action.isShown) state.showingSettings() else state.copy(settings = null))
+
+    // The Overview opens over the session, so the drawer closes as it does.
+    Action.OverviewTapped ->
+        if (state.showsOverview) {
+            Reduced(state)
+        } else {
+            Reduced(state.copy(showsOverview = true, drawerCloseRequests = state.drawerCloseRequests + 1))
+        }
+    Action.OverviewClosed -> Reduced(if (state.showsOverview) state.copy(showsOverview = false) else state)
+
+    // The Overview's own navigation: it closes, then the screen it names opens.
+    is Action.OverviewSessionTapped -> {
+        val closed = if (state.showsOverview) state.copy(showsOverview = false) else state
+        reduceDrawer(closed.adoptingSearchResult(action.sessionID), Action.SessionTapped(action.sessionID))
+    }
+    Action.OverviewNewSessionTapped -> {
+        val closed = if (state.showsOverview) state.copy(showsOverview = false) else state
+        reduceDrawer(closed, Action.NewSessionTapped)
+    }
+    Action.OverviewCatchUpTapped -> {
+        val closed = if (state.showsOverview) state.copy(showsOverview = false) else state
+        reduceCatchUp(closed, CatchUpFeature.Action.Tapped)
+    }
+    Action.OverviewSettingsTapped -> {
+        val closed = if (state.showsOverview) state.copy(showsOverview = false) else state
+        reduceDrawer(closed, Action.SettingsTapped)
+    }
 
     // The Onboarding Playground opens inside Settings (`SettingsFeature`), which sends it there.
     is Action.Settings -> {

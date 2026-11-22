@@ -443,14 +443,14 @@ private fun SelectionMark(selection: DrawerSelectionStyle?, cornerRadius: Dp) {
             .drawBehind {
                 val radius = CornerRadius(cornerRadius.toPx())
                 when (selection) {
-                    // The desktop sidebar's active row: a faint pressed overlay
-                    // (`--v2-overlay-simple-overlay-pressed`) in the row's small radius.
-                    DrawerSelectionStyle.Fill -> drawRoundRect(colors.text.copy(alpha = if (colors.isDark) 0.10f else 0.07f), cornerRadius = radius)
-                    DrawerSelectionStyle.Tint -> drawRoundRect(colors.accent, cornerRadius = radius)
+                    // The selected row wears the theme's brand: a soft wash of it over the canvas,
+                    // so the open session is the one coloured thing in the list.
+                    DrawerSelectionStyle.Fill -> drawRoundRect(colors.brandSoft, cornerRadius = radius)
+                    DrawerSelectionStyle.Tint -> drawRoundRect(colors.brand, cornerRadius = radius)
                     DrawerSelectionStyle.Outline -> {
                         val inset = 0.5.dp.toPx()
                         drawRoundRect(
-                            colors.text.copy(alpha = min(DrawerTunables.selectionOpacity * 2.5f, 1f)),
+                            colors.brand.copy(alpha = min(DrawerTunables.selectionOpacity * 2.5f, 1f)),
                             topLeft = Offset(inset, inset),
                             size = Size(size.width - inset * 2, size.height - inset * 2),
                             cornerRadius = CornerRadius(max(cornerRadius.toPx() - inset, 0f)),
@@ -461,7 +461,7 @@ private fun SelectionMark(selection: DrawerSelectionStyle?, cornerRadius: Dp) {
                         val width = 3.dp.toPx()
                         val x = if (rtl) size.width - width else 0f
                         drawRoundRect(
-                            colors.accent,
+                            colors.brand,
                             topLeft = Offset(x, 10.dp.toPx()),
                             size = Size(width, max(0f, size.height - 20.dp.toPx())),
                             cornerRadius = CornerRadius(1.5.dp.toPx()),

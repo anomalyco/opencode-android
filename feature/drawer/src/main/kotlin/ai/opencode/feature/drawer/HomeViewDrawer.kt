@@ -272,6 +272,7 @@ fun HomeDrawer(
             openWhatsNew = viewState::openWhatsNew,
             hideWhatsNew = { store.send(HomeFeature.Action.WhatsNew(WhatsNewFeature.Action.HideTapped)) },
             openArchived = openArchived,
+            openOverview = { store.send(HomeFeature.Action.OverviewTapped) },
         )
     }
 
@@ -506,14 +507,15 @@ private fun DrawerNewSessionButton(enabled: Boolean, onClick: () -> Unit) {
     val height = DrawerTunables.footerHeight.value
     val bearing = DrawerTunables.footerGlyphBearing.value * glyph / 17f
     val rise = DrawerTunables.footerGlyphRise.value * glyph / 17f
-    val tint = if (enabled) colors.text else colors.tertiaryText
+    val tint = if (enabled) colors.onBrand else colors.tertiaryText
     val newSession = stringResource(R.string.drawer_new_session)
     Surface(
         // The desktop's floating control: the popover fill, hairline ring and a soft shadow, at the
-        // floating panels' radius so the tall footer buttons don't read as keys.
+        // floating panels' radius so the tall footer buttons don't read as keys. Connected, it is
+        // the one filled button in the drawer, in the theme's brand.
         shape = RoundedCornerShape(OpenCodeRadius.panel),
-        color = OpenCodeSurfaces.color,
-        border = OpenCodeSurfaces.border,
+        color = if (enabled) colors.brand else OpenCodeSurfaces.color,
+        border = if (enabled) null else OpenCodeSurfaces.border,
         shadowElevation = OpenCodeSurfaces.raisedShadow,
         contentColor = tint,
         modifier = Modifier

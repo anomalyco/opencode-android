@@ -52,7 +52,7 @@ fun SessionContextRing(
         label = "contextRing",
     )
     val track = colors.text.copy(alpha = (if (colors.highContrast) trackOpacity * 2 else trackOpacity).toFloat().coerceIn(0f, 1f))
-    val tint = SessionContextRing.tint(fraction, colors.isDark, colors.text, colors.destructive)
+    val tint = SessionContextRing.tint(fraction, colors.isDark, colors.brand, colors.destructive)
     Canvas(modifier.padding(lineWidth / 2).clearAndSetSemantics {}) {
         val width = lineWidth.toPx()
         drawCircle(color = track, radius = size.minDimension / 2, style = Stroke(width))
@@ -87,7 +87,7 @@ fun SessionContextGauge(fraction: Double, modifier: Modifier = Modifier) {
     CircularProgressIndicator(
         progress = { animated },
         modifier = modifier.clearAndSetSemantics {},
-        color = SessionContextRing.tint(fraction, colors.isDark, colors.text, colors.destructive),
+        color = SessionContextRing.tint(fraction, colors.isDark, colors.brand, colors.destructive),
         strokeWidth = 3.dp,
         trackColor = MaterialTheme.colorScheme.outlineVariant,
         strokeCap = StrokeCap.Round,

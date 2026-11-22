@@ -3,6 +3,7 @@
     <!-- Appearance -->
     <string name="settings_appearance_title">Appearance</string>
     <string name="settings_appearance_mode_header">Mode</string>
+    <string name="settings_appearance_palette_header">Palette</string>
     <string name="settings_appearance_theme">Theme</string>
 
     <!-- Appearance › Themes -->
