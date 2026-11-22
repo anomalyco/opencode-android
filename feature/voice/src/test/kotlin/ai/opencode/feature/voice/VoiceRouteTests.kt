@@ -98,8 +98,7 @@ class VoiceRouteTests {
                     createSession = { _, _ -> throw AssertionError("Unused") },
                 )
                 this[VoiceCallClient] = testVoiceCall(
-                    start = { key, config ->
-                        assertEquals("", key)
+                    start = { config ->
                         configs += config
                         stream.yieldEvent(VoiceCallEvent.Connected)
                         stream.flow
@@ -164,7 +163,7 @@ class VoiceRouteTests {
                 createSession = { _, _ -> throw AssertionError("Unused") },
             )
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> throw AssertionError("A cancelled startup must never open a call") },
+                start = { _ -> throw AssertionError("A cancelled startup must never open a call") },
                 end = { },
             )
         }

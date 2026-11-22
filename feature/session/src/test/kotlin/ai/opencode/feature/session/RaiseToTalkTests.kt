@@ -60,7 +60,7 @@ class RaiseToTalkTests {
     }
 
     private fun callClient(
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _, _ -> emptyFlow() },
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _ -> emptyFlow() },
         setAtEar: suspend (Boolean) -> Unit = {},
         end: suspend () -> Unit = {},
     ) = VoiceCallClient(
@@ -298,7 +298,7 @@ class RaiseToTalkTests {
             this[Clock] = ImmediateClock()
             // Android: every call start mints its notification identity.
             this[ai.opencode.core.dependencies.UuidClient] = ai.opencode.core.dependencies.UuidClient.incrementing()
-            this[VoiceCallClient] = callClient(start = { _, config ->
+            this[VoiceCallClient] = callClient(start = { config ->
                 startedAtEar.append(config.isAtEar)
                 flow { awaitCancellation() }
             })
@@ -328,13 +328,12 @@ class RaiseToTalkTests {
             this[VoiceCallClient] = callClient(
                 setAtEar = { host.setAtEar(it) },
                 end = { host.end() },
-                start = { apiKey, config ->
+                start = { config ->
                     startedAtEar.append(config.isAtEar)
                     host.start(
-                        apiKey = apiKey,
                         config = config,
                         realtime = RealtimeClient.testValue,
-                        live = LiveClient { _, _ -> LiveConnection(events = flow { awaitCancellation() }, send = {}, close = {}) },
+                        live = LiveClient { _ -> LiveConnection(events = flow { awaitCancellation() }, send = {}, close = {}) },
                         audio = VoiceAudioClient(
                             start = { VoiceAudioClient.testValue.start() },
                             startAtEar = { atEar ->
@@ -389,7 +388,7 @@ class RaiseToTalkTests {
             })
             this[VoiceCallClient] = callClient(
                 setAtEar = { setAtEarCalls.append(it) },
-                start = { _, config ->
+                start = { config ->
                     startedConfigs.append(config.isAtEar)
                     callEvents.receiveAsFlow()
                 },

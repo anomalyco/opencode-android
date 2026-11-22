@@ -88,7 +88,7 @@ class CallVoiceTests {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             // Android: the call's ongoing-notification ID.
             this[UuidClient] = UuidClient.incrementing()
-            this[VoiceCallClient] = speechVoiceCall(start = { _, config ->
+            this[VoiceCallClient] = speechVoiceCall(start = { config ->
                 started.update { it + config }
                 emptyFlow()
             })
@@ -145,7 +145,7 @@ class CallVoiceTests {
                 this[SharedStore] = shared.store
                 this[DateClient] = date
                 this[UuidClient] = UuidClient { id }
-                this[VoiceCallClient] = speechVoiceCall(start = { _, _ -> emptyFlow() })
+                this[VoiceCallClient] = speechVoiceCall(start = { _ -> emptyFlow() })
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
             }
             store.exhaustive = false

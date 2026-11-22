@@ -50,7 +50,7 @@ object LiveRTC {
         initialized = true
     }
 
-    suspend fun connect(apiKey: String, config: LiveSessionConfig): LiveConnection {
+    suspend fun connect(config: LiveSessionConfig): LiveConnection {
         val broker = VoiceBrokerTransport(config.serverVoice ?: throw RealtimeClientError.InvalidURL)
         val setup = VoiceRTCSetup(
             engine = "GPT-Live",
@@ -844,7 +844,7 @@ class LiveRTCNetworkWatch {
 }
 
 object RealtimeRTC {
-    suspend fun connect(apiKey: String, config: RealtimeSessionConfig): RealtimeConnection {
+    suspend fun connect(config: RealtimeSessionConfig): RealtimeConnection {
         val broker = VoiceBrokerTransport(config.serverVoice ?: throw RealtimeClientError.InvalidURL)
         val setup = VoiceRTCSetup(
             engine = "Realtime",

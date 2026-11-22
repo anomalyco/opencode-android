@@ -19,15 +19,15 @@ class RealtimeConnection(
     override val startAudio: (suspend (Boolean) -> VoiceAudioSession)? = null,
 ) : VoiceSocketConnection<RealtimeServerEvent, RealtimeCommand>
 
-class RealtimeClient(val connect: suspend (String, RealtimeSessionConfig) -> RealtimeConnection) {
+class RealtimeClient(val connect: suspend (RealtimeSessionConfig) -> RealtimeConnection) {
     companion object Key : DependencyKey<RealtimeClient> {
-        override val liveValue = RealtimeClient { apiKey, config ->
+        override val liveValue = RealtimeClient { config ->
             dependency(LiveTransportChoice).connect(
-                webRTC = { RealtimeRTC.connect(apiKey, config) },
-                webSocket = { RealtimeSocket(apiKey, config).open() },
+                webRTC = { RealtimeRTC.connect(config) },
+                webSocket = { RealtimeSocket(config).open() },
             )
         }
-        override val testValue = RealtimeClient { _, _ -> RealtimeConnection(emptyFlow(), {}, {}) }
+        override val testValue = RealtimeClient { _ -> RealtimeConnection(emptyFlow(), {}, {}) }
     }
 }
 
@@ -60,7 +60,7 @@ sealed class RealtimeClientError(override val message: String) : Exception(messa
     }
 }
 
-class RealtimeSocket(private val apiKey: String, private val config: RealtimeSessionConfig) {
+class RealtimeSocket(private val config: RealtimeSessionConfig) {
     suspend fun open(): RealtimeConnection {
         val server = config.serverVoice ?: throw RealtimeClientError.InvalidURL
         val transport = VoiceBrokerTransport(server).webSocket(config.model, config.sessionPayload(true))

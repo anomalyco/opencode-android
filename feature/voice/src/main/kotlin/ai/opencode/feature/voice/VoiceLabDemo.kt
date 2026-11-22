@@ -100,7 +100,7 @@ object VoiceLabDemo {
         val dispatcher = Dispatchers.Default.limitedParallelism(1)
         var current: ScriptedCall? = null
         VoiceCallClient(
-            start = { _, _ -> withContext(dispatcher) {
+            start = { withContext(dispatcher) {
                 current?.finish(); current = null
                 val failure = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_FAIL")
                 if (failure != null) flow { throw LabFailure(failure) }

@@ -170,7 +170,7 @@ internal object VoiceFeatureTestSupport {
 
     /** A copy of the call client with some closures replaced. */
     fun VoiceCallClient.copy(
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
         completeFunction: suspend (String, String) -> Unit = this.completeFunction,
         noteProgressActivity: suspend (String, String?) -> Unit = this.noteProgressActivity,
         stopProgressLine: suspend (String) -> Unit = this.stopProgressLine,

@@ -286,7 +286,7 @@ class VoiceOpenLinkTests {
         val store = h.store(h.state { VoiceFeature.State(server, session) }) {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             this[Clock] = ImmediateClock()
-            voiceCall { copy(start = { _, _ -> events.events }, completeFunction = { _, _ -> }) }
+            voiceCall { copy(start = { _ -> events.events }, completeFunction = { _, _ -> }) }
             configure()
         }
         store.exhaustive = false

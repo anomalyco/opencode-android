@@ -102,10 +102,10 @@ class VoiceSessionDelegatorServerVoiceTests {
 
     private class CallStream {
         val channel = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        val configs = Locked(listOf<Pair<String, RealtimeSessionConfig>>())
+        val configs = Locked(listOf<RealtimeSessionConfig>())
 
-        fun start(key: String, config: RealtimeSessionConfig): Flow<VoiceCallEvent> {
-            configs.update { it + (key to config) }
+        fun start(config: RealtimeSessionConfig): Flow<VoiceCallEvent> {
+            configs.update { it + config }
             channel.trySend(VoiceCallEvent.Connected)
             return channel.consumeAsFlow()
         }
@@ -191,9 +191,8 @@ class VoiceSessionDelegatorServerVoiceTests {
             it.serverStarted(VoiceProviderOption.Brand.openAI, usesDelegator = true, usesSessionDelegator = false)
         }
         svBuiltInStore.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected), update = connected(now))
-        assertTrue(svBuiltInStream.configs.value.first().first.isEmpty())
-        assertEquals(false, svBuiltInStream.configs.value.first().second.unboundSpeechUsesInstructions)
-        val svBuiltInDelegation = sessionDelegation(svBuiltInStream.configs.value.first().second)?.jsonObject
+        assertEquals(false, svBuiltInStream.configs.value.first().unboundSpeechUsesInstructions)
+        val svBuiltInDelegation = sessionDelegation(svBuiltInStream.configs.value.first())?.jsonObject
         assertEquals(RealtimeJSONs.string("responses"), svBuiltInDelegation?.get("type"))
         assertEquals(RealtimeJSONs.string(VoiceDelegator.model), svBuiltInDelegation?.get("responses")?.jsonObject?.get("model"))
 
@@ -242,9 +241,8 @@ class VoiceSessionDelegatorServerVoiceTests {
             it.serverStarted(VoiceProviderOption.Brand.openAI, usesDelegator = false, usesSessionDelegator = true)
         }
         svSessionStore.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected), update = connected(now))
-        assertTrue(svSessionStream.configs.value.first().first.isEmpty())
-        assertEquals(true, svSessionStream.configs.value.first().second.unboundSpeechUsesInstructions)
-        assertEquals(clientDelegation, sessionDelegation(svSessionStream.configs.value.first().second))
+        assertEquals(true, svSessionStream.configs.value.first().unboundSpeechUsesInstructions)
+        assertEquals(clientDelegation, sessionDelegation(svSessionStream.configs.value.first()))
         svSessionStore.sessionTurn(
             itemID = "u4", text = "Deploy.", callID = "del_sv_s", promptID = "msg_sv_s",
             promptText = "server-delta", reply = "Server session reply.", now = now,
@@ -279,8 +277,7 @@ class VoiceSessionDelegatorServerVoiceTests {
             this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[VoiceWorkClient] = testVoiceWork(recentMessages = { _, _, _ -> emptyList() })
             this[VoiceCallClient] = speechVoiceCall(
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     startedConfigs.update { it + config }
                     if (startedConfigs.value.size == 1) {
                         throw RealtimeClientError.Closed("Couldn’t start voice: Invalid value: ’client’.")
@@ -390,8 +387,7 @@ class VoiceSessionDelegatorServerVoiceTests {
                 },
             )
         }
-        val live = LiveClient { key, config ->
-            assertTrue(key.isEmpty())
+        val live = LiveClient { config ->
             val broker = VoiceBrokerTransport(requireNotNull(config.serverVoice))
             val answer = withContext(brokerValues.asContextElement()) { broker.exchange(config = config, sdp = "v=0-offer") }
             assertEquals("v=0-answer", answer)
@@ -412,7 +408,7 @@ class VoiceSessionDelegatorServerVoiceTests {
         })
 
         val events = EventIterator(
-            harness.coordinator.start(apiKey = "", config = realtimeConfig.liveSessionConfig(), live = live, audio = audio),
+            harness.coordinator.start(config = realtimeConfig.liveSessionConfig(), live = live, audio = audio),
             backgroundScope,
         )
 

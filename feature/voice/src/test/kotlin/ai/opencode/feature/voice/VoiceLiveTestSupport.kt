@@ -213,7 +213,7 @@ class LiveHarness(
         delegation: LiveDelegation = LiveDelegation.client,
         unboundSpeechUsesInstructions: Boolean = false,
     ): Flow<VoiceCallEvent> {
-        val live = LiveClient { _, config ->
+        val live = LiveClient { config ->
             if (sockets.isNotEmpty() && failingConnects > 0) {
                 failingConnects -= 1
                 throw NotConnectedToInternet()
@@ -256,7 +256,6 @@ class LiveHarness(
             )
         })
         return coordinator.start(
-            apiKey = "test",
             config = LiveSessionConfig(
                 instructions = instructions,
                 delegation = delegation,
@@ -336,7 +335,7 @@ fun TestScope.voiceTestStore(
 
 /** A client whose unset closures do nothing. */
 fun testVoiceCall(
-    start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _, _ -> kotlinx.coroutines.flow.emptyFlow() },
+    start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _ -> kotlinx.coroutines.flow.emptyFlow() },
     completeFunction: suspend (String, String) -> Unit = { _, _ -> },
     noteProgressActivity: suspend (String, String?) -> Unit = { _, _ -> },
     cancelPendingAnnouncements: suspend (List<String>) -> Unit = { },

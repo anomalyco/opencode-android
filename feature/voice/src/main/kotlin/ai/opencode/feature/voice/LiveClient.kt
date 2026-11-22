@@ -14,13 +14,13 @@ class LiveConnection(
     override val startAudio: (suspend (Boolean) -> VoiceAudioSession)? = null,
 ) : VoiceSocketConnection<LiveServerEvent, LiveCommand>
 
-class LiveClient(val connect: suspend (String, LiveSessionConfig) -> LiveConnection) {
+class LiveClient(val connect: suspend (LiveSessionConfig) -> LiveConnection) {
     companion object Key : DependencyKey<LiveClient> {
-        override val liveValue = LiveClient { apiKey, config ->
-            try { LiveRTC.connect(apiKey, config) }
+        override val liveValue = LiveClient { config ->
+            try { LiveRTC.connect(config) }
             catch (error: LiveRTCRejected) { throw RealtimeClientError.Closed(error.message) }
         }
-        override val testValue = LiveClient { _, _ -> LiveConnection(emptyFlow(), {}, {}) }
+        override val testValue = LiveClient { _ -> LiveConnection(emptyFlow(), {}, {}) }
     }
 }
 /** WebRTC unless it recently failed on this network. A successful WebSocket

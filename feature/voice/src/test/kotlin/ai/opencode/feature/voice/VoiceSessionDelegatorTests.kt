@@ -134,8 +134,7 @@ class VoiceSessionDelegatorTests {
                     models = { null },
                     createSession = { _, _ -> throw AssertionError("Unused") },
                 )
-                this[VoiceCallClient] = testVoiceCall(start = { key, config ->
-                    assertTrue(key.isEmpty())
+                this[VoiceCallClient] = testVoiceCall(start = { config ->
                     startedConfigs += config
                     emptyFlow()
                 })

@@ -92,7 +92,7 @@ class DictationHoldReportingTests {
             this[UuidClient] = UuidClient.incrementing()
             this[DictationClient] = DictationClient(holdsAudio = { true }, releaseHold = {})
             this[VoiceCallClient] = VoiceCallClient(
-                start = { _, _ -> emptyFlow() },
+                start = { _ -> emptyFlow() },
                 completeFunction = { _, _ -> },
                 setMuted = {},
                 setAtEar = { routes.append(it) },

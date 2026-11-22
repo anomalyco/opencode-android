@@ -66,7 +66,7 @@ class VoiceProviderTests {
         shared: SpeechTestShared,
         at: Long,
         checkSupport: suspend (OpenCodeServer) -> ServerVoiceSupport,
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
         end: suspend () -> Unit,
     ): DependencyValues.Builder.() -> Unit = {
         this[SharedStore] = shared.store
@@ -183,8 +183,7 @@ class VoiceProviderTests {
                     fail("Studio's support is known")
                     ServerVoiceSupport.supported
                 },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     brokers.update { it + config.serverVoice }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -234,7 +233,7 @@ class VoiceProviderTests {
             callDependencies(
                 shared, at = 4_000,
                 checkSupport = { ServerVoiceSupport.unsupported },
-                start = { _, _ ->
+                start = { _ ->
                     fail("A server too old for voice never starts a call")
                     throw CancellationException()
                 },
@@ -301,7 +300,7 @@ class VoiceProviderTests {
             callDependencies(
                 shared, at = 5_000,
                 checkSupport = { ServerVoiceSupport.supported },
-                start = { _, config ->
+                start = { config ->
                     brokers.update { it + config.serverVoice }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)

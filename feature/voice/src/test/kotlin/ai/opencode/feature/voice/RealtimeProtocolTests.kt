@@ -348,7 +348,7 @@ class RealtimeProtocolTests {
                     teardowns = Channel(Channel.UNLIMITED),
                     coordinator = VoiceCallCoordinator(),
                 )
-                val realtime = RealtimeClient { _, _ ->
+                val realtime = RealtimeClient { _ ->
                     RealtimeConnection(
                         events = harness.serverEvents.receiveAsFlow(),
                         send = { command -> synchronized(harness.commandList) { harness.commandList += command } },
@@ -375,7 +375,6 @@ class RealtimeProtocolTests {
                     )
                 })
                 val events = harness.coordinator.start(
-                    apiKey = "test",
                     config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
                     realtime = realtime,
                     audio = audio,

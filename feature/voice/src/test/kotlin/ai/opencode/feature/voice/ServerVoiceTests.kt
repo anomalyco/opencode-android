@@ -191,7 +191,7 @@ class ServerVoiceTests {
     private fun serverVoiceDependencies(
         shared: SpeechTestShared,
         at: Long,
-        start: suspend (String, RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
         end: suspend () -> Unit = {},
         serverVoice: ServerVoiceClient? = null,
     ): ai.opencode.core.dependencies.DependencyValues.Builder.() -> Unit = {
@@ -219,8 +219,7 @@ class ServerVoiceTests {
         val openAIEffects = detachedScope(coroutineContext)
         val openAIStore = TestStore(
             openAIState, VoiceFeature(), openAIEffects,
-            serverVoiceDependencies(shared, at = 1_000, start = { key, config ->
-                assertTrue(key.isEmpty())
+            serverVoiceDependencies(shared, at = 1_000, start = { config ->
                 capturedConfigs.update { it + config }
                 openAIStream.trySend(VoiceCallEvent.Connected)
                 openAIStream.consumeAsFlow()
@@ -264,8 +263,7 @@ class ServerVoiceTests {
         val geminiEffects = detachedScope(coroutineContext)
         val geminiStore = TestStore(
             geminiState, VoiceFeature(), geminiEffects,
-            serverVoiceDependencies(geminiShared, at = 2_000, start = { key, config ->
-                assertTrue(key.isEmpty())
+            serverVoiceDependencies(geminiShared, at = 2_000, start = { config ->
                 capturedConfigs.update { it + config }
                 geminiStream.trySend(VoiceCallEvent.Connected)
                 geminiStream.consumeAsFlow()
@@ -321,8 +319,7 @@ class ServerVoiceTests {
             state, VoiceFeature(), effects,
             serverVoiceDependencies(
                 shared, at = 3_500,
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     assertEquals(server, config.serverVoice)
                     assertEquals(ServerVoiceProvider.geminiLive, config.provider)
                     connectGate.await()
@@ -379,7 +376,7 @@ class ServerVoiceTests {
         val effects = detachedScope(coroutineContext)
         val store = TestStore(
             state, VoiceFeature(), effects,
-            serverVoiceDependencies(shared, at = 4_000, start = { _, _ ->
+            serverVoiceDependencies(shared, at = 4_000, start = { _ ->
                 throw ServerVoiceError.fromHTTPResponse(
                     statusCode = 503,
                     data = """{"message":"Voice needs an OpenAI API key on the server (a stored key or OPENAI_API_KEY). ChatGPT sign-in can't start voice sessions."}""".toByteArray(),
@@ -547,7 +544,7 @@ class ServerVoiceTests {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
         }
         val coordinator = DependencyValues.withValues(values) { GeminiCallCoordinator() }
-        val geminiClient = GeminiLiveClient { _, _ ->
+        val geminiClient = GeminiLiveClient { _ ->
             GeminiLiveConnection(
                 events = serverEvents.consumeAsFlow(),
                 send = { command -> sentCommands.update { it + command } },
@@ -566,7 +563,6 @@ class ServerVoiceTests {
         })
 
         val callEvents = coordinator.start(
-            apiKey = "auth_tokens/test",
             config = GeminiLiveSessionConfig(instructions = "Test instructions", tools = VoiceInstructions.tools),
             gemini = geminiClient,
             audio = audioClient,
@@ -737,14 +733,13 @@ class ServerVoiceTests {
 
         val effects = detachedScope(coroutineContext)
         val store = TestStore(state, VoiceFeature(), effects) {
-            serverVoiceDependencies(shared, at = 4_000, start = { _, _ -> stream.consumeAsFlow() }).invoke(this)
+            serverVoiceDependencies(shared, at = 4_000, start = { _ -> stream.consumeAsFlow() }).invoke(this)
             this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 homeSnapshot = { OpenCodeHomeSnapshot(projects = listOf(project), sessions = emptyList(), activeSessionIDs = emptySet()) },
             )
             this[VoiceCallClient] = speechVoiceCall(
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     stream.trySend(VoiceCallEvent.Connected)
                     stream.consumeAsFlow()

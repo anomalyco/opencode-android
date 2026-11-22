@@ -156,7 +156,7 @@ class VoiceResumeTests {
         val voiceEvents: List<String> get() = marks.value.filter { it.startsWith("voice_") }
 
         suspend fun start(): Flow<VoiceCallEvent> {
-            val realtime = RealtimeClient { _, _ ->
+            val realtime = RealtimeClient { _ ->
                 if (sockets.value.isNotEmpty() && failingConnects.value > 0) {
                     failingConnects.update { it - 1 }
                     throw notConnectedError()
@@ -178,7 +178,6 @@ class VoiceResumeTests {
                 )
             })
             return coordinator.start(
-                apiKey = "test",
                 config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
                 realtime = realtime,
                 audio = audio,
@@ -586,7 +585,7 @@ class VoiceResumeTests {
         val sounds = dependencies[VoiceCallSounds]
         val coordinator = DependencyValues.withValues(dependencies) { VoiceCallCoordinator(timing = VoiceCallTiming()) }
 
-        val realtime = RealtimeClient { _, _ ->
+        val realtime = RealtimeClient { _ ->
             connectWaiter.complete(Unit)
             withContext(NonCancellable) { connectReturn.await() }
         }
@@ -608,7 +607,6 @@ class VoiceResumeTests {
 
         val startTask = async {
             coordinator.start(
-                apiKey = "test",
                 config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
                 realtime = realtime,
                 audio = audio,
@@ -716,7 +714,7 @@ class VoiceResumeFeatureTests {
         val store = h.store(h.state { State(server, session) }) {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             this[Clock] = clock
-            voiceCall { copy(start = { _, _ -> events.events }) }
+            voiceCall { copy(start = { _ -> events.events }) }
         }
         store.exhaustive = false
 
@@ -756,7 +754,7 @@ class VoiceResumeFeatureTests {
         val store = h.store(h.state { State(server, session) }) {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             this[Clock] = clock
-            voiceCall { copy(start = { _, _ -> events.events }) }
+            voiceCall { copy(start = { _ -> events.events }) }
         }
         store.exhaustive = false
 
@@ -796,7 +794,7 @@ class VoiceResumeFeatureTests {
             this[DateClient] = DateClient { now.value }
             this[Clock] = clock
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     val stream = EventStream()
                     calls.append(stream)
                     stream.events

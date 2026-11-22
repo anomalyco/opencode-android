@@ -169,7 +169,7 @@ class VoiceServerPickerTests {
         at: Long,
         checkSupport: suspend (OpenCodeServer) -> ServerVoiceSupport,
         recentMessages: suspend (OpenCodeServer, String, Int) -> List<String> = { _, _, _ -> emptyList() },
-        start: suspend (String, RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
         end: suspend () -> Unit,
     ): DependencyValues.Builder.() -> Unit = {
         this[SharedStore] = shared.store
@@ -204,8 +204,7 @@ class VoiceServerPickerTests {
                 shared, at = 1_000,
                 checkSupport = { requested -> probed.update { it + requested.persistenceID }; ServerVoiceSupport.supported },
                 recentMessages = { requested, _, _ -> read.update { it + requested.persistenceID }; emptyList() },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -267,7 +266,7 @@ class VoiceServerPickerTests {
             callDependencies(
                 shared, at = 2_000,
                 checkSupport = { requested -> probed.update { it + requested.persistenceID }; ServerVoiceSupport.supported },
-                start = { _, config ->
+                start = { config ->
                     configs.update { it + config }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -328,8 +327,7 @@ class VoiceServerPickerTests {
             callDependencies(
                 shared, at = 4_000,
                 checkSupport = { asked.set(true); ServerVoiceSupport.supported },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     stream.trySend(VoiceCallEvent.Connected)
                     stream.consumeAsFlow()

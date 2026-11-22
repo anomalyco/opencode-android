@@ -86,7 +86,7 @@ class VoiceFeatureTestsScreenSession {
 
     private fun callClient(
         completeFunction: suspend (String, String) -> Unit = { _, _ -> },
-        start: suspend (String, ai.opencode.feature.voice.RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent> = { _, _ -> kotlinx.coroutines.flow.emptyFlow() },
+        start: suspend (ai.opencode.feature.voice.RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent> = { _ -> kotlinx.coroutines.flow.emptyFlow() },
         delegatorRound: suspend (String) -> Result<VoiceDelegator.Response> = { Result.failure(OpenCodeClientError("The voice call has no delegator.")) },
         submitDelegatorInput: suspend (String, List<VoiceDelegator.InputItem>) -> Boolean = { _, _ -> false },
     ) = VoiceCallClient(
@@ -329,7 +329,7 @@ class VoiceFeatureTestsScreenSession {
         val instructions = LockIsolated<String?>(null)
         val events = Channel<VoiceCallEvent>(Channel.UNLIMITED)
         store.updateDependencies {
-            this[VoiceCallClient] = callClient(start = { _, config -> instructions.setValue(config.instructions); events.receiveAsFlow() })
+            this[VoiceCallClient] = callClient(start = { config -> instructions.setValue(config.instructions); events.receiveAsFlow() })
             this[VoiceWorkClient] = workClient(recentMessages = { _, _, _ -> emptyList() })
         }
         store.send(Action.voicePresented(VoiceFeature.Action.Start))

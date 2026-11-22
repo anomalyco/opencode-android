@@ -169,7 +169,7 @@ class HomeFeatureTestsMovedSessions {
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
                 this[DateClient] = DateClient.constant(Instant.EPOCH)
                 this[VoiceCallClient] = VoiceCallClient(
-                    start = { _, _ -> emptyFlow() },
+                    start = { _ -> emptyFlow() },
                     completeFunction = { _, _ -> },
                     retarget = { retargets += 1 },
                     setMuted = { },

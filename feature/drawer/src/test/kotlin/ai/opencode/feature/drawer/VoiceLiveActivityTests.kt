@@ -60,7 +60,7 @@ class VoiceLiveActivityTests {
         VoiceLiveActivityClient(update = { content, _ -> pushes.append(content) }, endAll = {}, commands = { kotlinx.coroutines.flow.emptyFlow() })
 
     private fun ai.opencode.core.dependencies.DependencyValues.Builder.startableCall(ends: LockIsolated<Int>? = null) {
-        voiceCall { copy(start = { _, _ -> flow { awaitCancellation() } }, setMuted = { }, end = { ends?.increment() }) }
+        voiceCall { copy(start = { _ -> flow { awaitCancellation() } }, setMuted = { }, end = { ends?.increment() }) }
     }
 
     /** Lets launched effects reach their sleep first, then reduces what they send. */

@@ -116,7 +116,7 @@ class SessionVoiceTests {
                 recentMessages = { _, _, _ -> emptyList() },
             )
             this[VoiceCallClient] = VoiceCallClient(
-                start = { _, _ -> emptyFlow() },
+                start = { _ -> emptyFlow() },
                 completeFunction = { callID, output -> harness.completed.update { it + (callID to output) } },
                 closeDelegation = { _, _ -> },
                 setMuted = { },
@@ -323,7 +323,7 @@ class SessionVoiceTests {
             this[Clock] = clock
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             this[VoiceCallClient] = VoiceCallClient(
-                start = { _, _ -> emptyFlow() },
+                start = { _ -> emptyFlow() },
                 completeFunction = { _, _ -> },
                 closeDelegation = { _, _ -> },
                 setMuted = { },

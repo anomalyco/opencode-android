@@ -27,7 +27,7 @@ class VoiceCallHost {
 
     internal suspend fun installForTesting(coordinator: VoiceCallTestingCoordinator) = withContext(dispatcher) { current = coordinator }
 
-    suspend fun start(apiKey: String, config: RealtimeSessionConfig, realtime: RealtimeClient, live: LiveClient,
+    suspend fun start(config: RealtimeSessionConfig, realtime: RealtimeClient, live: LiveClient,
         gemini: GeminiLiveClient = GeminiLiveClient.testValue, audio: VoiceAudioClient): Flow<VoiceCallEvent> = withContext(dispatcher) {
         val attemptID = dependency(UuidClient).next()
         startingAttemptID = attemptID; pendingAtEar = null
@@ -37,7 +37,7 @@ class VoiceCallHost {
         pendingAtEar = null; startingAttemptID = null
         if (initial.provider == ServerVoiceProvider.geminiLive) {
             val coordinator = GeminiCallCoordinator()
-            launch(coordinator) { coordinator.start(apiKey, GeminiLiveSessionConfig.from(initial), gemini, audio) }
+            launch(coordinator) { coordinator.start(GeminiLiveSessionConfig.from(initial), gemini, audio) }
         } else when (initial.engine) {
             VoiceEngine.gptLive -> {
                 var timing = VoiceCallTiming.live
@@ -45,11 +45,11 @@ class VoiceCallHost {
                     timing = timing.copy(liveUnbackedClaimWait = VoiceCallTiming.sessionDelegatorUnbackedClaimWait)
                 }
                 val coordinator = LiveCallCoordinator(timing = timing)
-                launch(coordinator) { coordinator.start(apiKey, initial.liveSessionConfig(), live, audio) }
+                launch(coordinator) { coordinator.start(initial.liveSessionConfig(), live, audio) }
             }
             VoiceEngine.realtime -> {
                 val coordinator = VoiceCallCoordinator()
-                launch(coordinator) { coordinator.start(apiKey, initial, realtime, audio) }
+                launch(coordinator) { coordinator.start(initial, realtime, audio) }
             }
             null -> throw ServerVoiceError.InvalidResponse
         }

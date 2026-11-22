@@ -10,13 +10,13 @@ class GeminiLiveConnection(
     override val close: suspend () -> Unit,
 ) : VoiceSocketConnection<GeminiLiveServerEvent, GeminiLiveCommand>
 
-class GeminiLiveClient(val connect: suspend (String, GeminiLiveSessionConfig) -> GeminiLiveConnection) {
+class GeminiLiveClient(val connect: suspend (GeminiLiveSessionConfig) -> GeminiLiveConnection) {
     companion object Key : DependencyKey<GeminiLiveClient> {
-        override val liveValue = GeminiLiveClient { apiKey, config -> GeminiLiveSocket(apiKey, config).open() }
-        override val testValue = GeminiLiveClient { _, _ -> GeminiLiveConnection(emptyFlow(), {}, {}) }
+        override val liveValue = GeminiLiveClient { config -> GeminiLiveSocket(config).open() }
+        override val testValue = GeminiLiveClient { _ -> GeminiLiveConnection(emptyFlow(), {}, {}) }
     }
 }
-class GeminiLiveSocket(private val apiKey: String, private val config: GeminiLiveSessionConfig) {
+class GeminiLiveSocket(private val config: GeminiLiveSessionConfig) {
     suspend fun open(): GeminiLiveConnection {
         val server = config.serverVoice ?: throw RealtimeClientError.InvalidURL
         val transport = VoiceBrokerTransport(server).webSocket(config.model, config.serverSessionPayload)

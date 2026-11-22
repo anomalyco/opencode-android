@@ -549,10 +549,8 @@ class VoiceEnginePersistenceTests {
         assertEquals("gpt-live-1", voiceEngine.modelID)
 
         val startedConfigs = mutableListOf<RealtimeSessionConfig>()
-        val startedKeys = mutableListOf<String>()
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
-            this[VoiceCallClient] = testVoiceCall(start = { key, config ->
-                startedKeys += key
+            this[VoiceCallClient] = testVoiceCall(start = { config ->
                 startedConfigs += config
                 emptyFlow()
             })
@@ -579,7 +577,6 @@ class VoiceEnginePersistenceTests {
         assertEquals("gpt-realtime-2.1", startedConfigs.last().model)
         assertEquals(listOf("delegate", "end_voice_session"), startedConfigs.last().tools.map { it.name })
 
-        assertEquals(listOf("", ""), startedKeys)
 
         shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
     }

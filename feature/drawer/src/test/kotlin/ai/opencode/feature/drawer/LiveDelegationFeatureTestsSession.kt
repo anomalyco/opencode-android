@@ -112,7 +112,7 @@ class LiveDelegationFeatureTestsSession {
         suspend fun nextOpened(): FakeLiveSocket = openedChannel.receive()
 
         suspend fun start(instructions: String): Flow<VoiceCallEvent> {
-            val live = LiveClient { _, config ->
+            val live = LiveClient { config ->
                 val socket = FakeLiveSocket(config)
                 openedChannel.trySend(socket)
                 LiveConnection(
@@ -134,7 +134,7 @@ class LiveDelegationFeatureTestsSession {
                     stop = { },
                 )
             })
-            return coordinator.start(apiKey = "test", config = LiveSessionConfig(instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
+            return coordinator.start(config = LiveSessionConfig(instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
         }
     }
 
@@ -159,7 +159,7 @@ class LiveDelegationFeatureTestsSession {
             // Android: every start mints the call's notification identity.
             this[UuidClient] = UuidClient.incrementing()
             this[VoiceCallClient] = VoiceCallClient(
-                start = { _, config -> harness.start(instructions = config.instructions) },
+                start = { config -> harness.start(instructions = config.instructions) },
                 completeFunction = { callID, output -> harness.coordinator.completeFunction(callID, output) },
                 closeDelegation = { callID, reason -> harness.coordinator.closeDelegation(callID, reason) },
                 setMuted = { muted -> harness.coordinator.setMuted(muted) },

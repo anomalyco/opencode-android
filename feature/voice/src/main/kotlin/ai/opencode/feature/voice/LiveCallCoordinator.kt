@@ -53,7 +53,6 @@ class LiveCallCoordinator(
     internal var outbound = LiveOutboundQueue()
     internal var outboundFlushTask: Job? = null
     internal var outboundFlushGeneration = 0
-    private var apiKey = ""
     private var live: LiveClient? = null
     internal var config: LiveSessionConfig? = null
     private var nextEventNumber = 0
@@ -113,8 +112,8 @@ class LiveCallCoordinator(
     internal val voiceCallLog = dependency(VoiceCallLogClient)
     internal val callLogMarker: (String) -> Unit = callLogMarker ?: { voiceCallLog.noteCurrent(VoiceCallLog.Note.Kind.marker, it) }
 
-    suspend fun start(apiKey: String, config: LiveSessionConfig, live: LiveClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
-        this.apiKey = apiKey; this.config = config; this.live = live
+    suspend fun start(config: LiveSessionConfig, live: LiveClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
+        this.config = config; this.live = live
         startAudioAndSocket(config.isAtEar, audio, concurrently = true)
     }
     internal fun handleResponseEvent(delegationID: String?, event: LiveResponseEvent) {
@@ -231,7 +230,7 @@ class LiveCallCoordinator(
         var config = config ?: throw RealtimeClientError.Closed("The voice connection is closed.")
         val mark = history.mark
         if (seeded) config = config.copy(input = seedMessages())
-        return openSocket(seeded, { client.connect(apiKey, config) }) { history = history.noteSeeded(mark) }
+        return openSocket(seeded, { client.connect(config) }) { history = history.noteSeeded(mark) }
     }
     private fun seedMessages(): List<LiveInputMessage> {
         var header = seedHeader

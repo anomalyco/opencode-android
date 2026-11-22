@@ -63,7 +63,7 @@ class VoiceFeatureTestsDelegation {
     ): Pair<TestStore<State, Action>, EventStream> {
         val events = EventStream()
         val store = makeStore {
-            voiceCall { copy(start = { _, _ -> events.events }) }
+            voiceCall { copy(start = { _ -> events.events }) }
             configure()
         }
         store.send(Action.Start)
@@ -80,7 +80,7 @@ class VoiceFeatureTestsDelegation {
         val store = makeStore {
             voiceCall {
                 copy(
-                    start = { _, config ->
+                    start = { config ->
                         assertTrue(config.instructions.contains("\"Voice lab\""))
                         assertTrue(config.instructions.contains("user: earlier context"))
                         events.events
@@ -512,7 +512,7 @@ class VoiceFeatureTestsDelegation {
         val calls = LockIsolated(listOf<EventStream>())
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     val stream = EventStream()
                     calls.append(stream)
                     stream.events
@@ -583,7 +583,7 @@ class VoiceFeatureTestsDelegation {
     @Test fun cancellingAConnectingCallAnswersTheFinger() = voiceTest { harness ->
         h = harness
         val events = EventStream()
-        val store = makeStore { voiceCall { copy(start = { _, _ -> events.events }) } }
+        val store = makeStore { voiceCall { copy(start = { _ -> events.events }) } }
         store.send(Action.Start) { it.withPhase(State.Phase.Connecting) }
         store.send(Action.EndPressed)
         store.receive(Action.EndTapped::class) { it.withPhase(State.Phase.Ended) }
@@ -646,7 +646,7 @@ class VoiceFeatureTestsDelegation {
         val events = EventStream()
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     starts.increment()
                     events.events
                 })
@@ -669,7 +669,7 @@ class VoiceFeatureTestsDelegation {
     @Test fun aFailedCallStartsAgainOnlyOnTryAgain() = voiceTest { harness ->
         h = harness
         val store = makeStore {
-            voiceCall { copy(start = { _, _ -> throw AssertionError("must not connect to a server without voice") }) }
+            voiceCall { copy(start = { _ -> throw AssertionError("must not connect to a server without voice") }) }
             this[ServerVoiceClient] = ServerVoiceClient(
                 checkSupport = { ServerVoiceSupport.unsupported },
                 models = ServerVoiceClient.testValue.models,
@@ -700,7 +700,7 @@ class VoiceFeatureTestsDelegation {
                 discardPrepared = { token -> steps.append("discard $token") },
             )
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     steps.append("call")
                     kotlinx.coroutines.flow.emptyFlow()
                 })
@@ -722,7 +722,7 @@ class VoiceFeatureTestsDelegation {
                 prepare = { 3 },
                 discardPrepared = { token -> discarded.append(token) },
             )
-            voiceCall { copy(start = { _, _ -> throw RealtimeClientError.Closed("Rejected.") }) }
+            voiceCall { copy(start = { _ -> throw RealtimeClientError.Closed("Rejected.") }) }
         }
 
         store.send(Action.Start)
@@ -744,7 +744,7 @@ class VoiceFeatureTestsDelegation {
     @Test fun microphoneDenialIsExplicit() = voiceTest { harness ->
         h = harness
         val store = makeStore {
-            voiceCall { copy(start = { _, _ -> throw VoiceAudioError.microphoneDenied }) }
+            voiceCall { copy(start = { _ -> throw VoiceAudioError.microphoneDenied }) }
         }
 
         store.send(Action.Start)
@@ -758,7 +758,7 @@ class VoiceFeatureTestsDelegation {
         h = harness
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     throw VoiceAudioError.engineRejected(operation = "Enabling voice processing", reason = "required condition is false")
                 })
             }

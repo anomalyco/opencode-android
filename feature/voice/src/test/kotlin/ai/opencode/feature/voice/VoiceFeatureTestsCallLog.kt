@@ -79,7 +79,7 @@ class VoiceFeatureTestsCallLog {
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
                 this[DateClient] = DateClient.constant(Instant.EPOCH)
                 this[Clock] = ImmediateClock()
-                voiceCall { copy(start = { _, _ -> flow { awaitCancellation() } }, end = {}) }
+                voiceCall { copy(start = { _ -> flow { awaitCancellation() } }, end = {}) }
             }
             store.exhaustive = false
             store.send(Action.Start)

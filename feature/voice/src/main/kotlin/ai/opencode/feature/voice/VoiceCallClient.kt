@@ -27,7 +27,7 @@ enum class VoiceDelegationCloseReason(val rawValue: String) {
  */
 class VoiceCallClient(
     /** The call's events until it ends: the flow completes, or throws why it dropped. */
-    val start: suspend (apiKey: String, config: RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
+    val start: suspend (config: RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
     val completeFunction: suspend (callID: String, output: String) -> Unit,
     /**
      * What a delegation's work is doing right now, for its spoken "still
@@ -103,9 +103,9 @@ class VoiceCallClient(
             if (VoiceLabDemo.isEnabled) VoiceLabDemo.call else {
                 val host = VoiceCallHost()
                 VoiceCallClient(
-                    start = { apiKey, config ->
+                    start = { config ->
                         withDependenciesSuspending({ this[VoiceAudioLabHooks] = VoiceLabDemo.audioHooks }) {
-                            host.start(apiKey, config, dependency(RealtimeClient), dependency(LiveClient), dependency(GeminiLiveClient), dependency(VoiceAudioClient))
+                            host.start(config, dependency(RealtimeClient), dependency(LiveClient), dependency(GeminiLiveClient), dependency(VoiceAudioClient))
                         }
                     },
                     completeFunction = host::completeFunction,
@@ -130,7 +130,7 @@ class VoiceCallClient(
         override val testValue: VoiceCallClient get() = inert()
 
         private fun inert() = VoiceCallClient(
-            start = { _, _ -> emptyFlow() },
+            start = { emptyFlow() },
             completeFunction = { _, _ -> },
             closeDelegation = { _, _ -> },
             setMuted = { },

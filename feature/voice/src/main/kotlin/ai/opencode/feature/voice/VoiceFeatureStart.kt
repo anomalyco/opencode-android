@@ -224,7 +224,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     unboundSpeechUsesInstructions = useSession,
                 )
                 try {
-                    return voiceCall.start("", config)
+                    return voiceCall.start(config)
                 } catch (error: CancellationException) {
                     throw error
                 } catch (error: Exception) {
@@ -254,7 +254,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                         server = server, delegation = fallbackDelegation,
                         unboundSpeechUsesInstructions = false,
                     )
-                    return voiceCall.start("", fallbackConfig)
+                    return voiceCall.start(fallbackConfig)
                 }
             }
 

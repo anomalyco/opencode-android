@@ -45,7 +45,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal fun speechVoiceCall(
-    start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _, _ -> kotlinx.coroutines.flow.emptyFlow() },
+    start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _ -> kotlinx.coroutines.flow.emptyFlow() },
     completeFunction: suspend (String, String) -> Unit = { _, _ -> },
     announce: suspend (String?, List<String>, String) -> Unit = { _, _, _ -> },
     cancelPendingAnnouncements: suspend (List<String>) -> Unit = {},
@@ -1353,7 +1353,7 @@ class VoiceSuppressionTests {
                 VoiceWorkClient(submit = work.submit, awaitReply = { _, _, _ -> "All tests pass." }, checkSessionActive = work.checkSessionActive, recentMessages = work.recentMessages)
             }
             this[VoiceCallClient] = speechVoiceCall(
-                start = { _, _ -> events.consumeAsFlow() },
+                start = { _ -> events.consumeAsFlow() },
                 completeFunction = { callID, _ ->
                     completing.complete(Unit)
                     releaseComplete.await()

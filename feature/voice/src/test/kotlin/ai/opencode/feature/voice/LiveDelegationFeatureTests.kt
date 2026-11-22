@@ -50,7 +50,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed += callID to output },
             )
             this[VoiceWorkClient] = testVoiceWork(
@@ -120,7 +120,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed[callID] = output },
             )
             this[VoiceWorkClient] = testVoiceWork(
@@ -206,7 +206,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
             )
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
@@ -294,7 +294,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[DateClient] = DateClient { clock }
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ ->
+            this[VoiceCallClient] = testVoiceCall(start = { _ ->
                 val call = CallEvents()
                 calls += call
                 call.flow
@@ -393,7 +393,7 @@ class LiveDelegationFeatureTests {
         val submitted = mutableListOf<String>()
         val shared = VoiceTestShared()
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ -> events.flow })
+            this[VoiceCallClient] = testVoiceCall(start = { _ -> events.flow })
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
                     submitted += text
@@ -426,7 +426,7 @@ class LiveDelegationFeatureTests {
         val submitted = mutableListOf<String>()
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ -> events.flow })
+            this[VoiceCallClient] = testVoiceCall(start = { _ -> events.flow })
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
                     submitted += text
@@ -498,7 +498,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed[callID] = output },
             )
             this[VoiceWorkClient] = testVoiceWork(
