@@ -29,10 +29,11 @@ android {
         }
         release {
             // R8 is what makes Compose fast in release: it strips the debug-only paths, inlines
-            // and devirtualises the runtime. Every library we use ships its own keep rules.
+            // and devirtualises the runtime. Libraries ship their own keep rules;
+            // proguard-rules.pro holds workarounds.
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         create("benchmark") {
             initWith(getByName("release"))

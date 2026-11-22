@@ -849,6 +849,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** How long last-known running state is shown without a live connection. */
         val lastKnownActivityLifetime: Duration = 120.seconds
 
+        /** How stale an unchanged idle snapshot's stamp may get before it's written again. */
+        val snapshotStampInterval: Duration = 30.seconds
+
         /** A cached snapshot's running state may show until this deadline, if it hasn't passed. */
         fun lastKnownActivityDeadline(capturedAt: Instant?, now: Instant): Instant? {
             if (capturedAt == null || capturedAt > now) return null
