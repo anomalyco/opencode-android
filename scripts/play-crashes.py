@@ -190,12 +190,19 @@ def sample_report(token, group, days):
 
 def stack(report):
     lines = []
+    other_thread = False
     for line in report.get("reportText", "").splitlines():
+        # Thread names can hold a user's server address, so only the main thread is kept.
+        thread = re.match(r"\"([^\"]*)\" tid=", line)
+        if thread:
+            other_thread = thread.group(1) != "main"
+        if other_thread:
+            continue
         exception = re.match(r"(Exception|Caused by:) ([\w.$]+)", line)
         if exception:
             lines.append(f"{exception.group(1)} {exception.group(2)}")
-        elif re.match(r"\s+(at |#\d+ )|\"[^\"]*\" tid=|backtrace:", line):
-            lines.append(line.rstrip())
+        elif re.match(r"\s+(at |#\d+ )|\"main\" tid=|backtrace:", line):
+            lines.append(re.sub(r"/data/app/\S+/", "", line.rstrip()))
     if len(lines) > STACK_LINES:
         lines = lines[:STACK_LINES] + ["  …"]
     return "\n".join(lines)
