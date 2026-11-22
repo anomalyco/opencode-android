@@ -308,13 +308,18 @@ class SessionFeatureTestsRendering {
             assertTrue(store.state.hasBackgroundWork)
 
             store.send(Action.RefreshRequested(reason)) {
-                var next = it.copy(nextRefreshID = 1, refresh = State.Refresh(id = 1, reason = reason), restoredShellIDs = setOf(staleShell.id))
+                var next = it.copy(
+                    nextRefreshID = 1,
+                    refresh = State.Refresh(id = 1, reason = reason),
+                    restoredShellIDs = setOf(staleShell.id),
+                    familyRead = CoalescedRead(isInFlight = true),
+                )
                 if (reason == RefreshReason.Resume) next = next.copy(resync = State.ResyncState(refreshID = 1))
                 next
             }
             if (reason == RefreshReason.Resume) {
                 // The reads answer in launch order.
-                store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet()) }
+                store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, familyRead = CoalescedRead(), activeFamilySessionIDs = emptySet()) }
                 store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
                     it.copy(shells = emptyList(), restoredShellIDs = emptySet())
                 }
@@ -322,7 +327,7 @@ class SessionFeatureTestsRendering {
                 store.receive(pageRead(root, 1, initialItems)) { it.copy(refresh = null, resync = null) }
                 store.receive(Action.AcceptedTranscriptUpdated(sessionID = root.id, items = initialItems))
             } else {
-                store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet()) }
+                store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, familyRead = CoalescedRead(), activeFamilySessionIDs = emptySet()) }
                 store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
                     it.copy(shells = emptyList(), restoredShellIDs = emptySet())
                 }
@@ -365,6 +370,7 @@ class SessionFeatureTestsRendering {
                     refresh = State.Refresh(id = 1, reason = RefreshReason.Resume),
                     resync = State.ResyncState(refreshID = 1),
                     restoredShellIDs = setOf(staleShell.id),
+                    familyRead = CoalescedRead(isInFlight = true),
                 )
             }
             familyStarted.await()
@@ -373,7 +379,7 @@ class SessionFeatureTestsRendering {
             transcriptStarted.await()
 
             cancelStore.send(Action.VisibilityChanged(false)) {
-                it.copy(isVisible = false, newMessagesBaseline = setOf("msg_1"), refresh = null, resync = null)
+                it.copy(isVisible = false, newMessagesBaseline = setOf("msg_1"), refresh = null, resync = null, familyRead = CoalescedRead())
             }
             cancelStore.finish()
             assertTrue(familyCancelled.value)
@@ -521,6 +527,7 @@ class SessionFeatureTestsRendering {
             ),
         ) { it.withRequestArrivalsAreLive(true) }
         store.receive(Action.PendingInputsRequested(sessionID = root.id))
+        store.receive(Action.JobsResponse(sessionID = root.id, jobs = emptyList()))
         store.receive(Action.PendingInputsResponse(sessionID = root.id, inputs = emptyList()))
         assertEquals(listOf(listOf(root.id, child.id, grandchild.id)), polledFamilies.value)
         assertEquals(1, inboxCalls.value)
@@ -574,9 +581,9 @@ class SessionFeatureTestsRendering {
             assertTrue(store.state.isRunning)
 
             store.send(Action.RefreshRequested(RefreshReason.Watchdog)) {
-                it.copy(nextRefreshID = 1, refresh = State.Refresh(id = 1, reason = RefreshReason.Watchdog))
+                it.copy(nextRefreshID = 1, refresh = State.Refresh(id = 1, reason = RefreshReason.Watchdog), familyRead = CoalescedRead(isInFlight = true))
             }
-            store.receive(familyRead(listOf(root))) { it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet()) }
+            store.receive(familyRead(listOf(root))) { it.copy(familyReadAt = now, familyRead = CoalescedRead(), activeFamilySessionIDs = emptySet()) }
             store.receive(Action.ExternalRunStateChanged(isRunning = false)) {
                 it.copy(
                     isExternallyActive = false,
@@ -646,11 +653,11 @@ class SessionFeatureTestsRendering {
             }
 
             store.send(Action.RefreshRequested(RefreshReason.Resume)) {
-                var next = it.copy(restoredShellIDs = setOf(staleShell.id))
+                var next = it.copy(restoredShellIDs = setOf(staleShell.id), familyRead = CoalescedRead(isInFlight = true))
                 if (!inFlightFollowupIsRunState) next = next.copy(refresh = next.refresh?.copy(followup = RefreshReason.Resume))
                 next
             }
-            store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet()) }
+            store.receive(familyRead(listOf(root, child))) { it.copy(familyReadAt = now, familyRead = CoalescedRead(), activeFamilySessionIDs = emptySet()) }
             store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
                 it.copy(shells = emptyList(), restoredShellIDs = emptySet())
             }
@@ -720,10 +727,15 @@ class SessionFeatureTestsRendering {
         }
 
         store.send(Action.VisibilityChanged(true)) {
-            it.copy(isVisible = true, resync = State.ResyncState(refreshID = 1), restoredShellIDs = setOf(staleShell.id))
+            it.copy(
+                isVisible = true,
+                resync = State.ResyncState(refreshID = 1),
+                restoredShellIDs = setOf(staleShell.id),
+                familyRead = CoalescedRead(isInFlight = true),
+            )
         }
         store.receive(familyRead(listOf(root, child))) {
-            it.copy(familyReadAt = now, activeFamilySessionIDs = emptySet(), pendingWorkPollSeconds = 60)
+            it.copy(familyReadAt = now, familyRead = CoalescedRead(), activeFamilySessionIDs = emptySet(), pendingWorkPollSeconds = 60)
         }
         store.receive(Action.ShellsResponse(sessionID = root.id, result = Result.success(emptyList()))) {
             it.copy(shells = emptyList(), restoredShellIDs = emptySet())
