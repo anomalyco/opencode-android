@@ -103,5 +103,10 @@ prints what it would do.
 It reads a key for `play-vitals-reader@opencode-android-vitals.iam.gserviceaccount.com` (Google
 Cloud project `opencode-android-vitals` in the anoma.ly org), invited in Play Console with only
 *View app quality information* on OpenCode, from `$PLAY_VITALS_KEY` or
-`~/.config/opencode-android/play-vitals-reader.json`. The key isn't in AWS, so nothing runs this
-on a schedule yet.
+`~/.config/opencode-android/play-vitals-reader.json`.
+
+Nothing in CI runs it. An agent on a machine that holds the key runs a pass once a day: it
+opens the issues, investigates each crash, opens a fix PR when the cause is proven, has the PR
+reviewed, and closes issues whose fix has shipped. It never merges. `triage` prints what that
+pass works from, and `reports <id>` prints a group's raw reports, which can hold a user's text
+or server address and stay out of anything public.
