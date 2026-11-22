@@ -80,8 +80,8 @@ internal fun SessionCallTasks(store: StoreOf<State, Action>, callStore: VoiceSto
 }
 
 /**
- * A call that couldn't connect ([VoiceCallFailure]: the provider's failure card, or Check API
- * Key/Open Settings and Try Again), whose connection was lost ([VoiceCallEnded]: Close and Rejoin),
+ * A call that couldn't connect ([VoiceCallFailure]: the provider's failure card, or Open Settings
+ * and Try Again), whose connection was lost ([VoiceCallEnded]: Close and Rejoin),
  * or that is connecting through a server ([VoiceConnectingCaption]: “Connecting via My Mac…”,
  * fading in and out).
  */

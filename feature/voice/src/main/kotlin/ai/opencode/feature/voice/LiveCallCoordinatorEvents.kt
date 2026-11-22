@@ -209,8 +209,8 @@ private fun LiveCallCoordinator.userAsked(before: Duration?): Boolean {
     return before > last + timing.liveAnswerPressedAfter
 }
 private fun LiveCallCoordinator.watchForUnbackedClaim(text: String, userWordsBefore: Duration?) {
-    if (timing.liveUnbackedClaimWait <= Duration.ZERO || finished || pendingDelegationTasks.isNotEmpty() || acknowledgements.isNotEmpty() ||
-        !userAsked(userWordsBefore) || !VoiceActionClaim.isClaim(text)) return
+    if (timing.liveUnbackedClaimWait <= Duration.ZERO || delegatesToResponses || finished || pendingDelegationTasks.isNotEmpty() ||
+        acknowledgements.isNotEmpty() || !userAsked(userWordsBefore) || !VoiceActionClaim.isClaim(text)) return
     unbackedClaimTask?.cancel()
     unbackedClaimTask = scope.launch {
         clock.sleep(timing.liveUnbackedClaimWait); unbackedClaimTask = null
@@ -228,7 +228,7 @@ private fun LiveCallCoordinator.watchForUnbackedClaim(text: String, userWordsBef
  * result behind it: unless the user speaks first, the call verifies it
  * silently and speaks only a correction (`VoiceActionClaim.verifyPrompt`). */
 private fun LiveCallCoordinator.watchForUnbackedOutcome(utterance: Utterance, text: String) {
-    if (timing.liveUnbackedClaimWait <= Duration.ZERO || finished || lastUserWordsAt != utterance.userWordsBefore ||
+    if (timing.liveUnbackedClaimWait <= Duration.ZERO || delegatesToResponses || finished || lastUserWordsAt != utterance.userWordsBefore ||
         !VoiceActionClaim.isOutcomeClaim(text) || !verifiedUtteranceIDs.add(utterance.id)) return
     unbackedOutcomeTask?.cancel()
     unbackedOutcomeTask = scope.launch {

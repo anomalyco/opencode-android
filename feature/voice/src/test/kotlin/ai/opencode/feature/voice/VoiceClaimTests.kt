@@ -31,7 +31,8 @@ import kotlin.time.Duration.Companion.seconds
 class VoiceClaimTests {
     private fun obj(vararg pairs: Pair<String, RealtimeJSON>) = RealtimeJSONs.obj(*pairs)
 
-    private suspend fun TestScope.claimCall(): VoiceClockedCall = clockedCall(
+    private suspend fun TestScope.claimCall(delegation: LiveDelegation = LiveDelegation.client): VoiceClockedCall = VoiceClockedCall.start(
+        this,
         VoiceCallTiming(
             rotateAfter = 3_000.0,
             forceRotateAfter = 3_500.0,
@@ -43,6 +44,7 @@ class VoiceClaimTests {
             liveUnbackedClaimWait = 150.milliseconds,
             liveAnswerPressedAfter = 50.milliseconds,
         ),
+        delegation,
     )
 
     /**
@@ -213,6 +215,37 @@ class VoiceClaimTests {
         assertFalse(instructions[1].startsWith(LiveCallCoordinator.spokenDirectiveLead))
 
         call.coordinator.end()
+    }
+
+    /**
+     * On a built-in delegator call the server runs the delegations, so a claim or an outcome
+     * without one is left to it and the phone delegates nothing itself.
+     */
+    @Test fun builtInDelegatorExecutesClientClaimWhenCaptureIsEmpty() = runTest {
+        val call = claimCall(LiveDelegation.responses(VoiceDelegator.responsesDelegation(context = "Draft.")))
+        val socket = call.socket
+        val iterator = call.events
+        socket.yieldEvent(LiveServerEvent.InputTranscriptDelta(delta = "Open code iOS", startMilliseconds = 1_000, endMilliseconds = 1_500))
+        assertEquals(VoiceCallEvent.UserTranscript(itemID = "live-u-1", text = "Open code iOS", final = true), iterator.next())
+        call.advance(80)
+        socket.yieldEvent(LiveServerEvent.OutputTranscriptDelta(delta = "Opening.", startMilliseconds = 2_000, endMilliseconds = 2_400))
+        assertEquals(VoiceCallEvent.AssistantDelta(itemID = "live-a-1", delta = "Opening."), iterator.next())
+        call.advance(40)
+        assertEquals(VoiceCallEvent.AssistantDone(itemID = "live-a-1", text = "Opening."), iterator.next())
+        assertEquals(VoiceCallEvent.AssistantPlaybackFinished, iterator.next())
+        val outcome = "I opened it and sent the note."
+        socket.yieldEvent(LiveServerEvent.OutputTranscriptDelta(delta = outcome, startMilliseconds = 3_000, endMilliseconds = 3_400))
+        assertEquals(VoiceCallEvent.AssistantDelta(itemID = "live-a-2", delta = outcome), iterator.next())
+        call.advance(40)
+        assertEquals(VoiceCallEvent.AssistantDone(itemID = "live-a-2", text = outcome), iterator.next())
+        assertEquals(VoiceCallEvent.AssistantPlaybackFinished, iterator.next())
+        call.advance(300)
+        assertFalse(call.harness.callLogMarkers.any { it.contains("without delegating") })
+        call.coordinator.end()
+        while (true) {
+            val event = iterator.next() ?: break
+            if (event is VoiceCallEvent.FunctionCall) fail("Delegated on the phone: $event")
+        }
     }
 
     @Test fun outcomeClaimDetectorMatchesFirstPersonActionsAndDoneClauses() {

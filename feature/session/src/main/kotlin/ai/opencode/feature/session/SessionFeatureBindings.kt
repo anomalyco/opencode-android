@@ -330,8 +330,7 @@ private fun SessionFeature.startCall(state: State): Reduced<State, Action> {
         val yielded = yieldDictation(state)
         return Reduced(yielded.state, Effect.merge(yielded.effect, Effect.send(Action.Delegate(SessionFeature.Delegate.CallRequested))))
     }
-    val own = startOwnCall(state)
-    return own
+    return startOwnCall(state)
 }
 
 private fun SessionFeature.startOwnCall(state: State): Reduced<State, Action> {

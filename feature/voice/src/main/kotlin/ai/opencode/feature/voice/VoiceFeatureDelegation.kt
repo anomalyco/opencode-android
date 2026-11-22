@@ -37,7 +37,6 @@ internal fun Throwable.asClientError(): OpenCodeClientError =
  */
 internal fun VoiceFeature.delegateWork(state: State, callID: String, rawFraming: String?): Reduced<State, Action> {
     if (state.usesSessionDelegator) return delegateToSessionDelegator(state, callID, rawFraming)
-    if (state.usesDelegator) return Reduced(state, completeFunction(callID, VoiceHandoff.failure("No OpenAI API key.")))
     val isClientDelegation = state.activeEngine == VoiceEngine.gptLive
     // One request creates a draft's session; a second one spoken while it is
     // being created would make another.

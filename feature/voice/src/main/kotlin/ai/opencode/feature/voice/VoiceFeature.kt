@@ -1276,18 +1276,17 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         // From a call that has since ended (its work was dropped then).
         if (callID !in state.delegatorWork) return Reduced(state)
         var next = state.copy(delegatorWork = state.delegatorWork.filter { it != callID })
-        val isVerify = callID.startsWith("client_verify_")
         val outcome = action.result.getOrNull()
         if (outcome != null) {
             val prompts = outcome.unanswered.map { ReplyWatch.Prompt(it) }
-            val speaks = !outcome.spoken && (!isVerify || VoiceActionClaim.correctsVoice(outcome.reply))
+            val speaks = !outcome.spoken
             // What it read counts as told only now its answer is spoken (never
             // when `interrupted`), and results held for it go out after it.
             val (sentWatch, sentEffects) = next.replyWatch.transition(ReplyWatch.Event.Sent(prompts))
             val (finishedWatch, finishedEffects) = sentWatch.transition(
                 ReplyWatch.Event.DelegatorFinished(
                     requestID = callID,
-                    spoken = if (outcome.interrupted == null) (if (isVerify) "VERIFIED" else outcome.reply) else null,
+                    spoken = if (outcome.interrupted == null) outcome.reply else null,
                 ),
             )
             next = next.copy(replyWatch = finishedWatch)
@@ -1317,7 +1316,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         next = next.copy(replyWatch = watch)
         return Reduced(
             next,
-            answerThenRelease(callID = callID, output = if (isVerify) "" else VoiceHandoff.failure(message), watchEffects = effects, state = next),
+            answerThenRelease(callID = callID, output = VoiceHandoff.failure(message), watchEffects = effects, state = next),
         )
     }
 
