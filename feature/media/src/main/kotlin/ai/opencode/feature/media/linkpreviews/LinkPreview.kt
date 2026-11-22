@@ -97,7 +97,12 @@ object LinkPreviewPolicy {
         var host = components.host.lowercase()
         if (host.endsWith(".")) host = host.dropLast(1)
         if (host in xHosts) host = "x.com"
-        val builder = components.newBuilder().scheme(components.scheme.lowercase()).host(host).fragment(null).query(null)
+        val builder = try {
+            components.newBuilder().scheme(components.scheme.lowercase()).host(host).fragment(null).query(null)
+        } catch (_: IllegalArgumentException) {
+            // OkHttp can't read back some punycode hosts it wrote itself, such as one with a full-width comma.
+            return null
+        }
         for (index in 0 until components.querySize) {
             val name = components.queryParameterName(index).lowercase()
             if (name.startsWith("utm_") || name in trackingParameters) continue
