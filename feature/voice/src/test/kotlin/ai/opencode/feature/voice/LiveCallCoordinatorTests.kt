@@ -350,25 +350,6 @@ class LiveCallCoordinatorTests {
         assertTrue(LiveCallCoordinator.hasWords("] Okay, and what are the rules"))
     }
 
-    @Test fun recognizesSpokenClaimsOfActing() {
-        for (claim in listOf(
-            "Opening.", "Checking.", "I'm checking right now.", "Let me look into that.", "Got it, switching you now.",
-            "On it.", "I'll take a look.", "Sure, opening OPENCODE IOS.", "Ooh, let's take a look.",
-            "Let's check the upload test.", "Digging into it.",
-        )) {
-            assertTrue(claim, VoiceActionClaim.isClaim(claim))
-        }
-        // Natural reactions the prompt now invites, and suggestions, aren't claims.
-        for (reply in listOf(
-            "Sure, which one do you want?", "Hey! What's up?", "Let me know if you need anything.", "I'll let you know.",
-            "Looking good.", "Okay.", "Checking the upload test took a while, and it eventually passed with two flaky retries.",
-            "Yeah.", "Yeah, good call.", "Yeah, I heard you.", "Ooh, that's a weird one.", "Let's start with the tests.",
-            "Let's stop there for today.", "Nice, let's see if that works.", "Huh, that's annoying.",
-        )) {
-            assertFalse(reply, VoiceActionClaim.isClaim(reply))
-        }
-    }
-
     @Test fun theVoiceIsToldAClaimNeedsADelegationAndAnAnswerIsNoFragment() {
         val live = VoiceInstructions.buildLive(
             VoiceInstructions.Context(sessionTitle = "HOME", directoryName = "home", recentMessages = emptyList(), previousTail = emptyList(), previousEndedAt = null, managesSessions = true),
@@ -642,14 +623,12 @@ class LiveCallCoordinatorTests {
     @Test fun resultRecordKeepsResultsWithoutTheirDeliveryDirections() {
         var record = VoiceResultRecord()
         record = record.record(LiveCallCoordinator.earlierConnectionLead + "Started that in HOME.")
-        record = record.record("Result of the request you acknowledged with “Opening.”: Opened OPENCODE IOS.")
         record = record.record(VoiceHandoff.earlierRequest("The session “Blog” finished the work you started there without a text reply. Tell the user briefly that “Blog” finished its steps.", topic = "Draft the launch post"))
         record = record.record("Sent that to the OPENCODE IOS session.")
         record = record.record("Sent that to the OPENCODE IOS session.")
         assertEquals(
             listOf(
                 "Started that in HOME.",
-                "Opened OPENCODE IOS.",
                 "The session “Blog” finished the work you started there without a text reply.",
                 "Sent that to the OPENCODE IOS session.",
             ),

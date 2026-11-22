@@ -31,7 +31,6 @@ import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.model.PromptContext
 import ai.opencode.server.testing.WireDecoders
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -45,7 +44,6 @@ import org.junit.Test
 import java.nio.file.Files
 import java.time.Instant
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class VoiceSessionDelegatorTests {
@@ -842,7 +840,7 @@ class VoiceSessionDelegatorTests {
         deleteEffects.skipInFlightEffects()
     }
 
-    // MARK: - Point 3: GPT-Live Wire Framing & 900 ms Action-Claim Backstop
+    // MARK: - Point 3: GPT-Live Wire Framing
 
     @Test fun sessionDelegatorAnswersBoundDelegationWithCommentaryAndUnboundSpeechAndClaimBackstopWithInstructions() = runTest {
         val harness = LiveHarness(
@@ -854,7 +852,6 @@ class VoiceSessionDelegatorTests {
                 liveDelegationSettle = Duration.ZERO,
                 liveTranscriptSettle = 5.seconds,
                 liveAcknowledgementWait = Duration.ZERO,
-                liveUnbackedClaimWait = VoiceCallTiming.sessionDelegatorUnbackedClaimWait,
                 liveAppendQuiet = Duration.ZERO,
             ),
         )
@@ -888,34 +885,6 @@ class VoiceSessionDelegatorTests {
             socket.commands.any { it is LiveCommand.AppendCommentary && it.delegationID == null },
         )
 
-        // 3. Unbacked action claim ("Let me check the logs for you.") fires at 900 ms and answers via session.instructions.append.
-        delay(2.seconds)
-        socket.yieldEvent(LiveServerEvent.InputTranscriptDelta(delta = "Check the server logs", startMilliseconds = 1_000, endMilliseconds = 1_500))
-        assertEquals(VoiceCallEvent.UserTranscript(itemID = "live-u-2", text = "Check the server logs", final = true), events.next())
-        socket.yieldEvent(LiveServerEvent.OutputTranscriptDelta(delta = "Let me check the logs for you.", startMilliseconds = 1_600, endMilliseconds = 2_000))
-        assertEquals(VoiceCallEvent.AssistantDelta(itemID = "live-a-1", delta = "Let me check the logs for you."), events.next())
-        harness.audioEvent(VoiceAudioEvent.interrupted)
-        assertEquals(VoiceCallEvent.AssistantDone(itemID = "live-a-1", text = "Let me check the logs for you."), events.next())
-        assertEquals(VoiceCallEvent.AudioInterrupted, events.next())
-        harness.audioEvent(VoiceAudioEvent.resumed)
-        assertEquals(VoiceCallEvent.AudioResumed, events.next())
-
-        delay(899.milliseconds)
-        delay(1.milliseconds)
-        assertEquals(
-            VoiceCallEvent.FunctionCall(
-                callID = "client_claim_1",
-                name = "delegate",
-                arguments = RealtimeJSONs.obj("text" to RealtimeJSONs.string("Let me check the logs for you.")),
-            ),
-            events.next(),
-        )
-
-        harness.coordinator.completeFunction(callID = "client_claim_1", output = "[COMPLETE] The server logs are clean.")
-        assertTrue(waitUntil {
-            socket.commands.any { it is LiveCommand.AppendInstructions && it.delegationID == null && it.content.contains("The server logs are clean.") }
-        })
-        assertFalse(socket.commands.any { it is LiveCommand.AppendCommentary && it.delegationID == null })
         harness.coordinator.end()
     }
 }

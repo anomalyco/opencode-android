@@ -56,7 +56,6 @@ object VoiceSessionDelegator {
         data class Turn(
             val callID: String,
             val capture: VoiceTranscriptTail.Capture,
-            val promisedClaim: String? = null,
             val sessionID: String?,
             val provisionalSessionID: String? = null,
             val createsViewedDraft: Boolean = false,
@@ -200,25 +199,17 @@ object VoiceSessionDelegator {
     /** Builds the steer prompt sent to the delegator OpenCode session. */
     fun formatPrompt(
         deltaLines: List<String>,
-        promisedClaim: String? = null,
         contextLine: String?,
         includeActiveCallHeader: Boolean,
     ): String {
         val sections = mutableListOf<String>()
         if (includeActiveCallHeader) sections += activeCallBlock
         if (!contextLine.isNullOrEmpty()) sections += contextLine
-        val outcomeCheck = promisedClaim?.trim()
-        if (outcomeCheck != null && outcomeCheck.startsWith("[Outcome check]")) {
-            sections += outcomeCheck
-            return sections.joinToString("\n\n")
-        }
         val delta = mutableListOf("[Voice delta]")
         for (line in deltaLines) {
             val trimmed = line.trim()
             if (trimmed.isNotEmpty()) delta += trimmed
         }
-        val claim = promisedClaim?.trim()
-        if (!claim.isNullOrEmpty()) delta += "Voice promised: \"$claim\""
         sections += delta.joinToString("\n")
         return sections.joinToString("\n\n")
     }
@@ -479,7 +470,6 @@ object VoiceSessionDelegator {
         val provisionalAutomaticSessionID: String?,
         val messageID: String,
         val deltaLines: List<String>,
-        val promisedClaim: String?,
         val contextLine: String,
         val lastContextBySession: Map<String, String>,
         val explainedSessionIDs: Set<String>,
@@ -537,7 +527,6 @@ object VoiceSessionDelegator {
             val includeContext = submission.lastContextBySession[sessionID] != submission.contextLine
             val text = formatPrompt(
                 deltaLines = submission.deltaLines,
-                promisedClaim = submission.promisedClaim,
                 contextLine = if (includeContext) submission.contextLine else null,
                 includeActiveCallHeader = includeHeader,
             )

@@ -29,7 +29,6 @@ import kotlinx.serialization.json.jsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
 import java.util.UUID
@@ -351,7 +350,6 @@ class VoiceSessionDelegatorServerVoiceTests {
                 liveDelegationSettle = Duration.ZERO,
                 liveTranscriptSettle = 5.seconds,
                 liveAcknowledgementWait = Duration.ZERO,
-                liveUnbackedClaimWait = VoiceCallTiming.sessionDelegatorUnbackedClaimWait,
                 liveAppendQuiet = Duration.ZERO,
             ),
         )

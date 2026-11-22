@@ -197,7 +197,7 @@ class VoiceFeatureTests {
 
     /**
      * Build 685, 22:56:57Z (14:56:57 PT): opening HEX mid-call replayed a stale
-     * `VoiceTranscriptRecord.tail` containing Voice's own unbacked lines ("And
+     * `VoiceTranscriptRecord.tail` containing Voice's own unverified lines ("And
      * that text to Olive went through, delivered"), causing Voice to answer
      * "No. Just to Olive." nine seconds later without delegating.
      */

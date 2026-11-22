@@ -36,14 +36,14 @@ internal fun Throwable.asClientError(): OpenCodeClientError =
  * GPT-Live's spoken acknowledgement) is what the session shows.
  */
 internal fun VoiceFeature.delegateWork(state: State, callID: String, rawFraming: String?): Reduced<State, Action> {
-    if (state.usesSessionDelegator) return delegateToSessionDelegator(state, callID, rawFraming)
+    if (state.usesSessionDelegator) return delegateToSessionDelegator(state, callID)
     val isClientDelegation = state.activeEngine == VoiceEngine.gptLive
     // One request creates a draft's session; a second one spoken while it is
     // being created would make another.
     if (state.isOnDraft && state.pendingWork.any(state::isHere)) {
         return Reduced(state, completeFunction(callID, VoiceHandoff.failure("The new session is still starting. Say that again in a moment.")))
     }
-    val captured = if (callID.startsWith("client_verify_")) VoiceTranscriptTail.Captured(state.tail, VoiceTranscriptTail.Capture.empty) else state.tail.capture()
+    val captured = state.tail.capture()
     var next = state.copy(tail = captured.tail)
     val capture = captured.capture
     var framing = VoiceHandoff.framing(rawFraming)

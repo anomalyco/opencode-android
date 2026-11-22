@@ -26,8 +26,6 @@ internal suspend fun LiveCallCoordinator.handleLiveEvent(event: LiveServerEvent,
                 val reply = currentAssistantUtterance
                 if (event.startMilliseconds != null && reply?.startMilliseconds != null && event.startMilliseconds < reply.startMilliseconds) {
                     currentAssistantUtterance = reply.copy(userWordsBefore = lastUserWordsAt)
-                } else {
-                    unbackedOutcomeTask?.cancel(); unbackedOutcomeTask = null
                 }
             }
             // GPT-Live is full duplex: user speech and assistant speech can overlap.
@@ -96,7 +94,6 @@ internal suspend fun LiveCallCoordinator.handleLiveEvent(event: LiveServerEvent,
             val isServer = event.target == "responses" && delegatesToResponses
             if (event.id.isEmpty() || (event.target != "client" && event.target.isNotEmpty() && !isServer) || !seenDelegationIDs.add(event.id)) return
             if (isServer) { serverDelegationIDs += event.id; serverDelegations[event.id] = LiveCallCoordinator.ServerDelegation(socket) }
-            lastDelegationCreatedAt = clock.now(); unbackedClaimTask?.cancel(); unbackedClaimTask = null
             delegationOffsets[event.id] = event.offsetMilliseconds
             if (timing.liveDelegationSettle > Duration.ZERO) scheduleDelegation(event.id) else delegationSettled(event.id)
         }
@@ -176,7 +173,7 @@ private fun LiveCallCoordinator.emitDelegation(id: String, acknowledgement: Stri
     val previous = acknowledgements.remove(id)
     previous?.deadline?.cancel()
     if (finished) return
-    delegations[id] = LiveCallCoordinator.DelegationRecord(socketID = active?.id, claim = null, delegatedAt = previous?.settledAt ?: settledAt)
+    delegations[id] = LiveCallCoordinator.DelegationRecord(socketID = active?.id, delegatedAt = previous?.settledAt ?: settledAt)
     val arguments = if (acknowledgement.isNullOrEmpty()) RealtimeJSONs.obj() else RealtimeJSONs.obj("text" to RealtimeJSONs.string(acknowledgement))
     emit(VoiceCallEvent.FunctionCall(id, "delegate", arguments))
 }
@@ -200,51 +197,6 @@ internal fun LiveCallCoordinator.settleAssistantUtterance(cutOff: Boolean = fals
     if (text.isEmpty()) return
     history = history.upsert(utterance.id, VoiceTranscriptTail.Role.assistant, text, cutOff)
     emit(VoiceCallEvent.AssistantDone(utterance.id, text))
-    watchForUnbackedClaim(text, utterance.userWordsBefore)
-    if (!cutOff) watchForUnbackedOutcome(utterance, text)
-}
-private fun LiveCallCoordinator.userAsked(before: Duration?): Boolean {
-    if (before == null) return false
-    val last = lastDelegationCreatedAt ?: return true
-    return before > last + timing.liveAnswerPressedAfter
-}
-private fun LiveCallCoordinator.watchForUnbackedClaim(text: String, userWordsBefore: Duration?) {
-    if (timing.liveUnbackedClaimWait <= Duration.ZERO || delegatesToResponses || finished || pendingDelegationTasks.isNotEmpty() ||
-        acknowledgements.isNotEmpty() || !userAsked(userWordsBefore) || !VoiceActionClaim.isClaim(text)) return
-    unbackedClaimTask?.cancel()
-    unbackedClaimTask = scope.launch {
-        clock.sleep(timing.liveUnbackedClaimWait); unbackedClaimTask = null
-        if (finished || pendingDelegationTasks.isNotEmpty() || acknowledgements.isNotEmpty() || !userAsked(userWordsBefore)) return@launch
-        val id = "client_claim_${nextClientDelegationNumber++}"
-        val now = clock.now(); lastDelegationCreatedAt = now; lastDelegatedAt = now
-        currentUserUtterance = currentUserUtterance?.copy(delegated = true)
-        delegations[id] = LiveCallCoordinator.DelegationRecord(socketID = null, claim = text, delegatedAt = now)
-        startProgressLine(id, now)
-        callLogMarker("The voice agent said “$text” without delegating; delegated the request for it")
-        emit(VoiceCallEvent.FunctionCall(id, "delegate", RealtimeJSONs.obj("text" to RealtimeJSONs.string(text))))
-    }
-}
-/** A finished reply that states an outcome ("Done, it's sent.") with no
- * result behind it: unless the user speaks first, the call verifies it
- * silently and speaks only a correction (`VoiceActionClaim.verifyPrompt`). */
-private fun LiveCallCoordinator.watchForUnbackedOutcome(utterance: Utterance, text: String) {
-    if (timing.liveUnbackedClaimWait <= Duration.ZERO || delegatesToResponses || finished || lastUserWordsAt != utterance.userWordsBefore ||
-        !VoiceActionClaim.isOutcomeClaim(text) || !verifiedUtteranceIDs.add(utterance.id)) return
-    unbackedOutcomeTask?.cancel()
-    unbackedOutcomeTask = scope.launch {
-        clock.sleep(timing.liveUnbackedClaimWait)
-        unbackedOutcomeTimedOut(text, utterance.userWordsBefore)
-    }
-}
-private fun LiveCallCoordinator.unbackedOutcomeTimedOut(claim: String, userWordsBefore: Duration?) {
-    unbackedOutcomeTask = null
-    if (finished || lastUserWordsAt != userWordsBefore) return
-    val id = "client_verify_${nextClientDelegationNumber++}"
-    delegations[id] = LiveCallCoordinator.DelegationRecord(socketID = null, claim = null, delegatedAt = clock.now())
-    callLogMarker("The voice agent claimed an outcome (“$claim”); verifying silently")
-    val question = if (userWordsBefore == null) null else history.turns.lastOrNull { it.role == VoiceTranscriptTail.Role.user }?.text
-    val prompt = VoiceActionClaim.verifyPrompt(question, claim)
-    emit(VoiceCallEvent.FunctionCall(id, "delegate", RealtimeJSONs.obj("text" to RealtimeJSONs.string(prompt))))
 }
 /**
  * One capture chunk's level. Transcript fragments arrive in bursts, a second or more apart while

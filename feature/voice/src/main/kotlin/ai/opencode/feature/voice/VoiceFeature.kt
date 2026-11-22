@@ -996,10 +996,6 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 val superseded = state.pendingWork.firstOrNull { it.callID == action.callID }?.superseded ?: false
                 val next = state.copy(pendingWork = state.pendingWork.filter { it.callID != action.callID })
                 val trimmed = action.reply?.trim() ?: ""
-                if (action.callID.startsWith("client_verify_")) {
-                    val output = if (VoiceActionClaim.correctsVoice(trimmed)) VoiceHandoff.completion(trimmed) else ""
-                    return Reduced(next, completeFunction(action.callID, output))
-                }
                 if (trimmed.isEmpty() && superseded) {
                     return Reduced(next, Effect.run { voiceCall.closeDelegation(action.callID, VoiceDelegationCloseReason.superseded) })
                 }
@@ -1078,7 +1074,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                     }
                     next = next.copy(pendingWork = remaining)
                 }
-                Reduced(next, completeFunction(action.callID, if (action.callID.startsWith("client_verify_")) "" else VoiceHandoff.failure(action.message)))
+                Reduced(next, completeFunction(action.callID, VoiceHandoff.failure(action.message)))
             }
 
             Action.MuteTapped -> {
@@ -1222,7 +1218,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
 
             is VoiceCallEvent.FunctionCall -> when (event.name) {
                 "delegate" -> delegateWork(
-                    if (event.callID.startsWith("client_verify_")) state else state.copy(replyWatch = state.replyWatch.noteUserActed()),
+                    state.copy(replyWatch = state.replyWatch.noteUserActed()),
                     callID = event.callID,
                     rawFraming = event.arguments["text"]?.stringValue,
                 )

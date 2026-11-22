@@ -106,17 +106,13 @@ data class VoiceResultRecord(val entries: List<String> = emptyList()) {
         fun entry(content: String): String {
             val horizontal = { char: Char -> char == ' ' || char == '\t' || (char.isWhitespace() && char != '\n' && char != '\r') }
             var text = content.trim()
-            for (rawLead in listOf(VoiceHandoff.earlierRequestLead, LiveCallCoordinator.earlierConnectionLead, LiveCallCoordinator.verifyLead)) {
+            for (rawLead in listOf(VoiceHandoff.earlierRequestLead, LiveCallCoordinator.earlierConnectionLead)) {
                 val lead = rawLead.trim(horizontal)
                 if (text.startsWith(lead)) text = text.removePrefix(lead).trim(horizontal)
             }
             if (text.startsWith(VoiceHandoff.earlierTopicLead)) {
                 val end = text.indexOf("”. ")
                 if (end >= 0) text = text.substring(end + "”. ".length)
-            }
-            if (text.startsWith(LiveCallCoordinator.claimLeadPrefix)) {
-                val end = text.indexOf("”: ")
-                if (end >= 0) text = text.substring(end + "”: ".length)
             }
             val reply = text.indexOf("Its reply: ")
             if (reply >= 0) {

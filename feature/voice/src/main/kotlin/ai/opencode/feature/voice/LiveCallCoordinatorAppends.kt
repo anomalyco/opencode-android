@@ -221,17 +221,9 @@ internal suspend fun LiveCallCoordinator.completeLiveFunction(callID: String, ou
     }
     val record = delegations.remove(callID)
     val role = LiveOutboundRole.Answer(clock.now(), record?.delegatedAt)
-    val verify = callID.startsWith("client_verify_")
-    val text = if (verify && !VoiceActionClaim.correctsVoice(output)) "" else output
-    val chunks = LiveContentChunker.commentaryChunks(text)
+    val chunks = LiveContentChunker.commentaryChunks(output)
     if (chunks.isEmpty()) {
         if (record != null) finishDelegationRelease()
-        return
-    }
-    if (verify || record?.claim != null) {
-        val lead = record?.claim?.let { "${LiveCallCoordinator.claimLeadPrefix}$it”: " } ?: LiveCallCoordinator.verifyLead
-        sendAnswerBatch(orphanCommentaryAppends(chunks, role, lead))
-        finishDelegationRelease()
         return
     }
     val socket = active
@@ -468,13 +460,7 @@ internal fun LiveCallCoordinator.deliveryNote(append: PendingAppend): String? {
  * unless it already tells the voice agent what to say. */
 fun LiveCallCoordinator.Companion.spokenDirectiveContent(raw: String): String {
     var cleaned = raw.trim()
-    for (lead in listOf(earlierConnectionLead, verifyLead)) {
-        if (cleaned.startsWith(lead)) cleaned = cleaned.substring(lead.length).trim()
-    }
-    if (cleaned.startsWith(claimLeadPrefix)) {
-        val end = cleaned.indexOf("”: ")
-        if (end >= 0) cleaned = cleaned.substring(end + "”: ".length).trim()
-    }
+    if (cleaned.startsWith(earlierConnectionLead)) cleaned = cleaned.substring(earlierConnectionLead.length).trim()
     cleaned = cleaned.replace(": [COMPLETE] ", ": ").replace(": [COMPLETE]", ": ").trim()
     if (cleaned.startsWith("[COMPLETE]")) cleaned = cleaned.removePrefix("[COMPLETE]").trim()
     if (cleaned.isEmpty()) return ""

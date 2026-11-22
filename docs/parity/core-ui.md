@@ -338,7 +338,7 @@ and `ellipsis` (every overflow menu) is the vertical `more_vert`, as on other An
 | `photo.badge.plus` | `add_photo_alternate` | `ms_add_photo_alternate` | `SFSymbol.PhotoBadgePlus` | — |
 | `photo.on.rectangle` | `photo_library` | `ms_photo_library` | `SFSymbol.PhotoOnRectangle` | AttachmentMenu, AttachmentPicker, WhatsNewList |
 | `photo.on.rectangle.angled` | `photo_library` | `ms_photo_library` | `SFSymbol.PhotoOnRectangleAngled` | WhatsNewList |
-| `pin` | `keep` | `ms_keep` | `SFSymbol.Pin` | DrawerStyle, HomeView+Drawer, SessionSheetView, SessionView+Header, VoiceActionClaim, WhatsNewList |
+| `pin` | `keep` | `ms_keep` | `SFSymbol.Pin` | DrawerStyle, HomeView+Drawer, SessionSheetView, SessionView+Header, WhatsNewList |
 | `pin.fill` | `keep` (fill) | `ms_keep_fill` | `SFSymbol.PinFill` | DrawerStyle, SessionSheetView |
 | `pin.slash` | `keep_off` | `ms_keep_off` | `SFSymbol.PinSlash` | HomeView+Drawer, SessionView+Header |
 | `pip.enter` | `picture_in_picture_alt` | `ms_picture_in_picture_alt` | `SFSymbol.PipEnter` | AgentFileViewer (AVKit’s Picture in Picture button) |

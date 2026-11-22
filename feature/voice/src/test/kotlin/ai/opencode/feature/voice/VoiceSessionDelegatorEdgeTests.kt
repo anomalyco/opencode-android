@@ -279,7 +279,6 @@ class VoiceSessionDelegatorEdgeTests {
         val expectedContext = """[Phone context] Call on session "Session View" (ses_view) · """ + VoiceScreenVisibility.notLooking.unseenNote!!
         val expectedPrompt1 = VoiceSessionDelegator.formatPrompt(
             deltaLines = listOf("User: First request."),
-            promisedClaim = null,
             contextLine = expectedContext,
             includeActiveCallHeader = true,
         )
@@ -315,7 +314,6 @@ class VoiceSessionDelegatorEdgeTests {
         // Release Turn 2's send: Turn 2 admits with ONLY its delta (no repeated header/context) and settles cleanly.
         val expectedPrompt2 = VoiceSessionDelegator.formatPrompt(
             deltaLines = listOf("User: Second request."),
-            promisedClaim = null,
             contextLine = null,
             includeActiveCallHeader = false,
         )
@@ -522,7 +520,6 @@ class VoiceSessionDelegatorEdgeTests {
         val expectedContext = """[Phone context] Call on session "Session View" (ses_view) · """ + VoiceScreenVisibility.notLooking.unseenNote!!
         val expectedPrompt = VoiceSessionDelegator.formatPrompt(
             deltaLines = listOf("User: Second call."),
-            promisedClaim = null,
             contextLine = expectedContext,
             includeActiveCallHeader = true,
         )
