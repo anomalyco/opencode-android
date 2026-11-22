@@ -9,6 +9,7 @@ import ai.opencode.server.model.OpenCodeWidgetRef
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -83,7 +84,18 @@ internal suspend inline fun <T> AgentWidgetLane.run(crossinline block: () -> T):
 @JvmInline
 internal value class AgentWidgetLane(val dispatcher: kotlinx.coroutines.CoroutineDispatcher) {
     companion object {
+        /** A step's run needs up to ~450 KB of stack at 100 view levels (psychoscript's budget is 512 KiB). */
+        const val STACK_BYTES = 512L shl 10
+
+        private val threads by lazy {
+            val count = java.util.concurrent.atomic.AtomicInteger()
+            val size = Runtime.getRuntime().availableProcessors().coerceIn(2, 4)
+            java.util.concurrent.ThreadPoolExecutor(size, size, 30, java.util.concurrent.TimeUnit.SECONDS, java.util.concurrent.LinkedBlockingQueue()) { task ->
+                Thread(null, task, "AgentWidgetStep-${count.incrementAndGet()}", STACK_BYTES).apply { isDaemon = true }
+            }.apply { allowCoreThreadTimeOut(true) }.asCoroutineDispatcher()
+        }
+
         @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-        fun make() = AgentWidgetLane(Dispatchers.Default.limitedParallelism(1))
+        fun make() = AgentWidgetLane(threads.limitedParallelism(1))
     }
 }
