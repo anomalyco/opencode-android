@@ -1,6 +1,6 @@
 # Widget binary format fixtures
 
-The committed workloads of psychoscript-mobile 6d49474 (`rust/crates/psychoscript-mobile/tests/fixtures/workloads`),
+The committed workloads of psychoscript-mobile (6d49474) (`rust/crates/psychoscript-mobile/tests/fixtures/workloads`),
 each in both forms, gzipped:
 
 - `<step>.json` / `<step>.bin`: a step's output from the same session, `RunSession.run` (JSON, with
@@ -11,4 +11,8 @@ each in both forms, gzipped:
   (each message as a little-endian u32 length and its bytes). Live programs use `Math.random` and the clock, so the
   bytes come from the JSON values rather than from a second run.
 
-`AgentWidgetTests` reads both forms and expects the same values, and fuzzes the bytes.
+Regenerate with `scripts/widget-wire-fixtures/generate.sh` (it follows `scripts/psychoscript.sh`'s REV). Live
+workloads that use randomness or the clock come out different each time; the rest are byte for byte the same.
+
+`AgentWidgetTests` decodes the bytes, checks that its JSON encoder (`AgentWidgetWireEncoder`, a port of the runtime's)
+writes the same values from the JSON, and fuzzes the bytes.
