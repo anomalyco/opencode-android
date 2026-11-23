@@ -131,6 +131,8 @@ internal object AgentWidgetWorkloads {
 
         override fun onWarning(message: String) = Unit
 
+        override fun onGpuCanvas(key: String?, state: com.anomalyco.psychoscript.GpuCanvasState) = Unit
+
         override fun onExit(exit: LiveExit) {
             if (exit is LiveExit.Failed) failure = exit.toString()
             frames.release(1000)

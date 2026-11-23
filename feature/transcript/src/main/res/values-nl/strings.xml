@@ -182,6 +182,7 @@
     <string name="transcript_widget_step_failed">De widget kon niet reageren.</string>
     <string name="transcript_widget_page">Pagina %1$d van %2$d</string>
     <string name="transcript_widget_shader_failed">Kan deze shader niet uitvoeren</string>
+    <string name="transcript_widget_gpu_unsupported">GPU-canvas niet ondersteund</string>
     <string name="transcript_widget_fullscreen">Volledig scherm</string>
     <string name="transcript_widget_fullscreen_placeholder">Openen in volledig scherm</string>
     <string name="transcript_widget_network">Netwerk: %1$s</string>

@@ -31,9 +31,10 @@ sealed interface AgentWidgetNode {
     data class Input(val id: String, val label: String?, val value: String, val placeholder: String?, val multiline: Boolean) : AgentWidgetNode
     data object Divider : AgentWidgetNode
     /**
-     * A drawing surface, drawn one way: by the widget template's `draw` commands (2D), or with [wgsl] by that fragment
-     * shader on the GPU, fed [values] (16 floats, zero padded; null for 2D). Only with [pointer] (the prelude sets it
-     * for an `onPointer` handler) does it take pointer input; an [id] alone is for live `widget.draw`.
+     * A drawing surface, drawn one way: by the widget template's `draw` commands (2D), with [wgsl] by that fragment
+     * shader on the GPU, fed [values] (16 floats, zero padded; null for 2D), or with [gpu] by a live program's WebGPU
+     * batches (widgets-gpu.md), which the runtime replays into a surface the app attaches. Only with [pointer] (the
+     * prelude sets it for an `onPointer` handler) does it take pointer input; an [id] alone is for live `widget.draw`.
      */
     data class Canvas(
         val id: String?,
@@ -47,13 +48,14 @@ sealed interface AgentWidgetNode {
         val values: FloatArray? = null,
         val poster: String? = null,
         val pointer: Boolean = false,
+        val gpu: Boolean = false,
     ) : AgentWidgetNode {
-        val gpu: Boolean get() = wgsl != null
+        val shader: Boolean get() = wgsl != null
 
         override fun equals(other: Any?): Boolean = other is Canvas && id == other.id && height == other.height &&
             width == other.width && fps == other.fps && duration == other.duration && alt == other.alt &&
             fill == other.fill && wgsl == other.wgsl && values.contentEquals(other.values) && poster == other.poster &&
-            pointer == other.pointer
+            pointer == other.pointer && gpu == other.gpu
 
         override fun hashCode(): Int = ((wgsl.hashCode() * 31 + values.contentHashCode()) * 31 + height.hashCode()) * 31 + id.hashCode()
     }
@@ -99,6 +101,16 @@ sealed interface AgentWidgetNode {
             is Carousel -> node.id != null || node.children.any(::takesPointer)
             is Canvas -> node.pointer
             else -> node.children.any(::takesPointer)
+        }
+
+        /**
+         * The `key` a keyed node's [id] carries (its last path segment, `:` and the key URI-encoded), or null without
+         * one or for a repeat of a key among its siblings (`~2`), which a live run can't address.
+         */
+        fun canvasKey(id: String): String? {
+            val last = id.substringAfterLast('/')
+            if (!last.startsWith(":") || Regex("~\\d+$").containsMatchIn(last)) return null
+            return runCatching { java.net.URLDecoder.decode(last.substring(1).replace("+", "%2B"), "UTF-8") }.getOrNull()
         }
 
         /** Visits [node] and every node under it, depth first. */
@@ -151,6 +163,7 @@ sealed interface AgentWidgetNode {
                     if (wgsl == null) null else FloatArray(16).also { f.values(it) },
                     f.string("poster"),
                     f.bool("pointer"),
+                    f.bool("gpu"),
                 )
             }
             else -> throw IllegalArgumentException(type)

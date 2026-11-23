@@ -188,6 +188,7 @@
     <string name="transcript_widget_step_failed">Виџет није могао да одговори.</string>
     <string name="transcript_widget_page">Страница %1$d од %2$d</string>
     <string name="transcript_widget_shader_failed">Није могуће покренути овај шејдер</string>
+    <string name="transcript_widget_gpu_unsupported">GPU платно није подржано</string>
     <string name="transcript_widget_fullscreen">Цео екран</string>
     <string name="transcript_widget_fullscreen_placeholder">Отвори преко целог екрана</string>
     <string name="transcript_widget_network">Мрежа: %1$s</string>

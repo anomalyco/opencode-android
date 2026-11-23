@@ -94,13 +94,20 @@ class AgentWidgetTests {
     fun readsACanvasDrawnOneWay() {
         fun canvas(props: String) = stepOutput("""{"state":{},"view":{"type":"canvas","height":120$props}}""").view as AgentWidgetNode.Canvas
         val flat = canvas("")
+        assertTrue(!flat.shader)
         assertTrue(!flat.gpu)
+        assertTrue(canvas(""","id":"0/:scene","gpu":true""").gpu)
+        // A GPU canvas is reached by its key, which its id carries URI-encoded; a repeated key can't be.
+        assertEquals("scene", AgentWidgetNode.canvasKey("0/:scene"))
+        assertEquals("a b/c+1", AgentWidgetNode.canvasKey("0/1/:a%20b%2Fc%2B1"))
+        assertNull(AgentWidgetNode.canvasKey("0/:scene~2"))
+        assertNull(AgentWidgetNode.canvasKey("0/1"))
         assertTrue(!flat.pointer)
         assertTrue(canvas(""","id":"0/:a","pointer":true""").pointer)
         assertEquals(0, flat.fps)
         assertNull(flat.values)
         val gpu = canvas(""","id":"0/:sky","wgsl":"fn shade(frag: vec2f) -> vec4f { return vec4f(1.0); }","values":[0.5,2],"poster":"sky.png","duration":3""")
-        assertTrue(gpu.gpu)
+        assertTrue(gpu.shader)
         assertEquals(60, gpu.fps)
         assertEquals(16, gpu.values?.size)
         assertEquals(listOf(0.5f, 2f, 0f), gpu.values?.take(3))

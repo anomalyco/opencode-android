@@ -17,13 +17,17 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
   compiles `program + "\nreturn __widget_step(__input())"` once and `run`s steps at 250 ms and draws at 8 ms
   (a draw timeout counts as an overrun). Everything else widget-shaped is the app's: step inputs, output
   parsing and validation, the 2,000-command cap, rendering.
-- Canvas GPU mode (a `canvas` with `wgsl`): `AgentWidgetEngine.translateShader(wgsl)` → vertex + fragment GLSL ES 3.00 with uniform block
-  names. `NativeAgentWidgetEngine` wraps the node's WGSL in the spec's header and a GL entry that flips
-  `frag.y`, then calls the runner's `translateWgsl` (feature `shader`). `AgentWidgetShaderStore` caches the
-  result by sha256(target + wgsl) in memory and under `files/support/widget-shaders/`. `AgentWidgetGL` (one
-  GL thread and context, programs cached by GLSL, 96-byte UBO bound to the reported blocks),
-  `AgentWidgetGPUCanvas` (`TextureView` per node, `withFrameNanos`, pause off screen / list not resumed,
-  50 ms × 3 stop, poster/alt on failure).
+- Canvas GPU mode (a `canvas` with `wgsl`): `AgentWidgetEngine.shaderCanvas(wgsl, surface, w, h)` wraps the
+  runner's `ShaderCanvas`, which compiles and presents on its own thread (Vulkan) into a `TextureView`'s
+  surface. `AgentWidgetGPUCanvas` records frames with `render(time, scale, pointer, values)` from
+  `withFrameNanos` at `fps` (once, and on `values` changes, at `fps: 0`), paused off screen / list not resumed;
+  a WGSL error is reported once in phase `gpu` with the template's line, no GPU is a client error; poster/alt
+  on failure.
+- Live GPU canvases (`canvas` with `gpu: true`, wire prop 38, widgets-gpu.md): `AgentWidgetLiveGPUCanvas`
+  attaches a `TextureView` surface under the canvas's key (`AgentWidgetNode.canvasKey`) to the live run
+  (`attachSurface`, again on resize; `detachSurface` before the surface goes). The driver keeps a stack per key
+  (inline and full screen: the newest presents) and reattaches after a restart or a snapshot resume. The run's
+  `onGpuCanvas` states drive the placeholder (`poster`, else `alt`, else "GPU canvas not supported").
 - Canvas: step and draw-list decode on the widget's lane, own program copy while animating,
   frames only while visible, `Budget` errors count toward the 3-overrun stop.
 

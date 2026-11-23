@@ -114,7 +114,11 @@ fun AgentWidgetNodeView(node: AgentWidgetNode, scope: AgentWidgetScope, modifier
         is AgentWidgetNode.Input -> InputNode(node, scope, modifier)
         AgentWidgetNode.Divider -> HorizontalDivider(modifier, thickness = 1.dp, color = OpenCodeTheme.colors.border)
         is AgentWidgetNode.Stack -> AgentWidgetStack(node, scope, modifier, path)
-        is AgentWidgetNode.Canvas -> if (node.gpu) AgentWidgetGPUCanvas(node, scope, modifier) else AgentWidgetCanvas(node, scope, modifier)
+        is AgentWidgetNode.Canvas -> when {
+            node.shader -> AgentWidgetGPUCanvas(node, scope, modifier)
+            node.gpu -> AgentWidgetLiveGPUCanvas(node, scope, modifier)
+            else -> AgentWidgetCanvas(node, scope, modifier)
+        }
     }
 }
 

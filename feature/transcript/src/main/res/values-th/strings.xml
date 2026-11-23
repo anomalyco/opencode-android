@@ -176,6 +176,7 @@
     <string name="transcript_widget_step_failed">วิดเจ็ตตอบกลับไม่ได้</string>
     <string name="transcript_widget_page">หน้า %1$d จาก %2$d</string>
     <string name="transcript_widget_shader_failed">เรียกใช้เชดเดอร์นี้ไม่ได้</string>
+    <string name="transcript_widget_gpu_unsupported">ไม่รองรับ GPU canvas</string>
     <string name="transcript_widget_fullscreen">เต็มจอ</string>
     <string name="transcript_widget_fullscreen_placeholder">เปิดแบบเต็มจอ</string>
     <string name="transcript_widget_network">เครือข่าย: %1$s</string>

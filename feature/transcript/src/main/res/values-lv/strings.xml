@@ -188,6 +188,7 @@
     <string name="transcript_widget_step_failed">Logrīks nevarēja atbildēt.</string>
     <string name="transcript_widget_page">Lapa %1$d no %2$d</string>
     <string name="transcript_widget_shader_failed">Neizdevās palaist šo šeideri</string>
+    <string name="transcript_widget_gpu_unsupported">GPU audekls nav atbalstīts</string>
     <string name="transcript_widget_fullscreen">Pilnekrāns</string>
     <string name="transcript_widget_fullscreen_placeholder">Atvērt pilnekrānā</string>
     <string name="transcript_widget_network">Tīkls: %1$s</string>

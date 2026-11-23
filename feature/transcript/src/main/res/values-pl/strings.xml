@@ -194,6 +194,7 @@
     <string name="transcript_widget_step_failed">Widżet nie mógł odpowiedzieć.</string>
     <string name="transcript_widget_page">Strona %1$d z %2$d</string>
     <string name="transcript_widget_shader_failed">Nie udało się uruchomić tego shadera</string>
+    <string name="transcript_widget_gpu_unsupported">Obszar rysowania GPU nieobsługiwany</string>
     <string name="transcript_widget_fullscreen">Pełny ekran</string>
     <string name="transcript_widget_fullscreen_placeholder">Otwórz na pełnym ekranie</string>
     <string name="transcript_widget_network">Sieć: %1$s</string>

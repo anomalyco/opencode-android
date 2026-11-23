@@ -188,6 +188,7 @@
     <string name="transcript_widget_step_failed">Il widget non ha potuto rispondere.</string>
     <string name="transcript_widget_page">Pagina %1$d di %2$d</string>
     <string name="transcript_widget_shader_failed">Impossibile eseguire questo shader</string>
+    <string name="transcript_widget_gpu_unsupported">Canvas GPU non supportato</string>
     <string name="transcript_widget_fullscreen">Schermo intero</string>
     <string name="transcript_widget_fullscreen_placeholder">Apri a schermo intero</string>
     <string name="transcript_widget_network">Rete: %1$s</string>

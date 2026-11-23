@@ -304,6 +304,8 @@ class AgentWidgetController internal constructor(
         val live = live
         if (isLiveMode && live != null) {
             phase = Phase.Starting(Status.Open)
+            gpuStates.clear()
+            gpuAll = null
             live.restart()
         } else {
             feed(Event.Retry)
@@ -343,6 +345,23 @@ class AgentWidgetController internal constructor(
     internal var liveViewHeight = 0f
 
     private var live: AgentWidgetLiveDriver? = null
+
+    // GPU canvases (widgets-gpu.md): each one's state by key, and the state the run gave every canvas at once.
+    private val gpuStates = mutableStateMapOf<String, AgentWidgetGpuState>()
+    private var gpuAll: AgentWidgetGpuState? by mutableStateOf(null)
+
+    /** The GPU canvas [key]'s state: null until the runtime says (the surface shows meanwhile). */
+    internal fun gpuState(key: String): AgentWidgetGpuState? = gpuStates[key] ?: gpuAll
+
+    /** Presents the GPU canvas [key] into [surface] ([width] × [height] physical pixels); again on a new size. */
+    internal fun attachGpuSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) {
+        live?.attachSurface(key, surface, width, height)
+    }
+
+    /** Before [surface] goes: once this returns, the run never touches it again. */
+    internal fun detachGpuSurface(key: String, surface: AgentWidgetGpuSurface) {
+        live?.detachSurface(key, surface)
+    }
     private var liveStartNanos = 0L
     private var lastFrameNanos = 0L
     private var shownInline = false
@@ -422,6 +441,18 @@ class AgentWidgetController internal constructor(
         }
 
         override fun malformed(message: String) = clientError("post", message)
+
+        override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) {
+            if (key == null) {
+                gpuAll = state
+                gpuStates.clear()
+            } else {
+                gpuStates[key] = state
+            }
+            if (state is AgentWidgetGpuState.Stopped) {
+                if (state.program && state.report) reportError("gpu", state.message) else if (!state.program) clientError("gpu", state.message)
+            }
+        }
 
         override fun ended() = Unit
     }

@@ -1,6 +1,7 @@
 package ai.opencode.feature.transcript.widgets
 
 import ai.opencode.core.dependencies.DependencyKey
+import android.view.Surface
 
 /**
  * Runs widget programs on the Rust PsychoScript (`psychoscript-mobile`). A program compiles once
@@ -16,8 +17,11 @@ interface AgentWidgetEngine {
     /** A live widget template's program, run with `return await __widget_live(__input())` (specs/v2/widgets-live.md). */
     fun compileLive(program: String): AgentWidgetLiveProgram
 
-    /** A `shader` node's `wgsl` (its `shade` function) in the spec's header and entry point, as GLSL ES 3.00, with the vertex stage. */
-    fun translateShader(wgsl: String): AgentWidgetShaderStages
+    /** The runtime's handle on [surface] (an `ANativeWindow`) for a GPU canvas; close it once nothing presents into it. */
+    fun gpuSurface(surface: Surface): AgentWidgetGpuSurface
+
+    /** A `wgsl` canvas presenting into [surface], [width] × [height] physical pixels; it returns at once. */
+    fun shaderCanvas(wgsl: String, surface: AgentWidgetGpuSurface, width: Int, height: Int): AgentWidgetShaderCanvas
 
     companion object Key : DependencyKey<AgentWidgetEngine> {
         override val liveValue: AgentWidgetEngine by lazy { NativeAgentWidgetEngine.load() ?: Unavailable }
@@ -29,7 +33,9 @@ interface AgentWidgetEngine {
         override val isAvailable: Boolean = false
         override fun compile(program: String): AgentWidgetProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
         override fun compileLive(program: String): AgentWidgetLiveProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
-        override fun translateShader(wgsl: String): AgentWidgetShaderStages = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
+        override fun gpuSurface(surface: Surface): AgentWidgetGpuSurface = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
+        override fun shaderCanvas(wgsl: String, surface: AgentWidgetGpuSurface, width: Int, height: Int): AgentWidgetShaderCanvas =
+            throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
         private const val UNAVAILABLE = "The widget runtime isn't available in this build."
     }
 }
@@ -97,11 +103,27 @@ internal fun Throwable.isProgramError(): Boolean = when (this) {
     else -> false
 }
 
-/** Translated GLSL ES 3.00 and its uniform blocks, each with the binding point to give it. */
-class AgentWidgetShaderCode(val code: String, val uniformBlocks: List<Pair<String, Int>> = emptyList())
+/** The runtime's surface for a GPU canvas ([handle] is the binding's `GpuSurface`). */
+class AgentWidgetGpuSurface(val handle: AutoCloseable) : AutoCloseable by handle
 
-/** A shader node's two GPU stages: the full-screen triangle and its fragment shader. */
-class AgentWidgetShaderStages(val vertex: AgentWidgetShaderCode, val fragment: AgentWidgetShaderCode)
+/** What stopped a GPU canvas for good: the widget template's ([program]: report it, phase `gpu`) or the client's. */
+class AgentWidgetGpuFailure(val program: Boolean, val message: String)
+
+/** A `wgsl` canvas (widgets.md, GPU canvases): frames are recorded here and drawn on the runtime's own thread. */
+interface AgentWidgetShaderCanvas : AutoCloseable {
+    /** Records a frame ([pointer] `x, y, down` in physical pixels); returns, once, what stopped the canvas. */
+    fun render(time: Float, scale: Float, pointer: FloatArray, values: FloatArray): AgentWidgetGpuFailure?
+    fun resize(width: Int, height: Int)
+}
+
+/** A live run's GPU canvas state (widgets-gpu.md): [Live] shows the surface, anything else its placeholder. */
+sealed interface AgentWidgetGpuState {
+    data object Live : AgentWidgetGpuState
+    data object Unavailable : AgentWidgetGpuState
+    data object Lost : AgentWidgetGpuState
+    /** An error stopped it for the rest of the run; [report] a [program] one once, in phase `gpu`. */
+    data class Stopped(val program: Boolean, val message: String, val report: Boolean) : AgentWidgetGpuState
+}
 
 /** A live program, compiled once: each open widget starts its own run of it. */
 interface AgentWidgetLiveProgram : AutoCloseable {
@@ -120,6 +142,10 @@ interface AgentWidgetLiveRun {
     /** Frees a paused run's VM (its state kept for [resume]); false when it can't (a fetch in flight). */
     fun snapshot(): Boolean
     fun stop()
+    /** Presents the GPU canvas [key] into [surface], [width] × [height] physical pixels; again on a new size. Never blocks. */
+    fun attachSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) = Unit
+    /** Once this returns (at most a frame), the run never touches the canvas's surface again. */
+    fun detachSurface(key: String) = Unit
 }
 
 /** What a live run tells its widget, on the run's own thread: hand it to the main thread and return. */
@@ -132,4 +158,7 @@ interface AgentWidgetLiveListener {
 
     /** A `fetch` transfer failed (the program gets the rejection). */
     fun fetchFailed(message: String)
+
+    /** A GPU canvas's state changed: [key] null for every GPU canvas of the run. */
+    fun gpuCanvas(key: String?, state: AgentWidgetGpuState) = Unit
 }

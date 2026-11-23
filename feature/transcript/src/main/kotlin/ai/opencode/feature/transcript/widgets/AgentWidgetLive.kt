@@ -37,6 +37,8 @@ internal class AgentWidgetLiveDriver(
         fun malformed(message: String)
         /** `main` returned without an answer: the last view stays. */
         fun ended()
+        /** A GPU canvas's state ([key] null: every GPU canvas of the run). */
+        fun gpuCanvas(key: String?, state: AgentWidgetGpuState) = Unit
     }
 
     private var run: AgentWidgetLiveRun? = null
@@ -88,6 +90,8 @@ internal class AgentWidgetLiveDriver(
                 paused = false
                 AppLog.perf.debug { "Live widget resumed after ${(System.nanoTime() - pausedSince) / 1_000_000} ms" }
                 run?.resume()
+                // A run restored from its snapshot presents again into the surfaces it had.
+                attachAll()
             }
         }
     }
@@ -125,6 +129,10 @@ internal class AgentWidgetLiveDriver(
                 scope.launch { if (current == generation) events.reported("fetch", message) }
             }
 
+            override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) {
+                scope.launch { if (current == generation) events.gpuCanvas(key, state) }
+            }
+
             override fun exited(failure: AgentWidgetEngineException?) {
                 inbox.trySend(Exit(current, failure))
             }
@@ -136,15 +144,58 @@ internal class AgentWidgetLiveDriver(
             events.failed(error)
             null
         }
+        attachAll()
     }
 
     private fun stopRun() {
         generation++
         snapshotJob?.cancel()
         snapshotJob = null
+        run?.let { run -> surfaces.keys.forEach(run::detachSurface) }
         run?.stop()
         run = null
         paused = false
+    }
+
+    private class Attached(val surface: AgentWidgetGpuSurface, var width: Int, var height: Int)
+
+    /**
+     * The GPU canvases' surfaces by key, attached to whichever run is current and kept across restarts. A key can have
+     * several (the inline row and full screen): the newest presents, and the one under it takes over when it goes.
+     */
+    private val surfaces = HashMap<String, ArrayList<Attached>>()
+
+    /** Presents the GPU canvas [key] into [surface] (again on a new size). Main thread; never blocks. */
+    fun attachSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) {
+        val list = surfaces.getOrPut(key) { ArrayList() }
+        val known = list.firstOrNull { it.surface === surface }
+        if (known != null) {
+            known.width = width
+            known.height = height
+            if (known !== list.last()) return
+        } else {
+            list += Attached(surface, width, height)
+        }
+        if (!finished) run?.attachSurface(key, surface, width, height)
+    }
+
+    /** Before [surface] goes: once this returns, no run touches it again. */
+    fun detachSurface(key: String, surface: AgentWidgetGpuSurface) {
+        val list = surfaces[key] ?: return
+        val top = list.lastOrNull()
+        if (!list.removeAll { it.surface === surface }) return
+        if (list.isEmpty()) surfaces.remove(key)
+        if (top?.surface !== surface) return
+        // A new surface applies only at the next present, so the old one is detached (waited for) first.
+        val run = run ?: return
+        run.detachSurface(key)
+        val next = list.lastOrNull()
+        if (next != null && !finished) run.attachSurface(key, next.surface, next.width, next.height)
+    }
+
+    private fun attachAll() {
+        val run = run ?: return
+        for ((key, list) in surfaces) list.lastOrNull()?.let { run.attachSurface(key, it.surface, it.width, it.height) }
     }
 
     private sealed interface Inbound { val generation: Int }
@@ -184,6 +235,7 @@ internal class AgentWidgetLiveDriver(
 
     private fun exited(current: Int, failure: AgentWidgetEngineException?) {
         if (current != generation) return
+        run?.let { run -> surfaces.keys.forEach(run::detachSurface) }
         run = null
         if (finished) return
         finished = true

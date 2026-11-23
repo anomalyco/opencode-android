@@ -662,13 +662,16 @@ internal interface UniffiCallbackInterfaceLiveHandlerMethod2 : com.sun.jna.Callb
 internal interface UniffiCallbackInterfaceLiveHandlerMethod3 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`exit`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
+internal interface UniffiCallbackInterfaceLiveHandlerMethod4 : com.sun.jna.Callback {
+    fun callback(`uniffiHandle`: Long,`key`: RustBuffer.ByValue,`state`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
+}
 internal interface UniffiCallbackInterfaceFetchTransportMethod0 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`request`: RustBuffer.ByValue,`completion`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
 internal interface UniffiCallbackInterfaceFetchTransportMethod1 : com.sun.jna.Callback {
     fun callback(`uniffiHandle`: Long,`id`: Long,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,)
 }
-@Structure.FieldOrder("uniffiFree", "uniffiClone", "onPosts", "onPostsBytes", "onWarning", "onExit")
+@Structure.FieldOrder("uniffiFree", "uniffiClone", "onPosts", "onPostsBytes", "onWarning", "onExit", "onGpuCanvas")
 internal open class UniffiVTableCallbackInterfaceLiveHandler(
     @JvmField internal var `uniffiFree`: UniffiCallbackInterfaceFree? = null,
     @JvmField internal var `uniffiClone`: UniffiCallbackInterfaceClone? = null,
@@ -676,6 +679,7 @@ internal open class UniffiVTableCallbackInterfaceLiveHandler(
     @JvmField internal var `onPostsBytes`: UniffiCallbackInterfaceLiveHandlerMethod1? = null,
     @JvmField internal var `onWarning`: UniffiCallbackInterfaceLiveHandlerMethod2? = null,
     @JvmField internal var `onExit`: UniffiCallbackInterfaceLiveHandlerMethod3? = null,
+    @JvmField internal var `onGpuCanvas`: UniffiCallbackInterfaceLiveHandlerMethod4? = null,
 ) : Structure() {
     class UniffiByValue(
         `uniffiFree`: UniffiCallbackInterfaceFree? = null,
@@ -684,7 +688,8 @@ internal open class UniffiVTableCallbackInterfaceLiveHandler(
         `onPostsBytes`: UniffiCallbackInterfaceLiveHandlerMethod1? = null,
         `onWarning`: UniffiCallbackInterfaceLiveHandlerMethod2? = null,
         `onExit`: UniffiCallbackInterfaceLiveHandlerMethod3? = null,
-    ): UniffiVTableCallbackInterfaceLiveHandler(`uniffiFree`,`uniffiClone`,`onPosts`,`onPostsBytes`,`onWarning`,`onExit`,), Structure.ByValue
+        `onGpuCanvas`: UniffiCallbackInterfaceLiveHandlerMethod4? = null,
+    ): UniffiVTableCallbackInterfaceLiveHandler(`uniffiFree`,`uniffiClone`,`onPosts`,`onPostsBytes`,`onWarning`,`onExit`,`onGpuCanvas`,), Structure.ByValue
 
    internal fun uniffiSetValue(other: UniffiVTableCallbackInterfaceLiveHandler) {
         `uniffiFree` = other.`uniffiFree`
@@ -693,6 +698,7 @@ internal open class UniffiVTableCallbackInterfaceLiveHandler(
         `onPostsBytes` = other.`onPostsBytes`
         `onWarning` = other.`onWarning`
         `onExit` = other.`onExit`
+        `onGpuCanvas` = other.`onGpuCanvas`
     }
 
 }
@@ -745,8 +751,6 @@ internal object IntegrityCheckingUniffiLib {
     internal fun ensureInitialized() = Unit
     external fun uniffi_psychoscript_mobile_checksum_func_is_public_address(
     ): Int
-    external fun uniffi_psychoscript_mobile_checksum_func_translate_wgsl(
-    ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_valueencoder_emit_name(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_fetchcompletion_fail(
@@ -757,7 +761,15 @@ internal object IntegrityCheckingUniffiLib {
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel(
     ): Int
+    external fun uniffi_psychoscript_mobile_checksum_method_shadercanvas_render(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_method_shadercanvas_resize(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface(
+    ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_liverun_deliver(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_method_liverun_detach_surface(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_liverun_is_running(
     ): Int
@@ -783,6 +795,12 @@ internal object IntegrityCheckingUniffiLib {
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget(
     ): Int
+    external fun uniffi_psychoscript_mobile_checksum_constructor_shadercanvas_new(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_constructor_gpusurface_android_window(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_constructor_gpusurface_metal_layer(
+    ): Int
     external fun uniffi_psychoscript_mobile_checksum_constructor_liverun_restore(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_constructor_program_new(
@@ -794,6 +812,8 @@ internal object IntegrityCheckingUniffiLib {
     external fun uniffi_psychoscript_mobile_checksum_method_livehandler_on_warning(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_livehandler_on_exit(
+    ): Int
+    external fun uniffi_psychoscript_mobile_checksum_method_livehandler_on_gpu_canvas(
     ): Int
     external fun ffi_psychoscript_mobile_uniffi_contract_version(
     ): Int
@@ -843,13 +863,35 @@ internal object UniffiLib {
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_method_fetchtransport_cancel(`ptr`: Long,`id`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
+    external fun uniffi_psychoscript_mobile_fn_clone_shadercanvas(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Long
+    external fun uniffi_psychoscript_mobile_fn_free_shadercanvas(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    external fun uniffi_psychoscript_mobile_fn_constructor_shadercanvas_new(`wgsl`: RustBuffer.ByValue,`surface`: Long,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
+    ): Long
+    external fun uniffi_psychoscript_mobile_fn_method_shadercanvas_render(`ptr`: Long,`time`: Float,`scale`: Float,`pointer`: RustBuffer.ByValue,`values`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    external fun uniffi_psychoscript_mobile_fn_method_shadercanvas_resize(`ptr`: Long,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    external fun uniffi_psychoscript_mobile_fn_clone_gpusurface(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Long
+    external fun uniffi_psychoscript_mobile_fn_free_gpusurface(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    external fun uniffi_psychoscript_mobile_fn_constructor_gpusurface_android_window(`pointer`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Long
+    external fun uniffi_psychoscript_mobile_fn_constructor_gpusurface_metal_layer(`pointer`: Long,uniffi_out_err: UniffiRustCallStatus, 
+    ): Long
     external fun uniffi_psychoscript_mobile_fn_clone_liverun(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Long
     external fun uniffi_psychoscript_mobile_fn_free_liverun(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_constructor_liverun_restore(`snapshot`: RustBuffer.ByValue,`handler`: Long,`inputName`: RustBuffer.ByValue,`options`: RustBuffer.ByValue,`transport`: RustBuffer.ByValue,`encoder`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Long
+    external fun uniffi_psychoscript_mobile_fn_method_liverun_attach_surface(`ptr`: Long,`key`: RustBuffer.ByValue,`surface`: Long,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
     external fun uniffi_psychoscript_mobile_fn_method_liverun_deliver(`ptr`: Long,`messageJson`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
+    ): Unit
+    external fun uniffi_psychoscript_mobile_fn_method_liverun_detach_surface(`ptr`: Long,`key`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_method_liverun_is_running(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
@@ -887,8 +929,6 @@ internal object UniffiLib {
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_func_is_public_address(`address`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
     ): Byte
-    external fun uniffi_psychoscript_mobile_fn_func_translate_wgsl(`source`: RustBuffer.ByValue,`target`: RustBuffer.ByValue,`stage`: RustBuffer.ByValue,`entry`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): RustBuffer.ByValue
     external fun ffi_psychoscript_mobile_rustbuffer_alloc(`size`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     external fun ffi_psychoscript_mobile_rustbuffer_from_bytes(`bytes`: ForeignBytes.ByValue,uniffi_out_err: UniffiRustCallStatus, 
@@ -1011,9 +1051,6 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_func_is_public_address() and 0xFFFF) != 43155) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_func_translate_wgsl() and 0xFFFF) != 52306) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_valueencoder_emit_name() and 0xFFFF) != 59884) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1029,7 +1066,19 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel() and 0xFFFF) != 11653) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_render() and 0xFFFF) != 57940) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_resize() and 0xFFFF) != 23969) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface() and 0xFFFF) != 44206) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_deliver() and 0xFFFF) != 52499) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_detach_surface() and 0xFFFF) != 50985) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_is_running() and 0xFFFF) != 46522) {
@@ -1068,6 +1117,15 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget() and 0xFFFF) != 51763) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_shadercanvas_new() and 0xFFFF) != 47676) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_gpusurface_android_window() and 0xFFFF) != 30339) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_gpusurface_metal_layer() and 0xFFFF) != 48692) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if ((lib.uniffi_psychoscript_mobile_checksum_constructor_liverun_restore() and 0xFFFF) != 27560) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1084,6 +1142,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_livehandler_on_exit() and 0xFFFF) != 38396) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_livehandler_on_gpu_canvas() and 0xFFFF) != 51723) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
 }
@@ -1344,6 +1405,29 @@ public object FfiConverterULong: FfiConverter<ULong, Long> {
 
     override fun write(value: ULong, buf: ByteBuffer) {
         buf.putLong(value.toLong())
+    }
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterFloat: FfiConverter<Float, Float> {
+    override fun lift(value: Float): Float {
+        return value
+    }
+
+    override fun read(buf: ByteBuffer): Float {
+        return buf.getFloat()
+    }
+
+    override fun lower(value: Float): Float {
+        return value
+    }
+
+    override fun allocationSize(value: Float) = 4UL
+
+    override fun write(value: Float, buf: ByteBuffer) {
+        buf.putFloat(value)
     }
 }
 
@@ -2186,15 +2270,313 @@ public object FfiConverterTypeFetchTransport: FfiConverter<FetchTransport, Long>
 
 
 /**
+ * Where a GPU canvas is presented: from `GpuSurface.metalLayer(pointer:)` (Swift: `GpuSurface.metal(layer)`) or,
+ * on Android, `PsychoScriptGpu.surface(surface)`. It holds the layer or window until it is dropped; attach it to a
+ * run's canvas with [`crate::LiveRun::attach_surface`] or give it to a [`super::ShaderCanvas`].
+ */
+public interface GpuSurfaceInterface {
+    
+    companion object
+}
+
+/**
+ * Where a GPU canvas is presented: from `GpuSurface.metalLayer(pointer:)` (Swift: `GpuSurface.metal(layer)`) or,
+ * on Android, `PsychoScriptGpu.surface(surface)`. It holds the layer or window until it is dropped; attach it to a
+ * run's canvas with [`crate::LiveRun::attach_surface`] or give it to a [`super::ShaderCanvas`].
+ */
+open class GpuSurface: Disposable, AutoCloseable, GpuSurfaceInterface
+{
+
+    @Suppress("UNUSED_PARAMETER")
+    /**
+     * @suppress
+     */
+    constructor(withHandle: UniffiWithHandle, handle: Long) {
+        this.handle = handle
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(handle))
+    }
+
+    /**
+     * @suppress
+     *
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noHandle: NoHandle) {
+        this.handle = 0
+        this.cleanable = null
+    }
+
+    protected val handle: Long
+    protected val cleanable: UniffiCleaner.Cleanable?
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    /**
+     * Whether the current object has been destroyed and its reference is gone in the Rust side.
+     */
+    val uniffiIsDestroyed: Boolean get() = wasDestroyed.get()
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithHandle(block: (handle: Long) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the handle being freed concurrently.
+        try {
+            return block(this.uniffiCloneHandle())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val handle: Long) : Runnable {
+        override fun run() {
+            if (handle == 0.toLong()) {
+                // Fake object created with `NoHandle`, don't try to free.
+                return;
+            }
+            uniffiRustCall { status ->
+                UniffiLib.uniffi_psychoscript_mobile_fn_free_gpusurface(handle, status)
+            }
+        }
+    }
+
+    /**
+     * @suppress
+     */
+    fun uniffiCloneHandle(): Long {
+        if (handle == 0.toLong()) {
+            throw InternalException("uniffiCloneHandle() called on NoHandle object");
+        }
+        return uniffiRustCall() { status ->
+            UniffiLib.uniffi_psychoscript_mobile_fn_clone_gpusurface(handle, status)
+        }
+    }
+
+    
+
+    
+
+
+    
+    companion object {
+        
+    /**
+     * An `ANativeWindow` with one reference the surface takes over (`PsychoScriptGpu.surface(surface)` makes it
+     * from a `Surface`), released when the surface is dropped. Fails off Android.
+     */
+    @Throws(GpuFailure::class) fun `androidWindow`(`pointer`: kotlin.ULong): GpuSurface {
+            return FfiConverterTypeGpuSurface.lift(
+    uniffiRustCallWithError(GpuFailure) { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_constructor_gpusurface_android_window(
+    
+        
+        FfiConverterULong.lower(`pointer`),_status)
+}
+    )
+    }
+    
+
+        
+    /**
+     * A `CAMetalLayer`, by its pointer (Swift: `UInt64(UInt(bitPattern: Unmanaged.passUnretained(layer)
+     * .toOpaque()))`), retained until the surface is dropped. Fails off Apple platforms.
+     */
+    @Throws(GpuFailure::class) fun `metalLayer`(`pointer`: kotlin.ULong): GpuSurface {
+            return FfiConverterTypeGpuSurface.lift(
+    uniffiRustCallWithError(GpuFailure) { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_constructor_gpusurface_metal_layer(
+    
+        
+        FfiConverterULong.lower(`pointer`),_status)
+}
+    )
+    }
+    
+
+        
+    }
+    
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeGpuSurface: FfiConverter<GpuSurface, Long> {
+    override fun lower(value: GpuSurface): Long {
+        return value.uniffiCloneHandle()
+    }
+
+    override fun lift(value: Long): GpuSurface {
+        return GpuSurface(UniffiWithHandle, value)
+    }
+
+    override fun read(buf: ByteBuffer): GpuSurface {
+        return lift(buf.getLong())
+    }
+
+    override fun allocationSize(value: GpuSurface) = 8UL
+
+    override fun write(value: GpuSurface, buf: ByteBuffer) {
+        buf.putLong(lower(value))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a handle
+// to the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque handle to the underlying Rust struct.
+//     Method calls need to read this handle from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its handle should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the handle, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the handle, but is interrupted
+//      before it can pass the handle over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read handle value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+/**
  * A program running on a thread of its own, talking to its host through `__host` (see the module docs).
  */
 public interface LiveRunInterface {
+    
+    /**
+     * Presents the GPU canvas `key` (a `gpu: true` canvas of the view, `widgets-gpu.md`) into `surface`, which is
+     * `width` × `height` physical pixels: the program gets that size (clamped to 4096 a side) before its next frame,
+     * and the canvas is scaled to the surface when clamped. Call it again with the new size when the canvas's size
+     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without the
+     * widget encoder's GPU.
+     */
+    fun `attachSurface`(`key`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt)
     
     /**
      * Queues a JSON message for `__host.receive()`; held while paused. Fails with `InvalidInput` for text that
      * isn't JSON, `InvalidState` once the run ended.
      */
     fun `deliver`(`messageJson`: kotlin.String)
+    
+    /**
+     * Stops presenting the canvas `key`: once this returns (a present in progress finishes first, at most a frame),
+     * its surface is never touched again and is released, so the app may destroy it (Android `surfaceDestroyed`,
+     * a view leaving). Call it before destroying the surface.
+     */
+    fun `detachSurface`(`key`: kotlin.String)
     
     /**
      * Whether the run is going: not paused, suspended or ended.
@@ -2336,6 +2718,29 @@ open class LiveRun: Disposable, AutoCloseable, LiveRunInterface
 
     
     /**
+     * Presents the GPU canvas `key` (a `gpu: true` canvas of the view, `widgets-gpu.md`) into `surface`, which is
+     * `width` × `height` physical pixels: the program gets that size (clamped to 4096 a side) before its next frame,
+     * and the canvas is scaled to the surface when clamped. Call it again with the new size when the canvas's size
+     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without the
+     * widget encoder's GPU.
+     */override fun `attachSurface`(`key`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt)
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_method_liverun_attach_surface(
+        it,
+        
+        FfiConverterString.lower(`key`),
+        FfiConverterTypeGpuSurface.lower(`surface`),
+        FfiConverterUInt.lower(`width`),
+        FfiConverterUInt.lower(`height`),_status)
+}
+    }
+    
+    
+
+    
+    /**
      * Queues a JSON message for `__host.receive()`; held while paused. Fails with `InvalidInput` for text that
      * isn't JSON, `InvalidState` once the run ended.
      */
@@ -2347,6 +2752,24 @@ open class LiveRun: Disposable, AutoCloseable, LiveRunInterface
         it,
         
         FfiConverterString.lower(`messageJson`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * Stops presenting the canvas `key`: once this returns (a present in progress finishes first, at most a frame),
+     * its surface is never touched again and is released, so the app may destroy it (Android `surfaceDestroyed`,
+     * a view leaving). Call it before destroying the surface.
+     */override fun `detachSurface`(`key`: kotlin.String)
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_method_liverun_detach_surface(
+        it,
+        
+        FfiConverterString.lower(`key`),_status)
 }
     }
     
@@ -3281,6 +3704,331 @@ public object FfiConverterTypeRunSession: FfiConverter<RunSession, Long> {
 
 
 /**
+ * A `canvas({ wgsl, values })`: make one per canvas (it returns at once) and call [`ShaderCanvas::render`] on the
+ * app's display link at the canvas's `fps`, pausing as the widget does when it isn't visible. Both are cheap on the
+ * calling thread: a thread of the canvas's own compiles the shader once the device is ready (nothing is drawn
+ * before), then draws and presents the newest frame. Drop it before its surface goes (Android `surfaceDestroyed`):
+ * once dropped it never touches the surface again (a present in progress finishes first).
+ */
+public interface ShaderCanvasInterface {
+    
+    /**
+     * A frame to draw: `time` in seconds since the canvas appeared, `scale` the display scale, `pointer`
+     * `[x, y, down, 0]` in physical pixels, `values` the node's (up to 16). It is drawn and presented off the calling
+     * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
+     * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
+     * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
+     */
+    fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
+    
+    /**
+     * The canvas's new size in physical pixels, from its next frame.
+     */
+    fun `resize`(`width`: kotlin.UInt, `height`: kotlin.UInt)
+    
+    companion object
+}
+
+/**
+ * A `canvas({ wgsl, values })`: make one per canvas (it returns at once) and call [`ShaderCanvas::render`] on the
+ * app's display link at the canvas's `fps`, pausing as the widget does when it isn't visible. Both are cheap on the
+ * calling thread: a thread of the canvas's own compiles the shader once the device is ready (nothing is drawn
+ * before), then draws and presents the newest frame. Drop it before its surface goes (Android `surfaceDestroyed`):
+ * once dropped it never touches the surface again (a present in progress finishes first).
+ */
+open class ShaderCanvas: Disposable, AutoCloseable, ShaderCanvasInterface
+{
+
+    @Suppress("UNUSED_PARAMETER")
+    /**
+     * @suppress
+     */
+    constructor(withHandle: UniffiWithHandle, handle: Long) {
+        this.handle = handle
+        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(handle))
+    }
+
+    /**
+     * @suppress
+     *
+     * This constructor can be used to instantiate a fake object. Only used for tests. Any
+     * attempt to actually use an object constructed this way will fail as there is no
+     * connected Rust object.
+     */
+    @Suppress("UNUSED_PARAMETER")
+    constructor(noHandle: NoHandle) {
+        this.handle = 0
+        this.cleanable = null
+    }
+    /**
+     * The widget template's `wgsl` for `surface`, `width` × `height` physical pixels. Doesn't wait: a WGSL error or
+     * the lack of a GPU comes from `render` once it is known.
+     */
+    constructor(`wgsl`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt) :
+        this(UniffiWithHandle, 
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_constructor_shadercanvas_new(
+    
+        
+        FfiConverterString.lower(`wgsl`),
+        FfiConverterTypeGpuSurface.lower(`surface`),
+        FfiConverterUInt.lower(`width`),
+        FfiConverterUInt.lower(`height`),_status)
+}
+    )
+
+    protected val handle: Long
+    protected val cleanable: UniffiCleaner.Cleanable?
+
+    private val wasDestroyed = AtomicBoolean(false)
+    private val callCounter = AtomicLong(1)
+
+    /**
+     * Whether the current object has been destroyed and its reference is gone in the Rust side.
+     */
+    val uniffiIsDestroyed: Boolean get() = wasDestroyed.get()
+
+    override fun destroy() {
+        // Only allow a single call to this method.
+        // TODO: maybe we should log a warning if called more than once?
+        if (this.wasDestroyed.compareAndSet(false, true)) {
+            // This decrement always matches the initial count of 1 given at creation time.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    @Synchronized
+    override fun close() {
+        this.destroy()
+    }
+
+    internal inline fun <R> callWithHandle(block: (handle: Long) -> R): R {
+        // Check and increment the call counter, to keep the object alive.
+        // This needs a compare-and-set retry loop in case of concurrent updates.
+        do {
+            val c = this.callCounter.get()
+            if (c == 0L) {
+                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
+            }
+            if (c == Long.MAX_VALUE) {
+                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
+            }
+        } while (! this.callCounter.compareAndSet(c, c + 1L))
+        // Now we can safely do the method call without the handle being freed concurrently.
+        try {
+            return block(this.uniffiCloneHandle())
+        } finally {
+            // This decrement always matches the increment we performed above.
+            if (this.callCounter.decrementAndGet() == 0L) {
+                cleanable?.clean()
+            }
+        }
+    }
+
+    // Use a static inner class instead of a closure so as not to accidentally
+    // capture `this` as part of the cleanable's action.
+    private class UniffiCleanAction(private val handle: Long) : Runnable {
+        override fun run() {
+            if (handle == 0.toLong()) {
+                // Fake object created with `NoHandle`, don't try to free.
+                return;
+            }
+            uniffiRustCall { status ->
+                UniffiLib.uniffi_psychoscript_mobile_fn_free_shadercanvas(handle, status)
+            }
+        }
+    }
+
+    /**
+     * @suppress
+     */
+    fun uniffiCloneHandle(): Long {
+        if (handle == 0.toLong()) {
+            throw InternalException("uniffiCloneHandle() called on NoHandle object");
+        }
+        return uniffiRustCall() { status ->
+            UniffiLib.uniffi_psychoscript_mobile_fn_clone_shadercanvas(handle, status)
+        }
+    }
+
+    
+    /**
+     * A frame to draw: `time` in seconds since the canvas appeared, `scale` the display scale, `pointer`
+     * `[x, y, down, 0]` in physical pixels, `values` the node's (up to 16). It is drawn and presented off the calling
+     * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
+     * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
+     * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
+     */
+    @Throws(GpuFailure::class)override fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
+        = 
+    callWithHandle {
+    uniffiRustCallWithError(GpuFailure) { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_method_shadercanvas_render(
+        it,
+        
+        FfiConverterFloat.lower(`time`),
+        FfiConverterFloat.lower(`scale`),
+        FfiConverterSequenceFloat.lower(`pointer`),
+        FfiConverterSequenceFloat.lower(`values`),_status)
+}
+    }
+    
+    
+
+    
+    /**
+     * The canvas's new size in physical pixels, from its next frame.
+     */override fun `resize`(`width`: kotlin.UInt, `height`: kotlin.UInt)
+        = 
+    callWithHandle {
+    uniffiRustCall() { _status ->
+    UniffiLib.uniffi_psychoscript_mobile_fn_method_shadercanvas_resize(
+        it,
+        
+        FfiConverterUInt.lower(`width`),
+        FfiConverterUInt.lower(`height`),_status)
+}
+    }
+    
+    
+
+    
+
+    
+
+
+    
+    
+    /**
+     * @suppress
+     */
+    companion object
+    
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeShaderCanvas: FfiConverter<ShaderCanvas, Long> {
+    override fun lower(value: ShaderCanvas): Long {
+        return value.uniffiCloneHandle()
+    }
+
+    override fun lift(value: Long): ShaderCanvas {
+        return ShaderCanvas(UniffiWithHandle, value)
+    }
+
+    override fun read(buf: ByteBuffer): ShaderCanvas {
+        return lift(buf.getLong())
+    }
+
+    override fun allocationSize(value: ShaderCanvas) = 8UL
+
+    override fun write(value: ShaderCanvas, buf: ByteBuffer) {
+        buf.putLong(lower(value))
+    }
+}
+
+
+// This template implements a class for working with a Rust struct via a handle
+// to the live Rust struct on the other side of the FFI.
+//
+// There's some subtlety here, because we have to be careful not to operate on a Rust
+// struct after it has been dropped, and because we must expose a public API for freeing
+// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
+//
+//   * Each instance holds an opaque handle to the underlying Rust struct.
+//     Method calls need to read this handle from the object's state and pass it in to
+//     the Rust FFI.
+//
+//   * When an instance is no longer needed, its handle should be passed to a
+//     special destructor function provided by the Rust FFI, which will drop the
+//     underlying Rust struct.
+//
+//   * Given an instance, calling code is expected to call the special
+//     `destroy` method in order to free it after use, either by calling it explicitly
+//     or by using a higher-level helper like the `use` method. Failing to do so risks
+//     leaking the underlying Rust struct.
+//
+//   * We can't assume that calling code will do the right thing, and must be prepared
+//     to handle Kotlin method calls executing concurrently with or even after a call to
+//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
+//
+//   * We must never allow Rust code to operate on the underlying Rust struct after
+//     the destructor has been called, and must never call the destructor more than once.
+//     Doing so may trigger memory unsafety.
+//
+//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
+//     is implemented to call the destructor when the Kotlin object becomes unreachable.
+//     This is done in a background thread. This is not a panacea, and client code should be aware that
+//      1. the thread may starve if some there are objects that have poorly performing
+//     `drop` methods or do significant work in their `drop` methods.
+//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
+//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
+//
+// If we try to implement this with mutual exclusion on access to the handle, there is the
+// possibility of a race between a method call and a concurrent call to `destroy`:
+//
+//    * Thread A starts a method call, reads the value of the handle, but is interrupted
+//      before it can pass the handle over the FFI to Rust.
+//    * Thread B calls `destroy` and frees the underlying Rust struct.
+//    * Thread A resumes, passing the already-read handle value to Rust and triggering
+//      a use-after-free.
+//
+// One possible solution would be to use a `ReadWriteLock`, with each method call taking
+// a read lock (and thus allowed to run concurrently) and the special `destroy` method
+// taking a write lock (and thus blocking on live method calls). However, we aim not to
+// generate methods with any hidden blocking semantics, and a `destroy` method that might
+// block if called incorrectly seems to meet that bar.
+//
+// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
+// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
+// has been called. These are updated according to the following rules:
+//
+//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
+//      The initial value for the flag is false.
+//
+//    * At the start of each method call, we atomically check the counter.
+//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
+//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
+//
+//    * At the end of each method call, we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+//    * When `destroy` is called, we atomically flip the flag from false to true.
+//      If the flag was already true we silently fail.
+//      Otherwise we atomically decrement and check the counter.
+//      If it has reached zero then we destroy the underlying Rust struct.
+//
+// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
+// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
+//
+// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
+// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
+// of the underlying Rust code.
+//
+// This makes a cleaner a better alternative to _not_ calling `destroy()` as
+// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
+// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
+// thread may be starved, and the app will leak memory.
+//
+// In this case, `destroy`ing manually may be a better solution.
+//
+// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
+// with Rust peers are reclaimed:
+//
+// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
+// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
+// 3. The memory is reclaimed when the process terminates.
+//
+// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
+//
+
+
+/**
  * An encoder for [`crate::Program::run_bytes`] and live runs (see [`EncodeValues`]).
  */
 public interface ValueEncoderInterface {
@@ -3775,110 +4523,262 @@ public object FfiConverterTypeRunOptions: FfiConverterRustBuffer<RunOptions> {
 
 
 /**
- * One entry point, translated.
+ * What a GPU canvas shows, from [`crate::LiveHandler::on_gpu_canvas`].
  */
-data class TranslatedShader (
-    var `code`: kotlin.String
-    , 
+sealed class GpuCanvasState {
+    
     /**
-     * The entry function's name in `code`: the WGSL name in MSL (unless it's reserved there, then
-     * naga's), always `main` in GLSL.
+     * It has an image: show its surface, without the placeholder.
      */
-    var `entryName`: kotlin.String
-    , 
-    var `uniformBlocks`: List<UniformBlock>
+    object Live : GpuCanvasState()
     
-){
+    
+    /**
+     * There is no GPU here: every GPU canvas of the run shows its placeholder (`poster`, else `alt`, else "GPU
+     * canvas not supported"). A client error; the widget keeps working.
+     */
+    object Unavailable : GpuCanvasState()
+    
+    
+    /**
+     * An error stopped it for the rest of the run: its placeholder with `message`. With `report`, report it once
+     * (a program error, phase `gpu`); a client error is logged.
+     */
+    data class Stopped(
+        val `kind`: com.anomalyco.psychoscript.GpuErrorKind, 
+        val `message`: kotlin.String, 
+        val `report`: kotlin.Boolean) : GpuCanvasState()
+        
+    {
+        
+
+        companion object
+    }
+    
+    /**
+     * The device was lost: the placeholder until the program draws it again (`Live`).
+     */
+    object Lost : GpuCanvasState()
+    
     
 
     
 
     
+    
+
+
     companion object
 }
 
 /**
  * @suppress
  */
-public object FfiConverterTypeTranslatedShader: FfiConverterRustBuffer<TranslatedShader> {
-    override fun read(buf: ByteBuffer): TranslatedShader {
-        return TranslatedShader(
-            FfiConverterString.read(buf),
-            FfiConverterString.read(buf),
-            FfiConverterSequenceTypeUniformBlock.read(buf),
-        )
+public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasState>{
+    override fun read(buf: ByteBuffer): GpuCanvasState {
+        return when(buf.getInt()) {
+            1 -> GpuCanvasState.Live
+            2 -> GpuCanvasState.Unavailable
+            3 -> GpuCanvasState.Stopped(
+                FfiConverterTypeGpuErrorKind.read(buf),
+                FfiConverterString.read(buf),
+                FfiConverterBoolean.read(buf),
+                )
+            4 -> GpuCanvasState.Lost
+            else -> throw RuntimeException("invalid enum value, something is very wrong!!")
+        }
     }
 
-    override fun allocationSize(value: TranslatedShader) = (
-            FfiConverterString.allocationSize(value.`code`) +
-            FfiConverterString.allocationSize(value.`entryName`) +
-            FfiConverterSequenceTypeUniformBlock.allocationSize(value.`uniformBlocks`)
-    )
+    override fun allocationSize(value: GpuCanvasState): ULong = when(value) {
+        is GpuCanvasState.Live -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is GpuCanvasState.Unavailable -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+        is GpuCanvasState.Stopped -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+                + FfiConverterTypeGpuErrorKind.allocationSize(value.`kind`)
+                + FfiConverterString.allocationSize(value.`message`)
+                + FfiConverterBoolean.allocationSize(value.`report`)
+            )
+        }
+        is GpuCanvasState.Lost -> {
+            // Add the size for the Int that specifies the variant plus the size needed for all fields
+            (
+                4UL
+            )
+        }
+    }
 
-    override fun write(value: TranslatedShader, buf: ByteBuffer) {
-            FfiConverterString.write(value.`code`, buf)
-            FfiConverterString.write(value.`entryName`, buf)
-            FfiConverterSequenceTypeUniformBlock.write(value.`uniformBlocks`, buf)
+    override fun write(value: GpuCanvasState, buf: ByteBuffer) {
+        when(value) {
+            is GpuCanvasState.Live -> {
+                buf.putInt(1)
+                Unit
+            }
+            is GpuCanvasState.Unavailable -> {
+                buf.putInt(2)
+                Unit
+            }
+            is GpuCanvasState.Stopped -> {
+                buf.putInt(3)
+                FfiConverterTypeGpuErrorKind.write(value.`kind`, buf)
+                FfiConverterString.write(value.`message`, buf)
+                FfiConverterBoolean.write(value.`report`, buf)
+                Unit
+            }
+            is GpuCanvasState.Lost -> {
+                buf.putInt(4)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
     }
 }
 
 
 
+
+
 /**
- * A uniform buffer the entry point reads, by its WGSL `@group` and `@binding`.
+ * Whose a GPU error is.
  */
-data class UniformBlock (
-    var `group`: kotlin.UInt
-    , 
-    var `binding`: kotlin.UInt
-    , 
-    /**
-     * GLSL: the uniform block's name, for `glGetUniformBlockIndex`. MSL: the WGSL variable's name.
-     */
-    var `name`: kotlin.String
-    , 
-    /**
-     * Where to bind it: MSL `[[buffer(slot)]]` (`setVertexBytes`/`setFragmentBytes` index); GLSL
-     * the binding point to give `glUniformBlockBinding`. Slots count from 0 in `(group, binding)`
-     * order.
-     */
-    var `slot`: kotlin.UInt
+
+enum class GpuErrorKind {
     
-){
-    
+    /**
+     * The program's (`report` it, phase `gpu`).
+     */
+    PROGRAM,
+    /**
+     * The client's (no GPU, a driver failure, out of GPU memory): log it.
+     */
+    CLIENT;
 
     
 
-    
+
     companion object
+}
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeGpuErrorKind: FfiConverterRustBuffer<GpuErrorKind> {
+    override fun read(buf: ByteBuffer) = try {
+        GpuErrorKind.values()[buf.getInt() - 1]
+    } catch (e: IndexOutOfBoundsException) {
+        throw RuntimeException("invalid enum value, something is very wrong!!", e)
+    }
+
+    override fun allocationSize(value: GpuErrorKind) = 4UL
+
+    override fun write(value: GpuErrorKind, buf: ByteBuffer) {
+        buf.putInt(value.ordinal + 1)
+    }
+}
+
+
+
+
+
+
+
+/**
+ * A GPU failure of [`GpuSurface`] or [`ShaderCanvas`].
+ */
+sealed class GpuFailure: kotlin.Exception() {
+    
+    /**
+     * The widget template's (a WGSL error, phase `gpu`): report it.
+     */
+    class Program(
+        
+        val `reason`: kotlin.String
+        ) : GpuFailure() {
+        override val message
+            get() = `reason`
+    }
+    
+    /**
+     * The client's (no GPU, not a surface): show the placeholder, log it.
+     */
+    class Client(
+        
+        val `reason`: kotlin.String
+        ) : GpuFailure() {
+        override val message
+            get() = `reason`
+    }
+    
+
+    
+
+
+    companion object ErrorHandler : UniffiRustCallStatusErrorHandler<GpuFailure> {
+        override fun lift(error_buf: RustBuffer.ByValue): GpuFailure = FfiConverterTypeGpuFailure.lift(error_buf)
+    }
+
+    
 }
 
 /**
  * @suppress
  */
-public object FfiConverterTypeUniformBlock: FfiConverterRustBuffer<UniformBlock> {
-    override fun read(buf: ByteBuffer): UniformBlock {
-        return UniformBlock(
-            FfiConverterUInt.read(buf),
-            FfiConverterUInt.read(buf),
-            FfiConverterString.read(buf),
-            FfiConverterUInt.read(buf),
-        )
+public object FfiConverterTypeGpuFailure : FfiConverterRustBuffer<GpuFailure> {
+    override fun read(buf: ByteBuffer): GpuFailure {
+        
+
+        return when(buf.getInt()) {
+            1 -> GpuFailure.Program(
+                FfiConverterString.read(buf),
+                )
+            2 -> GpuFailure.Client(
+                FfiConverterString.read(buf),
+                )
+            else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
+        }
     }
 
-    override fun allocationSize(value: UniformBlock) = (
-            FfiConverterUInt.allocationSize(value.`group`) +
-            FfiConverterUInt.allocationSize(value.`binding`) +
-            FfiConverterString.allocationSize(value.`name`) +
-            FfiConverterUInt.allocationSize(value.`slot`)
-    )
-
-    override fun write(value: UniformBlock, buf: ByteBuffer) {
-            FfiConverterUInt.write(value.`group`, buf)
-            FfiConverterUInt.write(value.`binding`, buf)
-            FfiConverterString.write(value.`name`, buf)
-            FfiConverterUInt.write(value.`slot`, buf)
+    override fun allocationSize(value: GpuFailure): ULong {
+        return when(value) {
+            is GpuFailure.Program -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+                + FfiConverterString.allocationSize(value.`reason`)
+            )
+            is GpuFailure.Client -> (
+                // Add the size for the Int that specifies the variant plus the size needed for all fields
+                4UL
+                + FfiConverterString.allocationSize(value.`reason`)
+            )
+        }
     }
+
+    override fun write(value: GpuFailure, buf: ByteBuffer) {
+        when(value) {
+            is GpuFailure.Program -> {
+                buf.putInt(1)
+                FfiConverterString.write(value.`reason`, buf)
+                Unit
+            }
+            is GpuFailure.Client -> {
+                buf.putInt(2)
+                FfiConverterString.write(value.`reason`, buf)
+                Unit
+            }
+        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
+    }
+
 }
 
 
@@ -4312,247 +5212,6 @@ public object FfiConverterTypePsychoScriptError : FfiConverterRustBuffer<PsychoS
 
 
 /**
- * Why a shader didn't translate: `reason` is the message. `line` and `column` are 1-based (the column in bytes), in the
- * source given, when known.
- */
-sealed class ShaderException: kotlin.Exception() {
-    
-    /**
-     * The WGSL doesn't parse.
-     */
-    class Parse(
-        
-        val `reason`: kotlin.String, 
-        
-        val `line`: kotlin.UInt?, 
-        
-        val `column`: kotlin.UInt?
-        ) : ShaderException() {
-        override val message
-            get() = "reason=${ `reason` }, line=${ `line` }, column=${ `column` }"
-    }
-    
-    /**
-     * It parses but isn't valid (types, uses beyond baseline capabilities, ...).
-     */
-    class Validation(
-        
-        val `reason`: kotlin.String, 
-        
-        val `line`: kotlin.UInt?, 
-        
-        val `column`: kotlin.UInt?
-        ) : ShaderException() {
-        override val message
-            get() = "reason=${ `reason` }, line=${ `line` }, column=${ `column` }"
-    }
-    
-    /**
-     * No entry point of that name and stage, or it uses a resource other than uniform buffers.
-     */
-    class Unsupported(
-        
-        val `reason`: kotlin.String
-        ) : ShaderException() {
-        override val message
-            get() = "reason=${ `reason` }"
-    }
-    
-    /**
-     * The target language can't express it.
-     */
-    class Translation(
-        
-        val `reason`: kotlin.String
-        ) : ShaderException() {
-        override val message
-            get() = "reason=${ `reason` }"
-    }
-    
-
-    
-
-
-    companion object ErrorHandler : UniffiRustCallStatusErrorHandler<ShaderException> {
-        override fun lift(error_buf: RustBuffer.ByValue): ShaderException = FfiConverterTypeShaderError.lift(error_buf)
-    }
-
-    
-}
-
-/**
- * @suppress
- */
-public object FfiConverterTypeShaderError : FfiConverterRustBuffer<ShaderException> {
-    override fun read(buf: ByteBuffer): ShaderException {
-        
-
-        return when(buf.getInt()) {
-            1 -> ShaderException.Parse(
-                FfiConverterString.read(buf),
-                FfiConverterOptionalUInt.read(buf),
-                FfiConverterOptionalUInt.read(buf),
-                )
-            2 -> ShaderException.Validation(
-                FfiConverterString.read(buf),
-                FfiConverterOptionalUInt.read(buf),
-                FfiConverterOptionalUInt.read(buf),
-                )
-            3 -> ShaderException.Unsupported(
-                FfiConverterString.read(buf),
-                )
-            4 -> ShaderException.Translation(
-                FfiConverterString.read(buf),
-                )
-            else -> throw RuntimeException("invalid error enum value, something is very wrong!!")
-        }
-    }
-
-    override fun allocationSize(value: ShaderException): ULong {
-        return when(value) {
-            is ShaderException.Parse -> (
-                // Add the size for the Int that specifies the variant plus the size needed for all fields
-                4UL
-                + FfiConverterString.allocationSize(value.`reason`)
-                + FfiConverterOptionalUInt.allocationSize(value.`line`)
-                + FfiConverterOptionalUInt.allocationSize(value.`column`)
-            )
-            is ShaderException.Validation -> (
-                // Add the size for the Int that specifies the variant plus the size needed for all fields
-                4UL
-                + FfiConverterString.allocationSize(value.`reason`)
-                + FfiConverterOptionalUInt.allocationSize(value.`line`)
-                + FfiConverterOptionalUInt.allocationSize(value.`column`)
-            )
-            is ShaderException.Unsupported -> (
-                // Add the size for the Int that specifies the variant plus the size needed for all fields
-                4UL
-                + FfiConverterString.allocationSize(value.`reason`)
-            )
-            is ShaderException.Translation -> (
-                // Add the size for the Int that specifies the variant plus the size needed for all fields
-                4UL
-                + FfiConverterString.allocationSize(value.`reason`)
-            )
-        }
-    }
-
-    override fun write(value: ShaderException, buf: ByteBuffer) {
-        when(value) {
-            is ShaderException.Parse -> {
-                buf.putInt(1)
-                FfiConverterString.write(value.`reason`, buf)
-                FfiConverterOptionalUInt.write(value.`line`, buf)
-                FfiConverterOptionalUInt.write(value.`column`, buf)
-                Unit
-            }
-            is ShaderException.Validation -> {
-                buf.putInt(2)
-                FfiConverterString.write(value.`reason`, buf)
-                FfiConverterOptionalUInt.write(value.`line`, buf)
-                FfiConverterOptionalUInt.write(value.`column`, buf)
-                Unit
-            }
-            is ShaderException.Unsupported -> {
-                buf.putInt(3)
-                FfiConverterString.write(value.`reason`, buf)
-                Unit
-            }
-            is ShaderException.Translation -> {
-                buf.putInt(4)
-                FfiConverterString.write(value.`reason`, buf)
-                Unit
-            }
-        }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }
-    }
-
-}
-
-
-
-/**
- * The entry point's stage.
- */
-
-enum class ShaderStage {
-    
-    VERTEX,
-    FRAGMENT;
-
-    
-
-
-    companion object
-}
-
-
-/**
- * @suppress
- */
-public object FfiConverterTypeShaderStage: FfiConverterRustBuffer<ShaderStage> {
-    override fun read(buf: ByteBuffer) = try {
-        ShaderStage.values()[buf.getInt() - 1]
-    } catch (e: IndexOutOfBoundsException) {
-        throw RuntimeException("invalid enum value, something is very wrong!!", e)
-    }
-
-    override fun allocationSize(value: ShaderStage) = 4UL
-
-    override fun write(value: ShaderStage, buf: ByteBuffer) {
-        buf.putInt(value.ordinal + 1)
-    }
-}
-
-
-
-
-
-/**
- * The language to write.
- */
-
-enum class ShaderTarget {
-    
-    /**
-     * Metal Shading Language 2.3 (iOS 14, macOS 11 and later).
-     */
-    MSL,
-    /**
-     * GLSL ES 3.00 (`#version 300 es`, OpenGL ES 3.0 and later).
-     */
-    GLSL_ES300;
-
-    
-
-
-    companion object
-}
-
-
-/**
- * @suppress
- */
-public object FfiConverterTypeShaderTarget: FfiConverterRustBuffer<ShaderTarget> {
-    override fun read(buf: ByteBuffer) = try {
-        ShaderTarget.values()[buf.getInt() - 1]
-    } catch (e: IndexOutOfBoundsException) {
-        throw RuntimeException("invalid enum value, something is very wrong!!", e)
-    }
-
-    override fun allocationSize(value: ShaderTarget) = 4UL
-
-    override fun write(value: ShaderTarget, buf: ByteBuffer) {
-        buf.putInt(value.ordinal + 1)
-    }
-}
-
-
-
-
-
-
-
-/**
  * What a live run tells its host, on the run's own thread, so return quickly (hand the messages to your UI thread).
  * `on_posts` gets the posts of one wake-up of the program together, in order, as soon as it waits again (as
  * JSON; with a [`ValueEncoder`], `on_posts_bytes` gets them instead, as its bytes); `on_exit` is called once, after
@@ -4567,6 +5226,12 @@ public interface LiveHandler {
     fun `onWarning`(`message`: kotlin.String)
     
     fun `onExit`(`exit`: LiveExit)
+    
+    /**
+     * A GPU canvas's state (widget runs, `widgets-gpu.md`): the canvas `key`, or `None` for every GPU canvas of the
+     * run (now and later).
+     */
+    fun `onGpuCanvas`(`key`: kotlin.String?, `state`: GpuCanvasState)
     
     companion object
 }
@@ -4623,6 +5288,19 @@ internal object uniffiCallbackInterfaceLiveHandler {
             uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
         }
     }
+    internal object `onGpuCanvas`: UniffiCallbackInterfaceLiveHandlerMethod4 {
+        override fun callback(`uniffiHandle`: Long,`key`: RustBuffer.ByValue,`state`: RustBuffer.ByValue,`uniffiOutReturn`: Pointer,uniffiCallStatus: UniffiRustCallStatus,) {
+            val uniffiObj = FfiConverterTypeLiveHandler.handleMap.get(uniffiHandle)
+            val makeCall = { ->
+                uniffiObj.`onGpuCanvas`(
+                    FfiConverterOptionalString.lift(`key`),
+                    FfiConverterTypeGpuCanvasState.lift(`state`),
+                )
+            }
+            val writeReturn = { _: Unit -> Unit }
+            uniffiTraitInterfaceCall(uniffiCallStatus, makeCall, writeReturn)
+        }
+    }
 
     internal object uniffiFree: UniffiCallbackInterfaceFree {
         override fun callback(handle: Long) {
@@ -4643,6 +5321,7 @@ internal object uniffiCallbackInterfaceLiveHandler {
         `onPostsBytes`,
         `onWarning`,
         `onExit`,
+        `onGpuCanvas`,
     )
 
     // Registers the foreign callback with the Rust side.
@@ -4889,6 +5568,34 @@ public object FfiConverterOptionalSequenceString: FfiConverterRustBuffer<List<ko
 /**
  * @suppress
  */
+public object FfiConverterSequenceFloat: FfiConverterRustBuffer<List<kotlin.Float>> {
+    override fun read(buf: ByteBuffer): List<kotlin.Float> {
+        val len = buf.getInt()
+        return List<kotlin.Float>(len) {
+            FfiConverterFloat.read(buf)
+        }
+    }
+
+    override fun allocationSize(value: List<kotlin.Float>): ULong {
+        val sizeForLength = 4UL
+        val sizeForItems = value.map { FfiConverterFloat.allocationSize(it) }.sum()
+        return sizeForLength + sizeForItems
+    }
+
+    override fun write(value: List<kotlin.Float>, buf: ByteBuffer) {
+        buf.putInt(value.size)
+        value.iterator().forEach {
+            FfiConverterFloat.write(it, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
 public object FfiConverterSequenceString: FfiConverterRustBuffer<List<kotlin.String>> {
     override fun read(buf: ByteBuffer): List<kotlin.String> {
         val len = buf.getInt()
@@ -4966,34 +5673,6 @@ public object FfiConverterSequenceTypeHttpHeader: FfiConverterRustBuffer<List<Ht
         }
     }
 }
-
-
-
-
-/**
- * @suppress
- */
-public object FfiConverterSequenceTypeUniformBlock: FfiConverterRustBuffer<List<UniformBlock>> {
-    override fun read(buf: ByteBuffer): List<UniformBlock> {
-        val len = buf.getInt()
-        return List<UniformBlock>(len) {
-            FfiConverterTypeUniformBlock.read(buf)
-        }
-    }
-
-    override fun allocationSize(value: List<UniformBlock>): ULong {
-        val sizeForLength = 4UL
-        val sizeForItems = value.map { FfiConverterTypeUniformBlock.allocationSize(it) }.sum()
-        return sizeForLength + sizeForItems
-    }
-
-    override fun write(value: List<UniformBlock>, buf: ByteBuffer) {
-        buf.putInt(value.size)
-        value.iterator().forEach {
-            FfiConverterTypeUniformBlock.write(it, buf)
-        }
-    }
-}
         /**
          * Whether `address` (an IPv4 or IPv6 literal) is a public unicast address a widget may reach: not loopback,
          * private, link-local, shared (CGNAT), unspecified, multicast or reserved. For transports that resolve names
@@ -5005,24 +5684,6 @@ public object FfiConverterSequenceTypeUniformBlock: FfiConverterRustBuffer<List<
     
         
         FfiConverterString.lower(`address`),_status)
-}
-    )
-    }
-    
-
-        /**
-         * Translates WGSL `source`'s entry point `entry` (of `stage`) to `target`.
-         */
-    @Throws(ShaderException::class) fun `translateWgsl`(`source`: kotlin.String, `target`: ShaderTarget, `stage`: ShaderStage, `entry`: kotlin.String): TranslatedShader {
-            return FfiConverterTypeTranslatedShader.lift(
-    uniffiRustCallWithError(ShaderException) { _status ->
-    UniffiLib.uniffi_psychoscript_mobile_fn_func_translate_wgsl(
-    
-        
-        FfiConverterString.lower(`source`),
-        FfiConverterTypeShaderTarget.lower(`target`),
-        FfiConverterTypeShaderStage.lower(`stage`),
-        FfiConverterString.lower(`entry`),_status)
 }
     )
     }

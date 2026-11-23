@@ -8,18 +8,21 @@ import com.anomalyco.psychoscript.LiveRun
 import com.anomalyco.psychoscript.Program
 import com.anomalyco.psychoscript.PsychoScriptException
 import com.anomalyco.psychoscript.RunOptions
-import com.anomalyco.psychoscript.ShaderException
-import com.anomalyco.psychoscript.ShaderStage
-import com.anomalyco.psychoscript.ShaderTarget
+import com.anomalyco.psychoscript.GpuCanvasState
+import com.anomalyco.psychoscript.GpuErrorKind
+import com.anomalyco.psychoscript.GpuFailure
+import com.anomalyco.psychoscript.GpuSurface
+import com.anomalyco.psychoscript.PsychoScriptGpu
+import com.anomalyco.psychoscript.ShaderCanvas
 import com.anomalyco.psychoscript.ValueEncoder
-import com.anomalyco.psychoscript.translateWgsl
+import android.view.Surface
 
 /**
- * The step ABI and shader wrapping on the Rust PsychoScript (`psychoscript-mobile`), when this
+ * The step ABI and GPU canvases on the Rust PsychoScript (`psychoscript-mobile`), when this
  * build bundles it: a widget template's program compiles once with the step entry appended, steps run
  * under the contract's 250 ms (draws 8 ms; a timeout there is an overrun), every run (steps, draws, live)
- * within a 32 MB heap, and a shader's WGSL goes in the spec's header and a GL entry point that flips
- * `frag.y` to a top-left origin.
+ * within a 32 MB heap; GPU canvases (live `gpu: true` and `wgsl`) are replayed and presented by the
+ * runtime into surfaces the app attaches.
  */
 internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     override val isAvailable: Boolean = true
@@ -61,6 +64,15 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                     override fun onPostsBytes(messages: List<ByteArray>) = listener.posted(messages)
                     override fun onWarning(message: String) = listener.warned(message)
                     override fun onExit(exit: LiveExit) = listener.exited((exit as? LiveExit.Failed)?.error?.let { mapped(it, draw = false) })
+                    override fun onGpuCanvas(key: String?, state: GpuCanvasState) = listener.gpuCanvas(
+                        key,
+                        when (state) {
+                            GpuCanvasState.Live -> AgentWidgetGpuState.Live
+                            GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable
+                            GpuCanvasState.Lost -> AgentWidgetGpuState.Lost
+                            is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(state.kind == GpuErrorKind.PROGRAM, state.message, state.report)
+                        },
+                    )
                 }
                 val options = LiveOptions(
                     sliceBudgetMs = 50uL,
@@ -89,6 +101,9 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             false
         }
         override fun stop() = live.stop()
+        override fun attachSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) =
+            live.attachSurface(key, surface.handle as GpuSurface, width.coerceAtLeast(0).toUInt(), height.coerceAtLeast(0).toUInt())
+        override fun detachSurface(key: String) = live.detachSurface(key)
 
         private inline fun quietly(block: () -> Unit) {
             try {
@@ -99,35 +114,28 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
         }
     }
 
-    override fun translateShader(wgsl: String): AgentWidgetShaderStages = try {
-        val fragment = translateWgsl(HEADER + wgsl + ENTRY_GL, ShaderTarget.GLSL_ES300, ShaderStage.FRAGMENT, "widget_main")
-        val vertex = translateWgsl(VERTEX, ShaderTarget.GLSL_ES300, ShaderStage.VERTEX, "widget_vertex")
-        AgentWidgetShaderStages(
-            vertex = AgentWidgetShaderCode(vertex.code),
-            fragment = AgentWidgetShaderCode(fragment.code, fragment.uniformBlocks.map { it.name to it.slot.toInt() }),
-        )
-    } catch (error: ShaderException) {
-        val (line, column) = when (error) {
-            is ShaderException.Parse -> error.line to error.column
-            is ShaderException.Validation -> error.line to error.column
-            else -> null to null
-        }
-        val at = line?.toInt()?.minus(HEADER_LINES)?.takeIf { it in 1..wgsl.lines().size }
-        // Parse and validation reject the WGSL as written; Unsupported and Translation fail on valid WGSL.
-        val invalid = error is ShaderException.Parse || error is ShaderException.Validation
-        throw AgentWidgetEngineException(shaderMessage(error, wgsl.lines().size), line = at, column = if (at != null) column?.toInt() else null, isProgramError = invalid)
+    override fun gpuSurface(surface: Surface): AgentWidgetGpuSurface = try {
+        AgentWidgetGpuSurface(PsychoScriptGpu.surface(surface))
+    } catch (error: Exception) {
+        throw AgentWidgetEngineException(error.message ?: error.javaClass.simpleName, isProgramError = false)
     }
 
-    /** The reason, with where it happened as a line of the widget template when it happened there. */
-    private fun shaderMessage(error: ShaderException, widgetTemplateLines: Int): String {
-        val (reason, line, column) = when (error) {
-            is ShaderException.Parse -> Triple(error.reason, error.line, error.column)
-            is ShaderException.Validation -> Triple(error.reason, error.line, error.column)
-            is ShaderException.Unsupported -> Triple(error.reason, null, null)
-            is ShaderException.Translation -> Triple(error.reason, null, null)
+    override fun shaderCanvas(wgsl: String, surface: AgentWidgetGpuSurface, width: Int, height: Int): AgentWidgetShaderCanvas {
+        val canvas = ShaderCanvas(wgsl, surface.handle as GpuSurface, width.coerceAtLeast(0).toUInt(), height.coerceAtLeast(0).toUInt())
+        return object : AgentWidgetShaderCanvas {
+            override fun render(time: Float, scale: Float, pointer: FloatArray, values: FloatArray): AgentWidgetGpuFailure? = try {
+                canvas.render(time, scale, listOf(pointer[0], pointer[1], pointer[2], 0f), values.asList())
+                null
+            } catch (failure: GpuFailure) {
+                when (failure) {
+                    is GpuFailure.Program -> AgentWidgetGpuFailure(program = true, failure.reason)
+                    is GpuFailure.Client -> AgentWidgetGpuFailure(program = false, failure.reason)
+                }
+            }
+
+            override fun resize(width: Int, height: Int) = canvas.resize(width.coerceAtLeast(0).toUInt(), height.coerceAtLeast(0).toUInt())
+            override fun close() = canvas.close()
         }
-        val at = line?.toInt()?.minus(HEADER_LINES)
-        return if (at != null && at in 1..widgetTemplateLines) "$reason (line $at, column ${column ?: 0u})" else reason
     }
 
     private inline fun <T> mapping(draw: Boolean = false, block: () -> T): T = try {
@@ -191,14 +199,4 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     private const val LIVE_ENTRY = "\nreturn await __widget_live(__input(), true)"
     internal val STEP = RunOptions(timeoutMs = 250uL, maxOutputBytes = 4uL * 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)
     internal val DRAW = RunOptions(timeoutMs = 8uL, maxOutputBytes = 1024uL * 1024uL, maxHeapBytes = HEAP_BYTES)
-
-    private const val HEADER = "struct Widget { resolution: vec2f, time: f32, scale: f32, pointer: vec4f, values: array<vec4f, 4> }\n" +
-        "@group(0) @binding(0) var<uniform> widget: Widget;\n"
-    private const val HEADER_LINES = 2
-    private const val ENTRY_GL = "\n@fragment fn widget_main(@builtin(position) p: vec4f) -> @location(0) vec4f " +
-        "{ return shade(vec2f(p.x, widget.resolution.y - p.y)); }\n"
-    private const val VERTEX = "@vertex fn widget_vertex(@builtin(vertex_index) i: u32) -> @builtin(position) vec4f {\n" +
-        "  let uv = vec2f(f32((i << 1u) & 2u), f32(i & 2u));\n" +
-        "  return vec4f(uv * 2.0 - 1.0, 0.0, 1.0);\n" +
-        "}\n"
 }

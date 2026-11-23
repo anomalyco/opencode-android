@@ -258,7 +258,7 @@ internal object AgentWidgetWire {
     private const val K_STRS = 4
     private const val K_OPTS = 5
     private const val T_UNKNOWN = 63L
-    private const val PROPS = 38
+    private const val PROPS = 39
 
     private val TYPE_NAMES = arrayOf(
         null, "column", "row", "text", "markdown", "image", "carousel", "card", "button", "checkbox", "slider", "select",
@@ -280,7 +280,7 @@ internal object AgentWidgetWire {
         else -> null
     }
 
-    private fun isBool(id: Int) = id == 3 || id == 12 || id == 15 || id == 16 || id == 22 || id == 24 || id == 32 || id == 33 || id == 35
+    private fun isBool(id: Int) = id == 3 || id == 12 || id == 15 || id == 16 || id == 22 || id == 24 || id == 32 || id == 33 || id == 35 || id == 38
 
     private fun propId(key: String): Int = when (key) {
         "gap" -> 1
@@ -320,6 +320,7 @@ internal object AgentWidgetWire {
         "pointer" -> 35
         "place" -> 36
         "inset" -> 37
+        "gpu" -> 38
         else -> 0
     }
 

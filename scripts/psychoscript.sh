@@ -16,7 +16,7 @@
 # without Rust compile; this script refreshes them. Without the libraries, widgets show "The widget
 # runtime isn't available".
 set -euo pipefail
-REV=35da04e4876ad13aa6c703eb815387ca559ee175
+REV=64897723c462365177b7d77e7fc416bb3f2d5222
 cd "$(dirname "$0")/.."
 out=vendor/psychoscript
 bindings=feature/transcript/src/main/kotlin/com/anomalyco/psychoscript
@@ -60,10 +60,24 @@ else
 fi
 
 grep -q "$REV" "$out/REVISION" || { echo "Built $(cat "$out/REVISION"), not $REV" >&2; exit 1; }
-if ! cmp -s "$out/kotlin/com/anomalyco/psychoscript/psychoscript_mobile.kt" "$bindings/psychoscript_mobile.kt"; then
-  mkdir -p "$bindings"
-  cp "$out/kotlin/com/anomalyco/psychoscript/psychoscript_mobile.kt" "$bindings/"
-  echo "Updated the committed bindings in $bindings: commit them with the REV bump."
-fi
+# Until psychoscript-mobile renames it: GpuFailure's field `message` clashes with Throwable.message in the Kotlin
+# bindings (they don't compile); call it `reason`, as the other errors do. Kotlin-side only: fields are positional.
+python3 - "$out/kotlin/com/anomalyco/psychoscript/psychoscript_mobile.kt" <<'PY'
+import sys
+p = sys.argv[1]; s = open(p).read()
+a = s.find("sealed class GpuFailure")
+b = s.find("\n}\n", s.find("public object FfiConverterTypeGpuFailure", a))
+if a >= 0 and b >= 0:
+    part = s[a:b].replace("val `message`: kotlin.String", "val `reason`: kotlin.String")
+    part = part.replace('get() = "message=${ `message` }"', "get() = `reason`").replace("value.`message`", "value.`reason`")
+    open(p, "w").write(s[:a] + part + s[b:])
+PY
+for f in psychoscript_mobile.kt PsychoScriptGpu.kt; do
+  if [[ -f "$out/kotlin/com/anomalyco/psychoscript/$f" ]] && ! cmp -s "$out/kotlin/com/anomalyco/psychoscript/$f" "$bindings/$f"; then
+    mkdir -p "$bindings"
+    cp "$out/kotlin/com/anomalyco/psychoscript/$f" "$bindings/"
+    echo "Updated the committed bindings ($f) in $bindings: commit them with the REV bump."
+  fi
+done
 echo "psychoscript $(cat "$out/REVISION")"
 ls -l "$out"/jniLibs/*/

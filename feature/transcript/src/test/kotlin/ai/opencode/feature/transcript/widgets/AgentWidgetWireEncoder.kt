@@ -90,7 +90,7 @@ internal object AgentWidgetWireEncoder {
     private val PROPS = listOf(
         "gap", "align", "wrap", "text", "style", "tone", "src", "alt", "aspect", "id", "index", "selected", "label", "variant",
         "disabled", "checked", "value", "min", "max", "step", "options", "multiple", "placeholder", "multiline", "height",
-        "width", "fps", "duration", "wgsl", "values", "poster", "fill", "fullscreen", "capture", "pointer", "place", "inset",
+        "width", "fps", "duration", "wgsl", "values", "poster", "fill", "fullscreen", "capture", "pointer", "place", "inset", "gpu",
     )
     private val ENUMS = mapOf(
         2 to listOf("start", "center", "end", "stretch"),
@@ -99,7 +99,7 @@ internal object AgentWidgetWireEncoder {
         14 to listOf("primary", "secondary", "danger"),
         36 to listOf("top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right", "fill"),
     )
-    private val BOOLS = setOf(3, 12, 15, 16, 22, 24, 32, 33, 35)
+    private val BOOLS = setOf(3, 12, 15, 16, 22, 24, 32, 33, 35, 38)
     private val STRS = setOf(4, 7, 8, 10, 13, 23, 29, 31, 34)
 
     private fun typeId(name: String) = if (name == "stack") 16 else TYPES.indexOf(name).let { if (it < 0) 63 else it + 1 }

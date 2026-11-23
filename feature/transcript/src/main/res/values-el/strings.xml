@@ -182,6 +182,7 @@
     <string name="transcript_widget_step_failed">Το widget δεν μπόρεσε να απαντήσει.</string>
     <string name="transcript_widget_page">Σελίδα %1$d από %2$d</string>
     <string name="transcript_widget_shader_failed">Αδυναμία εκτέλεσης αυτού του shader</string>
+    <string name="transcript_widget_gpu_unsupported">Ο καμβάς GPU δεν υποστηρίζεται</string>
     <string name="transcript_widget_fullscreen">Πλήρης οθόνη</string>
     <string name="transcript_widget_fullscreen_placeholder">Άνοιγμα σε πλήρη οθόνη</string>
     <string name="transcript_widget_network">Δίκτυο: %1$s</string>

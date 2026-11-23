@@ -1,20 +1,22 @@
 package ai.opencode.feature.transcript.widgets
 
 import ai.opencode.core.dependencies.dependency
-import ai.opencode.core.ui.excludedFromDrawerPan
 import ai.opencode.core.ui.OpenCodeShape
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
+import ai.opencode.core.ui.excludedFromDrawerPan
 import ai.opencode.feature.transcript.R
+import ai.opencode.feature.transcript.widgets.AgentWidgetMachine.Phase
 import android.graphics.SurfaceTexture
+import android.view.Surface
 import android.view.TextureView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -24,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -47,28 +50,138 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import kotlinx.coroutines.CancellationException
 
 /**
- * A GPU `canvas` (one with `wgsl`): its WGSL translated to GLSL ES once per source ([AgentWidgetShaderStore]), drawn
- * on the shared GL thread into a `TextureView` every frame at `fps` while composed and the list
- * is on screen, or once (and on `values` changes) with `fps: 0`. A shader that fails shows its
- * `poster` or `alt` with the error; one that runs over budget keeps its last frame.
+ * A `wgsl` canvas: a [AgentWidgetShaderCanvas] presenting into a `TextureView`, the runtime compiling and drawing on
+ * its own thread. Frames are recorded from `withFrameNanos` at `fps` while the canvas has a size, is on screen and the
+ * list isn't paused, or once (and on `values` changes) with `fps: 0`. A WGSL error (the widget template's, reported in
+ * phase `gpu`) or no GPU (the client's) shows its `poster` or `alt` with the error.
  */
 @Composable
 fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, modifier: Modifier = Modifier) {
     val wgsl = checkNotNull(node.wgsl)
     val nodeValues = checkNotNull(node.values)
-    val shaders = remember { dependency(AgentWidgetShaderStore) }
+    val engine = remember { dependency(AgentWidgetEngine) }
     val density = LocalDensity.current.density
     val paused = LocalAgentWidgetPaused.current
     var failure by remember(wgsl) { mutableStateOf<String?>(null) }
-    var fragment by remember(wgsl) { mutableStateOf<AgentWidgetShaderCode?>(null) }
-    var vertex by remember { mutableStateOf<AgentWidgetShaderCode?>(null) }
-    var ready by remember { mutableStateOf(false) }
-    var stopped by remember { mutableStateOf(false) }
-    var visible by remember { mutableStateOf(false) }
-    var pixels by remember { mutableStateOf(IntSize.Zero) }
+    var canvas by remember(wgsl) { mutableStateOf<AgentWidgetShaderCanvas?>(null) }
+    val frame = rememberGpuCanvasFrame(node, scope)
+    val size = canvasSize(node, modifier)
+
+    val error = failure
+    if (error != null) {
+        ShaderFallback(node, error, size)
+        return
+    }
+
+    val values by rememberUpdatedState(nodeValues)
+    val start = remember { longArrayOf(0L) }
+    val valuesKey = if (node.fps == 0) nodeValues.contentHashCode() else 0
+    LaunchedEffect(canvas, paused, frame.visible, node.fps, valuesKey, frame.pixels) {
+        val shader = canvas ?: return@LaunchedEffect
+        if (paused || !frame.visible || frame.pixels.width == 0 || frame.pixels.height == 0) return@LaunchedEffect
+        val interval = if (node.fps > 0) 1_000_000_000L / node.fps else 0L
+        var last = 0L
+        while (true) {
+            val now = withFrameNanos { it }
+            if (start[0] == 0L) start[0] = scope.controller?.startNanos("canvas:${node.id}", now) ?: now
+            if (last != 0L && now - last < interval - 2_000_000L) continue
+            last = now
+            val stopped = shader.render((now - start[0]) / 1e9f, density, frame.pointer, values)
+            if (stopped != null) {
+                failure = stopped.message
+                if (stopped.program) scope.controller?.reportError("gpu", stopped.message) else scope.controller?.clientError("gpu", stopped.message)
+                break
+            }
+            if (node.fps == 0) break
+        }
+    }
+
+    Box(size.then(frame.modifier)) {
+        key(wgsl) {
+            val held = remember { arrayOfNulls<AutoCloseable>(2) }
+            GpuTexture(
+                onAvailable = { surface, width, height ->
+                    try {
+                        val gpu = engine.gpuSurface(surface).also { held[0] = it }
+                        canvas = engine.shaderCanvas(wgsl, gpu, width, height).also { held[1] = it }
+                    } catch (e: AgentWidgetEngineException) {
+                        failure = e.message ?: e.javaClass.simpleName
+                        scope.controller?.clientError("gpu", failure!!)
+                    }
+                },
+                onResized = { width, height -> canvas?.resize(width, height) },
+                onGone = {
+                    // The canvas goes before its surface: once closed it never touches the surface again.
+                    canvas = null
+                    held[1]?.close()
+                    held[0]?.close()
+                    held.fill(null)
+                },
+            )
+        }
+    }
+}
+
+/**
+ * A live run's `gpu: true` canvas (widgets-gpu.md): the run replays the program's batches into the surface attached
+ * under the canvas's key and says how the canvas is ([AgentWidgetGpuState]); anything but live shows the placeholder
+ * (`poster`, else `alt`, else "GPU canvas not supported", with the error that stopped it). Input works as on a 2D
+ * canvas; layers above it in a stack keep working.
+ */
+@Composable
+internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, modifier: Modifier = Modifier) {
+    val controller = scope.controller
+    val engine = remember { dependency(AgentWidgetEngine) }
+    val canvasKey = node.id?.let(AgentWidgetNode::canvasKey)
+    val running = controller != null && controller.isLiveMode && controller.phase !is Phase.Closed && canvasKey != null
+    var noSurface by remember { mutableStateOf<String?>(null) }
+    val state = if (running && canvasKey != null) controller.gpuState(canvasKey) else null
+    val frame = rememberGpuCanvasFrame(node, scope)
+
+    Box(canvasSize(node, modifier).then(frame.modifier)) {
+        if (running && canvasKey != null && controller != null) {
+            key(canvasKey) {
+                val held = remember { arrayOfNulls<AgentWidgetGpuSurface>(1) }
+                GpuTexture(
+                    onAvailable = { surface, width, height ->
+                        try {
+                            val gpu = engine.gpuSurface(surface).also { held[0] = it }
+                            controller.attachGpuSurface(canvasKey, gpu, width, height)
+                        } catch (e: AgentWidgetEngineException) {
+                            noSurface = e.message
+                            controller.clientError("gpu", e.message ?: e.javaClass.simpleName)
+                        }
+                    },
+                    onResized = { width, height -> held[0]?.let { controller.attachGpuSurface(canvasKey, it, width, height) } },
+                    onGone = {
+                        held[0]?.let { controller.detachGpuSurface(canvasKey, it) }
+                        held[0]?.close()
+                        held[0] = null
+                    },
+                )
+            }
+        }
+        val shown = running && noSurface == null && (state == null || state == AgentWidgetGpuState.Live)
+        if (!shown) GpuPlaceholder(node, (state as? AgentWidgetGpuState.Stopped)?.message, Modifier.matchParentSize())
+    }
+}
+
+/** What a GPU canvas's box tracks: its size, where it is, whether it's seen, and the pointer for frames. */
+private class GpuCanvasFrame {
+    var visible by mutableStateOf(false)
+    var pixels by mutableStateOf(IntSize.Zero)
+    /** `x, y, down` in physical pixels. */
+    val pointer = FloatArray(3)
+    var bounds: Rect? = null
+    var modifier: Modifier = Modifier
+}
+
+@Composable
+private fun rememberGpuCanvasFrame(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope): GpuCanvasFrame {
+    val density = LocalDensity.current.density
+    val frame = remember { GpuCanvasFrame() }
     // Live mode: the program's frames carry this canvas's size and pointer, as a 2D canvas's do.
     val controller = scope.controller
     val liveKey = node.id ?: ""
@@ -79,124 +192,98 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
             onDispose { if (controller.liveCanvases[liveKey] === liveCanvas) controller.liveCanvases.remove(liveKey) }
         }
     }
-
-    LaunchedEffect(wgsl) {
-        try {
-            val stages = shaders.stages(wgsl)
-            vertex = stages.vertex
-            fragment = stages.fragment
-        } catch (error: CancellationException) {
-            throw error
-        } catch (error: Exception) {
-            failure = error.message ?: error.javaClass.simpleName
-            scope.controller?.reportError("shader", error)
+    val currentScope by rememberUpdatedState(scope)
+    frame.modifier = Modifier
+        .onVisibilityChanged(minFractionVisible = VISIBLE_FRACTION) { frame.visible = it }
+        .onSizeChanged {
+            frame.pixels = it
+            liveCanvas.width = it.width / density
+            liveCanvas.height = it.height / density
         }
-    }
+        .onGloballyPositioned {
+            frame.bounds = it.boundsInWindow()
+            liveCanvas.bounds = frame.bounds
+        }
+        .excludedFromDrawerPan(node.pointer && scope.live)
+        .agentWidgetPointer(node.id.takeIf { node.pointer }, density, { currentScope.send(it) }, { scope.controller?.closeOver(frame.bounds) }) { liveCanvas.pointer = it }
+        .then(if (node.alt != null) Modifier.semantics { contentDescription = node.alt } else Modifier)
+        .pointerInput(Unit) {
+            awaitPointerEventScope {
+                while (true) {
+                    val event = awaitPointerEvent(PointerEventPass.Initial)
+                    val change = event.changes.firstOrNull() ?: continue
+                    frame.pointer[0] = change.position.x
+                    frame.pointer[1] = change.position.y
+                    frame.pointer[2] = if (change.pressed) 1f else 0f
+                }
+            }
+        }
+    return frame
+}
 
+@Composable
+private fun canvasSize(node: AgentWidgetNode.Canvas, modifier: Modifier): Modifier {
     val width = node.width
-    val fullscreen = LocalAgentWidgetFullscreen.current
-    val grows = fullscreen && LocalAgentWidgetGrows.current && node.fill
-    val size = modifier
+    val grows = LocalAgentWidgetFullscreen.current && LocalAgentWidgetGrows.current && node.fill
+    return modifier
         .then(if (width != null) Modifier.width(width.dp) else Modifier.fillMaxWidth())
         .then(if (grows) Modifier.heightIn(min = node.height.dp).fillMaxHeight() else Modifier.height(node.height.dp))
         .clip(OpenCodeShape.control)
-    val error = failure
-    if (error != null) {
-        ShaderFallback(node, error, size)
-        return
-    }
-    val vertexSource = vertex ?: run {
-        Box(size.background(OpenCodeTheme.colors.userBubble))
-        return
-    }
-    val surface = remember(vertexSource) {
-        AgentWidgetGL.shared.Surface(
-            vertexSource,
-            object : AgentWidgetGL.SurfaceEvents {
-                override fun ready(value: Boolean) { ready = value }
-                override fun failed(message: String) {
-                    failure = message
-                    // GL setup, compile or link failing on WGSL that translated: the client's error.
-                    scope.controller?.clientError("shader", message)
-                }
-                override fun stopped() { stopped = true }
-            },
-        )
-    }
-    DisposableEffect(surface) { onDispose { surface.close() } }
-    LaunchedEffect(surface, fragment) { fragment?.let(surface::use) }
+}
 
-    val pointer = remember { FloatArray(3) }
-    val values by rememberUpdatedState(nodeValues)
-    val start = remember { longArrayOf(0L) }
-    val valuesKey = if (node.fps == 0) nodeValues.contentHashCode() else 0
-    LaunchedEffect(surface, ready, paused, stopped, visible, node.fps, valuesKey, pixels) {
-        if (!ready || paused || stopped || !visible || pixels.width == 0 || pixels.height == 0) return@LaunchedEffect
-        val interval = if (node.fps > 0) 1_000_000_000L / node.fps else 0L
-        var last = 0L
-        while (true) {
-            val now = withFrameNanos { it }
-            if (start[0] == 0L) start[0] = scope.controller?.startNanos("canvas:${node.id}", now) ?: now
-            if (last != 0L && now - last < interval - 2_000_000L) continue
-            val t = (now - start[0]) / 1e9f
-            if (surface.render(t, density, pointer[0], pointer[1], pointer[2] > 0f, values)) last = now
-            if (node.fps == 0 && last != 0L) break
-        }
-    }
+/**
+ * A `TextureView` the runtime presents into: [onAvailable] with its `Surface` and size in physical pixels, [onResized]
+ * on a new size, and [onGone] before the surface is released (the view leaving, or its texture destroyed). Main thread.
+ */
+@Composable
+private fun GpuTexture(onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
+    val available by rememberUpdatedState(onAvailable)
+    val resized by rememberUpdatedState(onResized)
+    val gone by rememberUpdatedState(onGone)
+    AndroidView(
+        factory = { context ->
+            TextureView(context).apply {
+                isOpaque = false
+                surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+                    private var surface: Surface? = null
 
-    val currentScope by rememberUpdatedState(scope)
-    val bounds = remember { arrayOfNulls<Rect>(1) }
-    Box(
-        size
-            .onVisibilityChanged(minFractionVisible = VISIBLE_FRACTION) { visible = it }
-            .onSizeChanged {
-                pixels = it
-                liveCanvas.width = it.width / density
-                liveCanvas.height = it.height / density
-            }
-            .onGloballyPositioned {
-                bounds[0] = it.boundsInWindow()
-                liveCanvas.bounds = bounds[0]
-            }
-            .excludedFromDrawerPan(node.pointer && scope.live)
-            .agentWidgetPointer(node.id.takeIf { node.pointer }, density, { currentScope.send(it) }, { scope.controller?.closeOver(bounds[0]) }) { liveCanvas.pointer = it }
-            .then(if (node.alt != null) Modifier.semantics { contentDescription = node.alt } else Modifier)
-            .pointerInput(Unit) {
-                awaitPointerEventScope {
-                    while (true) {
-                        val event = awaitPointerEvent(PointerEventPass.Initial)
-                        val change = event.changes.firstOrNull() ?: continue
-                        pointer[0] = change.position.x
-                        pointer[1] = change.position.y
-                        pointer[2] = if (change.pressed) 1f else 0f
+                    override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
+                        val surface = Surface(texture).also { surface = it }
+                        available(surface, width, height)
                     }
+
+                    override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) = resized(width, height)
+
+                    override fun onSurfaceTextureDestroyed(texture: SurfaceTexture): Boolean {
+                        gone()
+                        surface?.release()
+                        surface = null
+                        return true
+                    }
+
+                    override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
                 }
-            },
+            }
+        },
+        modifier = Modifier.fillMaxSize(),
+    )
+}
+
+@Composable
+private fun GpuPlaceholder(node: AgentWidgetNode.Canvas, error: String?, modifier: Modifier) {
+    val colors = OpenCodeTheme.colors
+    val poster = node.poster
+    Column(
+        modifier.background(colors.userBubble).padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AndroidView(
-            factory = { context ->
-                TextureView(context).apply {
-                    isOpaque = false
-                    surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-                        override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
-                            surface.attach(texture, width, height)
-                        }
-
-                        override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-                            surface.resize(width, height)
-                        }
-
-                        override fun onSurfaceTextureDestroyed(texture: SurfaceTexture): Boolean {
-                            surface.detach(texture)
-                            return false
-                        }
-
-                        override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
-                    }
-                }
-            },
-            modifier = Modifier.fillMaxSize(),
-        )
+        if (poster != null) {
+            AgentWidgetImage(poster, node.alt, null, Modifier.weight(1f, fill = false))
+        } else {
+            Text(node.alt ?: stringResource(R.string.transcript_widget_gpu_unsupported), style = OpenCodeTextStyles.footnote, color = colors.secondaryText, textAlign = TextAlign.Center)
+        }
+        if (error != null) Text(error, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, textAlign = TextAlign.Center, maxLines = 4)
     }
 }
 
