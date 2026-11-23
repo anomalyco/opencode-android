@@ -173,14 +173,6 @@ data class VoiceCallTiming(
      */
     val liveAcknowledgementWait: Duration = 1.seconds,
     /**
-     * How long after the voice agent says it's acting ("Opening.") on a
-     * request no delegation took the call waits for GPT-Live's delegation
-     * before making it itself (`VoiceActionClaim`). The delegation comes
-     * before its acknowledgement, so this only covers a late event. Zero: off
-     * (the coordinator tests' default).
-     */
-    val liveUnbackedClaimWait: Duration = Duration.ZERO,
-    /**
      * The spoken "still working" line while a delegation is out
      * (`VoiceProgressLine`). Zero `firstAfter`: off, the coordinator tests'
      * default.
@@ -301,7 +293,6 @@ data class VoiceCallTiming(
                     liveResultMaxHold = Duration.ZERO,
                     liveAnswerSpeakingHold = 15.seconds,
                     liveAnswerStartWait = 1_200.milliseconds,
-                    liveUnbackedClaimWait = 1_500.milliseconds,
                     liveProgress = VoiceProgressLine.Timing(
                         firstAfter = Math.round(VoiceProgressTunables.firstAfter.value * 1_000).milliseconds,
                         quiet = Math.round(VoiceProgressTunables.quiet.value * 1_000).milliseconds,
@@ -309,8 +300,6 @@ data class VoiceCallTiming(
                     ),
                 )
             }
-
-        val sessionDelegatorUnbackedClaimWait: Duration = 900.milliseconds
 
         private fun Instant.plusSeconds(seconds: Double): Instant = plusNanos(Math.round(seconds * 1e9))
     }

@@ -94,8 +94,7 @@ private suspend fun LiveCallCoordinator.progressLineDue(id: String) {
         progressLines[id] = current
         val out = ReplyWatch.milliseconds(sendAt - current.delegatedAt)
         // Bound to its open client delegation when GPT-Live knows it; a
-        // Responses delegation, a reconnect's orphan, or a delegation the call
-        // made for a claim takes no ID.
+        // Responses delegation or a reconnect's orphan takes no ID.
         val append = PendingAppend(
             role = LiveOutboundRole.Progress,
             kind = LiveAppendKind.commentary,

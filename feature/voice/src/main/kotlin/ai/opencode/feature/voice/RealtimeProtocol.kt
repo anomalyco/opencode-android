@@ -98,7 +98,7 @@ data class RealtimeSessionConfig(
     val liveDelegation: LiveDelegation = LiveDelegation.client,
     /**
      * OpenCode Session Delegator: sends unbound spoken updates (`delegationID == null`)
-     * via `session.instructions.append` and runs the 900 ms action-claim backstop.
+     * via `session.instructions.append`.
      */
     val unboundSpeechUsesInstructions: Boolean = false,
 ) {

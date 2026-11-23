@@ -72,20 +72,12 @@ private fun State.stepWatch(event: ReplyWatch.Event): Pair<State, List<ReplyWatc
 private fun VoiceSessionDelegator.State.withCreatingViewedDraft(): VoiceSessionDelegator.State =
     copy(creatingViewedDraft = turns.any { it.createsViewedDraft && it.promptID == null })
 
-internal fun VoiceFeature.delegateToSessionDelegator(state: State, callID: String, rawFraming: String?): Reduced<State, Action> {
-    val isVerify = callID.startsWith("client_verify_")
-    val captured = if (isVerify) VoiceTranscriptTail.Captured(state.tail, VoiceTranscriptTail.Capture.empty) else state.tail.capture()
+internal fun VoiceFeature.delegateToSessionDelegator(state: State, callID: String): Reduced<State, Action> {
+    val captured = state.tail.capture()
     var next = state.copy(tail = captured.tail)
     val capture = captured.capture
-    val promisedClaim = if (isVerify) {
-        rawFraming?.trim()
-    } else if (callID.startsWith("client_claim_")) {
-        VoiceHandoff.framing(rawFraming)
-    } else {
-        null
-    }
     val request = capture.userText.trim()
-    if (request.isEmpty() && promisedClaim.isNullOrEmpty()) {
+    if (request.isEmpty()) {
         next = next.copy(tail = next.tail.release(capture))
         return Reduced(next, completeFunction(callID, VoiceHandoff.failure(VoiceHandoff.nothingNewToSend)))
     }
@@ -128,7 +120,6 @@ internal fun VoiceFeature.delegateToSessionDelegator(state: State, callID: Strin
         turns = delegator.turns + VoiceSessionDelegator.State.Turn(
             callID = callID,
             capture = capture,
-            promisedClaim = promisedClaim,
             sessionID = knownSessionID,
             createsViewedDraft = createsViewedDraft,
             saidTurn = turnNow,
@@ -181,7 +172,7 @@ private fun VoiceFeature.startPendingSessionDelegatorAdmissions(
         }
         if (blockedByEarlierAdmission) continue
 
-        if (coalesceReleasedIntoFirstWaiting && !coalesced && !turns[index].callID.startsWith("client_verify_")) {
+        if (coalesceReleasedIntoFirstWaiting && !coalesced) {
             coalesced = true
             val previousCapture = turns[index].capture
             val merged = next.tail.release(previousCapture).capture()
@@ -202,7 +193,6 @@ private fun VoiceFeature.startSessionDelegatorAdmission(state: State, index: Int
     val turn = next.sessionDelegator.turns[index]
     val callID = turn.callID
     val capture = turn.capture
-    val promisedClaim = turn.promisedClaim
     val choice = next.voiceDelegatorChoice
     val server = next.target.server
     val serverScopeKey = VoiceDelegatorWorkspace.serverID(server)
@@ -269,7 +259,6 @@ private fun VoiceFeature.startSessionDelegatorAdmission(state: State, index: Int
             provisionalAutomaticSessionID = provisionalAutomaticID,
             messageID = messageID,
             deltaLines = VoiceSessionDelegator.formatDeltaLines(capture.lines),
-            promisedClaim = promisedClaim,
             contextLine = contextLine,
             lastContextBySession = lastContextBySession,
             explainedSessionIDs = explained,
@@ -488,7 +477,7 @@ internal fun VoiceFeature.reduceSessionDelegatorAdmissionFailed(
     next = watched
     val failEffect = answerThenRelease(
         callID,
-        if (callID.startsWith("client_verify_")) "" else VoiceHandoff.failure(error.message),
+        VoiceHandoff.failure(error.message),
         watchEffects,
         next,
     )
@@ -561,10 +550,10 @@ internal fun VoiceFeature.settleSessionDelegatorTurns(
             }
         }
 
-        var output: String
-        var rawReply: String?
-        var suppressionSpoken: String
-        var abandonOnly: Boolean
+        val output: String
+        val rawReply: String?
+        val suppressionSpoken: String
+        val abandonOnly: Boolean
         when (outcome) {
             is ReplyWatch.Outcome.Replied -> {
                 val spoken = VoiceSessionDelegator.spokenReply(outcome.reply)
@@ -597,15 +586,6 @@ internal fun VoiceFeature.settleSessionDelegatorTurns(
                 abandonOnly = false
             }
         }
-        if (turn.callID.startsWith("client_verify_") && (rawReply == null || !VoiceActionClaim.correctsVoice(output))) {
-            output = ""
-            rawReply = null
-            suppressionSpoken = "VERIFIED"
-            abandonOnly = false
-            next = next.copy(replyWatch = next.replyWatch.removeCompleted(setOf(promptID)))
-            remainingWatchEffects.removeAll { it is ReplyWatch.Effect.FindBackgroundWork && it.promptID == promptID }
-        }
-
         val releaseEffects = mutableListOf<ReplyWatch.Effect>()
         next.stepWatch(
             ReplyWatch.Event.DelegatorAnswered(sessionID = sessionID, reply = rawReply, promptIDs = coveredPromptIDs, requestID = turn.callID),

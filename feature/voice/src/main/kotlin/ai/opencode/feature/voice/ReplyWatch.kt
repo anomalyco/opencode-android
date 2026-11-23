@@ -398,8 +398,6 @@ data class ReplyWatch(
     fun setSessionActive(sessionID: String, isActive: Boolean): ReplyWatch =
         copy(activeSessionIDs = if (isActive) activeSessionIDs + sessionID else activeSessionIDs - sessionID)
 
-    fun removeCompleted(promptIDs: Set<String>): ReplyWatch = copy(completed = completed.filterNot { it.promptID in promptIDs })
-
     /** The next state and its effects. */
     fun transition(event: Event): Pair<ReplyWatch, List<Effect>> {
         val machine = Machine(this)

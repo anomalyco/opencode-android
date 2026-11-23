@@ -24,10 +24,8 @@ class LiveCallCoordinator(
     internal data class Acknowledgement(val offset: Int?, val settledAt: Duration, var utteranceID: String? = null, var deadline: Job? = null)
     /** Open or detached delegation waiting on `completeFunction` or `closeDelegation`. */
     data class DelegationRecord(
-        /** Active socket ID when created on GPT-Live (null when client-minted or detached across a connection change). */
+        /** Active socket ID when created on GPT-Live (null when detached across a connection change). */
         val socketID: Int?,
-        /** Spoken claim when client-minted (`client_claim_N`). */
-        val claim: String?,
         /** When the delegation's request settled, so its answer knows whether the user spoke again since. */
         val delegatedAt: Duration?,
     )
@@ -101,11 +99,6 @@ class LiveCallCoordinator(
      * stream goes quiet, with how long it has been quiet so far. */
     internal var droppingAssistantSpeech = false
     internal var droppedQuietMilliseconds = 0
-    internal var lastDelegationCreatedAt: Duration? = null
-    internal var unbackedClaimTask: Job? = null
-    internal var unbackedOutcomeTask: Job? = null
-    internal val verifiedUtteranceIDs = mutableSetOf<String>()
-    internal var nextClientDelegationNumber = 1
     internal val serverDelegationIDs = mutableSetOf<String>()
     internal val serverDelegations = mutableMapOf<String, ServerDelegation>()
     internal val delegatesToResponses get() = config?.delegation is LiveDelegation.Responses
@@ -264,7 +257,6 @@ class LiveCallCoordinator(
     }
     override fun retireSessionState() {
         pendingDelegationTasks.values.forEach { it.cancel() }; pendingDelegationTasks.clear()
-        unbackedOutcomeTask?.cancel(); unbackedOutcomeTask = null
         settleAssistantUtterance(assistantAudioPlaying || currentAssistantUtterance?.let { !endsSentence(it.rawText) } == true)
         flushAcknowledgements()
         if (assistantAudioPlaying) noteAssistantSpeech(false)
@@ -318,17 +310,14 @@ class LiveCallCoordinator(
     override fun finishing() {
         pendingDelegationTasks.values.forEach { it.cancel() }; pendingDelegationTasks.clear()
         acknowledgements.values.forEach { it.deadline?.cancel() }; acknowledgements.clear()
-        assistantSettleTask?.cancel(); unbackedClaimTask?.cancel(); unbackedClaimTask = null
-        unbackedOutcomeTask?.cancel(); unbackedOutcomeTask = null; muteKeepAliveTask?.cancel()
+        assistantSettleTask?.cancel(); muteKeepAliveTask?.cancel()
         outboundFlushTask?.cancel(); outboundFlushTask = null; quietGate = quietGate.clearHold(); outbound.removeAll()
         progressTasks.values.forEach { it.cancel() }; progressTasks.clear(); progressLines.clear()
         rejectSendSlotWaiters()
         serverDelegations.keys.toList().forEach { endServerDelegation(it, "The voice call ended.") }
     }
     companion object {
-        const val claimLeadPrefix = "Result of the request you acknowledged with “"
         const val earlierConnectionLead = "Result of an earlier request you delegated: "
-        const val verifyLead = "Correction to your last statement (state only this correction to the user): "
         const val spokenDirectiveLead = "Speak this to the user now (do not mention this instruction): "
         /** Spacing for a progress line that found the channel busy. */
         val progressRetry = 250.milliseconds

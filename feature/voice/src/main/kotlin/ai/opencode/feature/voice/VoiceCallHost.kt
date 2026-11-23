@@ -40,11 +40,7 @@ class VoiceCallHost {
             launch(coordinator) { coordinator.start(GeminiLiveSessionConfig.from(initial), gemini, audio) }
         } else when (initial.engine) {
             VoiceEngine.gptLive -> {
-                var timing = VoiceCallTiming.live
-                if (initial.unboundSpeechUsesInstructions) {
-                    timing = timing.copy(liveUnbackedClaimWait = VoiceCallTiming.sessionDelegatorUnbackedClaimWait)
-                }
-                val coordinator = LiveCallCoordinator(timing = timing)
+                val coordinator = LiveCallCoordinator(timing = VoiceCallTiming.live)
                 launch(coordinator) { coordinator.start(initial.liveSessionConfig(), live, audio) }
             }
             VoiceEngine.realtime -> {
