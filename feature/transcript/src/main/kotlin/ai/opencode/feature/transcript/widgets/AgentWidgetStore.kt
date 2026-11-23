@@ -447,6 +447,7 @@ class AgentWidgetController internal constructor(
         override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) {
             val before = if (key == null) gpuAll else gpuStates[key] ?: gpuAll
             if (before != state) AgentWidgetDiagnostics.log { "${ref.key} GPU canvas ${key ?: "(every canvas)"}: ${describe(state)}" }
+            AgentWidgetDiagnostics.gpuStarted(state)
             if (key == null) {
                 gpuAll = state
                 gpuStates.clear()
@@ -515,8 +516,8 @@ class AgentWidgetController internal constructor(
 
     private fun describe(state: AgentWidgetGpuState): String = when (state) {
         AgentWidgetGpuState.Live -> "live"
-        AgentWidgetGpuState.Unavailable -> "unavailable"
-        AgentWidgetGpuState.Lost -> "lost"
+        is AgentWidgetGpuState.Unavailable -> "unavailable: ${state.reason}"
+        is AgentWidgetGpuState.Lost -> "lost: ${state.reason}"
         is AgentWidgetGpuState.Stopped ->
             "stopped (${if (state.program) "program" else "client"}${if (state.report) ", reported" else ""}): ${state.message}"
     }

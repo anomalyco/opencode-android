@@ -4541,10 +4541,18 @@ sealed class GpuCanvasState {
     
     /**
      * There is no GPU here: every GPU canvas of the run shows its placeholder (`poster`, else `alt`, else "GPU
-     * canvas not supported"). A client error; the widget keeps working.
+     * canvas not supported"). A client error; the widget keeps working. `reason` says why (the Android version, no
+     * Vulkan adapter, the GPU's Vulkan version or limits under the spec's, each with its value, or wgpu's error
+     * making the device), for the app to show or ignore.
      */
-    object Unavailable : GpuCanvasState()
-    
+    data class Unavailable(
+        val `reason`: kotlin.String) : GpuCanvasState()
+        
+    {
+        
+
+        companion object
+    }
     
     /**
      * An error stopped it for the rest of the run: its placeholder with `message`. With `report`, report it once
@@ -4562,10 +4570,17 @@ sealed class GpuCanvasState {
     }
     
     /**
-     * The device was lost: the placeholder until the program draws it again (`Live`).
+     * The device was lost: the placeholder until the program draws it again (`Live`). `reason` is wgpu's, worked
+     * out once at the loss (`the GPU device was lost (unknown): ...`), for the app to show or ignore.
      */
-    object Lost : GpuCanvasState()
-    
+    data class Lost(
+        val `reason`: kotlin.String) : GpuCanvasState()
+        
+    {
+        
+
+        companion object
+    }
     
 
     
@@ -4584,13 +4599,17 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
     override fun read(buf: ByteBuffer): GpuCanvasState {
         return when(buf.getInt()) {
             1 -> GpuCanvasState.Live
-            2 -> GpuCanvasState.Unavailable
+            2 -> GpuCanvasState.Unavailable(
+                FfiConverterString.read(buf),
+                )
             3 -> GpuCanvasState.Stopped(
                 FfiConverterTypeGpuErrorKind.read(buf),
                 FfiConverterString.read(buf),
                 FfiConverterBoolean.read(buf),
                 )
-            4 -> GpuCanvasState.Lost
+            4 -> GpuCanvasState.Lost(
+                FfiConverterString.read(buf),
+                )
             else -> throw RuntimeException("invalid enum value, something is very wrong!!")
         }
     }
@@ -4606,6 +4625,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterString.allocationSize(value.`reason`)
             )
         }
         is GpuCanvasState.Stopped -> {
@@ -4621,6 +4641,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterString.allocationSize(value.`reason`)
             )
         }
     }
@@ -4633,6 +4654,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
             }
             is GpuCanvasState.Unavailable -> {
                 buf.putInt(2)
+                FfiConverterString.write(value.`reason`, buf)
                 Unit
             }
             is GpuCanvasState.Stopped -> {
@@ -4644,6 +4666,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
             }
             is GpuCanvasState.Lost -> {
                 buf.putInt(4)
+                FfiConverterString.write(value.`reason`, buf)
                 Unit
             }
         }.let { /* this makes the `when` an expression, which ensures it is exhaustive */ }

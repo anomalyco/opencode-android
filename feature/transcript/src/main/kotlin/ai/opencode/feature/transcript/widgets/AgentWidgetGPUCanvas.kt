@@ -175,8 +175,8 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
             // A program error shows its message; the client's reasons are for developers.
             val reason = when (state) {
                 is AgentWidgetGpuState.Stopped -> state.message.takeIf { state.program || dev }
-                AgentWidgetGpuState.Unavailable -> "GPU unavailable".takeIf { dev }
-                AgentWidgetGpuState.Lost -> "GPU device lost".takeIf { dev }
+                is AgentWidgetGpuState.Unavailable -> state.reason.takeIf { dev }
+                is AgentWidgetGpuState.Lost -> state.reason.takeIf { dev }
                 else -> null
             } ?: noSurface?.takeIf { dev }
             GpuPlaceholder(node, reason, Modifier.matchParentSize())

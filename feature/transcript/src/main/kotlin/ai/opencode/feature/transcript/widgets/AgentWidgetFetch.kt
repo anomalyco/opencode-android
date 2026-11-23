@@ -42,6 +42,18 @@ internal object AgentWidgetDiagnostics {
     fun log(message: () -> String) {
         if (AgentWidgetCapabilities.isDevMode) AppLog.widget.notice(message)
     }
+
+    private val gpuLogged = java.util.concurrent.atomic.AtomicBoolean(false)
+
+    /** The GPU's start, once per process: ready at the first live canvas, or why there is none. */
+    fun gpuStarted(state: AgentWidgetGpuState) {
+        val line = when (state) {
+            AgentWidgetGpuState.Live -> "GPU initialized: device ready (Vulkan), canvases live"
+            is AgentWidgetGpuState.Unavailable -> "GPU initialization failed: ${state.reason}"
+            else -> return
+        }
+        if (AgentWidgetCapabilities.isDevMode && gpuLogged.compareAndSet(false, true)) AppLog.widget.notice(line)
+    }
 }
 
 /**

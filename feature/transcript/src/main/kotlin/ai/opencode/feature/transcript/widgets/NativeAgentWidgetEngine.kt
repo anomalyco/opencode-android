@@ -68,8 +68,8 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                         key,
                         when (state) {
                             GpuCanvasState.Live -> AgentWidgetGpuState.Live
-                            GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable
-                            GpuCanvasState.Lost -> AgentWidgetGpuState.Lost
+                            is GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable(state.reason)
+                            is GpuCanvasState.Lost -> AgentWidgetGpuState.Lost(state.reason)
                             is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(state.kind == GpuErrorKind.PROGRAM, state.message, state.report)
                         },
                     )

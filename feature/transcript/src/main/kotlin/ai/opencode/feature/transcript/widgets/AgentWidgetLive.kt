@@ -122,7 +122,12 @@ internal class AgentWidgetLiveDriver(
             }
 
             override fun warned(message: String) {
-                AppLog.app.notice { "Live widget: ${message.take(160)}" }
+                // A fetch the runtime denied, as the program got it.
+                if (message.startsWith("CapabilityDenied")) {
+                    scope.launch { if (current == generation) events.reported("fetch", message) }
+                } else {
+                    AppLog.app.notice { "Live widget: ${message.take(160)}" }
+                }
             }
 
             override fun fetchFailed(message: String) {
