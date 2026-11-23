@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Кодыг хуулах</string>
+    <string name="transcript_table_show_table_description">Хүснэгтээр харуулах</string>
+    <string name="transcript_table_show_cards_description">Картаар харуулах</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Болсон</string>

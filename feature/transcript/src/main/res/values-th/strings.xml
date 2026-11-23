@@ -24,6 +24,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">คัดลอกโค้ด</string>
+    <string name="transcript_table_show_table_description">แสดงเป็นตาราง</string>
+    <string name="transcript_table_show_cards_description">แสดงเป็นการ์ด</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">เสร็จสิ้น</string>

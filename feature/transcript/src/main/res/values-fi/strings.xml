@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kopioi koodi</string>
+    <string name="transcript_table_show_table_description">Näytä taulukkona</string>
+    <string name="transcript_table_show_cards_description">Näytä kortteina</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Valmis</string>

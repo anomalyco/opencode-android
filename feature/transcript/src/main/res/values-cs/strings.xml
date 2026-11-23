@@ -27,6 +27,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kopírovat kód</string>
+    <string name="transcript_table_show_table_description">Zobrazit jako tabulku</string>
+    <string name="transcript_table_show_cards_description">Zobrazit jako karty</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Hotovo</string>

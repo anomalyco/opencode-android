@@ -24,6 +24,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">코드 복사</string>
+    <string name="transcript_table_show_table_description">표로 보기</string>
+    <string name="transcript_table_show_cards_description">카드로 보기</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">완료</string>

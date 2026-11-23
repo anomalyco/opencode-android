@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">කේතය පිටපත් කරන්න</string>
+    <string name="transcript_table_show_table_description">වගුවක් ලෙස පෙන්වන්න</string>
+    <string name="transcript_table_show_cards_description">කාඩ්පත් ලෙස පෙන්වන්න</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">අවසන්</string>

@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Code kopiëren</string>
+    <string name="transcript_table_show_table_description">Als tabel tonen</string>
+    <string name="transcript_table_show_cards_description">Als kaarten tonen</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Klaar</string>

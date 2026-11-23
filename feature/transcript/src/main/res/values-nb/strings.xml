@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kopier kode</string>
+    <string name="transcript_table_show_table_description">Vis som tabell</string>
+    <string name="transcript_table_show_cards_description">Vis som kort</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Ferdig</string>

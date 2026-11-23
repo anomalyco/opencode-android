@@ -24,6 +24,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">コードをコピー</string>
+    <string name="transcript_table_show_table_description">テーブルとして表示</string>
+    <string name="transcript_table_show_cards_description">カードとして表示</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">完了</string>

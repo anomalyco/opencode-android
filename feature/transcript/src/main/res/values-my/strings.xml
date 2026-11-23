@@ -24,6 +24,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">ကုဒ်ကို ကူးယူပါ</string>
+    <string name="transcript_table_show_table_description">ဇယားဖြင့် ပြပါ</string>
+    <string name="transcript_table_show_cards_description">ကတ်ဖြင့် ပြပါ</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">ပြီးပါပြီ</string>

@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kodu kopyala</string>
+    <string name="transcript_table_show_table_description">Tablo olarak göster</string>
+    <string name="transcript_table_show_cards_description">Kart olarak göster</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Bitti</string>

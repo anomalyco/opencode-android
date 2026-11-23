@@ -20,6 +20,7 @@ import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewRootForTest
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.unit.Density
@@ -36,6 +37,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import java.time.Duration
 
 /*
  * Android differences:
@@ -264,25 +266,37 @@ A second line in the same paragraph.
 
 After
         """.trimIndent()
-        val (texts, labels) = shown(table)
+        val view = render(table)
+        var (texts, labels) = shown(view)
         assertTrue(texts.contains("/v1/sessions/{id}/messages"))
         // Every cell but the first is labelled, empty ones too; the heading row itself isn't shown.
         assertEquals(2, labels.count { it == "Status" })
         assertEquals(2, labels.count { it == "Notes" })
         assertEquals(0, texts.count { it in listOf("Endpoint", "Method", "Status", "Owner", "Notes") })
+        // The switch shows the grid, heading row and all, and goes back to cards.
+        tap(view, "Show as Table")
+        shown(view).let { (gridTexts, gridLabels) -> texts = gridTexts; labels = gridLabels }
+        assertTrue(texts.containsAll(listOf("Endpoint", "Notes", "/v1/sessions/{id}/messages")))
+        assertEquals(listOf("Show as Cards"), labels)
+        tap(view, "Show as Cards")
+        shown(view).let { (cardTexts, cardLabels) -> texts = cardTexts; labels = cardLabels }
+        assertEquals(0, texts.count { it == "Endpoint" })
+        assertEquals(2, labels.count { it == "Notes" })
+        assertTrue(labels.contains("Show as Table"))
     }
 
     @Test
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     fun aTableThatFitsStaysAGridWithItsHeadingRow() {
-        val (texts, labels) = shown("| Name | State |\n| - | - |\n| Atlas | Ready |")
+        val (texts, labels) = shown(render("| Name | State |\n| - | - |\n| Atlas | Ready |"))
         assertTrue(texts.contains("Name"))
         assertTrue(texts.contains("Ready"))
+        // No labels and no switch.
         assertTrue(labels.isEmpty())
     }
 
-    /** The texts and content descriptions [markdown] draws in the transcript's Markdown view. */
-    private fun shown(markdown: String): Pair<List<String>, List<String>> {
+    /** [markdown] in the transcript's Markdown view. */
+    private fun render(markdown: String): ComposeView {
         val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
         val view = ComposeView(activity)
         activity.setContentView(view)
@@ -290,15 +304,38 @@ After
             OpenCodeAppTheme { MarkdownBlocksView(OpenCodeMarkdownBlock.blocks(markdown, inlineCache = null)) }
         }
         shadowOf(Looper.getMainLooper()).idle()
-        val texts = ArrayList<String>()
-        val labels = ArrayList<String>()
+        return view
+    }
+
+    private fun nodes(view: ComposeView): List<SemanticsNode> {
+        val nodes = ArrayList<SemanticsNode>()
         fun visit(node: SemanticsNode) {
-            if (SemanticsProperties.Text in node.config) node.config[SemanticsProperties.Text].forEach { texts += it.text }
-            if (SemanticsProperties.ContentDescription in node.config) labels += node.config[SemanticsProperties.ContentDescription]
+            nodes += node
             node.children.forEach(::visit)
         }
         visit((view.getChildAt(0) as ViewRootForTest).semanticsOwner.unmergedRootSemanticsNode)
+        return nodes
+    }
+
+    /** The texts and content descriptions [view] shows. */
+    private fun shown(view: ComposeView): Pair<List<String>, List<String>> {
+        val texts = ArrayList<String>()
+        val labels = ArrayList<String>()
+        for (node in nodes(view)) {
+            if (SemanticsProperties.Text in node.config) node.config[SemanticsProperties.Text].forEach { texts += it.text }
+            if (SemanticsProperties.ContentDescription in node.config) labels += node.config[SemanticsProperties.ContentDescription]
+        }
         return texts to labels
+    }
+
+    private fun tap(view: ComposeView, description: String) {
+        val node = nodes(view).single {
+            SemanticsProperties.ContentDescription in it.config && it.config[SemanticsProperties.ContentDescription] == listOf(description)
+        }
+        node.config[SemanticsActions.OnClick].action?.invoke()
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofMillis(100))
+        // Robolectric doesn't draw, and the root measures again from its draw pass.
+        (view.getChildAt(0) as ViewRootForTest).measureAndLayoutForTest()
     }
 
     @Test

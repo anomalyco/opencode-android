@@ -26,6 +26,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kopēt kodu</string>
+    <string name="transcript_table_show_table_description">Rādīt kā tabulu</string>
+    <string name="transcript_table_show_cards_description">Rādīt kā kartītes</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Gatavs</string>

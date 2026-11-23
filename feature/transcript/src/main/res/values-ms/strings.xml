@@ -24,6 +24,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Salin kod</string>
+    <string name="transcript_table_show_table_description">Tunjukkan sebagai jadual</string>
+    <string name="transcript_table_show_cards_description">Tunjukkan sebagai kad</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Selesai</string>

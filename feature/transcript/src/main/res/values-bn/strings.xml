@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">কোড কপি করুন</string>
+    <string name="transcript_table_show_table_description">টেবিল হিসেবে দেখান</string>
+    <string name="transcript_table_show_cards_description">কার্ড হিসেবে দেখান</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">হয়ে গেছে</string>

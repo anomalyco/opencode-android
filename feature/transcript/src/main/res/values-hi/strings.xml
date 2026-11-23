@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">कोड कॉपी करें</string>
+    <string name="transcript_table_show_table_description">तालिका के रूप में दिखाएँ</string>
+    <string name="transcript_table_show_cards_description">कार्ड के रूप में दिखाएँ</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">हो गया</string>

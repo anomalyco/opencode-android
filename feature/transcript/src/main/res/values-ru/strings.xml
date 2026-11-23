@@ -27,6 +27,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Копировать код</string>
+    <string name="transcript_table_show_table_description">Показать как таблицу</string>
+    <string name="transcript_table_show_cards_description">Показать как карточки</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Готово</string>

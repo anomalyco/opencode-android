@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Afrita kóða</string>
+    <string name="transcript_table_show_table_description">Sýna sem töflu</string>
+    <string name="transcript_table_show_cards_description">Sýna sem spjöld</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Lokið</string>

@@ -1,13 +1,21 @@
 package ai.opencode.feature.transcript.markdown.ui
 
+import ai.opencode.core.ui.OpenCodeIcon
+import ai.opencode.core.ui.OpenCodeMinTapTarget
 import ai.opencode.core.ui.OpenCodeRadius
 import ai.opencode.core.ui.OpenCodeSurfaces
 import ai.opencode.core.ui.OpenCodeTextStyles
+import ai.opencode.core.ui.OpenCodeTheme
+import ai.opencode.core.ui.SFSymbol
 import ai.opencode.core.ui.openCodeHairline
 import ai.opencode.feature.media.TranscriptMetrics
+import ai.opencode.feature.transcript.R
 import ai.opencode.feature.transcript.markdown.InlineText
 import ai.opencode.feature.transcript.selection.TranscriptSelectionLeafKey
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,20 +23,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.CollectionInfo
 import androidx.compose.ui.semantics.CollectionItemInfo
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.collectionInfo
 import androidx.compose.ui.semantics.collectionItemInfo
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +67,8 @@ import androidx.compose.ui.unit.em
  * first cell is the title, and every other cell sits under its column heading as a small label. The
  * heading row isn't shown. The cells are measured before either is composed, so the table never
  * draws as the other first; while a reply streams it turns into cards once, when a row makes it too
- * wide, and stays cards.
+ * wide, and stays cards. A quiet switch at the block's top end turns such a table into the grid and
+ * back; the pick is the reader's, per table, and stays while the row scrolls away and back.
  *
  * @param selection The block's key in a reply: each cell joins the reply's one selection (its part
  *     is [TranscriptSelectionLeafKey.tablePart]). Elsewhere cells aren't selectable.
@@ -85,6 +104,8 @@ fun MarkdownTable(
     ReportsSessionLinks((presentedHeader + presentedRows.flatten()).flatMap { it.sessionIDs }.distinct())
     val columns = maxOf(header.size, rows.maxOfOrNull { it.size } ?: 0)
     val latch = remember { TableCardsLatch() }
+    // The reader's pick for a table that went to cards: kept while the row scrolls away and back.
+    var showsTable by rememberSaveable { mutableStateOf(false) }
     SubcomposeLayout(modifier) { constraints ->
         val viewport = constraints.maxWidth - (TranscriptBandStyle.horizontalPadding * 2).roundToPx()
         // The grid's cells as plain text, measured only: what the grid would size its columns from.
@@ -108,7 +129,15 @@ fun MarkdownTable(
             IntArray(probes.size) { probes[it].minIntrinsicWidth(Constraints.Infinity) },
             columns, viewport,
         )
-        val cards = constraints.hasBoundedWidth && latch.cards(viewport, fit.scrolls)
+        val switchable = constraints.hasBoundedWidth && latch.cards(viewport, fit.scrolls)
+        val cards = switchable && !showsTable
+        val switch = if (switchable) {
+            subcompose(TableSlot.Switch) { TableViewSwitch(showsTable) { showsTable = !showsTable } }
+                .map { it.measure(Constraints()) }
+        } else {
+            emptyList()
+        }
+        val top = if (switchable) TableViewSwitch.height.roundToPx() else 0
         val content = subcompose(if (cards) TableSlot.Cards else TableSlot.Grid) {
             if (cards) {
                 TableCards(header, presentedRows, columns, cellStyle, selection, Modifier)
@@ -176,12 +205,58 @@ fun MarkdownTable(
             }
         }.map { it.measure(constraints.copy(minWidth = 0, minHeight = 0)) }
         val width = maxOf(constraints.minWidth, content.maxOfOrNull { it.width } ?: 0)
-        val height = maxOf(constraints.minHeight, content.maxOfOrNull { it.height } ?: 0)
-        layout(width, height) { content.forEach { it.place(0, 0) } }
+        val height = maxOf(constraints.minHeight, top + (content.maxOfOrNull { it.height } ?: 0))
+        layout(width, height) {
+            content.forEach { it.place(0, top) }
+            // The target is centred on the face, which sits flush with the block's top end; the rest of
+            // the target reaches into the margins around it.
+            val reach = ((OpenCodeMinTapTarget - TableViewSwitch.face) / 2).roundToPx()
+            switch.forEach { it.place(width - it.width + reach, -reach) }
+        }
     }
 }
 
-private enum class TableSlot { Probe, Grid, Cards }
+private enum class TableSlot { Probe, Switch, Grid, Cards }
+
+/**
+ * Switches a table that went to cards to the grid and back: a quiet glyph like the code block's
+ * Copy button, the table glyph over cards and the cards glyph over the grid.
+ */
+@Composable
+private fun TableViewSwitch(showsTable: Boolean, onSwitch: () -> Unit) {
+    val colors = OpenCodeTheme.colors
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    val label = stringResource(if (showsTable) R.string.transcript_table_show_cards_description else R.string.transcript_table_show_table_description)
+    val shape = RoundedCornerShape(OpenCodeRadius.xs)
+    var face = Modifier.size(TableViewSwitch.face)
+    if (pressed) face = face.background(colors.text.copy(alpha = 0.08f), shape)
+    Box(
+        Modifier
+            .size(OpenCodeMinTapTarget)
+            .clickable(interactionSource = interaction, indication = null, role = Role.Button, onClick = onSwitch)
+            .clearAndSetSemantics {
+                contentDescription = label
+                role = Role.Button
+                onClick { onSwitch(); true }
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(face, contentAlignment = Alignment.Center) {
+            OpenCodeIcon(
+                if (showsTable) SFSymbol.RectangleSplit1x2 else SFSymbol.Tablecells, contentDescription = null, size = 16.dp,
+                tint = if (pressed) colors.text else colors.secondaryText,
+            )
+        }
+    }
+}
+
+private object TableViewSwitch {
+    val face = 24.dp
+
+    /** What the switch adds above the table: its face and a little air. */
+    val height = face + 4.dp
+}
 
 /**
  * How a table's columns fit its block. Each column's natural width is its widest cell, capped at

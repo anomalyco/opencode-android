@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Copy code</string>
+    <string name="transcript_table_show_table_description">Show as Table</string>
+    <string name="transcript_table_show_cards_description">Show as Cards</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">Done</string>

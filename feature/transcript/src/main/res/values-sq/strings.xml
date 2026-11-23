@@ -25,6 +25,8 @@
 
     <!-- Code blocks -->
     <string name="transcript_code_copy_description">Kopjo kodin</string>
+    <string name="transcript_table_show_table_description">Trego si tabelë</string>
+    <string name="transcript_table_show_cards_description">Trego si karta</string>
 
     <!-- Markdown task lists -->
     <string name="transcript_task_done_description">U krye</string>
