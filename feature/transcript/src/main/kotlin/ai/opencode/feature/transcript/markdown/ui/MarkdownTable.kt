@@ -10,7 +10,6 @@ import ai.opencode.feature.transcript.selection.TranscriptSelectionLeafKey
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,11 +18,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.CollectionInfo
 import androidx.compose.ui.semantics.CollectionItemInfo
@@ -35,6 +33,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
@@ -46,8 +45,11 @@ import androidx.compose.ui.unit.em
  * the edge fade. Rules under the header and between rows run the block's full width and stay put
  * while the columns scroll.
  *
- * On a phone ([showsTableCards]) each body row is a card instead: its first cell is the title, and
- * every other cell sits under its column heading as a small label. The heading row isn't shown.
+ * A table that would scroll ([MarkdownTableFit.scrolls]) draws each body row as a card instead: its
+ * first cell is the title, and every other cell sits under its column heading as a small label. The
+ * heading row isn't shown. The cells are measured before either is composed, so the table never
+ * draws as the other first; while a reply streams it turns into cards once, when a row makes it too
+ * wide, and stays cards.
  *
  * @param selection The block's key in a reply: each cell joins the reply's one selection (its part
  *     is [TranscriptSelectionLeafKey.tablePart]). Elsewhere cells aren't selectable.
@@ -82,102 +84,166 @@ fun MarkdownTable(
     val presentedRows = remember(rows, targets, colors, density) { rows.map { row -> row.map { present(it, false) } } }
     ReportsSessionLinks((presentedHeader + presentedRows.flatten()).flatMap { it.sessionIDs }.distinct())
     val columns = maxOf(header.size, rows.maxOfOrNull { it.size } ?: 0)
-    if (showsTableCards) {
-        TableCards(header, presentedRows, columns, cellStyle, selection, modifier)
-        return
-    }
-    BoxWithConstraints(modifier) {
-        val viewport = maxWidth - TranscriptBandStyle.horizontalPadding * 2
-        MarkdownBand(rules = rules) {
-            Layout(
-                content = {
-                    for ((rowIndex, row) in (listOf(presentedHeader) + presentedRows).withIndex()) {
-                        for (column in 0 until columns) {
-                            val cell = row.getOrNull(column)
-                            val isHeader = row === presentedHeader
-                            if (cell == null) {
-                                Box(Modifier)
-                            } else {
-                                val key = selection?.copy(part = TranscriptSelectionLeafKey.tablePart(rowIndex, column))
-                                ArrivingText(
-                                    cell, emptyList(), if (isHeader) headerStyle else cellStyle, if (isHeader) colors.secondaryText else colors.text,
-                                    selectionKey = key,
-                                )
+    val latch = remember { TableCardsLatch() }
+    SubcomposeLayout(modifier) { constraints ->
+        val viewport = constraints.maxWidth - (TranscriptBandStyle.horizontalPadding * 2).roundToPx()
+        // The grid's cells as plain text, measured only: what the grid would size its columns from.
+        val probes = subcompose(TableSlot.Probe) {
+            for (row in listOf(presentedHeader) + presentedRows) {
+                for (column in 0 until columns) {
+                    val cell = row.getOrNull(column)
+                    if (cell == null) {
+                        Box(Modifier)
+                    } else {
+                        Text(
+                            cell.text, Modifier.clearAndSetSemantics {}, style = if (row === presentedHeader) headerStyle else cellStyle,
+                            inlineContent = cell.inlineContent,
+                        )
+                    }
+                }
+            }
+        }
+        val fit = markdownTableFit(
+            IntArray(probes.size) { probes[it].maxIntrinsicWidth(Constraints.Infinity) },
+            IntArray(probes.size) { probes[it].minIntrinsicWidth(Constraints.Infinity) },
+            columns, viewport,
+        )
+        val cards = constraints.hasBoundedWidth && latch.cards(viewport, fit.scrolls)
+        val content = subcompose(if (cards) TableSlot.Cards else TableSlot.Grid) {
+            if (cards) {
+                TableCards(header, presentedRows, columns, cellStyle, selection, Modifier)
+            } else {
+                MarkdownBand(rules = rules) {
+                    Layout(
+                        content = {
+                            for ((rowIndex, row) in (listOf(presentedHeader) + presentedRows).withIndex()) {
+                                for (column in 0 until columns) {
+                                    val cell = row.getOrNull(column)
+                                    val isHeader = row === presentedHeader
+                                    if (cell == null) {
+                                        Box(Modifier)
+                                    } else {
+                                        val key = selection?.copy(part = TranscriptSelectionLeafKey.tablePart(rowIndex, column))
+                                        ArrivingText(
+                                            cell, emptyList(), if (isHeader) headerStyle else cellStyle, if (isHeader) colors.secondaryText else colors.text,
+                                            selectionKey = key,
+                                        )
+                                    }
+                                }
+                            }
+                        },
+                    ) { measurables, _ ->
+                        val hSpacing = TranscriptMetrics.turn.roundToPx()
+                        val vSpacing = TranscriptMetrics.bubbleVertical.roundToPx()
+                        val rule = (0.5.dp).roundToPx().coerceAtLeast(1)
+                        val rowCount = measurables.size / maxOf(columns, 1)
+                        val columnWidths = markdownTableFit(
+                            IntArray(measurables.size) { measurables[it].maxIntrinsicWidth(Constraints.Infinity) },
+                            IntArray(measurables.size) { measurables[it].minIntrinsicWidth(Constraints.Infinity) },
+                            columns, viewport,
+                        ).columnWidths()
+                        val placeables = measurables.mapIndexed { index, measurable ->
+                            val width = columnWidths[index % maxOf(columns, 1)]
+                            measurable.measure(Constraints(minWidth = 0, maxWidth = width.coerceAtLeast(0)))
+                        }
+                        val widths = IntArray(columns) { column -> (0 until rowCount).maxOfOrNull { placeables[it * columns + column].width } ?: 0 }
+                        val heights = IntArray(rowCount) { row -> (0 until columns).maxOfOrNull { placeables[row * columns + it].height } ?: 0 }
+                        val tops = IntArray(rowCount)
+                        val ruleTops = mutableListOf<Float>()
+                        var y = 0
+                        for (row in 0 until rowCount) {
+                            if (row > 0) {
+                                y += vSpacing
+                                ruleTops += y.toFloat()
+                                y += rule + vSpacing
+                            }
+                            tops[row] = y
+                            y += heights[row]
+                        }
+                        val totalWidth = widths.sum() + hSpacing * (columns - 1).coerceAtLeast(0)
+                        rules.offsets = ruleTops
+                        layout(totalWidth, y) {
+                            for (row in 0 until rowCount) {
+                                var x = 0
+                                for (column in 0 until columns) {
+                                    placeables[row * columns + column].place(x, tops[row])
+                                    x += widths[column] + hSpacing
+                                }
                             }
                         }
                     }
-                },
-            ) { measurables, _ ->
-                val cap = 220.dp.roundToPx()
-                val floor = 112.dp.roundToPx()
-                val hSpacing = TranscriptMetrics.turn.roundToPx()
-                val vSpacing = TranscriptMetrics.bubbleVertical.roundToPx()
-                val rule = (0.5.dp).roundToPx().coerceAtLeast(1)
-                val rowCount = measurables.size / maxOf(columns, 1)
-                // Each column's natural width (its widest cell, capped) and its narrowest: its longest
-                // word, and at least the readable floor, so a squeezed column never wraps word by word.
-                val widest = IntArray(columns)
-                val narrowest = IntArray(columns)
-                for ((index, measurable) in measurables.withIndex()) {
-                    val column = index % maxOf(columns, 1)
-                    val natural = minOf(measurable.maxIntrinsicWidth(Constraints.Infinity), cap)
-                    val word = minOf(measurable.minIntrinsicWidth(Constraints.Infinity), natural)
-                    val readable = maxOf(word, minOf(natural, floor))
-                    widest[column] = maxOf(widest[column], natural)
-                    narrowest[column] = maxOf(narrowest[column], readable)
                 }
-                val room = viewport.roundToPx() - hSpacing * (columns - 1).coerceAtLeast(0)
-                val widestTotal = widest.sum()
-                val narrowestTotal = narrowest.sum()
-                val columnWidths = IntArray(columns)
-                for (column in 0 until columns) {
-                    columnWidths[column] = when {
-                        widestTotal <= room -> widest[column]
-                        narrowestTotal >= room -> narrowest[column]
-                        else -> {
-                            // Share the room past every column's longest word in proportion to how much more each wants.
-                            val share = (room - narrowestTotal).toFloat() / (widestTotal - narrowestTotal)
-                            narrowest[column] + ((widest[column] - narrowest[column]) * share).toInt()
-                        }
-                    }
-                }
-                val placeables = measurables.mapIndexed { index, measurable ->
-                    val width = columnWidths[index % maxOf(columns, 1)]
-                    measurable.measure(Constraints(minWidth = 0, maxWidth = width.coerceAtLeast(0)))
-                }
-                val widths = IntArray(columns) { column -> (0 until rowCount).maxOfOrNull { placeables[it * columns + column].width } ?: 0 }
-                val heights = IntArray(rowCount) { row -> (0 until columns).maxOfOrNull { placeables[row * columns + it].height } ?: 0 }
-                val tops = IntArray(rowCount)
-                val ruleTops = mutableListOf<Float>()
-                var y = 0
-                for (row in 0 until rowCount) {
-                    if (row > 0) {
-                        y += vSpacing
-                        ruleTops += y.toFloat()
-                        y += rule + vSpacing
-                    }
-                    tops[row] = y
-                    y += heights[row]
-                }
-                val totalWidth = widths.sum() + hSpacing * (columns - 1).coerceAtLeast(0)
-                rules.offsets = ruleTops
-                layout(totalWidth, y) {
-                    for (row in 0 until rowCount) {
-                        var x = 0
-                        for (column in 0 until columns) {
-                            placeables[row * columns + column].place(x, tops[row])
-                            x += widths[column] + hSpacing
-                        }
-                    }
+            }
+        }.map { it.measure(constraints.copy(minWidth = 0, minHeight = 0)) }
+        val width = maxOf(constraints.minWidth, content.maxOfOrNull { it.width } ?: 0)
+        val height = maxOf(constraints.minHeight, content.maxOfOrNull { it.height } ?: 0)
+        layout(width, height) { content.forEach { it.place(0, 0) } }
+    }
+}
+
+private enum class TableSlot { Probe, Grid, Cards }
+
+/**
+ * How a table's columns fit its block. Each column's natural width is its widest cell, capped at
+ * 220; its narrowest is its longest word and at least the readable floor (112, or its natural width
+ * if smaller), so a squeezed column never wraps word by word.
+ */
+internal class MarkdownTableFit(private val widest: IntArray, private val narrowest: IntArray, private val room: Int) {
+    /** Even at their narrowest the columns don't fit: the grid would scroll sideways. */
+    val scrolls: Boolean get() = narrowest.sum() > room
+
+    /** Natural widths when they fit; otherwise shrunk toward the narrowest, never below it. */
+    fun columnWidths(): IntArray {
+        val widestTotal = widest.sum()
+        val narrowestTotal = narrowest.sum()
+        return IntArray(widest.size) { column ->
+            when {
+                widestTotal <= room -> widest[column]
+                narrowestTotal >= room -> narrowest[column]
+                else -> {
+                    // Share the room past every column's longest word in proportion to how much more each wants.
+                    val share = (room - narrowestTotal).toFloat() / (widestTotal - narrowestTotal)
+                    narrowest[column] + ((widest[column] - narrowest[column]) * share).toInt()
                 }
             }
         }
     }
 }
 
-/** Phones show a table's rows as cards; tablets and wider windows keep the grid. */
-internal val showsTableCards: Boolean
-    @Composable @ReadOnlyComposable get() = LocalConfiguration.current.smallestScreenWidthDp < 600
+/**
+ * The fit of cells whose widest and narrowest (longest word) widths are [maxWidths] and [minWidths],
+ * row by row with the header first, in a block [viewport] wide.
+ */
+internal fun Density.markdownTableFit(maxWidths: IntArray, minWidths: IntArray, columns: Int, viewport: Int): MarkdownTableFit {
+    val cap = 220.dp.roundToPx()
+    val floor = 112.dp.roundToPx()
+    val widest = IntArray(columns)
+    val narrowest = IntArray(columns)
+    for (index in maxWidths.indices) {
+        val column = index % maxOf(columns, 1)
+        val natural = minOf(maxWidths[index], cap)
+        val word = minOf(minWidths[index], natural)
+        widest[column] = maxOf(widest[column], natural)
+        narrowest[column] = maxOf(narrowest[column], maxOf(word, minOf(natural, floor)))
+    }
+    val room = viewport - TranscriptMetrics.turn.roundToPx() * (columns - 1).coerceAtLeast(0)
+    return MarkdownTableFit(widest, narrowest, room)
+}
+
+/** Once cards at a width, a table stays cards, so a cell that shrinks as its Markdown closes doesn't flip it back. */
+private class TableCardsLatch {
+    private var viewport = -1
+    private var cards = false
+
+    fun cards(viewport: Int, scrolls: Boolean): Boolean {
+        if (viewport != this.viewport) {
+            this.viewport = viewport
+            cards = false
+        }
+        cards = cards || scrolls
+        return cards
+    }
+}
 
 @Composable
 private fun TableCards(

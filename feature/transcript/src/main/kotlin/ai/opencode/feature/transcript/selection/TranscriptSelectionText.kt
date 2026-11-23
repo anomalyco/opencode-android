@@ -115,8 +115,6 @@ class TranscriptSelectionContext(
     val decoratesLinks: Boolean = false,
     /** Whether a row's reply can still grow (its last block's open link keeps its URL). */
     val isGrowing: (String) -> Boolean = { false },
-    /** Tables draw as cards (`showsTableCards`), without their heading row. */
-    val tableCards: Boolean = false,
 )
 
 /** One reply row: its item and parsed blocks. */
@@ -500,7 +498,6 @@ class TranscriptSelectionDocument(val leaves: List<TranscriptSelectionLeaf>) {
                             tableRows += kind.header
                             tableRows.addAll(kind.rows)
                             for ((rowIndex, cells) in tableRows.withIndex()) {
-                                if (rowIndex == 0 && context.tableCards) continue
                                 for ((column, cell) in cells.withIndex()) {
                                     val cellKey = TranscriptSelectionLeafKey(row.itemID, block.id, TranscriptSelectionLeafKey.tablePart(rowIndex, column))
                                     // `MarkdownTable.present`: no Link Icons, never a growing tail.

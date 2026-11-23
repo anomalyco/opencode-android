@@ -37,7 +37,6 @@ internal class TranscriptListSelection(
     var style: MarkdownStyle? = null
     var density: Density = Density(1f)
     var linkStyle: InlineLinkStyle = InlineLinkStyle.Address
-    var tableCards: Boolean = false
 
     /** The header's height and the composer's (with the keyboard), in px. */
     var topPadding = 0f
@@ -72,7 +71,6 @@ internal class TranscriptListSelection(
             // The list keeps a link preview store, so its rows' links get their icon slots.
             decoratesLinks = true,
             isGrowing = { id -> rows.isGrowingEntry(id) },
-            tableCards = tableCards,
         )
         return TranscriptSelectionDocument.make(selectionRows, context)
     }

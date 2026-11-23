@@ -35,6 +35,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
 
 /*
  * Android differences:
@@ -253,25 +254,27 @@ A second line in the same paragraph.
     }
 
     @Test
-    fun onAPhoneEachTableRowIsACardLabelledWithItsColumnHeadings() {
-        val table = "| Name | State | Note |\n| - | - | - |\n| Atlas | **Ready** | Fine |\n| Birch | Busy | |\n\nAfter"
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    fun aTableTooWideToFitIsACardPerRowLabelledWithItsColumnHeadings() {
+        val table = """
+| Endpoint | Method | Status | Owner | Notes |
+| --- | --- | --- | --- | --- |
+| `/v1/sessions/{id}/messages` | POST | Degraded | Ben | Retries on the upstream model provider pile up when a stream is cut mid-response |
+| `/v1/search` | GET | Down | Kit | |
+
+After
+        """.trimIndent()
         val (texts, labels) = shown(table)
-        assertTrue(texts.contains("Atlas"))
+        assertTrue(texts.contains("/v1/sessions/{id}/messages"))
         // Every cell but the first is labelled, empty ones too; the heading row itself isn't shown.
-        assertEquals(2, labels.count { it == "State" })
-        assertEquals(2, labels.count { it == "Note" })
-        assertEquals(0, texts.count { it == "Name" || it == "State" || it == "Note" })
-        // Selection reads the cards' cells only: no heading row, no labels.
-        val cards = TranscriptSelectionDocument.make(
-            listOf(TranscriptSelectionRow("reply", OpenCodeMarkdownBlock.blocks(table, inlineCache = null))),
-            TranscriptSelectionContext(style = style, density = Density(1f), tableCards = true),
-        )
-        assertEquals("Atlas\tReady\tFine\nBirch\tBusy\n\nAfter", cards.copiedText(TextRange(0, cards.length)))
+        assertEquals(2, labels.count { it == "Status" })
+        assertEquals(2, labels.count { it == "Notes" })
+        assertEquals(0, texts.count { it in listOf("Endpoint", "Method", "Status", "Owner", "Notes") })
     }
 
     @Test
-    @Config(sdk = [35], qualifiers = "sw720dp")
-    fun onWiderScreensATableShowsItsHeadingRow() {
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    fun aTableThatFitsStaysAGridWithItsHeadingRow() {
         val (texts, labels) = shown("| Name | State |\n| - | - |\n| Atlas | Ready |")
         assertTrue(texts.contains("Name"))
         assertTrue(texts.contains("Ready"))
