@@ -55,7 +55,8 @@ import androidx.compose.ui.viewinterop.AndroidView
  * A `wgsl` canvas: a [AgentWidgetShaderCanvas] presenting into a `TextureView`, the runtime compiling and drawing on
  * its own thread. Frames are recorded from `withFrameNanos` at `fps` while the canvas has a size, is on screen and the
  * list isn't paused, or once (and on `values` changes) with `fps: 0`. A WGSL error (the widget template's, reported in
- * phase `gpu`) or no GPU (the client's) shows its `poster` or `alt` with the error.
+ * phase `gpu`) or no GPU or a GPU hang (the client's) shows its `poster` or `alt` with the error; a shader over 50 ms a
+ * frame three frames in a row stops on its last frame.
  */
 @Composable
 fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, modifier: Modifier = Modifier) {
@@ -66,6 +67,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     val paused = LocalAgentWidgetPaused.current
     var failure by remember(wgsl) { mutableStateOf<String?>(null) }
     var canvas by remember(wgsl) { mutableStateOf<AgentWidgetShaderCanvas?>(null) }
+    var onLastFrame by remember(wgsl) { mutableStateOf(false) }
     val frame = rememberGpuCanvasFrame(node, scope)
     val size = canvasSize(node, modifier)
 
@@ -80,7 +82,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     val valuesKey = if (node.fps == 0) nodeValues.contentHashCode() else 0
     LaunchedEffect(canvas, paused, frame.visible, node.fps, valuesKey, frame.pixels) {
         val shader = canvas ?: return@LaunchedEffect
-        if (paused || !frame.visible || frame.pixels.width == 0 || frame.pixels.height == 0) return@LaunchedEffect
+        if (onLastFrame || paused || !frame.visible || frame.pixels.width == 0 || frame.pixels.height == 0) return@LaunchedEffect
         val interval = if (node.fps > 0) 1_000_000_000L / node.fps else 0L
         var last = 0L
         while (true) {
@@ -90,7 +92,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
             last = now
             val stopped = shader.render((now - start[0]) / 1e9f, density, frame.pointer, values)
             if (stopped != null) {
-                failure = stopped.message
+                if (stopped.keepsLastFrame) onLastFrame = true else failure = stopped.message
                 if (stopped.program) scope.controller?.reportError("gpu", stopped.message) else scope.controller?.clientError("gpu", stopped.message)
                 break
             }

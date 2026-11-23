@@ -1066,7 +1066,7 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel() and 0xFFFF) != 11653) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_render() and 0xFFFF) != 57940) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_render() and 0xFFFF) != 28612) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_resize() and 0xFFFF) != 23969) {
@@ -3718,6 +3718,9 @@ public interface ShaderCanvasInterface {
      * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
      * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
      * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
+     * A shader over 50 ms a frame three frames in a row returns `Client` (reason `the shader took over 50 ms a frame,
+     * three frames in a row`): log it and
+     * keep the surface, which keeps its last frame.
      */
     fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
     
@@ -3860,6 +3863,9 @@ open class ShaderCanvas: Disposable, AutoCloseable, ShaderCanvasInterface
      * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
      * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
      * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
+     * A shader over 50 ms a frame three frames in a row returns `Client` (reason `the shader took over 50 ms a frame,
+     * three frames in a row`): log it and
+     * keep the surface, which keeps its last frame.
      */
     @Throws(GpuFailure::class)override fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
         = 
@@ -4699,14 +4705,15 @@ public object FfiConverterTypeGpuErrorKind: FfiConverterRustBuffer<GpuErrorKind>
 sealed class GpuFailure: kotlin.Exception() {
     
     /**
-     * The widget template's (a WGSL error, phase `gpu`): report it.
+     * The widget template's (a WGSL error, phase `gpu`): report it. (`reason`, not `message`: a Kotlin exception has
+     * a `message` of its own.)
      */
     class Program(
         
         val `reason`: kotlin.String
         ) : GpuFailure() {
         override val message
-            get() = `reason`
+            get() = "reason=${ `reason` }"
     }
     
     /**
@@ -4717,7 +4724,7 @@ sealed class GpuFailure: kotlin.Exception() {
         val `reason`: kotlin.String
         ) : GpuFailure() {
         override val message
-            get() = `reason`
+            get() = "reason=${ `reason` }"
     }
     
 

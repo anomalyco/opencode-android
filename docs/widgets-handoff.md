@@ -21,8 +21,8 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
   runner's `ShaderCanvas`, which compiles and presents on its own thread (Vulkan) into a `TextureView`'s
   surface. `AgentWidgetGPUCanvas` records frames with `render(time, scale, pointer, values)` from
   `withFrameNanos` at `fps` (once, and on `values` changes, at `fps: 0`), paused off screen / list not resumed;
-  a WGSL error is reported once in phase `gpu` with the template's line, no GPU is a client error; poster/alt
-  on failure.
+  a WGSL error is reported once in phase `gpu` with the template's line, no GPU or a GPU hang is a client error
+  (poster/alt); the slow-frame stop (50 ms × 3) is logged and keeps the last frame.
 - Live GPU canvases (`canvas` with `gpu: true`, wire prop 38, widgets-gpu.md): `AgentWidgetLiveGPUCanvas`
   attaches a `TextureView` surface under the canvas's key (`AgentWidgetNode.canvasKey`) to the live run
   (`attachSurface`, again on resize; `detachSurface` before the surface goes). The driver keeps a stack per key

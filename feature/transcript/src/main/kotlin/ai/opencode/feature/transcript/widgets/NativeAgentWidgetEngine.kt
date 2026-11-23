@@ -129,7 +129,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             } catch (failure: GpuFailure) {
                 when (failure) {
                     is GpuFailure.Program -> AgentWidgetGpuFailure(program = true, failure.reason)
-                    is GpuFailure.Client -> AgentWidgetGpuFailure(program = false, failure.reason)
+                    is GpuFailure.Client -> AgentWidgetGpuFailure(program = false, failure.reason, keepsLastFrame = failure.reason == SLOW_FRAMES)
                 }
             }
 
@@ -192,6 +192,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     }
 
     private const val HEAP_BYTES: ULong = 33_554_432uL
+    private const val SLOW_FRAMES = "the shader took over 50 ms a frame, three frames in a row"
     /** Writes the binary format: steps hand their output to its global, live posts go through it. */
     private val encoder: ValueEncoder by lazy { ValueEncoder.widget() }
     // Widget protocol 2 (widgets.md, Native hosts): the encoder builds the view tree from what the prelude emits.

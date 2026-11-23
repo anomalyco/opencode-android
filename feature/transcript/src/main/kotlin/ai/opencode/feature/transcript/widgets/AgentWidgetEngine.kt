@@ -106,8 +106,11 @@ internal fun Throwable.isProgramError(): Boolean = when (this) {
 /** The runtime's surface for a GPU canvas ([handle] is the binding's `GpuSurface`). */
 class AgentWidgetGpuSurface(val handle: AutoCloseable) : AutoCloseable by handle
 
-/** What stopped a GPU canvas for good: the widget template's ([program]: report it, phase `gpu`) or the client's. */
-class AgentWidgetGpuFailure(val program: Boolean, val message: String)
+/**
+ * What stopped a GPU canvas for good: the widget template's ([program]: report it, phase `gpu`) or the client's. With
+ * [keepsLastFrame] (the slow-frame stop) the canvas keeps its last frame instead of the placeholder.
+ */
+class AgentWidgetGpuFailure(val program: Boolean, val message: String, val keepsLastFrame: Boolean = false)
 
 /** A `wgsl` canvas (widgets.md, GPU canvases): frames are recorded here and drawn on the runtime's own thread. */
 interface AgentWidgetShaderCanvas : AutoCloseable {
