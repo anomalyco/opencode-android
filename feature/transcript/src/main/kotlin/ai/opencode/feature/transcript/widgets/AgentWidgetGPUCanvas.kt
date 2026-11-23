@@ -9,6 +9,9 @@ import ai.opencode.feature.transcript.R
 import ai.opencode.feature.transcript.widgets.AgentWidgetMachine.Phase
 import android.graphics.SurfaceTexture
 import android.view.Surface
+import android.view.SurfaceView
+import android.view.SurfaceHolder
+import android.graphics.PixelFormat
 import android.view.TextureView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -73,6 +76,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     val frame = rememberGpuCanvasFrame(node, scope)
     val size = canvasSize(node, modifier)
     val fps = rememberAgentWidgetFpsMeter()
+    val fullscreen = LocalAgentWidgetFullscreen.current
 
     val error = failure
     if (error != null) {
@@ -101,6 +105,8 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
                 if (stopped.program) scope.controller?.reportError("gpu", stopped.message) else scope.controller?.clientError("gpu", stopped.message)
                 break
             }
+            // A SurfaceView reports no presents: count the frames recorded.
+            if (fps != null && fullscreen) fps.frames++
             if (node.fps == 0) break
         }
     }
@@ -108,7 +114,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     Box(size.then(frame.modifier).agentWidgetFpsBadge(fps)) {
         key(wgsl) {
             val held = remember { arrayOfNulls<AutoCloseable>(2) }
-            GpuTexture(
+            GpuSurfaceHost(
                 fps = fps,
                 onAvailable = { surface, width, height ->
                     try {
@@ -150,11 +156,18 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
     val frame = rememberGpuCanvasFrame(node, scope)
 
     val fps = rememberAgentWidgetFpsMeter()
+    if (fps != null && controller != null && LocalAgentWidgetFullscreen.current) {
+        // A SurfaceView reports no presents: count the frames the program was given.
+        DisposableEffect(controller, fps) {
+            controller.liveFrameMeter = fps
+            onDispose { if (controller.liveFrameMeter === fps) controller.liveFrameMeter = null }
+        }
+    }
     Box(canvasSize(node, modifier).then(frame.modifier).agentWidgetFpsBadge(fps)) {
         if (running && canvasKey != null && controller != null) {
             key(canvasKey) {
                 val held = remember { arrayOfNulls<AgentWidgetGpuSurface>(1) }
-                GpuTexture(
+                GpuSurfaceHost(
                     fps = fps,
                     onAvailable = { surface, width, height ->
                         try {
@@ -249,6 +262,59 @@ private fun canvasSize(node: AgentWidgetNode.Canvas, modifier: Modifier): Modifi
         .then(if (width != null) Modifier.width(width.dp) else Modifier.fillMaxWidth())
         .then(if (grows) Modifier.heightIn(min = node.height.dp).fillMaxHeight() else Modifier.height(node.height.dp))
         .clip(OpenCodeShape.control)
+}
+
+/**
+ * Where a GPU canvas presents: a [GpuTexture] inline, a [GpuSurfaceView] full screen, where nothing clips or fades it
+ * and a frame then costs the app's threads nothing.
+ */
+@Composable
+private fun GpuSurfaceHost(fps: AgentWidgetFpsMeter?, onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
+    if (LocalAgentWidgetFullscreen.current) {
+        GpuSurfaceView(onAvailable, onResized, onGone)
+    } else {
+        GpuTexture(fps, onAvailable, onResized, onGone)
+    }
+}
+
+/**
+ * A `SurfaceView` the runtime presents into, below the full-screen window (its HUD layers draw over it): [onAvailable]
+ * at the first size, [onResized] on a new one, [onGone] before the surface goes. Opaque: a translucent surface there
+ * would show the transcript's window through it. Main thread.
+ */
+@Composable
+private fun GpuSurfaceView(onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
+    val available by rememberUpdatedState(onAvailable)
+    val resized by rememberUpdatedState(onResized)
+    val gone by rememberUpdatedState(onGone)
+    AndroidView(
+        factory = { context ->
+            SurfaceView(context).apply {
+                holder.setFormat(PixelFormat.OPAQUE)
+                holder.addCallback(object : SurfaceHolder.Callback {
+                    private var attached = false
+
+                    override fun surfaceCreated(holder: SurfaceHolder) = Unit
+
+                    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+                        if (attached) {
+                            resized(width, height)
+                        } else {
+                            attached = true
+                            available(holder.surface, width, height)
+                        }
+                    }
+
+                    override fun surfaceDestroyed(holder: SurfaceHolder) {
+                        if (!attached) return
+                        attached = false
+                        gone()
+                    }
+                })
+            }
+        },
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 /**

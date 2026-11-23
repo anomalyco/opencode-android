@@ -23,6 +23,10 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
   `withFrameNanos` at `fps` (once, and on `values` changes, at `fps: 0`), paused off screen / list not resumed;
   a WGSL error is reported once in phase `gpu` with the template's line, no GPU or a GPU hang is a client error
   (poster/alt); the slow-frame stop (50 ms × 3) is logged and keeps the last frame.
+- Both GPU kinds present into a `TextureView` inline and a `SurfaceView` full screen (`GpuSurfaceHost`): a TextureView
+  frame re-records the Compose root and redraws the window (AndroidView turns it into a layer invalidation); a
+  SurfaceView frame costs the app's threads nothing. The full-screen SurfaceView is opaque (a translucent one would
+  show the transcript's window through it) and sits below the full-screen window, so HUD layers draw over it.
 - Live GPU canvases (`canvas` with `gpu: true`, wire prop 38, widgets-gpu.md): `AgentWidgetLiveGPUCanvas`
   attaches a `TextureView` surface under the canvas's key (`AgentWidgetNode.canvasKey`) to the live run
   (`attachSurface`, again on resize; `detachSurface` before the surface goes). The driver keeps a stack per key

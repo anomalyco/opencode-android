@@ -582,7 +582,11 @@ class AgentWidgetController internal constructor(
             append(",\"close\":").append(close?.json ?: "null").append("}}")
         }
         live?.deliver(frame)
+        liveFrameMeter?.let { it.frames++ }
     }
+
+    /** Dev mode, a full-screen GPU canvas on a SurfaceView (no presents to count): counts the frames delivered. */
+    internal var liveFrameMeter: AgentWidgetFpsMeter? = null
 
     /**
      * One draw step for a canvas on this widget's lane, its output handed to [read] there too.
