@@ -2,18 +2,26 @@ package ai.opencode.feature.transcript.selection
 
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.core.ui.AppTheme
+import ai.opencode.core.ui.OpenCodeAppTheme
 import ai.opencode.core.ui.OpenCodeColors
 import ai.opencode.feature.transcript.SessionLinkTarget
 import ai.opencode.feature.transcript.TranscriptEntry
 import ai.opencode.feature.transcript.TranscriptLayoutTuning
 import ai.opencode.feature.transcript.markdown.OpenCodeMarkdownBlock
 import ai.opencode.feature.transcript.markdown.ui.InlineLinkStyle
+import ai.opencode.feature.transcript.markdown.ui.MarkdownBlocksView
 import ai.opencode.feature.transcript.markdown.ui.MarkdownStyle
 import ai.opencode.feature.transcript.markdown.ui.AtomicRun
 import ai.opencode.feature.transcript.markdown.ui.MathRenderer
 import ai.opencode.feature.transcript.markdown.ui.PresentedText
 import androidx.compose.ui.text.AnnotatedString
 import ai.opencode.server.model.OpenCodeTranscriptItem
+import android.os.Looper
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewRootForTest
+import androidx.compose.ui.semantics.SemanticsNode
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.unit.Density
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -23,7 +31,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 /*
@@ -240,6 +250,52 @@ A second line in the same paragraph.
         val word = document.wordRange(document.starts[0] + "Done ".length)
         assertNotNull(word)
         assertEquals("👩‍💻", document.string.substring(word.start, word.end))
+    }
+
+    @Test
+    fun onAPhoneEachTableRowIsACardLabelledWithItsColumnHeadings() {
+        val table = "| Name | State | Note |\n| - | - | - |\n| Atlas | **Ready** | Fine |\n| Birch | Busy | |\n\nAfter"
+        val (texts, labels) = shown(table)
+        assertTrue(texts.contains("Atlas"))
+        // Every cell but the first is labelled, empty ones too; the heading row itself isn't shown.
+        assertEquals(2, labels.count { it == "State" })
+        assertEquals(2, labels.count { it == "Note" })
+        assertEquals(0, texts.count { it == "Name" || it == "State" || it == "Note" })
+        // Selection reads the cards' cells only: no heading row, no labels.
+        val cards = TranscriptSelectionDocument.make(
+            listOf(TranscriptSelectionRow("reply", OpenCodeMarkdownBlock.blocks(table, inlineCache = null))),
+            TranscriptSelectionContext(style = style, density = Density(1f), tableCards = true),
+        )
+        assertEquals("Atlas\tReady\tFine\nBirch\tBusy\n\nAfter", cards.copiedText(TextRange(0, cards.length)))
+    }
+
+    @Test
+    @Config(sdk = [35], qualifiers = "sw720dp")
+    fun onWiderScreensATableShowsItsHeadingRow() {
+        val (texts, labels) = shown("| Name | State |\n| - | - |\n| Atlas | Ready |")
+        assertTrue(texts.contains("Name"))
+        assertTrue(texts.contains("Ready"))
+        assertTrue(labels.isEmpty())
+    }
+
+    /** The texts and content descriptions [markdown] draws in the transcript's Markdown view. */
+    private fun shown(markdown: String): Pair<List<String>, List<String>> {
+        val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
+        val view = ComposeView(activity)
+        activity.setContentView(view)
+        view.setContent {
+            OpenCodeAppTheme { MarkdownBlocksView(OpenCodeMarkdownBlock.blocks(markdown, inlineCache = null)) }
+        }
+        shadowOf(Looper.getMainLooper()).idle()
+        val texts = ArrayList<String>()
+        val labels = ArrayList<String>()
+        fun visit(node: SemanticsNode) {
+            if (SemanticsProperties.Text in node.config) node.config[SemanticsProperties.Text].forEach { texts += it.text }
+            if (SemanticsProperties.ContentDescription in node.config) labels += node.config[SemanticsProperties.ContentDescription]
+            node.children.forEach(::visit)
+        }
+        visit((view.getChildAt(0) as ViewRootForTest).semanticsOwner.unmergedRootSemanticsNode)
+        return texts to labels
     }
 
     @Test
