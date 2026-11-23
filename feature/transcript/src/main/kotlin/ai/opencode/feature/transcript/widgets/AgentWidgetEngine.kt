@@ -103,8 +103,8 @@ internal fun Throwable.isProgramError(): Boolean = when (this) {
     else -> false
 }
 
-/** The runtime's surface for a GPU canvas ([handle] is the binding's `GpuSurface`). */
-class AgentWidgetGpuSurface(val handle: AutoCloseable) : AutoCloseable by handle
+/** The runtime's surface for a GPU canvas ([handle] is the binding's `GpuSurface`; [isValid] the Android `Surface`'s). */
+class AgentWidgetGpuSurface(val handle: AutoCloseable, val isValid: () -> Boolean = { true }) : AutoCloseable by handle
 
 /**
  * What stopped a GPU canvas for good: the widget template's ([program]: report it, phase `gpu`) or the client's. With

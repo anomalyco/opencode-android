@@ -28,6 +28,8 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
   (`attachSurface`, again on resize; `detachSurface` before the surface goes). The driver keeps a stack per key
   (inline and full screen: the newest presents) and reattaches after a restart or a snapshot resume. The run's
   `onGpuCanvas` states drive the placeholder (`poster`, else `alt`, else "GPU canvas not supported").
+  A surface failure ("the surface was lost", "the surface failed: …") is live again once Android gives a new
+  surface for the key; one reported while the `Surface` is still valid is logged.
 - Canvas: step and draw-list decode on the widget's lane, own program copy while animating,
   frames only while visible, `Budget` errors count toward the 3-overrun stop.
 

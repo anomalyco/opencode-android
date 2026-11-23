@@ -130,7 +130,7 @@ internal class AgentWidgetLiveDriver(
             }
 
             override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) {
-                scope.launch { if (current == generation) events.gpuCanvas(key, state) }
+                scope.launch { if (current == generation) gpuCanvasChanged(key, state) }
             }
 
             override fun exited(failure: AgentWidgetEngineException?) {
@@ -155,6 +155,7 @@ internal class AgentWidgetLiveDriver(
         run?.stop()
         run = null
         paused = false
+        surfaceFailed.clear()
     }
 
     private class Attached(val surface: AgentWidgetGpuSurface, var width: Int, var height: Int)
@@ -176,7 +177,9 @@ internal class AgentWidgetLiveDriver(
         } else {
             list += Attached(surface, width, height)
         }
-        if (!finished) run?.attachSurface(key, surface, width, height)
+        if (finished) return
+        run?.attachSurface(key, surface, width, height)
+        if (known == null) presentsAgain(key)
     }
 
     /** Before [surface] goes: once this returns, no run touches it again. */
@@ -190,7 +193,34 @@ internal class AgentWidgetLiveDriver(
         val run = run ?: return
         run.detachSurface(key)
         val next = list.lastOrNull()
-        if (next != null && !finished) run.attachSurface(key, next.surface, next.width, next.height)
+        if (next != null && !finished) {
+            run.attachSurface(key, next.surface, next.width, next.height)
+            presentsAgain(key)
+        }
+    }
+
+    /** GPU canvases whose surface failed: the runtime dropped it and presents again once another is attached. */
+    private val surfaceFailed = HashSet<String>()
+
+    private fun gpuCanvasChanged(key: String?, state: AgentWidgetGpuState) {
+        // The runtime's surface failures all start so ("the surface was lost", "the surface failed: …").
+        val surface = key != null && state is AgentWidgetGpuState.Stopped && !state.program && state.message.startsWith("the surface")
+        if (surface) {
+            surfaceFailed += key!!
+            if (surfaces[key]?.lastOrNull()?.surface?.isValid?.invoke() == true) {
+                AppLog.app.notice { "GPU canvas surface failed while its Surface is still valid" }
+            }
+        } else if (key != null) {
+            surfaceFailed -= key
+        } else {
+            surfaceFailed.clear()
+        }
+        events.gpuCanvas(key, state)
+    }
+
+    /** A new surface presents for [key]: a canvas stopped only by its old surface's failure is live again. */
+    private fun presentsAgain(key: String) {
+        if (surfaceFailed.remove(key)) events.gpuCanvas(key, AgentWidgetGpuState.Live)
     }
 
     private fun attachAll() {

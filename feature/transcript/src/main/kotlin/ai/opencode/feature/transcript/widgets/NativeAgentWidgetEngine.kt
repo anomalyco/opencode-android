@@ -115,7 +115,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     }
 
     override fun gpuSurface(surface: Surface): AgentWidgetGpuSurface = try {
-        AgentWidgetGpuSurface(PsychoScriptGpu.surface(surface))
+        AgentWidgetGpuSurface(PsychoScriptGpu.surface(surface)) { surface.isValid }
     } catch (error: Exception) {
         throw AgentWidgetEngineException(error.message ?: error.javaClass.simpleName, isProgramError = false)
     }

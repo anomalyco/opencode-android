@@ -632,6 +632,70 @@ class AgentWidgetTests {
         main.close()
     }
 
+    /**
+     * A GPU canvas whose surface failed (the runtime drops it) is live again once Android gives a new surface, not on
+     * a resize of the old one; a canvas a program error stopped stays stopped.
+     */
+    @Test
+    fun gpuCanvasRecoversFromALostSurfaceOnANewOne() = runBlocking {
+        val main = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+        val scope = CoroutineScope(SupervisorJob() + main)
+        val log = CopyOnWriteArrayList<String>()
+        var started: AgentWidgetLiveListener? = null
+        val program = object : AgentWidgetLiveProgram {
+            override fun start(inputJson: String, listener: AgentWidgetLiveListener, httpsHosts: List<String>?): AgentWidgetLiveRun {
+                started = listener
+                return object : AgentWidgetLiveRun {
+                    override fun deliver(messageJson: String) = Unit
+                    override fun pause() = Unit
+                    override fun resume() = Unit
+                    override fun snapshot() = true
+                    override fun stop() = Unit
+                    override fun attachSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) { log += "attach $key ${width}x$height" }
+                    override fun detachSurface(key: String) { log += "detach $key" }
+                }
+            }
+        }
+        val events = object : AgentWidgetLiveDriver.Events {
+            override fun rendered(view: AgentWidgetNode, fullscreen: Boolean?) = Unit
+            override fun drew(draw: AgentWidgetWire.Post.Draw) = Unit
+            override fun wantsFrame() = Unit
+            override fun answered(response: OpenCodeWidgetResponse) = Unit
+            override fun sent(message: OpenCodeWidgetMessageValue) = Unit
+            override fun failed(error: AgentWidgetEngineException) = Unit
+            override fun reported(phase: String, message: String) = Unit
+            override fun malformed(message: String) = Unit
+            override fun ended() = Unit
+            override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) { log += "$key ${state.javaClass.simpleName}" }
+        }
+        fun surface() = AgentWidgetGpuSurface(AutoCloseable {}) { false }
+        val driver = AgentWidgetLiveDriver(program, "{}", null, scope, events)
+        val first = surface()
+        withContext(main) {
+            driver.setVisible(true)
+            driver.attachSurface("scene", first, 100, 50)
+        }
+        val listener = checkNotNull(started)
+        listener.gpuCanvas("scene", AgentWidgetGpuState.Stopped(program = false, message = "the surface was lost", report = false))
+        listener.gpuCanvas("hud", AgentWidgetGpuState.Stopped(program = true, message = "gpu op 1: no handle 3", report = true))
+        withContext(main) {}
+        withContext(main) {
+            driver.attachSurface("scene", first, 120, 60)
+            driver.attachSurface("hud", surface(), 10, 10)
+            driver.detachSurface("scene", first)
+            driver.attachSurface("scene", surface(), 120, 60)
+        }
+        assertEquals(
+            listOf(
+                "attach scene 100x50", "scene Stopped", "hud Stopped", "attach scene 120x60", "attach hud 10x10",
+                "detach scene", "attach scene 120x60", "scene Live",
+            ),
+            log.toList(),
+        )
+        scope.cancel()
+        main.close()
+    }
+
     /** A restarted draw effect leaves its cancelled decode running; the next one must not share its list. */
     @Test
     fun canvasDecodeCancelledMidWayNeverWritesTheShownList() = runBlocking {
