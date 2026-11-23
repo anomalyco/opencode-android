@@ -27,6 +27,7 @@ internal class AgentWidgetLiveDriver(
     interface Events {
         fun rendered(view: AgentWidgetNode, fullscreen: Boolean?)
         fun drew(draw: AgentWidgetWire.Post.Draw)
+        /** The program asked for a display frame: called on the run's thread, the only event that isn't main. */
         fun wantsFrame()
         fun answered(response: OpenCodeWidgetResponse)
         fun sent(message: OpenCodeWidgetMessageValue)
@@ -41,15 +42,15 @@ internal class AgentWidgetLiveDriver(
         fun gpuCanvas(key: String?, state: AgentWidgetGpuState) = Unit
     }
 
-    private var run: AgentWidgetLiveRun? = null
+    @Volatile private var run: AgentWidgetLiveRun? = null
     private var visible = false
     private var paused = false
     private var pausedSince = 0L
     private var snapshotJob: Job? = null
     /** The run was dropped while paused (a snapshot that couldn't be taken): start over when shown. */
     private var restartWhenShown = false
-    private var finished = false
-    private var generation = 0
+    @Volatile private var finished = false
+    @Volatile private var generation = 0
 
     val isRunning: Boolean get() = run != null && !finished
 
@@ -59,7 +60,7 @@ internal class AgentWidgetLiveDriver(
         if (shown) show() else hide()
     }
 
-    /** A message for the program (an event or a frame); held by the runner while paused. */
+    /** A message for the program (an event or a frame); held by the runner while paused. Any thread. */
     fun deliver(messageJson: String) {
         if (!finished) run?.deliver(messageJson)
     }
@@ -118,6 +119,8 @@ internal class AgentWidgetLiveDriver(
         paused = false
         val listener = object : AgentWidgetLiveListener {
             override fun posted(messages: List<ByteArray>) {
+                // A frame request goes to the frame thread from here, never through the main thread.
+                if (current == generation && messages.any(AgentWidgetWire::isFrame)) events.wantsFrame()
                 inbox.trySend(Batch(current, messages))
             }
 
@@ -320,7 +323,7 @@ internal class AgentWidgetLiveDriver(
         return when (post) {
             is AgentWidgetWire.Post.Render -> ({ events.rendered(post.view, post.fullscreen) })
             is AgentWidgetWire.Post.Draw -> ({ events.drew(post) })
-            AgentWidgetWire.Post.Frame -> ({ events.wantsFrame() })
+            AgentWidgetWire.Post.Frame -> null
             is AgentWidgetWire.Post.Submit -> ({ answered(OpenCodeWidgetResponse.Submit(post.value)) })
             AgentWidgetWire.Post.Dismiss -> ({ answered(OpenCodeWidgetResponse.Dismiss) })
             is AgentWidgetWire.Post.Send -> ({ events.sent(OpenCodeWidgetMessageValue(post.value, post.wake)) })
@@ -338,6 +341,6 @@ internal class AgentWidgetLiveCanvas {
     @Volatile var width = 0f
     @Volatile var height = 0f
     /** Where it is in its window (px), for the full-screen close area over it. */
-    var bounds: Rect? = null
+    @Volatile var bounds: Rect? = null
     @Volatile var pointer: FloatArray? = null
 }

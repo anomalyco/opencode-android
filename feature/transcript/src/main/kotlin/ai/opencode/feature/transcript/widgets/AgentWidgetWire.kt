@@ -121,6 +121,9 @@ internal object AgentWidgetWire {
     fun kind(message: ByteArray): Int =
         if (message.size >= 2 && message[0].toInt() == VERSION) message[1].toInt() and 0xff else -1
 
+    /** Whether a post is a frame request, from its kind byte alone. */
+    fun isFrame(message: ByteArray): Boolean = kind(message).let { it == FRAME || it == FRAME_GPU }
+
     /** A `draw` post's canvas id without reading its commands, or null when it can't be read. */
     fun drawId(message: ByteArray): String? = try {
         Cursor(message, 2, message.size).str()

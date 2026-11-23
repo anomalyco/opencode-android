@@ -1,8 +1,5 @@
 package ai.opencode.feature.transcript.widgets
 
-import android.os.Handler
-import android.os.Looper
-import android.view.Choreographer
 import ai.opencode.core.R as CoreR
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeIconButton
@@ -300,38 +297,14 @@ private fun KeyboardHint(modifier: Modifier) {
     }
 }
 
-/**
- * Hands a live program each display frame it asks for, at the next vsync while the widget is shown: a Choreographer
- * callback per request, outside Compose's frame clock, so a frame wakes no recomposer and writes no state.
- */
+/** While shown, the widget's frames go out on the frame thread with what they carry from here (scale, dark, full screen). */
 @Composable
 private fun LiveFrames(controller: AgentWidgetController, density: Float, fullscreen: Boolean) {
     val dark = OpenCodeTheme.colors.canvas.luminance() < 0.5f
     DisposableEffect(controller, density, fullscreen, dark) {
-        val choreographer = Choreographer.getInstance()
-        val handler = Handler(Looper.getMainLooper())
-        var posted = false
-        var frameNanos = 0L
-        // Delivered once the frame is drawn: at the vsync's start the delivery waits on the run (about 3x longer).
-        val deliver = Runnable { controller.deliverLiveFrame(frameNanos, density, dark, fullscreen) }
-        val callback = Choreographer.FrameCallback { nanos ->
-            posted = false
-            frameNanos = nanos
-            handler.post(deliver)
-        }
-        val wanted = {
-            if (!posted) {
-                posted = true
-                choreographer.postFrameCallback(callback)
-            }
-        }
-        controller.onLiveFrameWanted = wanted
-        if (controller.liveWantsFrame) wanted()
-        onDispose {
-            choreographer.removeFrameCallback(callback)
-            handler.removeCallbacks(deliver)
-            if (controller.onLiveFrameWanted === wanted) controller.onLiveFrameWanted = null
-        }
+        val params = AgentWidgetController.LiveFrameParams(density, dark, fullscreen)
+        controller.liveFrames(params)
+        onDispose { controller.liveFramesGone(params) }
     }
 }
 

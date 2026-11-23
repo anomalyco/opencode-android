@@ -1,5 +1,8 @@
 package ai.opencode.feature.transcript.widgets
 
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.ConcurrentHashMap
+import android.view.Choreographer
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.log.AppLog
 import ai.opencode.core.strings.localized
@@ -142,9 +145,9 @@ class AgentWidgetController internal constructor(
     // the close area the program was last told. The root sits FULLSCREEN_PADDING inside the safe area and the button
     // CLOSE_INSET from the safe area's top and end, so its area follows from the root alone and moves only with the
     // root's width.
-    private var rootInWindow: Rect? = null
-    private var layoutDensity = 1f
-    private var rtl = false
+    @Volatile private var rootInWindow: Rect? = null
+    @Volatile private var layoutDensity = 1f
+    @Volatile private var rtl = false
     private var toldClose: AgentWidgetRect? = null
 
     /** The full-screen root node's bounds (laid out, or a new size); [rtl]: the button is at the left. */
@@ -332,20 +335,43 @@ class AgentWidgetController internal constructor(
     internal val liveDraws = mutableStateMapOf<String, AgentWidgetWire.Post.Draw>()
 
     /** The program asked for one display frame. */
-    var liveWantsFrame: Boolean = false
-        private set
+    private val liveWantsFrame = AtomicBoolean(false)
 
-    /** Set by the shown widget's frame driver: schedules [deliverLiveFrame] for the next vsync (no state, no recomposition). */
-    internal var onLiveFrameWanted: (() -> Unit)? = null
+    /** What the shown widget's frames carry from its composition; null while no frames can go. */
+    internal class LiveFrameParams(val scale: Float, val dark: Boolean, val fullscreen: Boolean)
+
+    @Volatile private var liveFrameParams: LiveFrameParams? = null
+    private val liveFramePosted = AtomicBoolean(false)
+    private val liveFrameCallback = Choreographer.FrameCallback { nanos ->
+        liveFramePosted.set(false)
+        deliverLiveFrame(nanos)
+    }
+
+    /** The shown widget's frame parameters; a frame waiting for them goes now. */
+    internal fun liveFrames(params: LiveFrameParams) {
+        liveFrameParams = params
+        scheduleLiveFrame()
+    }
+
+    /** [params] no longer show (unless others replaced them). */
+    internal fun liveFramesGone(params: LiveFrameParams) {
+        if (liveFrameParams === params) liveFrameParams = null
+    }
+
+    /** At the frame thread's next vsync, when a frame is wanted and can go. Any thread. */
+    private fun scheduleLiveFrame() {
+        if (!liveWantsFrame.get() || !isShown || liveFrameParams == null) return
+        if (liveFramePosted.compareAndSet(false, true)) AgentWidgetFrameThread.post(liveFrameCallback)
+    }
 
     /** Live canvases by id: their size and pointer go into the frames the program asks for. */
-    internal val liveCanvases = HashMap<String, AgentWidgetLiveCanvas>()
+    internal val liveCanvases = ConcurrentHashMap<String, AgentWidgetLiveCanvas>()
 
     /** The widget's own size (logical px), for frames when the view has no canvas. */
-    internal var liveViewWidth = 0f
-    internal var liveViewHeight = 0f
+    @Volatile internal var liveViewWidth = 0f
+    @Volatile internal var liveViewHeight = 0f
 
-    private var live: AgentWidgetLiveDriver? = null
+    @Volatile private var live: AgentWidgetLiveDriver? = null
 
     // GPU canvases (widgets-gpu.md): each one's state by key, and the state the run gave every canvas at once.
     private val gpuStates = mutableStateMapOf<String, AgentWidgetGpuState>()
@@ -365,9 +391,9 @@ class AgentWidgetController internal constructor(
     }
     private var liveStartNanos = 0L
     private var lastFrameNanos = 0L
-    private var shownInline = false
-    private var shownFullscreen = false
-    private var listPaused = false
+    @Volatile private var shownInline = false
+    @Volatile private var shownFullscreen = false
+    @Volatile private var listPaused = false
 
     private fun startLiveMode(program: AgentWidgetLiveProgram, declaredHosts: List<String>?) {
         isLiveMode = true
@@ -398,8 +424,8 @@ class AgentWidgetController internal constructor(
         }
 
         override fun wantsFrame() {
-            liveWantsFrame = true
-            onLiveFrameWanted?.invoke()
+            liveWantsFrame.set(true)
+            scheduleLiveFrame()
         }
 
         override fun answered(response: OpenCodeWidgetResponse) {
@@ -465,7 +491,7 @@ class AgentWidgetController internal constructor(
 
     private fun closeLive(how: AgentWidgetMachine.Closed) {
         live?.stop()
-        liveWantsFrame = false
+        liveWantsFrame.set(false)
         phase = Phase.Closed(phase.view, how, phase.state)
     }
 
@@ -553,20 +579,25 @@ class AgentWidgetController internal constructor(
         listPaused = paused
         shownFullscreen = fullscreen
         live?.setVisible(isShown)
-        if (isShown && liveWantsFrame) onLiveFrameWanted?.invoke()
+        scheduleLiveFrame()
     }
 
     /**
-     * Hands the program the frame it asked for: the first live canvas's size (else the widget's) and pointer. With
-     * canvases, a frame waits until one has a positive size; without, until the widget has been laid out.
+     * Hands the program the frame it asked for, on the frame thread: the first live canvas's size (else the widget's)
+     * and pointer. With canvases, a frame waits until one has a positive size; without, until the widget has been laid
+     * out (it asks again at the next vsync).
      */
-    fun deliverLiveFrame(nanos: Long, scale: Float, dark: Boolean, fullscreen: Boolean) {
-        if (!liveWantsFrame || !isShown) return
+    private fun deliverLiveFrame(nanos: Long) {
+        val params = liveFrameParams ?: return
+        if (!liveWantsFrame.get() || !isShown) return
         val canvas = liveCanvases.values.firstOrNull { it.width > 0f && it.height > 0f }
-        if (canvas == null && (liveCanvases.isNotEmpty() || liveViewWidth <= 0f)) return
+        if (canvas == null && (liveCanvases.isNotEmpty() || liveViewWidth <= 0f)) return scheduleLiveFrame()
         val width = canvas?.width ?: liveViewWidth
         val height = canvas?.height ?: liveViewHeight
-        liveWantsFrame = false
+        if (!liveWantsFrame.compareAndSet(true, false)) return
+        val scale = params.scale
+        val dark = params.dark
+        val fullscreen = params.fullscreen
         if (liveStartNanos == 0L) liveStartNanos = nanos
         val close = closeOver(if (canvas != null) canvas.bounds else rootInWindow)
         val p = canvas?.pointer
@@ -586,7 +617,7 @@ class AgentWidgetController internal constructor(
     }
 
     /** Dev mode, a full-screen GPU canvas on a SurfaceView (no presents to count): counts the frames delivered. */
-    internal var liveFrameMeter: AgentWidgetFpsMeter? = null
+    @Volatile internal var liveFrameMeter: AgentWidgetFpsMeter? = null
 
     /**
      * One draw step for a canvas on this widget's lane, its output handed to [read] there too.
