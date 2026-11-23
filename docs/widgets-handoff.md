@@ -43,6 +43,9 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
   wgpu's device error). Each distinct error is logged once until Retry; nothing per frame.
 - On the widget, also dev mode only: a GPU placeholder shows the client's reason (program errors always show), and a
   "Dev:" line shows the last other client error.
+- An fps badge (bottom-start) on every animating canvas, 2D, live GPU and `wgsl`: frames presented in the last second
+  (`AgentWidgetFps.kt`), counted where a frame reaches the screen (the 2D draw of a new revision, a GPU canvas's
+  `onSurfaceTextureUpdated`). Hidden while nothing is presented; outside dev mode there's no meter at all.
 - Read it live: `adb logcat -G 16M` (a phone's main buffer holds only a few minutes), then
   `adb logcat -s OpenCode/widget`.
 

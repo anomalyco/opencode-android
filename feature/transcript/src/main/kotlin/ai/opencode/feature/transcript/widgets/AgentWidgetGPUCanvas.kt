@@ -72,6 +72,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     var onLastFrame by remember(wgsl) { mutableStateOf(false) }
     val frame = rememberGpuCanvasFrame(node, scope)
     val size = canvasSize(node, modifier)
+    val fps = rememberAgentWidgetFpsMeter()
 
     val error = failure
     if (error != null) {
@@ -104,10 +105,11 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
         }
     }
 
-    Box(size.then(frame.modifier)) {
+    Box(size.then(frame.modifier).agentWidgetFpsBadge(fps)) {
         key(wgsl) {
             val held = remember { arrayOfNulls<AutoCloseable>(2) }
             GpuTexture(
+                fps = fps,
                 onAvailable = { surface, width, height ->
                     try {
                         val gpu = engine.gpuSurface(surface).also { held[0] = it }
@@ -147,11 +149,13 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
     val state = if (running && canvasKey != null) controller.gpuState(canvasKey) else null
     val frame = rememberGpuCanvasFrame(node, scope)
 
-    Box(canvasSize(node, modifier).then(frame.modifier)) {
+    val fps = rememberAgentWidgetFpsMeter()
+    Box(canvasSize(node, modifier).then(frame.modifier).agentWidgetFpsBadge(fps)) {
         if (running && canvasKey != null && controller != null) {
             key(canvasKey) {
                 val held = remember { arrayOfNulls<AgentWidgetGpuSurface>(1) }
                 GpuTexture(
+                    fps = fps,
                     onAvailable = { surface, width, height ->
                         try {
                             val gpu = engine.gpuSurface(surface).also { held[0] = it }
@@ -252,7 +256,7 @@ private fun canvasSize(node: AgentWidgetNode.Canvas, modifier: Modifier): Modifi
  * on a new size, and [onGone] before the surface is released (the view leaving, or its texture destroyed). Main thread.
  */
 @Composable
-private fun GpuTexture(onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
+private fun GpuTexture(fps: AgentWidgetFpsMeter?, onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
     val available by rememberUpdatedState(onAvailable)
     val resized by rememberUpdatedState(onResized)
     val gone by rememberUpdatedState(onGone)
@@ -277,7 +281,10 @@ private fun GpuTexture(onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int
                         return true
                     }
 
-                    override fun onSurfaceTextureUpdated(texture: SurfaceTexture) = Unit
+                    // One call per frame the runtime presented.
+                    override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
+                        if (fps != null) fps.frames++
+                    }
                 }
             }
         },

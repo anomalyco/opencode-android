@@ -93,6 +93,7 @@ fun AgentWidgetCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, mod
     val drawState = controller?.phase?.state
     val currentScope by rememberUpdatedState(scope)
     var visible by remember { mutableStateOf(false) }
+    val fps = rememberAgentWidgetFpsMeter()
 
     val fullscreen = LocalAgentWidgetFullscreen.current
     val grows = fullscreen && LocalAgentWidgetGrows.current && node.fill
@@ -181,9 +182,14 @@ fun AgentWidgetCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, mod
             .onVisibilityChanged(minFractionVisible = VISIBLE_FRACTION) { visible = it }
             .excludedFromDrawerPan(node.pointer && scope.live)
             .then(if (alt != null) Modifier.semantics { contentDescription = alt } else Modifier)
-            .agentWidgetPointer(node.id.takeIf { node.pointer }, density, { currentScope.send(it) }, { controller?.closeOver(state.bounds) }) { state.pointer = it },
+            .agentWidgetPointer(node.id.takeIf { node.pointer }, density, { currentScope.send(it) }, { controller?.closeOver(state.bounds) }) { state.pointer = it }
+            .agentWidgetFpsBadge(fps),
     ) {
-        @Suppress("UNUSED_EXPRESSION") revision
+        val drawn = revision
+        if (fps != null && fps.revision != drawn) {
+            fps.revision = drawn
+            fps.frames++
+        }
         state.renderer.replay(this, state.buffers.shown, density, state.images)
     }
 }
