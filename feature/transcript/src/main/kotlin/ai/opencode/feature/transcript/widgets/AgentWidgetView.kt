@@ -229,6 +229,10 @@ fun AgentWidgetFrame(
             }
             val failure = controller?.failure
             if (controller != null && failure != null && phase !is Phase.Closed) FailureNote(failure, told = failure.sent || controller.askedAgent, onAsk = controller::askAgentToFix)
+            controller?.devNotice?.let { notice ->
+                // Dev mode only: the last client error.
+                Text("Dev: $notice", style = OpenCodeTextStyles.caption1.copy(fontFamily = FontFamily.Monospace), color = colors.tertiaryText, maxLines = 3)
+            }
         }
         if (keyboard.focused) KeyboardHint(Modifier.align(Alignment.BottomEnd).padding(6.dp))
         if (onExpand != null) {

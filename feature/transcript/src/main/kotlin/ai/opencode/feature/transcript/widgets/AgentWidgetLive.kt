@@ -208,7 +208,7 @@ internal class AgentWidgetLiveDriver(
         if (surface) {
             surfaceFailed += key!!
             if (surfaces[key]?.lastOrNull()?.surface?.isValid?.invoke() == true) {
-                AppLog.app.notice { "GPU canvas surface failed while its Surface is still valid" }
+                AgentWidgetDiagnostics.log { "GPU canvas $key: the surface failed while its Surface is still valid" }
             }
         } else if (key != null) {
             surfaceFailed -= key

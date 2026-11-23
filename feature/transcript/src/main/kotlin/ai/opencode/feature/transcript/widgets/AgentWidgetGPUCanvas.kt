@@ -66,6 +66,8 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     val density = LocalDensity.current.density
     val paused = LocalAgentWidgetPaused.current
     var failure by remember(wgsl) { mutableStateOf<String?>(null) }
+    var programFailure by remember(wgsl) { mutableStateOf(false) }
+    val dev = remember { AgentWidgetCapabilities.isDevMode }
     var canvas by remember(wgsl) { mutableStateOf<AgentWidgetShaderCanvas?>(null) }
     var onLastFrame by remember(wgsl) { mutableStateOf(false) }
     val frame = rememberGpuCanvasFrame(node, scope)
@@ -73,7 +75,8 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
 
     val error = failure
     if (error != null) {
-        ShaderFallback(node, error, size)
+        // A client's reason is for developers.
+        ShaderFallback(node, error.takeIf { programFailure || dev }, size)
         return
     }
 
@@ -92,6 +95,7 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
             last = now
             val stopped = shader.render((now - start[0]) / 1e9f, density, frame.pointer, values)
             if (stopped != null) {
+                programFailure = stopped.program
                 if (stopped.keepsLastFrame) onLastFrame = true else failure = stopped.message
                 if (stopped.program) scope.controller?.reportError("gpu", stopped.message) else scope.controller?.clientError("gpu", stopped.message)
                 break
@@ -139,6 +143,7 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
     val canvasKey = node.id?.let(AgentWidgetNode::canvasKey)
     val running = controller != null && controller.isLiveMode && controller.phase !is Phase.Closed && canvasKey != null
     var noSurface by remember { mutableStateOf<String?>(null) }
+    val dev = remember { AgentWidgetCapabilities.isDevMode }
     val state = if (running && canvasKey != null) controller.gpuState(canvasKey) else null
     val frame = rememberGpuCanvasFrame(node, scope)
 
@@ -166,7 +171,16 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
             }
         }
         val shown = running && noSurface == null && (state == null || state == AgentWidgetGpuState.Live)
-        if (!shown) GpuPlaceholder(node, (state as? AgentWidgetGpuState.Stopped)?.message, Modifier.matchParentSize())
+        if (!shown) {
+            // A program error shows its message; the client's reasons are for developers.
+            val reason = when (state) {
+                is AgentWidgetGpuState.Stopped -> state.message.takeIf { state.program || dev }
+                AgentWidgetGpuState.Unavailable -> "GPU unavailable".takeIf { dev }
+                AgentWidgetGpuState.Lost -> "GPU device lost".takeIf { dev }
+                else -> null
+            } ?: noSurface?.takeIf { dev }
+            GpuPlaceholder(node, reason, Modifier.matchParentSize())
+        }
     }
 }
 
@@ -290,13 +304,13 @@ private fun GpuPlaceholder(node: AgentWidgetNode.Canvas, error: String?, modifie
 }
 
 @Composable
-private fun ShaderFallback(node: AgentWidgetNode.Canvas, error: String, modifier: Modifier) {
+private fun ShaderFallback(node: AgentWidgetNode.Canvas, error: String?, modifier: Modifier) {
     val colors = OpenCodeTheme.colors
     val poster = node.poster
     if (poster != null) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             AgentWidgetImage(poster, node.alt, node.width?.let { it / node.height })
-            Text(error, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, maxLines = 3)
+            if (error != null) Text(error, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, maxLines = 3)
         }
         return
     }
@@ -306,6 +320,6 @@ private fun ShaderFallback(node: AgentWidgetNode.Canvas, error: String, modifier
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(node.alt ?: stringResource(R.string.transcript_widget_shader_failed), style = OpenCodeTextStyles.footnote, color = colors.secondaryText, textAlign = TextAlign.Center)
-        Text(error, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, textAlign = TextAlign.Center, maxLines = 4)
+        if (error != null) Text(error, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, textAlign = TextAlign.Center, maxLines = 4)
     }
 }

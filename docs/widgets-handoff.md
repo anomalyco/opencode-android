@@ -33,6 +33,17 @@ tap to submit) and `backdrop` (GLES 3 shader, speed slider).
 - Canvas: step and draw-list decode on the widget's lane, own program copy while animating,
   frames only while visible, `Budget` errors count toward the 3-overrun stop.
 
+## Diagnostics (dev mode)
+
+- In dev mode only (`AgentWidgetCapabilities.isDevMode`: a debug build or Developer Mode), `AgentWidgetDiagnostics`
+  logs to `AppLog.widget`, logcat tag `OpenCode/widget`. It logs every program error (template `name@version`, phase,
+  line and column, message), every client error with its exact reason (posts, load, step, live, fetch transfers,
+  GPU), and every GPU canvas state change. Each distinct error is logged once until Retry; nothing per frame.
+- On the widget, also dev mode only: a GPU placeholder shows the client's reason (program errors always show), and a
+  "Dev:" line shows the last other client error.
+- Read it live: `adb logcat -G 16M` (a phone's main buffer holds only a few minutes), then
+  `adb logcat -s OpenCode/widget`.
+
 ## Server seam: the `opencode.widget` plugin
 
 A widget is the `widget` tool call (`{ widgetTemplate, data, title?, wait? }`), found by `(messageID, callID)`.

@@ -301,6 +301,8 @@ class AgentWidgetController internal constructor(
     }
 
     fun retry() {
+        synchronized(diagnosed) { diagnosed.clear() }
+        devNotice = null
         val live = live
         if (isLiveMode && live != null) {
             phase = Phase.Starting(Status.Open)
@@ -443,6 +445,8 @@ class AgentWidgetController internal constructor(
         override fun malformed(message: String) = clientError("post", message)
 
         override fun gpuCanvas(key: String?, state: AgentWidgetGpuState) {
+            val before = if (key == null) gpuAll else gpuStates[key] ?: gpuAll
+            if (before != state) AgentWidgetDiagnostics.log { "${ref.key} GPU canvas ${key ?: "(every canvas)"}: ${describe(state)}" }
             if (key == null) {
                 gpuAll = state
                 gpuStates.clear()
@@ -450,7 +454,7 @@ class AgentWidgetController internal constructor(
                 gpuStates[key] = state
             }
             if (state is AgentWidgetGpuState.Stopped) {
-                if (state.program && state.report) reportError("gpu", state.message) else if (!state.program) clientError("gpu", state.message)
+                if (state.program && state.report) reportError("gpu", state.message)
             }
         }
 
@@ -488,13 +492,41 @@ class AgentWidgetController internal constructor(
         reportError(phase, message, line, if (line != null) engine?.column else null)
     }
 
-    /** A client error: a bug to fix in the app, not the widget template's; logged in dev mode only. */
+    /** A client error: a bug to fix in the app, not the widget template's; logged and shown in dev mode only. */
     fun clientError(phase: String, message: String) {
-        if (AgentWidgetCapabilities.isDevMode) AppLog.app.notice { "Widget ${ref.name} client error ($phase): ${message.take(160)}" }
+        val new = diagnose("client\u0000$phase\u0000$message") { "${ref.key} client error ($phase): $message" }
+        // A GPU canvas shows its own reason under its placeholder.
+        if (new && phase != "gpu") devNotice = "$phase: $message"
+    }
+
+    /** Dev mode: the last client error, for a line on the widget (null outside dev mode). */
+    var devNotice: String? by mutableStateOf(null)
+        private set
+
+    /** Errors logged in dev mode, each once until a retry. */
+    private val diagnosed = HashSet<String>()
+
+    private fun diagnose(key: String, message: () -> String): Boolean {
+        if (!AgentWidgetCapabilities.isDevMode) return false
+        if (!synchronized(diagnosed) { diagnosed.size < MAX_DIAGNOSED && diagnosed.add(key) }) return false
+        AgentWidgetDiagnostics.log(message)
+        return true
+    }
+
+    private fun describe(state: AgentWidgetGpuState): String = when (state) {
+        AgentWidgetGpuState.Live -> "live"
+        AgentWidgetGpuState.Unavailable -> "unavailable"
+        AgentWidgetGpuState.Lost -> "lost"
+        is AgentWidgetGpuState.Stopped ->
+            "stopped (${if (state.program) "program" else "client"}${if (state.report) ", reported" else ""}): ${state.message}"
     }
 
     /** A program error found by the app (an invalid view): [reportError] for errors the runtime threw. */
     fun reportError(phase: String, message: String, line: Int? = null, column: Int? = null) {
+        diagnose("program\u0000$phase\u0000$message") {
+            val at = line?.let { l -> " at line $l" + (column?.let { ":$it" } ?: "") } ?: ""
+            "${ref.key} program error ($phase$at): $message"
+        }
         // An answered widget's program is done; each error goes once, and a widget sends at most a few.
         if (status(widget) is Status.Answered || reported.size >= MAX_REPORTS || !reported.add("$phase\u0000$message")) return
         val error = OpenCodeWidgetError(phase, message, line, column)
@@ -603,6 +635,8 @@ class AgentWidgetController internal constructor(
                         if (error is AgentWidgetPrograms.CompileFailed) {
                             sourceLines(error.info)
                             reportError(if (error.info.isLive) "main" else "init", error.cause)
+                        } else {
+                            clientError("load", error.message ?: error.javaClass.simpleName)
                         }
                         Event.LoadFailed(error.message ?: error.javaClass.simpleName)
                     }
@@ -669,6 +703,7 @@ class AgentWidgetController internal constructor(
 
     internal companion object {
         const val MAX_REPORTS = 8
+        const val MAX_DIAGNOSED = 64
 
         /**
          * The close button's area in the coordinates of a full-screen root [width] dp wide: CLOSE_AREA square,

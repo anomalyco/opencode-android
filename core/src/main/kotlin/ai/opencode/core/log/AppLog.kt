@@ -54,6 +54,8 @@ class AppLog private constructor(val category: String, subsystem: String = SUBSY
         val stream = AppLog("stream")
         val voice = AppLog("voice")
         val app = AppLog("app")
+        /** Agent widget diagnostics (dev mode only): `OpenCode/widget`. */
+        val widget = AppLog("widget")
 
         /** The responsiveness gauntlet's timing marks (`LabMarks`), under the `opencode.perf` subsystem. */
         val perf = AppLog("session", subsystem = "opencode.perf", traces = true)

@@ -1,5 +1,6 @@
 package ai.opencode.feature.transcript.widgets
 
+import ai.opencode.core.log.AppLog
 import ai.opencode.core.tuning.DeveloperMode
 import ai.opencode.core.tuning.InternalBuild
 import com.anomalyco.psychoscript.FetchCompletion
@@ -34,6 +35,13 @@ object AgentWidgetCapabilities {
 
     /** In dev mode `fetch` may also reach declared local hosts, `http:` included. */
     val allowsLocalNetwork: Boolean get() = isDevMode
+}
+
+/** Widget diagnostics for developers, under one logcat tag (`OpenCode/widget`): dev mode only, never per frame. */
+internal object AgentWidgetDiagnostics {
+    fun log(message: () -> String) {
+        if (AgentWidgetCapabilities.isDevMode) AppLog.widget.notice(message)
+    }
 }
 
 /**
