@@ -1,19 +1,42 @@
 package ai.opencode.feature.transcript.markdown.ui
 
+import ai.opencode.core.ui.OpenCodeRadius
+import ai.opencode.core.ui.OpenCodeSurfaces
 import ai.opencode.core.ui.OpenCodeTextStyles
+import ai.opencode.core.ui.openCodeHairline
 import ai.opencode.feature.media.TranscriptMetrics
 import ai.opencode.feature.transcript.markdown.InlineText
 import ai.opencode.feature.transcript.selection.TranscriptSelectionLeafKey
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CollectionItemInfo
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.collectionItemInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 
 /**
  * A table in the transcript's inset block. Columns size to their content up to 220. When that's
@@ -22,6 +45,9 @@ import androidx.compose.ui.unit.dp
  * its longest word). A table that still doesn't fit scrolls, with the next column peeking in under
  * the edge fade. Rules under the header and between rows run the block's full width and stay put
  * while the columns scroll.
+ *
+ * On a phone ([showsTableCards]) each body row is a card instead: its first cell is the title, and
+ * every other cell sits under its column heading as a small label. The heading row isn't shown.
  *
  * @param selection The block's key in a reply: each cell joins the reply's one selection (its part
  *     is [TranscriptSelectionLeafKey.tablePart]). Elsewhere cells aren't selectable.
@@ -56,6 +82,10 @@ fun MarkdownTable(
     val presentedRows = remember(rows, targets, colors, density) { rows.map { row -> row.map { present(it, false) } } }
     ReportsSessionLinks((presentedHeader + presentedRows.flatten()).flatMap { it.sessionIDs }.distinct())
     val columns = maxOf(header.size, rows.maxOfOrNull { it.size } ?: 0)
+    if (showsTableCards) {
+        TableCards(header, presentedRows, columns, cellStyle, selection, modifier)
+        return
+    }
     BoxWithConstraints(modifier) {
         val viewport = maxWidth - TranscriptBandStyle.horizontalPadding * 2
         MarkdownBand(rules = rules) {
@@ -145,3 +175,62 @@ fun MarkdownTable(
     }
 }
 
+/** Phones show a table's rows as cards; tablets and wider windows keep the grid. */
+internal val showsTableCards: Boolean
+    @Composable @ReadOnlyComposable get() = LocalConfiguration.current.smallestScreenWidthDp < 600
+
+@Composable
+private fun TableCards(
+    header: List<InlineText>,
+    rows: List<List<PresentedText>>,
+    columns: Int,
+    cellStyle: TextStyle,
+    selection: TranscriptSelectionLeafKey?,
+    modifier: Modifier,
+) {
+    val colors = currentMarkdownStyle().colors
+    val shape = RoundedCornerShape(OpenCodeRadius.card)
+    val headings = remember(header) { header.map { it.text.trim() } }
+    val titleStyle = cellStyle.copy(fontWeight = FontWeight.SemiBold)
+    val labelStyle = OpenCodeTextStyles.caption2.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.04.em)
+    // A cell still streaming in holds its line, so the card doesn't grow when it arrives.
+    val pendingHeight = with(LocalDensity.current) { cellStyle.lineHeight.toDp() }
+    Column(
+        modifier.fillMaxWidth().semantics { collectionInfo = CollectionInfo(rowCount = rows.size, columnCount = 1) },
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        for ((rowIndex, row) in rows.withIndex()) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .semantics { collectionItemInfo = CollectionItemInfo(rowIndex = rowIndex, rowSpan = 1, columnIndex = 0, columnSpan = 1) }
+                    .background(OpenCodeSurfaces.color, shape)
+                    .openCodeHairline(shape)
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+            ) {
+                for (column in 0 until columns) {
+                    val cell = row.getOrNull(column)
+                    val key = selection?.copy(part = TranscriptSelectionLeafKey.tablePart(rowIndex + 1, column))
+                    if (column == 0) {
+                        if (cell == null) Spacer(Modifier.height(pendingHeight)) else ArrivingText(cell, emptyList(), titleStyle, colors.text, selectionKey = key)
+                        if (columns > 1) {
+                            Spacer(Modifier.height(10.dp))
+                            Box(Modifier.fillMaxWidth().height(OpenCodeSurfaces.hairline).background(colors.border))
+                        }
+                        continue
+                    }
+                    Column(Modifier.padding(top = 10.dp)) {
+                        val heading = headings.getOrNull(column).orEmpty()
+                        if (heading.isNotEmpty()) {
+                            Text(
+                                heading.uppercase(), style = labelStyle, color = colors.accent,
+                                modifier = Modifier.padding(bottom = 2.dp).clearAndSetSemantics { contentDescription = heading },
+                            )
+                        }
+                        if (cell == null) Spacer(Modifier.height(pendingHeight)) else ArrivingText(cell, emptyList(), cellStyle, colors.text, selectionKey = key)
+                    }
+                }
+            }
+        }
+    }
+}

@@ -34,6 +34,7 @@ import ai.opencode.feature.transcript.markdown.ui.LocalTranscriptTextReveal
 import ai.opencode.feature.transcript.markdown.ui.MarkdownStyle
 import ai.opencode.feature.transcript.markdown.ui.SharedTextContextMenus
 import ai.opencode.feature.transcript.markdown.ui.TranscriptTextReveal
+import ai.opencode.feature.transcript.markdown.ui.showsTableCards
 import ai.opencode.feature.transcript.rows.DisclosureMotion
 import ai.opencode.feature.transcript.rows.LocalRowHeightMotion
 import ai.opencode.feature.transcript.rows.NewMessagesDivider
@@ -417,6 +418,7 @@ private fun TranscriptListContent(
     listSelection.style = MarkdownStyle(layoutTuning, OpenCodeTheme.colors)
     listSelection.density = density
     listSelection.linkStyle = LocalInlineLinkStyle.current
+    listSelection.tableCards = showsTableCards
     listSelection.topPadding = with(density) { contentPadding.calculateTopPadding().toPx() }
     listSelection.bottomPadding = with(density) { contentPadding.calculateBottomPadding().toPx() }
     replySelection.density = density.density
