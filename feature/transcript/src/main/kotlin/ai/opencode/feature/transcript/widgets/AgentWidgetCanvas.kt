@@ -41,6 +41,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
+import kotlinx.coroutines.flow.collectLatest
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -106,23 +108,25 @@ fun AgentWidgetCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, mod
             controller.liveCanvases[liveKey] = liveCanvas
             onDispose { if (controller.liveCanvases[liveKey] === liveCanvas) controller.liveCanvases.remove(liveKey) }
         }
-        val commands = controller.liveDraws[liveKey]
-        LaunchedEffect(commands, palette) {
-            commands ?: return@LaunchedEffect
-            val started = System.nanoTime()
-            val decoded = state.buffers.update({ list ->
-                withContext(Dispatchers.Default) {
-                    try {
-                        AgentWidgetWire.draw(commands.message, commands.section, palette, list)
-                        true
-                    } catch (error: AgentWidgetWire.Malformed) {
-                        controller.clientError("draw", error.message ?: "malformed draw")
-                        false
+        // Read outside composition: a draw post decodes and redraws this canvas without recomposing it.
+        LaunchedEffect(controller, liveKey, palette) {
+            snapshotFlow { controller.liveDraws[liveKey] }.collectLatest { commands ->
+                commands ?: return@collectLatest
+                val started = System.nanoTime()
+                val decoded = state.buffers.update({ list ->
+                    withContext(Dispatchers.Default) {
+                        try {
+                            AgentWidgetWire.draw(commands.message, commands.section, palette, list)
+                            true
+                        } catch (error: AgentWidgetWire.Malformed) {
+                            controller.clientError("draw", error.message ?: "malformed draw")
+                            false
+                        }
                     }
-                }
-            }) { it }
-            if (decoded) revision++
-            state.noteFrame(0, (System.nanoTime() - started) / 1_000)
+                }) { it }
+                if (decoded) revision++
+                state.noteFrame(0, (System.nanoTime() - started) / 1_000)
+            }
         }
     }
     state.pointerSink = if (liveMode) liveCanvas else null

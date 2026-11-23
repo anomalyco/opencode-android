@@ -335,9 +335,8 @@ class AgentWidgetController internal constructor(
     var liveWantsFrame: Boolean = false
         private set
 
-    /** Counts frame requests (and returns to view while one waits), so a request right after a delivery is never merged away. */
-    var liveFrameRequests: Int by mutableIntStateOf(0)
-        private set
+    /** Set by the shown widget's frame driver: schedules [deliverLiveFrame] for the next vsync (no state, no recomposition). */
+    internal var onLiveFrameWanted: (() -> Unit)? = null
 
     /** Live canvases by id: their size and pointer go into the frames the program asks for. */
     internal val liveCanvases = HashMap<String, AgentWidgetLiveCanvas>()
@@ -400,7 +399,7 @@ class AgentWidgetController internal constructor(
 
         override fun wantsFrame() {
             liveWantsFrame = true
-            liveFrameRequests++
+            onLiveFrameWanted?.invoke()
         }
 
         override fun answered(response: OpenCodeWidgetResponse) {
@@ -554,7 +553,7 @@ class AgentWidgetController internal constructor(
         listPaused = paused
         shownFullscreen = fullscreen
         live?.setVisible(isShown)
-        if (isShown && liveWantsFrame) liveFrameRequests++
+        if (isShown && liveWantsFrame) onLiveFrameWanted?.invoke()
     }
 
     /**
