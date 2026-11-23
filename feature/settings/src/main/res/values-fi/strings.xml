@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Ota ääni käyttöön</string>
     <string name="settings_voice_model">Malli</string>
     <string name="settings_voice_model_description">Äänimalli</string>
+    <string name="settings_voice_model_automatic">Automaattinen</string>
     <string name="settings_voice_call_voice">Ääni</string>
     <string name="settings_voice_raise_to_talk">Nosta ja puhu</string>
     <string name="settings_voice_call_sounds">Puheluäänet</string>

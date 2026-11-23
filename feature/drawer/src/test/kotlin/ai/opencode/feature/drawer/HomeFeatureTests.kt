@@ -647,8 +647,6 @@ class HomeFeatureTests {
         assertTrue(h.shared(SharedKeys.voiceModeEnabled))
         store.send(Action.Settings(HomeSettingsFeature.Action.RaiseToTalkChanged(true)))
         assertTrue(h.shared(SharedKeys.raiseToTalk))
-        store.send(Action.Settings(HomeSettingsFeature.Action.VoiceEngineChanged(VoiceEngine.realtime)))
-        assertEquals(VoiceEngine.realtime, h.shared(VoiceSharedKeys.voiceEngine))
         store.send(Action.Settings(HomeSettingsFeature.Action.CallVoiceChanged(CallVoice.cedar)))
         assertEquals(CallVoice.cedar, h.shared(VoiceSharedKeys.callVoice))
     }

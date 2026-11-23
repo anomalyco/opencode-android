@@ -8,13 +8,13 @@ import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.voice.ServerVoiceClient
 import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
-import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoicePick
 import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceReadiness
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
@@ -22,38 +22,34 @@ import ai.opencode.server.ServerSharedKeys
 import ai.opencode.server.model.OpenCodeHomeSnapshot
 import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
-/** `aReconnectForgetsTheServersModelsAndAnyAnswerStillComing`, which drives [HomeFeature]. */
+/** `aReconnectDropsAnAnswerStillComing`, which drives [HomeFeature]. */
 class VoiceProviderTestsHome {
     @get:Rule val isolation = TestIsolationRule()
 
     private val server = OpenCodeServer(url = "http://127.0.0.1:4096", username = "opencode", password = "secret", name = "My Mac")
-    private val keyless = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = false)
+    private val keyless = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = false, engine = "openai-live")
     private val empty = OpenCodeHomeSnapshot(projects = emptyList(), sessions = emptyList(), activeSessionIDs = emptySet())
 
-    /**
-     * A keyless answer cached before the server was set up doesn't outlive its reconnect:
-     * an answer asked before the reconnect doesn't land.
-     */
-    @Test fun aReconnectForgetsTheServersModelsAndAnyAnswerStillComing() = homeTest { h ->
+    /** A reconnect keeps the cached list, and an answer asked before it doesn't land. */
+    @Test fun aReconnectDropsAnAnswerStillComing() = homeTest { h ->
         h.setShared(ServerSharedKeys.savedServers, listOf(server))
         h.setShared(ServerSharedKeys.savedServer, server)
         h.setShared(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         h.setShared(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
-        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf<String, ServerVoiceModelsAnswer>(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(keyless))))
+        h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf<String, ServerVoiceModelsAnswer>(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(keyless))))
         fun models() = h.shared(VoiceSharedKeys.voiceModelsByServer)
         fun pick() = VoicePick.resolve(
             choice = VoiceServerChoice.Automatic,
-            provider = ServerVoiceProvider.openAI,
             connected = server,
             saved = listOf(server),
             readiness = VoiceReadiness(answers = models(), support = mapOf(server.persistenceID to ServerVoiceSupport.supported)),
         )
-        assertEquals(listOf(keyless), (models()[server.persistenceID] as? ServerVoiceModelsAnswer.Listed)?.models)
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
 
+        val ready = keyless.copy(available = true)
         val gate = CompletableDeferred<Unit>()
         val store = h.store(h.state { HomeFeature.State(server, empty) }) {
             this[Clock] = ImmediateClock()
@@ -61,7 +57,7 @@ class VoiceProviderTestsHome {
                 checkSupport = { ServerVoiceSupport.supported },
                 models = {
                     gate.await()
-                    listOf(keyless)
+                    listOf(ready)
                 },
                 createSession = { _, _ -> throw AssertionError("Unused") },
             )
@@ -75,13 +71,13 @@ class VoiceProviderTestsHome {
         // Asked before the reconnect…
         store.send(HomeFeature.Action.Settings(HomeSettingsFeature.Action.CheckServerVoiceSupport))
         store.send(HomeFeature.Action.ServerEvent(OpenCodeServerEvent.Connected))
-        assertNull(models()[server.persistenceID])
-        assertEquals(VoicePick(VoiceProviderOption.Place.Server(server), ServerVoiceProvider.openAI, isAutomatic = true), pick())
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
+        assertEquals(VoicePick(VoiceProviderOption.Place.Server(server), isAutomatic = true), pick())
 
         // …answered after it: the server may have changed since, so it's dropped.
         gate.complete(Unit)
-        store.receive(HomeFeature.Action.Settings(HomeSettingsFeature.Action.VoiceModelsLoaded(server.persistenceID, 0, ServerVoiceModelsAnswer.Listed(listOf(keyless)))))
-        assertNull(models()[server.persistenceID])
+        store.receive(HomeFeature.Action.Settings(HomeSettingsFeature.Action.VoiceModelsLoaded(voiceServerID(server), 0, ServerVoiceModelsAnswer.Listed(listOf(ready)))))
+        assertEquals(listOf(keyless), (models()[voiceServerID(server)] as? ServerVoiceModelsAnswer.Listed)?.models)
         assertEquals(VoiceProviderOption.Place.Server(server), pick().place)
         h.skipInFlightEffects()
     }

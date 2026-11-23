@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Овозро фаъол кунед</string>
     <string name="settings_voice_model">Модел</string>
     <string name="settings_voice_model_description">Модели овоз</string>
+    <string name="settings_voice_model_automatic">Худкор</string>
     <string name="settings_voice_call_voice">Овоз</string>
     <string name="settings_voice_raise_to_talk">Ба гӯш бареду суҳбат кунед</string>
     <string name="settings_voice_call_sounds">Садоҳои занг</string>

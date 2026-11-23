@@ -26,57 +26,45 @@ class VoiceRouteTests {
     private val session = OpenCodeSession(id = "route", serverTitle = "Routing", projectID = "p", directory = "/project", updatedAt = Instant.EPOCH)
 
     /**
-     * 32 combinations. Expected precedence is tabulated independently of the resolver:
-     * active Gemini always server; a broker whose support is supported/undetermined
-     * owns OpenAI; otherwise there's no route.
+     * 40 combinations. Expected routes are tabulated independently of the resolver: a model on a
+     * broker whose support isn't unsupported routes by its engine; otherwise there's no route.
      */
     @Test fun completePrecedenceTable() {
         var count = 0
-        for (engine in VoiceEngine.allCases) {
-            for (provider in ServerVoiceProvider.allCases) {
-                for (enabled in listOf(false, true)) {
-                    for (support in listOf(ServerVoiceSupport.unknown, ServerVoiceSupport.checking, ServerVoiceSupport.supported, ServerVoiceSupport.unsupported)) {
-                        val expected: VoiceRoute = when {
-                            enabled && provider == ServerVoiceProvider.geminiLive && support == ServerVoiceSupport.unsupported ->
-                                VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)
-                            enabled && provider == ServerVoiceProvider.geminiLive -> VoiceRoute.serverGeminiLive
-                            enabled && support in listOf(ServerVoiceSupport.unknown, ServerVoiceSupport.checking, ServerVoiceSupport.supported) ->
-                                VoiceRoute.serverOpenAI(if (engine == VoiceEngine.gptLive) VoiceRoute.OpenAI.gptLive else VoiceRoute.OpenAI.realtime)
-                            else -> VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)
-                        }
-                        val route = VoiceRoute.resolve(
-                            selectedEngine = engine,
-                            serverVoiceEnabled = enabled, serverVoiceProvider = provider, serverVoiceSupport = support,
-                        )
-                        assertEquals(expected, route)
-                        count += 1
+        val models = testVoiceModels.models + listOf(null, ServerVoiceModel(model = "gpt-live-1", available = true))
+        for (model in models) {
+            for (enabled in listOf(false, true)) {
+                for (support in listOf(ServerVoiceSupport.unknown, ServerVoiceSupport.checking, ServerVoiceSupport.supported, ServerVoiceSupport.unsupported)) {
+                    val expected: VoiceRoute = when {
+                        !enabled || support == ServerVoiceSupport.unsupported -> VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)
+                        model?.engine == "openai-live" -> VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.gptLive)
+                        model?.engine == "openai-realtime" -> VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.realtime)
+                        model?.engine == "gemini-live" -> VoiceRoute.serverGeminiLive
+                        else -> VoiceRoute.Unavailable(VoiceRoute.Reason.NoVoiceModels)
                     }
+                    val route = VoiceRoute.resolve(model = model, serverVoiceEnabled = enabled, serverVoiceSupport = support)
+                    assertEquals(expected, route)
+                    count += 1
                 }
             }
         }
-        assertEquals(32, count)
+        assertEquals(40, count)
     }
 
     /** Each test's in-memory shared store starts from these values. */
     private fun preserveSettings(): VoiceTestShared {
         val shared = VoiceTestShared()
         shared.set(SharedKeys.voiceModeEnabled, true)
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
-        shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.openAI)
+        shared.set(VoiceSharedKeys.voiceModelsByServer, mapOf(voiceServerID(server) to testVoiceModels))
         shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
         shared.set(VoiceSharedKeys.serverVoiceSupportByServer, emptyMap())
         shared.set(VoiceSharedKeys.voiceTranscripts, emptyMap())
         return shared
     }
 
-    @Test fun serverEnabledStartupUsesResolvedModelAndCredentials() {
-        for (engine in listOf(VoiceEngine.gptLive, VoiceEngine.realtime)) serverEnabledStartupUsesResolvedModelAndCredentials(engine)
-    }
-
-    private fun serverEnabledStartupUsesResolvedModelAndCredentials(engine: VoiceEngine) = runTest {
+    @Test fun serverEnabledStartupUsesResolvedModelAndCredentials() = runTest {
         val shared = preserveSettings()
-        shared.set(VoiceSharedKeys.voiceEngine, engine)
-        shared.set(VoiceSharedKeys.serverVoiceProvider, ServerVoiceProvider.geminiLive)
+        shared.set(VoiceSharedKeys.voiceModel, "gemini-3.8-live")
         val route: VoiceRoute = VoiceRoute.serverGeminiLive
         val state = shared.read { VoiceFeature.State(server, session) }.copy(serverVoiceSupport = ServerVoiceSupport.supported)
         val configs = mutableListOf<RealtimeSessionConfig>()
@@ -107,7 +95,7 @@ class VoiceRouteTests {
                     end = { stream.finish() },
                 )
             }
-            val activeVoice = shared.read { state.callVoice.resolved(engine) }
+            val activeVoice = shared.read { state.callVoice.resolved(VoiceEngine.gptLive) }
             store.send(VoiceFeature.Action.Start) {
                 it.copy(
                     callLogID = logID,
@@ -116,6 +104,7 @@ class VoiceRouteTests {
                     activeVoice = activeVoice,
                     diagnosesFailure = true,
                     callPlace = VoiceCallPlace("Localhost", VoiceProviderOption.Brand.gemini),
+                    activeModel = "gemini-3.8-live",
                     // Android: the call's ongoing notification, started with the call.
                     callPresenceID = logID,
                 )
@@ -133,7 +122,7 @@ class VoiceRouteTests {
             )
             store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
             store.finish()
-            val config = configs.firstOrNull() ?: throw AssertionError("The call started ($engine)")
+            val config = configs.firstOrNull() ?: throw AssertionError("The call started")
             assertEquals(route.engine, config.engine)
             assertEquals(server, config.serverVoice)
             assertEquals(route.logEngine, recorder.list().firstOrNull()?.engine)
@@ -174,6 +163,7 @@ class VoiceRouteTests {
                 activeVoice = CallVoice.marin,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Localhost", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 // Android: the call's ongoing notification, started with the call.
                 callPresenceID = UUID(0, 0),
             )
@@ -190,7 +180,7 @@ class VoiceRouteTests {
 
     /** The server brokers the call's own session and hands back its SDP answer. */
     @Test fun theServerBrokerSendsTheCallsSessionAndReturnsItsAnswer() = runTest {
-        val config = LiveSessionConfig(instructions = "context")
+        val config = LiveSessionConfig(model = "gpt-live-1", instructions = "context")
         val expectedRequest = ServerVoiceSessionRequest(
             model = config.model, session = config.sessionPayload(includeAudioFormat = false),
             transport = ServerVoiceTransportRequest.Webrtc(sdp = "offer", dcid = LiveRTC.dataChannelID),
@@ -227,7 +217,7 @@ class VoiceRouteTests {
                 this[ServerVoiceClient] = ServerVoiceClient(checkSupport = { ServerVoiceSupport.supported }, models = { null }, createSession = createSession)
             }
             return withContext(values.asContextElement()) {
-                runCatching { VoiceBrokerTransport(server).exchange(config = LiveSessionConfig(instructions = "test"), sdp = "offer") }.exceptionOrNull()
+                runCatching { VoiceBrokerTransport(server).exchange(config = LiveSessionConfig(model = "gpt-live-1", instructions = "test"), sdp = "offer") }.exceptionOrNull()
             }
         }
         for ((error, rejected) in refusals) {

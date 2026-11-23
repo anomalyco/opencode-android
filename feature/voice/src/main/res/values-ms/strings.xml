@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">Format perkakasan audio tidak disokong.</string>
     <string name="voice_error_audio_engine_rejected">Tidak dapat memulakan audio panggilan. Cuba lagi sebentar nanti.</string>
     <string name="voice_error_server_unsupported">Pelayan ini memerlukan OpenCode yang lebih baharu untuk panggilan suara</string>
+    <string name="voice_error_no_voice_models">Pelayan anda tiada model suara. Sambungkannya ke OpenCode Console atau penyedia suara untuk membuat panggilan.</string>
     <string name="voice_error_invalid_server_url">Tidak dapat memulakan suara: Masukkan URL pelayan HTTP atau HTTPS yang sah.</string>
     <string name="voice_error_invalid_response">Tidak dapat memulakan suara: Pelayan memberikan maklum balas yang tidak sah.</string>
     <string name="voice_error_start_voice_detail">Tidak dapat memulakan suara: %1$s</string>

@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">ເປີດໃຊ້ສຽງ</string>
     <string name="settings_voice_model">ຕົວແບບ</string>
     <string name="settings_voice_model_description">ຕົວແບບສຽງ</string>
+    <string name="settings_voice_model_automatic">ອັດຕະໂນມັດ</string>
     <string name="settings_voice_call_voice">ສຽງ</string>
     <string name="settings_voice_raise_to_talk">ຍົກຂຶ້ນເພື່ອເວົ້າ</string>
     <string name="settings_voice_call_sounds">ສຽງການໂທ</string>

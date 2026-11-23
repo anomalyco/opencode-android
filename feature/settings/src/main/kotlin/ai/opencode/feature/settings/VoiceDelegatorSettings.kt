@@ -8,9 +8,9 @@ import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
-import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.VoiceDelegatorChoice
 import ai.opencode.feature.voice.VoiceDelegatorRouteAvailability
+import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.voice.VoiceDelegatorWorkspace
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.server.model.OpenCodeSession
@@ -46,8 +46,7 @@ val VoiceSettingsFeature.State.showsDelegatorRow: Boolean
 val VoiceSettingsFeature.State.delegatorRouteAvailability: VoiceDelegatorRouteAvailability
     get() = VoiceDelegatorRouteAvailability.resolve(
         route = route,
-        selectedEngine = voiceEngine,
-        isGeminiProvider = broker.isEnabled && broker.provider == ServerVoiceProvider.geminiLive,
+        selectedEngine = route.engine ?: VoiceEngine.gptLive,
     )
 
 /** Root sessions on the connected server for picking a delegator session. */

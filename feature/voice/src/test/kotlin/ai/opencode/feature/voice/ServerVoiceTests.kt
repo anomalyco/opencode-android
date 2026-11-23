@@ -56,7 +56,7 @@ class ServerVoiceTests {
     private val presenceID = UUID(0, 0)
 
     /** Every test gets a fresh in-memory store, which starts at those same defaults. */
-    private fun resetSharedVoiceState(): SpeechTestShared = SpeechTestShared()
+    private fun resetSharedVoiceState(): SpeechTestShared = SpeechTestShared().listVoiceModels(server)
 
     private fun startedTarget() = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory)
 
@@ -213,7 +213,7 @@ class ServerVoiceTests {
         val shared = resetSharedVoiceState()
         val openAIStream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
         val openAIState = shared.run {
-            shared(VoiceSharedKeys.serverVoiceProvider).set(ServerVoiceProvider.openAI)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels))
             VoiceFeature.State(server, session).copy(serverVoiceSupport = ServerVoiceSupport.supported)
         }
         val openAIEffects = detachedScope(coroutineContext)
@@ -230,6 +230,7 @@ class ServerVoiceTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Server 1", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 startedTarget = startedTarget(),
                 activeVoice = CallVoice.marin,
@@ -257,7 +258,8 @@ class ServerVoiceTests {
         val geminiShared = resetSharedVoiceState()
         val geminiStream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
         val geminiState = geminiShared.run {
-            shared(VoiceSharedKeys.serverVoiceProvider).set(ServerVoiceProvider.geminiLive)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels))
+            shared(VoiceSharedKeys.voiceModel).set("gemini-3.8-live")
             VoiceFeature.State(server, session).copy(serverVoiceSupport = ServerVoiceSupport.supported)
         }
         val geminiEffects = detachedScope(coroutineContext)
@@ -274,6 +276,7 @@ class ServerVoiceTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Server 1", VoiceProviderOption.Brand.gemini),
+                activeModel = "gemini-3.8-live",
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.GeminiLive),
                 startedTarget = startedTarget(),
                 activeVoice = CallVoice.marin,
@@ -311,7 +314,8 @@ class ServerVoiceTests {
         // upgrades to `.supported` when the server now advertises the route.
         val state = shared.run {
             shared(VoiceSharedKeys.serverVoiceSupportByServer).update { it + (server.persistenceID to ServerVoiceSupport.unsupported) }
-            shared(VoiceSharedKeys.serverVoiceProvider).set(ServerVoiceProvider.geminiLive)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels))
+            shared(VoiceSharedKeys.voiceModel).set("gemini-3.8-live")
             VoiceFeature.State(server, session).copy(serverVoiceSupport = ServerVoiceSupport.unsupported)
         }
         val effects = detachedScope(coroutineContext)
@@ -337,6 +341,7 @@ class ServerVoiceTests {
             it.copy(
                 diagnosesFailure = true,
                 activeRoute = VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported),
+                activeModel = "gemini-3.8-live",
                 startedTarget = startedTarget(),
                 activeVoice = CallVoice.marin,
                 usesDelegator = false,
@@ -369,7 +374,7 @@ class ServerVoiceTests {
     @Test fun serverVoiceSurfacesReadableMissingServerKeyError() = runBlocking {
         val shared = resetSharedVoiceState()
         val state = shared.run {
-            shared(VoiceSharedKeys.serverVoiceProvider).set(ServerVoiceProvider.openAI)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(mapOf(voiceServerID(server) to testVoiceModels))
             VoiceFeature.State(server, session).copy(serverVoiceSupport = ServerVoiceSupport.supported)
         }
         val message = "Couldn’t start voice: Voice needs an OpenAI API key on the server (a stored key or OPENAI_API_KEY). ChatGPT sign-in can’t start voice sessions."
@@ -388,6 +393,7 @@ class ServerVoiceTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Server 1", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 startedTarget = startedTarget(),
                 activeVoice = CallVoice.marin,
@@ -563,7 +569,7 @@ class ServerVoiceTests {
         })
 
         val callEvents = coordinator.start(
-            config = GeminiLiveSessionConfig(instructions = "Test instructions", tools = VoiceInstructions.tools),
+            config = GeminiLiveSessionConfig(model = "gemini-3.8-live", instructions = "Test instructions", tools = VoiceInstructions.tools),
             gemini = geminiClient,
             audio = audioClient,
         )
@@ -627,7 +633,7 @@ class ServerVoiceTests {
             tools = arr(obj("type" to str("function"), "name" to str("list_projects"))),
             reasoningEffort = "low",
         )
-        val payload = LiveSessionConfig(instructions = "Be brief.", delegation = LiveDelegation.responses(backend))
+        val payload = LiveSessionConfig(model = "gpt-live-1", instructions = "Be brief.", delegation = LiveDelegation.responses(backend))
             .sessionPayload(includeAudioFormat = false)
         assertEquals(
             obj(
@@ -641,7 +647,7 @@ class ServerVoiceTests {
             ),
             payload["delegation"],
         )
-        assertEquals(obj("type" to str("client")), LiveSessionConfig(instructions = "Be brief.").sessionPayload(includeAudioFormat = false)["delegation"])
+        assertEquals(obj("type" to str("client")), LiveSessionConfig(model = "gpt-live-1", instructions = "Be brief.").sessionPayload(includeAudioFormat = false)["delegation"])
 
         // The real delegator: its model, prompt with the screen, and every tool.
         val delegator = VoiceDelegator.responsesDelegation(context = "Viewing session \"Server Voice\".")
@@ -762,6 +768,7 @@ class ServerVoiceTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Server 1", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 startedTarget = startedTarget(),
                 activeVoice = CallVoice.marin,

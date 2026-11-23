@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Virkja rødd</string>
     <string name="settings_voice_model">Modell</string>
     <string name="settings_voice_model_description">Raddmodell</string>
+    <string name="settings_voice_model_automatic">Sjálvvirkandi</string>
     <string name="settings_voice_call_voice">Rødd</string>
     <string name="settings_voice_raise_to_talk">Lyft fyri at tosa</string>
     <string name="settings_voice_call_sounds">Samrøðuljóð</string>

@@ -126,6 +126,7 @@
     <string name="voice_error_audio_format_unavailable">Zvukový formát zařízení není podporován.</string>
     <string name="voice_error_audio_engine_rejected">Nepodařilo se spustit zvuk hovoru. Zkuste to za chvíli znovu.</string>
     <string name="voice_error_server_unsupported">Tento server potřebuje pro hlasové hovory novější verzi OpenCode</string>
+    <string name="voice_error_no_voice_models">Váš server nemá žádné hlasové modely. Připojte ho k OpenCode Console nebo k poskytovateli hlasu, abyste mohli volat.</string>
     <string name="voice_error_invalid_server_url">Nepodařilo se spustit hlasový hovor: Zadejte platnou URL serveru s HTTP nebo HTTPS.</string>
     <string name="voice_error_invalid_response">Nepodařilo se spustit hlasový hovor: Server vrátil neplatnou odpověď.</string>
     <string name="voice_error_start_voice_detail">Nepodařilo se spustit hlasový hovor: %1$s</string>

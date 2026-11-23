@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">Səs avadanlığının formatı dəstəklənmir.</string>
     <string name="voice_error_audio_engine_rejected">Zəngin səsini başlatmaq mümkün olmadı. Bir az sonra yenidən cəhd edin.</string>
     <string name="voice_error_server_unsupported">Səsli zənglər üçün bu serverə daha yeni OpenCode lazımdır</string>
+    <string name="voice_error_no_voice_models">Serverinizdə səs modeli yoxdur. Zəng etmək üçün onu OpenCode Console-a və ya səs provayderinə qoşun.</string>
     <string name="voice_error_invalid_server_url">Səsi başlatmaq mümkün olmadı: düzgün HTTP və ya HTTPS server URL-i daxil edin.</string>
     <string name="voice_error_invalid_response">Səsi başlatmaq mümkün olmadı: server yanlış cavab qaytardı.</string>
     <string name="voice_error_start_voice_detail">Səsi başlatmaq mümkün olmadı: %1$s</string>

@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Iespējot balsi</string>
     <string name="settings_voice_model">Modelis</string>
     <string name="settings_voice_model_description">Balss modelis</string>
+    <string name="settings_voice_model_automatic">Automātiski</string>
     <string name="settings_voice_call_voice">Balss</string>
     <string name="settings_voice_raise_to_talk">Pacelt, lai runātu</string>
     <string name="settings_voice_call_sounds">Zvanu skaņas</string>

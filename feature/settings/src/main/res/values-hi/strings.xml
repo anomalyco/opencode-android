@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">वॉइस सक्षम करें</string>
     <string name="settings_voice_model">मॉडल</string>
     <string name="settings_voice_model_description">वॉइस मॉडल</string>
+    <string name="settings_voice_model_automatic">स्वचालित</string>
     <string name="settings_voice_call_voice">आवाज़</string>
     <string name="settings_voice_raise_to_talk">कान के पास लाकर बात करें</string>
     <string name="settings_voice_call_sounds">कॉल की ध्वनियाँ</string>

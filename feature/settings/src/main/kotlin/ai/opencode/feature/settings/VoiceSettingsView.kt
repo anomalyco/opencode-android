@@ -13,12 +13,11 @@ import ai.opencode.core.ui.OpenCodeRadius
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.SFSymbol
 import ai.opencode.feature.voice.CallVoice
-import ai.opencode.feature.voice.ServerVoiceProvider
+import ai.opencode.feature.voice.ServerVoiceModels
 import ai.opencode.feature.voice.VoiceCallLog
 import ai.opencode.feature.voice.VoiceCallLogList
 import ai.opencode.feature.voice.VoiceCallReplayView
 import ai.opencode.feature.voice.VoiceEngine
-import ai.opencode.feature.voice.VoiceProvider
 import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceCallSoundPack
@@ -68,10 +67,9 @@ internal fun rememberVoiceStore(store: SettingsStore): VoiceStore = remember(sto
 internal fun rememberVoiceSharedRevision(): Any {
     val values = listOf(
         remember { shared(SharedKeys.voiceModeEnabled).flow }.collectAsState().value,
-        remember { shared(VoiceSharedKeys.voiceEngine).flow }.collectAsState().value,
+        remember { shared(VoiceSharedKeys.voiceModel).flow }.collectAsState().value,
         remember { shared(VoiceSharedKeys.callVoice).flow }.collectAsState().value,
         remember { shared(SharedKeys.raiseToTalk).flow }.collectAsState().value,
-        remember { shared(VoiceSharedKeys.serverVoiceProvider).flow }.collectAsState().value,
         remember { shared(VoiceSharedKeys.serverVoiceSupportByServer).flow }.collectAsState().value,
         remember { shared(VoiceSharedKeys.voiceServerChoice).flow }.collectAsState().value,
         remember { shared(ExperimentalFeature.voiceSessionDelegator.key).flow }.collectAsState().value,
@@ -131,7 +129,7 @@ fun VoiceSettingsView(store: SettingsStore) {
         }
         settingsSection(
             key = "enable",
-            footer = if (!state.voiceModeEnabled) footerText(keySource.footer) else null,
+            footer = if (!state.voiceModeEnabled) keySource?.let { footerText(it.footer) } else null,
         ) {
             SettingsToggleRow(
                 stringResource(R.string.settings_voice_enable),
@@ -146,7 +144,7 @@ fun VoiceSettingsView(store: SettingsStore) {
             settingsSection(
                 key = "configuration",
                 header = callSetupHeader,
-                description = keySource.footer.removeSuffix("."),
+                description = keySource?.footer?.removeSuffix("."),
             ) {
                 var first = true
                 fun divider() = if (first) { first = false; false } else true
@@ -154,27 +152,29 @@ fun VoiceSettingsView(store: SettingsStore) {
                     divider()
                     VoiceProviderSettingsRow(state) { store.send(SettingsFeature.Action.PagePushed(SettingsPage.VoiceProvider)) }
                 }
-                val route = state.route
-                if (route != VoiceRoute.Server(VoiceRoute.ServerRoute.GeminiLive)) {
+                val usable = ServerVoiceModels.usable(state.voiceModels)
+                val chosen = ServerVoiceModels.chosen(state.voiceModels, state.voiceModel)
+                if (chosen != null) {
                     if (divider()) SettingsDivider()
+                    val automatic = SettingsMenuOption("", stringResource(R.string.settings_voice_model_automatic), caption = usable.first().title)
+                    val sections = mutableListOf<Pair<String?, List<SettingsMenuOption<String>>>>(null to listOf(automatic))
+                    for ((route, models) in usable.groupBy { ServerVoiceModels.brokered(it) }) {
+                        val header = route?.let { VoiceRoute.Server(it).title }
+                        sections += header to models.map { SettingsMenuOption(it.model, it.title) }
+                    }
                     SettingsMenuRow(
                         title = stringResource(R.string.settings_voice_model),
-                        value = state.voiceEngine.title,
-                        selection = state.voiceEngine,
-                        sections = VoiceProvider.allCases.map { provider ->
-                            provider.displayName to provider.engines.map { SettingsMenuOption(it, it.title) }
-                        },
-                        onSelect = {
-                            voice.send(VoiceSettingsFeature.Action.VoiceEngineChanged(it))
-                            settings(HomeSettingsFeature.Action.VoiceEngineChanged(it))
-                        },
+                        value = chosen.title,
+                        selection = if (chosen.model == state.voiceModel) chosen.model else "",
+                        sections = sections,
+                        onSelect = { voice.send(VoiceSettingsFeature.Action.VoiceModelChanged(it)) },
                         accessibilityLabel = stringResource(R.string.settings_voice_model_description),
                     )
                 }
                 if (divider()) SettingsDivider()
                 SettingsChoiceRow(
                     stringResource(R.string.settings_voice_call_voice),
-                    value = CallVoicePicker.rowValue(state.callVoice, state.voiceEngine),
+                    value = CallVoicePicker.rowValue(state.callVoice, state.route.engine ?: VoiceEngine.gptLive),
                 ) { store.send(SettingsFeature.Action.PagePushed(SettingsPage.CallVoicePicker)) }
                 if (state.showsDelegatorRow) {
                     SettingsDivider()
@@ -234,7 +234,7 @@ object CallVoicePicker {
 fun CallVoicePickerView(store: SettingsStore) {
     val voice = rememberVoiceStore(store)
     val state = rememberVoiceState(voice)
-    val engine = state.voiceEngine
+    val engine = state.route.engine ?: VoiceEngine.gptLive
     val selected = state.callVoice.resolved(engine)
     val settings = { action: HomeSettingsFeature.Action -> store.send(SettingsFeature.Action.Settings(action)) }
     val footer = if (CallVoicePicker.isMissing(state.callVoice, engine)) {

@@ -621,8 +621,10 @@ object VoiceInstructions {
         val status: String? = null,
         /** Why the call moved, when the user didn't move it themselves. */
         val unpromptedMoveReason: String? = null,
+        /** The voice model the call asked for. */
+        val model: String = "",
         /** What the voice model calls itself (Realtime). */
-        val voiceLayer: String = VoiceEngine.realtime.selfDescription,
+        val voiceLayer: String = VoiceEngine.realtime.selfDescription(model),
         /** The user said they're looking at the screen and the app is in front ([VoiceScreenVisibility.visible]). */
         val userSeesScreen: Boolean = false,
         /** The built-in delegator can record the user saying they're looking (`set_user_looking`). */
@@ -707,12 +709,12 @@ object VoiceInstructions {
 
     fun build(context: Context, engine: VoiceEngine): String = when (engine) {
         VoiceEngine.gptLive -> buildLive(context)
-        VoiceEngine.realtime -> build(context.copy(voiceLayer = engine.selfDescription))
+        VoiceEngine.realtime -> build(context.copy(voiceLayer = engine.selfDescription(context.model)))
     }
 
     fun build(context: Context, route: VoiceRoute): String {
         route.engine?.let { return build(context, it) }
-        return build(context.copy(voiceLayer = "Gemini Live (${GeminiLiveSessionConfig.defaultModel}) from Google"))
+        return build(context.copy(voiceLayer = "Gemini Live (${context.model}) from Google"))
     }
 
     fun buildRetarget(context: Context, route: VoiceRoute): String {
@@ -758,7 +760,7 @@ object VoiceInstructions {
             "You cannot approve permissions or answer the session's own questions; if the session is blocked on one of those, say so and tell the user to open the session."
         }
         sections += """You are OpenCode, a relaxed, friendly voice coding assistant. ${attachment(context)} If the session you're attached to changes mid-call, you receive updated instructions.
-You are GPT-Live (gpt-live-1)—that is your voice layer, inside OpenCode, whose sessions do the coding. No human team exists: never say "the team", "the backend", "relay", "passing it along", "have them", or "someone will", never call a session "they" or "them", and never imply contacting people a tool didn't message. Questions about GPT-Live, Realtime, or which voice model or provider you are refer to this voice engine: answer directly that you are GPT-Live (gpt-live-1). For anything else you do not know, say unknown rather than guessing.
+You are ${VoiceEngine.gptLive.selfDescription(context.model)}—that is your voice layer, inside OpenCode, whose sessions do the coding. No human team exists: never say "the team", "the backend", "relay", "passing it along", "have them", or "someone will", never call a session "they" or "them", and never imply contacting people a tool didn't message. Questions about GPT-Live, Realtime, or which voice model or provider you are refer to this voice engine: answer directly that you are ${VoiceEngine.gptLive.selfDescription(context.model)}. For anything else you do not know, say unknown rather than guessing.
 Talk like a sharp friend on the phone: relaxed, direct, a little dry, at a natural pace. Keep your own replies to one or two short sentences, then stop; relayed session results keep their full facts.
 Treat the user as a capable adult: no unsolicited warnings, safety tips, reminders about obvious everyday things, moralizing, or lectures. Speak up only for a serious, immediate risk they seem to have missed.
 Relay the session's replies faithfully, in order: keep every fact, drop only code, IDs, paths and URLs, add nothing. Anything beyond what a result says (the next item, a detail, a number) and any decision on it goes to `delegate`; if you were interrupted, answer what the user just said, and give the rest only if asked.
@@ -848,7 +850,7 @@ $personalMessagesSection"""
         sections += """# Role & Objective
 
 You are OpenCode, a coding agent, speaking with the user by voice. ${attachment(context)} If the session you're attached to changes mid-call, these instructions are updated. You NEVER write code, edit files, or run commands yourself; the active session does that work when you delegate. Present all work as your own. The user is talking to one unified assistant, never to tools or internal parts.
-Your voice layer is ${context.voiceLayer}, inside OpenCode, whose sessions do the coding. No human team exists: never say "the team", "the backend", "relay", "passing it along", "have them", or "someone will", never call a session "they" or "them", and never imply contacting people a tool didn't message. Questions about GPT-Live, Realtime, Grok, or which voice model or provider you are refer to this voice engine: answer directly that you are ${context.voiceLayer}. For anything else you do not know, say unknown rather than guessing.
+Your voice layer is ${context.voiceLayer}, inside OpenCode, whose sessions do the coding. No human team exists: never say "the team", "the backend", "relay", "passing it along", "have them", or "someone will", never call a session "they" or "them", and never imply contacting people a tool didn't message. Questions about GPT-Live, Realtime, or which voice model or provider you are refer to this voice engine: answer directly that you are ${context.voiceLayer}. For anything else you do not know, say unknown rather than guessing.
 
 ${if (context.userSeesScreen) screenLookingPolicy else screenAwayPolicy}
 

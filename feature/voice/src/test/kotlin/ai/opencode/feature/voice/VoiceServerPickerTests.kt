@@ -43,12 +43,12 @@ class VoiceServerPickerTests {
         directory = "/Users/kit/code/open-source/opencode-ios",
         updatedAt = Instant.ofEpochSecond(1_700_000_000),
     )
-    private val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true)
+    private val gptLive = ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = true, engine = "openai-live")
 
     private val presenceID = UUID(0, 0)
 
     /** Each test here gets a fresh in-memory store. */
-    private fun resetSharedState(): SpeechTestShared = SpeechTestShared()
+    private fun resetSharedState(): SpeechTestShared = SpeechTestShared().listVoiceModels(server, studio)
 
     /** `servers` saved and `server` the one in use, with `choice` in Voice Server. */
     private fun SpeechTestShared.save(servers: List<OpenCodeServer>, choice: VoiceServerChoice = VoiceServerChoice.Automatic) = run {
@@ -67,39 +67,34 @@ class VoiceServerPickerTests {
     // MARK: Which servers offer it
 
     /**
-     * The documented model list decodes. A server can broker a call only with
-     * a key for GPT-Live, Realtime or Gemini Live: Grok alone never counts.
+     * The documented model list decodes. A server can broker a model only with a key for it and an
+     * engine the app speaks: Grok, and an older server's entries without an engine, never count.
      */
     @Test fun aServerOffersVoiceWithAKeyForAModelItCanBroker() {
         val list = """
             { "data": { "models": [
-              { "model": "gpt-live-1", "provider": "openai", "transports": ["webrtc"], "available": false },
-              { "model": "gpt-realtime-2.1", "provider": "opencode", "transports": ["webrtc"], "available": false },
-              { "model": "grok-voice-1", "provider": "xai", "transports": ["websocket"], "available": true },
-              { "model": "gemini-3.8-live", "provider": "google", "transports": ["websocket"], "available": false }
-            ], "default": "gpt-live-1" } }
+              { "model": "gpt-live-1.1", "name": "GPT-Live 1.1", "engine": "openai-live", "provider": "opencode", "transports": ["webrtc"], "available": true },
+              { "model": "gpt-realtime-2.1", "name": "GPT-Realtime 2.1", "engine": "openai-realtime", "provider": "openai", "transports": ["webrtc"], "available": false },
+              { "model": "grok-voice-3.0", "name": "Grok Voice 3.0", "engine": "xai-realtime", "provider": "xai", "transports": ["websocket"], "available": true },
+              { "model": "gemini-3.8-live", "provider": "google", "transports": ["websocket"], "available": true }
+            ], "default": "gpt-live-1.1" } }
         """.trimIndent()
         val models = Json { ignoreUnknownKeys = true }.decodeFromString(ServerVoiceModels.Envelope.serializer(), list).data.models
         assertEquals(
             listOf(
-                ServerVoiceModel(model = "gpt-live-1", provider = "openai", available = false),
-                ServerVoiceModel(model = "gpt-realtime-2.1", provider = "opencode", available = false),
-                ServerVoiceModel(model = "grok-voice-1", provider = "xai", available = true),
-                ServerVoiceModel(model = "gemini-3.8-live", provider = "google", available = false),
+                ServerVoiceModel(model = "gpt-live-1.1", provider = "opencode", available = true, name = "GPT-Live 1.1", engine = "openai-live"),
+                ServerVoiceModel(model = "gpt-realtime-2.1", provider = "openai", available = false, name = "GPT-Realtime 2.1", engine = "openai-realtime"),
+                ServerVoiceModel(model = "grok-voice-3.0", provider = "xai", available = true, name = "Grok Voice 3.0", engine = "xai-realtime"),
+                ServerVoiceModel(model = "gemini-3.8-live", provider = "google", available = true),
             ),
             models,
         )
-        assertFalse("Only Grok has a key", ServerVoiceModels.offers(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive), models))
-        assertTrue(ServerVoiceModels.offers(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive), listOf(ServerVoiceModel(model = "gpt-live-1", available = true))))
-        assertTrue(
-            ServerVoiceModels.offers(
-                VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.realtime),
-                listOf(ServerVoiceModel(model = "gpt-realtime-2.1", available = true)),
-            ),
-        )
-        assertTrue(ServerVoiceModels.offers(VoiceRoute.ServerRoute.GeminiLive, listOf(ServerVoiceModel(model = "gemini-3.8-live", available = true))))
-        assertFalse(ServerVoiceModels.offers(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive), listOf(ServerVoiceModel(model = "gpt-live-1", available = false))))
-        assertFalse("A server without the list (a 404)", ServerVoiceModels.offers(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive), emptyList()))
+        assertEquals(listOf("gpt-live-1.1"), ServerVoiceModels.usable(models).map { it.model })
+        assertEquals("GPT-Live 1.1", models[0].title)
+        assertEquals("gemini-3.8-live", models[3].title)
+        assertEquals("A pick it no longer lists", "gpt-live-1.1", ServerVoiceModels.chosen(models, pick = "gpt-live-1")?.model)
+        assertEquals("An unavailable pick", "gpt-live-1.1", ServerVoiceModels.chosen(models, pick = "gpt-realtime-2.1")?.model)
+        assertEquals(null, ServerVoiceModels.chosen(emptyList(), pick = ""))
     }
 
     private sealed interface Reply {
@@ -133,7 +128,7 @@ class VoiceServerPickerTests {
             val models = DependencyValues.withValues(values) { runBlocking { ServerVoiceClient.liveValue.models(server) } }
             return models to requests
         }
-        val list = """{ "data": { "models": [{ "model": "gpt-live-1", "provider": "openai", "transports": ["webrtc"], "available": true }], "default": "gpt-live-1" } }"""
+        val list = """{ "data": { "models": [{ "model": "gpt-live-1", "engine": "openai-live", "provider": "openai", "transports": ["webrtc"], "available": true }], "default": "gpt-live-1" } }"""
 
         val (models, requests) = ask(Reply.Json(status = 200, body = list))
         assertEquals(listOf(gptLive), models)
@@ -219,6 +214,7 @@ class VoiceServerPickerTests {
                 serverVoiceBroker = studio,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("Studio", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,
@@ -282,6 +278,7 @@ class VoiceServerPickerTests {
                 serverVoiceSupport = ServerVoiceSupport.unknown,
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,
@@ -340,6 +337,7 @@ class VoiceServerPickerTests {
             it.copy(
                 diagnosesFailure = true,
                 callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
+                activeModel = "gpt-live-1",
                 startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
                 activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
                 callPresenceID = presenceID,

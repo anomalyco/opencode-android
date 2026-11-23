@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">不支援此音訊硬體格式。</string>
     <string name="voice_error_audio_engine_rejected">無法啟動通話音訊。請稍後再試。</string>
     <string name="voice_error_server_unsupported">此伺服器需要更新 OpenCode 才能使用語音通話</string>
+    <string name="voice_error_no_voice_models">你的伺服器沒有語音模型。請將它連線至 OpenCode Console 或語音提供者以進行通話。</string>
     <string name="voice_error_invalid_server_url">無法啟動語音：請輸入有效的 HTTP 或 HTTPS 伺服器 URL。</string>
     <string name="voice_error_invalid_response">無法啟動語音：伺服器傳回的回覆無效。</string>
     <string name="voice_error_start_voice_detail">無法啟動語音：%1$s</string>

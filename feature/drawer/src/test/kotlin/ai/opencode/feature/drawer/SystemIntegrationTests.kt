@@ -17,6 +17,7 @@ import ai.opencode.feature.system.SessionDirectory
 import ai.opencode.feature.system.SystemAction
 import ai.opencode.feature.system.SystemIntegrationClient
 import ai.opencode.feature.voice.VoiceFeature
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.friendlyName
@@ -135,6 +136,7 @@ class SystemIntegrationTests {
         if (voiceConfigured) {
             context.read {
                 shared(SharedKeys.voiceModeEnabled).set(true)
+                shared(VoiceSharedKeys.voiceModelsByServer).set(VoiceHomeTestSupport.voiceModels(server))
             }
         }
         val state = HomeFeature.State(server, snapshot(listOf(project, docs), listOf(older, newer)))
@@ -382,6 +384,7 @@ class SystemIntegrationTests {
     ): TestStore<HomeFeature.State, HomeFeature.Action> {
         val store = homeStore(scope, {
             shared(SharedKeys.voiceModeEnabled).set(voiceModeEnabled)
+            shared(VoiceSharedKeys.voiceModelsByServer).set(VoiceHomeTestSupport.voiceModels(server))
             HomeFeature.State(server, snapshot(listOf(project, docs), listOf(older, newer))).copy(sessionDetail = detail())
         }) {
             this[DateClient] = DateClient.constant(Instant.ofEpochSecond(1_000))

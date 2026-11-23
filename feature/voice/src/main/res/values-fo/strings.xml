@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">Ljóðsniðið hjá tólinum er ikki stuðlað.</string>
     <string name="voice_error_audio_engine_rejected">Kundi ikki byrja samrøðuljóðið. Royn aftur um eina løtu.</string>
     <string name="voice_error_server_unsupported">Hesin ambætarin krevur nýggjari OpenCode til raddsamrøður</string>
+    <string name="voice_error_no_voice_models">Tín ambætari hevur eingi raddmodell. Knýt hann at OpenCode Console ella einum raddveitara fyri at ringja.</string>
     <string name="voice_error_invalid_server_url">Kundi ikki byrja rødd: Skriva eitt gyldugt HTTP- ella HTTPS-URL til ambætaran.</string>
     <string name="voice_error_invalid_response">Kundi ikki byrja rødd: Ambætarin sendi eitt ógyldugt svar.</string>
     <string name="voice_error_start_voice_detail">Kundi ikki byrja rødd: %1$s</string>

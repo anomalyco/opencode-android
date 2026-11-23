@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">အသံစက်ပစ္စည်း၏ ဖော်မတ်ကို မပံ့ပိုးပါ။</string>
     <string name="voice_error_audio_engine_rejected">ခေါ်ဆိုမှုအသံကို မစတင်နိုင်ပါ။ ခဏနေ ပြန်ကြိုးစားပါ။</string>
     <string name="voice_error_server_unsupported">အသံခေါ်ဆိုရန် ဤဆာဗာတွင် ပိုသစ်သော OpenCode လိုအပ်သည်</string>
+    <string name="voice_error_no_voice_models">သင့်ဆာဗာတွင် အသံမော်ဒယ်များ မရှိပါ။ ခေါ်ဆိုမှုများ ပြုလုပ်ရန် OpenCode Console သို့မဟုတ် အသံဝန်ဆောင်မှုပေးသူနှင့် ချိတ်ဆက်ပါ။</string>
     <string name="voice_error_invalid_server_url">အသံကို မစတင်နိုင်ပါ။ မှန်ကန်သော HTTP သို့မဟုတ် HTTPS ဆာဗာ URL ကို ရိုက်ထည့်ပါ။</string>
     <string name="voice_error_invalid_response">အသံကို မစတင်နိုင်ပါ။ ဆာဗာက မမှန်ကန်သော တုံ့ပြန်မှု ပေးပို့ခဲ့သည်။</string>
     <string name="voice_error_start_voice_detail">အသံကို မစတင်နိုင်ပါ: %1$s</string>

@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">The audio hardware format is not supported.</string>
     <string name="voice_error_audio_engine_rejected">Couldn’t start call audio. Try again in a moment.</string>
     <string name="voice_error_server_unsupported">This server needs a newer OpenCode for voice calls</string>
+    <string name="voice_error_no_voice_models">Your server has no voice models. Connect it to OpenCode Console or a voice provider to make calls.</string>
     <string name="voice_error_invalid_server_url">Couldn’t start voice: Enter a valid HTTP or HTTPS server URL.</string>
     <string name="voice_error_invalid_response">Couldn’t start voice: The server returned an invalid response.</string>
     <string name="voice_error_start_voice_detail">Couldn’t start voice: %1$s</string>

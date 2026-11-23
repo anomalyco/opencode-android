@@ -37,6 +37,7 @@ import ai.opencode.feature.session.reconcileInvariants
 import ai.opencode.feature.session.withDraft
 import ai.opencode.feature.session.withPermissionRequests
 import ai.opencode.feature.voice.VoiceFeature
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
@@ -428,6 +429,7 @@ class SubagentStackTests {
         val childModel = OpenCodeModelRef(id = "gpt-5.4", providerID = "openai", variant = "high")
         val childURL = "https://docs.example.com/subagent"
         h.setShared(SharedKeys.voiceModeEnabled, true)
+        h.setShared(VoiceSharedKeys.voiceModelsByServer, VoiceHomeTestSupport.voiceModels(server))
         val state = h.home().let { home ->
             h.state {
                 home.copy(waitingPicks = home.waitingPicks + (child.id to childModel)).updatingDetail {

@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Habilita la veu</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Model de veu</string>
+    <string name="settings_voice_model_automatic">Automàtic</string>
     <string name="settings_voice_call_voice">Veu</string>
     <string name="settings_voice_raise_to_talk">Apropa\'l per parlar</string>
     <string name="settings_voice_call_sounds">Sons de trucada</string>

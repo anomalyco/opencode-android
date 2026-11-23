@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">ድምፅ አንቃ</string>
     <string name="settings_voice_model">ሞዴል</string>
     <string name="settings_voice_model_description">የድምፅ ሞዴል</string>
+    <string name="settings_voice_model_automatic">ራስ-ሰር</string>
     <string name="settings_voice_call_voice">ድምፅ</string>
     <string name="settings_voice_raise_to_talk">ለማውራት አንሳ</string>
     <string name="settings_voice_call_sounds">የጥሪ ድምፆች</string>

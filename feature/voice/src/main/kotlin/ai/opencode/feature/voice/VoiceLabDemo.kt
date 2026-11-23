@@ -54,7 +54,6 @@ object VoiceScriptedDemo {
 object VoiceLabDemo {
     val isEnabled get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_DEMO") != null
     val playbackPreroll get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_PREROLL_MS")?.toLongOrNull()?.times(24)
-    val overrideEngine: VoiceEngine? get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_ENGINE")?.let { VoiceEngine.ofRawValue(it) }
     val audioHooks: VoiceAudioLabHooks get() = object : VoiceAudioLabHooks {
         override val isScriptedDemo = isEnabled
         override val playbackPreroll = VoiceLabDemo.playbackPreroll

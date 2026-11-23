@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">O formato de áudio do dispositivo não é compatível.</string>
     <string name="voice_error_audio_engine_rejected">Não foi possível iniciar o áudio da chamada. Tente novamente em instantes.</string>
     <string name="voice_error_server_unsupported">Este servidor precisa de uma versão mais recente do OpenCode para chamadas de voz</string>
+    <string name="voice_error_no_voice_models">Seu servidor não tem modelos de voz. Conecte-o ao OpenCode Console ou a um provedor de voz para fazer chamadas.</string>
     <string name="voice_error_invalid_server_url">Não foi possível iniciar a voz: digite uma URL de servidor HTTP ou HTTPS válida.</string>
     <string name="voice_error_invalid_response">Não foi possível iniciar a voz: o servidor retornou uma resposta inválida.</string>
     <string name="voice_error_start_voice_detail">Não foi possível iniciar a voz: %1$s</string>

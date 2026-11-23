@@ -124,6 +124,7 @@
     <string name="voice_error_audio_format_unavailable">Audio ierīces formāts netiek atbalstīts.</string>
     <string name="voice_error_audio_engine_rejected">Neizdevās ieslēgt zvana skaņu. Pēc brīža mēģini vēlreiz.</string>
     <string name="voice_error_server_unsupported">Šim serverim balss zvaniem vajadzīga jaunāka OpenCode versija</string>
+    <string name="voice_error_no_voice_models">Tavam serverim nav balss modeļu. Savieno to ar OpenCode Console vai balss pakalpojumu sniedzēju, lai zvanītu.</string>
     <string name="voice_error_invalid_server_url">Neizdevās sākt balss sarunu: ievadi derīgu HTTP vai HTTPS servera URL.</string>
     <string name="voice_error_invalid_response">Neizdevās sākt balss sarunu: serveris atgrieza nederīgu atbildi.</string>
     <string name="voice_error_start_voice_detail">Neizdevās sākt balss sarunu: %1$s</string>

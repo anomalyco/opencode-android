@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">지원하지 않는 오디오 하드웨어 형식이에요.</string>
     <string name="voice_error_audio_engine_rejected">통화 오디오를 시작할 수 없어요. 잠시 후 다시 시도하세요.</string>
     <string name="voice_error_server_unsupported">음성 통화를 하려면 이 서버의 OpenCode를 업데이트해야 해요</string>
+    <string name="voice_error_no_voice_models">서버에 음성 모델이 없어요. 통화하려면 OpenCode Console 또는 음성 공급자에 연결하세요.</string>
     <string name="voice_error_invalid_server_url">음성 통화를 시작할 수 없어요: 올바른 HTTP 또는 HTTPS 서버 URL을 입력하세요.</string>
     <string name="voice_error_invalid_response">음성 통화를 시작할 수 없어요: 서버가 잘못된 응답을 보냈어요.</string>
     <string name="voice_error_start_voice_detail">음성 통화를 시작할 수 없어요: %1$s</string>

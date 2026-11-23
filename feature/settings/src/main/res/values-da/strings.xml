@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Aktivér tale</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Talemodel</string>
+    <string name="settings_voice_model_automatic">Automatisk</string>
     <string name="settings_voice_call_voice">Stemme</string>
     <string name="settings_voice_raise_to_talk">Løft for at tale</string>
     <string name="settings_voice_call_sounds">Opkaldslyde</string>

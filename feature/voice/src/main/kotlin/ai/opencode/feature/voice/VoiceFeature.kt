@@ -133,6 +133,8 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val pendingModel: OpenCodeModelRef? = null,
         /** The route locked in when the call starts: its engine and provider are what the call runs on. */
         val activeRoute: VoiceRoute = VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.gptLive),
+        /** The voice model the call asked for when it started. */
+        val activeModel: String = "",
         /** Whether [supportServer] supports `POST /api/experimental/voice/session`. */
         val serverVoiceSupport: ServerVoiceSupport = ServerVoiceSupport.unknown,
         /**
@@ -314,8 +316,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val supportServer: OpenCodeServer get() = serverVoiceBroker ?: target.server
 
         // Read where they're used, never stored in the state.
-        val voiceEngine: VoiceEngine get() = shared(VoiceSharedKeys.voiceEngine).value
-        val serverVoiceProvider: ServerVoiceProvider get() = shared(VoiceSharedKeys.serverVoiceProvider).value
+        val voiceModel: String get() = shared(VoiceSharedKeys.voiceModel).value
         val voiceServer: VoiceServerChoice get() = shared(VoiceSharedKeys.voiceServerChoice).value
         val serverVoiceSupportByServer: Map<String, ServerVoiceSupport>
             get() = shared(VoiceSharedKeys.serverVoiceSupportByServer).value
@@ -346,8 +347,6 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         val transcriptKey: String? get() = target.sessionID?.let { "${target.server.id}:$it" }
         val isOnDraft: Boolean get() = target.sessionID == null
 
-        val resolvedEngine: VoiceEngine get() = VoiceLabFlags.overrideEngine ?: voiceEngine
-
         val appContextSummary: String
             get() {
                 if (isOnDraft) return "New session draft in project \"$directoryName\"."
@@ -368,6 +367,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                 viewing = viewing,
                 userSeesScreen = screenVisibility.userSeesScreen,
                 recordsLooking = usesDelegator,
+                model = activeModel,
             )
 
         val isWorking: Boolean
@@ -681,7 +681,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
         data class CallPlaceChanged(val place: VoiceCallPlace?) : Action
 
         /** Automatic moved the call to another server (null: the session's own). */
-        data class CallBrokerMoved(val server: OpenCodeServer?, val place: VoiceCallPlace?) : Action
+        data class CallBrokerMoved(val server: OpenCodeServer?, val place: VoiceCallPlace?, val model: String) : Action
 
         /** The failure card's one fix. */
         data class FailureFixTapped(val fix: VoiceCallFix) : Action
@@ -855,6 +855,7 @@ class VoiceFeature : Reducer<VoiceFeature.State, VoiceFeature.Action> {
                     serverVoiceSupport = state.serverVoiceSupportByServer[action.server?.persistenceID ?: state.target.server.persistenceID]
                         ?: ServerVoiceSupport.unknown,
                     callPlace = action.place,
+                    activeModel = action.model,
                 ),
             )
 

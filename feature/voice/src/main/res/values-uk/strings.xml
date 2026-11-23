@@ -126,6 +126,7 @@
     <string name="voice_error_audio_format_unavailable">Аудіоформат обладнання не підтримується.</string>
     <string name="voice_error_audio_engine_rejected">Не вдалося запустити аудіо дзвінка. Спробуйте ще раз за мить.</string>
     <string name="voice_error_server_unsupported">Для голосових дзвінків на цьому сервері потрібна новіша версія OpenCode</string>
+    <string name="voice_error_no_voice_models">На вашому сервері немає голосових моделей. Підключіть його до OpenCode Console або голосового провайдера, щоб дзвонити.</string>
     <string name="voice_error_invalid_server_url">Не вдалося увімкнути голос: введіть коректний URL сервера з HTTP або HTTPS.</string>
     <string name="voice_error_invalid_response">Не вдалося увімкнути голос: сервер повернув некоректну відповідь.</string>
     <string name="voice_error_start_voice_detail">Не вдалося увімкнути голос: %1$s</string>

@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">भ्वाइस सक्षम गर्नुहोस्</string>
     <string name="settings_voice_model">मोडेल</string>
     <string name="settings_voice_model_description">भ्वाइस मोडेल</string>
+    <string name="settings_voice_model_automatic">स्वचालित</string>
     <string name="settings_voice_call_voice">आवाज</string>
     <string name="settings_voice_raise_to_talk">बोल्न फोन कानमा लग्नुहोस्</string>
     <string name="settings_voice_call_sounds">कलका ध्वनिहरू</string>

@@ -134,6 +134,7 @@
     <string name="settings_voice_enable">Įgalinti balso funkciją</string>
     <string name="settings_voice_model">Modelis</string>
     <string name="settings_voice_model_description">Balso modelis</string>
+    <string name="settings_voice_model_automatic">Automatiškai</string>
     <string name="settings_voice_call_voice">Balsas</string>
     <string name="settings_voice_raise_to_talk">Pakelti ir kalbėti</string>
     <string name="settings_voice_call_sounds">Skambučių garsai</string>

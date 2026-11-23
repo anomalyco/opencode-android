@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Ενεργοποίηση φωνής</string>
     <string name="settings_voice_model">Μοντέλο</string>
     <string name="settings_voice_model_description">Μοντέλο φωνής</string>
+    <string name="settings_voice_model_automatic">Αυτόματα</string>
     <string name="settings_voice_call_voice">Φωνή</string>
     <string name="settings_voice_raise_to_talk">Σηκώστε για ομιλία</string>
     <string name="settings_voice_call_sounds">Ήχοι κλήσεων</string>

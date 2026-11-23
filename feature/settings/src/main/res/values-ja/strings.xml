@@ -128,6 +128,7 @@
     <string name="settings_voice_enable">音声を有効にする</string>
     <string name="settings_voice_model">モデル</string>
     <string name="settings_voice_model_description">音声モデル</string>
+    <string name="settings_voice_model_automatic">自動</string>
     <string name="settings_voice_call_voice">声</string>
     <string name="settings_voice_raise_to_talk">耳に近づけて通話</string>
     <string name="settings_voice_call_sounds">通話音</string>

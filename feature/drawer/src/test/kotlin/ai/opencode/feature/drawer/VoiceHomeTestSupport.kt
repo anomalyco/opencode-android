@@ -5,6 +5,8 @@ import ai.opencode.core.store.TestStore
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.voice.RealtimeJSON
 import ai.opencode.feature.voice.RealtimeSessionConfig
+import ai.opencode.feature.voice.ServerVoiceModel
+import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.VoiceBackgroundWork
 import ai.opencode.feature.voice.VoiceCallClient
 import ai.opencode.feature.voice.VoiceDelegationCloseReason
@@ -15,6 +17,7 @@ import ai.opencode.feature.voice.VoiceTranscriptTail
 import ai.opencode.feature.voice.VoiceWorkAdmission
 import ai.opencode.feature.voice.VoiceWorkClient
 import ai.opencode.feature.voice.VoiceWorkTarget
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeModelCatalog
@@ -33,6 +36,9 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
 internal object VoiceHomeTestSupport {
+    /** `server` lists one GPT-Live model, so calls on it are available. */
+    fun voiceModels(server: OpenCodeServer): Map<String, ServerVoiceModelsAnswer> =
+        mapOf(voiceServerID(server) to ServerVoiceModelsAnswer.Listed(listOf(ServerVoiceModel(model = "gpt-live-1", available = true, engine = "openai-live"))))
     /**
      * `runBlocking`, not `runTest`: the delegator's tools run on real dispatchers, so receive
      * timeouts must be real time. Effects left running are cancelled at the end.

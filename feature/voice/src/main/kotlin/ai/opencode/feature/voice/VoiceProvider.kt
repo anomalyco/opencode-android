@@ -38,9 +38,9 @@ sealed interface ServerVoiceModelsAnswer {
 }
 
 /**
- * Voice models answers kept across reconnects only while still true: reducers ask with
- * [epoch], record with [record], and a reconnect [invalidate]s the server's answer and any
- * request still in flight.
+ * Each server's voice models answer, by [voiceServerID]: reducers ask with [epoch], record with
+ * [record], and a reconnect [invalidate]s any request still in flight. A server that doesn't
+ * answer keeps the list it last gave.
  */
 object VoiceModelsCache {
     fun epoch(serverID: String): Int = shared(VoiceSharedKeys.voiceModelsEpochs).value[serverID] ?: 0
@@ -48,19 +48,16 @@ object VoiceModelsCache {
     /** Whether the answer landed: one asked before a reconnect doesn't. */
     fun record(answer: ServerVoiceModelsAnswer, serverID: String, asked: Int): Boolean {
         val answers = shared(VoiceSharedKeys.voiceModelsByServer)
-        if (asked != epoch(serverID) || answers.value[serverID] == answer) return false
+        val current = answers.value[serverID]
+        if (asked != epoch(serverID) || current == answer) return false
+        if (answer == ServerVoiceModelsAnswer.NoAnswer && current is ServerVoiceModelsAnswer.Listed) return false
         answers.update { it + (serverID to answer) }
         return true
     }
 
-    /**
-     * The server reconnected: maybe set up or updated since. Its answer and any still being
-     * asked no longer count, so it's asked again.
-     */
+    /** The server reconnected: an answer still being asked no longer counts. */
     fun invalidate(serverID: String) {
         shared(VoiceSharedKeys.voiceModelsEpochs).update { it + (serverID to ((it[serverID] ?: 0) + 1)) }
-        val answers = shared(VoiceSharedKeys.voiceModelsByServer)
-        if (answers.value[serverID] != null) answers.update { it - serverID }
     }
 }
 
@@ -97,16 +94,19 @@ enum class VoiceProviderState {
         }
 
     companion object {
-        /** A server's state for `call`, from its models answer and voice support. */
-        fun server(answer: ServerVoiceModelsAnswer?, support: ServerVoiceSupport?, call: VoiceRoute.ServerRoute): VoiceProviderState {
+        /**
+         * A server's state, from its models answer and voice support: an older server lists no
+         * models, or lists them without the engine the app picks by.
+         */
+        fun server(answer: ServerVoiceModelsAnswer?, support: ServerVoiceSupport?): VoiceProviderState {
             if (support == ServerVoiceSupport.unsupported) return needsUpdate
             return when (answer) {
                 null -> unknown
                 ServerVoiceModelsAnswer.NoAnswer -> offline
                 is ServerVoiceModelsAnswer.Listed -> when {
-                    answer.models.isEmpty() -> if (support == ServerVoiceSupport.supported) unknown else needsUpdate
-                    ServerVoiceModels.offers(call, answer.models) -> ready
-                    else -> noKey
+                    ServerVoiceModels.usable(answer.models).isNotEmpty() -> ready
+                    answer.models.any { it.engine != null } -> noKey
+                    else -> needsUpdate
                 }
             }
         }
@@ -117,28 +117,22 @@ enum class VoiceProviderState {
 data class VoiceReadiness(
     val answers: Map<String, ServerVoiceModelsAnswer> = emptyMap(),
     val support: Map<String, ServerVoiceSupport> = emptyMap(),
-    val engine: VoiceEngine = VoiceEngine.gptLive,
+    /** The picked voice model ([VoiceSharedKeys.voiceModel]); empty for Automatic. */
+    val pick: String = "",
 ) {
-    /** The server call a provider on a server would start. */
-    fun call(provider: ServerVoiceProvider): VoiceRoute.ServerRoute =
-        if (provider == ServerVoiceProvider.geminiLive) {
-            VoiceRoute.ServerRoute.GeminiLive
-        } else {
-            VoiceRoute.ServerRoute.OpenAI(if (engine == VoiceEngine.gptLive) VoiceRoute.OpenAI.gptLive else VoiceRoute.OpenAI.realtime)
-        }
+    /** The model a call through `server` asks for. */
+    fun chosen(server: OpenCodeServer): ServerVoiceModel? =
+        ServerVoiceModels.chosen(answers[voiceServerID(server)]?.models ?: emptyList(), pick)
 
-    fun state(server: OpenCodeServer, provider: ServerVoiceProvider = ServerVoiceProvider.openAI): VoiceProviderState =
-        VoiceProviderState.server(answers[server.persistenceID], support[server.persistenceID], call(provider))
+    fun state(server: OpenCodeServer): VoiceProviderState =
+        VoiceProviderState.server(answers[voiceServerID(server)], support[server.persistenceID])
 
-    /** Who'd run `provider`'s calls on `server`: OpenCode when its Console connection hosts them there. */
-    fun brand(server: OpenCodeServer, provider: ServerVoiceProvider): VoiceProviderOption.Brand {
-        if (provider == ServerVoiceProvider.geminiLive) return VoiceProviderOption.Brand.gemini
-        val models = answers[server.persistenceID]?.models ?: emptyList()
-        return if (ServerVoiceModels.hostedByOpenCode(call(ServerVoiceProvider.openAI), models)) {
-            VoiceProviderOption.Brand.openCode
-        } else {
-            VoiceProviderOption.Brand.openAI
-        }
+    /** Who'd run calls on `server`: OpenCode when its Console connection hosts the chosen model. */
+    fun brand(server: OpenCodeServer): VoiceProviderOption.Brand {
+        val model = chosen(server)
+        if (model?.engine == "gemini-live") return VoiceProviderOption.Brand.gemini
+        if (model?.provider == "opencode") return VoiceProviderOption.Brand.openCode
+        return VoiceProviderOption.Brand.openAI
     }
 }
 
@@ -150,7 +144,6 @@ data class VoiceProviderOption(
     val state: VoiceProviderState,
     /** What picking it stores in Voice Provider. */
     val choice: VoiceServerChoice,
-    val provider: ServerVoiceProvider,
 ) {
     enum class Brand { openAI, openCode, gemini }
 
@@ -160,7 +153,7 @@ data class VoiceProviderOption(
 
     val id: String
         get() = when (place) {
-            is Place.Server -> "${place.server.persistenceID}|${provider.rawValue}"
+            is Place.Server -> place.server.persistenceID
         }
 
     val placeName: String
@@ -188,7 +181,6 @@ data class VoiceProviderOption(
  */
 class VoiceProviderCatalog(
     choice: VoiceServerChoice,
-    provider: ServerVoiceProvider,
     connected: OpenCodeServer?,
     others: List<OpenCodeServer>,
     readiness: VoiceReadiness,
@@ -204,35 +196,33 @@ class VoiceProviderCatalog(
     val unavailable: List<VoiceProviderOption>
 
     init {
-        val pick = VoicePick.resolve(choice, provider, connected, others, readiness)
+        val pick = VoicePick.resolve(choice, connected, others, readiness)
         isAutomatic = pick.isAutomatic
 
-        fun option(server: OpenCodeServer, provider: ServerVoiceProvider): VoiceProviderOption {
-            val state = readiness.state(server, provider)
+        fun option(server: OpenCodeServer): VoiceProviderOption {
+            val state = readiness.state(server)
             return VoiceProviderOption(
                 // Unknown: a server that brokers calls but can't say whose; OpenAI's, as it starts them.
                 place = VoiceProviderOption.Place.Server(server),
-                brand = if (state == VoiceProviderState.ready || state == VoiceProviderState.unknown) readiness.brand(server, provider) else null,
+                brand = if (state == VoiceProviderState.ready || state == VoiceProviderState.unknown) readiness.brand(server) else null,
                 // Always the server itself: picking the connected one must survive a switch.
                 state = state,
                 choice = VoiceServerChoice.of(server),
-                provider = provider,
             )
         }
-        active = pick.server?.let { option(it, pick.provider) }
+        active = pick.server?.let { option(it) }
         val activeID = active?.id
         val servers = listOfNotNull(connected) + others
         val ready = mutableListOf<VoiceProviderOption>()
         val unavailable = mutableListOf<VoiceProviderOption>()
         for (server in servers) {
-            val offers = ServerVoiceProvider.entries.map { option(server, it) }.filter { it.isReady }
-            if (offers.isEmpty()) {
-                // The server's own state for an OpenAI call says why it can't; one not heard
-                // from yet isn't listed.
-                val shown = option(server, ServerVoiceProvider.openAI)
-                if (shown.id != activeID && shown.state != VoiceProviderState.unknown) unavailable += shown
-            } else {
-                ready += offers.filter { it.id != activeID }
+            val shown = option(server)
+            if (shown.id == activeID) continue
+            // One not heard from yet isn't listed.
+            if (shown.isReady) {
+                ready += shown
+            } else if (shown.state != VoiceProviderState.unknown) {
+                unavailable += shown
             }
         }
         this.others = ready
@@ -250,7 +240,6 @@ class VoiceProviderCatalog(
 data class VoicePick(
     /** Null with no server to call through. */
     val place: VoiceProviderOption.Place?,
-    val provider: ServerVoiceProvider,
     /** Chosen automatically: when the call can't start there, it may move on. */
     val isAutomatic: Boolean,
 ) {
@@ -262,41 +251,34 @@ data class VoicePick(
          * other saved servers. The connected server counts until it's
          * known it can't (its support check still decides); another server only once it's
          * known ready. With none ready, the connected server, whose failure says why. A pick
-         * is never swapped; one no longer saved chooses automatically, and so does Automatic
-         * only for OpenAI.
+         * is never swapped; one no longer saved chooses automatically.
          */
         fun resolve(
             choice: VoiceServerChoice,
-            provider: ServerVoiceProvider,
             connected: OpenCodeServer?,
             saved: List<OpenCodeServer>,
             readiness: VoiceReadiness,
         ): VoicePick {
             when (choice) {
                 VoiceServerChoice.Connected ->
-                    if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), provider, isAutomatic = false)
+                    if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), isAutomatic = false)
                 is VoiceServerChoice.Saved -> {
-                    choice.savedServer(saved)?.let { return VoicePick(VoiceProviderOption.Place.Server(it), provider, isAutomatic = false) }
+                    choice.savedServer(saved)?.let { return VoicePick(VoiceProviderOption.Place.Server(it), isAutomatic = false) }
                     if (connected != null && choice.savedServer(listOf(connected)) != null) {
-                        return VoicePick(VoiceProviderOption.Place.Server(connected), provider, isAutomatic = false)
+                        return VoicePick(VoiceProviderOption.Place.Server(connected), isAutomatic = false)
                     }
                 }
-                VoiceServerChoice.Automatic ->
-                    // Gemini Live picked as the provider is a pick too: it stays on the
-                    // connected server (before Voice Provider, that's where it ran).
-                    if (provider == ServerVoiceProvider.geminiLive && connected != null) {
-                        return VoicePick(VoiceProviderOption.Place.Server(connected), provider, isAutomatic = false)
-                    }
+                VoiceServerChoice.Automatic -> {}
             }
             if (connected != null && readiness.state(connected) in setOf(VoiceProviderState.ready, VoiceProviderState.unknown)) {
-                return VoicePick(VoiceProviderOption.Place.Server(connected), ServerVoiceProvider.openAI, isAutomatic = true)
+                return VoicePick(VoiceProviderOption.Place.Server(connected), isAutomatic = true)
             }
             val others = saved.filter { it.persistenceID != connected?.persistenceID }
             others.firstOrNull { readiness.state(it) == VoiceProviderState.ready }?.let {
-                return VoicePick(VoiceProviderOption.Place.Server(it), ServerVoiceProvider.openAI, isAutomatic = true)
+                return VoicePick(VoiceProviderOption.Place.Server(it), isAutomatic = true)
             }
-            if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), ServerVoiceProvider.openAI, isAutomatic = true)
-            return VoicePick(null, ServerVoiceProvider.openAI, isAutomatic = true)
+            if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), isAutomatic = true)
+            return VoicePick(null, isAutomatic = true)
         }
     }
 }

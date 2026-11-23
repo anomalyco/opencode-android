@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Омогући глас</string>
     <string name="settings_voice_model">Модел</string>
     <string name="settings_voice_model_description">Гласовни модел</string>
+    <string name="settings_voice_model_automatic">Аутоматски</string>
     <string name="settings_voice_call_voice">Глас</string>
     <string name="settings_voice_raise_to_talk">Принеси за разговор</string>
     <string name="settings_voice_call_sounds">Звуци позива</string>

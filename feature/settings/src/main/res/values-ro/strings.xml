@@ -132,6 +132,7 @@
     <string name="settings_voice_enable">Activați vocea</string>
     <string name="settings_voice_model">Model</string>
     <string name="settings_voice_model_description">Model vocal</string>
+    <string name="settings_voice_model_automatic">Automat</string>
     <string name="settings_voice_call_voice">Voce</string>
     <string name="settings_voice_raise_to_talk">Ridică pentru a vorbi</string>
     <string name="settings_voice_call_sounds">Sunete de apel</string>

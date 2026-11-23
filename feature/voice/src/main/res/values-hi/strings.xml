@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">ऑडियो हार्डवेयर का फ़ॉर्मैट समर्थित नहीं है।</string>
     <string name="voice_error_audio_engine_rejected">कॉल का ऑडियो शुरू नहीं हो सका। थोड़ी देर में फिर से कोशिश करें।</string>
     <string name="voice_error_server_unsupported">वॉइस कॉल के लिए इस सर्वर पर OpenCode का नया संस्करण चाहिए</string>
+    <string name="voice_error_no_voice_models">आपके सर्वर पर कोई वॉइस मॉडल नहीं है। कॉल करने के लिए इसे OpenCode Console या किसी वॉइस प्रोवाइडर से कनेक्ट करें।</string>
     <string name="voice_error_invalid_server_url">वॉइस शुरू नहीं हो सकी: मान्य HTTP या HTTPS सर्वर URL दर्ज करें।</string>
     <string name="voice_error_invalid_response">वॉइस शुरू नहीं हो सकी: सर्वर से अमान्य प्रतिक्रिया मिली।</string>
     <string name="voice_error_start_voice_detail">वॉइस शुरू नहीं हो सकी: %1$s</string>

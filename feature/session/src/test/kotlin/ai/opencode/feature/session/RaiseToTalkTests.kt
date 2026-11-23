@@ -31,6 +31,7 @@ import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceCallHost
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceWorkClient
+import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeDelivery
@@ -56,6 +57,7 @@ class RaiseToTalkTests {
 
     private fun Harness.earState(voice: Boolean = true): SessionFeature.State {
         sharedStore.reference(SharedKeys.voiceModeEnabled).set(voice)
+        sharedStore.reference(VoiceSharedKeys.voiceModelsByServer).set(SessionTestSupport.voiceModels(server))
         return state { SessionFeature.State.session(server = server, session = session, cachedItems = emptyList()) }
     }
 

@@ -12,6 +12,7 @@ import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoiceServerChoice
 import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.voiceServerID
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import kotlinx.coroutines.test.runTest
@@ -28,7 +29,7 @@ class VoiceServerPickerTests {
     /**
      * Home saves Voice Server and asks the server it names whether it brokers
      * calls, keeping the answer under that server: the chosen one, the
-     * connected one once the chosen one is gone, and none for This iPhone.
+     * connected one once the chosen one is gone.
      */
     @Test
     fun homeSavesTheChoiceAndAsksTheServerItNames() = runTest {
@@ -59,13 +60,16 @@ class VoiceServerPickerTests {
         store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.of(studio)))
         assertEquals(VoiceServerChoice.of(studio), choice())
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
+        // The connected server's models are asked too, so Automatic can come back to it.
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(serverID = voiceServerID(server), asked = 0, answer = ServerVoiceModelsAnswer.NoAnswer))
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(serverID = voiceServerID(studio), asked = 0, answer = ServerVoiceModelsAnswer.NoAnswer))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(serverID = studio.persistenceID, support = ServerVoiceSupport.supported))
         assertEquals(mapOf(studio.persistenceID to ServerVoiceSupport.supported), support())
 
         store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Saved(serverID = "srv_gone")))
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
         // A stale pick falls back to Automatic, which also asks the connected server's models.
-        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(serverID = server.persistenceID, asked = 0, answer = ServerVoiceModelsAnswer.NoAnswer))
+        store.receive(HomeSettingsFeature.Action.VoiceModelsLoaded(serverID = voiceServerID(server), asked = 0, answer = ServerVoiceModelsAnswer.NoAnswer))
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(serverID = server.persistenceID, support = ServerVoiceSupport.supported))
         assertEquals(listOf(studio.persistenceID, server.persistenceID), asked.value)
         assertEquals(mapOf(studio.persistenceID to ServerVoiceSupport.supported, server.persistenceID to ServerVoiceSupport.supported), support())

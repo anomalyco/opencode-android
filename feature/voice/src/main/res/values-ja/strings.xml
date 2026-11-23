@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">音声機器の形式に対応していません。</string>
     <string name="voice_error_audio_engine_rejected">通話音声を開始できませんでした。少し待ってからもう一度試してください。</string>
     <string name="voice_error_server_unsupported">このサーバーで音声通話を使うにはOpenCodeの更新が必要です</string>
+    <string name="voice_error_no_voice_models">サーバーに音声モデルがありません。通話するには、OpenCode Consoleまたは音声プロバイダーに接続してください。</string>
     <string name="voice_error_invalid_server_url">音声通話を開始できませんでした。有効なHTTPまたはHTTPSのサーバーURLを入力してください。</string>
     <string name="voice_error_invalid_response">音声通話を開始できませんでした。サーバーから無効な応答が返されました。</string>
     <string name="voice_error_start_voice_detail">音声通話を開始できませんでした: %1$s</string>

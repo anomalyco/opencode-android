@@ -122,6 +122,7 @@
     <string name="voice_error_audio_format_unavailable">অডিও হার্ডওয়্যারের ফরম্যাট সমর্থিত নয়।</string>
     <string name="voice_error_audio_engine_rejected">কলের অডিও চালু করা যায়নি। একটু পরে আবার চেষ্টা করুন।</string>
     <string name="voice_error_server_unsupported">ভয়েস কলের জন্য এই সার্ভারে OpenCode-এর নতুন সংস্করণ দরকার</string>
+    <string name="voice_error_no_voice_models">আপনার সার্ভারে কোনো ভয়েস মডেল নেই। কল করতে এটি OpenCode Console বা একটি ভয়েস প্রদানকারীর সাথে সংযুক্ত করুন।</string>
     <string name="voice_error_invalid_server_url">ভয়েস চালু করা যায়নি: একটি বৈধ HTTP বা HTTPS সার্ভার URL লিখুন।</string>
     <string name="voice_error_invalid_response">ভয়েস চালু করা যায়নি: সার্ভার একটি অবৈধ প্রতিক্রিয়া পাঠিয়েছে।</string>
     <string name="voice_error_start_voice_detail">ভয়েস চালু করা যায়নি: %1$s</string>

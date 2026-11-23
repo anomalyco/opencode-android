@@ -126,7 +126,12 @@ data class ServerVoiceModel(
     val model: String,
     val provider: String? = null,
     val available: Boolean,
-)
+    val name: String? = null,
+    /** The protocol it speaks, such as "openai-live"; the app offers the ones it can speak. */
+    val engine: String? = null,
+) {
+    val title: String get() = name ?: model
+}
 
 /**
  * `GET /api/experimental/voice/models`: the voice models a server knows, and
@@ -141,32 +146,21 @@ object ServerVoiceModels {
         data class Payload(val models: List<ServerVoiceModel>)
     }
 
-    /**
-     * Whether a server listing `models` can broker a call: it holds a key for GPT-Live, Realtime or
-     * Gemini Live. Kept until Settings' picker moves to the Voice Provider page.
-     */
-    fun offersVoice(models: List<ServerVoiceModel>): Boolean = models.any { it.available && brokered(it.model) != null }
+    /** The models a server listing `models` can start a call on now, newest first within each engine. */
+    fun usable(models: List<ServerVoiceModel>): List<ServerVoiceModel> = models.filter { it.available && brokered(it) != null }
 
-    /**
-     * Whether a server listing `models` starts `call` through its OpenCode
-     * Console connection, which bills that connection's workspace.
-     */
-    fun hostedByOpenCode(call: VoiceRoute.ServerRoute, models: List<ServerVoiceModel>): Boolean =
-        models.any { it.available && it.provider == "opencode" && brokered(it.model) == call }
+    /** What a call asks for: `pick` while it's usable, else the first usable, which is the server's default. */
+    fun chosen(models: List<ServerVoiceModel>, pick: String): ServerVoiceModel? {
+        val usable = usable(models)
+        return usable.firstOrNull { it.model == pick } ?: usable.firstOrNull()
+    }
 
-    /** Whether a server listing `models` holds a key for `call`. */
-    fun offers(call: VoiceRoute.ServerRoute, models: List<ServerVoiceModel>): Boolean =
-        models.any { it.available && brokered(it.model) == call }
-
-    /**
-     * The call a server's model brokers, by family, as the server resolves a
-     * model it's asked for: `gpt-live-1` for GPT-Live.
-     */
-    private fun brokered(model: String): VoiceRoute.ServerRoute? {
-        if (model.startsWith("gpt-live")) return VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)
-        if (model.startsWith("gpt-realtime")) return VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.realtime)
-        if (model.startsWith("gemini-") && model.contains("live")) return VoiceRoute.ServerRoute.GeminiLive
-        return null
+    /** The call a server's model starts. */
+    fun brokered(model: ServerVoiceModel): VoiceRoute.ServerRoute? = when (model.engine) {
+        "openai-live" -> VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)
+        "openai-realtime" -> VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.realtime)
+        "gemini-live" -> VoiceRoute.ServerRoute.GeminiLive
+        else -> null
     }
 }
 

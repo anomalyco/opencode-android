@@ -42,7 +42,7 @@ data class GeminiLiveFunctionResponse(
 }
 
 data class GeminiLiveSessionConfig(
-    val model: String = defaultModel,
+    val model: String,
     val voice: CallVoice = CallVoice.default,
     val instructions: String,
     val tools: List<RealtimeFunctionTool>,
@@ -107,18 +107,9 @@ data class GeminiLiveSessionConfig(
     val setupMessage: RealtimeJSON get() = RealtimeJSONs.obj("setup" to setupBody)
 
     companion object {
-        const val defaultModel = "gemini-3.8-live"
-
         fun from(config: RealtimeSessionConfig): GeminiLiveSessionConfig {
-            val resolvedModel = if (config.model == RealtimeSessionConfig.defaultModel ||
-                config.model == LiveSessionConfig.defaultModel
-            ) {
-                defaultModel
-            } else {
-                config.model
-            }
             return GeminiLiveSessionConfig(
-                model = resolvedModel,
+                model = config.model,
                 voice = config.voice,
                 instructions = config.instructions,
                 tools = config.tools,

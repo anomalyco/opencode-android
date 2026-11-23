@@ -126,6 +126,7 @@
     <string name="voice_error_audio_format_unavailable">Garso įrangos formatas nepalaikomas.</string>
     <string name="voice_error_audio_engine_rejected">Nepavyko įjungti skambučio garso. Netrukus bandykite dar kartą.</string>
     <string name="voice_error_server_unsupported">Balso skambučiams šiame serveryje reikia naujesnės OpenCode versijos</string>
+    <string name="voice_error_no_voice_models">Jūsų serveryje nėra balso modelių. Prijunkite jį prie OpenCode Console arba balso teikėjo, kad galėtumėte skambinti.</string>
     <string name="voice_error_invalid_server_url">Nepavyko įjungti balso funkcijos: įveskite tinkamą HTTP arba HTTPS serverio URL.</string>
     <string name="voice_error_invalid_response">Nepavyko įjungti balso funkcijos: serveris grąžino netinkamą atsakymą.</string>
     <string name="voice_error_start_voice_detail">Nepavyko įjungti balso funkcijos: %1$s</string>

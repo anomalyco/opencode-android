@@ -12,8 +12,7 @@ import ai.opencode.server.OpenCodeServer
  */
 data class VoiceRoutePreferences(
     val enabled: Shared<Boolean> = shared(SharedKeys.voiceModeEnabled),
-    val engine: Shared<VoiceEngine> = shared(VoiceSharedKeys.voiceEngine),
-    val provider: Shared<ServerVoiceProvider> = shared(VoiceSharedKeys.serverVoiceProvider),
+    val voiceModel: Shared<String> = shared(VoiceSharedKeys.voiceModel),
     val voiceServer: Shared<VoiceServerChoice> = shared(VoiceSharedKeys.voiceServerChoice),
     val support: Shared<Map<String, ServerVoiceSupport>> = shared(VoiceSharedKeys.serverVoiceSupportByServer),
     val voiceModels: Shared<Map<String, ServerVoiceModelsAnswer>> = shared(VoiceSharedKeys.voiceModelsByServer),
@@ -21,14 +20,13 @@ data class VoiceRoutePreferences(
     fun route(server: OpenCodeServer): VoiceRoute {
         val (broker, _) = VoiceBroker.resolve(
             choice = voiceServer.value,
-            provider = provider.value,
             connected = server,
             saved = VoiceFeature.savedServers,
             answers = voiceModels.value,
             support = support.value,
-            engine = engine.value,
+            pick = voiceModel.value,
         )
-        return broker.route(engine = engine.value, support = broker.support(support.value))
+        return broker.route(support = broker.support(support.value))
     }
 
     fun isAvailable(server: OpenCodeServer): Boolean {

@@ -120,6 +120,7 @@
     <string name="voice_error_audio_format_unavailable">Format perangkat keras audio tidak didukung.</string>
     <string name="voice_error_audio_engine_rejected">Gagal memulai audio panggilan. Coba lagi beberapa saat lagi.</string>
     <string name="voice_error_server_unsupported">Server ini memerlukan OpenCode versi lebih baru untuk panggilan suara</string>
+    <string name="voice_error_no_voice_models">Server Anda tidak memiliki model suara. Hubungkan ke OpenCode Console atau penyedia suara untuk melakukan panggilan.</string>
     <string name="voice_error_invalid_server_url">Gagal memulai suara: Masukkan URL server HTTP atau HTTPS yang valid.</string>
     <string name="voice_error_invalid_response">Gagal memulai suara: Server mengirim respons yang tidak valid.</string>
     <string name="voice_error_start_voice_detail">Gagal memulai suara: %1$s</string>

@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Aktivera röst</string>
     <string name="settings_voice_model">Modell</string>
     <string name="settings_voice_model_description">Röstmodell</string>
+    <string name="settings_voice_model_automatic">Automatiskt</string>
     <string name="settings_voice_call_voice">Röst</string>
     <string name="settings_voice_raise_to_talk">Lyft för att prata</string>
     <string name="settings_voice_call_sounds">Samtalsljud</string>

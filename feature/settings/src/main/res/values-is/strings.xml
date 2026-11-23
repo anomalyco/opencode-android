@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Virkja raddsamtöl</string>
     <string name="settings_voice_model">Líkan</string>
     <string name="settings_voice_model_description">Raddlíkan</string>
+    <string name="settings_voice_model_automatic">Sjálfvirkt</string>
     <string name="settings_voice_call_voice">Rödd</string>
     <string name="settings_voice_raise_to_talk">Lyfta til að tala</string>
     <string name="settings_voice_call_sounds">Símtalshljóð</string>

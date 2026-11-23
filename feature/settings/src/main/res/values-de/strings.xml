@@ -130,6 +130,7 @@
     <string name="settings_voice_enable">Sprachfunktion aktivieren</string>
     <string name="settings_voice_model">Modell</string>
     <string name="settings_voice_model_description">Sprachmodell</string>
+    <string name="settings_voice_model_automatic">Automatisch</string>
     <string name="settings_voice_call_voice">Stimme</string>
     <string name="settings_voice_raise_to_talk">Zum Sprechen anheben</string>
     <string name="settings_voice_call_sounds">Anruftöne</string>
