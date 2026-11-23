@@ -15,26 +15,14 @@ class VoiceFeatureTestsSession {
     private val server = OpenCodeServer(url = "http://localhost:4096", username = "", password = "")
     private val session = OpenCodeSession(id = "ses_voice", serverTitle = "Voice lab", projectID = "p", directory = "/Users/kit/project", updatedAt = distantPast)
 
-    /**
-     * Voice needs its switch, and on This Phone the phone's key; chosen
-     * automatically, the connected server can take the call without one.
-     */
+    /** Voice needs its switch; chosen automatically, the connected server takes the call. */
     @Test fun voiceAvailabilityRequiresBothAdvancedToggleAndAPIKey() = sessionTest { h ->
         val state = h.state { State.session(server = server, session = session, cachedItems = emptyList()) }
-        state.voiceServer.set(VoiceServerChoice.Phone)
+        state.voiceServer.set(VoiceServerChoice.Automatic)
         state.voiceModeEnabled.set(false)
-        state.openAIAPIKey.set("sk-test")
         assertFalse(h.state { state.isVoiceAvailable })
 
         state.voiceModeEnabled.set(true)
-        state.openAIAPIKey.set(null)
-        assertFalse(h.state { state.isVoiceAvailable })
-
-        state.openAIAPIKey.set("sk-test")
-        assertTrue(h.state { state.isVoiceAvailable })
-
-        state.openAIAPIKey.set(null)
-        state.voiceServer.set(VoiceServerChoice.Automatic)
         assertTrue("The connected server, not known to be unable, takes the call", h.state { state.isVoiceAvailable })
     }
 }

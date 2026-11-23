@@ -814,12 +814,10 @@ private fun rememberVoiceAvailable(server: OpenCodeServer): Boolean {
     val preferences = remember { VoiceRoutePreferences() }
     val enabled by preferences.enabled.flow.collectAsState()
     val engine by preferences.engine.flow.collectAsState()
-    val openAIKey by preferences.openAIKey.flow.collectAsState()
-    val xaiKey by preferences.xaiKey.flow.collectAsState()
     val provider by preferences.provider.flow.collectAsState()
     val voiceServer by preferences.voiceServer.flow.collectAsState()
     val support by preferences.support.flow.collectAsState()
-    return remember(server, enabled, engine, openAIKey, xaiKey, provider, voiceServer, support) {
+    return remember(server, enabled, engine, provider, voiceServer, support) {
         preferences.isAvailable(server)
     }
 }

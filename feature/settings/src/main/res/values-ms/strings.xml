@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · Pelayan lain</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Sembunyi kunci</string>
-    <string name="settings_voice_key_show_description">Tunjukkan kunci</string>
-    <string name="settings_voice_key_verify">Sahkan</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Penyedia suara</string>
     <string name="settings_voice_provider_place">Pada %1$s</string>
-    <string name="settings_voice_api_key_title">Kunci API</string>
     <string name="settings_voice_provider_automatic_footer">Apabila %1$s belum sedia, panggilan menggunakan penyedia yang sedia.</string>
     <string name="settings_voice_provider_choose_automatically">Pilih secara automatik</string>
     <string name="settings_voice_provider_others_header">Penyedia lain</string>
     <string name="settings_voice_provider_use_description">Gunakan %1$s</string>
     <string name="settings_voice_provider_use">Gunakan</string>
-    <string name="settings_voice_provider_set_up">Sediakan</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">%d tidak tersedia</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Akaun OpenAI anda</string>
-    <string name="settings_voice_account_place">Pada telefon ini</string>
-    <string name="settings_voice_account_key_footer">Panggilan menggunakan akaun OpenAI anda dan bukannya pelayan.</string>
-    <string name="settings_voice_account_use_for_calls">Gunakan untuk panggilan</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Suara</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">Angkat untuk bercakap</string>
     <string name="settings_voice_call_sounds">Bunyi panggilan</string>
     <string name="settings_voice_call_history">Sejarah panggilan</string>
-    <string name="settings_voice_edit_key_label">Sunting kunci API %1$s anda</string>
-    <string name="settings_voice_key_verified">Disahkan</string>
-    <string name="settings_voice_key_checking">Sedang menyemak…</string>
-    <string name="settings_voice_key_saved">Disimpan</string>
-    <string name="settings_voice_key_missing">Tiada</string>
-    <string name="settings_voice_preview_disabled_hint">Tambah kunci %1$s anda untuk pratonton suara</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Tambah kunci %1$s anda untuk pratonton suara.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s tidak tersedia pada %2$s, jadi panggilan menggunakan %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Henti pratonton %1$s</string>
-    <string name="settings_voice_preview_description">Pratonton %1$s</string>
-    <string name="settings_voice_preview_playing">Sedang dimainkan</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s tidak tersedia</string>
 
     <!-- Settings root -->

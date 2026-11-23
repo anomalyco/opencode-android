@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Panggilan tamat</string>
     <string name="voice_call_ended_rejoin">Sertai semula</string>
     <string name="voice_failure_title">Tidak dapat menyambung suara</string>
-    <string name="voice_failure_check_api_key">Semak kunci API</string>
     <string name="voice_failure_start_title">Tidak dapat memulakan panggilan</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">Tiada kunci</string>
     <string name="voice_provider_state_needs_update">Kemas kini OpenCode</string>
     <string name="voice_provider_state_offline">Luar talian</string>
-    <string name="voice_provider_place_phone">Telefon ini</string>
-    <string name="voice_provider_brand_openai_account">Akaun OpenAI anda</string>
     <string name="voice_provider_name">%1$s pada %2$s</string>
     <string name="voice_provider_subtitle">Pada %1$s</string>
-    <string name="voice_provider_key_row_title">Kunci %1$s</string>
-    <string name="voice_provider_key_placeholder">Kunci API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Kunci pada pelayan anda</string>
-    <string name="voice_key_source_phone_footer">Panggilan menggunakan kunci OpenAI atau xAI anda sendiri.</string>
     <string name="voice_key_source_server_footer">Panggilan menggunakan kunci %1$s pada pelayan anda.</string>
     <string name="voice_key_source_opencode_footer">Caj panggilan dibilkan kepada ruang kerja OpenCode Console anda.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Sediakan pada telefon ini</string>
     <string name="voice_fix_choose_provider">Pilih penyedia</string>
     <string name="voice_fix_update_opencode">Kemas kini OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s memerlukan OpenCode yang lebih baharu untuk panggilan suara.</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Tidak dapat menghubungi pelayan anda.</string>
     <string name="voice_diagnosis_failed">%1$s tidak dapat memulakan panggilan.</string>
     <string name="voice_diagnosis_your_server_failed">Pelayan anda tidak dapat memulakan panggilan.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI tidak menerima kunci pada telefon ini.</string>
-    <string name="voice_diagnosis_missing_phone_key">Tambah kunci API %1$s anda untuk membuat panggilan dari telefon ini.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Benarkan akses mikrofon dalam Tetapan untuk berbual dengan sesi anda.</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">Tidak dapat memulakan suara: Pelayan memberikan maklum balas yang tidak sah.</string>
     <string name="voice_error_start_voice_detail">Tidak dapat memulakan suara: %1$s</string>
     <string name="voice_error_start_voice_http">Tidak dapat memulakan suara (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI menolak kunci API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI tidak dapat mengesahkan kunci ini (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Tiada sambungan.</string>
-    <string name="voice_error_model_address_invalid">Alamat model suara tidak sah.</string>
-    <string name="voice_error_xai_rejected_key">xAI menolak kunci API.</string>
-    <string name="voice_error_xai_verify_http">xAI tidak dapat mengesahkan kunci ini (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Kunci API xAI ini dinonaktifkan.</string>
-    <string name="voice_error_xai_key_blocked">Kunci API xAI ini disekat.</string>
     <string name="voice_error_service_address_invalid">Alamat perkhidmatan suara tidak sah.</string>
     <string name="voice_error_connection_lost">Sambungan suara terputus.</string>
     <string name="voice_error_connection_closed">Sambungan suara ditutup.</string>
     <string name="voice_error_connection_setup">Sambungan suara tidak dapat disediakan.</string>
     <string name="voice_error_safety_filter">Penapis keselamatan menamatkan panggilan suara.</string>
     <string name="voice_error_audio_reset">Audio ditetapkan semula oleh sistem. Mulakan panggilan semula.</string>
-    <string name="voice_error_missing_phone_key">Tambah kunci API %1$s anda dalam Tetapan untuk menggunakan Suara.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Bahasa Inggeris Australia</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">Bahasa Portugis Brazil</string>
     <string name="voice_accent_filipino_english">Bahasa Inggeris Filipina</string>
     <string name="voice_accent_southern_us_english">Bahasa Inggeris Selatan AS</string>
-    <string name="voice_accent_indian_english">Bahasa Inggeris India</string>
-    <string name="voice_preview_error">Tidak dapat memainkan pratonton</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Denting nafas</string>

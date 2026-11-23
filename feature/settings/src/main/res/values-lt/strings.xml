@@ -108,20 +108,15 @@
     <string name="settings_delegator_another_server">%1$s · Kitas serveris</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Slėpti raktą</string>
-    <string name="settings_voice_key_show_description">Rodyti raktą</string>
-    <string name="settings_voice_key_verify">Patikrinti</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Balso teikėjas</string>
     <string name="settings_voice_provider_place">Per %1$s</string>
-    <string name="settings_voice_api_key_title">API raktas</string>
     <string name="settings_voice_provider_automatic_footer">Kai %1$s neparuoštas, skambučiams naudojamas kitas paruoštas teikėjas.</string>
     <string name="settings_voice_provider_choose_automatically">Parinkti automatiškai</string>
     <string name="settings_voice_provider_others_header">Kiti teikėjai</string>
     <string name="settings_voice_provider_use_description">Naudoti %1$s</string>
     <string name="settings_voice_provider_use">Naudoti</string>
-    <string name="settings_voice_provider_set_up">Nustatyti</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d nepasiekiamas</item>
         <item quantity="few">%d nepasiekiami</item>
@@ -130,10 +125,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Jūsų OpenAI paskyra</string>
-    <string name="settings_voice_account_place">Šiame telefone</string>
-    <string name="settings_voice_account_key_footer">Skambučiams vietoj serverio naudojama jūsų OpenAI paskyra.</string>
-    <string name="settings_voice_account_use_for_calls">Naudoti skambučiams</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Balsas</string>
@@ -147,19 +138,9 @@
     <string name="settings_voice_raise_to_talk">Pakelti ir kalbėti</string>
     <string name="settings_voice_call_sounds">Skambučių garsai</string>
     <string name="settings_voice_call_history">Skambučių istorija</string>
-    <string name="settings_voice_edit_key_label">Redaguoti jūsų %1$s API raktą</string>
-    <string name="settings_voice_key_verified">Patikrintas</string>
-    <string name="settings_voice_key_checking">Tikrinama…</string>
-    <string name="settings_voice_key_saved">Išsaugotas</string>
-    <string name="settings_voice_key_missing">Trūksta</string>
-    <string name="settings_voice_preview_disabled_hint">Pridėkite %1$s raktą, kad galėtumėte perklausyti balsus</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Pridėkite %1$s raktą, kad galėtumėte perklausyti balsus.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s nepasiekiamas per %2$s, todėl skambučiams naudojamas %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Stabdyti %1$s perklausą</string>
-    <string name="settings_voice_preview_description">Perklausyti %1$s</string>
-    <string name="settings_voice_preview_playing">Grojama</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s nepasiekiamas</string>
 
     <!-- Settings root -->

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Повикот заврши</string>
     <string name="voice_call_ended_rejoin">Приклучи се повторно</string>
     <string name="voice_failure_title">Не успеа гласовното поврзување</string>
-    <string name="voice_failure_check_api_key">Провери го клучот API</string>
     <string name="voice_failure_start_title">Не успеа започнувањето на повикот</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Нема клуч</string>
     <string name="voice_provider_state_needs_update">Ажурирај OpenCode</string>
     <string name="voice_provider_state_offline">Нема врска</string>
-    <string name="voice_provider_place_phone">Овој телефон</string>
-    <string name="voice_provider_brand_openai_account">Твојата сметка на OpenAI</string>
     <string name="voice_provider_name">%1$s на %2$s</string>
     <string name="voice_provider_subtitle">На %1$s</string>
-    <string name="voice_provider_key_row_title">Клуч за %1$s</string>
-    <string name="voice_provider_key_placeholder">Клуч API за %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Клуч на твојот сервер</string>
-    <string name="voice_key_source_phone_footer">Повиците го користат твојот клуч за OpenAI или xAI.</string>
     <string name="voice_key_source_server_footer">Повиците го користат клучот за %1$s на твојот сервер.</string>
     <string name="voice_key_source_opencode_footer">Повиците се наплаќаат на твојот работен простор во OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Постави на овој телефон</string>
     <string name="voice_fix_choose_provider">Избери провајдер</string>
     <string name="voice_fix_update_opencode">Ажурирај OpenCode</string>
     <string name="voice_diagnosis_needs_update">На %1$s му треба понов OpenCode за гласовни повици.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Не може да се воспостави врска со твојот сервер.</string>
     <string name="voice_diagnosis_failed">%1$s не успеа да го започне повикот.</string>
     <string name="voice_diagnosis_your_server_failed">Твојот сервер не успеа да го започне повикот.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI не го прифати клучот на овој телефон.</string>
-    <string name="voice_diagnosis_missing_phone_key">Додади го твојот клуч API за %1$s за повици од овој телефон.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Дозволи пристап до микрофонот во Поставки за да разговараш со твојата сесија.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Не успеа започнувањето на гласовниот повик: серверот врати неважечки одговор.</string>
     <string name="voice_error_start_voice_detail">Не успеа започнувањето на гласовниот повик: %1$s</string>
     <string name="voice_error_start_voice_http">Не успеа започнувањето на гласовниот повик (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI го одби клучот API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI не успеа да го провери овој клуч (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Нема врска.</string>
-    <string name="voice_error_model_address_invalid">Адресата на гласовниот модел е неважечка.</string>
-    <string name="voice_error_xai_rejected_key">xAI го одби клучот API.</string>
-    <string name="voice_error_xai_verify_http">xAI не успеа да го провери овој клуч (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Овој клуч API за xAI е оневозможен.</string>
-    <string name="voice_error_xai_key_blocked">Овој клуч API за xAI е блокиран.</string>
     <string name="voice_error_service_address_invalid">Адресата на гласовната услуга е неважечка.</string>
     <string name="voice_error_connection_lost">Гласовната врска се изгуби.</string>
     <string name="voice_error_connection_closed">Гласовната врска е затворена.</string>
     <string name="voice_error_connection_setup">Не успеа воспоставувањето на гласовната врска.</string>
     <string name="voice_error_safety_filter">Безбедносен филтер го заврши гласовниот повик.</string>
     <string name="voice_error_audio_reset">Системот го ресетираше аудиото. Започни го повикот повторно.</string>
-    <string name="voice_error_missing_phone_key">Додади го твојот клуч API за %1$s во Поставки за да користиш глас.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Австралиски англиски</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Бразилски португалски</string>
     <string name="voice_accent_filipino_english">Филипински англиски</string>
     <string name="voice_accent_southern_us_english">Јужен американски англиски</string>
-    <string name="voice_accent_indian_english">Индиски англиски</string>
-    <string name="voice_preview_error">Не успеа преслушувањето</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Ѕвонлив здив</string>

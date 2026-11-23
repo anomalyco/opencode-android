@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Занг анҷом ёфт</string>
     <string name="voice_call_ended_rejoin">Аз нав ҳамроҳ шавед</string>
     <string name="voice_failure_title">Овоз пайваст нашуд</string>
-    <string name="voice_failure_check_api_key">API калидро санҷед</string>
     <string name="voice_failure_start_title">Занг оғоз нашуд</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Калид нест</string>
     <string name="voice_provider_state_needs_update">OpenCode-ро навсозӣ кунед</string>
     <string name="voice_provider_state_offline">Офлайн</string>
-    <string name="voice_provider_place_phone">Ин телефон</string>
-    <string name="voice_provider_brand_openai_account">Ҳисоби OpenAI-и шумо</string>
     <string name="voice_provider_name">%1$s дар %2$s</string>
     <string name="voice_provider_subtitle">Дар %1$s</string>
-    <string name="voice_provider_key_row_title">Калиди %1$s</string>
-    <string name="voice_provider_key_placeholder">API калиди %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Калид дар сервери шумо</string>
-    <string name="voice_key_source_phone_footer">Зангҳо калиди шахсии OpenAI ё xAI-и шуморо истифода мебаранд.</string>
     <string name="voice_key_source_server_footer">Зангҳо калиди %1$s-и сервери шуморо истифода мебаранд.</string>
     <string name="voice_key_source_opencode_footer">Ҳаққи зангҳо аз ҳисоби фазои кории шумо дар OpenCode Console гирифта мешавад.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Дар ин телефон танзим кунед</string>
     <string name="voice_fix_choose_provider">Таъминкунандаро интихоб кунед</string>
     <string name="voice_fix_update_opencode">OpenCode-ро навсозӣ кунед</string>
     <string name="voice_diagnosis_needs_update">Барои зангҳои овозӣ ба %1$s версияи навтари OpenCode лозим аст.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Ба сервери шумо пайваст шудан нашуд.</string>
     <string name="voice_diagnosis_failed">%1$s зангро оғоз карда натавонист.</string>
     <string name="voice_diagnosis_your_server_failed">Сервери шумо зангро оғоз карда натавонист.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI калиди ин телефонро қабул накард.</string>
-    <string name="voice_diagnosis_missing_phone_key">Барои занг аз ин телефон API калиди %1$s-и худро илова кунед.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Барои суҳбат бо сессия дар танзимот дастрасӣ ба микрофонро иҷозат диҳед.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Овоз оғоз нашуд: сервер ҷавоби нодуруст дод.</string>
     <string name="voice_error_start_voice_detail">Овоз оғоз нашуд: %1$s</string>
     <string name="voice_error_start_voice_http">Овоз оғоз нашуд (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI API калидро рад кард.</string>
-    <string name="voice_error_openai_verify_http">OpenAI ин калидро санҷида натавонист (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Пайвастшавӣ нест.</string>
-    <string name="voice_error_model_address_invalid">Суроғаи модели овоз нодуруст аст.</string>
-    <string name="voice_error_xai_rejected_key">xAI API калидро рад кард.</string>
-    <string name="voice_error_xai_verify_http">xAI ин калидро санҷида натавонист (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Ин API калиди xAI ғайрифаъол аст.</string>
-    <string name="voice_error_xai_key_blocked">Ин API калиди xAI масдуд шудааст.</string>
     <string name="voice_error_service_address_invalid">Суроғаи хидмати овоз нодуруст аст.</string>
     <string name="voice_error_connection_lost">Пайвастшавии овозӣ канда шуд.</string>
     <string name="voice_error_connection_closed">Пайвастшавии овозӣ баста аст.</string>
     <string name="voice_error_connection_setup">Пайвастшавии овозӣ барқарор нашуд.</string>
     <string name="voice_error_safety_filter">Филтри бехатарӣ занги овозиро анҷом дод.</string>
     <string name="voice_error_audio_reset">Система аудиоро бозсозӣ кард. Зангро аз нав оғоз кунед.</string>
-    <string name="voice_error_missing_phone_key">Барои истифодаи овоз API калиди %1$s-и худро дар танзимот илова кунед.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Англисии австралиягӣ</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Португалии бразилӣ</string>
     <string name="voice_accent_filipino_english">Англисии филиппинӣ</string>
     <string name="voice_accent_southern_us_english">Англисии ҷануби ИМА</string>
-    <string name="voice_accent_indian_english">Англисии ҳиндӣ</string>
-    <string name="voice_preview_error">Намуна пахш нашуд</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Садои нафас</string>

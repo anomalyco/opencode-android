@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · En anden server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Skjul nøgle</string>
-    <string name="settings_voice_key_show_description">Vis nøgle</string>
-    <string name="settings_voice_key_verify">Kontrollér</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Taleudbyder</string>
     <string name="settings_voice_provider_place">På %1$s</string>
-    <string name="settings_voice_api_key_title">API-nøgle</string>
     <string name="settings_voice_provider_automatic_footer">Når %1$s ikke er klar, bruger opkald en udbyder, der er.</string>
     <string name="settings_voice_provider_choose_automatically">Vælg automatisk</string>
     <string name="settings_voice_provider_others_header">Andre udbydere</string>
     <string name="settings_voice_provider_use_description">Brug %1$s</string>
     <string name="settings_voice_provider_use">Brug</string>
-    <string name="settings_voice_provider_set_up">Opsæt</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d ikke tilgængelig</item>
         <item quantity="other">%d ikke tilgængelige</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Din OpenAI-konto</string>
-    <string name="settings_voice_account_place">På denne telefon</string>
-    <string name="settings_voice_account_key_footer">Opkald bruger din OpenAI-konto i stedet for en server.</string>
-    <string name="settings_voice_account_use_for_calls">Brug til opkald</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Tale</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Løft for at tale</string>
     <string name="settings_voice_call_sounds">Opkaldslyde</string>
     <string name="settings_voice_call_history">Opkaldshistorik</string>
-    <string name="settings_voice_edit_key_label">Rediger din API-nøgle til %1$s</string>
-    <string name="settings_voice_key_verified">Bekræftet</string>
-    <string name="settings_voice_key_checking">Tjekker…</string>
-    <string name="settings_voice_key_saved">Gemt</string>
-    <string name="settings_voice_key_missing">Mangler</string>
-    <string name="settings_voice_preview_disabled_hint">Tilføj din nøgle til %1$s for at høre stemmer</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Tilføj din nøgle til %1$s for at høre stemmer.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s er ikke tilgængelig på %2$s, så opkald bruger %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Stop stemmeprøven for %1$s</string>
-    <string name="settings_voice_preview_description">Lyt til %1$s</string>
-    <string name="settings_voice_preview_playing">Afspiller</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s ikke tilgængelig</string>
 
     <!-- Settings root -->

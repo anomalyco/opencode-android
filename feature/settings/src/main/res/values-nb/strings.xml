@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Annen server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Skjul nøkkel</string>
-    <string name="settings_voice_key_show_description">Vis nøkkel</string>
-    <string name="settings_voice_key_verify">Verifiser</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Taleleverandør</string>
     <string name="settings_voice_provider_place">På %1$s</string>
-    <string name="settings_voice_api_key_title">API-nøkkel</string>
     <string name="settings_voice_provider_automatic_footer">Når %1$s ikke er klar, bruker samtaler en som er klar.</string>
     <string name="settings_voice_provider_choose_automatically">Velg automatisk</string>
     <string name="settings_voice_provider_others_header">Andre leverandører</string>
     <string name="settings_voice_provider_use_description">Bruk %1$s</string>
     <string name="settings_voice_provider_use">Bruk</string>
-    <string name="settings_voice_provider_set_up">Sett opp</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d utilgjengelig</item>
         <item quantity="other">%d utilgjengelige</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">OpenAI-kontoen din</string>
-    <string name="settings_voice_account_place">På denne telefonen</string>
-    <string name="settings_voice_account_key_footer">Samtaler bruker OpenAI-kontoen din i stedet for en server.</string>
-    <string name="settings_voice_account_use_for_calls">Bruk til samtaler</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Tale</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Løft for å snakke</string>
     <string name="settings_voice_call_sounds">Samtalelyder</string>
     <string name="settings_voice_call_history">Samtalehistorikk</string>
-    <string name="settings_voice_edit_key_label">Rediger API-nøkkelen din for %1$s</string>
-    <string name="settings_voice_key_verified">Verifisert</string>
-    <string name="settings_voice_key_checking">Sjekker…</string>
-    <string name="settings_voice_key_saved">Lagret</string>
-    <string name="settings_voice_key_missing">Mangler</string>
-    <string name="settings_voice_preview_disabled_hint">Legg til nøkkelen din for %1$s for å prøvelytte til stemmer</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Legg til nøkkelen din for %1$s for å prøvelytte til stemmer.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s er ikke tilgjengelig på %2$s, så samtaler bruker %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Stopp prøvelytting til %1$s</string>
-    <string name="settings_voice_preview_description">Prøvelytt til %1$s</string>
-    <string name="settings_voice_preview_playing">Spiller av</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s er utilgjengelig</string>
 
     <!-- Settings root -->

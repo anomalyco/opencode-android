@@ -4,7 +4,6 @@ import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.withDependenciesSuspending
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
@@ -270,10 +269,7 @@ class VoiceSharedWaitTests {
         val poll = Poll()
         val issues = Locked(listOf<String>())
         val shared = SpeechTestShared()
-        val voice = shared.run {
-            shared(SharedKeys.openAIAPIKey).set("sk-test")
-            VoiceFeature.State(server, home).withPhase(VoiceFeature.State.Phase.Live)
-        }
+        val voice = shared.run { VoiceFeature.State(server, home).withPhase(VoiceFeature.State.Phase.Live) }
         val effects = detachedScope(coroutineContext)
         val store = TestStore(voice, VoiceFeature(), effects) {
             this[SharedStore] = shared.store

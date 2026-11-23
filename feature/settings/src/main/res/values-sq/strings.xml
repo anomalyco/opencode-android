@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Server tjetër</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Fshih tastin</string>
-    <string name="settings_voice_key_show_description">Trego tastin</string>
-    <string name="settings_voice_key_verify">Verifiko</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Ofruesi i zërit</string>
     <string name="settings_voice_provider_place">Në %1$s</string>
-    <string name="settings_voice_api_key_title">Tasti API</string>
     <string name="settings_voice_provider_automatic_footer">Kur %1$s nuk është gati, thirrjet përdorin një ofrues që është.</string>
     <string name="settings_voice_provider_choose_automatically">Zgjidh automatikisht</string>
     <string name="settings_voice_provider_others_header">Ofrues të tjerë</string>
     <string name="settings_voice_provider_use_description">Përdor %1$s</string>
     <string name="settings_voice_provider_use">Përdor</string>
-    <string name="settings_voice_provider_set_up">Konfiguro</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d i padisponueshëm</item>
         <item quantity="other">%d të padisponueshëm</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Llogaria jote OpenAI</string>
-    <string name="settings_voice_account_place">Në këtë telefon</string>
-    <string name="settings_voice_account_key_footer">Thirrjet përdorin llogarinë tënde OpenAI në vend të një serveri.</string>
-    <string name="settings_voice_account_use_for_calls">Përdor për thirrje</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Zëri</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Ngrije për të folur</string>
     <string name="settings_voice_call_sounds">Tingujt e thirrjeve</string>
     <string name="settings_voice_call_history">Historiku i thirrjeve</string>
-    <string name="settings_voice_edit_key_label">Redakto tastin tënd API për %1$s</string>
-    <string name="settings_voice_key_verified">I verifikuar</string>
-    <string name="settings_voice_key_checking">Po kontrollon…</string>
-    <string name="settings_voice_key_saved">I ruajtur</string>
-    <string name="settings_voice_key_missing">Mungon</string>
-    <string name="settings_voice_preview_disabled_hint">Shto tastin tënd për %1$s për të provuar zërat</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Shto tastin tënd për %1$s për të provuar zërat.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s nuk disponohet në %2$s, ndaj thirrjet përdorin %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Ndalo provën e %1$s</string>
-    <string name="settings_voice_preview_description">Provo %1$s</string>
-    <string name="settings_voice_preview_playing">Po luhet</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s nuk disponohet</string>
 
     <!-- Settings root -->

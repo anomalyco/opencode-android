@@ -27,7 +27,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
-import java.io.IOException
 import java.time.Instant
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.sin
@@ -48,65 +47,6 @@ class RealtimeProtocolTests {
             return
         }
         fail("Expected $expected to be thrown")
-    }
-
-    @Test fun preflightErrorsAreReadable() {
-        assertEquals(RealtimePreflightError.RejectedAPIKey, RealtimePreflightError.response(statusCode = 401, data = ByteArray(0)))
-        val quota = """{"error":{"message":"Your project has no remaining quota.","type":"insufficient_quota"}}""".toByteArray()
-        assertEquals(RealtimePreflightError.Service("Your project has no remaining quota."), RealtimePreflightError.response(statusCode = 429, data = quota))
-        assertEquals(RealtimePreflightError.NoConnection, RealtimePreflightError.transport(IOException("The Internet connection appears to be offline.")))
-    }
-
-    /** xAI's answers to `GET /v1/api-key`, as the live service sent them. */
-    @Test fun xaiPreflightReadsTheKeyCheck() {
-        val working = """{"redacted_api_key":"xai-…","acls":["api-key:endpoint:*"],"team_blocked":false,"api_key_blocked":false,"api_key_disabled":false}""".toByteArray()
-        RealtimePreflightError.checkXAI(statusCode = 200, data = working)
-        val incorrect = """{"code":"invalid-argument","error":"Incorrect API key provided. You can obtain an API key from https://console.x.ai."}""".toByteArray()
-        expectThrows(RealtimePreflightError.Service("xAI rejected the API key.")) {
-            RealtimePreflightError.checkXAI(statusCode = 400, data = incorrect)
-        }
-        val disabled = """{"team_blocked":false,"api_key_blocked":false,"api_key_disabled":true}""".toByteArray()
-        expectThrows(RealtimePreflightError.Service("This xAI API key is disabled.")) {
-            RealtimePreflightError.checkXAI(statusCode = 200, data = disabled)
-        }
-        val blocked = """{"team_blocked":true,"api_key_blocked":false,"api_key_disabled":false}""".toByteArray()
-        expectThrows(RealtimePreflightError.Service("This xAI API key is blocked.")) {
-            RealtimePreflightError.checkXAI(statusCode = 200, data = blocked)
-        }
-        expectThrows(RealtimePreflightError.Service("xAI couldn’t verify this key (HTTP 503).")) {
-            RealtimePreflightError.checkXAI(statusCode = 503, data = ByteArray(0))
-        }
-    }
-
-    /**
-     * Grok Voice's documented `session.update`, checked against the live
-     * service: it delegated through these tools and spoke the result.
-     */
-    @Test fun grokSessionUpdateUsesXAIsShape() {
-        val config = RealtimeSessionConfig(
-            engine = VoiceEngine.grok,
-            model = VoiceEngine.grok.modelID,
-            voice = CallVoice.eve,
-            instructions = "Be brief.",
-            tools = VoiceInstructions.tools,
-        )
-        assertEquals("wss://api.x.ai/v1/realtime?model=grok-voice-3.0", config.webSocketURL)
-        assertEquals("wss://api.openai.com/v1/realtime?model=gpt-realtime-2.1", RealtimeSessionConfig(instructions = "", tools = emptyList()).webSocketURL)
-        val json = decode(RealtimeCommand.SessionUpdate(config).encoded())
-        assertEquals(s("session.update"), json["type"])
-        val session = json["session"] ?: return fail("session missing")
-        assertNull(session["type"])
-        assertNull("The model rides in the socket's query", session["model"])
-        assertEquals(s("eve"), session["voice"])
-        assertEquals(s("Be brief."), session["instructions"])
-        assertEquals(RealtimeJSONs.obj("type" to s("server_vad")), session["turn_detection"])
-        assertEquals(RealtimeJSONs.obj("type" to s("audio/pcm"), "rate" to n(24_000)), session["audio"]?.get("input")?.get("format"))
-        assertEquals(RealtimeJSONs.obj("type" to s("audio/pcm"), "rate" to n(24_000)), session["audio"]?.get("output")?.get("format"))
-        assertNull("Grok transcribes the user's turns without it", session["audio"]?.get("input")?.get("transcription"))
-        val tools = session["tools"] as? JsonArray ?: return fail("tools missing")
-        assertEquals(listOf(s("delegate"), s("end_voice_session")), tools.map { it["name"] })
-        assertTrue(tools.all { it["type"] == s("function") })
-        assertEquals(config.sessionUpdate, config.sessionUpdate(includeAudioFormat = false))
     }
 
     @Test fun decodesTheEventsTheCallDependsOn() {
@@ -408,7 +348,7 @@ class RealtimeProtocolTests {
                     teardowns = Channel(Channel.UNLIMITED),
                     coordinator = VoiceCallCoordinator(),
                 )
-                val realtime = RealtimeClient { _, _ ->
+                val realtime = RealtimeClient { _ ->
                     RealtimeConnection(
                         events = harness.serverEvents.receiveAsFlow(),
                         send = { command -> synchronized(harness.commandList) { harness.commandList += command } },
@@ -435,7 +375,6 @@ class RealtimeProtocolTests {
                     )
                 })
                 val events = harness.coordinator.start(
-                    apiKey = "test",
                     config = RealtimeSessionConfig(instructions = "", tools = emptyList()),
                     realtime = realtime,
                     audio = audio,

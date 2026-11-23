@@ -37,7 +37,6 @@ internal fun Throwable.asClientError(): OpenCodeClientError =
  */
 internal fun VoiceFeature.delegateWork(state: State, callID: String, rawFraming: String?): Reduced<State, Action> {
     if (state.usesSessionDelegator) return delegateToSessionDelegator(state, callID, rawFraming)
-    if (state.usesDelegator) return delegateToDelegator(state, callID, rawFraming = rawFraming)
     val isClientDelegation = state.activeEngine == VoiceEngine.gptLive
     // One request creates a draft's session; a second one spoken while it is
     // being created would make another.
@@ -130,36 +129,14 @@ internal fun VoiceFeature.delegateWork(state: State, callID: String, rawFraming:
 /**
  * GPT-Live with the delegator: the request goes to an invisible agent that
  * works across sessions, moving the screen and sending Voice messages.
- *
- * [onCall]: Server Voice, where GPT-Live already handed the request to
- * the delegator on its Responses backend; the phone runs its tools.
+ * GPT-Live already handed the request to the delegator on the server's
+ * Responses backend; the phone runs its tools.
  */
-internal fun VoiceFeature.delegateToDelegator(
-    state: State,
-    callID: String,
-    onCall: Boolean = false,
-    rawFraming: String? = null,
-): Reduced<State, Action> {
-    val apiKey = state.activeEngine?.let { state.callAPIKey(it) }?.trim() ?: ""
-    if (!onCall && apiKey.isEmpty()) {
-        return Reduced(state, completeFunction(callID, VoiceHandoff.failure("No OpenAI API key.")))
-    }
-    val isVerify = callID.startsWith("client_verify_")
-    val captured = if (isVerify) VoiceTranscriptTail.Captured(state.tail, VoiceTranscriptTail.Capture.empty) else state.tail.capture()
+internal fun VoiceFeature.delegateToDelegator(state: State, callID: String): Reduced<State, Action> {
+    val captured = state.tail.capture()
     var next = state.copy(tail = captured.tail)
     val capture = captured.capture
-    // Only the user's own words are a request, except on a client_claim_N / client_verify_N backstop.
-    val promisedClaim = if (callID.startsWith("client_claim_")) VoiceHandoff.framing(rawFraming) else null
-    val userRequest = capture.userText.trim()
-    val request = if (isVerify) {
-        rawFraming?.trim() ?: ""
-    } else {
-        userRequest.ifEmpty { promisedClaim?.let { "Voice promised: \"$it\"" } ?: "" }
-    }
-    if (!onCall && request.isEmpty()) {
-        next = next.copy(tail = next.tail.release(capture))
-        return Reduced(next, completeFunction(callID, VoiceHandoff.failure(VoiceHandoff.nothingNewToSend)))
-    }
+    val request = capture.userText.trim()
     // The delegator has it now; later words travel with the next request.
     // Its prompts count from now, the delegation; one for a turn GPT-Live
     // held back counts from that turn once it's unambiguous (`heldBackTurns`).
@@ -225,7 +202,6 @@ internal fun VoiceFeature.delegateToDelegator(
     )
     val viewingText = delegatorContext(next, otherRequests = maxOf(0, next.delegatorWork.size - 1))
     val text = VoiceDelegator.requestText(viewing = viewingText, conversation = next.tail.lines, request = request)
-    val previous = next.delegatorResponseID
     if (recorder != null && log != null) recorder.note(log, VoiceCallLog.Note.Kind.received, text)
     val client = dependency(OpenCodeClient)
     val delegator = dependency(VoiceDelegatorClient)
@@ -272,7 +248,7 @@ internal fun VoiceFeature.delegateToDelegator(
                 // from half the picture, and the delegator's answer then waits behind it.
                 note = { note -> if (recorder != null && log != null) recorder.note(log, VoiceCallLog.Note.Kind.marker, note) },
                 trace = { trace ->
-                    if (!isVerify && trace is VoiceDelegator.Trace.ToolStarted) voiceCallCues.toolCalled(trace.name, trace.arguments)
+                    if (trace is VoiceDelegator.Trace.ToolStarted) voiceCallCues.toolCalled(trace.name, trace.arguments)
                     // Outer null: no change (a round); inner null: no named tool running.
                     val activity: Pair<String?, Unit>? = when (trace) {
                         is VoiceDelegator.Trace.ToolStarted -> synchronized(running) {
@@ -311,11 +287,7 @@ internal fun VoiceFeature.delegateToDelegator(
         )
         val result: Result<VoiceDelegator.Outcome> = try {
             Result.success(
-                if (onCall) {
-                    delegator.runOnCall(delegationID = callID, rounds = voiceCall.delegatorRounds, tools = workspace.tools)
-                } else {
-                    delegator.run(apiKey = apiKey, request = text, previousResponseID = previous, tools = workspace.tools)
-                },
+                delegator.runOnCall(delegationID = callID, rounds = voiceCall.delegatorRounds, tools = workspace.tools),
             )
         } catch (error: CancellationException) {
             throw error

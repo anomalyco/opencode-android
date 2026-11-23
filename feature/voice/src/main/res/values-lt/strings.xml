@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Skambutis baigtas</string>
     <string name="voice_call_ended_rejoin">Prisijungti iš naujo</string>
     <string name="voice_failure_title">Nepavyko prijungti balso</string>
-    <string name="voice_failure_check_api_key">Patikrinti API raktą</string>
     <string name="voice_failure_start_title">Nepavyko pradėti skambučio</string>
 
     <!-- Floating call -->
@@ -103,21 +102,14 @@
     <string name="voice_provider_state_no_key">Nėra rakto</string>
     <string name="voice_provider_state_needs_update">Atnaujinti OpenCode</string>
     <string name="voice_provider_state_offline">Neprisijungęs</string>
-    <string name="voice_provider_place_phone">Šis telefonas</string>
-    <string name="voice_provider_brand_openai_account">Jūsų OpenAI paskyra</string>
     <string name="voice_provider_name">%1$s (%2$s)</string>
     <string name="voice_provider_subtitle">Vieta: %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s raktas</string>
-    <string name="voice_provider_key_placeholder">%1$s API raktas</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Raktas jūsų serveryje</string>
-    <string name="voice_key_source_phone_footer">Skambučiams naudojamas jūsų OpenAI arba xAI raktas.</string>
     <string name="voice_key_source_server_footer">Skambučiams naudojamas jūsų serverio %1$s raktas.</string>
     <string name="voice_key_source_opencode_footer">Skambučių mokesčiai priskiriami jūsų OpenCode Console darbo sričiai.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Nustatyti šiame telefone</string>
     <string name="voice_fix_choose_provider">Pasirinkite teikėją</string>
     <string name="voice_fix_update_opencode">Atnaujinti OpenCode</string>
     <string name="voice_diagnosis_needs_update">Balso skambučiams per %1$s reikia naujesnės OpenCode versijos.</string>
@@ -128,8 +120,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Nepavyko pasiekti jūsų serverio.</string>
     <string name="voice_diagnosis_failed">%1$s nepavyko pradėti skambučio.</string>
     <string name="voice_diagnosis_your_server_failed">Jūsų serveriui nepavyko pradėti skambučio.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nepriėmė šiame telefone esančio rakto.</string>
-    <string name="voice_diagnosis_missing_phone_key">Pridėkite savo %1$s API raktą, kad galėtumėte skambinti iš šio telefono.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Nustatymuose suteikite prieigą prie mikrofono, kad galėtumėte kalbėtis su savo seansu.</string>
@@ -140,21 +130,12 @@
     <string name="voice_error_invalid_response">Nepavyko įjungti balso funkcijos: serveris grąžino netinkamą atsakymą.</string>
     <string name="voice_error_start_voice_detail">Nepavyko įjungti balso funkcijos: %1$s</string>
     <string name="voice_error_start_voice_http">Nepavyko įjungti balso funkcijos (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI atmetė API raktą.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nepavyko patikrinti šio rakto (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Nėra ryšio.</string>
-    <string name="voice_error_model_address_invalid">Netinkamas balso modelio adresas.</string>
-    <string name="voice_error_xai_rejected_key">xAI atmetė API raktą.</string>
-    <string name="voice_error_xai_verify_http">xAI nepavyko patikrinti šio rakto (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Šis xAI API raktas išjungtas.</string>
-    <string name="voice_error_xai_key_blocked">Šis xAI API raktas užblokuotas.</string>
     <string name="voice_error_service_address_invalid">Netinkamas balso paslaugos adresas.</string>
     <string name="voice_error_connection_lost">Balso ryšys nutrūko.</string>
     <string name="voice_error_connection_closed">Balso ryšys uždarytas.</string>
     <string name="voice_error_connection_setup">Nepavyko užmegzti balso ryšio.</string>
     <string name="voice_error_safety_filter">Saugos filtras nutraukė balso skambutį.</string>
     <string name="voice_error_audio_reset">Sistema iš naujo nustatė garsą. Pradėkite skambutį dar kartą.</string>
-    <string name="voice_error_missing_phone_key">Nustatymuose pridėkite savo %1$s API raktą, kad galėtumėte naudoti balso funkciją.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australijos anglų</string>
@@ -164,8 +145,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazilijos portugalų</string>
     <string name="voice_accent_filipino_english">Filipinų anglų</string>
     <string name="voice_accent_southern_us_english">Pietų JAV anglų</string>
-    <string name="voice_accent_indian_english">Indijos anglų</string>
-    <string name="voice_preview_error">Nepavyko paleisti perklausos</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Kvėpavimo skambesys</string>

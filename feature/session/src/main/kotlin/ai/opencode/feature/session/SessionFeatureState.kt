@@ -327,12 +327,11 @@ fun State.Companion.peekText(markdown: String): String {
 // region Voice
 
 /**
- * Voice is an opt-in feature (Settings → Voice): calls go through a server that brokers them, or
- * the user's own key for the chosen engine; without either, the call button stays hidden.
+ * Voice is an opt-in feature (Settings → Voice): calls go through a server that brokers them;
+ * without one, the call button stays hidden.
  */
 val State.voiceRoute: VoiceRoute
     get() {
-        val hasOpenAIKey = !openAIAPIKey.value.isNullOrBlank()
         val broker = VoiceBroker(
             choice = voiceServer.value,
             provider = serverVoiceProvider.value,
@@ -341,26 +340,17 @@ val State.voiceRoute: VoiceRoute
             readiness = VoiceReadiness(
                 answers = voiceModelsByServer.value,
                 support = serverVoiceSupportByServer.value,
-                hasPhoneKey = hasOpenAIKey,
                 engine = voiceEngine.value,
             ),
         )
-        return broker.route(
-            engine = voiceEngine.value,
-            support = broker.support(serverVoiceSupportByServer.value),
-            hasOpenAIKey = hasOpenAIKey,
-            hasXAIKey = !xaiAPIKey.value.isNullOrBlank(),
-        )
+        return broker.route(engine = voiceEngine.value, support = broker.support(serverVoiceSupportByServer.value))
     }
 
 val State.isVoiceAvailable: Boolean get() = voiceLabOverride || (voiceModeEnabled.value && voiceRoute.isAvailable)
 
-/**
- * A scripted call, a stand-in server, or the lab's key make the call button available.
- * [VoiceLabDemo] answers nothing in release builds.
- */
+/** A scripted call makes the call button available. [VoiceLabDemo] answers nothing in release builds. */
 private val voiceLabOverride: Boolean
-    get() = VoiceLabDemo.isEnabled || VoiceLabDemo.hasStandInServer || VoiceLabDemo.labAPIKey != null
+    get() = VoiceLabDemo.isEnabled
 
 /** The model the next send applies: a draft's model for the session it creates, or a pick still waiting in a session. */
 val State.sendModel: OpenCodeModelRef? get() = if (session == null) currentModel else pendingModel

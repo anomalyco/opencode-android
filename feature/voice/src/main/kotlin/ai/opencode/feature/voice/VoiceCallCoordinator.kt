@@ -5,7 +5,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 
-/** Realtime and Grok: server VAD owns turns, while the local floor prevents
+/** Realtime: server VAD owns turns, while the local floor prevents
  * tool replies from talking over the user or audio still playing. */
 class VoiceCallCoordinator(
     timing: VoiceCallTiming = VoiceCallTiming.live,
@@ -15,7 +15,6 @@ class VoiceCallCoordinator(
     override val defaultDiagnosticDomain = "RealtimeClient"
     override val expiredDiagnosticDomain = "OpenAIRealtime"
     override val canSwapToStandby get() = floor.floorIsFree
-    private var apiKey = ""
     private var realtime: RealtimeClient? = null
     private var config: RealtimeSessionConfig? = null
     private var currentResponseID: String? = null
@@ -33,8 +32,8 @@ class VoiceCallCoordinator(
     private var transcriptsOwed = 0
     private val heldDelegations = mutableListOf<Pair<VoiceCallEvent, Job>>()
 
-    suspend fun start(apiKey: String, config: RealtimeSessionConfig, realtime: RealtimeClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
-        this.apiKey = apiKey; this.config = config; this.realtime = realtime
+    suspend fun start(config: RealtimeSessionConfig, realtime: RealtimeClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
+        this.config = config; this.realtime = realtime
         startAudioAndSocket(config.isAtEar, audio)
     }
 
@@ -81,7 +80,7 @@ class VoiceCallCoordinator(
     override suspend fun open(seeded: Boolean): VoiceCallSocket<RealtimeServerEvent, RealtimeCommand, Nothing> {
         val client = realtime ?: throw RealtimeClientError.Closed("The voice connection is closed.")
         val config = config ?: throw RealtimeClientError.Closed("The voice connection is closed.")
-        return openSocket(seeded, { client.connect(apiKey, config) }) { connection ->
+        return openSocket(seeded, { client.connect(config) }) { connection ->
             val mark = history.mark
             connection.sendControl(RealtimeCommand.SystemMessage(history.seedText(openCalls.size + orphanCalls.size)), "realtime.seed")
             if (!running()) throw CancellationException()

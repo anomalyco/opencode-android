@@ -2,7 +2,6 @@ package ai.opencode.feature.drawer
 
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.ImmediateClock
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.homeTest
 import ai.opencode.feature.settings.HomeSettingsFeature
@@ -11,8 +10,6 @@ import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.ServerVoiceProvider
 import ai.opencode.feature.voice.ServerVoiceSupport
-import ai.opencode.feature.voice.VoiceEngine
-import ai.opencode.feature.voice.VoiceKeyFingerprint
 import ai.opencode.feature.voice.VoicePick
 import ai.opencode.feature.voice.VoiceProviderOption
 import ai.opencode.feature.voice.VoiceReadiness
@@ -39,15 +36,12 @@ class VoiceProviderTestsHome {
 
     /**
      * A keyless answer cached before the server was set up doesn't outlive its reconnect:
-     * Automatic goes back to the server instead of the phone's key, and an answer asked before
-     * the reconnect doesn't land.
+     * an answer asked before the reconnect doesn't land.
      */
     @Test fun aReconnectForgetsTheServersModelsAndAnyAnswerStillComing() = homeTest { h ->
         h.setShared(ServerSharedKeys.savedServers, listOf(server))
         h.setShared(ServerSharedKeys.savedServer, server)
         h.setShared(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Automatic)
-        h.setShared(SharedKeys.openAIAPIKey, "sk-phone")
-        h.setShared(SharedKeys.verifiedVoiceKeyFingerprint, VoiceKeyFingerprint.make(key = "sk-phone", model = VoiceEngine.gptLive.modelID))
         h.setShared(VoiceSharedKeys.serverVoiceSupportByServer, mapOf(server.persistenceID to ServerVoiceSupport.supported))
         h.setShared(VoiceSharedKeys.voiceModelsByServer, mapOf<String, ServerVoiceModelsAnswer>(server.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(keyless))))
         fun models() = h.shared(VoiceSharedKeys.voiceModelsByServer)
@@ -56,9 +50,9 @@ class VoiceProviderTestsHome {
             provider = ServerVoiceProvider.openAI,
             connected = server,
             saved = listOf(server),
-            readiness = VoiceReadiness(answers = models(), support = mapOf(server.persistenceID to ServerVoiceSupport.supported), hasPhoneKey = true),
+            readiness = VoiceReadiness(answers = models(), support = mapOf(server.persistenceID to ServerVoiceSupport.supported)),
         )
-        assertEquals(VoiceProviderOption.Place.Phone, pick().place)
+        assertEquals(listOf(keyless), (models()[server.persistenceID] as? ServerVoiceModelsAnswer.Listed)?.models)
 
         val gate = CompletableDeferred<Unit>()
         val store = h.store(h.state { HomeFeature.State(server, empty) }) {

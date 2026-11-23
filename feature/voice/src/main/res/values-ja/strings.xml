@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">通話が終了しました</string>
     <string name="voice_call_ended_rejoin">再参加</string>
     <string name="voice_failure_title">音声に接続できませんでした</string>
-    <string name="voice_failure_check_api_key">APIキーを確認</string>
     <string name="voice_failure_start_title">通話を開始できませんでした</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">キー未設定</string>
     <string name="voice_provider_state_needs_update">OpenCodeを更新</string>
     <string name="voice_provider_state_offline">オフライン</string>
-    <string name="voice_provider_place_phone">このスマホ</string>
-    <string name="voice_provider_brand_openai_account">あなたのOpenAIアカウント</string>
     <string name="voice_provider_name">%2$sの%1$s</string>
     <string name="voice_provider_subtitle">%1$s上</string>
-    <string name="voice_provider_key_row_title">%1$sのキー</string>
-    <string name="voice_provider_key_placeholder">%1$sのAPIキー</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">あなたのサーバー上のキー</string>
-    <string name="voice_key_source_phone_footer">通話には自分のOpenAIまたはxAIのキーを使用します。</string>
     <string name="voice_key_source_server_footer">通話にはサーバー上の%1$sのキーを使用します。</string>
     <string name="voice_key_source_opencode_footer">通話料金はOpenCode Consoleのワークスペースに請求されます。</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">このスマホで設定</string>
     <string name="voice_fix_choose_provider">プロバイダーを選択</string>
     <string name="voice_fix_update_opencode">OpenCodeを更新</string>
     <string name="voice_diagnosis_needs_update">%1$sで音声通話を使うにはOpenCodeの更新が必要です。</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">あなたのサーバーに接続できませんでした。</string>
     <string name="voice_diagnosis_failed">%1$sで通話を開始できませんでした。</string>
     <string name="voice_diagnosis_your_server_failed">あなたのサーバーで通話を開始できませんでした。</string>
-    <string name="voice_diagnosis_key_rejected">このスマホのキーがOpenAIに拒否されました。</string>
-    <string name="voice_diagnosis_missing_phone_key">このスマホで通話するには、%1$sのAPIキーを追加してください。</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">セッションと通話するには、設定でマイクへのアクセスを許可してください。</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">音声通話を開始できませんでした。サーバーから無効な応答が返されました。</string>
     <string name="voice_error_start_voice_detail">音声通話を開始できませんでした: %1$s</string>
     <string name="voice_error_start_voice_http">音声通話を開始できませんでした（HTTP %1$d）。</string>
-    <string name="voice_error_openai_rejected_key">APIキーがOpenAIに拒否されました。</string>
-    <string name="voice_error_openai_verify_http">OpenAIでこのキーを確認できませんでした（HTTP %1$d）。</string>
-    <string name="voice_error_no_connection">接続されていません。</string>
-    <string name="voice_error_model_address_invalid">音声モデルのアドレスが無効です。</string>
-    <string name="voice_error_xai_rejected_key">APIキーがxAIに拒否されました。</string>
-    <string name="voice_error_xai_verify_http">xAIでこのキーを確認できませんでした（HTTP %1$d）。</string>
-    <string name="voice_error_xai_key_disabled">このxAIのAPIキーは無効になっています。</string>
-    <string name="voice_error_xai_key_blocked">このxAIのAPIキーはブロックされています。</string>
     <string name="voice_error_service_address_invalid">音声サービスのアドレスが無効です。</string>
     <string name="voice_error_connection_lost">音声接続が途切れました。</string>
     <string name="voice_error_connection_closed">音声接続は終了しています。</string>
     <string name="voice_error_connection_setup">音声接続を確立できませんでした。</string>
     <string name="voice_error_safety_filter">安全フィルターにより音声通話が終了しました。</string>
     <string name="voice_error_audio_reset">システムにより音声がリセットされました。通話を開始し直してください。</string>
-    <string name="voice_error_missing_phone_key">音声を使うには、設定で%1$sのAPIキーを追加してください。</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">オーストラリア英語</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">ブラジルポルトガル語</string>
     <string name="voice_accent_filipino_english">フィリピン英語</string>
     <string name="voice_accent_southern_us_english">アメリカ南部英語</string>
-    <string name="voice_accent_indian_english">インド英語</string>
-    <string name="voice_preview_error">試聴できませんでした</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">ブレスピン</string>

@@ -7,7 +7,6 @@ import ai.opencode.core.dependencies.UuidClient
 import ai.opencode.core.dependencies.asContextElement
 import ai.opencode.core.haptics.Haptic
 import ai.opencode.core.haptics.HapticsClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
@@ -155,9 +154,6 @@ internal object VoiceFeatureTestSupport {
     suspend fun <R> withTestDependencies(update: DependencyValues.Builder.() -> Unit, block: suspend () -> R): R =
         withContext(DependencyValues.testing().update(update).asContextElement()) { block() }
 
-    fun TestStore<VoiceFeature.State, VoiceFeature.Action>.setAPIKey(key: String?) =
-        withDependencies { shared(SharedKeys.openAIAPIKey).set(key) }
-
     fun TestStore<VoiceFeature.State, VoiceFeature.Action>.transcripts(): Map<String, VoiceTranscriptRecord> =
         withDependencies { shared(VoiceSharedKeys.voiceTranscripts).value }
 
@@ -174,7 +170,7 @@ internal object VoiceFeatureTestSupport {
 
     /** A copy of the call client with some closures replaced. */
     fun VoiceCallClient.copy(
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
         completeFunction: suspend (String, String) -> Unit = this.completeFunction,
         noteProgressActivity: suspend (String, String?) -> Unit = this.noteProgressActivity,
         stopProgressLine: suspend (String) -> Unit = this.stopProgressLine,
@@ -233,8 +229,14 @@ internal object VoiceFeatureTestSupport {
         this[VoiceWorkClient] = this[VoiceWorkClient].update()
     }
 
-    fun delegator(respond: suspend (String, List<VoiceDelegator.InputItem>, String?) -> VoiceDelegator.Response) =
-        VoiceDelegatorClient(isEnabled = true, respond = respond)
+    /** Server Voice delegation rounds answered by [respond], given the tool results sent since the last round. */
+    fun VoiceCallClient.delegating(respond: suspend (List<VoiceDelegator.InputItem>) -> VoiceDelegator.Response): VoiceCallClient {
+        val submitted = LockIsolated(listOf<VoiceDelegator.InputItem>())
+        return copy(
+            delegatorRound = { _ -> runCatching { respond(submitted.withValue { emptyList<VoiceDelegator.InputItem>() to it }) } },
+            submitDelegatorInput = { _, input -> submitted.setValue(input); true },
+        )
+    }
 
     fun response(id: String, calls: List<VoiceDelegator.ToolCall> = emptyList(), text: String = "") =
         VoiceDelegator.Response(id = id, calls = calls, text = text)

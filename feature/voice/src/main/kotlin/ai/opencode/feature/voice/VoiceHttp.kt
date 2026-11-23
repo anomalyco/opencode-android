@@ -14,8 +14,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * One HTTP exchange read whole, for the voice calls that talk to OpenAI, xAI or a server's voice
- * routes outside `OpenCodeClient`.
+ * One HTTP exchange read whole, for the voice calls that talk to a server's voice routes outside
+ * `OpenCodeClient`.
  */
 class VoiceHttpResponse(val statusCode: Int, val headers: Headers, val body: ByteArray) {
     fun header(name: String): String? = headers[name]

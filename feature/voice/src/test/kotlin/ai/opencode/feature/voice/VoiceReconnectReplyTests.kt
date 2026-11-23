@@ -3,7 +3,6 @@ package ai.opencode.feature.voice
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
@@ -170,8 +169,7 @@ class VoiceReconnectReplyTests {
             delivered = { delivered.toList() },
             note = { },
         )
-        val client = VoiceDelegatorClient(isEnabled = true) { _, _, _ -> throw OpenCodeClientError("unused") }
-        return client.runOnCall(
+        return VoiceDelegatorClient(isEnabled = true).runOnCall(
             delegationID = "del_1",
             rounds = VoiceDelegatorRounds(next = { rounds.removeFirst() }, submit = { _, _ -> true }),
             tools = tools,
@@ -183,7 +181,6 @@ class VoiceReconnectReplyTests {
         assertEquals(
             VoiceDelegator.Outcome(
                 reply = VoiceDelegator.deliveredBeforeFailure(listOf(sent)),
-                responseID = null,
                 unanswered = listOf(sent),
                 interrupted = replaced.message,
             ),
@@ -211,69 +208,6 @@ class VoiceReconnectReplyTests {
     }
 
     /**
-     * On the phone's key the delegator chains requests by response ID. The
-     * recovered request's last response has a `send_message` call whose
-     * output never reached it, so the next request chains onto the response
-     * before it, and the Responses API (stood in for here) takes it.
-     */
-    @Test fun theNextDelegationAfterARecoveredSendHasNoDanglingFunctionCalls() = runTest {
-        val shared = VoiceTestShared()
-        shared.set(SharedKeys.openAIAPIKey, "sk-test")
-        val voice = voiceOnCall(shared).copy(delegatorResponseID = "r0")
-        // Calls each response made, and the requests it got: (previous, input).
-        val pendingCalls = mutableMapOf("r0" to emptyList<String>())
-        val requests = mutableListOf<Pair<String?, List<VoiceDelegator.InputItem>>>()
-        val replaced = replaced
-        val completed = mutableListOf<String>()
-        // The store's effects run in a scope the test cancels.
-        val effects = CoroutineScope(coroutineContext + SupervisorJob(coroutineContext[Job]))
-        val store = voiceTestStore(shared, { voice }, effects) {
-            this[Clock] = TestClock()
-            this[DateClient] = DateClient.constant(Instant.EPOCH)
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, previous ->
-                requests += previous to input
-                val number = requests.size
-                val answered = input.mapNotNull { (it as? VoiceDelegator.InputItem.ToolOutput)?.callID }.toSet()
-                val missing = previous?.let { pendingCalls[it] }?.firstOrNull { it !in answered }
-                if (missing != null) throw OpenCodeClientError("No tool output found for function call $missing.", statusCode = 400)
-                when (number) {
-                    1 -> {
-                        pendingCalls["r1"] = listOf("t1")
-                        VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "send_message", arguments = """{"text":"Prioritize ElevenLabs"}""")), text = "")
-                    }
-                    2 -> throw replaced
-                    else -> {
-                        pendingCalls["r3"] = emptyList()
-                        VoiceDelegator.Response(id = "r3", calls = emptyList(), text = "It's still on the sound options.")
-                    }
-                }
-            }
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                sendDeliveredPrompt = { _, _, _, _ -> "msg_steer" },
-                familyPendingRequests = { _, _, _ -> OpenCodePendingRequests(permissions = emptyList(), forms = emptyList()) },
-            )
-            this[VoiceWorkClient] = testVoiceWork(awaitReply = { _, _, _ ->
-                delay(60.seconds)
-                null
-            })
-            this[VoiceCallClient] = testVoiceCall(completeFunction = { _, output -> completed += output })
-        }
-        store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = RealtimeJSONs.obj())))
-        store.receiveAfterActorWork(::isDelegatorFinished, timeout = 5.seconds)
-        assertEquals("r0", store.state.delegatorResponseID)
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.UserTranscript(itemID = "u2", text = "How's it going?", final = true)))
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d2", name = "delegate", arguments = RealtimeJSONs.obj())))
-        store.receiveAfterActorWork(::isDelegatorFinished, timeout = 5.seconds)
-        untilAfterActorWork { completed.size >= 2 }
-        assertEquals(listOf("r0", "r1", "r0"), requests.map { it.first })
-        assertTrue(requests.last().second.all { it is VoiceDelegator.InputItem.User })
-        assertEquals(VoiceHandoff.completion("It's still on the sound options."), completed.lastOrNull())
-        assertEquals("r3", store.state.delegatorResponseID)
-        effects.cancel()
-    }
-
-    /**
      * Through the call: the Responses round after `send_message` fails as the
      * connection is replaced. The voice agent hears the message went through,
      * never "could not take that request", and the reply stays watched.
@@ -292,9 +226,7 @@ class VoiceReconnectReplyTests {
         val store = voiceTestStore(shared, { voice }, effects) {
             this[Clock] = TestClock()
             this[DateClient] = DateClient.constant(Instant.EPOCH)
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                throw AssertionError("The phone's delegator must not run on a Responses delegation")
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 sendDeliveredPrompt = { _, _, _, _ -> "msg_steer" },
                 familyPendingRequests = { _, _, _ -> OpenCodePendingRequests(permissions = emptyList(), forms = emptyList()) },

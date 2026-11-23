@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">通话已结束</string>
     <string name="voice_call_ended_rejoin">重新加入</string>
     <string name="voice_failure_title">无法连接语音</string>
-    <string name="voice_failure_check_api_key">检查 API 密钥</string>
     <string name="voice_failure_start_title">无法发起通话</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">无密钥</string>
     <string name="voice_provider_state_needs_update">更新 OpenCode</string>
     <string name="voice_provider_state_offline">离线</string>
-    <string name="voice_provider_place_phone">此手机</string>
-    <string name="voice_provider_brand_openai_account">你的 OpenAI 账户</string>
     <string name="voice_provider_name">%2$s 上的 %1$s</string>
     <string name="voice_provider_subtitle">在 %1$s 上</string>
-    <string name="voice_provider_key_row_title">%1$s 密钥</string>
-    <string name="voice_provider_key_placeholder">%1$s API 密钥</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">服务器上的密钥</string>
-    <string name="voice_key_source_phone_footer">通话使用你自己的 OpenAI 或 xAI 密钥。</string>
     <string name="voice_key_source_server_footer">通话使用你服务器上的 %1$s 密钥。</string>
     <string name="voice_key_source_opencode_footer">通话费用计入你的 OpenCode Console 工作区。</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">在此手机上设置</string>
     <string name="voice_fix_choose_provider">选择提供商</string>
     <string name="voice_fix_update_opencode">更新 OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s 需要更新 OpenCode 才能进行语音通话。</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">无法连接到你的服务器。</string>
     <string name="voice_diagnosis_failed">%1$s 无法发起通话。</string>
     <string name="voice_diagnosis_your_server_failed">你的服务器无法发起通话。</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI 拒绝了此手机上的密钥。</string>
-    <string name="voice_diagnosis_missing_phone_key">添加你的 %1$s API 密钥，即可从此手机发起通话。</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">请在设置中允许访问麦克风，即可与会话进行语音交流。</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">无法启动语音：服务器返回了无效回复。</string>
     <string name="voice_error_start_voice_detail">无法启动语音：%1$s</string>
     <string name="voice_error_start_voice_http">无法启动语音（HTTP %1$d）。</string>
-    <string name="voice_error_openai_rejected_key">OpenAI 拒绝了此 API 密钥。</string>
-    <string name="voice_error_openai_verify_http">OpenAI 无法验证此密钥（HTTP %1$d）。</string>
-    <string name="voice_error_no_connection">未连接。</string>
-    <string name="voice_error_model_address_invalid">语音模型地址无效。</string>
-    <string name="voice_error_xai_rejected_key">xAI 拒绝了此 API 密钥。</string>
-    <string name="voice_error_xai_verify_http">xAI 无法验证此密钥（HTTP %1$d）。</string>
-    <string name="voice_error_xai_key_disabled">此 xAI API 密钥已禁用。</string>
-    <string name="voice_error_xai_key_blocked">此 xAI API 密钥已被封禁。</string>
     <string name="voice_error_service_address_invalid">语音服务地址无效。</string>
     <string name="voice_error_connection_lost">语音连接已断开。</string>
     <string name="voice_error_connection_closed">语音连接已关闭。</string>
     <string name="voice_error_connection_setup">无法建立语音连接。</string>
     <string name="voice_error_safety_filter">语音通话因安全过滤而结束。</string>
     <string name="voice_error_audio_reset">系统已重置音频，请重新发起通话。</string>
-    <string name="voice_error_missing_phone_key">请在设置中添加你的 %1$s API 密钥，以使用语音功能。</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">澳大利亚英语</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">巴西葡萄牙语</string>
     <string name="voice_accent_filipino_english">菲律宾英语</string>
     <string name="voice_accent_southern_us_english">美国南部英语</string>
-    <string name="voice_accent_indian_english">印度英语</string>
-    <string name="voice_preview_error">无法试听</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">轻息叮咚</string>

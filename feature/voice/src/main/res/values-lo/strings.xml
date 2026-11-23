@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">ການໂທສິ້ນສຸດແລ້ວ</string>
     <string name="voice_call_ended_rejoin">ເຂົ້າຮ່ວມອີກຄັ້ງ</string>
     <string name="voice_failure_title">ເຊື່ອມຕໍ່ສຽງບໍ່ໄດ້</string>
-    <string name="voice_failure_check_api_key">ກວດລະຫັດ API</string>
     <string name="voice_failure_start_title">ເລີ່ມການໂທບໍ່ໄດ້</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">ບໍ່ມີລະຫັດ</string>
     <string name="voice_provider_state_needs_update">ອັບເດດ OpenCode</string>
     <string name="voice_provider_state_offline">ອອບລາຍ</string>
-    <string name="voice_provider_place_phone">ໂທລະສັບນີ້</string>
-    <string name="voice_provider_brand_openai_account">ບັນຊີ OpenAI ຂອງເຈົ້າ</string>
     <string name="voice_provider_name">%1$s ໃນ %2$s</string>
     <string name="voice_provider_subtitle">ໃນ %1$s</string>
-    <string name="voice_provider_key_row_title">ລະຫັດ %1$s</string>
-    <string name="voice_provider_key_placeholder">ລະຫັດ API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">ລະຫັດໃນເຊີບເວີຂອງເຈົ້າ</string>
-    <string name="voice_key_source_phone_footer">ການໂທໃຊ້ລະຫັດ OpenAI ຫຼື xAI ຂອງເຈົ້າເອງ.</string>
     <string name="voice_key_source_server_footer">ການໂທໃຊ້ລະຫັດ %1$s ໃນເຊີບເວີຂອງເຈົ້າ.</string>
     <string name="voice_key_source_opencode_footer">ຄ່າໂທຈະຖືກເກັບຈາກພື້ນທີ່ເຮັດວຽກ OpenCode Console ຂອງເຈົ້າ.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">ຕັ້ງຄ່າໃນໂທລະສັບນີ້</string>
     <string name="voice_fix_choose_provider">ເລືອກຜູ້ໃຫ້ບໍລິການ</string>
     <string name="voice_fix_update_opencode">ອັບເດດ OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s ຕ້ອງໃຊ້ OpenCode ລຸ້ນໃໝ່ກວ່າເພື່ອໂທດ້ວຍສຽງ.</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">ເຊື່ອມຕໍ່ຫາເຊີບເວີຂອງເຈົ້າບໍ່ໄດ້.</string>
     <string name="voice_diagnosis_failed">%1$s ເລີ່ມການໂທບໍ່ໄດ້.</string>
     <string name="voice_diagnosis_your_server_failed">ເຊີບເວີຂອງເຈົ້າເລີ່ມການໂທບໍ່ໄດ້.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI ບໍ່ຍອມຮັບລະຫັດໃນໂທລະສັບນີ້.</string>
-    <string name="voice_diagnosis_missing_phone_key">ເພີ່ມລະຫັດ API %1$s ຂອງເຈົ້າເພື່ອໂທຈາກໂທລະສັບນີ້.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">ອະນຸຍາດໃຫ້ໃຊ້ໄມໂຄຣໂຟນໃນການຕັ້ງຄ່າເພື່ອລົມກັບເຊດຊັນຂອງເຈົ້າ.</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້: ເຊີບເວີສົ່ງຄຳຕອບທີ່ບໍ່ຖືກຕ້ອງກັບມາ.</string>
     <string name="voice_error_start_voice_detail">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້: %1$s</string>
     <string name="voice_error_start_voice_http">ເລີ່ມໃຊ້ສຽງບໍ່ໄດ້ (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI ປະຕິເສດລະຫັດ API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI ກວດສອບລະຫັດນີ້ບໍ່ໄດ້ (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">ບໍ່ມີການເຊື່ອມຕໍ່.</string>
-    <string name="voice_error_model_address_invalid">ທີ່ຢູ່ຕົວແບບສຽງບໍ່ຖືກຕ້ອງ.</string>
-    <string name="voice_error_xai_rejected_key">xAI ປະຕິເສດລະຫັດ API.</string>
-    <string name="voice_error_xai_verify_http">xAI ກວດສອບລະຫັດນີ້ບໍ່ໄດ້ (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">ລະຫັດ API xAI ນີ້ຖືກປິດໃຊ້.</string>
-    <string name="voice_error_xai_key_blocked">ລະຫັດ API xAI ນີ້ຖືກບລັອກ.</string>
     <string name="voice_error_service_address_invalid">ທີ່ຢູ່ບໍລິການສຽງບໍ່ຖືກຕ້ອງ.</string>
     <string name="voice_error_connection_lost">ການເຊື່ອມຕໍ່ສຽງຂາດຫາຍ.</string>
     <string name="voice_error_connection_closed">ການເຊື່ອມຕໍ່ສຽງປິດແລ້ວ.</string>
     <string name="voice_error_connection_setup">ຕັ້ງຄ່າການເຊື່ອມຕໍ່ສຽງບໍ່ໄດ້.</string>
     <string name="voice_error_safety_filter">ຕົວກັ່ນຕອງຄວາມປອດໄພໄດ້ຢຸດການໂທດ້ວຍສຽງ.</string>
     <string name="voice_error_audio_reset">ລະບົບໄດ້ຣີເຊັດສຽງ. ເລີ່ມການໂທໃໝ່.</string>
-    <string name="voice_error_missing_phone_key">ເພີ່ມລະຫັດ API %1$s ຂອງເຈົ້າໃນການຕັ້ງຄ່າເພື່ອໃຊ້ສຽງ.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">ອັງກິດສຳນຽງອົດສະຕຣາລີ</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">ປອກຕຸຍການສຳນຽງບຣາຊິນ</string>
     <string name="voice_accent_filipino_english">ອັງກິດສຳນຽງຟິລິບປິນ</string>
     <string name="voice_accent_southern_us_english">ອັງກິດສຳນຽງພາກໃຕ້ສະຫະລັດ</string>
-    <string name="voice_accent_indian_english">ອັງກິດສຳນຽງອິນເດຍ</string>
-    <string name="voice_preview_error">ຫຼິ້ນສຽງຕົວຢ່າງບໍ່ໄດ້</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">ສຽງຕິ໊ງເບົາໆ</string>

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Anruf beendet</string>
     <string name="voice_call_ended_rejoin">Erneut beitreten</string>
     <string name="voice_failure_title">Sprachverbindung fehlgeschlagen</string>
-    <string name="voice_failure_check_api_key">API-Schlüssel prüfen</string>
     <string name="voice_failure_start_title">Anrufstart fehlgeschlagen</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Kein Schlüssel</string>
     <string name="voice_provider_state_needs_update">OpenCode aktualisieren</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">Dieses Handy</string>
-    <string name="voice_provider_brand_openai_account">Dein OpenAI-Konto</string>
     <string name="voice_provider_name">%1$s auf %2$s</string>
     <string name="voice_provider_subtitle">Auf %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-Schlüssel</string>
-    <string name="voice_provider_key_placeholder">%1$s-API-Schlüssel</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Schlüssel auf deinem Server</string>
-    <string name="voice_key_source_phone_footer">Anrufe verwenden deinen eigenen OpenAI- oder xAI-Schlüssel.</string>
     <string name="voice_key_source_server_footer">Anrufe verwenden den %1$s-Schlüssel auf deinem Server.</string>
     <string name="voice_key_source_opencode_footer">Anrufe werden über deinen OpenCode Console-Arbeitsbereich abgerechnet.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Auf diesem Handy einrichten</string>
     <string name="voice_fix_choose_provider">Anbieter auswählen</string>
     <string name="voice_fix_update_opencode">OpenCode aktualisieren</string>
     <string name="voice_diagnosis_needs_update">%1$s braucht eine neuere OpenCode-Version für Sprachanrufe.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Dein Server ist nicht erreichbar.</string>
     <string name="voice_diagnosis_failed">%1$s konnte den Anruf nicht starten.</string>
     <string name="voice_diagnosis_your_server_failed">Dein Server konnte den Anruf nicht starten.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI hat den Schlüssel auf diesem Handy nicht akzeptiert.</string>
-    <string name="voice_diagnosis_missing_phone_key">Füge deinen %1$s-API-Schlüssel hinzu, um von diesem Handy anzurufen.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Erlaube den Mikrofonzugriff in den Einstellungen, um mit deiner Sitzung zu sprechen.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Sprachfunktion konnte nicht gestartet werden: Die Serverantwort ist ungültig.</string>
     <string name="voice_error_start_voice_detail">Sprachfunktion konnte nicht gestartet werden: %1$s</string>
     <string name="voice_error_start_voice_http">Sprachfunktion konnte nicht gestartet werden (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI hat den API-Schlüssel abgelehnt.</string>
-    <string name="voice_error_openai_verify_http">OpenAI konnte diesen Schlüssel nicht überprüfen (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Keine Verbindung.</string>
-    <string name="voice_error_model_address_invalid">Die Adresse des Sprachmodells ist ungültig.</string>
-    <string name="voice_error_xai_rejected_key">xAI hat den API-Schlüssel abgelehnt.</string>
-    <string name="voice_error_xai_verify_http">xAI konnte diesen Schlüssel nicht überprüfen (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Dieser xAI-API-Schlüssel ist deaktiviert.</string>
-    <string name="voice_error_xai_key_blocked">Dieser xAI-API-Schlüssel ist gesperrt.</string>
     <string name="voice_error_service_address_invalid">Die Adresse des Sprachdienstes ist ungültig.</string>
     <string name="voice_error_connection_lost">Die Sprachverbindung wurde unterbrochen.</string>
     <string name="voice_error_connection_closed">Die Sprachverbindung ist geschlossen.</string>
     <string name="voice_error_connection_setup">Die Sprachverbindung konnte nicht hergestellt werden.</string>
     <string name="voice_error_safety_filter">Ein Sicherheitsfilter hat den Sprachanruf beendet.</string>
     <string name="voice_error_audio_reset">Audio wurde vom System zurückgesetzt. Starte den Anruf erneut.</string>
-    <string name="voice_error_missing_phone_key">Füge deinen %1$s-API-Schlüssel in den Einstellungen hinzu, um die Sprachfunktion zu nutzen.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australisches Englisch</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brasilianisches Portugiesisch</string>
     <string name="voice_accent_filipino_english">Philippinisches Englisch</string>
     <string name="voice_accent_southern_us_english">Englisch der US-Südstaaten</string>
-    <string name="voice_accent_indian_english">Indisches Englisch</string>
-    <string name="voice_preview_error">Vorschau konnte nicht abgespielt werden</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Atem-Ping</string>

@@ -43,10 +43,8 @@ sealed interface SettingsPage {
     /** Settings › Models › one provider (`ModelVisibilityProviderView`). */
     data class ModelProvider(val providerID: String) : SettingsPage
     data object Voice : SettingsPage
-    /** Settings › Voice › Voice Provider; [opensAccount] pushes Your Account over it. */
-    data class VoiceProvider(val opensAccount: Boolean = false) : SettingsPage
-    /** Settings › Voice › Voice Provider › API Key. */
-    data object VoiceAccount : SettingsPage
+    /** Settings › Voice › Voice Provider. */
+    data object VoiceProvider : SettingsPage
     /** Settings › Voice › Delegator. */
     data object VoiceDelegator : SettingsPage
     /** Settings › Voice › Voice (`CallVoicePicker`). */
@@ -338,11 +336,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
         var next = state.copy(path = path)
         if (SettingsPage.ServerDetails !in path) next = next.copy(serverDetails = null)
         if (path.none { it == SettingsPage.Models || it is SettingsPage.ModelProvider }) next = next.copy(modelVisibility = null)
-        var effect: Effect<Action> = Effect.none()
-        if (SettingsPage.CallVoicePicker in state.path && SettingsPage.CallVoicePicker !in path) {
-            effect = Effect.send(Action.Voice(VoiceSettingsFeature.Action.VoicePickerDisappeared))
-        }
-        if (next.serverDetails == null) effect = Effect.merge(effect, leaveServerDetails(state.serverDetails))
+        val effect = if (next.serverDetails == null) leaveServerDetails(state.serverDetails) else Effect.none()
         return Reduced(next, effect)
     }
 

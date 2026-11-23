@@ -11,9 +11,7 @@ import ai.opencode.feature.voice.ServerVoiceModel
 import ai.opencode.feature.voice.ServerVoiceModelsAnswer
 import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.feature.voice.VoiceEngine
-import ai.opencode.feature.voice.VoiceKeyFingerprint
 import ai.opencode.feature.voice.VoiceKeySource
-import ai.opencode.feature.voice.VoiceProvider
 import ai.opencode.feature.voice.VoiceProviderState
 import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.feature.voice.VoiceServerChoice
@@ -48,11 +46,6 @@ class VoiceServerPickerTests {
 
     private fun SettingsTestShared.setSupport(support: Map<String, ServerVoiceSupport>) =
         set(VoiceSharedKeys.serverVoiceSupportByServer, support)
-
-    private fun SettingsTestShared.savePhoneKey() {
-        set(SharedKeys.openAIAPIKey, "sk-phone")
-        set(SharedKeys.verifiedVoiceKeyFingerprint, VoiceKeyFingerprint.make(key = "sk-phone", model = VoiceEngine.gptLive.modelID))
-    }
 
     private fun serverVoice(models: suspend (OpenCodeServer) -> List<ServerVoiceModel>?) = ServerVoiceClient(
         checkSupport = { throw AssertionError("Unused") },
@@ -118,8 +111,8 @@ class VoiceServerPickerTests {
         )
         store.withDependencies {
             val catalog = store.state.providerCatalog
-            assertEquals("OpenAI on My Mac", catalog.active.name)
-            assertEquals(VoiceProviderState.ready, catalog.active.state)
+            assertEquals("OpenAI on My Mac", catalog.active?.name)
+            assertEquals(VoiceProviderState.ready, catalog.active?.state)
             assertTrue(catalog.isAutomatic)
             assertEquals(listOf("OpenAI on Studio"), catalog.others.map { it.name })
             assertEquals(listOf("Grok Box", "Old Box"), catalog.unavailable.map { it.title })
@@ -149,14 +142,14 @@ class VoiceServerPickerTests {
         store.finish()
     }
 
-    /** A picked server brokers before its check answers. A pick that's no longer saved chooses automatically; This Phone brokers nothing. */
+    /** A picked server brokers before its check answers. A pick that's no longer saved chooses automatically. */
     @Test fun aPickBrokersAndAStaleOneChoosesAutomatically() {
         val shared = SettingsTestShared()
         shared.save(listOf(server, studio), choice = VoiceServerChoice.of(studio))
         val settings = VoiceSettingsFeature.State(server = server)
         shared.read {
             assertTrue(settings.broker.isEnabled && settings.broker.server == studio && !settings.broker.isAutomatic)
-            assertEquals("Studio", settings.providerCatalog.active.placeName)
+            assertEquals("Studio", settings.providerCatalog.active?.placeName)
             assertFalse(settings.providerCatalog.isAutomatic)
 
             val onStudio = VoiceSettingsFeature.State(server = studio)
@@ -169,18 +162,11 @@ class VoiceServerPickerTests {
             assertTrue(settings.broker.isAutomatic)
             assertTrue(settings.providerCatalog.isAutomatic)
         }
-
-        shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Phone)
-        shared.read {
-            assertTrue(!settings.broker.isEnabled && settings.broker.server == null)
-            assertEquals("Your OpenAI Account on This Phone", settings.providerCatalog.active.name)
-            assertEquals(VoiceProviderState.noKey, settings.providerCatalog.active.state)
-        }
     }
 
     /**
      * A broker that lists the call's model as OpenCode's starts it through its OpenCode Console
-     * connection, so the key row names OpenCode and the footer the workspace it bills. Any other
+     * connection, so the footer names the workspace it bills. Any other
      * answer keeps the provider's key.
      */
     @Test fun theKeyRowNamesOpenCodeWhenTheBrokerHostsTheCallThroughIt() {
@@ -194,10 +180,7 @@ class VoiceServerPickerTests {
         )
         shared.read {
             assertEquals(VoiceKeySource.OpenCode, settings.keySource)
-            assertEquals("Key on Your Server", settings.keyRowTitle)
-            assertEquals("OpenCode", settings.keyBadgeTitle)
             assertEquals("Calls are billed to your OpenCode Console workspace.", settings.keySource.footer)
-
         }
         shared.set(
             VoiceSharedKeys.voiceModelsByServer,
@@ -221,15 +204,11 @@ class VoiceServerPickerTests {
         shared.read {
             assertEquals("Studio brokers with its own OpenAI key", VoiceKeySource.Server(providerName = "OpenAI"), settings.keySource)
         }
-
-        shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Phone)
-        shared.read { assertEquals(VoiceKeySource.Phone(VoiceProvider.openAI), settings.keySource) }
     }
 
     /**
      * Home saves Voice Server and asks the server it names whether it brokers calls, keeping the
-     * answer under that server: the chosen one, the connected one once the chosen one is gone, and
-     * none for This Phone.
+     * answer under that server: the chosen one, and the connected one once the chosen one is gone.
      */
     @Test fun homeSavesTheChoiceAndAsksTheServerItNames() = runTest {
         val shared = SettingsTestShared()
@@ -253,10 +232,6 @@ class VoiceServerPickerTests {
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(studio.persistenceID, ServerVoiceSupport.supported))
         assertEquals(mapOf(studio.persistenceID to ServerVoiceSupport.supported), shared.get(VoiceSharedKeys.serverVoiceSupportByServer))
 
-        store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Phone))
-        assertEquals(VoiceServerChoice.Phone, shared.get(VoiceSharedKeys.voiceServerChoice))
-        store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
-
         // A pick no longer saved chooses automatically, which reads the connected server's
         // models; one that doesn't answer reads as offline.
         store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Saved(serverID = "srv_gone")))
@@ -272,20 +247,18 @@ class VoiceServerPickerTests {
     }
 
     /**
-     * Never the connected server's support. A picked server without the voice routes fails rather
-     * than move to the phone's key.
+     * Never the connected server's support. A picked server without the voice routes fails.
      */
     @Test fun everyEntryPointRoutesByTheChosenServersSupport() {
         val shared = SettingsTestShared()
         shared.save(listOf(server, studio), choice = VoiceServerChoice.of(studio))
-        shared.savePhoneKey()
         shared.set(SharedKeys.voiceModeEnabled, true)
         val settings = VoiceSettingsFeature.State(server = server)
 
         shared.setSupport(mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.unsupported))
         shared.read {
             assertEquals(VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported), settings.route)
-            assertEquals(VoiceProviderState.needsUpdate, settings.providerCatalog.active.state)
+            assertEquals(VoiceProviderState.needsUpdate, settings.providerCatalog.active?.state)
         }
 
         shared.setSupport(mapOf(server.persistenceID to ServerVoiceSupport.unsupported, studio.persistenceID to ServerVoiceSupport.supported))
@@ -295,23 +268,4 @@ class VoiceServerPickerTests {
         }
     }
 
-    @Test fun thisIPhoneUsesThePhonesOwnKey() {
-        val shared = SettingsTestShared()
-        shared.save(listOf(server, studio), choice = VoiceServerChoice.Phone)
-        shared.setSupport(mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.supported))
-        shared.set(SharedKeys.voiceModeEnabled, true)
-        shared.read {
-            assertEquals(
-                VoiceRoute.Unavailable(VoiceRoute.Reason.MissingPhoneKey(VoiceEngine.gptLive)),
-                VoiceSettingsFeature.State(server = server).route,
-            )
-        }
-
-        shared.savePhoneKey()
-        shared.read {
-            val settings = VoiceSettingsFeature.State(server = server)
-            assertEquals(VoiceRoute.PhoneKey(VoiceEngine.gptLive), settings.route)
-            assertEquals(VoiceKeySource.Phone(VoiceProvider.openAI), settings.keySource)
-        }
-    }
 }

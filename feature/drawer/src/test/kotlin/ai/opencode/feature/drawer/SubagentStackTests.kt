@@ -428,7 +428,6 @@ class SubagentStackTests {
         val childModel = OpenCodeModelRef(id = "gpt-5.4", providerID = "openai", variant = "high")
         val childURL = "https://docs.example.com/subagent"
         h.setShared(SharedKeys.voiceModeEnabled, true)
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         val state = h.home().let { home ->
             h.state {
                 home.copy(waitingPicks = home.waitingPicks + (child.id to childModel)).updatingDetail {

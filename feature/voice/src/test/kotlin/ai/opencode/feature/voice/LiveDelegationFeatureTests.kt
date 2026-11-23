@@ -2,7 +2,6 @@ package ai.opencode.feature.voice
 
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.DependencyValues
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.store.TestStore
 import ai.opencode.server.OpenCodeClientError
@@ -33,7 +32,6 @@ class LiveDelegationFeatureTests {
     ): TestStore<VoiceFeature.State, VoiceFeature.Action> {
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }, dependencies = dependencies)
         store.exhaustive = false
-        shared.set(SharedKeys.openAIAPIKey, "sk-test")
         shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
         return store
     }
@@ -52,7 +50,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed += callID to output },
             )
             this[VoiceWorkClient] = testVoiceWork(
@@ -122,7 +120,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed[callID] = output },
             )
             this[VoiceWorkClient] = testVoiceWork(
@@ -208,7 +206,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
             )
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
@@ -296,7 +294,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[DateClient] = DateClient { clock }
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ ->
+            this[VoiceCallClient] = testVoiceCall(start = { _ ->
                 val call = CallEvents()
                 calls += call
                 call.flow
@@ -395,7 +393,7 @@ class LiveDelegationFeatureTests {
         val submitted = mutableListOf<String>()
         val shared = VoiceTestShared()
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ -> events.flow })
+            this[VoiceCallClient] = testVoiceCall(start = { _ -> events.flow })
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
                     submitted += text
@@ -407,7 +405,6 @@ class LiveDelegationFeatureTests {
             )
         }
         store.exhaustive = false
-        shared.set(SharedKeys.openAIAPIKey, "sk-test")
         store.send(VoiceFeature.Action.Start)
         events.yieldEvent(VoiceCallEvent.Connected)
         store.receive(::isCallEvent)
@@ -429,7 +426,7 @@ class LiveDelegationFeatureTests {
         val submitted = mutableListOf<String>()
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
-            this[VoiceCallClient] = testVoiceCall(start = { _, _ -> events.flow })
+            this[VoiceCallClient] = testVoiceCall(start = { _ -> events.flow })
             this[VoiceWorkClient] = testVoiceWork(
                 submit = { _, text ->
                     submitted += text
@@ -501,7 +498,7 @@ class LiveDelegationFeatureTests {
         val shared = VoiceTestShared()
         val store = liveStore(shared) {
             this[VoiceCallClient] = testVoiceCall(
-                start = { _, _ -> events.flow },
+                start = { _ -> events.flow },
                 completeFunction = { callID, output -> completed[callID] = output },
             )
             this[VoiceWorkClient] = testVoiceWork(

@@ -3,10 +3,9 @@ package ai.opencode.feature.voice
 import ai.opencode.core.strings.localized
 import ai.opencode.server.OpenCodeServer
 
-/** The only precedence table for a new call. Never contains a phone key. */
+/** The only precedence table for a new call. */
 sealed interface VoiceRoute {
     data class Server(val server: ServerRoute) : VoiceRoute
-    data class PhoneKey(override val engine: VoiceEngine) : VoiceRoute
     data class Unavailable(val reason: Reason) : VoiceRoute
 
     enum class OpenAI {
@@ -22,12 +21,10 @@ sealed interface VoiceRoute {
     }
 
     sealed interface Reason {
-        data class MissingPhoneKey(val engine: VoiceEngine) : Reason
         data object ServerUnsupported : Reason
 
         val message: String
             get() = when (this) {
-                is MissingPhoneKey -> "Add your ${engine.provider.displayName} API key in Settings to use Voice."
                 ServerUnsupported -> ServerVoiceError.unsupportedServerNotice
             }
     }
@@ -36,14 +33,12 @@ sealed interface VoiceRoute {
 
     val isServer: Boolean get() = this is Server
 
-    val warmsPhoneConnection: Boolean get() = this == PhoneKey(VoiceEngine.gptLive)
     val usesBrokerDelegator: Boolean get() = this == serverOpenAI(OpenAI.gptLive)
     val sendsContextDelta: Boolean get() = engine == VoiceEngine.gptLive || this == serverGeminiLive
 
     /** Gemini is not an OpenAI engine, even though it shares the attached-session tools. */
     val engine: VoiceEngine?
         get() = when (this) {
-            is PhoneKey -> engine
             is Server -> when (val route = server) {
                 is ServerRoute.OpenAI -> route.model.engine
                 ServerRoute.GeminiLive -> null
@@ -61,11 +56,9 @@ sealed interface VoiceRoute {
                 is ServerRoute.OpenAI -> VoiceKeySource.Server(providerName = "OpenAI")
                 ServerRoute.GeminiLive -> VoiceKeySource.Server(providerName = "Gemini Live")
             }
-            is Unavailable -> when (val reason = reason) {
+            is Unavailable -> when (reason) {
                 Reason.ServerUnsupported -> VoiceKeySource.Server(providerName = "Gemini Live")
-                is Reason.MissingPhoneKey -> VoiceKeySource.Phone(reason.engine.provider)
             }
-            is PhoneKey -> VoiceKeySource.Phone(engine.provider)
         }
 
     fun sessionConfig(
@@ -98,34 +91,23 @@ sealed interface VoiceRoute {
             serverVoiceEnabled: Boolean,
             serverVoiceProvider: ServerVoiceProvider,
             serverVoiceSupport: ServerVoiceSupport,
-            hasOpenAIKey: Boolean,
-            hasXAIKey: Boolean,
-            fallsBackToPhoneKey: Boolean = true,
         ): VoiceRoute {
-            // Server Voice never owns Grok, including when Gemini is selected on the server.
-            if (selectedEngine == VoiceEngine.grok) {
-                return if (hasXAIKey) PhoneKey(VoiceEngine.grok) else Unavailable(Reason.MissingPhoneKey(VoiceEngine.grok))
-            }
             if (serverVoiceEnabled && serverVoiceProvider == ServerVoiceProvider.geminiLive) {
                 return if (serverVoiceSupport == ServerVoiceSupport.unsupported) Unavailable(Reason.ServerUnsupported) else serverGeminiLive
             }
             if (serverVoiceEnabled && serverVoiceSupport != ServerVoiceSupport.unsupported) {
                 return serverOpenAI(if (selectedEngine == VoiceEngine.gptLive) OpenAI.gptLive else OpenAI.realtime)
             }
-            // A server the person picked is never swapped for the phone's key.
-            if (serverVoiceEnabled && !fallsBackToPhoneKey) return Unavailable(Reason.ServerUnsupported)
-            // Automatic falls back only after a confirmed unsupported route.
-            return if (hasOpenAIKey) PhoneKey(selectedEngine) else Unavailable(Reason.MissingPhoneKey(selectedEngine))
+            return Unavailable(Reason.ServerUnsupported)
         }
     }
 }
 
 /**
  * Who pays for a call, moved down to Voice because [VoiceRoute.keySource] returns it and Settings
- * sits above Voice. Settings' `VoiceKeyStatus` stays in Settings.
+ * sits above Voice.
  */
 sealed interface VoiceKeySource {
-    data class Phone(val provider: VoiceProvider) : VoiceKeySource
     data class Server(val providerName: String) : VoiceKeySource
 
     /**
@@ -134,21 +116,12 @@ sealed interface VoiceKeySource {
      */
     data object OpenCode : VoiceKeySource
 
-    val rowTitle: String
-        get() = when (this) {
-            is Phone -> provider.keyRowTitle
-            is Server, OpenCode -> localized(R.string.voice_key_source_server_row_title)
-        }
-
     /** Settings › Voice's footer: whose key, or which workspace, pays for calls. */
     val footer: String
         get() = when (this) {
-            is Phone -> localized(R.string.voice_key_source_phone_footer)
             is Server -> localized(R.string.voice_key_source_server_footer, providerName)
             OpenCode -> localized(R.string.voice_key_source_opencode_footer)
         }
-
-    val isPhoneKey: Boolean get() = this is Phone
 }
 
 /**
@@ -171,7 +144,7 @@ class VoiceBroker(
     /** The server that brokers, picked or chosen automatically. Null while nothing brokers. */
     val server: OpenCodeServer?
 
-    /** Chosen automatically: a server without the voice routes falls back to the phone's key. A pick never does. */
+    /** Chosen automatically: a server without the voice routes moves on to the next ready one. A pick never does. */
     val isAutomatic: Boolean
 
     /** The provider the broker runs: the picked one, OpenAI automatically. */
@@ -179,13 +152,8 @@ class VoiceBroker(
 
     init {
         val pick = VoicePick.resolve(choice, provider, connected, saved, readiness)
-        if (pick.place == VoiceProviderOption.Place.Phone) {
-            isEnabled = false
-            server = null
-        } else {
-            isEnabled = true
-            server = pick.server ?: connected
-        }
+        server = pick.server
+        isEnabled = server != null
         isAutomatic = pick.isAutomatic
         this.provider = pick.provider
     }
@@ -199,10 +167,9 @@ class VoiceBroker(
             saved: List<OpenCodeServer>,
             answers: Map<String, ServerVoiceModelsAnswer>,
             support: Map<String, ServerVoiceSupport>,
-            hasOpenAIKey: Boolean,
             engine: VoiceEngine,
         ): Pair<VoiceBroker, VoiceReadiness> {
-            val readiness = VoiceReadiness(answers = answers, support = support, hasPhoneKey = hasOpenAIKey, engine = engine)
+            val readiness = VoiceReadiness(answers = answers, support = support, engine = engine)
             val broker = VoiceBroker(choice, provider, connected, saved, readiness)
             return broker to readiness
         }
@@ -213,15 +180,12 @@ class VoiceBroker(
         server?.let { supportByServer[it.persistenceID] } ?: ServerVoiceSupport.unknown
 
     /** The route a new call on `engine` takes through this broker. */
-    fun route(engine: VoiceEngine, support: ServerVoiceSupport, hasOpenAIKey: Boolean, hasXAIKey: Boolean): VoiceRoute =
+    fun route(engine: VoiceEngine, support: ServerVoiceSupport): VoiceRoute =
         VoiceRoute.resolve(
             selectedEngine = engine,
             serverVoiceEnabled = isEnabled,
             serverVoiceProvider = provider,
             serverVoiceSupport = support,
-            hasOpenAIKey = hasOpenAIKey,
-            hasXAIKey = hasXAIKey,
-            fallsBackToPhoneKey = !isEnabled || isAutomatic,
         )
 
     override fun equals(other: Any?): Boolean =

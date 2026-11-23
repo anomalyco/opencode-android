@@ -240,10 +240,9 @@ class RaiseToTalkRoutingTests {
         val firstAudioRoutes = mutableListOf<Boolean>()
         val firstSocket = Channel<LiveServerEvent>(Channel.UNLIMITED)
         val events = host.start(
-            apiKey = "sk-test",
             config = liveConfig(isAtEar = true),
             realtime = RealtimeClient.testValue,
-            live = LiveClient { _, _ -> LiveConnection(events = firstSocket.receiveAsFlow(), send = {}, close = {}) },
+            live = LiveClient { _ -> LiveConnection(events = firstSocket.receiveAsFlow(), send = {}, close = {}) },
             audio = VoiceAudioClient(start = {
                 VoiceAudioSession(
                     capture = emptyFlow(), events = emptyFlow(), enqueue = { _, _ -> }, flush = { 0 }, setMuted = {}, stop = {},
@@ -280,10 +279,9 @@ class RaiseToTalkRoutingTests {
         val c2Routes = mutableListOf<Boolean>()
         val socket = Channel<LiveServerEvent>(Channel.UNLIMITED)
         val c2Events: Flow<VoiceCallEvent> = host.start(
-            apiKey = "sk-test",
             config = liveConfig(isAtEar = false),
             realtime = RealtimeClient.testValue,
-            live = LiveClient { _, _ -> LiveConnection(events = socket.receiveAsFlow(), send = {}, close = {}) },
+            live = LiveClient { _ -> LiveConnection(events = socket.receiveAsFlow(), send = {}, close = {}) },
             audio = VoiceAudioClient(start = {
                 VoiceAudioSession(
                     capture = emptyFlow(), events = emptyFlow(), enqueue = { _, _ -> }, flush = { 0 }, setMuted = {}, stop = {},
@@ -318,10 +316,9 @@ class RaiseToTalkRoutingTests {
         val socket2 = Channel<LiveServerEvent>(Channel.UNLIMITED)
         val startTask = async {
             host.start(
-                apiKey = "sk-test",
                 config = liveConfig(isAtEar = false),
                 realtime = RealtimeClient.testValue,
-                live = LiveClient { _, _ -> LiveConnection(events = socket2.receiveAsFlow(), send = {}, close = {}) },
+                live = LiveClient { _ -> LiveConnection(events = socket2.receiveAsFlow(), send = {}, close = {}) },
                 audio = VoiceAudioClient(
                     start = { VoiceAudioClient.testValue.start() },
                     startAtEar = { atEar ->
@@ -362,10 +359,9 @@ class RaiseToTalkRoutingTests {
         val socket = Channel<LiveServerEvent>(Channel.UNLIMITED)
         val startTask = async {
             host.start(
-                apiKey = "sk-test",
                 config = liveConfig(isAtEar = true),
                 realtime = RealtimeClient.testValue,
-                live = LiveClient { _, _ -> LiveConnection(events = socket.receiveAsFlow(), send = {}, close = {}) },
+                live = LiveClient { _ -> LiveConnection(events = socket.receiveAsFlow(), send = {}, close = {}) },
                 audio = VoiceAudioClient(
                     start = { VoiceAudioClient.testValue.start() },
                     startAtEar = { atEar ->

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Jaň tamamlandy</string>
     <string name="voice_call_ended_rejoin">Täzeden goşul</string>
     <string name="voice_failure_title">Sesi birikdirip bolmady</string>
-    <string name="voice_failure_check_api_key">API açaryny barlaň</string>
     <string name="voice_failure_start_title">Jaňy başladyp bolmady</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Açar ýok</string>
     <string name="voice_provider_state_needs_update">OpenCode-y täzeläň</string>
     <string name="voice_provider_state_offline">Oflaýn</string>
-    <string name="voice_provider_place_phone">Bu telefon</string>
-    <string name="voice_provider_brand_openai_account">OpenAI hasabyňyz</string>
     <string name="voice_provider_name">%2$s-daky %1$s</string>
     <string name="voice_provider_subtitle">%1$s-da</string>
-    <string name="voice_provider_key_row_title">%1$s açary</string>
-    <string name="voice_provider_key_placeholder">%1$s API açary</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Serweriňizdäki açar</string>
-    <string name="voice_key_source_phone_footer">Jaňlar öz OpenAI ýa-da xAI açaryňyzy ulanýar.</string>
     <string name="voice_key_source_server_footer">Jaňlar serweriňiziň %1$s açaryny ulanýar.</string>
     <string name="voice_key_source_opencode_footer">Jaňlaryň tölegi OpenCode Console iş giňişligiňiziň hasabyna ýazylýar.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Bu telefonda sazla</string>
     <string name="voice_fix_choose_provider">Üpjün edijini saýlaň</string>
     <string name="voice_fix_update_opencode">OpenCode-y täzeläň</string>
     <string name="voice_diagnosis_needs_update">%1$s üçin sesli jaňlara OpenCode-yň has täze wersiýasy gerek.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Serweriňiz bilen birigip bolmady.</string>
     <string name="voice_diagnosis_failed">%1$s jaňy başladyp bilmedi.</string>
     <string name="voice_diagnosis_your_server_failed">Serweriňiz jaňy başladyp bilmedi.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI bu telefondaky açary kabul etmedi.</string>
-    <string name="voice_diagnosis_missing_phone_key">Bu telefondan jaň etmek üçin %1$s API açaryňyzy goşuň.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Sessiýaňyz bilen gürleşmek üçin Sazlamalarda mikrofony ulanmaga rugsat beriň.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Sesi başladyp bolmady: Serwer nädogry jogap gaýtardy.</string>
     <string name="voice_error_start_voice_detail">Sesi başladyp bolmady: %1$s</string>
     <string name="voice_error_start_voice_http">Sesi başladyp bolmady (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI API açaryny kabul etmedi.</string>
-    <string name="voice_error_openai_verify_http">OpenAI bu açary barlap bilmedi (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Baglanyşyk ýok.</string>
-    <string name="voice_error_model_address_invalid">Ses modeliniň salgysy nädogry.</string>
-    <string name="voice_error_xai_rejected_key">xAI API açaryny kabul etmedi.</string>
-    <string name="voice_error_xai_verify_http">xAI bu açary barlap bilmedi (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Bu xAI API açary öçürilen.</string>
-    <string name="voice_error_xai_key_blocked">Bu xAI API açary petiklenen.</string>
     <string name="voice_error_service_address_invalid">Ses hyzmatynyň salgysy nädogry.</string>
     <string name="voice_error_connection_lost">Ses baglanyşygy kesildi.</string>
     <string name="voice_error_connection_closed">Ses baglanyşygy ýapyldy.</string>
     <string name="voice_error_connection_setup">Ses baglanyşygyny gurup bolmady.</string>
     <string name="voice_error_safety_filter">Howpsuzlyk süzgüji sesli jaňy tamamlady.</string>
     <string name="voice_error_audio_reset">Ulgam ses sazlamalaryny täzeden düzdi. Jaňy täzeden başlaň.</string>
-    <string name="voice_error_missing_phone_key">Sesi ulanmak üçin Sazlamalarda %1$s API açaryňyzy goşuň.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Awstraliýa iňlisçesi</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Braziliýa portugalçasy</string>
     <string name="voice_accent_filipino_english">Filippin iňlisçesi</string>
     <string name="voice_accent_southern_us_english">ABŞ-nyň günortasynyň iňlisçesi</string>
-    <string name="voice_accent_indian_english">Hindistan iňlisçesi</string>
-    <string name="voice_preview_error">Deslapky sesi aýtdyryp bolmady</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Dem jaňy</string>

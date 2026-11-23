@@ -107,20 +107,15 @@
     <string name="settings_delegator_another_server">%1$s · Outro servidor</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Esconder chave</string>
-    <string name="settings_voice_key_show_description">Mostrar chave</string>
-    <string name="settings_voice_key_verify">Verificar</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Provedor de voz</string>
     <string name="settings_voice_provider_place">Em %1$s</string>
-    <string name="settings_voice_api_key_title">Chave de API</string>
     <string name="settings_voice_provider_automatic_footer">Quando %1$s não está pronto, as chamadas usam um provedor disponível.</string>
     <string name="settings_voice_provider_choose_automatically">Escolher automaticamente</string>
     <string name="settings_voice_provider_others_header">Outros provedores</string>
     <string name="settings_voice_provider_use_description">Usar %1$s</string>
     <string name="settings_voice_provider_use">Usar</string>
-    <string name="settings_voice_provider_set_up">Configurar</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d indisponível</item>
         <item quantity="many">%d indisponíveis</item>
@@ -128,10 +123,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Sua conta OpenAI</string>
-    <string name="settings_voice_account_place">Neste celular</string>
-    <string name="settings_voice_account_key_footer">As chamadas usam sua conta OpenAI em vez de um servidor.</string>
-    <string name="settings_voice_account_use_for_calls">Usar nas chamadas</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Voz</string>
@@ -145,19 +136,9 @@
     <string name="settings_voice_raise_to_talk">Elevar para falar</string>
     <string name="settings_voice_call_sounds">Sons de chamada</string>
     <string name="settings_voice_call_history">Histórico de chamadas</string>
-    <string name="settings_voice_edit_key_label">Editar sua chave de API de %1$s</string>
-    <string name="settings_voice_key_verified">Verificada</string>
-    <string name="settings_voice_key_checking">Verificando…</string>
-    <string name="settings_voice_key_saved">Salva</string>
-    <string name="settings_voice_key_missing">Ausente</string>
-    <string name="settings_voice_preview_disabled_hint">Adicione sua chave de %1$s para ouvir as vozes</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Adicione sua chave de %1$s para ouvir as vozes.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s não está disponível em %2$s, então as chamadas usam %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Parar prévia de %1$s</string>
-    <string name="settings_voice_preview_description">Ouvir %1$s</string>
-    <string name="settings_voice_preview_playing">Reproduzindo</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s indisponível</string>
 
     <!-- Settings root -->

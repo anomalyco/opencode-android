@@ -17,7 +17,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.webrtc.*
@@ -36,7 +35,6 @@ import kotlin.time.Duration.Companion.seconds
 /** Opus/RTP for speech (jitter buffer, loss concealment, FEC), JSON on the
  * pre-negotiated event channel. WebSocket audio otherwise queues behind lost TCP packets. */
 object LiveRTC {
-    const val sessionsURL = "https://api.openai.com/v1/live/sessions"
     const val dataChannelID = 4
     val connectLimit = 8.seconds
     val disconnectLimit = 5.seconds
@@ -52,36 +50,11 @@ object LiveRTC {
         initialized = true
     }
 
-    /** A free model request keeps the pooled TLS connection warm. The warmer owns/cancels this job. */
-    fun warmConnection(apiKey: String): Job {
-        val http = dependency(OpenCodeTransport).request.withVoiceTimeout(10)
-        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO + DependencyValues.current.asContextElement())
-        return scope.launch {
-            try {
-                val request = Request.Builder().url("https://api.openai.com/v1/models/${LiveSessionConfig.defaultModel}")
-                    .header("Authorization", "Bearer $apiKey").build()
-                http.voiceSend(request)
-            } catch (error: CancellationException) { throw error
-            } catch (_: Exception) { /* Warming is opportunistic, not a key preflight. */
-            } finally { scope.cancel() }
-        }
-    }
-
-    suspend fun connect(apiKey: String, config: LiveSessionConfig): LiveConnection {
-        val broker = config.serverVoice?.let(::VoiceBrokerTransport)
+    suspend fun connect(config: LiveSessionConfig): LiveConnection {
+        val broker = VoiceBrokerTransport(config.serverVoice ?: throw RealtimeClientError.InvalidURL)
         val setup = VoiceRTCSetup(
             engine = "GPT-Live",
-            request = { sdp -> Request.Builder()
-                .url(VoiceLabEnvironment.string("OPENCODE_LAB_LIVE_RTC_URL") ?: sessionsURL)
-                .header("Authorization", "Bearer $apiKey")
-                .post(requestBody(config, sdp).toRequestBody(voiceJsonMediaType)).build() },
-            answer = { data ->
-                val root = VoiceWireJson.parseToJsonElement(data.decodeToString()).jsonObject
-                // An answer requires both session.id and transport.sdp.
-                require(root["session"]?.jsonObject?.get("id")?.stringValue != null)
-                root["transport"]?.jsonObject?.get("sdp")?.stringValue ?: throw ServerVoiceError.InvalidResponse
-            },
-            exchange = broker?.let { { sdp -> it.exchange(config, sdp) } },
+            exchange = { sdp -> broker.exchange(config, sdp) },
             closeMessage = LiveCommand.Close().encoded(),
             startedType = "session.started", closedType = "session.closed",
         )
@@ -100,12 +73,6 @@ object LiveRTC {
             close = session::close, startAudio = session::startAudio,
         )
     }
-
-    /** Audio format is negotiated in SDP, not in the session JSON. */
-    fun requestBody(config: LiveSessionConfig, sdp: String): ByteArray = buildJsonObject {
-        put("session", config.sessionPayload(false))
-        putJsonObject("transport") { put("type", "webrtc"); put("sdp", sdp); put("dcid", dataChannelID) }
-    }.encodedBytes()
 }
 
 /** A refusal would fail on WebSocket too, so transport choice must not retry it. */
@@ -119,9 +86,7 @@ sealed interface VoiceRTCSignal {
 
 data class VoiceRTCSetup(
     val engine: String,
-    val request: (sdp: String) -> Request,
-    val answer: (ByteArray) -> String,
-    val exchange: (suspend (sdp: String) -> String)? = null,
+    val exchange: suspend (sdp: String) -> String,
     val closeMessage: ByteArray?,
     val startedType: String,
     val closedType: String?,
@@ -251,16 +216,7 @@ class VoiceRTCSession private constructor(private val setup: VoiceRTCSetup) {
         if (peer.iceGatheringState() != PeerConnection.IceGatheringState.COMPLETE) gathered.await()
         requireOpen()
         val sdp = peer.localDescription?.description ?: throw RealtimeClientError.Closed("The voice connection couldn't be set up.")
-        var answer = setup.exchange?.invoke(sdp) ?: run {
-            val response = http.voiceSend(setup.request(sdp))
-            if (response.statusCode !in 200..299) {
-                val detail = runCatching {
-                    VoiceWireJson.parseToJsonElement(response.body.decodeToString()).jsonObject["error"]?.jsonObject?.get("message")?.stringValue
-                }.getOrNull()
-                throw LiveRTCRejected(response.statusCode, detail ?: "The voice service refused the call (HTTP ${response.statusCode}).")
-            }
-            setup.answer(response.body)
-        }
+        var answer = setup.exchange(sdp)
         requireOpen()
         note(String.format(Locale.US, "%s WebRTC session created at %.2f s", setup.engine, elapsed()))
         answer = routeLabRelay(answer)
@@ -888,14 +844,11 @@ class LiveRTCNetworkWatch {
 }
 
 object RealtimeRTC {
-    const val callsURL = "https://api.openai.com/v1/realtime/calls"
-    suspend fun connect(apiKey: String, config: RealtimeSessionConfig): RealtimeConnection {
+    suspend fun connect(config: RealtimeSessionConfig): RealtimeConnection {
+        val broker = VoiceBrokerTransport(config.serverVoice ?: throw RealtimeClientError.InvalidURL)
         val setup = VoiceRTCSetup(
-            engine = "Realtime", request = { sdp -> request(apiKey, config, sdp) },
-            answer = { it.decodeToString() },
-            exchange = config.serverVoice?.let { server -> { sdp ->
-                VoiceBrokerTransport(server).exchange(config.model, config.sessionPayload(false), sdp, LiveRTC.dataChannelID)
-            } },
+            engine = "Realtime",
+            exchange = { sdp -> broker.exchange(config.model, config.sessionPayload(false), sdp, LiveRTC.dataChannelID) },
             closeMessage = null, startedType = "session.created", closedType = null,
         )
         val session = VoiceRTCSession.open(setup)
@@ -913,18 +866,6 @@ object RealtimeRTC {
             } },
             close = session::close, startAudio = session::startAudio,
         )
-    }
-    /** Multipart SDP + session, with the pre-negotiated channel id in the query. */
-    fun request(apiKey: String, config: RealtimeSessionConfig, sdp: String): Request {
-        val url = callsURL.toHttpUrl().newBuilder().addQueryParameter("dcid", LiveRTC.dataChannelID.toString()).build()
-        val boundary = "opencode-${dependency(UuidClient).next()}"
-        val body = buildString {
-            for ((name, value) in listOf("sdp" to sdp, "session" to config.sessionPayload(false).toString()))
-                append("--$boundary\r\nContent-Disposition: form-data; name=\"$name\"\r\n\r\n$value\r\n")
-            append("--$boundary--\r\n")
-        }
-        return Request.Builder().url(url).header("Authorization", "Bearer $apiKey")
-            .post(body.toRequestBody("multipart/form-data; boundary=$boundary".toMediaType())).build()
     }
 }
 

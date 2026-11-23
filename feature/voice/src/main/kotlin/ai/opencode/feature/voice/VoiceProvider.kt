@@ -110,8 +110,6 @@ enum class VoiceProviderState {
                 }
             }
         }
-
-        fun phone(hasKey: Boolean): VoiceProviderState = if (hasKey) ready else noKey
     }
 }
 
@@ -119,7 +117,6 @@ enum class VoiceProviderState {
 data class VoiceReadiness(
     val answers: Map<String, ServerVoiceModelsAnswer> = emptyMap(),
     val support: Map<String, ServerVoiceSupport> = emptyMap(),
-    val hasPhoneKey: Boolean = false,
     val engine: VoiceEngine = VoiceEngine.gptLive,
 ) {
     /** The server call a provider on a server would start. */
@@ -155,23 +152,20 @@ data class VoiceProviderOption(
     val choice: VoiceServerChoice,
     val provider: ServerVoiceProvider,
 ) {
-    enum class Brand { openAI, openCode, gemini, openAIAccount }
+    enum class Brand { openAI, openCode, gemini }
 
     sealed interface Place {
         data class Server(val server: OpenCodeServer) : Place
-        data object Phone : Place
     }
 
     val id: String
         get() = when (place) {
             is Place.Server -> "${place.server.persistenceID}|${provider.rawValue}"
-            Place.Phone -> "phone"
         }
 
     val placeName: String
         get() = when (place) {
             is Place.Server -> place.server.friendlyName
-            Place.Phone -> localized(R.string.voice_provider_place_phone)
         }
 
     val title: String
@@ -179,7 +173,6 @@ data class VoiceProviderOption(
             Brand.openAI -> "OpenAI"
             Brand.openCode -> "OpenCode"
             Brand.gemini -> "Gemini Live"
-            Brand.openAIAccount -> localized(R.string.voice_provider_brand_openai_account)
             null -> placeName
         }
 
@@ -200,15 +193,12 @@ class VoiceProviderCatalog(
     others: List<OpenCodeServer>,
     readiness: VoiceReadiness,
 ) {
-    /** What new calls use: Automatic's pick, or the person's. */
-    val active: VoiceProviderOption
+    /** What new calls use: Automatic's pick, or the person's. Null with no server to call through. */
+    val active: VoiceProviderOption?
     val isAutomatic: Boolean
 
     /** Providers ready to take calls, other than the active one. */
     val others: List<VoiceProviderOption>
-
-    /** Your OpenAI Account, on this phone. */
-    val account: VoiceProviderOption
 
     /** Servers with no provider ready, and why. */
     val unavailable: List<VoiceProviderOption>
@@ -216,13 +206,6 @@ class VoiceProviderCatalog(
     init {
         val pick = VoicePick.resolve(choice, provider, connected, others, readiness)
         isAutomatic = pick.isAutomatic
-        account = VoiceProviderOption(
-            place = VoiceProviderOption.Place.Phone,
-            brand = VoiceProviderOption.Brand.openAIAccount,
-            state = VoiceProviderState.phone(readiness.hasPhoneKey),
-            choice = VoiceServerChoice.Phone,
-            provider = ServerVoiceProvider.openAI,
-        )
 
         fun option(server: OpenCodeServer, provider: ServerVoiceProvider): VoiceProviderOption {
             val state = readiness.state(server, provider)
@@ -236,11 +219,8 @@ class VoiceProviderCatalog(
                 provider = provider,
             )
         }
-        active = when (val place = pick.place) {
-            VoiceProviderOption.Place.Phone -> account
-            is VoiceProviderOption.Place.Server -> option(place.server, pick.provider)
-        }
-        val activeID = active.id
+        active = pick.server?.let { option(it, pick.provider) }
+        val activeID = active?.id
         val servers = listOfNotNull(connected) + others
         val ready = mutableListOf<VoiceProviderOption>()
         val unavailable = mutableListOf<VoiceProviderOption>()
@@ -261,14 +241,15 @@ class VoiceProviderCatalog(
 
     override fun equals(other: Any?): Boolean =
         other is VoiceProviderCatalog && other.active == active && other.isAutomatic == isAutomatic &&
-            other.others == others && other.account == account && other.unavailable == unavailable
+            other.others == others && other.unavailable == unavailable
 
-    override fun hashCode(): Int = listOf(active, isAutomatic, others, account, unavailable).hashCode()
+    override fun hashCode(): Int = listOf(active, isAutomatic, others, unavailable).hashCode()
 }
 
 /** Where a new call goes: the person's pick, or Automatic's. */
 data class VoicePick(
-    val place: VoiceProviderOption.Place,
+    /** Null with no server to call through. */
+    val place: VoiceProviderOption.Place?,
     val provider: ServerVoiceProvider,
     /** Chosen automatically: when the call can't start there, it may move on. */
     val isAutomatic: Boolean,
@@ -277,8 +258,8 @@ data class VoicePick(
 
     companion object {
         /**
-         * Automatic takes the first that can place the call: the connected server, this
-         * phone's key, then the other saved servers. The connected server counts until it's
+         * Automatic takes the first that can place the call: the connected server, then the
+         * other saved servers. The connected server counts until it's
          * known it can't (its support check still decides); another server only once it's
          * known ready. With none ready, the connected server, whose failure says why. A pick
          * is never swapped; one no longer saved chooses automatically, and so does Automatic
@@ -292,7 +273,6 @@ data class VoicePick(
             readiness: VoiceReadiness,
         ): VoicePick {
             when (choice) {
-                VoiceServerChoice.Phone -> return VoicePick(VoiceProviderOption.Place.Phone, ServerVoiceProvider.openAI, isAutomatic = false)
                 VoiceServerChoice.Connected ->
                     if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), provider, isAutomatic = false)
                 is VoiceServerChoice.Saved -> {
@@ -311,26 +291,24 @@ data class VoicePick(
             if (connected != null && readiness.state(connected) in setOf(VoiceProviderState.ready, VoiceProviderState.unknown)) {
                 return VoicePick(VoiceProviderOption.Place.Server(connected), ServerVoiceProvider.openAI, isAutomatic = true)
             }
-            if (readiness.hasPhoneKey) return VoicePick(VoiceProviderOption.Place.Phone, ServerVoiceProvider.openAI, isAutomatic = true)
             val others = saved.filter { it.persistenceID != connected?.persistenceID }
             others.firstOrNull { readiness.state(it) == VoiceProviderState.ready }?.let {
                 return VoicePick(VoiceProviderOption.Place.Server(it), ServerVoiceProvider.openAI, isAutomatic = true)
             }
             if (connected != null) return VoicePick(VoiceProviderOption.Place.Server(connected), ServerVoiceProvider.openAI, isAutomatic = true)
-            return VoicePick(VoiceProviderOption.Place.Phone, ServerVoiceProvider.openAI, isAutomatic = true)
+            return VoicePick(null, ServerVoiceProvider.openAI, isAutomatic = true)
         }
     }
 }
 
-/** Where Settings opens from a failed call's card: Settings › Voice, its Voice Provider page, or Your OpenAI Account under it. */
-enum class VoiceSettingsPage { voice, provider, account }
+/** Where Settings opens from a failed call's card: Settings › Voice or its Voice Provider page. */
+enum class VoiceSettingsPage { voice, provider }
 
 /** The server brokering a call, as the call bar and its failure name it. */
 data class VoiceCallPlace(val name: String, val brand: VoiceProviderOption.Brand)
 
 /** The one button a failed call's card offers, besides closing it. */
 enum class VoiceCallFix {
-    setUpOnIPhone,
     chooseProvider,
     updateOpenCode,
     openSettings,
@@ -338,7 +316,6 @@ enum class VoiceCallFix {
 
     val title: String
         get() = when (this) {
-            setUpOnIPhone -> localized(R.string.voice_fix_set_up_on_phone)
             chooseProvider -> localized(R.string.voice_fix_choose_provider)
             updateOpenCode -> localized(R.string.voice_fix_update_opencode)
             openSettings -> localized(CoreR.string.common_open_settings)
@@ -398,33 +375,16 @@ data class VoiceCallDiagnosis(
                 val sentence = if (place == null) localized(R.string.voice_diagnosis_your_server_needs_update) else localized(R.string.voice_diagnosis_needs_update, place)
                 return VoiceCallDiagnosis(sentence, VoiceCallFix.updateOpenCode, place)
             }
-            val reason = (route as? VoiceRoute.Unavailable)?.reason
-            if (reason is VoiceRoute.Reason.MissingPhoneKey) {
-                return VoiceCallDiagnosis(missingKey(reason.engine), VoiceCallFix.setUpOnIPhone, null)
+            val lowered = message.lowercase()
+            val sentence = when {
+                lowered.contains("api key") || lowered.contains("sign-in") ->
+                    if (place == null) localized(R.string.voice_diagnosis_your_server_no_key) else localized(R.string.voice_diagnosis_no_key, place)
+                lowered.contains("offline") || lowered.contains("could not connect") || lowered.contains("timed out") ->
+                    if (place == null) localized(R.string.voice_diagnosis_your_server_unreachable) else localized(R.string.voice_diagnosis_unreachable, place)
+                else -> if (place == null) localized(R.string.voice_diagnosis_your_server_failed) else localized(R.string.voice_diagnosis_failed, place)
             }
-            if (route is VoiceRoute.Server) {
-                val lowered = message.lowercase()
-                val sentence = when {
-                    lowered.contains("api key") || lowered.contains("sign-in") ->
-                        if (place == null) localized(R.string.voice_diagnosis_your_server_no_key) else localized(R.string.voice_diagnosis_no_key, place)
-                    message == RealtimePreflightError.NoConnection.message || lowered.contains("offline") ||
-                        lowered.contains("could not connect") || lowered.contains("timed out") ->
-                        if (place == null) localized(R.string.voice_diagnosis_your_server_unreachable) else localized(R.string.voice_diagnosis_unreachable, place)
-                    else -> if (place == null) localized(R.string.voice_diagnosis_your_server_failed) else localized(R.string.voice_diagnosis_failed, place)
-                }
-                return VoiceCallDiagnosis(sentence, VoiceCallFix.chooseProvider, place)
-            }
-            if (message == RealtimePreflightError.RejectedAPIKey.message) {
-                return VoiceCallDiagnosis(localized(R.string.voice_diagnosis_key_rejected), VoiceCallFix.setUpOnIPhone, null)
-            }
-            val engine = route.engine
-            if (engine != null && message == VoiceRoute.Reason.MissingPhoneKey(engine).message) {
-                return VoiceCallDiagnosis(missingKey(engine), VoiceCallFix.setUpOnIPhone, null)
-            }
-            return VoiceCallDiagnosis(voiceFailureDisplayText(message), VoiceCallFix.setUpOnIPhone, null)
+            return VoiceCallDiagnosis(sentence, VoiceCallFix.chooseProvider, place)
         }
-
-        private fun missingKey(engine: VoiceEngine): String = localized(R.string.voice_diagnosis_missing_phone_key, engine.provider.displayName)
     }
 }
 
@@ -440,12 +400,6 @@ fun voiceFailureDisplayText(message: String): String {
         ServerVoiceError.unsupportedServerNotice -> return localized(R.string.voice_error_server_unsupported)
         ServerVoiceError.InvalidServerURL.errorDescription -> return localized(R.string.voice_error_invalid_server_url)
         ServerVoiceError.InvalidResponse.errorDescription -> return localized(R.string.voice_error_invalid_response)
-        RealtimePreflightError.RejectedAPIKey.message -> return localized(R.string.voice_error_openai_rejected_key)
-        RealtimePreflightError.NoConnection.message -> return localized(R.string.voice_error_no_connection)
-        "The voice model address is invalid." -> return localized(R.string.voice_error_model_address_invalid)
-        "xAI rejected the API key." -> return localized(R.string.voice_error_xai_rejected_key)
-        "This xAI API key is disabled." -> return localized(R.string.voice_error_xai_key_disabled)
-        "This xAI API key is blocked." -> return localized(R.string.voice_error_xai_key_blocked)
         RealtimeClientError.InvalidURL.message -> return localized(R.string.voice_error_service_address_invalid)
         RealtimeClientError.Dropped.message -> return localized(R.string.voice_notification_call_ended)
         "The voice connection was lost." -> return localized(R.string.voice_error_connection_lost)
@@ -454,21 +408,12 @@ fun voiceFailureDisplayText(message: String): String {
         "A safety filter ended the voice call." -> return localized(R.string.voice_error_safety_filter)
         "Audio was reset by the system. Start the call again." -> return localized(R.string.voice_error_audio_reset)
     }
-    for (engine in VoiceEngine.entries) {
-        if (message == VoiceRoute.Reason.MissingPhoneKey(engine).message) {
-            return localized(R.string.voice_error_missing_phone_key, engine.provider.displayName)
-        }
-    }
     val startPrefix = "Couldn’t start voice: "
     if (message.startsWith(startPrefix)) {
         return localized(R.string.voice_error_start_voice_detail, message.removePrefix(startPrefix))
     }
     val statusCode = httpStatusCode(message, "Couldn’t start voice (HTTP ", ").")
     if (statusCode != null) return localized(R.string.voice_error_start_voice_http, statusCode)
-    val openAIStatus = httpStatusCode(message, "OpenAI couldn’t verify this key (HTTP ", ").")
-    if (openAIStatus != null) return localized(R.string.voice_error_openai_verify_http, openAIStatus)
-    val xAIStatus = httpStatusCode(message, "xAI couldn’t verify this key (HTTP ", ").")
-    if (xAIStatus != null) return localized(R.string.voice_error_xai_verify_http, xAIStatus)
     return message
 }
 

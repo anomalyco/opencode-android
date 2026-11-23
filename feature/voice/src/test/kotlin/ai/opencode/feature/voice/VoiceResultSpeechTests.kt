@@ -1,11 +1,11 @@
 package ai.opencode.feature.voice
 
+import ai.opencode.feature.voice.VoiceFeatureTestSupport.delegating
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
@@ -45,7 +45,7 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 internal fun speechVoiceCall(
-    start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _, _ -> kotlinx.coroutines.flow.emptyFlow() },
+    start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = { _ -> kotlinx.coroutines.flow.emptyFlow() },
     completeFunction: suspend (String, String) -> Unit = { _, _ -> },
     announce: suspend (String?, List<String>, String) -> Unit = { _, _, _ -> },
     cancelPendingAnnouncements: suspend (List<String>) -> Unit = {},
@@ -327,7 +327,6 @@ class VoiceSuppressionTests {
         val shared = SpeechTestShared()
         val session = OpenCodeSession(id = home, serverTitle = "HOME", projectID = "p", directory = "/Users/kit/home", updatedAt = distantPast)
         val voice = shared.run {
-            shared(SharedKeys.openAIAPIKey).set("sk-test")
             VoiceFeature.State(server, session)
                 .withPhase(VoiceFeature.State.Phase.Live)
                 .copy(usesDelegator = true)
@@ -342,21 +341,21 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
+            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
+                isSessionActive = { _, _ -> false },
+                transcript = { _, _, _ -> decodeTranscript("""{"data":[]}""".toByteArray()) },
+            )
+            this[VoiceCallClient] = speechVoiceCall(cancelPendingAnnouncements = { ids -> cancelled.update { it + listOf(ids) } }).delegating { input ->
                 if (input.firstOrNull() is VoiceDelegator.InputItem.ToolOutput) {
                     VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "HOME says two DMs need replies.")
                 } else {
                     VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t_read", name = "read_session", arguments = "{}")), text = "")
                 }
             }
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                isSessionActive = { _, _ -> false },
-                transcript = { _, _, _ -> decodeTranscript("""{"data":[]}""".toByteArray()) },
-            )
-            this[VoiceCallClient] = speechVoiceCall(cancelPendingAnnouncements = { ids -> cancelled.update { it + listOf(ids) } })
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         assertEquals(listOf(listOf("msg_inbox", "msg_dms", "msg_narrow")), cancelled.value)
         assertTrue(store.state.replyWatch.watched.isEmpty())
@@ -382,7 +381,6 @@ class VoiceSuppressionTests {
         get() = OpenCodeSession(id = home, serverTitle = "HOME", projectID = "p", directory = "/Users/kit/home", updatedAt = distantPast)
 
     private fun delegatorCall(shared: SpeechTestShared): VoiceFeature.State = shared.run {
-        shared(SharedKeys.openAIAPIKey).set("sk-test")
         VoiceFeature.State(server, homeSession)
             .withPhase(VoiceFeature.State.Phase.Live)
             .copy(usesDelegator = true)
@@ -438,20 +436,7 @@ class VoiceSuppressionTests {
             // A test clock: held results wait for the answer, not a timer.
             this[Clock] = TestClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                when (round.withValue { (it + 1) to (it + 1) }) {
-                    1 -> VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "send_message", arguments = """{"text":"When does Karma Cafe close?"}""")), text = "")
-                    2 -> VoiceDelegator.Response(id = "r2", calls = listOf(VoiceDelegator.ToolCall(callID = "t2", name = "wait_for_session", arguments = "{}")), text = "")
-                    else -> {
-                        // The watched reads land while the delegator writes its answer.
-                        released.complete(Unit)
-                        readsLanded.await()
-                        repeat(20) { kotlinx.coroutines.yield() }
-                        if (finalRoundFails) throw OpenCodeClientError("The delegator's reply wasn't readable.")
-                        VoiceDelegator.Response(id = "r3", calls = emptyList(), text = "Karma Cafe closed at 4 today.")
-                    }
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 sendDeliveredPrompt = { _, _, _, _ -> "msg_cafe" },
                 // Every steer reads its target's requests first: none here.
@@ -473,11 +458,24 @@ class VoiceSuppressionTests {
             }
             this[VoiceCallClient] = speechVoiceCall(
                 announce = { _, ids, text -> announced.update { it + Announced(ids, text) } },
-            )
+            ).delegating { _ ->
+                when (round.withValue { (it + 1) to (it + 1) }) {
+                    1 -> VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "send_message", arguments = """{"text":"When does Karma Cafe close?"}""")), text = "")
+                    2 -> VoiceDelegator.Response(id = "r2", calls = listOf(VoiceDelegator.ToolCall(callID = "t2", name = "wait_for_session", arguments = "{}")), text = "")
+                    else -> {
+                        // The watched reads land while the delegator writes its answer.
+                        released.complete(Unit)
+                        readsLanded.await()
+                        repeat(20) { kotlinx.coroutines.yield() }
+                        if (finalRoundFails) throw OpenCodeClientError("The delegator's reply wasn't readable.")
+                        VoiceDelegator.Response(id = "r3", calls = emptyList(), text = "Karma Cafe closed at 4 today.")
+                    }
+                }
+            }
         }
         store.exhaustive = false
         store.send(VoiceFeature.Action.ReplyWatch(ReplyWatch.Event.Sent(steered)))
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 10.seconds)
         store.eventuallyReducing(timeout = 5.seconds) { announced.value.isNotEmpty() }
         check(announced.value)
@@ -499,15 +497,7 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
-                val first = input.firstOrNull()
-                if (first is VoiceDelegator.InputItem.ToolOutput) {
-                    outputs.update { it + first.output }
-                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "It says turn two.")
-                } else {
-                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "wait_for_session", arguments = "{}")), text = "")
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 waitForIdle = { _, _ -> },
                 transcript = { _, _, _ ->
@@ -519,10 +509,18 @@ class VoiceSuppressionTests {
                     )
                 },
             )
-            this[VoiceCallClient] = speechVoiceCall()
+            this[VoiceCallClient] = speechVoiceCall().delegating { input ->
+                val first = input.firstOrNull()
+                if (first is VoiceDelegator.InputItem.ToolOutput) {
+                    outputs.update { it + first.output }
+                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "It says turn two.")
+                } else {
+                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "wait_for_session", arguments = "{}")), text = "")
+                }
+            }
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         assertEquals(true, outputs.value.firstOrNull()?.contains("Turn two reply."))
         assertEquals(false, outputs.value.firstOrNull()?.contains("Turn one reply."))
@@ -552,15 +550,7 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
-                val first = input.firstOrNull()
-                if (first is VoiceDelegator.InputItem.ToolOutput) {
-                    outputs.update { it + first.output }
-                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "It says the new thing.")
-                } else {
-                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "wait_for_session", arguments = "{}")), text = "")
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 waitForIdle = { _, _ -> },
                 transcript = { _, _, _ ->
@@ -572,10 +562,18 @@ class VoiceSuppressionTests {
                     )
                 },
             )
-            this[VoiceCallClient] = speechVoiceCall(cancelPendingAnnouncements = { ids -> cancelled.update { it + listOf(ids) } })
+            this[VoiceCallClient] = speechVoiceCall(cancelPendingAnnouncements = { ids -> cancelled.update { it + listOf(ids) } }).delegating { input ->
+                val first = input.firstOrNull()
+                if (first is VoiceDelegator.InputItem.ToolOutput) {
+                    outputs.update { it + first.output }
+                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "It says the new thing.")
+                } else {
+                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "wait_for_session", arguments = "{}")), text = "")
+                }
+            }
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         assertEquals(true, outputs.value.firstOrNull()?.contains("New reply."))
         assertEquals(false, outputs.value.firstOrNull()?.contains("Old reply."))
@@ -678,14 +676,7 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                if (round.withValue { (it + 1) to (it + 1) } == 1) {
-                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "send_message", arguments = """{"text":"Rename the drawer button"}""")), text = "")
-                } else {
-                    failNow.await()
-                    throw OpenCodeClientError("The delegator's reply wasn't readable.")
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 sendDeliveredPrompt = { _, _, _, _ -> "msg_rename" },
                 familyPendingRequests = { _, _, _ -> OpenCodePendingRequests(permissions = emptyList(), forms = emptyList()) },
@@ -703,10 +694,17 @@ class VoiceSuppressionTests {
                     recentMessages = work.recentMessages,
                 )
             }
-            this[VoiceCallClient] = speechVoiceCall(announce = { _, ids, text -> announced.update { it + Announced(ids, text) } })
+            this[VoiceCallClient] = speechVoiceCall(announce = { _, ids, text -> announced.update { it + Announced(ids, text) } }).delegating { _ ->
+                if (round.withValue { (it + 1) to (it + 1) } == 1) {
+                    VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t1", name = "send_message", arguments = """{"text":"Rename the drawer button"}""")), text = "")
+                } else {
+                    failNow.await()
+                    throw OpenCodeClientError("The delegator's reply wasn't readable.")
+                }
+            }
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isReplyWatch, timeout = 5.seconds)
         // Still running, and already watched.
         assertEquals(listOf("d1"), store.state.delegatorWork)
@@ -1138,21 +1136,21 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
+            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
+                isSessionActive = { _, _ -> calls.update { it + "status" }; false },
+                transcript = { _, _, _ -> calls.update { it + "transcript" }; emptyList() },
+            )
+            this[VoiceCallClient] = speechVoiceCall().delegating { input ->
                 if (input.firstOrNull() is VoiceDelegator.InputItem.ToolOutput) {
                     VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "It's idle.")
                 } else {
                     VoiceDelegator.Response(id = "r1", calls = listOf(VoiceDelegator.ToolCall(callID = "t_read", name = "read_session", arguments = "{}")), text = "")
                 }
             }
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                isSessionActive = { _, _ -> calls.update { it + "status" }; false },
-                transcript = { _, _, _ -> calls.update { it + "transcript" }; emptyList() },
-            )
-            this[VoiceCallClient] = speechVoiceCall()
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         assertEquals(listOf("status", "transcript"), calls.value.take(2))
         effects.skipInFlightEffects()
@@ -1299,20 +1297,20 @@ class VoiceSuppressionTests {
             this[SharedStore] = shared.store
             this[Clock] = clock
             this[DateClient] = epoch
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                answerNow.await()
-                VoiceDelegator.Response(id = "r1", calls = emptyList(), text = "Opened HOME.")
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[VoiceWorkClient] = VoiceWorkClient.testValue.let { work ->
                 VoiceWorkClient(submit = work.submit, awaitReply = { _, _, _ -> "All tests pass." }, checkSessionActive = work.checkSessionActive, recentMessages = work.recentMessages)
             }
             this[VoiceCallClient] = speechVoiceCall(
                 completeFunction = { _, _ -> completing.complete(Unit); releaseComplete.await() },
                 announce = { _, _, text -> announced.update { it + text } },
-            )
+            ).delegating { _ ->
+                answerNow.await()
+                VoiceDelegator.Response(id = "r1", calls = emptyList(), text = "Opened HOME.")
+            }
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.send(VoiceFeature.Action.ReplyWatch(ReplyWatch.Event.Sent(listOf(upload))))
         store.receive(::isReplyWatch, timeout = 5.seconds)
         assertEquals("Its grace timer is running", listOf("msg_up"), store.state.replyWatch.deferredNotices.map { it.promptID })
@@ -1350,15 +1348,12 @@ class VoiceSuppressionTests {
             this[DateClient] = epoch
             // Android: the rejoined call's ongoing-notification ID.
             this[UuidClient] = UuidClient.incrementing()
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                answerNow.await()
-                VoiceDelegator.Response(id = "r1", calls = emptyList(), text = "Opened HOME.")
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[VoiceWorkClient] = VoiceWorkClient.testValue.let { work ->
                 VoiceWorkClient(submit = work.submit, awaitReply = { _, _, _ -> "All tests pass." }, checkSessionActive = work.checkSessionActive, recentMessages = work.recentMessages)
             }
             this[VoiceCallClient] = speechVoiceCall(
-                start = { _, _ -> events.consumeAsFlow() },
+                start = { _ -> events.consumeAsFlow() },
                 completeFunction = { callID, _ ->
                     completing.complete(Unit)
                     releaseComplete.await()
@@ -1366,10 +1361,13 @@ class VoiceSuppressionTests {
                 },
                 announce = { _, _, text -> announced.update { it + text } },
                 end = {},
-            )
+            ).delegating { _ ->
+                answerNow.await()
+                VoiceDelegator.Response(id = "r1", calls = emptyList(), text = "Opened HOME.")
+            }
         }
         store.exhaustive = false
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = emptyArguments)))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.send(VoiceFeature.Action.ReplyWatch(ReplyWatch.Event.Sent(listOf(upload))))
         store.receive(::isReplyWatch, timeout = 5.seconds)
         assertEquals("In its grace while d1 works", listOf("msg_up"), store.state.replyWatch.deferredNotices.map { it.promptID })
@@ -1388,7 +1386,7 @@ class VoiceSuppressionTests {
         store.skipReceivedActions()
         assertTrue("The old call's result never reaches the new one", announced.value.isEmpty())
         // A late finish from the old call is ignored.
-        store.send(VoiceFeature.Action.DelegatorFinished(callID = "d_old", result = Result.success(VoiceDelegator.Outcome(reply = "Stale.", responseID = null, unanswered = emptyList()))))
+        store.send(VoiceFeature.Action.DelegatorFinished(callID = "d_old", result = Result.success(VoiceDelegator.Outcome(reply = "Stale.", unanswered = emptyList()))))
         delay(100)
         store.skipReceivedActions()
         assertFalse(completed.value.contains("d_old"))

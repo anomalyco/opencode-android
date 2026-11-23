@@ -330,15 +330,7 @@ private fun SessionFeature.startCall(state: State): Reduced<State, Action> {
         val yielded = yieldDictation(state)
         return Reduced(yielded.state, Effect.merge(yielded.effect, Effect.send(Action.Delegate(SessionFeature.Delegate.CallRequested))))
     }
-    val own = startOwnCall(state)
-    return Reduced(own.state, Effect.merge(warmPhoneConnection(state), own.effect))
-}
-
-private fun SessionFeature.warmPhoneConnection(state: State): Effect<Action> {
-    if (!state.voiceRoute.warmsPhoneConnection) return Effect.none()
-    val key = state.openAIAPIKey.value?.trim()?.takeIf { it.isNotEmpty() } ?: return Effect.none()
-    val warmer = liveSocketWarmer
-    return Effect.run { warmer.warm(key) }
+    return startOwnCall(state)
 }
 
 private fun SessionFeature.startOwnCall(state: State): Reduced<State, Action> {

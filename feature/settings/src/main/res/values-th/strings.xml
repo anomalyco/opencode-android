@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · เซิร์ฟเวอร์อื่น</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">ซ่อนคีย์</string>
-    <string name="settings_voice_key_show_description">แสดงคีย์</string>
-    <string name="settings_voice_key_verify">ตรวจสอบ</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">ผู้ให้บริการเสียง</string>
     <string name="settings_voice_provider_place">บน %1$s</string>
-    <string name="settings_voice_api_key_title">คีย์ API</string>
     <string name="settings_voice_provider_automatic_footer">เมื่อ %1$s ไม่พร้อม การโทรจะใช้ผู้ให้บริการที่พร้อมแทน</string>
     <string name="settings_voice_provider_choose_automatically">เลือกอัตโนมัติ</string>
     <string name="settings_voice_provider_others_header">ผู้ให้บริการอื่น</string>
     <string name="settings_voice_provider_use_description">ใช้ %1$s</string>
     <string name="settings_voice_provider_use">ใช้</string>
-    <string name="settings_voice_provider_set_up">ตั้งค่า</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">ไม่พร้อมใช้งาน %d ราย</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">บัญชี OpenAI ของคุณ</string>
-    <string name="settings_voice_account_place">บนมือถือเครื่องนี้</string>
-    <string name="settings_voice_account_key_footer">การโทรใช้บัญชี OpenAI ของคุณแทนเซิร์ฟเวอร์</string>
-    <string name="settings_voice_account_use_for_calls">ใช้สำหรับการโทร</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">เสียง</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">ยกขึ้นเพื่อพูด</string>
     <string name="settings_voice_call_sounds">เสียงการโทร</string>
     <string name="settings_voice_call_history">ประวัติการโทร</string>
-    <string name="settings_voice_edit_key_label">แก้ไขคีย์ API ของ %1$s</string>
-    <string name="settings_voice_key_verified">ตรวจสอบแล้ว</string>
-    <string name="settings_voice_key_checking">กำลังตรวจสอบ…</string>
-    <string name="settings_voice_key_saved">บันทึกแล้ว</string>
-    <string name="settings_voice_key_missing">ยังไม่มีคีย์</string>
-    <string name="settings_voice_preview_disabled_hint">เพิ่มคีย์ %1$s เพื่อฟังตัวอย่างเสียง</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">เพิ่มคีย์ %1$s เพื่อฟังตัวอย่างเสียง</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s ไม่พร้อมใช้งานบน %2$s การโทรจึงใช้ %3$s แทน</string>
-    <string name="settings_voice_stop_preview_description">หยุดตัวอย่างเสียง %1$s</string>
-    <string name="settings_voice_preview_description">ฟังตัวอย่าง %1$s</string>
-    <string name="settings_voice_preview_playing">กำลังเล่น</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s ไม่พร้อมใช้งาน</string>
 
     <!-- Settings root -->

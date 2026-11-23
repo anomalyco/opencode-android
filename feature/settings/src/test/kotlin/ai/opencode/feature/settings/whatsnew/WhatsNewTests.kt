@@ -387,7 +387,6 @@ class WhatsNewTryItTests {
     fun aCallBeforeVoiceIsSetUpPushesVoiceSettingsOnThePage() = runTest {
         val shared = SettingsTestShared()
         shared.set(SharedKeys.voiceModeEnabled, false)
-        shared.set(SharedKeys.openAIAPIKey, null)
         val store = store(whatsNewSettings(), shared)
         store.send(SettingsFeature.Action.WhatsNew(WhatsNewFeature.Action.TryTapped(WhatsNewEntry.Destination.Call, "call-voice"))) {
             it.copy(path = listOf(SettingsPage.Voice))

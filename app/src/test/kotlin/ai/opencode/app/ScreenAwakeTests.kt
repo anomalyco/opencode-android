@@ -3,6 +3,7 @@ package ai.opencode.app
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
+import ai.opencode.core.dependencies.UuidClient
 import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.sharing.shared
@@ -14,8 +15,9 @@ import ai.opencode.feature.voice.DotScopeSimulation
 import ai.opencode.feature.voice.ScreenAwakeClient
 import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceFeature
-import ai.opencode.feature.voice.VoiceServerChoice
-import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.ServerVoiceClient
+import ai.opencode.feature.voice.ServerVoiceError
+import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeHomeSnapshot
 import ai.opencode.server.model.OpenCodeSession
@@ -41,7 +43,11 @@ class ScreenAwakeTests {
     private val shared = AppTestShared()
     private lateinit var effects: kotlinx.coroutines.CoroutineScope
 
-    private fun TestScope.makeStore(calls: Locked<List<Boolean>>, clock: TestClock): TestStore<AppFeature.State, AppFeature.Action> {
+    private fun TestScope.makeStore(
+        calls: Locked<List<Boolean>>,
+        clock: TestClock,
+        voiceSupport: ServerVoiceSupport = ServerVoiceSupport.unknown,
+    ): TestStore<AppFeature.State, AppFeature.Action> {
         val app = shared.run {
             val home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = emptyList(), sessions = listOf(session), activeSessionIDs = emptySet()))
             val (next, detail) = home.makeDetail(session)
@@ -52,6 +58,12 @@ class ScreenAwakeTests {
             this[DateClient] = DateClient.constant(Instant.ofEpochSecond(1_000))
             this[Clock] = clock
             this[ScreenAwakeClient] = ScreenAwakeClient { awake -> calls.update { it + awake } }
+            this[UuidClient] = UuidClient.incrementing()
+            this[ServerVoiceClient] = ServerVoiceClient(
+                checkSupport = { voiceSupport },
+                models = ServerVoiceClient.testValue.models,
+                createSession = ServerVoiceClient.testValue.createSession,
+            )
         }
         store.exhaustive = false
         return store
@@ -134,18 +146,17 @@ class ScreenAwakeTests {
         effects.skipInFlightEffects()
     }
 
-    /** A call that fails as it starts (no API key) turns the screen on and straight off again, in that order, with nothing left on. */
+    /** A call that fails as it starts (a server that can't place calls) turns the screen on and straight off again, in that order, with nothing left on. */
     @Test
     fun aCallThatFailsAsItStartsLeavesTheScreenFreeToSleep() = runTest {
-        shared.run { shared(VoiceSharedKeys.voiceServerChoice).set(VoiceServerChoice.Phone) }
         val calls = Locked<List<Boolean>>(emptyList())
-        val store = makeStore(calls, TestClock())
+        val store = makeStore(calls, TestClock(), voiceSupport = ServerVoiceSupport.unsupported)
 
         store.send(AppFeature.Action.Home(HomeFeature.Action.detail(SessionFeature.Action.VoiceTapped)))
         assertEquals(listOf(true), calls.value)
         voice(store, VoiceFeature.Action.Start)
-        assertEquals(VoiceFeature.State.Phase.Failed("Add your OpenAI API key in Settings to use Voice."), store.phase)
-        assertEquals(listOf(true, false), calls.value)
+        assertEquals(listOf(true, false), settled(store, calls))
+        assertEquals(VoiceFeature.State.Phase.Failed(ServerVoiceError.unsupportedServerNotice), store.phase)
         effects.skipInFlightEffects()
     }
 

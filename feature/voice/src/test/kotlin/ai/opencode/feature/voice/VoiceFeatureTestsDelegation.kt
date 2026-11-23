@@ -21,7 +21,6 @@ import ai.opencode.feature.voice.VoiceFeatureTestSupport.receive
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.receiveEnded
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.server
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.session
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.setAPIKey
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.settle
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.transcripts
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceCall
@@ -45,7 +44,6 @@ class VoiceFeatureTestsDelegation {
     private lateinit var h: Harness
 
     private fun makeStore(
-        apiKey: String? = "sk-test",
         configure: DependencyValues.Builder.() -> Unit = {},
     ): TestStore<State, Action> {
         // Each test starts from no saved conversation (the shared store is the test's own).
@@ -57,9 +55,6 @@ class VoiceFeatureTestsDelegation {
             configure()
         }
         store.exhaustive = false
-        store.setAPIKey(apiKey)
-        // These cover calls on this phone's key; Automatic would try the server first.
-        store.withDependencies { shared(VoiceSharedKeys.voiceServerChoice).set(VoiceServerChoice.Phone) }
         return store
     }
 
@@ -68,7 +63,7 @@ class VoiceFeatureTestsDelegation {
     ): Pair<TestStore<State, Action>, EventStream> {
         val events = EventStream()
         val store = makeStore {
-            voiceCall { copy(start = { _, _ -> events.events }) }
+            voiceCall { copy(start = { _ -> events.events }) }
             configure()
         }
         store.send(Action.Start)
@@ -85,7 +80,7 @@ class VoiceFeatureTestsDelegation {
         val store = makeStore {
             voiceCall {
                 copy(
-                    start = { _, config ->
+                    start = { config ->
                         assertTrue(config.instructions.contains("\"Voice lab\""))
                         assertTrue(config.instructions.contains("user: earlier context"))
                         events.events
@@ -517,7 +512,7 @@ class VoiceFeatureTestsDelegation {
         val calls = LockIsolated(listOf<EventStream>())
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     val stream = EventStream()
                     calls.append(stream)
                     stream.events
@@ -588,7 +583,7 @@ class VoiceFeatureTestsDelegation {
     @Test fun cancellingAConnectingCallAnswersTheFinger() = voiceTest { harness ->
         h = harness
         val events = EventStream()
-        val store = makeStore { voiceCall { copy(start = { _, _ -> events.events }) } }
+        val store = makeStore { voiceCall { copy(start = { _ -> events.events }) } }
         store.send(Action.Start) { it.withPhase(State.Phase.Connecting) }
         store.send(Action.EndPressed)
         store.receive(Action.EndTapped::class) { it.withPhase(State.Phase.Ended) }
@@ -597,10 +592,17 @@ class VoiceFeatureTestsDelegation {
 
     @Test fun closingAFailedCallsCardBacksOut() = voiceTest { harness ->
         h = harness
-        val store = makeStore(apiKey = null)
-        store.send(Action.Start) {
-            it.withPhase(State.Phase.Failed("Add your OpenAI API key in Settings to use Voice."))
+        val store = makeStore {
+            this[ServerVoiceClient] = ServerVoiceClient(
+                checkSupport = { ServerVoiceSupport.unsupported },
+                models = ServerVoiceClient.testValue.models,
+                createSession = ServerVoiceClient.testValue.createSession,
+            )
         }
+        store.send(Action.Start)
+        store.receive(Action.CallEnded::class)
+        assertTrue(store.state.phase is State.Phase.Failed)
+        h.haptics.reset()
         store.send(Action.EndPressed)
         store.receive(Action.EndTapped::class)
         store.receiveEnded()
@@ -634,16 +636,6 @@ class VoiceFeatureTestsDelegation {
         store.finish()
     }
 
-    @Test fun missingKeyFailsBeforeAnyConnection() = voiceTest { harness ->
-        h = harness
-        val store = makeStore(apiKey = null) {
-            voiceCall { copy(start = { _, _ -> throw AssertionError("must not connect without a key") }) }
-        }
-        store.send(Action.Start) {
-            it.withPhase(State.Phase.Failed("Add your OpenAI API key in Settings to use Voice."))
-        }
-    }
-
     /**
      * The call bar's view appearing again (Settings closing, the drawer
      * swapping sessions) never restarts a live call.
@@ -654,7 +646,7 @@ class VoiceFeatureTestsDelegation {
         val events = EventStream()
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     starts.increment()
                     events.events
                 })
@@ -673,16 +665,21 @@ class VoiceFeatureTestsDelegation {
         store.finish()
     }
 
-    /** Check API Key, then Back: the failed call waits for Try Again. */
+    /** Choose Provider, then Back: the failed call waits for Try Again. */
     @Test fun aFailedCallStartsAgainOnlyOnTryAgain() = voiceTest { harness ->
         h = harness
-        val store = makeStore(apiKey = null) {
-            voiceCall { copy(start = { _, _ -> throw AssertionError("must not connect without a key") }) }
+        val store = makeStore {
+            voiceCall { copy(start = { _ -> throw AssertionError("must not connect to a server without voice") }) }
+            this[ServerVoiceClient] = ServerVoiceClient(
+                checkSupport = { ServerVoiceSupport.unsupported },
+                models = ServerVoiceClient.testValue.models,
+                createSession = ServerVoiceClient.testValue.createSession,
+            )
         }
         store.send(Action.StartIfNeeded)
-        store.receive(Action.Start::class) {
-            it.withPhase(State.Phase.Failed("Add your OpenAI API key in Settings to use Voice."))
-        }
+        store.receive(Action.Start::class)
+        store.receive(Action.CallEnded::class)
+        assertTrue(store.state.phase is State.Phase.Failed)
         assertFalse(store.state.awaitsFirstStart)
         // Exhaustive from here: a second `.start` would go unreceived and fail.
         store.exhaustive = true
@@ -690,24 +687,10 @@ class VoiceFeatureTestsDelegation {
         store.finish()
     }
 
-    @Test fun rejectedKeyFailsBeforeOpeningTheCall() = voiceTest { harness ->
-        h = harness
-        val store = makeStore(apiKey = "sk-rejected") {
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> throw RealtimePreflightError.RejectedAPIKey })
-            voiceCall { copy(start = { _, _ -> throw AssertionError("must not open a call after a failed preflight") }) }
-        }
-
-        store.send(Action.Start)
-        store.receive(Action.CallEnded::class) {
-            it.withPhase(State.Phase.Failed("OpenAI rejected the API key."))
-        }
-        store.finish()
-    }
-
     @Test fun callAudioStartsAtTheTapBeforeThePreflightAndIsReleasedAfter() = voiceTest { harness ->
         h = harness
         val steps = LockIsolated(listOf<String>())
-        val store = makeStore(apiKey = "sk-new") {
+        val store = makeStore {
             this[VoiceAudioClient] = VoiceAudioClient(
                 start = VoiceAudioClient.testValue.start,
                 prepare = { atEar ->
@@ -716,9 +699,8 @@ class VoiceFeatureTestsDelegation {
                 },
                 discardPrepared = { token -> steps.append("discard $token") },
             )
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> steps.append("preflight") })
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     steps.append("call")
                     kotlinx.coroutines.flow.emptyFlow()
                 })
@@ -728,40 +710,25 @@ class VoiceFeatureTestsDelegation {
         store.send(Action.Start)
         store.receive(Action.CallEnded::class)
         store.finish()
-        assertEquals(listOf("prepare false", "preflight", "call", "discard 7"), steps.value)
+        assertEquals(listOf("prepare false", "call", "discard 7"), steps.value)
     }
 
     @Test fun callAudioStartedAtTheTapIsReleasedWhenTheStartFails() = voiceTest { harness ->
         h = harness
         val discarded = LockIsolated(listOf<Int>())
-        val store = makeStore(apiKey = "sk-rejected") {
+        val store = makeStore {
             this[VoiceAudioClient] = VoiceAudioClient(
                 start = VoiceAudioClient.testValue.start,
                 prepare = { 3 },
                 discardPrepared = { token -> discarded.append(token) },
             )
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> throw RealtimePreflightError.RejectedAPIKey })
+            voiceCall { copy(start = { _ -> throw RealtimeClientError.Closed("Rejected.") }) }
         }
 
         store.send(Action.Start)
         store.receive(Action.CallEnded::class)
         store.finish()
         assertEquals(listOf(3), discarded.value)
-    }
-
-    @Test fun aFailedPreflightEndsThePendingStart() = voiceTest { harness ->
-        h = harness
-        val store = makeStore(apiKey = "sk-rejected") {
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> throw RealtimePreflightError.RejectedAPIKey })
-        }
-
-        store.send(Action.Start)
-        // Counts `VoiceCallSounds.cancelPendingStart`, which ends the connecting stage the tap
-        // began.
-        assertTrue(h.haptics.sounds.stageElapsed(DotScopeSimulation.Stage.connecting) != null)
-        store.receive(Action.CallEnded::class)
-        assertNull("The scanner's timeline from the tap ends with the start", h.haptics.sounds.stageElapsed(DotScopeSimulation.Stage.connecting))
-        store.finish()
     }
 
     @Test fun realtimeServiceErrorEndsWithTheServerMessage() = voiceTest { harness ->
@@ -777,7 +744,7 @@ class VoiceFeatureTestsDelegation {
     @Test fun microphoneDenialIsExplicit() = voiceTest { harness ->
         h = harness
         val store = makeStore {
-            voiceCall { copy(start = { _, _ -> throw VoiceAudioError.microphoneDenied }) }
+            voiceCall { copy(start = { _ -> throw VoiceAudioError.microphoneDenied }) }
         }
 
         store.send(Action.Start)
@@ -791,7 +758,7 @@ class VoiceFeatureTestsDelegation {
         h = harness
         val store = makeStore {
             voiceCall {
-                copy(start = { _, _ ->
+                copy(start = { _ ->
                     throw VoiceAudioError.engineRejected(operation = "Enabling voice processing", reason = "required condition is false")
                 })
             }

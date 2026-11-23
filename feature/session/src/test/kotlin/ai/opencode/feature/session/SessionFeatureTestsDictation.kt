@@ -28,8 +28,7 @@ import ai.opencode.feature.session.SessionTestSupport.settle
 import ai.opencode.feature.session.SessionTestSupport.testServer
 import ai.opencode.feature.session.SessionTestSupport.testSession
 import ai.opencode.feature.voice.VoiceFeature
-import ai.opencode.feature.voice.VoiceServerChoice
-import ai.opencode.feature.voice.VoiceSharedKeys
+import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.model.OpenCodeDelivery
@@ -731,7 +730,6 @@ class SessionFeatureTestsDictation {
      * in the draft instead of being discarded.
      */
     @Test fun tryAgainOnACallCardKeepsTheWords() = sessionTest { h ->
-        h.sharedStore.reference(VoiceSharedKeys.voiceServerChoice).set(VoiceServerChoice.Phone)
         val voice = h.state { VoiceFeature.State(testServer, testSession()) }.withPhase(VoiceFeature.State.Phase.Failed("Couldn’t connect"))
         val state = h.makeState(draft = "Check").copy(voice = voice)
         val feed = Channel<String>(Channel.UNLIMITED)
@@ -740,6 +738,7 @@ class SessionFeatureTestsDictation {
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 sendPrompt = { _, _, _, _, _, _, _ -> throw AssertionError("Starting a call must not send a recording") },
             )
+            this[UuidClient] = UuidClient.incrementing()
         }
         store.exhaustive = false
         store.send(Action.micPressBegan)

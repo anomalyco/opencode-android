@@ -748,9 +748,8 @@ fun VoiceCallEnded(store: VoiceStoreOf, modifier: Modifier = Modifier) {
 
 /**
  * Shown above the composer when the call couldn't connect: the provider that couldn't start it,
- * one sentence and one fix ([VoiceProviderFailureCard]); for Grok, which only runs on this phone's
- * xAI key, the error as it came, with Check API Key (or Open Settings when the microphone was
- * denied) and Try Again.
+ * one sentence and one fix ([VoiceProviderFailureCard]); otherwise the error as it came, with
+ * Open Settings when the microphone was denied, and Try Again.
  */
 @Composable
 fun VoiceCallFailure(store: VoiceStoreOf, message: String, modifier: Modifier = Modifier) {
@@ -799,8 +798,6 @@ private fun VoiceCallFailurePlainCard(store: VoiceStoreOf, message: String, modi
         val actions = @Composable {
             if (isMicrophoneDenied) {
                 OpenCodeSecondaryButton(stringResource(CoreR.string.common_open_settings), onClick = { store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.openSettings)) })
-            } else {
-                OpenCodeSecondaryButton(stringResource(R.string.voice_failure_check_api_key), onClick = { store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.setUpOnIPhone)) })
             }
             OpenCodePrimaryButton(stringResource(CoreR.string.common_try_again), onClick = { store.send(VoiceFeature.Action.TryAgainTapped) })
         }

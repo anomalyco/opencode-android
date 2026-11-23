@@ -5,7 +5,6 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
@@ -20,8 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
@@ -54,11 +51,6 @@ class VoiceProviderTests {
         shared(VoiceSharedKeys.voiceServerChoice).set(choice)
     }
 
-    private fun SpeechTestShared.savePhoneKey() = run {
-        shared(SharedKeys.openAIAPIKey).set("sk-phone")
-        shared(SharedKeys.verifiedVoiceKeyFingerprint).set(VoiceKeyFingerprint.make(key = "sk-phone", model = VoiceEngine.gptLive.modelID))
-    }
-
     private fun SpeechTestShared.know(
         support: Map<String, ServerVoiceSupport> = emptyMap(),
         models: Map<String, ServerVoiceModelsAnswer> = emptyMap(),
@@ -74,9 +66,8 @@ class VoiceProviderTests {
         shared: SpeechTestShared,
         at: Long,
         checkSupport: suspend (OpenCodeServer) -> ServerVoiceSupport,
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent>,
         end: suspend () -> Unit,
-        preflight: RealtimePreflightClient? = null,
     ): DependencyValues.Builder.() -> Unit = {
         this[SharedStore] = shared.store
         this[DateClient] = DateClient.constant(Instant.ofEpochSecond(at))
@@ -88,7 +79,6 @@ class VoiceProviderTests {
             VoiceWorkClient(submit = work.submit, awaitReply = work.awaitReply, checkSessionActive = work.checkSessionActive, recentMessages = { _, _, _ -> emptyList() })
         }
         this[VoiceCallClient] = speechVoiceCall(start = start, end = end)
-        preflight?.let { this[RealtimePreflightClient] = it }
     }
 
     private val gptLiveServerRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive))
@@ -116,8 +106,6 @@ class VoiceProviderTests {
             VoiceProviderState.noKey,
             VoiceProviderState.server(ServerVoiceModelsAnswer.Listed(listOf(gptLive)), support = null, call = VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.realtime)),
         )
-        assertEquals(VoiceProviderState.ready, VoiceProviderState.phone(hasKey = true))
-        assertEquals(VoiceProviderState.noKey, VoiceProviderState.phone(hasKey = false))
 
         assertEquals(
             listOf("Ready", "No key", "Update OpenCode", "Offline"),
@@ -130,8 +118,8 @@ class VoiceProviderTests {
 
     /**
      * Automatic takes the connected server while it can (or can't be known
-     * not to), then this phone's key, then another saved server that's
-     * ready, else the connected server, whose failure says why.
+     * not to), then another saved server that's ready, else the connected
+     * server, whose failure says why.
      */
     @Test fun automaticTriesTheConnectedServerThenThePhoneThenAnotherReadyServer() {
         fun pick(readiness: VoiceReadiness): VoicePick =
@@ -141,10 +129,9 @@ class VoiceProviderTests {
             studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive)),
         )
         assertEquals("Not heard from yet: its probe decides", server, pick(VoiceReadiness()).server)
-        assertEquals(server, pick(VoiceReadiness(answers = ready, hasPhoneKey = true)).server)
+        assertEquals(server, pick(VoiceReadiness(answers = ready)).server)
 
         val tooOld = mapOf(server.persistenceID to ServerVoiceSupport.unsupported)
-        assertEquals(VoiceProviderOption.Place.Phone, pick(VoiceReadiness(answers = ready, support = tooOld, hasPhoneKey = true)).place)
         assertEquals(studio, pick(VoiceReadiness(answers = ready, support = tooOld)).server)
         assertEquals(
             studio,
@@ -163,68 +150,14 @@ class VoiceProviderTests {
 
         val picked = VoicePick.resolve(
             VoiceServerChoice.of(studio), ServerVoiceProvider.openAI, connected = server, saved = listOf(server, studio),
-            readiness = VoiceReadiness(answers = mapOf(studio.persistenceID to ServerVoiceModelsAnswer.NoAnswer), hasPhoneKey = true),
+            readiness = VoiceReadiness(answers = mapOf(studio.persistenceID to ServerVoiceModelsAnswer.NoAnswer)),
         )
         assertTrue("A pick stays, ready or not", picked.server == studio && !picked.isAutomatic)
         val gemini = VoicePick.resolve(
             VoiceServerChoice.Automatic, ServerVoiceProvider.geminiLive, connected = server, saved = emptyList(),
-            readiness = VoiceReadiness(hasPhoneKey = true),
+            readiness = VoiceReadiness(),
         )
         assertTrue("Gemini Live picked stays", gemini.server == server && gemini.provider == ServerVoiceProvider.geminiLive && !gemini.isAutomatic)
-    }
-
-    /**
-     * A connected server known to be too old: Automatic starts the call on
-     * this phone's key, asking no server.
-     */
-    @Test fun automaticCallsOnThePhoneKeyPastAConnectedServerThatNeedsAnUpdate() = runBlocking {
-        val shared = reset()
-        shared.save(listOf(server, studio))
-        shared.savePhoneKey()
-        shared.know(
-            support = mapOf(server.persistenceID to ServerVoiceSupport.unsupported),
-            models = mapOf(studio.persistenceID to ServerVoiceModelsAnswer.Listed(listOf(gptLive))),
-        )
-        val keys = Locked(listOf<String>())
-        val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(
-            shared.run { VoiceFeature.State(server, session) }, VoiceFeature(), effects,
-            callDependencies(
-                shared, at = 1_000,
-                checkSupport = {
-                    fail("The phone's key asks no server")
-                    ServerVoiceSupport.supported
-                },
-                start = { key, config ->
-                    assertNull(config.serverVoice)
-                    keys.update { it + key }
-                    stream.trySend(VoiceCallEvent.Connected)
-                    stream.consumeAsFlow()
-                },
-                end = { stream.close() },
-            ),
-        )
-
-        store.send(VoiceFeature.Action.Start) {
-            it.copy(
-                diagnosesFailure = true,
-                startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
-                activeRoute = VoiceRoute.PhoneKey(VoiceEngine.gptLive),
-                activeVoice = CallVoice.marin,
-                callPresenceID = presenceID,
-            )
-        }
-        store.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected)) {
-            it.withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = Instant.ofEpochSecond(1_000))
-        }
-        stream.close()
-        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null)) { it.withPhase(VoiceFeature.State.Phase.Ended) }
-        assertEquals(VoiceTranscriptRecord(endedAt = Instant.ofEpochSecond(1_000), tail = emptyList(), log = emptyList()), transcriptRecord(shared))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
-        store.finish()
-        effects.cancel()
-        assertEquals(listOf("sk-phone"), keys.value)
     }
 
     /**
@@ -250,8 +183,7 @@ class VoiceProviderTests {
                     fail("Studio's support is known")
                     ServerVoiceSupport.supported
                 },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     brokers.update { it + config.serverVoice }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -286,89 +218,26 @@ class VoiceProviderTests {
         assertEquals(listOf<OpenCodeServer?>(studio), brokers.value)
     }
 
-    /**
-     * The connected server's probe finds it too old as the call starts:
-     * Automatic moves the call to this phone's key.
-     */
-    @Test fun automaticMovesToThePhoneKeyWhenTheProbeFindsTheServerTooOld() = runBlocking {
-        val shared = reset()
-        shared.save(listOf(server))
-        shared.savePhoneKey()
-        val keys = Locked(listOf<String>())
-        val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        // Holds the call until the probe's actions are received, so the order below is fixed.
-        val connectGate = CompletableDeferred<Unit>()
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(
-            shared.run { VoiceFeature.State(server, session) }, VoiceFeature(), effects,
-            callDependencies(
-                shared, at = 3_000,
-                checkSupport = { ServerVoiceSupport.unsupported },
-                start = { key, config ->
-                    assertNull(config.serverVoice)
-                    keys.update { it + key }
-                    connectGate.await()
-                    stream.trySend(VoiceCallEvent.Connected)
-                    stream.consumeAsFlow()
-                },
-                end = { stream.close() },
-            ),
-        )
-
-        store.send(VoiceFeature.Action.Start) {
-            it.copy(
-                diagnosesFailure = true,
-                callPlace = VoiceCallPlace("My Mac", VoiceProviderOption.Brand.openAI),
-                startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
-                activeRoute = gptLiveServerRoute,
-                activeVoice = CallVoice.marin,
-                callPresenceID = presenceID,
-            )
-        }
-        store.receive(VoiceFeature.Action.ServerVoiceSupportUpdated(ServerVoiceSupport.unsupported)) {
-            it.copy(serverVoiceSupport = ServerVoiceSupport.unsupported)
-        }
-        assertEquals(ServerVoiceSupport.unsupported, shared.run { shared(VoiceSharedKeys.serverVoiceSupportByServer).value[server.persistenceID] })
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.ServerVoiceSupportChanged(ServerVoiceSupport.unsupported)))
-        store.receive(VoiceFeature.Action.CallPlaceChanged(null)) { it.copy(callPlace = null) }
-        store.receive(VoiceFeature.Action.CallRouteResolved(VoiceRoute.PhoneKey(VoiceEngine.gptLive), usesDelegator = false)) {
-            it.copy(activeRoute = VoiceRoute.PhoneKey(VoiceEngine.gptLive))
-        }
-        connectGate.complete(Unit)
-        store.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected)) {
-            it.withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = Instant.ofEpochSecond(3_000))
-        }
-        stream.close()
-        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null)) { it.withPhase(VoiceFeature.State.Phase.Ended) }
-        assertEquals(VoiceTranscriptRecord(endedAt = Instant.ofEpochSecond(3_000), tail = emptyList(), log = emptyList()), transcriptRecord(shared))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
-        store.finish()
-        effects.cancel()
-        assertEquals(listOf("sk-phone"), keys.value)
-    }
-
     // MARK: A pick
 
     /**
      * The connected server picked, and too old: the call fails saying so,
-     * with Update OpenCode, and never moves to the phone's key it has.
+     * with Update OpenCode.
      */
     @Test fun aPickedServerThatFailsIsNeverSwappedForThePhoneKey() = runBlocking {
         val shared = reset()
         shared.save(listOf(server), choice = VoiceServerChoice.of(server))
-        shared.savePhoneKey()
         val effects = detachedScope(coroutineContext)
         val store = TestStore(
             shared.run { VoiceFeature.State(server, session) }, VoiceFeature(), effects,
             callDependencies(
                 shared, at = 4_000,
                 checkSupport = { ServerVoiceSupport.unsupported },
-                start = { _, _ ->
-                    fail("A pick never moves to the phone's key")
+                start = { _ ->
+                    fail("A server too old for voice never starts a call")
                     throw CancellationException()
                 },
                 end = {},
-                preflight = RealtimePreflightClient(verify = { _, _ -> fail("A pick never moves to the phone's key") }),
             ),
         )
 
@@ -418,10 +287,9 @@ class VoiceProviderTests {
             support = mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.supported),
         )
         val catalog = VoiceProviderCatalog(VoiceServerChoice.Automatic, ServerVoiceProvider.openAI, connected = server, others = listOf(studio), readiness = readiness)
-        assertEquals(VoiceServerChoice.of(server), catalog.active.choice)
+        assertEquals(VoiceServerChoice.of(server), catalog.active?.choice)
 
-        shared.save(listOf(server, studio), choice = catalog.active.choice)
-        shared.savePhoneKey()
+        shared.save(listOf(server, studio), choice = VoiceServerChoice.of(server))
         shared.know(support = readiness.support, models = readiness.answers)
         val brokers = Locked(listOf<OpenCodeServer?>())
         val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
@@ -432,7 +300,7 @@ class VoiceProviderTests {
             callDependencies(
                 shared, at = 5_000,
                 checkSupport = { ServerVoiceSupport.supported },
-                start = { _, config ->
+                start = { config ->
                     brokers.update { it + config.serverVoice }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -482,8 +350,7 @@ class VoiceProviderTests {
     // MARK: Failures
 
     /**
-     * One sentence and the button that fixes it: a server's failure never
-     * offers the phone's key.
+     * One sentence and the button that fixes it.
      */
     @Test fun aFailedCallSaysWhyAndOffersTheOneFix() {
         val serverRoute = gptLiveServerRoute
@@ -493,28 +360,21 @@ class VoiceProviderTests {
             VoiceCallDiagnosis(sentence = "My Mac doesn’t have a key for voice calls.", fix = VoiceCallFix.chooseProvider, place = "My Mac"),
             diagnose(missingServerKey, serverRoute),
         )
-        assertEquals("Couldn’t reach My Mac.", diagnose("No connection.", serverRoute).sentence)
-        assertEquals(VoiceCallFix.chooseProvider, diagnose("No connection.", serverRoute).fix)
+        assertEquals("Couldn’t reach My Mac.", diagnose("Could not connect to My Mac.", serverRoute).sentence)
+        assertEquals(VoiceCallFix.chooseProvider, diagnose("Could not connect to My Mac.", serverRoute).fix)
         assertEquals("My Mac couldn’t start the call.", diagnose("Couldn’t start voice: boom", serverRoute).sentence)
         assertEquals(VoiceCallFix.updateOpenCode, diagnose(ServerVoiceError.unsupportedServerNotice, VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)).fix)
 
-        val missingPhoneKey = VoiceRoute.Reason.MissingPhoneKey(VoiceEngine.gptLive)
-        assertEquals(
-            VoiceCallDiagnosis(sentence = "Add your OpenAI API key to call from this phone.", fix = VoiceCallFix.setUpOnIPhone, place = null),
-            diagnose(missingPhoneKey.message, VoiceRoute.Unavailable(missingPhoneKey), null),
-        )
-        assertEquals(VoiceCallFix.setUpOnIPhone, diagnose(RealtimePreflightError.RejectedAPIKey.message, VoiceRoute.PhoneKey(VoiceEngine.gptLive), null).fix)
         assertEquals(VoiceCallFix.openSettings, diagnose(VoiceAudioError.microphoneDenied.message ?: "", serverRoute).fix)
         assertEquals(
-            listOf("Set Up on This Phone", "Choose Provider", "Update OpenCode"),
-            listOf(VoiceCallFix.setUpOnIPhone, VoiceCallFix.chooseProvider, VoiceCallFix.updateOpenCode).map { it.title },
+            listOf("Choose Provider", "Update OpenCode"),
+            listOf(VoiceCallFix.chooseProvider, VoiceCallFix.updateOpenCode).map { it.title },
         )
     }
 
     /**
-     * The card's button opens the page that fixes it: Your OpenAI Account for
-     * this phone's key and Voice Provider for a server's failure. Update
-     * OpenCode opens the download page.
+     * The card's button opens the page that fixes it: Voice Provider for a
+     * server's failure. Update OpenCode opens the download page.
      */
     @Test fun theFixButtonOpensThePageThatFixesIt() = runBlocking {
         val shared = reset()
@@ -527,8 +387,6 @@ class VoiceProviderTests {
             this[SharedStore] = shared.store
             this[VoiceCallFixClient] = VoiceCallFixClient(openURL = { url -> opened.update { it + url } }, openAppSettings = {})
         }
-        store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.setUpOnIPhone))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.OpenVoiceSettings(VoiceSettingsPage.account)))
         store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.chooseProvider))
         store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.OpenVoiceSettings(VoiceSettingsPage.provider)))
         store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.updateOpenCode))
@@ -538,21 +396,4 @@ class VoiceProviderTests {
         effects.cancel()
     }
 
-    /**
-     * A Grok call's plain card: Check API Key opens Settings › Voice, where
-     * its xAI key lives.
-     */
-    @Test fun aGrokFailureOpensVoiceSettings() = runBlocking {
-        val shared = reset()
-        val state = shared.run { VoiceFeature.State(server, session) }
-            .withPhase(VoiceFeature.State.Phase.Failed("Add your xAI API key in Settings to use Voice."))
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(state, VoiceFeature(), effects) { this[SharedStore] = shared.store }
-        assertNull(store.state.failureDiagnosis)
-        store.send(VoiceFeature.Action.FailureFixTapped(VoiceCallFix.setUpOnIPhone))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.OpenVoiceSettings(VoiceSettingsPage.voice)))
-        store.finish()
-        effects.cancel()
-        assertFalse(store.state.diagnosesFailure)
-    }
 }

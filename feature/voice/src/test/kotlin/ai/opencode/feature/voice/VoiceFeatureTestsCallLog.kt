@@ -5,20 +5,19 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.feature.voice.VoiceFeature.Action
 import ai.opencode.feature.voice.VoiceFeature.State
+import ai.opencode.feature.voice.VoiceFeatureTestSupport.arguments
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.Harness
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.LockIsolated
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.append
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.arguments
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.call
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.copy
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.date
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.delegator
+import ai.opencode.feature.voice.VoiceFeatureTestSupport.delegating
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.live
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.receive
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.response
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.server
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.session
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.setAPIKey
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.settle
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceCall
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceTest
@@ -80,11 +79,9 @@ class VoiceFeatureTestsCallLog {
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
                 this[DateClient] = DateClient.constant(Instant.EPOCH)
                 this[Clock] = ImmediateClock()
-                voiceCall { copy(start = { _, _ -> flow { awaitCancellation() } }, end = {}) }
-                this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> })
+                voiceCall { copy(start = { _ -> flow { awaitCancellation() } }, end = {}) }
             }
             store.exhaustive = false
-            store.setAPIKey("sk-test")
             store.send(Action.Start)
             store.send(Action.CallEvent(VoiceCallEvent.Connected))
             store.send(Action.CallEvent(VoiceCallEvent.UserTranscript(itemID = "u1", text = "Check the upload test", final = true)))
@@ -259,49 +256,6 @@ class VoiceFeatureTestsCallLog {
         store.finish()
     }
 
-    @Test fun delegatorRequestContextReflectsLiveSessionRunStateAndSeparatesInFlightDelegatorWork() = voiceTest { harness ->
-        h = harness
-        val blog = VoiceFeatureTestSupport.session("ses_blog", "Blog game", "/Users/kit/blog-game")
-        var voice = h.state { State(server, session) }.live().copy(usesDelegator = true)
-        voice = voice.copy(replyWatch = voice.replyWatch.copy(activeSessionIDs = setOf(session.id)))
-        voice = voice.stepping(ReplyWatch.Event.Sent(listOf(ReplyWatch.Prompt(promptID = "msg_blog", sessionID = blog.id, title = blog.title))))
-        voice = voice.stepping(ReplyWatch.Event.WaitSucceeded(promptID = "msg_blog", reply = "Finished the scoring loop."))
-        voice = voice.copy(replyWatch = voice.replyWatch.copy(activeSessionIDs = setOf(session.id)), delegatorWork = listOf("earlier_call"))
-        voice = record(voice, VoiceTranscriptTail.Role.user, "How is this session doing, and did Blog game finish?", id = "u1")
-
-        val capturedRequests = LockIsolated(listOf<String>())
-        val store = h.store(voice) {
-            this[Clock] = ImmediateClock()
-            this[DateClient] = DateClient.constant(Instant.EPOCH)
-            this[VoiceDelegatorClient] = delegator { _, input, _ ->
-                (input.firstOrNull() as? VoiceDelegator.InputItem.User)?.let { capturedRequests.append(it.text) }
-                response("r1", text = "Voice lab is working and Blog game finished.")
-            }
-            voiceCall { copy(completeFunction = { _, _ -> }) }
-        }
-        store.exhaustive = false
-        store.setAPIKey("sk-test")
-
-        store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d2", name = "delegate", arguments = arguments())))
-        store.receive(Action.DelegatorFinished::class)
-
-        val firstRequest = capturedRequests.value.firstOrNull() ?: throw AssertionError("No request")
-        assertTrue(firstRequest.contains("The call is attached to session \"Voice lab\" (id ses_voice, project project, working)."))
-        assertTrue(firstRequest.contains("Tracked session work from this call:"))
-        assertTrue(firstRequest.contains("- \"Blog game\" (id ses_blog, prompt msg_blog): finished — replied: Finished the scoring loop."))
-        assertTrue(firstRequest.contains("Other voice delegator requests currently in flight: 1."))
-
-        // Now the viewed session is idle even while another delegator request is in flight.
-        store.send(Action.ReplyWatch(ReplyWatch.Event.ActiveSessionsSnapshot(emptySet(), source = ReplyWatch.SettlementSource.snapshot)))
-        store.send(Action.CallEvent(VoiceCallEvent.UserTranscript(itemID = "u2", text = "Check again", final = true)))
-        store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d3", name = "delegate", arguments = arguments())))
-        store.receive(Action.DelegatorFinished::class)
-
-        val secondRequest = capturedRequests.value.lastOrNull() ?: throw AssertionError("No request")
-        assertTrue(secondRequest.contains("The call is attached to session \"Voice lab\" (id ses_voice, project project, idle)."))
-        store.finish()
-    }
-
     @Test fun readSessionSurfacesStatusAndTranscriptErrorsInsteadOfReportingWorkingFalse() = voiceTest { harness ->
         h = harness
         val directory = tempDirectory("voice-read-err-")
@@ -318,24 +272,23 @@ class VoiceFeatureTestsCallLog {
                 this[Clock] = ImmediateClock()
                 this[DateClient] = DateClient.constant(Instant.EPOCH)
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
-                this[VoiceDelegatorClient] = delegator { _, input, _ ->
-                    val first = input.firstOrNull()
-                    if (first is VoiceDelegator.InputItem.ToolOutput) {
-                        toolOutputs.append(first.output)
-                        return@delegator response("r2", text = "I couldn’t reach the server to check.")
-                    }
-                    response("r1", listOf(call("t_read", "read_session", "{}")))
-                }
+                this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
                 this[OpenCodeClient] = this[OpenCodeClient].copy(
                     transcript = { _, _, _ -> listOf(OpenCodeTranscriptItem.AssistantMarkdown(id = "m1", text = "Earlier reply")) },
                     isSessionActive = { _, _ -> throw OpenCodeClientError(message = "Couldn’t reach the OpenCode server") },
                 )
-                voiceCall { copy(completeFunction = { _, _ -> }, end = {}) }
+                voiceCall { copy(completeFunction = { _, _ -> }, end = {}).delegating { input ->
+                    val first = input.firstOrNull()
+                    if (first is VoiceDelegator.InputItem.ToolOutput) {
+                        toolOutputs.append(first.output)
+                        return@delegating response("r2", text = "I couldn’t reach the server to check.")
+                    }
+                    response("r1", listOf(call("t_read", "read_session", "{}")))
+                } }
             }
             store.exhaustive = false
-            store.setAPIKey("sk-test")
 
-            store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = arguments())))
+            store.send(Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
             store.receive(Action.DelegatorFinished::class)
 
             val output = toolOutputs.value.firstOrNull() ?: throw AssertionError("No tool output")
@@ -387,18 +340,7 @@ class VoiceFeatureTestsCallLog {
                 this[Clock] = ImmediateClock()
                 this[DateClient] = DateClient.constant(startTime.plusSeconds(900))
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
-                this[VoiceDelegatorClient] = delegator { _, input, _ ->
-                    if (input.firstOrNull() is VoiceDelegator.InputItem.ToolOutput) {
-                        return@delegator response("r2", text = "Sent the bug report with the call log attached.")
-                    }
-                    response(
-                        "r1",
-                        listOf(
-                            call("t1", "send_message", """{"text":"Investigate missed completion notice.","attach_call_log":true}"""),
-                            call("t2", "send_call_log", """{"note":"Check why watch-msg_blog stayed open."}"""),
-                        ),
-                    )
-                }
+                this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
                 this[OpenCodeClient] = this[OpenCodeClient].copy(
                     uploadFile = { _, _, file, name ->
                         flow {
@@ -417,12 +359,22 @@ class VoiceFeatureTestsCallLog {
                     familyPendingRequests = { _, _, _ -> OpenCodePendingRequests(permissions = emptyList(), forms = emptyList()) },
                 )
                 voiceWork { copy(awaitReply = { _, _, _ -> "Root cause identified." }) }
-                voiceCall { copy(completeFunction = { _, _ -> }, announce = { _, _, _ -> }) }
+                voiceCall { copy(completeFunction = { _, _ -> }, announce = { _, _, _ -> }).delegating { input ->
+                    if (input.firstOrNull() is VoiceDelegator.InputItem.ToolOutput) {
+                        return@delegating response("r2", text = "Sent the bug report with the call log attached.")
+                    }
+                    response(
+                        "r1",
+                        listOf(
+                            call("t1", "send_message", """{"text":"Investigate missed completion notice.","attach_call_log":true}"""),
+                            call("t2", "send_call_log", """{"note":"Check why watch-msg_blog stayed open."}"""),
+                        ),
+                    )
+                } }
             }
             store.exhaustive = false
-            store.setAPIKey("sk-test")
 
-            store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d_log", name = "delegate", arguments = arguments())))
+            store.send(Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d_log")))
             store.receive(Action.DelegatorFinished::class)
             store.skipReceivedActions()
 
@@ -474,14 +426,7 @@ class VoiceFeatureTestsCallLog {
         val store = h.store(voice) {
             this[Clock] = ImmediateClock()
             this[DateClient] = DateClient.constant(Instant.EPOCH)
-            this[VoiceDelegatorClient] = delegator { _, input, _ ->
-                val first = input.firstOrNull()
-                if (first is VoiceDelegator.InputItem.ToolOutput) {
-                    toolOutputs.append(first.output)
-                    return@delegator response("r2", text = "Blog game finished its tool steps.")
-                }
-                response("r1", listOf(call("t_read", "read_session", """{"session_id":"ses_blog"}""")))
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 getSession = { _, id -> if (id == blog.id) blog else session },
                 isSessionActive = { _, _ -> false },
@@ -504,13 +449,19 @@ class VoiceFeatureTestsCallLog {
                 copy(
                     completeFunction = { _, _ -> },
                     cancelPendingAnnouncements = { promptIDs -> cancelled.append(promptIDs) },
-                )
+                ).delegating { input ->
+                    val first = input.firstOrNull()
+                    if (first is VoiceDelegator.InputItem.ToolOutput) {
+                        toolOutputs.append(first.output)
+                        return@delegating response("r2", text = "Blog game finished its tool steps.")
+                    }
+                    response("r1", listOf(call("t_read", "read_session", """{"session_id":"ses_blog"}""")))
+                }
             }
         }
         store.exhaustive = false
-        store.setAPIKey("sk-test")
 
-        store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d_check", name = "delegate", arguments = arguments())))
+        store.send(Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d_check")))
         store.receive(Action.ReplyWatch::class)
         store.receive(Action.DelegatorFinished::class)
         settle()

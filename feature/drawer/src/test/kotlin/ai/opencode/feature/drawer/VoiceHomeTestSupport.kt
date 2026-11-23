@@ -10,7 +10,6 @@ import ai.opencode.feature.voice.VoiceCallClient
 import ai.opencode.feature.voice.VoiceDelegationCloseReason
 import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceDelegator
-import ai.opencode.feature.voice.VoiceDelegatorClient
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceTranscriptTail
 import ai.opencode.feature.voice.VoiceWorkAdmission
@@ -28,6 +27,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.yield
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.reflect.KClass
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -81,8 +81,14 @@ internal object VoiceHomeTestSupport {
         receiveBounded({ action -> action.voiceAction?.let(case::isInstance) == true }, "voice.${case.simpleName}", timeout)
     }
 
-    fun delegator(respond: suspend (String, List<VoiceDelegator.InputItem>, String?) -> VoiceDelegator.Response) =
-        VoiceDelegatorClient(isEnabled = true, respond = respond)
+    /** Server Voice delegation rounds answered by [respond], given the tool results sent since the last round. */
+    fun VoiceCallClient.delegating(respond: suspend (List<VoiceDelegator.InputItem>) -> VoiceDelegator.Response): VoiceCallClient {
+        val submitted = AtomicReference(emptyList<VoiceDelegator.InputItem>())
+        return copy(
+            delegatorRound = { _ -> runCatching { respond(submitted.getAndSet(emptyList())) } },
+            submitDelegatorInput = { _, input -> submitted.set(input); true },
+        )
+    }
 
     fun response(id: String, calls: List<VoiceDelegator.ToolCall> = emptyList(), text: String = "") =
         VoiceDelegator.Response(id = id, calls = calls, text = text)
@@ -91,7 +97,7 @@ internal object VoiceHomeTestSupport {
 
     /** A copy of the call client with some closures replaced. */
     fun VoiceCallClient.copy(
-        start: suspend (String, RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
+        start: suspend (RealtimeSessionConfig) -> Flow<VoiceCallEvent> = this.start,
         completeFunction: suspend (String, String) -> Unit = this.completeFunction,
         noteProgressActivity: suspend (String, String?) -> Unit = this.noteProgressActivity,
         stopProgressLine: suspend (String) -> Unit = this.stopProgressLine,

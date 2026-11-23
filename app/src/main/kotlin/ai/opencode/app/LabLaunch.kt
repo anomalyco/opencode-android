@@ -40,7 +40,6 @@ internal object LabLaunch {
             val pasteboard = dependency(PasteboardClient)
             CoroutineScope(Dispatchers.Main).launch { pasteboard.setString(text) }
         }
-        seedVoiceKeys(intent)
         setExperiments(intent.getStringExtra("lab-experiments-on"), true)
         setExperiments(intent.getStringExtra("lab-experiments-off"), false)
     }
@@ -51,15 +50,6 @@ internal object LabLaunch {
             val feature = ExperimentalFeature.fromRawValue(name) ?: continue
             val stored = shared(experimental(feature))
             if (stored.value != on) stored.set(on)
-        }
-    }
-
-    private fun seedVoiceKeys(intent: Intent) {
-        listOf("lab-openai-key" to SharedKeys.openAIAPIKey, "lab-xai-key" to SharedKeys.xaiAPIKey).forEach { (extra, key) ->
-            if (!intent.hasExtra(extra)) return@forEach
-            val next = intent.getStringExtra(extra)?.takeUnless { it.isEmpty() || it == "NONE" }
-            val stored = shared(key)
-            if (stored.value != next) stored.set(next)
         }
     }
 

@@ -35,8 +35,6 @@ import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.share.ReceivedShare
 import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.system.liveactivity.SessionLiveActivity
-import ai.opencode.feature.voice.VoiceSharedKeys
-import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.settings.SettingsFeature
 import ai.opencode.feature.settings.SettingsPage
 import ai.opencode.feature.settings.onboarding.WelcomeFeature
@@ -491,15 +489,11 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
             return next.copy(settings = root.copy(path = voiceSettingsPath(voicePage)))
         }
 
-        /**
-         * The pages a call's card opens Settings at: Voice, then Voice Provider (with Your Account
-         * over it) when the provider row stands in for the key row (not Grok).
-         */
+        /** The pages a call's card opens Settings at: Voice, then Voice Provider. */
         private fun voiceSettingsPath(voicePage: VoiceSettingsPage?): List<SettingsPage> {
             voicePage ?: return emptyList()
-            val showsProviderRow = shared(VoiceSharedKeys.voiceEngine).value != VoiceEngine.grok
-            if (!showsProviderRow || voicePage == VoiceSettingsPage.voice) return listOf(SettingsPage.Voice)
-            return listOf(SettingsPage.Voice, SettingsPage.VoiceProvider(opensAccount = voicePage == VoiceSettingsPage.account))
+            if (voicePage == VoiceSettingsPage.voice) return listOf(SettingsPage.Voice)
+            return listOf(SettingsPage.Voice, SettingsPage.VoiceProvider)
         }
 
         /** A reconnect, a server's first connection, or a return to the app: the next list and attention read set the baseline quietly. */

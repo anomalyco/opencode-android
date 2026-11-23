@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Anderer Server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Schlüssel verstecken</string>
-    <string name="settings_voice_key_show_description">Schlüssel zeigen</string>
-    <string name="settings_voice_key_verify">Überprüfen</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Sprachanbieter</string>
     <string name="settings_voice_provider_place">Auf %1$s</string>
-    <string name="settings_voice_api_key_title">API-Schlüssel</string>
     <string name="settings_voice_provider_automatic_footer">Wenn %1$s nicht bereit ist, nutzen Anrufe einen verfügbaren Anbieter.</string>
     <string name="settings_voice_provider_choose_automatically">Automatisch auswählen</string>
     <string name="settings_voice_provider_others_header">Andere Anbieter</string>
     <string name="settings_voice_provider_use_description">%1$s verwenden</string>
     <string name="settings_voice_provider_use">Verwenden</string>
-    <string name="settings_voice_provider_set_up">Einrichten</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d nicht verfügbar</item>
         <item quantity="other">%d nicht verfügbar</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Dein OpenAI-Konto</string>
-    <string name="settings_voice_account_place">Auf diesem Handy</string>
-    <string name="settings_voice_account_key_footer">Anrufe nutzen dein OpenAI-Konto statt eines Servers.</string>
-    <string name="settings_voice_account_use_for_calls">Für Anrufe verwenden</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Sprachfunktion</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Zum Sprechen anheben</string>
     <string name="settings_voice_call_sounds">Anruftöne</string>
     <string name="settings_voice_call_history">Anrufverlauf</string>
-    <string name="settings_voice_edit_key_label">Deinen API-Schlüssel für %1$s bearbeiten</string>
-    <string name="settings_voice_key_verified">Überprüft</string>
-    <string name="settings_voice_key_checking">Prüfen…</string>
-    <string name="settings_voice_key_saved">Gespeichert</string>
-    <string name="settings_voice_key_missing">Fehlt</string>
-    <string name="settings_voice_preview_disabled_hint">Füge deinen Schlüssel für %1$s hinzu, um Stimmen anzuhören</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Füge deinen Schlüssel für %1$s hinzu, um Stimmen anzuhören.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s ist auf %2$s nicht verfügbar. Anrufe nutzen daher %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Hörprobe für %1$s stoppen</string>
-    <string name="settings_voice_preview_description">%1$s anhören</string>
-    <string name="settings_voice_preview_playing">Wird abgespielt</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s nicht verfügbar</string>
 
     <!-- Settings root -->

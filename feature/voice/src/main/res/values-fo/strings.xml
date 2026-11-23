@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Samrøðan er endað</string>
     <string name="voice_call_ended_rejoin">Kom við aftur</string>
     <string name="voice_failure_title">Kundi ikki fáa samband við rødd</string>
-    <string name="voice_failure_check_api_key">Kanna API lykil</string>
     <string name="voice_failure_start_title">Kundi ikki byrja samrøðu</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Eingin lykil</string>
     <string name="voice_provider_state_needs_update">Dagfør OpenCode</string>
     <string name="voice_provider_state_offline">Uttan samband</string>
-    <string name="voice_provider_place_phone">Henda telefonin</string>
-    <string name="voice_provider_brand_openai_account">Tín OpenAI-konta</string>
     <string name="voice_provider_name">%1$s á %2$s</string>
     <string name="voice_provider_subtitle">Á %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-lykill</string>
-    <string name="voice_provider_key_placeholder">%1$s API lykil</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Lykil á tínum ambætara</string>
-    <string name="voice_key_source_phone_footer">Samrøður brúka tín egna OpenAI- ella xAI-lykil.</string>
     <string name="voice_key_source_server_footer">Samrøður brúka %1$s-lykilin á tínum ambætara.</string>
     <string name="voice_key_source_opencode_footer">Samrøður verða roknaðar á títt arbeiðsøki í OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Set upp á hesi telefonini</string>
     <string name="voice_fix_choose_provider">Vel veitara</string>
     <string name="voice_fix_update_opencode">Dagfør OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s krevur nýggjari OpenCode til raddsamrøður.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Fekk ikki samband við tín ambætara.</string>
     <string name="voice_diagnosis_failed">%1$s kundi ikki byrja samrøðuna.</string>
     <string name="voice_diagnosis_your_server_failed">Tín ambætari kundi ikki byrja samrøðuna.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI góðtók ikki lykilin á hesi telefonini.</string>
-    <string name="voice_diagnosis_missing_phone_key">Legg tín %1$s API lykil afturat fyri at ringja frá hesi telefonini.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Loyv mikrofonatgongd í innstillingum fyri at tosa við tína setu.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Kundi ikki byrja rødd: Ambætarin sendi eitt ógyldugt svar.</string>
     <string name="voice_error_start_voice_detail">Kundi ikki byrja rødd: %1$s</string>
     <string name="voice_error_start_voice_http">Kundi ikki byrja rødd (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI noktaði API lyklinum.</string>
-    <string name="voice_error_openai_verify_http">OpenAI kundi ikki staðfesta henda lykilin (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Einki samband.</string>
-    <string name="voice_error_model_address_invalid">Adressan hjá raddmodellinum er ógyldug.</string>
-    <string name="voice_error_xai_rejected_key">xAI noktaði API lyklinum.</string>
-    <string name="voice_error_xai_verify_http">xAI kundi ikki staðfesta henda lykilin (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Hesin xAI API lykilin er óvirkin.</string>
-    <string name="voice_error_xai_key_blocked">Hesin xAI API lykilin er sperraður.</string>
     <string name="voice_error_service_address_invalid">Adressan hjá raddtænastuni er ógyldug.</string>
     <string name="voice_error_connection_lost">Raddsambandið slitnaði.</string>
     <string name="voice_error_connection_closed">Raddsambandið er stongt.</string>
     <string name="voice_error_connection_setup">Kundi ikki seta raddsambandið upp.</string>
     <string name="voice_error_safety_filter">Eitt trygdarfiltur endaði raddsamrøðuna.</string>
     <string name="voice_error_audio_reset">Skipanin nullstillaði ljóðið. Byrja samrøðuna aftur.</string>
-    <string name="voice_error_missing_phone_key">Legg tín %1$s API lykil afturat í innstillingum fyri at brúka rødd.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Avstralskt enskt</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brasilskt portugisiskt</string>
     <string name="voice_accent_filipino_english">Filipinskt enskt</string>
     <string name="voice_accent_southern_us_english">Enskt úr suðurstatunum</string>
-    <string name="voice_accent_indian_english">Indiskt enskt</string>
-    <string name="voice_preview_error">Kundi ikki spæla forskoðan</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Andadráttartóni</string>

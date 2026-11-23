@@ -3,13 +3,11 @@ package ai.opencode.feature.drawer
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.ImmediateClock
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.LockIsolated
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.append
-import ai.opencode.feature.drawer.VoiceHomeTestSupport.arguments
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.call
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.copy
-import ai.opencode.feature.drawer.VoiceHomeTestSupport.delegator
+import ai.opencode.feature.drawer.VoiceHomeTestSupport.delegating
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.live
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.openingScreens
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.receiveVoice
@@ -22,7 +20,6 @@ import ai.opencode.feature.drawer.VoiceHomeTestSupport.voiceWork
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.withCall
 import ai.opencode.feature.voice.ReplyWatch
 import ai.opencode.feature.voice.VoiceCallEvent
-import ai.opencode.feature.voice.VoiceDelegator
 import ai.opencode.feature.voice.VoiceDelegatorClient
 import ai.opencode.feature.voice.VoiceTranscriptTail
 import ai.opencode.server.OpenCodeClient
@@ -136,7 +133,6 @@ class VoiceFeatureTestsCallLog {
     fun delegatorSendsToOffScreenSessionAndSSEExecutionEndedAnnouncesReplyWhileViewingAnotherSession() = voiceHomeTest { h ->
         val blog = OpenCodeSession(id = "ses_blog", serverTitle = "Blog game", projectID = "p", directory = "/Users/kit/blog-game", updatedAt = HomeFeatureTestSupport.distantPast)
         val session = session.copy(updatedAt = HomeFeatureTestSupport.distantPast)
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = emptyList(), sessions = listOf(session, blog), activeSessionIDs = emptySet()))
             home = home.copy(transcriptCache = home.transcriptCache + (session.id to emptyList()) + (blog.id to emptyList()))
@@ -153,15 +149,7 @@ class VoiceFeatureTestsCallLog {
         val fetched = LockIsolated(listOf<Pair<String, String>>())
         val store = h.store(home) {
             this[Clock] = ImmediateClock()
-            this[VoiceDelegatorClient] = delegator { _, input, _ ->
-                when (input.firstOrNull()) {
-                    is VoiceDelegator.InputItem.User -> response(
-                        "r1",
-                        listOf(call("t1", "send_message", """{"session_id":"ses_blog","text":"Finish the scoring loop."}""")),
-                    )
-                    else -> response("r2", text = "Started the scoring loop in Blog game.")
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.openingScreens { id -> if (id == blog.id) blog else session }.copy(
                 homeSnapshot = { _ -> OpenCodeHomeSnapshot(projects = emptyList(), sessions = listOf(session, blog), activeSessionIDs = emptySet()) },
                 homeAttention = { _, _, _ -> emptySet() },
@@ -181,11 +169,19 @@ class VoiceFeatureTestsCallLog {
                     noteSessionSettled = { _, sessionID -> settled.append(sessionID) },
                 )
             }
-            voiceCall { copy(completeFunction = { _, _ -> }, announce = { _, _, text -> announced.append(text) }) }
+            voiceCall {
+                copy(completeFunction = { _, _ -> }, announce = { _, _, text -> announced.append(text) }).delegating { input ->
+                    if (input.isEmpty()) {
+                        response("r1", listOf(call("t1", "send_message", """{"session_id":"ses_blog","text":"Finish the scoring loop."}""")))
+                    } else {
+                        response("r2", text = "Started the scoring loop in Blog game.")
+                    }
+                }
+            }
         }
         store.exhaustive = false
 
-        store.send(voiceEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = arguments())))
+        store.send(voiceEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receiveVoice(VoiceFeature.Action.DelegatorFinished::class)
         assertEquals("Screen stays on the viewed session", session.id, store.state.sessionDetail?.session?.id)
         assertEquals(listOf("msg_blog"), store.state.sessionDetail?.voice?.replyWatch?.watched?.map { it.promptID })

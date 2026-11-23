@@ -1,6 +1,5 @@
 package ai.opencode.feature.voice
 
-import ai.opencode.core.strings.localized
 import ai.opencode.server.OpenCodeServer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,20 +7,13 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import java.security.MessageDigest
 import java.time.Instant
 
 /** Which voice engine new calls use. */
 @Serializable
 enum class VoiceEngine(val rawValue: String) {
     @SerialName("gpt-live") gptLive("gpt-live"),
-    @SerialName("realtime") realtime("realtime"),
-
-    /**
-     * xAI's Grok Voice. It speaks the Realtime protocol, so it runs on the
-     * Realtime coordinator and delegates straight into the session on screen.
-     */
-    @SerialName("grok") grok("grok");
+    @SerialName("realtime") realtime("realtime");
 
     val id: VoiceEngine get() = this
 
@@ -29,59 +21,25 @@ enum class VoiceEngine(val rawValue: String) {
         get() = when (this) {
             gptLive -> "GPT-Live"
             realtime -> "Realtime"
-            grok -> "Grok Voice"
         }
 
     val modelID: String
         get() = when (this) {
             gptLive -> LiveSessionConfig.defaultModel
             realtime -> RealtimeSessionConfig.defaultModel
-            grok -> RealtimeSessionConfig.grokModel
         }
 
-    val provider: VoiceProvider
-        get() = when (this) {
-            gptLive, realtime -> VoiceProvider.openAI
-            grok -> VoiceProvider.xAI
-        }
+    val provider: VoiceProvider get() = VoiceProvider.openAI
 
     /**
-     * How the voice model names itself when asked (Realtime and Grok Voice;
-     * GPT-Live's instructions have their own).
+     * How the voice model names itself when asked (Realtime; GPT-Live's
+     * instructions have their own).
      */
     val selfDescription: String
         get() = when (this) {
             gptLive -> "GPT-Live ($modelID)"
             realtime -> "the Realtime model ($modelID)"
-            grok -> "Grok Voice ($modelID) from xAI"
         }
-
-    /** The saved key this engine's calls use. */
-    fun apiKey(openAI: String?, xAI: String?): String? = when (provider) {
-        VoiceProvider.openAI -> openAI
-        VoiceProvider.xAI -> xAI
-    }
-
-    /**
-     * Whether this engine's saved key is non-empty and matches the stored
-     * preflight fingerprint for this engine's model.
-     */
-    fun hasVerifiedAPIKey(openAI: String?, xAI: String?, verifiedFingerprint: String?): Boolean {
-        val key = (apiKey(openAI, xAI) ?: "").trim()
-        if (key.isEmpty() || verifiedFingerprint == null) return false
-        return verifiedFingerprint == VoiceKeyFingerprint.make(key = key, model = modelID)
-    }
-
-    /**
-     * The engine to move to during the one-time GPT-Live default migration:
-     * Realtime always moves (same OpenAI provider); Grok Voice moves only when
-     * the saved OpenAI key is already verified for GPT-Live, so a Grok-only or
-     * unverified OpenAI setup keeps working.
-     */
-    fun migratedToGPTLive(openAI: String?, verifiedFingerprint: String?): VoiceEngine = when (this) {
-        gptLive, realtime -> gptLive
-        grok -> if (gptLive.hasVerifiedAPIKey(openAI = openAI, xAI = null, verifiedFingerprint = verifiedFingerprint)) gptLive else grok
-    }
 
     /** Provider and model shown on the Settings › Voice Model row. */
     val providerModelTitle: String get() = "${provider.displayName} · $title"
@@ -92,36 +50,23 @@ enum class VoiceEngine(val rawValue: String) {
     }
 }
 
-/** Whose API a voice engine calls, and so whose key it needs. */
+/** Who runs a voice engine. */
 @Serializable
 enum class VoiceProvider(val rawValue: String) {
-    @SerialName("openAI") openAI("openAI"),
-    @SerialName("xAI") xAI("xAI");
+    @SerialName("openAI") openAI("openAI");
 
     /** Kotlin enums reserve `name`, so it is `displayName` here. */
     val displayName: String
         get() = when (this) {
             openAI -> "OpenAI"
-            xAI -> "xAI"
         }
 
     val id: VoiceProvider get() = this
-    val keyRowTitle: String get() = localized(R.string.voice_provider_key_row_title, displayName)
-    val keyPlaceholder: String get() = localized(R.string.voice_provider_key_placeholder, displayName)
     val engines: List<VoiceEngine> get() = VoiceEngine.entries.filter { it.provider == this }
 
     companion object {
-        val allCases: List<VoiceProvider> get() = listOf(openAI, xAI)
+        val allCases: List<VoiceProvider> get() = listOf(openAI)
     }
-}
-
-/**
- * The SHA-256 fingerprint of a voice key and the model its preflight accepted it for, moved down to
- * Voice because [VoiceEngine.hasVerifiedAPIKey] needs it and Settings sits above Voice.
- */
-object VoiceKeyFingerprint {
-    fun make(key: String, model: String): String =
-        MessageDigest.getInstance("SHA-256").digest("$model:$key".toByteArray()).joinToString("") { "%02x".format(it) }
 }
 
 /**

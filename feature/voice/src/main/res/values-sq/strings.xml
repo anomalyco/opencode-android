@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Thirrja përfundoi</string>
     <string name="voice_call_ended_rejoin">Ribashkohu</string>
     <string name="voice_failure_title">Zëri nuk u lidh dot</string>
-    <string name="voice_failure_check_api_key">Kontrollo tastin API</string>
     <string name="voice_failure_start_title">Thirrja nuk u nis dot</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Pa tast</string>
     <string name="voice_provider_state_needs_update">Përditëso OpenCode</string>
     <string name="voice_provider_state_offline">Jashtë linje</string>
-    <string name="voice_provider_place_phone">Ky telefon</string>
-    <string name="voice_provider_brand_openai_account">Llogaria jote OpenAI</string>
     <string name="voice_provider_name">%1$s në %2$s</string>
     <string name="voice_provider_subtitle">Në %1$s</string>
-    <string name="voice_provider_key_row_title">Tasti i %1$s</string>
-    <string name="voice_provider_key_placeholder">Tasti API i %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Tasti në serverin tënd</string>
-    <string name="voice_key_source_phone_footer">Thirrjet përdorin tastin tënd të OpenAI ose xAI.</string>
     <string name="voice_key_source_server_footer">Thirrjet përdorin tastin e %1$s në serverin tënd.</string>
     <string name="voice_key_source_opencode_footer">Thirrjet faturohen në hapësirën tënde të punës në OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Konfiguro në këtë telefon</string>
     <string name="voice_fix_choose_provider">Zgjidh ofruesin</string>
     <string name="voice_fix_update_opencode">Përditëso OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s ka nevojë për një version më të ri të OpenCode për thirrje zanore.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Nuk u lidh dot me serverin tënd.</string>
     <string name="voice_diagnosis_failed">%1$s nuk e nisi dot thirrjen.</string>
     <string name="voice_diagnosis_your_server_failed">Serveri yt nuk e nisi dot thirrjen.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nuk e pranoi tastin në këtë telefon.</string>
-    <string name="voice_diagnosis_missing_phone_key">Shto tastin tënd API të %1$s për të telefonuar nga ky telefon.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Lejo qasjen te mikrofoni te cilësimet për të folur me sesionin tënd.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Zëri nuk u nis dot: Serveri ktheu një përgjigje të pavlefshme.</string>
     <string name="voice_error_start_voice_detail">Zëri nuk u nis dot: %1$s</string>
     <string name="voice_error_start_voice_http">Zëri nuk u nis dot (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI e refuzoi tastin API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nuk e verifikoi dot këtë tast (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Nuk ka lidhje.</string>
-    <string name="voice_error_model_address_invalid">Adresa e modelit të zërit është e pavlefshme.</string>
-    <string name="voice_error_xai_rejected_key">xAI e refuzoi tastin API.</string>
-    <string name="voice_error_xai_verify_http">xAI nuk e verifikoi dot këtë tast (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Ky tast API i xAI është çaktivizuar.</string>
-    <string name="voice_error_xai_key_blocked">Ky tast API i xAI është bllokuar.</string>
     <string name="voice_error_service_address_invalid">Adresa e shërbimit të zërit është e pavlefshme.</string>
     <string name="voice_error_connection_lost">Lidhja zanore humbi.</string>
     <string name="voice_error_connection_closed">Lidhja zanore është mbyllur.</string>
     <string name="voice_error_connection_setup">Lidhja zanore nuk u vendos dot.</string>
     <string name="voice_error_safety_filter">Një filtër sigurie e përfundoi thirrjen zanore.</string>
     <string name="voice_error_audio_reset">Sistemi e rivendosi audion. Nise sërish thirrjen.</string>
-    <string name="voice_error_missing_phone_key">Shto tastin tënd API të %1$s te cilësimet për të përdorur zërin.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Anglishte australiane</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Portugalisht braziliane</string>
     <string name="voice_accent_filipino_english">Anglishte filipinase</string>
     <string name="voice_accent_southern_us_english">Anglishte e jugut të SHBA-së</string>
-    <string name="voice_accent_indian_english">Anglishte indiane</string>
-    <string name="voice_preview_error">Nuk u luajt dot prova</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Tringëllimë fryme</string>

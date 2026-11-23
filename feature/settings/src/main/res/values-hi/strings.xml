@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · दूसरा सर्वर</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">कुंजी छिपाएँ</string>
-    <string name="settings_voice_key_show_description">कुंजी दिखाएँ</string>
-    <string name="settings_voice_key_verify">सत्यापित करें</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">वॉइस प्रोवाइडर</string>
     <string name="settings_voice_provider_place">%1$s पर</string>
-    <string name="settings_voice_api_key_title">API कुंजी</string>
     <string name="settings_voice_provider_automatic_footer">जब %1$s तैयार नहीं होता, तो कॉल के लिए कोई तैयार प्रोवाइडर इस्तेमाल होता है।</string>
     <string name="settings_voice_provider_choose_automatically">अपने आप चुनें</string>
     <string name="settings_voice_provider_others_header">अन्य प्रोवाइडर</string>
     <string name="settings_voice_provider_use_description">%1$s का उपयोग करें</string>
     <string name="settings_voice_provider_use">उपयोग करें</string>
-    <string name="settings_voice_provider_set_up">सेट अप करें</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d उपलब्ध नहीं</item>
         <item quantity="other">%d उपलब्ध नहीं</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">आपका OpenAI खाता</string>
-    <string name="settings_voice_account_place">इस फ़ोन पर</string>
-    <string name="settings_voice_account_key_footer">कॉल के लिए सर्वर के बजाय आपका OpenAI खाता इस्तेमाल होता है।</string>
-    <string name="settings_voice_account_use_for_calls">कॉल के लिए उपयोग करें</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">वॉइस</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">कान के पास लाकर बात करें</string>
     <string name="settings_voice_call_sounds">कॉल की ध्वनियाँ</string>
     <string name="settings_voice_call_history">कॉल इतिहास</string>
-    <string name="settings_voice_edit_key_label">अपनी %1$s API कुंजी संपादित करें</string>
-    <string name="settings_voice_key_verified">सत्यापित</string>
-    <string name="settings_voice_key_checking">जाँच हो रही है…</string>
-    <string name="settings_voice_key_saved">सहेजी गई</string>
-    <string name="settings_voice_key_missing">मौजूद नहीं</string>
-    <string name="settings_voice_preview_disabled_hint">आवाज़ें सुनने के लिए अपनी %1$s कुंजी जोड़ें</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">आवाज़ें सुनने के लिए अपनी %1$s कुंजी जोड़ें।</string>
     <string name="settings_voice_picker_unavailable_footer">%2$s पर %1$s उपलब्ध नहीं है, इसलिए कॉल के लिए %3$s इस्तेमाल होता है।</string>
-    <string name="settings_voice_stop_preview_description">%1$s का पूर्वावलोकन रोकें</string>
-    <string name="settings_voice_preview_description">%1$s की आवाज़ सुनें</string>
-    <string name="settings_voice_preview_playing">चल रहा है</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s उपलब्ध नहीं है</string>
 
     <!-- Settings root -->

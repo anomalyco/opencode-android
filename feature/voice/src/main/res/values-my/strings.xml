@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">ခေါ်ဆိုမှု ပြီးဆုံးပါပြီ</string>
     <string name="voice_call_ended_rejoin">ပြန်ဝင်ပါ</string>
     <string name="voice_failure_title">အသံ မချိတ်ဆက်နိုင်ပါ</string>
-    <string name="voice_failure_check_api_key">API သော့ကို စစ်ပါ</string>
     <string name="voice_failure_start_title">ခေါ်ဆိုမှု မစတင်နိုင်ပါ</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">သော့ မရှိပါ</string>
     <string name="voice_provider_state_needs_update">OpenCode ကို အပ်ဒိတ်လုပ်ပါ</string>
     <string name="voice_provider_state_offline">အော့ဖ်လိုင်း</string>
-    <string name="voice_provider_place_phone">ဤဖုန်း</string>
-    <string name="voice_provider_brand_openai_account">သင့် OpenAI အကောင့်</string>
     <string name="voice_provider_name">%2$s ရှိ %1$s</string>
     <string name="voice_provider_subtitle">%1$s တွင်</string>
-    <string name="voice_provider_key_row_title">%1$s သော့</string>
-    <string name="voice_provider_key_placeholder">%1$s API သော့</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">သင့်ဆာဗာရှိ သော့</string>
-    <string name="voice_key_source_phone_footer">ခေါ်ဆိုမှုများတွင် သင့်ကိုယ်ပိုင် OpenAI သို့မဟုတ် xAI သော့ကို သုံးသည်။</string>
     <string name="voice_key_source_server_footer">ခေါ်ဆိုမှုများတွင် သင့်ဆာဗာ၏ %1$s သော့ကို သုံးသည်။</string>
     <string name="voice_key_source_opencode_footer">ခေါ်ဆိုခများကို သင့် OpenCode Console အလုပ်နေရာသို့ ကောက်ခံသည်။</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">ဤဖုန်းတွင် စနစ်ထည့်သွင်းပါ</string>
     <string name="voice_fix_choose_provider">ပံ့ပိုးပေးသူကို ရွေးပါ</string>
     <string name="voice_fix_update_opencode">OpenCode ကို အပ်ဒိတ်လုပ်ပါ</string>
     <string name="voice_diagnosis_needs_update">အသံခေါ်ဆိုရန် %1$s တွင် ပိုသစ်သော OpenCode လိုအပ်သည်။</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">သင့်ဆာဗာကို မချိတ်ဆက်နိုင်ပါ။</string>
     <string name="voice_diagnosis_failed">%1$s က ခေါ်ဆိုမှုကို မစတင်နိုင်ပါ။</string>
     <string name="voice_diagnosis_your_server_failed">သင့်ဆာဗာက ခေါ်ဆိုမှုကို မစတင်နိုင်ပါ။</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI က ဤဖုန်းရှိ သော့ကို လက်မခံပါ။</string>
-    <string name="voice_diagnosis_missing_phone_key">ဤဖုန်းမှ ခေါ်ဆိုရန် သင့် %1$s API သော့ကို ထည့်ပါ။</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">သင့်စက်ရှင်နှင့် စကားပြောရန် ဆက်တင်များတွင် မိုက်ခရိုဖုန်း သုံးခွင့်ပြုပါ။</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">အသံကို မစတင်နိုင်ပါ။ ဆာဗာက မမှန်ကန်သော တုံ့ပြန်မှု ပေးပို့ခဲ့သည်။</string>
     <string name="voice_error_start_voice_detail">အသံကို မစတင်နိုင်ပါ: %1$s</string>
     <string name="voice_error_start_voice_http">အသံကို မစတင်နိုင်ပါ (HTTP %1$d)။</string>
-    <string name="voice_error_openai_rejected_key">OpenAI က API သော့ကို ငြင်းပယ်ခဲ့သည်။</string>
-    <string name="voice_error_openai_verify_http">OpenAI က ဤသော့ကို အတည်မပြုနိုင်ပါ (HTTP %1$d)။</string>
-    <string name="voice_error_no_connection">ချိတ်ဆက်မှု မရှိပါ။</string>
-    <string name="voice_error_model_address_invalid">အသံမော်ဒယ်လိပ်စာ မမှန်ပါ။</string>
-    <string name="voice_error_xai_rejected_key">xAI က API သော့ကို ငြင်းပယ်ခဲ့သည်။</string>
-    <string name="voice_error_xai_verify_http">xAI က ဤသော့ကို အတည်မပြုနိုင်ပါ (HTTP %1$d)။</string>
-    <string name="voice_error_xai_key_disabled">ဤ xAI API သော့ကို ပိတ်ထားသည်။</string>
-    <string name="voice_error_xai_key_blocked">ဤ xAI API သော့ကို ပိတ်ပင်ထားသည်။</string>
     <string name="voice_error_service_address_invalid">အသံဝန်ဆောင်မှုလိပ်စာ မမှန်ပါ။</string>
     <string name="voice_error_connection_lost">အသံချိတ်ဆက်မှု ပြတ်တောက်သွားသည်။</string>
     <string name="voice_error_connection_closed">အသံချိတ်ဆက်မှု ပိတ်သွားသည်။</string>
     <string name="voice_error_connection_setup">အသံချိတ်ဆက်မှုကို မတည်ဆောက်နိုင်ပါ။</string>
     <string name="voice_error_safety_filter">ဘေးကင်းရေး စစ်ထုတ်မှုက အသံခေါ်ဆိုမှုကို အဆုံးသတ်လိုက်သည်။</string>
     <string name="voice_error_audio_reset">စနစ်က အသံကို ပြန်လည်သတ်မှတ်လိုက်သည်။ ခေါ်ဆိုမှုကို ပြန်စတင်ပါ။</string>
-    <string name="voice_error_missing_phone_key">အသံကို သုံးရန် ဆက်တင်များတွင် သင့် %1$s API သော့ကို ထည့်ပါ။</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">ဩစတြေးလျ အင်္ဂလိပ်</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">ဘရာဇီး ပေါ်တူဂီ</string>
     <string name="voice_accent_filipino_english">ဖိလစ်ပိုင် အင်္ဂလိပ်</string>
     <string name="voice_accent_southern_us_english">အမေရိကန်တောင်ပိုင်း အင်္ဂလိပ်</string>
-    <string name="voice_accent_indian_english">အိန္ဒိယ အင်္ဂလိပ်</string>
-    <string name="voice_preview_error">နမူနာအသံ မဖွင့်နိုင်ပါ</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">အသက်ရှူသံ တင်ခနဲ</string>

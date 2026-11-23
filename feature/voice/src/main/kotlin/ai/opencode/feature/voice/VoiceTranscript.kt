@@ -621,7 +621,7 @@ object VoiceInstructions {
         val status: String? = null,
         /** Why the call moved, when the user didn't move it themselves. */
         val unpromptedMoveReason: String? = null,
-        /** What the voice model calls itself (Realtime and Grok Voice). */
+        /** What the voice model calls itself (Realtime). */
         val voiceLayer: String = VoiceEngine.realtime.selfDescription,
         /** The user said they're looking at the screen and the app is in front ([VoiceScreenVisibility.visible]). */
         val userSeesScreen: Boolean = false,
@@ -707,7 +707,7 @@ object VoiceInstructions {
 
     fun build(context: Context, engine: VoiceEngine): String = when (engine) {
         VoiceEngine.gptLive -> buildLive(context)
-        VoiceEngine.realtime, VoiceEngine.grok -> build(context.copy(voiceLayer = engine.selfDescription))
+        VoiceEngine.realtime -> build(context.copy(voiceLayer = engine.selfDescription))
     }
 
     fun build(context: Context, route: VoiceRoute): String {
@@ -729,7 +729,7 @@ object VoiceInstructions {
     const val retargetPrefix = "Session changed."
 
     fun buildRetarget(context: Context, engine: VoiceEngine): String = when (engine) {
-        VoiceEngine.realtime, VoiceEngine.grok -> build(context.copy(previousTail = emptyList(), previousEndedAt = null), engine)
+        VoiceEngine.realtime -> build(context.copy(previousTail = emptyList(), previousEndedAt = null), engine)
         VoiceEngine.gptLive -> {
             val status = context.status?.let { " It is $it." } ?: ""
             val move = context.unpromptedMoveReason?.let { "The call moved because $it; unless you already said so, mention in a few words where you are now." }

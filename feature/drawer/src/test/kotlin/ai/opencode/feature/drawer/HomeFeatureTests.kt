@@ -651,12 +651,5 @@ class HomeFeatureTests {
         assertEquals(VoiceEngine.realtime, h.shared(VoiceSharedKeys.voiceEngine))
         store.send(Action.Settings(HomeSettingsFeature.Action.CallVoiceChanged(CallVoice.cedar)))
         assertEquals(CallVoice.cedar, h.shared(VoiceSharedKeys.callVoice))
-        store.send(Action.Settings(HomeSettingsFeature.Action.OpenAIAPIKeyChanged("sk-test")))
-        assertEquals("sk-test", h.shared(SharedKeys.openAIAPIKey))
-        store.send(Action.Settings(HomeSettingsFeature.Action.XaiAPIKeyChanged("xai-test")))
-        assertEquals("xai-test", h.shared(SharedKeys.xaiAPIKey))
-        assertEquals("Each provider keeps its own key", "sk-test", h.shared(SharedKeys.openAIAPIKey))
-        store.send(Action.Settings(HomeSettingsFeature.Action.VerifiedVoiceKeyFingerprintChanged("fp-1")))
-        assertEquals("fp-1", h.shared(SharedKeys.verifiedVoiceKeyFingerprint))
     }
 }

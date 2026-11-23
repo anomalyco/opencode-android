@@ -425,7 +425,6 @@ class WhatsNewTryItTests {
     @Test
     fun aCallBeforeVoiceIsSetUpPushesVoiceSettingsOnThePage() = homeTest { h ->
         h.setShared(SharedKeys.voiceModeEnabled, false)
-        h.setShared(SharedKeys.openAIAPIKey, null)
         val store = h.tryStore(h.home().presentingWhatsNew())
         // The entry's page the action is on.
         store.send(settingsAction(SettingsFeature.Action.PagePushed(SettingsPage.WhatsNewDetail("call-voice"))))

@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Друг сървър</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Скриване на ключа</string>
-    <string name="settings_voice_key_show_description">Показване на ключа</string>
-    <string name="settings_voice_key_verify">Проверка</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Доставчик на глас</string>
     <string name="settings_voice_provider_place">На %1$s</string>
-    <string name="settings_voice_api_key_title">API ключ</string>
     <string name="settings_voice_provider_automatic_footer">Когато %1$s не е готов, обажданията използват друг готов доставчик.</string>
     <string name="settings_voice_provider_choose_automatically">Автоматичен избор</string>
     <string name="settings_voice_provider_others_header">Други доставчици</string>
     <string name="settings_voice_provider_use_description">Използване на %1$s</string>
     <string name="settings_voice_provider_use">Използване</string>
-    <string name="settings_voice_provider_set_up">Настройване</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d недостъпен</item>
         <item quantity="other">%d недостъпни</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Вашият акаунт в OpenAI</string>
-    <string name="settings_voice_account_place">На този телефон</string>
-    <string name="settings_voice_account_key_footer">Обажданията използват вашия акаунт в OpenAI вместо сървър.</string>
-    <string name="settings_voice_account_use_for_calls">Използване за обаждания</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Глас</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Вдигнете, за да говорите</string>
     <string name="settings_voice_call_sounds">Звуци при обаждане</string>
     <string name="settings_voice_call_history">История на обажданията</string>
-    <string name="settings_voice_edit_key_label">Редактиране на вашия API ключ за %1$s</string>
-    <string name="settings_voice_key_verified">Проверен</string>
-    <string name="settings_voice_key_checking">Проверка…</string>
-    <string name="settings_voice_key_saved">Запазен</string>
-    <string name="settings_voice_key_missing">Липсва</string>
-    <string name="settings_voice_preview_disabled_hint">Добавете ключа си за %1$s, за да прослушате гласовете</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Добавете ключа си за %1$s, за да прослушате гласовете.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s не е наличен на %2$s, затова обажданията използват %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Спиране на прослушването на %1$s</string>
-    <string name="settings_voice_preview_description">Прослушване на %1$s</string>
-    <string name="settings_voice_preview_playing">Възпроизвеждане</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s не е наличен</string>
 
     <!-- Settings root -->

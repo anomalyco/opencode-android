@@ -107,20 +107,15 @@
     <string name="settings_delegator_another_server">%1$s · Други сервер</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Сакриј кључ</string>
-    <string name="settings_voice_key_show_description">Прикажи кључ</string>
-    <string name="settings_voice_key_verify">Провери</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Добављач гласа</string>
     <string name="settings_voice_provider_place">На %1$s</string>
-    <string name="settings_voice_api_key_title">API кључ</string>
     <string name="settings_voice_provider_automatic_footer">Када %1$s није спреман, позиви користе доступног добављача.</string>
     <string name="settings_voice_provider_choose_automatically">Изабери аутоматски</string>
     <string name="settings_voice_provider_others_header">Други добављачи</string>
     <string name="settings_voice_provider_use_description">Користи %1$s</string>
     <string name="settings_voice_provider_use">Користи</string>
-    <string name="settings_voice_provider_set_up">Подеси</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d добављач није доступан</item>
         <item quantity="few">%d добављача нису доступна</item>
@@ -128,10 +123,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Ваш OpenAI налог</string>
-    <string name="settings_voice_account_place">На овом телефону</string>
-    <string name="settings_voice_account_key_footer">Позиви користе ваш OpenAI налог уместо сервера.</string>
-    <string name="settings_voice_account_use_for_calls">Користи за позиве</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Глас</string>
@@ -145,19 +136,9 @@
     <string name="settings_voice_raise_to_talk">Принеси за разговор</string>
     <string name="settings_voice_call_sounds">Звуци позива</string>
     <string name="settings_voice_call_history">Историја позива</string>
-    <string name="settings_voice_edit_key_label">Уреди свој API кључ за %1$s</string>
-    <string name="settings_voice_key_verified">Проверен</string>
-    <string name="settings_voice_key_checking">Проверавам…</string>
-    <string name="settings_voice_key_saved">Сачуван</string>
-    <string name="settings_voice_key_missing">Недостаје</string>
-    <string name="settings_voice_preview_disabled_hint">Додајте свој кључ за %1$s да преслушате гласове</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Додајте свој кључ за %1$s да преслушате гласове.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s није доступан на %2$s, па позиви користе %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Заустави преслушавање гласа %1$s</string>
-    <string name="settings_voice_preview_description">Преслушај %1$s</string>
-    <string name="settings_voice_preview_playing">Репродукција</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s није доступан</string>
 
     <!-- Settings root -->

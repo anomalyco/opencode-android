@@ -143,8 +143,7 @@ object ServerVoiceModels {
 
     /**
      * Whether a server listing `models` can broker a call: it holds a key for GPT-Live, Realtime or
-     * Gemini Live. Grok never counts, since a Grok call always uses the phone's xAI key
-     * (`VoiceRoute.resolve`). Kept until Settings' picker moves to the Voice Provider page.
+     * Gemini Live. Kept until Settings' picker moves to the Voice Provider page.
      */
     fun offersVoice(models: List<ServerVoiceModel>): Boolean = models.any { it.available && brokered(it.model) != null }
 
@@ -189,8 +188,8 @@ fun voiceServerID(server: OpenCodeServer): String =
 sealed interface VoiceServerChoice {
     /**
      * The first provider that can place the call ([VoicePick.resolve]). The
-     * default, and what earlier builds' “connected server” reads as: it
-     * already moved to the phone's key when the server couldn't.
+     * default, and what earlier builds' “connected server” and “this phone's
+     * key” read as.
      */
     data object Automatic : VoiceServerChoice
 
@@ -201,15 +200,12 @@ sealed interface VoiceServerChoice {
      */
     data object Connected : VoiceServerChoice
 
-    /** None: calls use this iPhone's own OpenAI or xAI key. */
-    data object Phone : VoiceServerChoice
     data class Saved(val serverID: String) : VoiceServerChoice
 
     val rawValue: String
         get() = when (this) {
             Automatic -> ""
             Connected -> "connected"
-            Phone -> "phone"
             is Saved -> serverID
         }
 
@@ -229,7 +225,7 @@ sealed interface VoiceServerChoice {
         fun of(rawValue: String): VoiceServerChoice = when (rawValue) {
             "" -> Automatic
             "connected" -> Connected
-            "phone" -> Phone
+            "phone" -> Automatic
             else -> Saved(rawValue)
         }
 

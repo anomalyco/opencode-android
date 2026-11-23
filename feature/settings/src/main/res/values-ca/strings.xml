@@ -107,20 +107,15 @@
     <string name="settings_delegator_another_server">%1$s · Un altre servidor</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Amaga la tecla</string>
-    <string name="settings_voice_key_show_description">Mostra la tecla</string>
-    <string name="settings_voice_key_verify">Verifica</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Proveïdor de veu</string>
     <string name="settings_voice_provider_place">A %1$s</string>
-    <string name="settings_voice_api_key_title">Tecla API</string>
     <string name="settings_voice_provider_automatic_footer">Quan %1$s no està a punt, les trucades fan servir un proveïdor que sí que ho està.</string>
     <string name="settings_voice_provider_choose_automatically">Tria automàticament</string>
     <string name="settings_voice_provider_others_header">Altres proveïdors</string>
     <string name="settings_voice_provider_use_description">Fes servir %1$s</string>
     <string name="settings_voice_provider_use">Fes servir</string>
-    <string name="settings_voice_provider_set_up">Configura</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d no disponible</item>
         <item quantity="many">%d no disponibles</item>
@@ -128,10 +123,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">El teu compte d\'OpenAI</string>
-    <string name="settings_voice_account_place">En aquest mòbil</string>
-    <string name="settings_voice_account_key_footer">Les trucades fan servir el teu compte d\'OpenAI en lloc d\'un servidor.</string>
-    <string name="settings_voice_account_use_for_calls">Fes servir per a trucades</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Veu</string>
@@ -145,19 +136,9 @@
     <string name="settings_voice_raise_to_talk">Apropa\'l per parlar</string>
     <string name="settings_voice_call_sounds">Sons de trucada</string>
     <string name="settings_voice_call_history">Historial de trucades</string>
-    <string name="settings_voice_edit_key_label">Edita la teva tecla API de %1$s</string>
-    <string name="settings_voice_key_verified">Verificada</string>
-    <string name="settings_voice_key_checking">S\'està comprovant…</string>
-    <string name="settings_voice_key_saved">Desada</string>
-    <string name="settings_voice_key_missing">Falta</string>
-    <string name="settings_voice_preview_disabled_hint">Afegeix la teva tecla de %1$s per escoltar les veus</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Afegeix la teva tecla de %1$s per escoltar les veus.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s no està disponible a %2$s, així que les trucades fan servir %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Atura la mostra de %1$s</string>
-    <string name="settings_voice_preview_description">Escolta %1$s</string>
-    <string name="settings_voice_preview_playing">S\'està reproduint</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s no disponible</string>
 
     <!-- Settings root -->

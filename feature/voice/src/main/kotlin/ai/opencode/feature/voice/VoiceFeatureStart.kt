@@ -14,15 +14,13 @@ import ai.opencode.server.friendlyName
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 
-// Starting a call on its route — Server Voice's probe, the phone key's preflight, then the session.
+// Starting a call on its route — Server Voice's probe, then the session.
 
 fun VoiceFeature.State.setActiveRoute(
     route: VoiceRoute,
@@ -38,8 +36,6 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     var next = state
     val target = next.target
     val selectedEngine = next.resolvedEngine
-    val openAIKey = next.callAPIKey(VoiceEngine.gptLive)?.trim() ?: ""
-    val xaiKey = next.callAPIKey(VoiceEngine.grok)?.trim() ?: ""
     if (next.voiceServer == VoiceServerChoice.Connected) {
         shared(VoiceSharedKeys.voiceServerChoice).update { it.pinningConnected(target.server) }
     }
@@ -51,7 +47,6 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         saved = saved,
         answers = next.voiceModelsByServer,
         support = next.serverVoiceSupportByServer,
-        hasOpenAIKey = openAIKey.isNotEmpty(),
         engine = selectedEngine,
     )
     val serverVoiceEnabled = broker.isEnabled
@@ -68,7 +63,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     val previousCached = next.serverVoiceSupportByServer[brokerServer.persistenceID]
     val initialSupport = if (previousSupport != ServerVoiceSupport.unknown) previousSupport else previousCached ?: ServerVoiceSupport.unknown
     val resolve: (VoiceBroker, ServerVoiceSupport) -> VoiceRoute = { routeBroker, support ->
-        routeBroker.route(selectedEngine, support, hasOpenAIKey = openAIKey.isNotEmpty(), hasXAIKey = xaiKey.isNotEmpty())
+        routeBroker.route(selectedEngine, support)
     }
 
     /** Automatic, once `server` turns out to have no voice routes: the next provider that can place the call. A pick never moves. */
@@ -82,18 +77,16 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         )
     }
     val place: (VoiceBroker) -> VoiceCallPlace? = place@{ placeBroker ->
-        val server = placeBroker.server
-        if (server == null || selectedEngine == VoiceEngine.grok) return@place null
+        val server = placeBroker.server ?: return@place null
         VoiceCallPlace(name = server.friendlyName, brand = readiness.brand(server, placeBroker.provider))
     }
     val route = resolve(broker, initialSupport)
-    next = next.copy(diagnosesFailure = selectedEngine != VoiceEngine.grok, callPlace = null)
-    val shouldProbe = serverVoiceEnabled && selectedEngine != VoiceEngine.grok && initialSupport != ServerVoiceSupport.supported
+    next = next.copy(diagnosesFailure = true, callPlace = null)
+    val shouldProbe = serverVoiceEnabled && initialSupport != ServerVoiceSupport.supported
     if (route is VoiceRoute.Unavailable && !shouldProbe) {
         next = next.setActiveRoute(route, usesDelegator = false).copy(callPlace = place(broker))
         return Reduced(next.withPhase(VoiceFeature.State.Phase.Failed(route.reason.message)))
     }
-    val key = if (selectedEngine == VoiceEngine.grok) xaiKey else openAIKey
     val sounds = dependency(VoiceCallSounds)
     sounds.voice(VoiceCallHaptic.callStarted)
     val voiceCallLog = dependency(VoiceCallLogClient)
@@ -123,11 +116,10 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         startedTarget = target,
         startedViewing = next.viewing,
     )
-    val delegatorEnabled = voiceDelegator.isEnabled && key != "lab"
+    val delegatorEnabled = voiceDelegator.isEnabled
     val experimentalFeatures = dependency(ExperimentalFeatures)
     val sessionDelegatorEligible = experimentalFeatures(ExperimentalFeature.voiceSessionDelegator) &&
-        next.voiceDelegatorChoice.usesOpenCodeSession &&
-        key != "lab"
+        next.voiceDelegatorChoice.usesOpenCodeSession
     val usesSessionDelegatorForRoute: (VoiceRoute) -> Boolean = { resolvedRoute ->
         sessionDelegatorEligible && resolvedRoute.engine == VoiceEngine.gptLive
     }
@@ -141,34 +133,29 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
     ).copy(callPlace = if (route.isServer) place(broker) else null)
     val voice = next.callVoice.resolved(selectedEngine)
     // On Server Voice with Built-in, OpenAI runs the delegator on the server's
-    // key (Responses delegation); with OpenCode Session or a phone key, the
-    // phone runs client delegation.
+    // key (Responses delegation); with OpenCode Session, the phone runs client
+    // delegation.
     next = next.copy(
         activeVoice = voice,
-        delegatorResponseID = null,
         // Android: the call's ongoing notification, started with the call.
         callPresenceID = uuid.next(),
     )
     val initialContext = next.instructionsContext
-    val responsesDelegation: LiveDelegation? = if (selectedEngine == VoiceEngine.gptLive && key != "lab") {
+    val responsesDelegation: LiveDelegation? = if (selectedEngine == VoiceEngine.gptLive) {
         LiveDelegation.responses(VoiceDelegator.responsesDelegation(context = delegatorContext(next, otherRequests = 0)))
     } else {
         null
     }
     next.atEarBox.current = next.isAtEar
     val atEarBox = next.atEarBox
-    // A key Settings already verified for this model skips the preflight
-    // (a ~0.7 s round trip, measured); a new one is still checked first.
-    val verified = key.isNotEmpty() && next.verifiedKeyFingerprint == VoiceKeyFingerprint.make(key = key, model = selectedEngine.modelID)
     val startsAtEar = next.isAtEar
     val voiceAudio = dependency(VoiceAudioClient)
     val serverVoice = dependency(ServerVoiceClient)
-    val realtimePreflight = dependency(RealtimePreflightClient)
     val voiceCall = dependency(VoiceCallClient)
 
     val effect = Effect.run<VoiceFeature.Action> { send ->
-        // The call's audio starts with the tap, alongside the probe, the
-        // preflight, and the context below; the call adopts it once set up.
+        // The call's audio starts with the tap, alongside the probe and the
+        // context below; the call adopts it once set up.
         val preparedAudio = voiceAudio.prepare(startsAtEar)
         var discarded = false
         suspend fun discardPrepared() {
@@ -181,19 +168,14 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
             var resolvedRoute = route
             var callBroker = brokerServer
 
-            // Automatic moves on from a server without the voice routes: to the
-            // next ready server, else the phone's key.
+            // Automatic moves on from a server without the voice routes to the
+            // next ready server.
             suspend fun moveOn(server: OpenCodeServer) {
                 val moved = movedOn(server)
                 val nextServer = moved?.server
                 if (moved == null || !moved.isEnabled || nextServer == null || nextServer.persistenceID == server.persistenceID) {
-                    // This phone's key, else nothing can: the server's own failure says why.
-                    resolvedRoute = resolve(broker, ServerVoiceSupport.unsupported)
-                    if (resolvedRoute is VoiceRoute.PhoneKey) {
-                        send(VoiceFeature.Action.CallPlaceChanged(null))
-                    } else {
-                        resolvedRoute = VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)
-                    }
+                    // Nothing else can: the server's own failure says why.
+                    resolvedRoute = VoiceRoute.Unavailable(VoiceRoute.Reason.ServerUnsupported)
                     return
                 }
                 callBroker = nextServer
@@ -229,18 +211,6 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                 resolvedAgain()
             }
 
-            suspend fun startWithPhoneKey(context: VoiceInstructions.Context): Flow<VoiceCallEvent> {
-                if (key.isEmpty()) throw RealtimePreflightError.Service(VoiceRoute.Reason.MissingPhoneKey(selectedEngine).message)
-                if (!verified) realtimePreflight.verify(key, selectedEngine.modelID)
-                currentCoroutineContext().ensureActive()
-                val phoneRoute = VoiceRoute.PhoneKey(selectedEngine)
-                val config = phoneRoute.sessionConfig(
-                    voice = voice, context = context, isAtEar = atEarBox.current, server = target.server,
-                    unboundSpeechUsesInstructions = usesSessionDelegatorForRoute(phoneRoute),
-                )
-                return voiceCall.start(key, config)
-            }
-
             suspend fun startOnServer(route: VoiceRoute, server: OpenCodeServer): Flow<VoiceCallEvent> {
                 val useSession = usesSessionDelegatorForRoute(route)
                 val delegation = if (!useSession && usesBuiltInDelegatorForRoute(route)) {
@@ -254,7 +224,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                     unboundSpeechUsesInstructions = useSession,
                 )
                 try {
-                    return voiceCall.start("", config)
+                    return voiceCall.start(config)
                 } catch (error: CancellationException) {
                     throw error
                 } catch (error: Exception) {
@@ -284,28 +254,12 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                         server = server, delegation = fallbackDelegation,
                         unboundSpeechUsesInstructions = false,
                     )
-                    return voiceCall.start("", fallbackConfig)
+                    return voiceCall.start(fallbackConfig)
                 }
             }
 
-            // In parallel when using a phone key: the preflight, and the session's
-            // recent messages, which wait at most 0.6 s rather than hold the call back.
-            val needsPreflight = resolvedRoute == VoiceRoute.PhoneKey(selectedEngine) && !verified
-            val started: Pair<Flow<VoiceCallEvent>?, Exception?> = coroutineScope {
-                val preflight = if (needsPreflight) {
-                    async {
-                        try {
-                            realtimePreflight.verify(key, selectedEngine.modelID)
-                            null
-                        } catch (error: CancellationException) {
-                            throw error
-                        } catch (error: Exception) {
-                            error
-                        }
-                    }
-                } else {
-                    null
-                }
+            // The session's recent messages wait at most 0.6 s rather than hold the call back.
+            val started: Pair<Flow<VoiceCallEvent>?, Exception?> = run {
                 context = context.copy(recentMessages = fetchRecentMessages(target))
                 try {
                     currentCoroutineContext().ensureActive()
@@ -326,27 +280,16 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                                 resolvedAgain()
                                 when (val moved = resolvedRoute) {
                                     is VoiceRoute.Server -> startOnServer(moved, callBroker)
-                                    is VoiceRoute.PhoneKey -> startWithPhoneKey(context)
-                                    is VoiceRoute.Unavailable -> throw RealtimePreflightError.Service(moved.reason.message)
+                                    is VoiceRoute.Unavailable -> throw IllegalStateException(moved.reason.message)
                                 }
                             }
                         }
-                        is VoiceRoute.PhoneKey -> {
-                            preflight?.await()?.let { throw it }
-                            currentCoroutineContext().ensureActive()
-                            val config = chosen.sessionConfig(
-                                voice = voice, context = context, isAtEar = atEarBox.current, server = target.server,
-                                unboundSpeechUsesInstructions = usesSessionDelegatorForRoute(chosen),
-                            )
-                            voiceCall.start(key, config)
-                        }
-                        is VoiceRoute.Unavailable -> throw RealtimePreflightError.Service(chosen.reason.message)
+                        is VoiceRoute.Unavailable -> throw IllegalStateException(chosen.reason.message)
                     }
                     events to null
                 } catch (error: CancellationException) {
                     throw error
                 } catch (error: Exception) {
-                    preflight?.cancel()
                     null to error
                 }
             }

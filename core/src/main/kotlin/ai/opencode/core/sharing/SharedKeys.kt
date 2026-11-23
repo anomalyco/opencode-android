@@ -59,20 +59,8 @@ object SharedKeys {
     /** Whether the OpenCode Console sign-in earlier builds kept has been deleted (no-op on Android; kept for parity). */
     val consoleSignInRemoved = SharedKey.appStorage("console-sign-in-removed", false)
 
-    /** Your own OpenAI project key for voice calls; never sent to the OpenCode server. Empty/null disables Voice. */
-    val openAIAPIKey = SharedKey.keychain<String?>("openai-api-key", null)
-
-    /** Your own xAI key for Grok Voice calls; never sent to the OpenCode server. */
-    val xaiAPIKey = SharedKey.keychain<String?>("xai-api-key", null)
-
     /** The random key that owns this phone's uploaded voice calls; whoever has it can view them. Made on first upload. */
     val developerModeOwner = SharedKey.keychain<String?>("voice-call-upload-owner", null)
-
-    /**
-     * SHA-256 fingerprint of the last voice key and model accepted by the preflight. Not a
-     * credential; only avoids redundant checks. Keeps its OpenAI-only file name.
-     */
-    val verifiedVoiceKeyFingerprint = SharedKey.fileStorage<String?>(FileDirectory.Caches, "verified-openai-key.json", null)
 
     /** Starred models pinned to the top of the model picker. */
     val favoriteModelIDs = SharedKey.fileStorage<Set<String>>(FileDirectory.Documents, "favorite-models.json", emptySet())

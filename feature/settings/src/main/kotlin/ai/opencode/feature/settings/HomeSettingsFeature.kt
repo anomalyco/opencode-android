@@ -74,13 +74,10 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
         data class ServerVoiceSupportLoaded(val serverID: String, val support: ServerVoiceSupport) : Action
         /**
          * The connected server's voice models, so Automatic knows before a call whether it can take
-         * one or this phone's key should.
+         * one or another saved server should.
          */
         data class VoiceModelsLoaded(val serverID: String, val asked: Int, val answer: ServerVoiceModelsAnswer) : Action
         data class CallVoiceChanged(val voice: CallVoice) : Action
-        data class OpenAIAPIKeyChanged(val key: String?) : Action
-        data class XaiAPIKeyChanged(val key: String?) : Action
-        data class VerifiedVoiceKeyFingerprintChanged(val fingerprint: String?) : Action
         data object OnboardingPlaygroundOpened : Action
         /** Settings › Experimental › Show Welcome (Welcome Preview). */
         data object WelcomeOpened : Action
@@ -160,7 +157,6 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
                 val readiness = VoiceReadiness(
                     answers = shared(VoiceSharedKeys.voiceModelsByServer).value,
                     support = shared(VoiceSharedKeys.serverVoiceSupportByServer).value,
-                    hasPhoneKey = !shared(SharedKeys.openAIAPIKey).value.orEmpty().isBlank(),
                     engine = shared(VoiceSharedKeys.voiceEngine).value,
                 )
                 val pick = VoiceBroker(
@@ -205,10 +201,6 @@ class HomeSettingsFeature : Reducer<HomeSettingsFeature.State, HomeSettingsFeatu
                 }
             }
             is Action.CallVoiceChanged -> setShared(VoiceSharedKeys.callVoice, action.voice)
-            is Action.OpenAIAPIKeyChanged -> setShared(SharedKeys.openAIAPIKey, action.key)
-            is Action.XaiAPIKeyChanged -> setShared(SharedKeys.xaiAPIKey, action.key)
-            is Action.VerifiedVoiceKeyFingerprintChanged ->
-                setShared(SharedKeys.verifiedVoiceKeyFingerprint, action.fingerprint)
             Action.OnboardingPlaygroundOpened, Action.WelcomeOpened -> Unit
             is Action.AppThemeChanged ->
                 // The theme cross-fades in place: OpenCodeAppTheme observes the key.

@@ -669,7 +669,7 @@ class LiveCallCoordinatorTests {
     @Test fun everyEngineIsToldWhatItHearsIsTheUsersOwnAndNeverANote() {
         val context = VoiceInstructions.Context(sessionTitle = "HOME", directoryName = "home", recentMessages = emptyList(), previousTail = emptyList(), previousEndedAt = null, managesSessions = true)
         val section = VoiceInstructions.whatYouHearSection
-        for (prompt in listOf(VoiceInstructions.buildLive(context), VoiceInstructions.build(context, engine = VoiceEngine.realtime), VoiceInstructions.build(context, engine = VoiceEngine.grok))) {
+        for (prompt in listOf(VoiceInstructions.buildLive(context), VoiceInstructions.build(context, engine = VoiceEngine.realtime))) {
             assertTrue(prompt.contains(section))
         }
         assertTrue(section.contains("It is never a note, a message, or part of a result: never call it one."))

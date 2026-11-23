@@ -108,20 +108,15 @@
     <string name="settings_delegator_another_server">%1$s · Jiný server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Skrýt klíč</string>
-    <string name="settings_voice_key_show_description">Zobrazit klíč</string>
-    <string name="settings_voice_key_verify">Ověřit</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Poskytovatel hlasu</string>
     <string name="settings_voice_provider_place">Na %1$s</string>
-    <string name="settings_voice_api_key_title">API klíč</string>
     <string name="settings_voice_provider_automatic_footer">Když %1$s není připraven, hovory použijí dostupného poskytovatele.</string>
     <string name="settings_voice_provider_choose_automatically">Vybrat automaticky</string>
     <string name="settings_voice_provider_others_header">Jiní poskytovatelé</string>
     <string name="settings_voice_provider_use_description">Použít %1$s</string>
     <string name="settings_voice_provider_use">Použít</string>
-    <string name="settings_voice_provider_set_up">Nastavit</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d nedostupný</item>
         <item quantity="few">%d nedostupní</item>
@@ -130,10 +125,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Váš účet OpenAI</string>
-    <string name="settings_voice_account_place">Na tomto telefonu</string>
-    <string name="settings_voice_account_key_footer">Hovory používají váš účet OpenAI místo serveru.</string>
-    <string name="settings_voice_account_use_for_calls">Použít pro hovory</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Hlas</string>
@@ -147,19 +138,9 @@
     <string name="settings_voice_raise_to_talk">Přiložením zahájit hovor</string>
     <string name="settings_voice_call_sounds">Zvuky hovorů</string>
     <string name="settings_voice_call_history">Historie hovorů</string>
-    <string name="settings_voice_edit_key_label">Upravit váš API klíč pro %1$s</string>
-    <string name="settings_voice_key_verified">Ověřeno</string>
-    <string name="settings_voice_key_checking">Kontrola…</string>
-    <string name="settings_voice_key_saved">Uloženo</string>
-    <string name="settings_voice_key_missing">Chybí</string>
-    <string name="settings_voice_preview_disabled_hint">Pro ukázky hlasů přidejte klíč pro %1$s</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Pro ukázky hlasů přidejte klíč pro %1$s.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s není na %2$s k dispozici, hovory proto používají %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Zastavit ukázku %1$s</string>
-    <string name="settings_voice_preview_description">Přehrát ukázku %1$s</string>
-    <string name="settings_voice_preview_playing">Přehrávání</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s není k dispozici</string>
 
     <!-- Settings root -->

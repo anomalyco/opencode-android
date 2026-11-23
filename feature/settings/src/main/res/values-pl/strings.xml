@@ -108,20 +108,15 @@
     <string name="settings_delegator_another_server">%1$s · Inny serwer</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Ukryj klucz</string>
-    <string name="settings_voice_key_show_description">Pokaż klucz</string>
-    <string name="settings_voice_key_verify">Zweryfikuj</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Dostawca głosu</string>
     <string name="settings_voice_provider_place">Na %1$s</string>
-    <string name="settings_voice_api_key_title">Klucz API</string>
     <string name="settings_voice_provider_automatic_footer">Gdy %1$s nie jest gotowy, rozmowy korzystają z innego, gotowego dostawcy.</string>
     <string name="settings_voice_provider_choose_automatically">Wybieraj automatycznie</string>
     <string name="settings_voice_provider_others_header">Inni dostawcy</string>
     <string name="settings_voice_provider_use_description">Użyj %1$s</string>
     <string name="settings_voice_provider_use">Użyj</string>
-    <string name="settings_voice_provider_set_up">Skonfiguruj</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d niedostępny dostawca</item>
         <item quantity="few">%d niedostępni dostawcy</item>
@@ -130,10 +125,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Twoje konto OpenAI</string>
-    <string name="settings_voice_account_place">Na tym telefonie</string>
-    <string name="settings_voice_account_key_footer">Rozmowy korzystają z twojego konta OpenAI zamiast z serwera.</string>
-    <string name="settings_voice_account_use_for_calls">Używaj do rozmów</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Głos</string>
@@ -147,19 +138,9 @@
     <string name="settings_voice_raise_to_talk">Podnieś, by rozmawiać</string>
     <string name="settings_voice_call_sounds">Dźwięki rozmów</string>
     <string name="settings_voice_call_history">Historia rozmów</string>
-    <string name="settings_voice_edit_key_label">Edytuj swój klucz API %1$s</string>
-    <string name="settings_voice_key_verified">Zweryfikowany</string>
-    <string name="settings_voice_key_checking">Sprawdzanie…</string>
-    <string name="settings_voice_key_saved">Zapisany</string>
-    <string name="settings_voice_key_missing">Brak</string>
-    <string name="settings_voice_preview_disabled_hint">Dodaj swój klucz %1$s, aby odsłuchać głosy</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Dodaj swój klucz %1$s, aby odsłuchać głosy.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s jest niedostępny na %2$s, więc rozmowy korzystają z %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Zatrzymaj odsłuch %1$s</string>
-    <string name="settings_voice_preview_description">Odsłuchaj %1$s</string>
-    <string name="settings_voice_preview_playing">Odtwarzanie</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s niedostępny</string>
 
     <!-- Settings root -->

@@ -6,7 +6,6 @@ import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.sharing.ExperimentalFeature
 import ai.opencode.core.sharing.ExperimentalFeatures
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.testing.eventually
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.copy
 import ai.opencode.feature.voice.VoiceSessionDelegatorTestSupport.liveDelegatorState
@@ -100,26 +99,12 @@ class VoiceSessionDelegatorTests {
         assertFalse(geminiAvail.isAvailable)
         assertEquals(true, geminiAvail.explanation?.contains("Gemini Live"))
 
-        val realtimeAvail = VoiceDelegatorRouteAvailability.resolve(
-            route = VoiceRoute.PhoneKey(VoiceEngine.realtime),
-            selectedEngine = VoiceEngine.realtime,
-        )
-        assertFalse(realtimeAvail.isAvailable)
-        assertEquals(true, realtimeAvail.explanation?.contains("GPT-Live"))
-
         val serverRealtimeAvail = VoiceDelegatorRouteAvailability.resolve(
             route = VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.realtime),
             selectedEngine = VoiceEngine.realtime,
         )
         assertFalse(serverRealtimeAvail.isAvailable)
         assertEquals(true, serverRealtimeAvail.explanation?.contains("GPT-Live"))
-
-        val phoneLiveAvail = VoiceDelegatorRouteAvailability.resolve(
-            route = VoiceRoute.PhoneKey(VoiceEngine.gptLive),
-            selectedEngine = VoiceEngine.gptLive,
-        )
-        assertTrue(phoneLiveAvail.isAvailable)
-        assertNull(phoneLiveAvail.explanation)
     }
 
     @Test fun startSupportsSessionDelegatorOnServerVoiceAndPhoneKeyGPTLive() = runTest {
@@ -141,7 +126,7 @@ class VoiceSessionDelegatorTests {
             val serverStore = voiceTestStore(shared, { serverState }) {
                 this[DateClient] = DateClient.constant(Instant.ofEpochSecond(100))
                 this[ExperimentalFeatures] = ExperimentalFeatures.enabling(setOf(ExperimentalFeature.voiceSessionDelegator))
-                this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ -> throw AssertionError("Unused") }
+                this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
                 this[VoiceWorkClient] = testVoiceWork(recentMessages = { _, _, _ -> emptyList() })
                 this[ServerVoiceClient] = ServerVoiceClient(
@@ -149,8 +134,7 @@ class VoiceSessionDelegatorTests {
                     models = { null },
                     createSession = { _, _ -> throw AssertionError("Unused") },
                 )
-                this[VoiceCallClient] = testVoiceCall(start = { key, config ->
-                    assertTrue(key.isEmpty())
+                this[VoiceCallClient] = testVoiceCall(start = { config ->
                     startedConfigs += config
                     emptyFlow()
                 })
@@ -163,33 +147,6 @@ class VoiceSessionDelegatorTests {
             assertFalse(serverStore.state.usesDelegator)
             assertTrue(serverStore.state.usesSessionDelegator)
             assertEquals(LiveDelegation.client, startedConfigs.firstOrNull()?.liveDelegation)
-            assertEquals(true, startedConfigs.firstOrNull()?.unboundSpeechUsesInstructions)
-
-            // 2. Phone-key GPT-Live -> locks in OpenCode Session Delegator & unboundSpeechUsesInstructions.
-            startedConfigs.clear()
-            shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Phone)
-            shared.set(SharedKeys.openAIAPIKey, "sk-test")
-            shared.set(SharedKeys.verifiedVoiceKeyFingerprint, VoiceKeyFingerprint.make(key = "sk-test", model = VoiceEngine.gptLive.modelID))
-
-            val phoneState = shared.read { VoiceFeature.State(server, session) }
-            val phoneStore = voiceTestStore(shared, { phoneState }) {
-                this[DateClient] = DateClient.constant(Instant.ofEpochSecond(110))
-                this[ExperimentalFeatures] = ExperimentalFeatures.enabling(setOf(ExperimentalFeature.voiceSessionDelegator))
-                this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ -> throw AssertionError("Unused") }
-                this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
-                this[VoiceWorkClient] = testVoiceWork(recentMessages = { _, _, _ -> emptyList() })
-                this[VoiceCallClient] = testVoiceCall(start = { _, config ->
-                    startedConfigs += config
-                    emptyFlow()
-                })
-            }
-            phoneStore.exhaustive = false
-            phoneStore.send(VoiceFeature.Action.Start)
-            phoneStore.receive({ it == VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended) }, "ended", 5.seconds)
-            phoneStore.finish()
-            assertEquals(VoiceRoute.PhoneKey(VoiceEngine.gptLive), phoneStore.state.activeRoute)
-            assertFalse(phoneStore.state.usesDelegator)
-            assertTrue(phoneStore.state.usesSessionDelegator)
             assertEquals(true, startedConfigs.firstOrNull()?.unboundSpeechUsesInstructions)
         } finally {
             logDir.deleteRecursively()

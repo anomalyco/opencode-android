@@ -75,7 +75,6 @@ object VoiceProviderTunables {
  */
 sealed interface VoiceProviderTileKind {
     data object openAI : VoiceProviderTileKind
-    data object openAIAccount : VoiceProviderTileKind
     data object openCode : VoiceProviderTileKind
     data object gemini : VoiceProviderTileKind
     data class device(val deviceSymbol: String) : VoiceProviderTileKind
@@ -83,7 +82,6 @@ sealed interface VoiceProviderTileKind {
     val symbol: String
         get() = when (this) {
             openAI -> "waveform"
-            openAIAccount -> "person.fill"
             openCode -> "chevron.left.forwardslash.chevron.right"
             gemini -> "sparkle"
             is device -> deviceSymbol
@@ -92,7 +90,7 @@ sealed interface VoiceProviderTileKind {
     /** Top to bottom. */
     val colors: List<Color>
         get() = when (this) {
-            openAI, openAIAccount -> listOf(Color(0.13f, 0.72f, 0.56f), Color(0.04f, 0.52f, 0.42f))
+            openAI -> listOf(Color(0.13f, 0.72f, 0.56f), Color(0.04f, 0.52f, 0.42f))
             openCode -> listOf(white(0.32f), white(0.12f))
             gemini -> listOf(Color(0.36f, 0.47f, 1f), Color(0.52f, 0.3f, 0.93f))
             is device -> listOf(white(0.62f), white(0.5f))
@@ -102,15 +100,12 @@ sealed interface VoiceProviderTileKind {
         /** Nil is a server that can't say who'd run its calls. */
         fun of(brand: VoiceProviderOption.Brand?): VoiceProviderTileKind = when (brand) {
             VoiceProviderOption.Brand.openAI -> openAI
-            VoiceProviderOption.Brand.openAIAccount -> openAIAccount
             VoiceProviderOption.Brand.openCode -> openCode
             VoiceProviderOption.Brand.gemini -> gemini
             null -> device("desktopcomputer")
         }
 
-        /** This phone is always your own account. */
-        fun of(option: VoiceProviderOption): VoiceProviderTileKind =
-            if (option.place == VoiceProviderOption.Place.Phone) openAIAccount else of(option.brand)
+        fun of(option: VoiceProviderOption): VoiceProviderTileKind = of(option.brand)
 
         private fun white(value: Float) = Color(value, value, value)
     }
@@ -226,7 +221,7 @@ fun VoiceProviderFailureCard(
     val badge = VoiceProviderTunables.failureBadge.value
     val offset = VoiceProviderTunables.failureBadgeOffset.value
     val tileSize = VoiceProviderTunables.failureTile.value
-    val kind = if (diagnosis.place == null) VoiceProviderTileKind.openAIAccount else VoiceProviderTileKind.of(brand)
+    val kind = VoiceProviderTileKind.of(brand)
     val shape = RoundedCornerShape(VoiceProviderTunables.failureCorner.value.dp)
     Column(
         modifier

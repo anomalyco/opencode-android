@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Զանգն ավարտվել է</string>
     <string name="voice_call_ended_rejoin">Կրկին միանալ</string>
     <string name="voice_failure_title">Չհաջողվեց միացնել ձայնը</string>
-    <string name="voice_failure_check_api_key">Ստուգել API բանալին</string>
     <string name="voice_failure_start_title">Չհաջողվեց սկսել զանգը</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Բանալի չկա</string>
     <string name="voice_provider_state_needs_update">Թարմացնել OpenCode-ը</string>
     <string name="voice_provider_state_offline">Անցանց</string>
-    <string name="voice_provider_place_phone">Այս հեռախոսը</string>
-    <string name="voice_provider_brand_openai_account">Ձեր OpenAI հաշիվը</string>
     <string name="voice_provider_name">%1$s՝ %2$s-ում</string>
     <string name="voice_provider_subtitle">%1$s-ում</string>
-    <string name="voice_provider_key_row_title">%1$s-ի բանալի</string>
-    <string name="voice_provider_key_placeholder">%1$s-ի API բանալի</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Բանալի՝ ձեր սերվերում</string>
-    <string name="voice_key_source_phone_footer">Զանգերն օգտագործում են ձեր OpenAI կամ xAI բանալին։</string>
     <string name="voice_key_source_server_footer">Զանգերն օգտագործում են ձեր սերվերի %1$s բանալին։</string>
     <string name="voice_key_source_opencode_footer">Զանգերի վճարը գանձվում է ձեր OpenCode Console աշխատանքային տարածքից։</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Կարգավորել այս հեռախոսում</string>
     <string name="voice_fix_choose_provider">Ընտրել մատակարար</string>
     <string name="voice_fix_update_opencode">Թարմացնել OpenCode-ը</string>
     <string name="voice_diagnosis_needs_update">%1$s-ին ձայնային զանգերի համար պետք է OpenCode-ի ավելի նոր տարբերակ։</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Չհաջողվեց կապվել ձեր սերվերի հետ։</string>
     <string name="voice_diagnosis_failed">%1$s-ը չկարողացավ սկսել զանգը։</string>
     <string name="voice_diagnosis_your_server_failed">Ձեր սերվերը չկարողացավ սկսել զանգը։</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI-ը չընդունեց այս հեռախոսի բանալին։</string>
-    <string name="voice_diagnosis_missing_phone_key">Ավելացրեք ձեր %1$s API բանալին՝ այս հեռախոսից զանգելու համար։</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Կարգավորումներում թույլատրեք խոսափողի հասանելիությունը՝ ձեր նիստի հետ խոսելու համար։</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Չհաջողվեց միացնել ձայնային կապը․ սերվերն անվավեր պատասխան վերադարձրեց։</string>
     <string name="voice_error_start_voice_detail">Չհաջողվեց միացնել ձայնային կապը․ %1$s</string>
     <string name="voice_error_start_voice_http">Չհաջողվեց միացնել ձայնային կապը (HTTP %1$d)։</string>
-    <string name="voice_error_openai_rejected_key">OpenAI-ը մերժեց API բանալին։</string>
-    <string name="voice_error_openai_verify_http">OpenAI-ը չկարողացավ ստուգել այս բանալին (HTTP %1$d)։</string>
-    <string name="voice_error_no_connection">Միացում չկա։</string>
-    <string name="voice_error_model_address_invalid">Ձայնային մոդելի հասցեն անվավեր է։</string>
-    <string name="voice_error_xai_rejected_key">xAI-ը մերժեց API բանալին։</string>
-    <string name="voice_error_xai_verify_http">xAI-ը չկարողացավ ստուգել այս բանալին (HTTP %1$d)։</string>
-    <string name="voice_error_xai_key_disabled">Այս xAI API բանալին անջատված է։</string>
-    <string name="voice_error_xai_key_blocked">Այս xAI API բանալին արգելափակված է։</string>
     <string name="voice_error_service_address_invalid">Ձայնային ծառայության հասցեն անվավեր է։</string>
     <string name="voice_error_connection_lost">Ձայնային կապը կորել է։</string>
     <string name="voice_error_connection_closed">Ձայնային կապը փակված է։</string>
     <string name="voice_error_connection_setup">Չհաջողվեց հաստատել ձայնային կապը։</string>
     <string name="voice_error_safety_filter">Անվտանգության զտիչն ավարտեց ձայնային զանգը։</string>
     <string name="voice_error_audio_reset">Համակարգը վերականգնեց ձայնը։ Կրկին սկսեք զանգը։</string>
-    <string name="voice_error_missing_phone_key">Ձայնն օգտագործելու համար կարգավորումներում ավելացրեք ձեր %1$s API բանալին։</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Ավստրալական անգլերեն</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Բրազիլական պորտուգալերեն</string>
     <string name="voice_accent_filipino_english">Ֆիլիպինյան անգլերեն</string>
     <string name="voice_accent_southern_us_english">ԱՄՆ հարավի անգլերեն</string>
-    <string name="voice_accent_indian_english">Հնդկական անգլերեն</string>
-    <string name="voice_preview_error">Չհաջողվեց նվագարկել նախադիտումը</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Շնչի զնգոց</string>

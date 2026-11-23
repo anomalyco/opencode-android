@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Samtalet avslutades</string>
     <string name="voice_call_ended_rejoin">Anslut igen</string>
     <string name="voice_failure_title">Kunde inte ansluta röst</string>
-    <string name="voice_failure_check_api_key">Kontrollera API-nyckeln</string>
     <string name="voice_failure_start_title">Kunde inte starta samtalet</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Ingen nyckel</string>
     <string name="voice_provider_state_needs_update">Uppdatera OpenCode</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">Den här telefonen</string>
-    <string name="voice_provider_brand_openai_account">Ditt OpenAI-konto</string>
     <string name="voice_provider_name">%1$s på %2$s</string>
     <string name="voice_provider_subtitle">På %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-nyckel</string>
-    <string name="voice_provider_key_placeholder">API-nyckel för %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Nyckel på din server</string>
-    <string name="voice_key_source_phone_footer">Samtal använder din egen OpenAI- eller xAI-nyckel.</string>
     <string name="voice_key_source_server_footer">Samtal använder din servers %1$s-nyckel.</string>
     <string name="voice_key_source_opencode_footer">Samtal debiteras din arbetsyta i OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Konfigurera på den här telefonen</string>
     <string name="voice_fix_choose_provider">Välj leverantör</string>
     <string name="voice_fix_update_opencode">Uppdatera OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s behöver en nyare version av OpenCode för röstsamtal.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Kunde inte nå din server.</string>
     <string name="voice_diagnosis_failed">%1$s kunde inte starta samtalet.</string>
     <string name="voice_diagnosis_your_server_failed">Din server kunde inte starta samtalet.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI godkände inte nyckeln på den här telefonen.</string>
-    <string name="voice_diagnosis_missing_phone_key">Lägg till din API-nyckel för %1$s för att ringa från den här telefonen.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Tillåt mikrofonåtkomst i inställningarna för att prata med din session.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Kunde inte starta röstsamtal: Servern gav ett ogiltigt svar.</string>
     <string name="voice_error_start_voice_detail">Kunde inte starta röstsamtal: %1$s</string>
     <string name="voice_error_start_voice_http">Kunde inte starta röstsamtal (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI avvisade API-nyckeln.</string>
-    <string name="voice_error_openai_verify_http">OpenAI kunde inte verifiera den här nyckeln (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Ingen anslutning.</string>
-    <string name="voice_error_model_address_invalid">Röstmodellens adress är ogiltig.</string>
-    <string name="voice_error_xai_rejected_key">xAI avvisade API-nyckeln.</string>
-    <string name="voice_error_xai_verify_http">xAI kunde inte verifiera den här nyckeln (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Den här API-nyckeln för xAI är inaktiverad.</string>
-    <string name="voice_error_xai_key_blocked">Den här API-nyckeln för xAI är spärrad.</string>
     <string name="voice_error_service_address_invalid">Rösttjänstens adress är ogiltig.</string>
     <string name="voice_error_connection_lost">Röstanslutningen bröts.</string>
     <string name="voice_error_connection_closed">Röstanslutningen är stängd.</string>
     <string name="voice_error_connection_setup">Kunde inte upprätta röstanslutningen.</string>
     <string name="voice_error_safety_filter">Ett säkerhetsfilter avslutade röstsamtalet.</string>
     <string name="voice_error_audio_reset">Systemet återställde ljudet. Starta samtalet igen.</string>
-    <string name="voice_error_missing_phone_key">Lägg till din API-nyckel för %1$s i inställningarna för att använda röst.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australisk engelska</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brasiliansk portugisiska</string>
     <string name="voice_accent_filipino_english">Filippinsk engelska</string>
     <string name="voice_accent_southern_us_english">Sydstatsengelska</string>
-    <string name="voice_accent_indian_english">Indisk engelska</string>
-    <string name="voice_preview_error">Kunde inte provlyssna</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Luftigt pling</string>

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Apel încheiat</string>
     <string name="voice_call_ended_rejoin">Revino în apel</string>
     <string name="voice_failure_title">Conectarea vocală nu a reușit</string>
-    <string name="voice_failure_check_api_key">Verifică cheia API</string>
     <string name="voice_failure_start_title">Apelul nu a putut fi pornit</string>
 
     <!-- Floating call -->
@@ -101,21 +100,14 @@
     <string name="voice_provider_state_no_key">Fără cheie</string>
     <string name="voice_provider_state_needs_update">Actualizează OpenCode</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">Acest telefon</string>
-    <string name="voice_provider_brand_openai_account">Contul tău OpenAI</string>
     <string name="voice_provider_name">%1$s pe %2$s</string>
     <string name="voice_provider_subtitle">Pe %1$s</string>
-    <string name="voice_provider_key_row_title">Cheie %1$s</string>
-    <string name="voice_provider_key_placeholder">Cheie API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Cheie pe serverul tău</string>
-    <string name="voice_key_source_phone_footer">Apelurile folosesc cheia ta OpenAI sau xAI.</string>
     <string name="voice_key_source_server_footer">Apelurile folosesc cheia %1$s de pe serverul tău.</string>
     <string name="voice_key_source_opencode_footer">Apelurile sunt facturate în spațiul tău de lucru OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Configurează pe acest telefon</string>
     <string name="voice_fix_choose_provider">Alege furnizorul</string>
     <string name="voice_fix_update_opencode">Actualizează OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s are nevoie de o versiune mai nouă de OpenCode pentru apeluri vocale.</string>
@@ -126,8 +118,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Conectarea la serverul tău nu a reușit.</string>
     <string name="voice_diagnosis_failed">%1$s nu a putut porni apelul.</string>
     <string name="voice_diagnosis_your_server_failed">Serverul tău nu a putut porni apelul.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nu a acceptat cheia de pe acest telefon.</string>
-    <string name="voice_diagnosis_missing_phone_key">Adaugă cheia ta API %1$s pentru a apela de pe acest telefon.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Permite accesul la microfon în Setări pentru a vorbi cu sesiunea ta.</string>
@@ -138,21 +128,12 @@
     <string name="voice_error_invalid_response">Apelul vocal nu a putut fi pornit: serverul a returnat un răspuns invalid.</string>
     <string name="voice_error_start_voice_detail">Apelul vocal nu a putut fi pornit: %1$s</string>
     <string name="voice_error_start_voice_http">Apelul vocal nu a putut fi pornit (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI a respins cheia API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nu a putut verifica această cheie (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Fără conexiune.</string>
-    <string name="voice_error_model_address_invalid">Adresa modelului vocal este invalidă.</string>
-    <string name="voice_error_xai_rejected_key">xAI a respins cheia API.</string>
-    <string name="voice_error_xai_verify_http">xAI nu a putut verifica această cheie (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Această cheie API xAI este dezactivată.</string>
-    <string name="voice_error_xai_key_blocked">Această cheie API xAI este blocată.</string>
     <string name="voice_error_service_address_invalid">Adresa serviciului vocal este invalidă.</string>
     <string name="voice_error_connection_lost">Conexiunea vocală s-a pierdut.</string>
     <string name="voice_error_connection_closed">Conexiunea vocală este închisă.</string>
     <string name="voice_error_connection_setup">Conexiunea vocală nu a putut fi stabilită.</string>
     <string name="voice_error_safety_filter">Un filtru de siguranță a încheiat apelul vocal.</string>
     <string name="voice_error_audio_reset">Sistemul a resetat sunetul. Pornește din nou apelul.</string>
-    <string name="voice_error_missing_phone_key">Adaugă cheia ta API %1$s în Setări pentru a folosi vocea.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Engleză australiană</string>
@@ -162,8 +143,6 @@
     <string name="voice_accent_brazilian_portuguese">Portugheză braziliană</string>
     <string name="voice_accent_filipino_english">Engleză filipineză</string>
     <string name="voice_accent_southern_us_english">Engleză din sudul SUA</string>
-    <string name="voice_accent_indian_english">Engleză indiană</string>
-    <string name="voice_preview_error">Nu s-a putut reda previzualizarea</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Clinchet diafan</string>

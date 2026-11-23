@@ -6,12 +6,10 @@ import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
 import ai.opencode.server.OpenCodeClient
-import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeHomeSnapshot
 import ai.opencode.server.model.OpenCodeProject
@@ -193,7 +191,7 @@ class ServerVoiceTests {
     private fun serverVoiceDependencies(
         shared: SpeechTestShared,
         at: Long,
-        start: suspend (String, RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
         end: suspend () -> Unit = {},
         serverVoice: ServerVoiceClient? = null,
     ): ai.opencode.core.dependencies.DependencyValues.Builder.() -> Unit = {
@@ -221,8 +219,7 @@ class ServerVoiceTests {
         val openAIEffects = detachedScope(coroutineContext)
         val openAIStore = TestStore(
             openAIState, VoiceFeature(), openAIEffects,
-            serverVoiceDependencies(shared, at = 1_000, start = { key, config ->
-                assertTrue(key.isEmpty())
+            serverVoiceDependencies(shared, at = 1_000, start = { config ->
                 capturedConfigs.update { it + config }
                 openAIStream.trySend(VoiceCallEvent.Connected)
                 openAIStream.consumeAsFlow()
@@ -266,8 +263,7 @@ class ServerVoiceTests {
         val geminiEffects = detachedScope(coroutineContext)
         val geminiStore = TestStore(
             geminiState, VoiceFeature(), geminiEffects,
-            serverVoiceDependencies(geminiShared, at = 2_000, start = { key, config ->
-                assertTrue(key.isEmpty())
+            serverVoiceDependencies(geminiShared, at = 2_000, start = { config ->
                 capturedConfigs.update { it + config }
                 geminiStream.trySend(VoiceCallEvent.Connected)
                 geminiStream.consumeAsFlow()
@@ -304,73 +300,6 @@ class ServerVoiceTests {
         assertEquals(listOf("delegate", "end_voice_session"), capturedConfigs.value[1].tools.map { it.name })
     }
 
-    @Test fun serverVoiceFallsBackToPhoneKeyWhenServerDoesNotSupportEndpoint() = runBlocking {
-        val shared = resetSharedVoiceState()
-        val capturedStarts = Locked(listOf<Pair<String, OpenCodeServer?>>())
-        val fallbackStream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        // Holds the call until the probe's actions are received, so the order below is fixed.
-        val connectGate = CompletableDeferred<Unit>()
-
-        val state = shared.run {
-            shared(SharedKeys.openAIAPIKey).set("sk-phone-fallback")
-            shared(SharedKeys.verifiedVoiceKeyFingerprint).set(VoiceKeyFingerprint.make(key = "sk-phone-fallback", model = VoiceEngine.gptLive.modelID))
-            shared(VoiceSharedKeys.serverVoiceProvider).set(ServerVoiceProvider.openAI)
-            VoiceFeature.State(server, session)
-        }
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(
-            state, VoiceFeature(), effects,
-            serverVoiceDependencies(
-                shared, at = 3_000,
-                start = { key, config ->
-                    capturedStarts.update { it + (key to config.serverVoice) }
-                    connectGate.await()
-                    fallbackStream.trySend(VoiceCallEvent.Connected)
-                    fallbackStream.consumeAsFlow()
-                },
-                end = { fallbackStream.close() },
-                serverVoice = ServerVoiceClient.testValue.let { ServerVoiceClient(checkSupport = { ServerVoiceSupport.unsupported }, models = it.models, createSession = it.createSession) },
-            ),
-        )
-
-        store.send(VoiceFeature.Action.Start) {
-            it.copy(
-                diagnosesFailure = true,
-                callPlace = VoiceCallPlace("Server 1", VoiceProviderOption.Brand.openAI),
-                activeRoute = VoiceRoute.Server(VoiceRoute.ServerRoute.OpenAI(VoiceRoute.OpenAI.gptLive)),
-                startedTarget = startedTarget(),
-                activeVoice = CallVoice.marin,
-                usesDelegator = false,
-                callPresenceID = presenceID,
-            )
-        }
-        store.receive(VoiceFeature.Action.ServerVoiceSupportUpdated(ServerVoiceSupport.unsupported)) {
-            it.copy(serverVoiceSupport = ServerVoiceSupport.unsupported)
-        }
-        assertEquals(ServerVoiceSupport.unsupported, shared.run { shared(VoiceSharedKeys.serverVoiceSupportByServer).value[server.persistenceID] })
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.ServerVoiceSupportChanged(ServerVoiceSupport.unsupported)))
-        store.receive(VoiceFeature.Action.CallPlaceChanged(null)) { it.copy(callPlace = null) }
-        store.receive(VoiceFeature.Action.CallRouteResolved(VoiceRoute.PhoneKey(VoiceEngine.gptLive), usesDelegator = false)) {
-            it.copy(activeRoute = VoiceRoute.PhoneKey(VoiceEngine.gptLive))
-        }
-        connectGate.complete(Unit)
-        store.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected)) {
-            it.withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = Instant.ofEpochSecond(3_000))
-        }
-        fallbackStream.close()
-        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null)) {
-            it.withPhase(VoiceFeature.State.Phase.Ended)
-        }
-        assertEquals(VoiceTranscriptRecord(endedAt = Instant.ofEpochSecond(3_000), tail = emptyList(), log = emptyList()), transcriptRecord(shared))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
-        store.finish()
-        effects.cancel()
-
-        assertEquals(1, capturedStarts.value.size)
-        assertEquals("sk-phone-fallback", capturedStarts.value[0].first)
-        assertNull(capturedStarts.value[0].second)
-    }
-
     @Test fun serverVoiceReprobesOnceWhenUnsupportedAndClearsCacheOnReconnect() = runBlocking {
         val shared = resetSharedVoiceState()
         val probeCount = Locked(0)
@@ -390,8 +319,7 @@ class ServerVoiceTests {
             state, VoiceFeature(), effects,
             serverVoiceDependencies(
                 shared, at = 3_500,
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     assertEquals(server, config.serverVoice)
                     assertEquals(ServerVoiceProvider.geminiLive, config.provider)
                     connectGate.await()
@@ -448,7 +376,7 @@ class ServerVoiceTests {
         val effects = detachedScope(coroutineContext)
         val store = TestStore(
             state, VoiceFeature(), effects,
-            serverVoiceDependencies(shared, at = 4_000, start = { _, _ ->
+            serverVoiceDependencies(shared, at = 4_000, start = { _ ->
                 throw ServerVoiceError.fromHTTPResponse(
                     statusCode = 503,
                     data = """{"message":"Voice needs an OpenAI API key on the server (a stored key or OPENAI_API_KEY). ChatGPT sign-in can't start voice sessions."}""".toByteArray(),
@@ -616,7 +544,7 @@ class ServerVoiceTests {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
         }
         val coordinator = DependencyValues.withValues(values) { GeminiCallCoordinator() }
-        val geminiClient = GeminiLiveClient { _, _ ->
+        val geminiClient = GeminiLiveClient { _ ->
             GeminiLiveConnection(
                 events = serverEvents.consumeAsFlow(),
                 send = { command -> sentCommands.update { it + command } },
@@ -635,7 +563,6 @@ class ServerVoiceTests {
         })
 
         val callEvents = coordinator.start(
-            apiKey = "auth_tokens/test",
             config = GeminiLiveSessionConfig(instructions = "Test instructions", tools = VoiceInstructions.tools),
             gemini = geminiClient,
             audio = audioClient,
@@ -803,21 +730,16 @@ class ServerVoiceTests {
         )
         val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
         val state = shared.run { VoiceFeature.State(server, session).copy(serverVoiceSupport = ServerVoiceSupport.supported) }
-        val phoneDelegatorRan = Locked(false)
 
         val effects = detachedScope(coroutineContext)
         val store = TestStore(state, VoiceFeature(), effects) {
-            serverVoiceDependencies(shared, at = 4_000, start = { _, _ -> stream.consumeAsFlow() }).invoke(this)
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                phoneDelegatorRan.set(true)
-                throw OpenCodeClientError("unused")
-            }
+            serverVoiceDependencies(shared, at = 4_000, start = { _ -> stream.consumeAsFlow() }).invoke(this)
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 homeSnapshot = { OpenCodeHomeSnapshot(projects = listOf(project), sessions = emptyList(), activeSessionIDs = emptySet()) },
             )
             this[VoiceCallClient] = speechVoiceCall(
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     stream.trySend(VoiceCallEvent.Connected)
                     stream.consumeAsFlow()
@@ -864,13 +786,12 @@ class ServerVoiceTests {
         store.receive(
             VoiceFeature.Action.DelegatorFinished(
                 callID = "del_1",
-                result = Result.success(VoiceDelegator.Outcome(reply = reply, responseID = "resp_2", unanswered = emptyList(), spoken = true)),
+                result = Result.success(VoiceDelegator.Outcome(reply = reply, unanswered = emptyList(), spoken = true)),
             ),
             timeout = 5.seconds,
         ) {
             it.copy(
                 delegatorWork = emptyList(),
-                delegatorResponseID = "resp_2",
                 replyWatch = it.replyWatch
                     .transition(ReplyWatch.Event.Sent(emptyList())).first
                     .transition(ReplyWatch.Event.DelegatorFinished(requestID = "del_1", spoken = reply)).first,
@@ -886,7 +807,6 @@ class ServerVoiceTests {
         store.finish()
         effects.cancel()
 
-        assertTrue("The phone's delegator must not run on a Server Voice call", !phoneDelegatorRan.value)
         // The session JSON the server passes through asks for Responses delegation.
         assertEquals(1, configs.value.size)
         assertEquals(server, configs.value[0].serverVoice)
@@ -901,141 +821,5 @@ class ServerVoiceTests {
         assertTrue(output.output.contains(""""name":"opencode-ios""""))
         // The backend's answer reached GPT-Live without the phone: nothing to append.
         assertEquals(listOf(listOf("del_1", "")), completed.value)
-    }
-
-    /**
-     * On the phone's own key (This Phone) GPT-Live keeps client delegation
-     * and the phone's delegator.
-     */
-    @Test fun phoneKeyCallsKeepClientDelegationAndThePhoneDelegator() = runBlocking {
-        val shared = resetSharedVoiceState()
-        val configs = Locked(listOf<RealtimeSessionConfig>())
-        val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        val state = shared.run {
-            shared(VoiceSharedKeys.voiceServerChoice).set(VoiceServerChoice.Phone)
-            shared(SharedKeys.openAIAPIKey).set("sk-phone")
-            shared(SharedKeys.verifiedVoiceKeyFingerprint).set(VoiceKeyFingerprint.make(key = "sk-phone", model = VoiceEngine.gptLive.modelID))
-            VoiceFeature.State(server, session)
-        }
-
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(state, VoiceFeature(), effects) {
-            serverVoiceDependencies(
-                shared, at = 5_000,
-                start = { key, config ->
-                    assertEquals("sk-phone", key)
-                    configs.update { it + config }
-                    stream.trySend(VoiceCallEvent.Connected)
-                    stream.consumeAsFlow()
-                },
-                end = { stream.close() },
-            ).invoke(this)
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ -> throw OpenCodeClientError("unused") }
-        }
-
-        store.send(VoiceFeature.Action.Start) {
-            it.copy(
-                startedTarget = startedTarget(),
-                activeVoice = CallVoice.marin,
-                usesDelegator = true,
-                diagnosesFailure = true,
-                callPresenceID = presenceID,
-            )
-        }
-        store.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected)) {
-            it.withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = Instant.ofEpochSecond(5_000))
-        }
-        stream.close()
-        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null)) {
-            it.withPhase(VoiceFeature.State.Phase.Ended)
-        }
-        assertEquals(VoiceTranscriptRecord(endedAt = Instant.ofEpochSecond(5_000), tail = emptyList(), log = emptyList()), transcriptRecord(shared))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
-        store.finish()
-        effects.cancel()
-
-        assertEquals(1, configs.value.size)
-        assertNull(configs.value[0].serverVoice)
-        assertEquals(LiveDelegation.client, configs.value[0].liveDelegation)
-        assertEquals(obj("type" to str("client")), configs.value[0].liveSessionConfig().sessionPayload(includeAudioFormat = false)["delegation"])
-    }
-
-    /**
-     * A phone-key delegation still runs the phone's delegator against
-     * `/v1/responses` with the phone's key, and never asks the call for rounds.
-     */
-    @Test fun phoneKeyDelegationRunsThePhoneDelegator() = runBlocking {
-        val shared = resetSharedVoiceState()
-        val project = OpenCodeProject(id = "ios", name = "opencode-ios", directory = "/Users/kit/code/open-source/opencode-ios")
-        val requests = Locked(listOf<List<VoiceDelegator.InputItem>>())
-        val completed = Locked(listOf<List<String>>())
-        val callRoundAsked = Locked(false)
-        val state = shared.run {
-            shared(SharedKeys.openAIAPIKey).set("sk-phone")
-            VoiceFeature.State(server, session)
-                .withPhase(VoiceFeature.State.Phase.Live)
-                .copy(usesDelegator = true)
-                .recording(VoiceTranscriptTail.Role.user, "Which projects do I have?", id = "u1")
-        }
-
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(state, VoiceFeature(), effects) {
-            this[SharedStore] = shared.store
-            this[DateClient] = DateClient.constant(Instant.ofEpochSecond(6_000))
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { key, input, previous ->
-                assertEquals("sk-phone", key)
-                val round = requests.withValue { (it + listOf(input)).let { all -> all to all.size } }
-                if (round == 1) {
-                    assertNull(previous)
-                    VoiceDelegator.Response(id = "resp_1", calls = listOf(VoiceDelegator.ToolCall(callID = "call_1", name = "list_projects", arguments = "{}")), text = "")
-                } else {
-                    assertEquals("resp_1", previous)
-                    VoiceDelegator.Response(id = "resp_2", calls = emptyList(), text = "You have one project, opencode-ios.")
-                }
-            }
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                homeSnapshot = { OpenCodeHomeSnapshot(projects = listOf(project), sessions = emptyList(), activeSessionIDs = emptySet()) },
-            )
-            this[VoiceCallClient] = speechVoiceCall(
-                delegatorRound = {
-                    callRoundAsked.set(true)
-                    Result.failure(OpenCodeClientError("unused"))
-                },
-                completeFunction = { callID, output -> completed.update { it + listOf(listOf(callID, output)) } },
-            )
-        }
-
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = obj()))) {
-            val captured = it.tail.capture()
-            it.copy(
-                replyWatch = it.replyWatch.noteUserActed().transition(ReplyWatch.Event.DelegatorStarted(requestID = "d1")).first,
-                tail = captured.tail.accept(captured.capture),
-                delegatorWork = listOf("d1"),
-            )
-        }
-        val reply = "You have one project, opencode-ios."
-        store.receive(
-            VoiceFeature.Action.DelegatorFinished(callID = "d1", result = Result.success(VoiceDelegator.Outcome(reply = reply, responseID = "resp_2", unanswered = emptyList()))),
-            timeout = 5.seconds,
-        ) {
-            it.copy(
-                delegatorWork = emptyList(),
-                delegatorResponseID = "resp_2",
-                replyWatch = it.replyWatch
-                    .transition(ReplyWatch.Event.Sent(emptyList())).first
-                    .transition(ReplyWatch.Event.DelegatorFinished(requestID = "d1", spoken = reply)).first,
-            )
-        }
-        store.finish()
-        effects.cancel()
-
-        assertTrue("A phone-key call has no rounds on the call", !callRoundAsked.value)
-        assertEquals(2, requests.value.size)
-        val request = requests.value.firstOrNull()?.firstOrNull() as? VoiceDelegator.InputItem.User ?: return@runBlocking fail("No request")
-        assertTrue(request.text.contains("Which projects do I have?"))
-        val output = requests.value.lastOrNull()?.firstOrNull() as? VoiceDelegator.InputItem.ToolOutput ?: return@runBlocking fail("No tool result")
-        assertEquals("call_1", output.callID)
-        assertTrue(output.output.contains(""""name":"opencode-ios""""))
-        assertEquals(listOf(listOf("d1", VoiceHandoff.completion(reply))), completed.value)
     }
 }

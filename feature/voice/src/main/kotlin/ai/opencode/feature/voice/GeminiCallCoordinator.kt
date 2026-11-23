@@ -12,7 +12,6 @@ class GeminiCallCoordinator(
     override val defaultDiagnosticDomain = "GeminiLiveClient"
     override val expiredDiagnosticDomain = "GeminiLive"
     override val canSwapToStandby get() = !assistantSpeaking && openCalls.isEmpty()
-    private var apiKey = ""
     private var gemini: GeminiLiveClient? = null
     private var config: GeminiLiveSessionConfig? = null
     private val resampler = GeminiPCMResampler()
@@ -28,14 +27,14 @@ class GeminiCallCoordinator(
     private var nextItemSequence = 0
     private var attachingSocketID: Int? = null
 
-    suspend fun start(apiKey: String, config: GeminiLiveSessionConfig, gemini: GeminiLiveClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
-        this.apiKey = apiKey; this.config = config; this.gemini = gemini
+    suspend fun start(config: GeminiLiveSessionConfig, gemini: GeminiLiveClient, audio: VoiceAudioClient): Flow<VoiceCallEvent> = serialized {
+        this.config = config; this.gemini = gemini
         startAudioAndSocket(config.isAtEar, audio)
     }
     override suspend fun open(seeded: Boolean): VoiceCallSocket<GeminiLiveServerEvent, GeminiLiveCommand, GeminiLiveContentTurn> {
         val client = gemini ?: throw RealtimeClientError.Closed("The voice connection is closed.")
         val config = config ?: throw RealtimeClientError.Closed("The voice connection is closed.")
-        return openSocket(seeded, { client.connect(apiKey, config) })
+        return openSocket(seeded, { client.connect(config) })
     }
     override suspend fun activate(socket: VoiceCallSocket<GeminiLiveServerEvent, GeminiLiveCommand, GeminiLiveContentTurn>) {
         val previous = active

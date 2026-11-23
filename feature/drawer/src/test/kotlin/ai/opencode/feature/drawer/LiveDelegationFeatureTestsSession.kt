@@ -5,7 +5,6 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.homeTest
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.openingScreens
@@ -20,7 +19,6 @@ import ai.opencode.feature.voice.LiveDelegation
 import ai.opencode.feature.voice.LiveInputMessage
 import ai.opencode.feature.voice.LiveServerEvent
 import ai.opencode.feature.voice.LiveSessionConfig
-import ai.opencode.feature.voice.RealtimePreflightClient
 import ai.opencode.feature.voice.VoiceAudioClient
 import ai.opencode.feature.voice.VoiceAudioEvent
 import ai.opencode.feature.voice.VoiceAudioSession
@@ -114,7 +112,7 @@ class LiveDelegationFeatureTestsSession {
         suspend fun nextOpened(): FakeLiveSocket = openedChannel.receive()
 
         suspend fun start(instructions: String): Flow<VoiceCallEvent> {
-            val live = LiveClient { _, config ->
+            val live = LiveClient { config ->
                 val socket = FakeLiveSocket(config)
                 openedChannel.trySend(socket)
                 LiveConnection(
@@ -136,7 +134,7 @@ class LiveDelegationFeatureTestsSession {
                     stop = { },
                 )
             })
-            return coordinator.start(apiKey = "test", config = LiveSessionConfig(instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
+            return coordinator.start(config = LiveSessionConfig(instructions = instructions, delegation = LiveDelegation.client), live = live, audio = audio)
         }
     }
 
@@ -146,7 +144,6 @@ class LiveDelegationFeatureTestsSession {
     fun aDelegationKeepsRunningAcrossASessionSwitchAndAReconnect() = homeTest { h ->
         val other = OpenCodeSession(id = "ses_other", serverTitle = "Other session", projectID = "p", directory = "/Users/kit/project", updatedAt = HomeFeatureTestSupport.distantPast)
         val project = OpenCodeProject(id = "p", name = "project", directory = "/Users/kit/project")
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         h.setShared(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = listOf(project), sessions = listOf(session, other), activeSessionIDs = emptySet()))
@@ -161,9 +158,8 @@ class LiveDelegationFeatureTestsSession {
             this[Clock] = TestClock()
             // Android: every start mints the call's notification identity.
             this[UuidClient] = UuidClient.incrementing()
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> })
             this[VoiceCallClient] = VoiceCallClient(
-                start = { _, config -> harness.start(instructions = config.instructions) },
+                start = { config -> harness.start(instructions = config.instructions) },
                 completeFunction = { callID, output -> harness.coordinator.completeFunction(callID, output) },
                 closeDelegation = { callID, reason -> harness.coordinator.closeDelegation(callID, reason) },
                 setMuted = { muted -> harness.coordinator.setMuted(muted) },

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Rozmowa zakończona</string>
     <string name="voice_call_ended_rejoin">Dołącz ponownie</string>
     <string name="voice_failure_title">Nie udało się połączyć głosowo</string>
-    <string name="voice_failure_check_api_key">Sprawdź klucz API</string>
     <string name="voice_failure_start_title">Nie udało się rozpocząć rozmowy</string>
 
     <!-- Floating call -->
@@ -103,21 +102,14 @@
     <string name="voice_provider_state_no_key">Brak klucza</string>
     <string name="voice_provider_state_needs_update">Zaktualizuj OpenCode</string>
     <string name="voice_provider_state_offline">Brak połączenia</string>
-    <string name="voice_provider_place_phone">Ten telefon</string>
-    <string name="voice_provider_brand_openai_account">Twoje konto OpenAI</string>
     <string name="voice_provider_name">%1$s na %2$s</string>
     <string name="voice_provider_subtitle">Na %1$s</string>
-    <string name="voice_provider_key_row_title">Klucz %1$s</string>
-    <string name="voice_provider_key_placeholder">Klucz API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Klucz na twoim serwerze</string>
-    <string name="voice_key_source_phone_footer">Rozmowy używają twojego klucza OpenAI lub xAI.</string>
     <string name="voice_key_source_server_footer">Rozmowy używają klucza %1$s z twojego serwera.</string>
     <string name="voice_key_source_opencode_footer">Koszty rozmów obciążają twój obszar roboczy w OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Skonfiguruj na tym telefonie</string>
     <string name="voice_fix_choose_provider">Wybierz dostawcę</string>
     <string name="voice_fix_update_opencode">Zaktualizuj OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s wymaga nowszej wersji OpenCode do rozmów głosowych.</string>
@@ -128,8 +120,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Nie udało się połączyć z twoim serwerem.</string>
     <string name="voice_diagnosis_failed">%1$s nie zdołał rozpocząć rozmowy.</string>
     <string name="voice_diagnosis_your_server_failed">Twój serwer nie zdołał rozpocząć rozmowy.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nie zaakceptowało klucza na tym telefonie.</string>
-    <string name="voice_diagnosis_missing_phone_key">Dodaj swój klucz API %1$s, aby dzwonić z tego telefonu.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Zezwól na dostęp do mikrofonu w ustawieniach, aby rozmawiać ze swoją sesją.</string>
@@ -140,21 +130,12 @@
     <string name="voice_error_invalid_response">Nie udało się uruchomić głosu: serwer zwrócił nieprawidłową odpowiedź.</string>
     <string name="voice_error_start_voice_detail">Nie udało się uruchomić głosu: %1$s</string>
     <string name="voice_error_start_voice_http">Nie udało się uruchomić głosu (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI odrzuciło klucz API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nie mogło zweryfikować tego klucza (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Brak połączenia.</string>
-    <string name="voice_error_model_address_invalid">Adres modelu głosowego jest nieprawidłowy.</string>
-    <string name="voice_error_xai_rejected_key">xAI odrzuciło klucz API.</string>
-    <string name="voice_error_xai_verify_http">xAI nie mogło zweryfikować tego klucza (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Ten klucz API xAI jest wyłączony.</string>
-    <string name="voice_error_xai_key_blocked">Ten klucz API xAI jest zablokowany.</string>
     <string name="voice_error_service_address_invalid">Adres usługi głosowej jest nieprawidłowy.</string>
     <string name="voice_error_connection_lost">Utracono połączenie głosowe.</string>
     <string name="voice_error_connection_closed">Połączenie głosowe jest zamknięte.</string>
     <string name="voice_error_connection_setup">Nie udało się nawiązać połączenia głosowego.</string>
     <string name="voice_error_safety_filter">Filtr bezpieczeństwa zakończył rozmowę głosową.</string>
     <string name="voice_error_audio_reset">System zresetował dźwięk. Rozpocznij rozmowę ponownie.</string>
-    <string name="voice_error_missing_phone_key">Dodaj swój klucz API %1$s w ustawieniach, aby używać głosu.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Angielski australijski</string>
@@ -164,8 +145,6 @@
     <string name="voice_accent_brazilian_portuguese">Portugalski brazylijski</string>
     <string name="voice_accent_filipino_english">Angielski filipiński</string>
     <string name="voice_accent_southern_us_english">Angielski z południa USA</string>
-    <string name="voice_accent_indian_english">Angielski indyjski</string>
-    <string name="voice_preview_error">Nie udało się odtworzyć podglądu</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Sygnał oddechu</string>

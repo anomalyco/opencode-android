@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · အခြားဆာဗာ</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">သော့ကို ဖျောက်ရန်</string>
-    <string name="settings_voice_key_show_description">သော့ကို ပြရန်</string>
-    <string name="settings_voice_key_verify">အတည်ပြုပါ</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">အသံဝန်ဆောင်မှုပေးသူ</string>
     <string name="settings_voice_provider_place">%1$s တွင်</string>
-    <string name="settings_voice_api_key_title">API သော့</string>
     <string name="settings_voice_provider_automatic_footer">%1$s အဆင်သင့်မဖြစ်လျှင် ခေါ်ဆိုမှုများအတွက် အဆင်သင့်ဖြစ်သော ဝန်ဆောင်မှုပေးသူကို သုံးမည်။</string>
     <string name="settings_voice_provider_choose_automatically">အလိုအလျောက် ရွေးပါ</string>
     <string name="settings_voice_provider_others_header">အခြားဝန်ဆောင်မှုပေးသူများ</string>
     <string name="settings_voice_provider_use_description">%1$s ကို သုံးပါ</string>
     <string name="settings_voice_provider_use">သုံးပါ</string>
-    <string name="settings_voice_provider_set_up">စနစ်ထည့်သွင်းပါ</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">%d ခု မရရှိနိုင်ပါ</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">သင့် OpenAI အကောင့်</string>
-    <string name="settings_voice_account_place">ဤဖုန်းတွင်</string>
-    <string name="settings_voice_account_key_footer">ခေါ်ဆိုမှုများအတွက် ဆာဗာအစား သင့် OpenAI အကောင့်ကို သုံးမည်။</string>
-    <string name="settings_voice_account_use_for_calls">ခေါ်ဆိုမှုများအတွက် သုံးပါ</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">အသံ</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">ဖုန်းကို မြှောက်ပြီး ပြောပါ</string>
     <string name="settings_voice_call_sounds">ခေါ်ဆိုမှုအသံများ</string>
     <string name="settings_voice_call_history">ခေါ်ဆိုမှုမှတ်တမ်း</string>
-    <string name="settings_voice_edit_key_label">သင့် %1$s API သော့ကို တည်းဖြတ်ပါ။</string>
-    <string name="settings_voice_key_verified">အတည်ပြုပြီးပါပြီ</string>
-    <string name="settings_voice_key_checking">စစ်ဆေးနေသည်…</string>
-    <string name="settings_voice_key_saved">သိမ်းပြီးပါပြီ</string>
-    <string name="settings_voice_key_missing">မရှိပါ</string>
-    <string name="settings_voice_preview_disabled_hint">အသံများကို နမူနာနားထောင်ရန် သင့် %1$s သော့ကို ထည့်ပါ</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">အသံများကို နမူနာနားထောင်ရန် သင့် %1$s သော့ကို ထည့်ပါ။</string>
     <string name="settings_voice_picker_unavailable_footer">%2$s တွင် %1$s မရရှိနိုင်သဖြင့် ခေါ်ဆိုမှုများအတွက် %3$s ကို သုံးမည်။</string>
-    <string name="settings_voice_stop_preview_description">%1$s နမူနာအသံကို ရပ်ပါ</string>
-    <string name="settings_voice_preview_description">%1$s ကို နမူနာနားထောင်ပါ</string>
-    <string name="settings_voice_preview_playing">ဖွင့်နေသည်</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s မရရှိနိုင်ပါ</string>
 
     <!-- Settings root -->

@@ -9,12 +9,10 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import java.time.Instant
 import java.util.Base64
 
-// OpenAI Realtime wire protocol (GA shape, `session.type: "realtime"`), and
-// xAI's Grok Voice, which speaks it with a flatter `session.update`. Kept free
+// OpenAI Realtime wire protocol (GA shape, `session.type: "realtime"`). Kept free
 // of audio and OpenCode knowledge so it can be tested from fixtures.
 
 data class RealtimeFunctionTool(
@@ -115,16 +113,6 @@ data class RealtimeSessionConfig(
         unboundSpeechUsesInstructions = unboundSpeechUsesInstructions,
     )
 
-    /** The socket address: the model rides in the query on both services. */
-    val webSocketURL: String?
-        get() {
-            val base = if (engine == VoiceEngine.grok) "wss://api.x.ai/v1/realtime" else "wss://api.openai.com/v1/realtime"
-            // OkHttp's HttpUrl only parses http(s); build on https and swap the scheme back.
-            val url = base.replaceFirst("wss://", "https://").toHttpUrlOrNull()
-                ?.newBuilder()?.setQueryParameter("model", model)?.build() ?: return null
-            return url.toString().replaceFirst("https://", "wss://")
-        }
-
     /**
      * The `session.update` payload. Server-driven turns: the model responds
      * when the turn ends and cancels itself on barge-in. No server noise
@@ -140,7 +128,6 @@ data class RealtimeSessionConfig(
     )
 
     fun sessionPayload(includeAudioFormat: Boolean): RealtimeJSON {
-        if (engine == VoiceEngine.grok) return grokSessionPayload
         val input = linkedMapOf(
             "transcription" to RealtimeJSONs.obj(
                 "model" to RealtimeJSONs.string(transcriptionModel),
@@ -169,31 +156,8 @@ data class RealtimeSessionConfig(
         )
     }
 
-    /**
-     * Grok Voice's documented shape: voice and turn detection at the top and no
-     * session type; it transcribes the user's turns without being asked. Its
-     * turn detection is `server_vad` only; the model is in the socket's query.
-     */
-    val grokSessionPayload: RealtimeJSON
-        get() {
-            val format = RealtimeJSONs.obj("type" to RealtimeJSONs.string("audio/pcm"), "rate" to RealtimeJSONs.number(24_000))
-            return RealtimeJSONs.obj(
-                "voice" to RealtimeJSONs.string(voice.rawValue),
-                "instructions" to RealtimeJSONs.string(instructions),
-                "turn_detection" to RealtimeJSONs.obj("type" to RealtimeJSONs.string("server_vad")),
-                "tools" to RealtimeJSONs.array(tools.map(::toolJSON)),
-                "audio" to RealtimeJSONs.obj(
-                    "input" to RealtimeJSONs.obj("format" to format),
-                    "output" to RealtimeJSONs.obj("format" to format),
-                ),
-            )
-        }
-
     companion object {
         const val defaultModel = "gpt-realtime-2.1"
-
-        /** Pinned rather than `grok-voice-latest`, as xAI recommends for production. */
-        const val grokModel = "grok-voice-3.0"
 
         private fun toolJSON(tool: RealtimeFunctionTool): RealtimeJSON = RealtimeJSONs.obj(
             "type" to RealtimeJSONs.string("function"),

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Samtalen er avsluttet</string>
     <string name="voice_call_ended_rejoin">Bli med igjen</string>
     <string name="voice_failure_title">Kunne ikke koble til tale</string>
-    <string name="voice_failure_check_api_key">Sjekk API-nøkkel</string>
     <string name="voice_failure_start_title">Kunne ikke starte samtalen</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Ingen nøkkel</string>
     <string name="voice_provider_state_needs_update">Oppdater OpenCode</string>
     <string name="voice_provider_state_offline">Frakoblet</string>
-    <string name="voice_provider_place_phone">Denne telefonen</string>
-    <string name="voice_provider_brand_openai_account">OpenAI-kontoen din</string>
     <string name="voice_provider_name">%1$s på %2$s</string>
     <string name="voice_provider_subtitle">På %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-nøkkel</string>
-    <string name="voice_provider_key_placeholder">API-nøkkel for %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Nøkkel på serveren din</string>
-    <string name="voice_key_source_phone_footer">Samtaler bruker din egen OpenAI- eller xAI-nøkkel.</string>
     <string name="voice_key_source_server_footer">Samtaler bruker serverens %1$s-nøkkel.</string>
     <string name="voice_key_source_opencode_footer">Samtaler faktureres til arbeidsområdet ditt i OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Sett opp på denne telefonen</string>
     <string name="voice_fix_choose_provider">Velg leverandør</string>
     <string name="voice_fix_update_opencode">Oppdater OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s trenger en nyere versjon av OpenCode for talesamtaler.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Kunne ikke nå serveren din.</string>
     <string name="voice_diagnosis_failed">%1$s kunne ikke starte samtalen.</string>
     <string name="voice_diagnosis_your_server_failed">Serveren din kunne ikke starte samtalen.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI godtok ikke nøkkelen på denne telefonen.</string>
-    <string name="voice_diagnosis_missing_phone_key">Legg til API-nøkkelen din for %1$s for å ringe fra denne telefonen.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Tillat mikrofontilgang i innstillingene for å snakke med sesjonen din.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Kunne ikke starte tale: Serveren returnerte et ugyldig svar.</string>
     <string name="voice_error_start_voice_detail">Kunne ikke starte tale: %1$s</string>
     <string name="voice_error_start_voice_http">Kunne ikke starte tale (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI avviste API-nøkkelen.</string>
-    <string name="voice_error_openai_verify_http">OpenAI kunne ikke verifisere denne nøkkelen (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Ingen tilkobling.</string>
-    <string name="voice_error_model_address_invalid">Adressen til talemodellen er ugyldig.</string>
-    <string name="voice_error_xai_rejected_key">xAI avviste API-nøkkelen.</string>
-    <string name="voice_error_xai_verify_http">xAI kunne ikke verifisere denne nøkkelen (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Denne xAI-API-nøkkelen er deaktivert.</string>
-    <string name="voice_error_xai_key_blocked">Denne xAI-API-nøkkelen er blokkert.</string>
     <string name="voice_error_service_address_invalid">Adressen til taletjenesten er ugyldig.</string>
     <string name="voice_error_connection_lost">Taletilkoblingen ble brutt.</string>
     <string name="voice_error_connection_closed">Taletilkoblingen er lukket.</string>
     <string name="voice_error_connection_setup">Kunne ikke opprette taletilkoblingen.</string>
     <string name="voice_error_safety_filter">Et sikkerhetsfilter avsluttet talesamtalen.</string>
     <string name="voice_error_audio_reset">Systemet tilbakestilte lyden. Start samtalen på nytt.</string>
-    <string name="voice_error_missing_phone_key">Legg til API-nøkkelen din for %1$s i innstillingene for å bruke tale.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australsk engelsk</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brasiliansk portugisisk</string>
     <string name="voice_accent_filipino_english">Filippinsk engelsk</string>
     <string name="voice_accent_southern_us_english">Sørstatsengelsk</string>
-    <string name="voice_accent_indian_english">Indisk engelsk</string>
-    <string name="voice_preview_error">Kunne ikke spille av forhåndsvisningen</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Breath Ping</string>

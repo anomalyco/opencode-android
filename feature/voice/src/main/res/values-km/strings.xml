@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">ការហៅបានបញ្ចប់</string>
     <string name="voice_call_ended_rejoin">ចូលរួមវិញ</string>
     <string name="voice_failure_title">មិនអាចភ្ជាប់សំឡេងបាន</string>
-    <string name="voice_failure_check_api_key">ពិនិត្យសោ API</string>
     <string name="voice_failure_start_title">មិនអាចចាប់ផ្ដើមការហៅបាន</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">គ្មានសោ</string>
     <string name="voice_provider_state_needs_update">ធ្វើបច្ចុប្បន្នភាព OpenCode</string>
     <string name="voice_provider_state_offline">គ្មានអ៊ីនធឺណិត</string>
-    <string name="voice_provider_place_phone">ទូរសព្ទនេះ</string>
-    <string name="voice_provider_brand_openai_account">គណនី OpenAI របស់អ្នក</string>
     <string name="voice_provider_name">%1$s លើ %2$s</string>
     <string name="voice_provider_subtitle">លើ %1$s</string>
-    <string name="voice_provider_key_row_title">សោ %1$s</string>
-    <string name="voice_provider_key_placeholder">សោ API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">សោលើម៉ាស៊ីនមេរបស់អ្នក</string>
-    <string name="voice_key_source_phone_footer">ការហៅប្រើសោ OpenAI ឬ xAI ផ្ទាល់ខ្លួនរបស់អ្នក។</string>
     <string name="voice_key_source_server_footer">ការហៅប្រើសោ %1$s របស់ម៉ាស៊ីនមេអ្នក។</string>
     <string name="voice_key_source_opencode_footer">ថ្លៃការហៅត្រូវបានគិតទៅកន្លែងធ្វើការ OpenCode Console របស់អ្នក។</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">រៀបចំលើទូរសព្ទនេះ</string>
     <string name="voice_fix_choose_provider">ជ្រើសរើសអ្នកផ្តល់សេវា</string>
     <string name="voice_fix_update_opencode">ធ្វើបច្ចុប្បន្នភាព OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s ត្រូវការ OpenCode កំណែថ្មីជាងនេះសម្រាប់ការហៅជាសំឡេង។</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">មិនអាចភ្ជាប់ទៅម៉ាស៊ីនមេរបស់អ្នកបានទេ។</string>
     <string name="voice_diagnosis_failed">%1$s មិនអាចចាប់ផ្ដើមការហៅបានទេ។</string>
     <string name="voice_diagnosis_your_server_failed">ម៉ាស៊ីនមេរបស់អ្នកមិនអាចចាប់ផ្ដើមការហៅបានទេ។</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI មិនទទួលយកសោលើទូរសព្ទនេះទេ។</string>
-    <string name="voice_diagnosis_missing_phone_key">បន្ថែមសោ API %1$s របស់អ្នក ដើម្បីហៅពីទូរសព្ទនេះ។</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">អនុញ្ញាតឱ្យប្រើមីក្រូហ្វូនក្នុងការកំណត់ ដើម្បីនិយាយជាមួយសម័យរបស់អ្នក។</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ៖ ម៉ាស៊ីនមេបានផ្ញើការឆ្លើយតបមិនត្រឹមត្រូវ។</string>
     <string name="voice_error_start_voice_detail">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ៖ %1$s</string>
     <string name="voice_error_start_voice_http">មិនអាចចាប់ផ្ដើមសំឡេងបានទេ (HTTP %1$d)។</string>
-    <string name="voice_error_openai_rejected_key">OpenAI បានបដិសេធសោ API។</string>
-    <string name="voice_error_openai_verify_http">OpenAI មិនអាចផ្ទៀងផ្ទាត់សោនេះបានទេ (HTTP %1$d)។</string>
-    <string name="voice_error_no_connection">គ្មានការតភ្ជាប់។</string>
-    <string name="voice_error_model_address_invalid">អាសយដ្ឋានម៉ូដែលសំឡេងមិនត្រឹមត្រូវ។</string>
-    <string name="voice_error_xai_rejected_key">xAI បានបដិសេធសោ API។</string>
-    <string name="voice_error_xai_verify_http">xAI មិនអាចផ្ទៀងផ្ទាត់សោនេះបានទេ (HTTP %1$d)។</string>
-    <string name="voice_error_xai_key_disabled">សោ API xAI នេះត្រូវបានបិទ។</string>
-    <string name="voice_error_xai_key_blocked">សោ API xAI នេះត្រូវបានរារាំង។</string>
     <string name="voice_error_service_address_invalid">អាសយដ្ឋានសេវាសំឡេងមិនត្រឹមត្រូវ។</string>
     <string name="voice_error_connection_lost">ការតភ្ជាប់សំឡេងបានដាច់។</string>
     <string name="voice_error_connection_closed">ការតភ្ជាប់សំឡេងត្រូវបានបិទ។</string>
     <string name="voice_error_connection_setup">មិនអាចរៀបចំការតភ្ជាប់សំឡេងបានទេ។</string>
     <string name="voice_error_safety_filter">តម្រងសុវត្ថិភាពបានបញ្ចប់ការហៅជាសំឡេង។</string>
     <string name="voice_error_audio_reset">ប្រព័ន្ធបានកំណត់សំឡេងឡើងវិញ។ សូមចាប់ផ្ដើមការហៅម្តងទៀត។</string>
-    <string name="voice_error_missing_phone_key">បន្ថែមសោ API %1$s របស់អ្នកក្នុងការកំណត់ ដើម្បីប្រើសំឡេង។</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">អង់គ្លេសបែបអូស្ត្រាលី</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">ព័រទុយហ្គាល់បែបប្រេស៊ីល</string>
     <string name="voice_accent_filipino_english">អង់គ្លេសបែបហ្វីលីពីន</string>
     <string name="voice_accent_southern_us_english">អង់គ្លេសបែបសហរដ្ឋអាមេរិកភាគខាងត្បូង</string>
-    <string name="voice_accent_indian_english">អង់គ្លេសបែបឥណ្ឌា</string>
-    <string name="voice_preview_error">មិនអាចចាក់សំឡេងសាកល្បងបាន</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">សូរដង្ហើម</string>

@@ -1,6 +1,5 @@
 package ai.opencode.feature.voice
 
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.copy
 import ai.opencode.feature.voice.VoiceSessionDelegatorTestSupport.admittingFirstTurn
 import ai.opencode.feature.voice.VoiceSessionDelegatorTestSupport.liveDelegatorState
@@ -32,7 +31,8 @@ import kotlin.time.Duration.Companion.seconds
 class VoiceClaimTests {
     private fun obj(vararg pairs: Pair<String, RealtimeJSON>) = RealtimeJSONs.obj(*pairs)
 
-    private suspend fun TestScope.claimCall(): VoiceClockedCall = clockedCall(
+    private suspend fun TestScope.claimCall(delegation: LiveDelegation = LiveDelegation.client): VoiceClockedCall = VoiceClockedCall.start(
+        this,
         VoiceCallTiming(
             rotateAfter = 3_000.0,
             forceRotateAfter = 3_500.0,
@@ -44,6 +44,7 @@ class VoiceClaimTests {
             liveUnbackedClaimWait = 150.milliseconds,
             liveAnswerPressedAfter = 50.milliseconds,
         ),
+        delegation,
     )
 
     /**
@@ -216,51 +217,35 @@ class VoiceClaimTests {
         call.coordinator.end()
     }
 
-    @Test fun builtInDelegatorExecutesClientClaimWhenCaptureIsEmpty() = runBlocking<Unit> {
-        val shared = preserveSettings()
-        val server = OpenCodeServer(url = "http://localhost:4096", username = "", password = "")
-        val session = OpenCodeSession(id = "ses_ios", serverTitle = "OPENCODE IOS", projectID = "p", directory = "/tmp/ios", updatedAt = VoiceFeatureTestSupport.distantPast)
-        shared.set(VoiceSharedKeys.voiceDelegatorChoice, VoiceDelegatorChoice.BuiltIn)
-        shared.set(SharedKeys.openAIAPIKey, "sk-test")
-        val voice = shared.read { VoiceFeature.State(server, session) }
-            .withPhase(VoiceFeature.State.Phase.Live)
-            .copy(usesDelegator = true)
-
-        val receivedInput = Locked(listOf<VoiceDelegator.InputItem>())
-        val completed = Locked(listOf<String>())
-        val effects = detachedScope(coroutineContext)
-        val store = store(shared, voice, effects, now = 0) {
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
-                receivedInput.update { input }
-                VoiceDelegator.Response(id = "resp_claim", calls = emptyList(), text = "The server logs are clean.")
-            }
-            this[VoiceCallClient] = testVoiceCall(
-                completeFunction = { _, output -> completed.update { it + output } },
-            )
+    /**
+     * On a built-in delegator call the server runs the delegations, so a claim or an outcome
+     * without one is left to it and the phone delegates nothing itself.
+     */
+    @Test fun builtInDelegatorExecutesClientClaimWhenCaptureIsEmpty() = runTest {
+        val call = claimCall(LiveDelegation.responses(VoiceDelegator.responsesDelegation(context = "Draft.")))
+        val socket = call.socket
+        val iterator = call.events
+        socket.yieldEvent(LiveServerEvent.InputTranscriptDelta(delta = "Open code iOS", startMilliseconds = 1_000, endMilliseconds = 1_500))
+        assertEquals(VoiceCallEvent.UserTranscript(itemID = "live-u-1", text = "Open code iOS", final = true), iterator.next())
+        call.advance(80)
+        socket.yieldEvent(LiveServerEvent.OutputTranscriptDelta(delta = "Opening.", startMilliseconds = 2_000, endMilliseconds = 2_400))
+        assertEquals(VoiceCallEvent.AssistantDelta(itemID = "live-a-1", delta = "Opening."), iterator.next())
+        call.advance(40)
+        assertEquals(VoiceCallEvent.AssistantDone(itemID = "live-a-1", text = "Opening."), iterator.next())
+        assertEquals(VoiceCallEvent.AssistantPlaybackFinished, iterator.next())
+        val outcome = "I opened it and sent the note."
+        socket.yieldEvent(LiveServerEvent.OutputTranscriptDelta(delta = outcome, startMilliseconds = 3_000, endMilliseconds = 3_400))
+        assertEquals(VoiceCallEvent.AssistantDelta(itemID = "live-a-2", delta = outcome), iterator.next())
+        call.advance(40)
+        assertEquals(VoiceCallEvent.AssistantDone(itemID = "live-a-2", text = outcome), iterator.next())
+        assertEquals(VoiceCallEvent.AssistantPlaybackFinished, iterator.next())
+        call.advance(300)
+        assertFalse(call.harness.callLogMarkers.any { it.contains("without delegating") })
+        call.coordinator.end()
+        while (true) {
+            val event = iterator.next() ?: break
+            if (event is VoiceCallEvent.FunctionCall) fail("Delegated on the phone: $event")
         }
-
-        store.send(
-            VoiceFeature.Action.CallEvent(
-                VoiceCallEvent.FunctionCall(
-                    callID = "client_claim_1",
-                    name = "delegate",
-                    arguments = obj("text" to RealtimeJSONs.string("Let me check the logs.")),
-                ),
-            ),
-        ) {
-            it.copy(replyWatch = it.replyWatch.noteUserActed(), delegatorWork = it.delegatorWork + "client_claim_1")
-                .stepping(ReplyWatch.Event.DelegatorStarted(requestID = "client_claim_1"))
-        }
-        store.receive(::isDelegatorFinished, timeout = 5.seconds) {
-            it.copy(delegatorWork = it.delegatorWork.filter { id -> id != "client_claim_1" }, delegatorResponseID = "resp_claim")
-                .stepping(ReplyWatch.Event.DelegatorFinished(requestID = "client_claim_1", spoken = "The server logs are clean."))
-        }
-        store.finish(timeout = 5.seconds)
-
-        val userTexts = receivedInput.value.mapNotNull { (it as? VoiceDelegator.InputItem.User)?.text }
-        assertTrue(userTexts.toString(), userTexts.any { it.contains("Voice promised: \"Let me check the logs.\"") })
-        assertEquals(listOf(VoiceHandoff.completion("The server logs are clean.")), completed.value)
-        effects.skipInFlightEffects()
     }
 
     @Test fun outcomeClaimDetectorMatchesFirstPersonActionsAndDoneClauses() {

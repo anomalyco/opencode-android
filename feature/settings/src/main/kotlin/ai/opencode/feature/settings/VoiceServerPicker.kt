@@ -13,19 +13,16 @@ import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.server.OpenCodeServer
 
 // Settings › Voice › Voice Provider, which provider calls use. Automatic by default (the connected
-// server, this phone's key, then another saved server that's ready), or one picked. The rows
+// server, then another saved server that's ready), or one picked. The rows
 // themselves are on the Voice Provider page (`VoiceProviderPage.kt`).
 
 /** The server calls start from: Home's, else the last one used. */
 val VoiceSettingsFeature.State.connectedServer: OpenCodeServer? get() = server ?: savedServer
 
-val VoiceSettingsFeature.State.hasOpenAIKey: Boolean get() = openAIAPIKey.orEmpty().trim().isNotEmpty()
-
 val VoiceSettingsFeature.State.readiness: VoiceReadiness
     get() = VoiceReadiness(
         answers = voiceModelsByServer,
         support = serverVoiceSupportByServer,
-        hasPhoneKey = hasOpenAIKey,
         engine = voiceEngine,
     )
 
@@ -62,6 +59,7 @@ val VoiceSettingsFeature.State.providerCatalog: VoiceProviderCatalog
 val VoiceSettingsFeature.State.keySource: VoiceKeySource
     get() {
         val route = route
+        if (route is VoiceRoute.Unavailable) return VoiceKeySource.Server(providerName = serverVoiceProvider.title)
         val brokerServer = broker.server
         if (route is VoiceRoute.Server && brokerServer != null &&
             ServerVoiceModels.hostedByOpenCode(route.server, voiceModelsByServer[brokerServer.persistenceID]?.models.orEmpty())

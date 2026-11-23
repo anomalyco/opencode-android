@@ -135,7 +135,6 @@ class SystemIntegrationTests {
         if (voiceConfigured) {
             context.read {
                 shared(SharedKeys.voiceModeEnabled).set(true)
-                shared(SharedKeys.openAIAPIKey).set("sk-test")
             }
         }
         val state = HomeFeature.State(server, snapshot(listOf(project, docs), listOf(older, newer)))
@@ -383,7 +382,6 @@ class SystemIntegrationTests {
     ): TestStore<HomeFeature.State, HomeFeature.Action> {
         val store = homeStore(scope, {
             shared(SharedKeys.voiceModeEnabled).set(voiceModeEnabled)
-            shared(SharedKeys.openAIAPIKey).set("sk-test")
             HomeFeature.State(server, snapshot(listOf(project, docs), listOf(older, newer))).copy(sessionDetail = detail())
         }) {
             this[DateClient] = DateClient.constant(Instant.ofEpochSecond(1_000))

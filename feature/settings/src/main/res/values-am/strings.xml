@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · ሌላ አገልጋይ</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">ቁልፉን ደብቅ</string>
-    <string name="settings_voice_key_show_description">ቁልፉን አሳይ</string>
-    <string name="settings_voice_key_verify">አረጋግጥ</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">የድምፅ አቅራቢ</string>
     <string name="settings_voice_provider_place">በ%1$s ላይ</string>
-    <string name="settings_voice_api_key_title">API ቁልፍ</string>
     <string name="settings_voice_provider_automatic_footer">%1$s ዝግጁ ካልሆነ፣ ጥሪዎች ዝግጁ የሆነ ሌላ አቅራቢ ይጠቀማሉ።</string>
     <string name="settings_voice_provider_choose_automatically">በራስ-ሰር ምረጥ</string>
     <string name="settings_voice_provider_others_header">ሌሎች አቅራቢዎች</string>
     <string name="settings_voice_provider_use_description">%1$s ተጠቀም</string>
     <string name="settings_voice_provider_use">ተጠቀም</string>
-    <string name="settings_voice_provider_set_up">አዋቅር</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d አይገኝም</item>
         <item quantity="other">%d አይገኙም</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">የእርስዎ OpenAI መለያ</string>
-    <string name="settings_voice_account_place">በዚህ ስልክ ላይ</string>
-    <string name="settings_voice_account_key_footer">ጥሪዎች ከአገልጋይ ይልቅ የእርስዎን OpenAI መለያ ይጠቀማሉ።</string>
-    <string name="settings_voice_account_use_for_calls">ለጥሪዎች ተጠቀም</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">ድምፅ</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">ለማውራት አንሳ</string>
     <string name="settings_voice_call_sounds">የጥሪ ድምፆች</string>
     <string name="settings_voice_call_history">የጥሪ ታሪክ</string>
-    <string name="settings_voice_edit_key_label">የእርስዎን %1$s API ቁልፍ አርትዕ</string>
-    <string name="settings_voice_key_verified">ተረጋግጧል</string>
-    <string name="settings_voice_key_checking">በማጣራት ላይ…</string>
-    <string name="settings_voice_key_saved">ተቀምጧል</string>
-    <string name="settings_voice_key_missing">የለም</string>
-    <string name="settings_voice_preview_disabled_hint">ድምፆችን ለመስማት የእርስዎን %1$s ቁልፍ አክል</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">ድምፆችን ለመስማት የእርስዎን %1$s ቁልፍ አክል።</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s በ%2$s ላይ አይገኝም፣ ስለዚህ ጥሪዎች %3$s ይጠቀማሉ።</string>
-    <string name="settings_voice_stop_preview_description">የ%1$s ናሙና ማጫወትን አቁም</string>
-    <string name="settings_voice_preview_description">የ%1$s ናሙና አዳምጥ</string>
-    <string name="settings_voice_preview_playing">በመጫወት ላይ</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s አይገኝም</string>
 
     <!-- Settings root -->

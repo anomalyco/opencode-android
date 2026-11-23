@@ -135,9 +135,7 @@ class VoiceSessionDelegatorTestsProgress {
         val endedCalls = Locked(0)
         val effects = detachedScope(coroutineContext)
         val store = store(shared, state, effects, now = 5_000) {
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, _ ->
-                throw OpenCodeClientError("Unused on the call")
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[VoiceCallClient] = testVoiceCall(
                 delegatorRound = {
                     Result.success(

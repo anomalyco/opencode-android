@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · Máy chủ khác</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Ẩn khóa</string>
-    <string name="settings_voice_key_show_description">Hiện khóa</string>
-    <string name="settings_voice_key_verify">Xác minh</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Nhà cung cấp giọng nói</string>
     <string name="settings_voice_provider_place">Trên %1$s</string>
-    <string name="settings_voice_api_key_title">Khóa API</string>
     <string name="settings_voice_provider_automatic_footer">Khi %1$s chưa sẵn sàng, cuộc gọi sẽ dùng nhà cung cấp khác đã sẵn sàng.</string>
     <string name="settings_voice_provider_choose_automatically">Tự động chọn</string>
     <string name="settings_voice_provider_others_header">Nhà cung cấp khác</string>
     <string name="settings_voice_provider_use_description">Dùng %1$s</string>
     <string name="settings_voice_provider_use">Dùng</string>
-    <string name="settings_voice_provider_set_up">Thiết lập</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">%d không có sẵn</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Tài khoản OpenAI của bạn</string>
-    <string name="settings_voice_account_place">Trên điện thoại này</string>
-    <string name="settings_voice_account_key_footer">Cuộc gọi dùng tài khoản OpenAI của bạn thay vì máy chủ.</string>
-    <string name="settings_voice_account_use_for_calls">Dùng cho cuộc gọi</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Giọng nói</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">Đưa lên tai để nói</string>
     <string name="settings_voice_call_sounds">Âm thanh cuộc gọi</string>
     <string name="settings_voice_call_history">Lịch sử cuộc gọi</string>
-    <string name="settings_voice_edit_key_label">Chỉnh sửa khóa API %1$s của bạn</string>
-    <string name="settings_voice_key_verified">Đã xác minh</string>
-    <string name="settings_voice_key_checking">Đang kiểm tra…</string>
-    <string name="settings_voice_key_saved">Đã lưu</string>
-    <string name="settings_voice_key_missing">Chưa có</string>
-    <string name="settings_voice_preview_disabled_hint">Thêm khóa %1$s của bạn để nghe thử giọng nói</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Thêm khóa %1$s của bạn để nghe thử giọng nói.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s không có sẵn trên %2$s nên cuộc gọi dùng %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Dừng nghe thử %1$s</string>
-    <string name="settings_voice_preview_description">Nghe thử %1$s</string>
-    <string name="settings_voice_preview_playing">Đang phát</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s không có sẵn</string>
 
     <!-- Settings root -->

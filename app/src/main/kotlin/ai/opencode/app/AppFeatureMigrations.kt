@@ -3,6 +3,7 @@ package ai.opencode.app
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.log.AppLog
 import ai.opencode.core.sharing.ExperimentalFeature
+import ai.opencode.core.sharing.FileDirectory
 import ai.opencode.core.sharing.InstallHistory
 import ai.opencode.core.sharing.SharedKey
 import ai.opencode.core.sharing.SharedKeys
@@ -25,12 +26,24 @@ internal fun migrateSettingsIfNeeded(savedServers: List<OpenCodeServer>) {
     ExperimentalFeature.removeRetiredSwitches(store)
     ExperimentalFeature.adoptNewExperimentsIntoAll()
     removeRetiredOrbStyles(store)
+    removeRetiredVoiceKeys(store)
 }
 
 internal const val RETIRED_ORB_STYLE_KEY = "living-orb-style"
 
 private fun removeRetiredOrbStyles(store: SharedStore) {
     store.remove(SharedKey.appStorage(RETIRED_ORB_STYLE_KEY, ""))
+}
+
+/** Calls go through the server only, so the provider keys earlier builds kept on the phone are deleted. */
+internal val retiredVoiceKeys = listOf(
+    SharedKey.keychain<String?>("openai-api-key", null),
+    SharedKey.keychain<String?>("xai-api-key", null),
+    SharedKey.fileStorage<String?>(FileDirectory.Caches, "verified-openai-key.json", null),
+)
+
+private fun removeRetiredVoiceKeys(store: SharedStore) {
+    for (key in retiredVoiceKeys) store.remove(key)
 }
 
 /**

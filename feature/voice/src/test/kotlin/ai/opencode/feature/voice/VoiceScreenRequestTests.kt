@@ -24,7 +24,6 @@ import ai.opencode.feature.voice.VoiceFeatureTestSupport.receive
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.receiveEnded
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.server
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.session
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.setAPIKey
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.settle
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceCall
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceTest
@@ -347,11 +346,10 @@ class VoiceScreenRequestTests {
         val store = h.store(h.state { VoiceFeature.State(server, session) }) {
             this[DateClient] = DateClient.constant(Instant.EPOCH)
             this[Clock] = ImmediateClock()
-            voiceCall { copy(start = { _, _ -> events.events }, completeFunction = { _, _ -> }) }
+            voiceCall { copy(start = { _ -> events.events }, completeFunction = { _, _ -> }) }
             configure()
         }
         store.exhaustive = false
-        store.setAPIKey("sk-test")
         store.send(VoiceFeature.Action.Start)
         events.yield(VoiceCallEvent.Connected)
         store.receive(VoiceFeature.Action.CallEvent::class) { it.live() }

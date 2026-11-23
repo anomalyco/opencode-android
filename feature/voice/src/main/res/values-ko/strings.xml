@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">통화 종료됨</string>
     <string name="voice_call_ended_rejoin">다시 참여</string>
     <string name="voice_failure_title">음성 연결을 할 수 없어요</string>
-    <string name="voice_failure_check_api_key">API 키 확인</string>
     <string name="voice_failure_start_title">통화를 시작할 수 없어요</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">키 없음</string>
     <string name="voice_provider_state_needs_update">OpenCode 업데이트</string>
     <string name="voice_provider_state_offline">오프라인</string>
-    <string name="voice_provider_place_phone">이 휴대폰</string>
-    <string name="voice_provider_brand_openai_account">내 OpenAI 계정</string>
     <string name="voice_provider_name">%2$s의 %1$s</string>
     <string name="voice_provider_subtitle">%1$s에서</string>
-    <string name="voice_provider_key_row_title">%1$s 키</string>
-    <string name="voice_provider_key_placeholder">%1$s API 키</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">내 서버의 키</string>
-    <string name="voice_key_source_phone_footer">통화에 내 OpenAI 또는 xAI 키를 사용해요.</string>
     <string name="voice_key_source_server_footer">통화에 내 서버의 %1$s 키를 사용해요.</string>
     <string name="voice_key_source_opencode_footer">통화 요금은 내 OpenCode Console 작업 공간에 청구돼요.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">이 휴대폰에서 설정</string>
     <string name="voice_fix_choose_provider">공급자 선택</string>
     <string name="voice_fix_update_opencode">OpenCode 업데이트</string>
     <string name="voice_diagnosis_needs_update">%1$s에서 음성 통화를 하려면 OpenCode를 업데이트해야 해요.</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">내 서버에 연결할 수 없어요.</string>
     <string name="voice_diagnosis_failed">%1$s에서 통화를 시작할 수 없어요.</string>
     <string name="voice_diagnosis_your_server_failed">내 서버에서 통화를 시작할 수 없어요.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI에서 이 휴대폰의 키를 거부했어요.</string>
-    <string name="voice_diagnosis_missing_phone_key">이 휴대폰에서 통화하려면 내 %1$s API 키를 추가하세요.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">세션과 대화하려면 설정에서 마이크 접근을 허용하세요.</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">음성 통화를 시작할 수 없어요: 서버가 잘못된 응답을 보냈어요.</string>
     <string name="voice_error_start_voice_detail">음성 통화를 시작할 수 없어요: %1$s</string>
     <string name="voice_error_start_voice_http">음성 통화를 시작할 수 없어요 (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI에서 API 키를 거부했어요.</string>
-    <string name="voice_error_openai_verify_http">OpenAI에서 이 키를 확인할 수 없어요 (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">연결되지 않았어요.</string>
-    <string name="voice_error_model_address_invalid">음성 모델 주소가 올바르지 않아요.</string>
-    <string name="voice_error_xai_rejected_key">xAI에서 API 키를 거부했어요.</string>
-    <string name="voice_error_xai_verify_http">xAI에서 이 키를 확인할 수 없어요 (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">이 xAI API 키는 비활성화되어 있어요.</string>
-    <string name="voice_error_xai_key_blocked">이 xAI API 키는 차단되어 있어요.</string>
     <string name="voice_error_service_address_invalid">음성 서비스 주소가 올바르지 않아요.</string>
     <string name="voice_error_connection_lost">음성 연결이 끊어졌어요.</string>
     <string name="voice_error_connection_closed">음성 연결이 종료되었어요.</string>
     <string name="voice_error_connection_setup">음성 연결을 설정할 수 없어요.</string>
     <string name="voice_error_safety_filter">안전 필터가 음성 통화를 종료했어요.</string>
     <string name="voice_error_audio_reset">시스템에서 오디오를 초기화했어요. 통화를 다시 시작하세요.</string>
-    <string name="voice_error_missing_phone_key">음성 기능을 사용하려면 설정에서 내 %1$s API 키를 추가하세요.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">호주 영어</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">브라질 포르투갈어</string>
     <string name="voice_accent_filipino_english">필리핀 영어</string>
     <string name="voice_accent_southern_us_english">미국 남부 영어</string>
-    <string name="voice_accent_indian_english">인도 영어</string>
-    <string name="voice_preview_error">미리 듣기를 재생할 수 없어요</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">숨결 알림음</string>

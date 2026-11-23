@@ -108,13 +108,10 @@ data class GeminiLiveSessionConfig(
 
     companion object {
         const val defaultModel = "gemini-3.8-live"
-        const val defaultWebSocketURL =
-            "wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained"
 
         fun from(config: RealtimeSessionConfig): GeminiLiveSessionConfig {
             val resolvedModel = if (config.model == RealtimeSessionConfig.defaultModel ||
-                config.model == LiveSessionConfig.defaultModel ||
-                config.model == RealtimeSessionConfig.grokModel
+                config.model == LiveSessionConfig.defaultModel
             ) {
                 defaultModel
             } else {

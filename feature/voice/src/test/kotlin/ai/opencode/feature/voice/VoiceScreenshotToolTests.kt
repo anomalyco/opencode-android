@@ -1,5 +1,6 @@
 package ai.opencode.feature.voice
 
+import ai.opencode.feature.voice.VoiceFeatureTestSupport.delegating
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.ImmediateClock
@@ -132,8 +133,6 @@ class VoiceScreenshotToolTests {
             developerMode.set(false)
             assertFalse(names().contains("capture_app_screenshot"))
             assertFalse(liveNames().contains("capture_app_screenshot"))
-            val bodyTools = VoiceDelegator.requestBody(emptyList(), previousResponseID = null)["tools"] as? JsonArray ?: JsonArray(emptyList())
-            assertFalse(bodyTools.any { it.name() == "capture_app_screenshot" })
 
             developerMode.set(true)
             assertEquals("capture_app_screenshot", names().last())
@@ -297,7 +296,6 @@ class VoiceScreenshotToolTests {
         val shared = SpeechTestShared()
         val voice = shared.run {
             shared(SharedKeys.developerMode).set(true)
-            shared(SharedKeys.openAIAPIKey).set("sk-test")
             VoiceFeature.State(server, session).withPhase(VoiceFeature.State.Phase.Live).copy(usesDelegator = true)
                 .recording(VoiceTranscriptTail.Role.user, "Look at this, the orb overlaps the composer", id = "u1")
         }
@@ -315,7 +313,10 @@ class VoiceScreenshotToolTests {
                     VoiceScreenshotClient.Capture(jpeg = jpeg, screen = "Session", appearance = VoiceAppState.Appearance(style = "dark", dynamicType = "L")),
                 )
             }
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
+            this[OpenCodeClient] = client(sent)
+            this[VoiceWorkClient] = VoiceWorkClient.testValue
+            this[VoiceCallClient] = speechVoiceCall().delegating { input ->
                 schemas.update { it + VoiceDelegator.tools.mapNotNull { tool -> tool.name() } }
                 val first = input.firstOrNull()
                 if (first is VoiceDelegator.InputItem.ToolOutput) {
@@ -329,13 +330,10 @@ class VoiceScreenshotToolTests {
                     )
                 }
             }
-            this[OpenCodeClient] = client(sent)
-            this[VoiceWorkClient] = VoiceWorkClient.testValue
-            this[VoiceCallClient] = speechVoiceCall()
         }
         store.exhaustive = false
 
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = JsonObject(emptyMap()))))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         store.skipReceivedActions()
 

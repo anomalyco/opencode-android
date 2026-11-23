@@ -23,7 +23,6 @@ class VoiceLayLowTests {
         get() = listOf(
             VoiceInstructions.buildLive(context),
             VoiceInstructions.build(context, engine = VoiceEngine.realtime),
-            VoiceInstructions.build(context, engine = VoiceEngine.grok),
             VoiceInstructions.build(context, route = VoiceRoute.serverGeminiLive),
         )
 

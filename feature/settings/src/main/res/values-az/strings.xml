@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Başqa server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Açarı gizlət</string>
-    <string name="settings_voice_key_show_description">Açarı göstər</string>
-    <string name="settings_voice_key_verify">Yoxla</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Səs provayderi</string>
     <string name="settings_voice_provider_place">%1$s üzərində</string>
-    <string name="settings_voice_api_key_title">API açarı</string>
     <string name="settings_voice_provider_automatic_footer">%1$s hazır olmayanda zənglər hazır olan provayderdən istifadə edir.</string>
     <string name="settings_voice_provider_choose_automatically">Avtomatik seç</string>
     <string name="settings_voice_provider_others_header">Digər provayderlər</string>
     <string name="settings_voice_provider_use_description">%1$s istifadə et</string>
     <string name="settings_voice_provider_use">İstifadə et</string>
-    <string name="settings_voice_provider_set_up">Quraşdır</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d əlçatan deyil</item>
         <item quantity="other">%d əlçatan deyil</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">OpenAI hesabınız</string>
-    <string name="settings_voice_account_place">Bu telefonda</string>
-    <string name="settings_voice_account_key_footer">Zənglər server əvəzinə OpenAI hesabınızdan istifadə edir.</string>
-    <string name="settings_voice_account_use_for_calls">Zənglər üçün istifadə et</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Səs</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Danışmaq üçün qaldır</string>
     <string name="settings_voice_call_sounds">Zəng səsləri</string>
     <string name="settings_voice_call_history">Zəng tarixçəsi</string>
-    <string name="settings_voice_edit_key_label">%1$s API açarınızı redaktə edin</string>
-    <string name="settings_voice_key_verified">Yoxlanılıb</string>
-    <string name="settings_voice_key_checking">Yoxlanılır…</string>
-    <string name="settings_voice_key_saved">Saxlanılıb</string>
-    <string name="settings_voice_key_missing">Yoxdur</string>
-    <string name="settings_voice_preview_disabled_hint">Səsləri dinləmək üçün %1$s açarınızı əlavə edin</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Səsləri dinləmək üçün %1$s açarınızı əlavə edin.</string>
     <string name="settings_voice_picker_unavailable_footer">%2$s üzərində %1$s əlçatan deyil, buna görə zənglər %3$s istifadə edir.</string>
-    <string name="settings_voice_stop_preview_description">%1$s səsinin sınağını dayandır</string>
-    <string name="settings_voice_preview_description">%1$s səsini sına</string>
-    <string name="settings_voice_preview_playing">Səsləndirilir</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s əlçatan deyil</string>
 
     <!-- Settings root -->

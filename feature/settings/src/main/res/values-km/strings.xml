@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · ម៉ាស៊ីនមេផ្សេង</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">លាក់សោ</string>
-    <string name="settings_voice_key_show_description">បង្ហាញសោ</string>
-    <string name="settings_voice_key_verify">ផ្ទៀងផ្ទាត់</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">អ្នកផ្តល់សេវាសំឡេង</string>
     <string name="settings_voice_provider_place">នៅលើ %1$s</string>
-    <string name="settings_voice_api_key_title">សោ API</string>
     <string name="settings_voice_provider_automatic_footer">ពេល %1$s មិនទាន់រួចរាល់ ការហៅប្រើអ្នកផ្តល់សេវាដែលរួចរាល់ជំនួស។</string>
     <string name="settings_voice_provider_choose_automatically">ជ្រើសរើសដោយស្វ័យប្រវត្តិ</string>
     <string name="settings_voice_provider_others_header">អ្នកផ្តល់សេវាផ្សេងទៀត</string>
     <string name="settings_voice_provider_use_description">ប្រើ %1$s</string>
     <string name="settings_voice_provider_use">ប្រើ</string>
-    <string name="settings_voice_provider_set_up">រៀបចំ</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">មិនមាន %d</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">គណនី OpenAI របស់អ្នក</string>
-    <string name="settings_voice_account_place">លើទូរសព្ទនេះ</string>
-    <string name="settings_voice_account_key_footer">ការហៅប្រើគណនី OpenAI របស់អ្នកជំនួសម៉ាស៊ីនមេ។</string>
-    <string name="settings_voice_account_use_for_calls">ប្រើសម្រាប់ការហៅ</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">សំឡេង</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">លើកដើម្បីនិយាយ</string>
     <string name="settings_voice_call_sounds">សំឡេងពេលហៅ</string>
     <string name="settings_voice_call_history">ប្រវត្តិការហៅ</string>
-    <string name="settings_voice_edit_key_label">កែសម្រួលសោ API %1$s របស់អ្នក</string>
-    <string name="settings_voice_key_verified">បានផ្ទៀងផ្ទាត់</string>
-    <string name="settings_voice_key_checking">កំពុងពិនិត្យ…</string>
-    <string name="settings_voice_key_saved">បានរក្សាទុក</string>
-    <string name="settings_voice_key_missing">មិនទាន់មាន</string>
-    <string name="settings_voice_preview_disabled_hint">បន្ថែមសោ %1$s របស់អ្នកដើម្បីស្តាប់សំឡេងសាកល្បង</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">បន្ថែមសោ %1$s របស់អ្នកដើម្បីស្តាប់សំឡេងសាកល្បង។</string>
     <string name="settings_voice_picker_unavailable_footer">មិនមាន %1$s នៅលើ %2$s ដូច្នេះការហៅប្រើ %3$s។</string>
-    <string name="settings_voice_stop_preview_description">ឈប់ស្តាប់ %1$s សាកល្បង</string>
-    <string name="settings_voice_preview_description">ស្តាប់ %1$s សាកល្បង</string>
-    <string name="settings_voice_preview_playing">កំពុងចាក់</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · មិនមាន %2$s</string>
 
     <!-- Settings root -->

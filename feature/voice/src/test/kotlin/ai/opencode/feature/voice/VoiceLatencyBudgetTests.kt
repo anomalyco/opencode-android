@@ -13,7 +13,6 @@ import ai.opencode.feature.voice.VoiceFeatureTestSupport.date
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.increment
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.live
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.receive
-import ai.opencode.feature.voice.VoiceFeatureTestSupport.setAPIKey
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceCall
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceTest
 import ai.opencode.feature.voice.VoiceFeatureTestSupport.voiceWork
@@ -629,7 +628,6 @@ class VoiceLatencyBudgetTests {
             }
         }
         store.exhaustive = false
-        store.setAPIKey("sk-test")
         store.send(Action.CallEvent(VoiceCallEvent.UserTranscript(itemID = "item_1", text = "run it", final = true)))
         store.send(Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "call_once", name = "delegate", arguments = VoiceFeatureTestSupport.arguments("Run it."))))
         store.receive(Action.WorkAdmitted::class)

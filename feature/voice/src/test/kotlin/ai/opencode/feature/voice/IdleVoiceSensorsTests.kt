@@ -3,12 +3,8 @@ package ai.opencode.feature.voice
 import ai.opencode.core.dependencies.TestClock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runCurrent
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -122,25 +118,5 @@ class IdleVoiceSensorsTests {
         assertEquals("Covered flat is no raise", 0, probe.raises)
         assertEquals(listOf(true, false), probe.motion)
         detector.stop()
-    }
-
-    @Test fun aWarmWindowWarmsSixTimesAndThenNothing() = runTest {
-        var warms = 0
-        val window = launch { LiveSocketWarmer.warmWindow { warms += 1 } }
-        advanceTimeBy(120.seconds)
-        runCurrent()
-        assertTrue(window.isCompleted)
-        assertEquals(6, warms)
-        advanceTimeBy(3_600.seconds)
-        assertEquals(6, warms)
-    }
-
-    @Test fun aCancelledWindowStopsWarming() = runTest {
-        var warms = 0
-        val window = launch { LiveSocketWarmer.warmWindow { warms += 1 } }
-        advanceTimeBy(25.seconds)
-        window.cancel()
-        advanceTimeBy(120.seconds)
-        assertEquals(3, warms)
     }
 }

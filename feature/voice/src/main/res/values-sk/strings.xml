@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Hovor sa skončil</string>
     <string name="voice_call_ended_rejoin">Znova sa pripojiť</string>
     <string name="voice_failure_title">Nepodarilo sa pripojiť hlas</string>
-    <string name="voice_failure_check_api_key">Skontrolovať API kľúč</string>
     <string name="voice_failure_start_title">Nepodarilo sa začať hovor</string>
 
     <!-- Floating call -->
@@ -103,21 +102,14 @@
     <string name="voice_provider_state_no_key">Chýba kľúč</string>
     <string name="voice_provider_state_needs_update">Aktualizovať OpenCode</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">Tento telefón</string>
-    <string name="voice_provider_brand_openai_account">Váš účet OpenAI</string>
     <string name="voice_provider_name">%1$s na %2$s</string>
     <string name="voice_provider_subtitle">Na %1$s</string>
-    <string name="voice_provider_key_row_title">Kľúč %1$s</string>
-    <string name="voice_provider_key_placeholder">API kľúč %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Kľúč na vašom serveri</string>
-    <string name="voice_key_source_phone_footer">Hovory používajú váš vlastný kľúč OpenAI alebo xAI.</string>
     <string name="voice_key_source_server_footer">Hovory používajú kľúč %1$s z vášho servera.</string>
     <string name="voice_key_source_opencode_footer">Hovory sa účtujú vášmu pracovnému priestoru v OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Nastaviť na tomto telefóne</string>
     <string name="voice_fix_choose_provider">Vybrať poskytovateľa</string>
     <string name="voice_fix_update_opencode">Aktualizovať OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s potrebuje na hlasové hovory novšiu verziu OpenCode.</string>
@@ -128,8 +120,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Nepodarilo sa pripojiť k vášmu serveru.</string>
     <string name="voice_diagnosis_failed">%1$s nedokázal začať hovor.</string>
     <string name="voice_diagnosis_your_server_failed">Váš server nedokázal začať hovor.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI neprijalo kľúč v tomto telefóne.</string>
-    <string name="voice_diagnosis_missing_phone_key">Ak chcete volať z tohto telefónu, pridajte svoj API kľúč %1$s.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Ak chcete hovoriť so svojou reláciou, povoľte v nastaveniach prístup k mikrofónu.</string>
@@ -140,21 +130,12 @@
     <string name="voice_error_invalid_response">Nepodarilo sa spustiť hlas: Server vrátil neplatnú odpoveď.</string>
     <string name="voice_error_start_voice_detail">Nepodarilo sa spustiť hlas: %1$s</string>
     <string name="voice_error_start_voice_http">Nepodarilo sa spustiť hlas (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI odmietlo API kľúč.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nedokázalo overiť tento kľúč (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Žiadne pripojenie.</string>
-    <string name="voice_error_model_address_invalid">Adresa hlasového modelu je neplatná.</string>
-    <string name="voice_error_xai_rejected_key">xAI odmietlo API kľúč.</string>
-    <string name="voice_error_xai_verify_http">xAI nedokázalo overiť tento kľúč (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Tento API kľúč xAI je zakázaný.</string>
-    <string name="voice_error_xai_key_blocked">Tento API kľúč xAI je zablokovaný.</string>
     <string name="voice_error_service_address_invalid">Adresa hlasovej služby je neplatná.</string>
     <string name="voice_error_connection_lost">Hlasové spojenie sa prerušilo.</string>
     <string name="voice_error_connection_closed">Hlasové spojenie je ukončené.</string>
     <string name="voice_error_connection_setup">Nepodarilo sa nadviazať hlasové spojenie.</string>
     <string name="voice_error_safety_filter">Bezpečnostný filter ukončil hlasový hovor.</string>
     <string name="voice_error_audio_reset">Systém obnovil zvuk. Začnite hovor znova.</string>
-    <string name="voice_error_missing_phone_key">Ak chcete používať hlas, pridajte v nastaveniach svoj API kľúč %1$s.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Austrálska angličtina</string>
@@ -164,8 +145,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazílska portugalčina</string>
     <string name="voice_accent_filipino_english">Filipínska angličtina</string>
     <string name="voice_accent_southern_us_english">Angličtina juhu USA</string>
-    <string name="voice_accent_indian_english">Indická angličtina</string>
-    <string name="voice_preview_error">Nepodarilo sa prehrať ukážku</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Dychové cinknutie</string>

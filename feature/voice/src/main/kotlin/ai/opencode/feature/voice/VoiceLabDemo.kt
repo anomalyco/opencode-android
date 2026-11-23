@@ -50,22 +50,11 @@ object VoiceScriptedDemo {
 }
 
 /** All switches go through VoiceLabEnvironment: release builds cannot enable
- * scripted calls, input injection, alternate URLs or lab credentials. Time scale is 1. */
+ * scripted calls or input injection. Time scale is 1. */
 object VoiceLabDemo {
     val isEnabled get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_DEMO") != null
-    val realtimeURL get() = VoiceLabEnvironment.string("OPENCODE_LAB_REALTIME_URL")
-    val liveURL get() = VoiceLabEnvironment.string("OPENCODE_LAB_LIVE_URL")
-    val liveRTCURL get() = VoiceLabEnvironment.string("OPENCODE_LAB_LIVE_RTC_URL")
-    val hasStandInServer get() = realtimeURL != null || liveURL != null
-    val labAPIKey get() = VoiceLabEnvironment.string("OPENCODE_LAB_OPENAI_KEY")
     val playbackPreroll get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_PREROLL_MS")?.toLongOrNull()?.times(24)
-    val overrideEngine: VoiceEngine? get() {
-        VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_ENGINE")?.let { VoiceEngine.ofRawValue(it)?.let { engine -> return engine } }
-        if (liveURL != null && realtimeURL == null) return VoiceEngine.gptLive
-        if (realtimeURL != null && liveURL == null) return VoiceEngine.realtime
-        return null
-    }
-    val preflight = RealtimePreflightClient(verify = { _, _ -> })
+    val overrideEngine: VoiceEngine? get() = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_ENGINE")?.let { VoiceEngine.ofRawValue(it) }
     val audioHooks: VoiceAudioLabHooks get() = object : VoiceAudioLabHooks {
         override val isScriptedDemo = isEnabled
         override val playbackPreroll = VoiceLabDemo.playbackPreroll
@@ -111,7 +100,7 @@ object VoiceLabDemo {
         val dispatcher = Dispatchers.Default.limitedParallelism(1)
         var current: ScriptedCall? = null
         VoiceCallClient(
-            start = { _, _ -> withContext(dispatcher) {
+            start = { withContext(dispatcher) {
                 current?.finish(); current = null
                 val failure = VoiceLabEnvironment.string("OPENCODE_LAB_VOICE_FAIL")
                 if (failure != null) flow { throw LabFailure(failure) }

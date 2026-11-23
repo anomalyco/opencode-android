@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Zvans beidzies</string>
     <string name="voice_call_ended_rejoin">Pievienoties vēlreiz</string>
     <string name="voice_failure_title">Neizdevās izveidot balss savienojumu</string>
-    <string name="voice_failure_check_api_key">Pārbaudīt API atslēgu</string>
     <string name="voice_failure_start_title">Neizdevās sākt zvanu</string>
 
     <!-- Floating call -->
@@ -101,21 +100,14 @@
     <string name="voice_provider_state_no_key">Nav atslēgas</string>
     <string name="voice_provider_state_needs_update">Atjaunināt OpenCode</string>
     <string name="voice_provider_state_offline">Bezsaistē</string>
-    <string name="voice_provider_place_phone">Šis tālrunis</string>
-    <string name="voice_provider_brand_openai_account">Tavs OpenAI konts</string>
     <string name="voice_provider_name">%1$s ierīcē %2$s</string>
     <string name="voice_provider_subtitle">Ierīcē %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s atslēga</string>
-    <string name="voice_provider_key_placeholder">%1$s API atslēga</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Atslēga tavā serverī</string>
-    <string name="voice_key_source_phone_footer">Zvaniem izmanto tavu OpenAI vai xAI atslēgu.</string>
     <string name="voice_key_source_server_footer">Zvaniem izmanto tava servera %1$s atslēgu.</string>
     <string name="voice_key_source_opencode_footer">Maksa par zvaniem tiek iekasēta no tavas OpenCode Console darbvietas.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Iestatīt šajā tālrunī</string>
     <string name="voice_fix_choose_provider">Izvēlēties pakalpojumu sniedzēju</string>
     <string name="voice_fix_update_opencode">Atjaunināt OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s balss zvaniem vajadzīga jaunāka OpenCode versija.</string>
@@ -126,8 +118,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Neizdevās sasniegt tavu serveri.</string>
     <string name="voice_diagnosis_failed">%1$s neizdevās sākt zvanu.</string>
     <string name="voice_diagnosis_your_server_failed">Tavam serverim neizdevās sākt zvanu.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nepieņēma šajā tālrunī saglabāto atslēgu.</string>
-    <string name="voice_diagnosis_missing_phone_key">Pievieno savu %1$s API atslēgu, lai zvanītu no šī tālruņa.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Iestatījumos atļauj piekļuvi mikrofonam, lai sarunātos ar savu sesiju.</string>
@@ -138,21 +128,12 @@
     <string name="voice_error_invalid_response">Neizdevās sākt balss sarunu: serveris atgrieza nederīgu atbildi.</string>
     <string name="voice_error_start_voice_detail">Neizdevās sākt balss sarunu: %1$s</string>
     <string name="voice_error_start_voice_http">Neizdevās sākt balss sarunu (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI noraidīja API atslēgu.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nevarēja pārbaudīt šo atslēgu (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Nav savienojuma.</string>
-    <string name="voice_error_model_address_invalid">Balss modeļa adrese nav derīga.</string>
-    <string name="voice_error_xai_rejected_key">xAI noraidīja API atslēgu.</string>
-    <string name="voice_error_xai_verify_http">xAI nevarēja pārbaudīt šo atslēgu (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Šī xAI API atslēga ir atspējota.</string>
-    <string name="voice_error_xai_key_blocked">Šī xAI API atslēga ir bloķēta.</string>
     <string name="voice_error_service_address_invalid">Balss pakalpojuma adrese nav derīga.</string>
     <string name="voice_error_connection_lost">Balss savienojums pārtrūka.</string>
     <string name="voice_error_connection_closed">Balss savienojums ir slēgts.</string>
     <string name="voice_error_connection_setup">Neizdevās izveidot balss savienojumu.</string>
     <string name="voice_error_safety_filter">Drošības filtrs pārtrauca balss zvanu.</string>
     <string name="voice_error_audio_reset">Sistēma atiestatīja audio. Sāc zvanu vēlreiz.</string>
-    <string name="voice_error_missing_phone_key">Iestatījumos pievieno savu %1$s API atslēgu, lai izmantotu balsi.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Austrālijas angļu</string>
@@ -162,8 +143,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazīlijas portugāļu</string>
     <string name="voice_accent_filipino_english">Filipīnu angļu</string>
     <string name="voice_accent_southern_us_english">ASV dienvidu angļu</string>
-    <string name="voice_accent_indian_english">Indijas angļu</string>
-    <string name="voice_preview_error">Neizdevās atskaņot paraugu</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Elpas zvaniņš</string>

@@ -8,7 +8,7 @@ import ai.opencode.core.sharing.SharedKey
  * [VoiceEngine] (`LiveProtocol.kt`), [ServerVoiceProvider], [ServerVoiceSupport] and
  * [VoiceServerChoice] (`ServerVoiceClient.kt`), [CallVoice] (`CallVoice.kt`),
  * [VoiceTranscriptRecord] (`VoiceTranscript.kt`). Bool and key-chain voice keys
- * (`voiceModeEnabled`, `voiceEngineMigratedToGPTLive`, `openAIAPIKey`, `xaiAPIKey`, …) live in
+ * (`voiceModeEnabled`, `voiceEngineMigratedToGPTLive`, …) live in
  * `:core`'s `SharedKeys`.
  */
 object VoiceSharedKeys {

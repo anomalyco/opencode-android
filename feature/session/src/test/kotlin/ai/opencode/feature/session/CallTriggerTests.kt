@@ -27,7 +27,6 @@ class CallTriggerTests {
 
     private fun Harness.voiceReady(): SessionFeature.State {
         sharedStore.reference(SharedKeys.voiceModeEnabled).set(true)
-        sharedStore.reference(SharedKeys.openAIAPIKey).set("sk-test")
         return state { SessionFeature.State.session(server = server, session = session, cachedItems = emptyList()) }
     }
 

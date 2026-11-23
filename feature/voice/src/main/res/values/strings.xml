@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Call Ended</string>
     <string name="voice_call_ended_rejoin">Rejoin</string>
     <string name="voice_failure_title">Couldn’t Connect Voice</string>
-    <string name="voice_failure_check_api_key">Check API Key</string>
     <string name="voice_failure_start_title">Couldn’t Start Call</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">No key</string>
     <string name="voice_provider_state_needs_update">Update OpenCode</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">This Phone</string>
-    <string name="voice_provider_brand_openai_account">Your OpenAI Account</string>
     <string name="voice_provider_name">%1$s on %2$s</string>
     <string name="voice_provider_subtitle">On %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s Key</string>
-    <string name="voice_provider_key_placeholder">%1$s API key</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Key on Your Server</string>
-    <string name="voice_key_source_phone_footer">Calls use your own OpenAI or xAI key.</string>
     <string name="voice_key_source_server_footer">Calls use your server’s %1$s key.</string>
     <string name="voice_key_source_opencode_footer">Calls are billed to your OpenCode Console workspace.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Set Up on This Phone</string>
     <string name="voice_fix_choose_provider">Choose Provider</string>
     <string name="voice_fix_update_opencode">Update OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s needs a newer OpenCode for voice calls.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Couldn’t reach Your server.</string>
     <string name="voice_diagnosis_failed">%1$s couldn’t start the call.</string>
     <string name="voice_diagnosis_your_server_failed">Your server couldn’t start the call.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI didn’t accept the key on this phone.</string>
-    <string name="voice_diagnosis_missing_phone_key">Add your %1$s API key to call from this phone.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Allow microphone access in Settings to talk to your session.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Couldn’t start voice: The server returned an invalid response.</string>
     <string name="voice_error_start_voice_detail">Couldn’t start voice: %1$s</string>
     <string name="voice_error_start_voice_http">Couldn’t start voice (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI rejected the API key.</string>
-    <string name="voice_error_openai_verify_http">OpenAI couldn’t verify this key (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">No connection.</string>
-    <string name="voice_error_model_address_invalid">The voice model address is invalid.</string>
-    <string name="voice_error_xai_rejected_key">xAI rejected the API key.</string>
-    <string name="voice_error_xai_verify_http">xAI couldn’t verify this key (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">This xAI API key is disabled.</string>
-    <string name="voice_error_xai_key_blocked">This xAI API key is blocked.</string>
     <string name="voice_error_service_address_invalid">The voice service address is invalid.</string>
     <string name="voice_error_connection_lost">The voice connection was lost.</string>
     <string name="voice_error_connection_closed">The voice connection is closed.</string>
     <string name="voice_error_connection_setup">The voice connection couldn\'t be set up.</string>
     <string name="voice_error_safety_filter">A safety filter ended the voice call.</string>
     <string name="voice_error_audio_reset">Audio was reset by the system. Start the call again.</string>
-    <string name="voice_error_missing_phone_key">Add your %1$s API key in Settings to use Voice.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australian English</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazilian Portuguese</string>
     <string name="voice_accent_filipino_english">Filipino English</string>
     <string name="voice_accent_southern_us_english">Southern U.S. English</string>
-    <string name="voice_accent_indian_english">Indian English</string>
-    <string name="voice_preview_error">Couldn’t play preview</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Breath Ping</string>

@@ -1,9 +1,6 @@
 package ai.opencode.feature.voice
 
 import ai.opencode.core.dependencies.DateClient
-import ai.opencode.core.dependencies.DependencyValues
-import ai.opencode.core.dependencies.UuidClient
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeSession
 import java.time.Instant
@@ -238,20 +235,6 @@ class LiveProtocolTests {
 }
 
 class LiveRTCTests {
-    @Test fun sessionRequestLeavesTheAudioFormatToSDPAndPreNegotiatesTheEventChannel() {
-        val config = LiveSessionConfig(instructions = "Be concise.", input = listOf(LiveInputMessage(LiveInputMessage.Role.user, "Hi")))
-        val json = decodeJSON(LiveRTC.requestBody(config = config, sdp = "v=0\r\n"))
-        assertEquals(RealtimeJSONs.string("webrtc"), json["transport"]?.get("type"))
-        assertEquals(RealtimeJSONs.string("v=0\r\n"), json["transport"]?.get("sdp"))
-        assertEquals(RealtimeJSONs.number(4), json["transport"]?.get("dcid"))
-        val session = json["session"]!!
-        assertEquals(RealtimeJSONs.string("gpt-live-1"), session["model"])
-        assertNull(session["audio"]?.get("format"))
-        assertEquals(RealtimeJSONs.string("marin"), session["audio"]?.get("output")?.get("voice"))
-        assertEquals(RealtimeJSONs.string("client"), session["delegation"]?.get("type"))
-        assertNotNull(session["input"])
-        assertNull("The HTTP request starts the session; no session.start", json["type"])
-    }
 
     /**
      * One second later: `received` packets in, `lost` lost, `concealed` of
@@ -463,21 +446,6 @@ private class LiveRTCLinkWatchTester {
 class RealtimeRTCTests {
     private val config = RealtimeSessionConfig(instructions = "Be brief.", tools = emptyList())
 
-    @Test fun callRequestIsMultipartWithTheSessionAndPreNegotiatedChannel() {
-        val request = DependencyValues.withValues(DependencyValues.testing().update { this[UuidClient] = UuidClient.incrementing() }) {
-            RealtimeRTC.request(apiKey = "sk-test", config = config, sdp = "v=0")
-        }
-        assertEquals("https://api.openai.com/v1/realtime/calls?dcid=4", request.url.toString())
-        assertEquals("Bearer sk-test", request.header("Authorization"))
-        // OkHttp carries the content type on the body rather than as a header.
-        assertTrue(request.body?.contentType()?.toString()?.startsWith("multipart/form-data; boundary=") == true)
-        val body = okio.Buffer().also { request.body!!.writeTo(it) }.readUtf8()
-        assertTrue(body.contains("name=\"sdp\"\r\n\r\nv=0\r\n"))
-        assertTrue(body.contains("name=\"session\""))
-        assertTrue(body.contains("\"model\":\"gpt-realtime-2.1\""))
-        assertFalse("WebRTC negotiates the format in SDP", body.contains("audio/pcm"))
-    }
-
     @Test fun updatesOverWebRTCLeaveTheAudioFormatOut() {
         val rtc = config.sessionUpdate(includeAudioFormat = false)
         assertNull(rtc["session"]?.get("audio")?.get("input")?.get("format"))
@@ -519,21 +487,30 @@ class VoiceDelegatorRoundTests {
      */
     private suspend fun run(answerOnLastRound: Boolean): Pair<VoiceDelegator.Outcome, List<List<VoiceDelegator.InputItem>>> {
         val inputs = mutableListOf<List<VoiceDelegator.InputItem>>()
-        val client = VoiceDelegatorClient(isEnabled = true) { _, input, _ ->
-            inputs += input
-            val round = inputs.size
-            if (answerOnLastRound && input.contains(VoiceDelegator.InputItem.User(VoiceDelegator.lastRoundNote))) {
-                VoiceDelegator.Response(id = "r$round", calls = emptyList(), text = "The build is still running.")
-            } else {
-                VoiceDelegator.Response(id = "r$round", calls = listOf(VoiceDelegator.ToolCall(callID = "c$round", name = "wait_for_session", arguments = "{}")), text = "")
-            }
-        }
+        var submitted = emptyList<VoiceDelegator.InputItem>()
+        val rounds = VoiceDelegatorRounds(
+            next = { _ ->
+                val input = submitted
+                submitted = emptyList()
+                inputs += input
+                val round = inputs.size
+                if (answerOnLastRound && input.contains(VoiceDelegator.InputItem.User(VoiceDelegator.lastRoundNote))) {
+                    Result.success(VoiceDelegator.Response(id = "r$round", calls = emptyList(), text = "The build is still running."))
+                } else {
+                    Result.success(VoiceDelegator.Response(id = "r$round", calls = listOf(VoiceDelegator.ToolCall(callID = "c$round", name = "wait_for_session", arguments = "{}")), text = ""))
+                }
+            },
+            submit = { _, input ->
+                submitted = input
+                true
+            },
+        )
         val tools = VoiceDelegatorTools(
             run = { """{"finished":false,"latest_reply":""}""" },
             sent = { emptyList() },
             note = { },
         )
-        val outcome = client.run(apiKey = "key", request = "Wait for the build.", previousResponseID = null, tools = tools)
+        val outcome = VoiceDelegatorClient(isEnabled = true).runOnCall(delegationID = "d1", rounds = rounds, tools = tools)
         return outcome to inputs
     }
 
@@ -546,7 +523,6 @@ class VoiceDelegatorRoundTests {
         assertTrue(VoiceDelegator.maxRounds >= 30)
         assertEquals(VoiceDelegator.maxRounds, inputs.size)
         assertEquals("The build is still running.", outcome.reply)
-        assertEquals("r${VoiceDelegator.maxRounds}", outcome.responseID)
         // Only the last round is told to answer.
         assertTrue(inputs.dropLast(1).all { !it.contains(VoiceDelegator.InputItem.User(VoiceDelegator.lastRoundNote)) })
         assertEquals(VoiceDelegator.InputItem.ToolOutput(callID = "c${VoiceDelegator.maxRounds - 1}", output = """{"finished":false,"latest_reply":""}"""), inputs.last().first())
@@ -556,7 +532,7 @@ class VoiceDelegatorRoundTests {
     @Test fun aRunThatNeverAnswersStopsAtTheCapSayingWorkContinues() = runTest {
         val (outcome, inputs) = run(answerOnLastRound = false)
         assertEquals(VoiceDelegator.maxRounds, inputs.size)
-        assertTrue("Never chain onto unanswered calls", outcome.reply == VoiceDelegator.outOfRoundsReply && outcome.responseID == null)
+        assertEquals(VoiceDelegator.outOfRoundsReply, outcome.reply)
     }
 }
 
@@ -566,7 +542,6 @@ class VoiceEnginePersistenceTests {
 
     @Test fun defaultsToGPTLiveAndPersistsSelectionAcrossCalls() = runTest {
         val shared = VoiceTestShared()
-        shared.set(VoiceSharedKeys.voiceServerChoice, VoiceServerChoice.Phone)
         shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
         var voiceEngine = shared.get(VoiceSharedKeys.voiceEngine)
         assertEquals(VoiceEngine.gptLive, voiceEngine)
@@ -574,23 +549,17 @@ class VoiceEnginePersistenceTests {
         assertEquals("gpt-live-1", voiceEngine.modelID)
 
         val startedConfigs = mutableListOf<RealtimeSessionConfig>()
-        val verifiedModels = mutableListOf<String>()
-        val startedKeys = mutableListOf<String>()
         val store = voiceTestStore(shared, { VoiceFeature.State(server, session) }) {
-            this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, model -> verifiedModels += model })
-            this[VoiceCallClient] = testVoiceCall(start = { key, config ->
-                startedKeys += key
+            this[VoiceCallClient] = testVoiceCall(start = { config ->
                 startedConfigs += config
                 emptyFlow()
             })
             this[VoiceWorkClient] = testVoiceWork()
         }
         store.exhaustive = false
-        shared.set(SharedKeys.openAIAPIKey, "sk-test")
 
         store.send(VoiceFeature.Action.Start)
         store.receive(::isCallEnded)
-        assertEquals(listOf("gpt-live-1"), verifiedModels)
         assertEquals(VoiceEngine.gptLive, startedConfigs.first().engine)
         assertEquals("gpt-live-1", startedConfigs.first().model)
         assertTrue(startedConfigs.first().tools.isEmpty())
@@ -604,33 +573,10 @@ class VoiceEnginePersistenceTests {
 
         store.send(VoiceFeature.Action.Start)
         store.receive(::isCallEnded)
-        assertEquals(listOf("gpt-live-1", "gpt-realtime-2.1"), verifiedModels)
         assertEquals(VoiceEngine.realtime, startedConfigs.last().engine)
         assertEquals("gpt-realtime-2.1", startedConfigs.last().model)
         assertEquals(listOf("delegate", "end_voice_session"), startedConfigs.last().tools.map { it.name })
 
-        // Grok Voice needs its own xAI key: the OpenAI one doesn't start it.
-        assertEquals(listOf("sk-test", "sk-test"), startedKeys)
-        shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.grok)
-        voiceEngine = shared.get(VoiceSharedKeys.voiceEngine)
-        assertEquals("Grok Voice", voiceEngine.title)
-        assertEquals(VoiceProvider.xAI, voiceEngine.provider)
-        store.send(VoiceFeature.Action.Start)
-        assertEquals(VoiceFeature.State.Phase.Failed("Add your xAI API key in Settings to use Voice."), store.state.phase)
-        assertEquals(2, startedKeys.size)
-        // The voice module's part is that Grok has no key from the OpenAI one.
-        assertNull(voiceEngine.apiKey(openAI = "sk-test", xAI = null))
-
-        shared.set(SharedKeys.xaiAPIKey, "xai-test")
-        store.send(VoiceFeature.Action.Start)
-        store.receive(::isCallEnded)
-        assertEquals("grok-voice-3.0", verifiedModels.last())
-        assertEquals(listOf("sk-test", "sk-test", "xai-test"), startedKeys)
-        assertEquals(VoiceEngine.grok, startedConfigs.last().engine)
-        assertEquals("grok-voice-3.0", startedConfigs.last().model)
-        assertEquals("Grok delegates through tools, like Realtime", listOf("delegate", "end_voice_session"), startedConfigs.last().tools.map { it.name })
-        assertEquals(false, store.state.usesDelegator)
-        shared.set(SharedKeys.xaiAPIKey, null)
 
         shared.set(VoiceSharedKeys.voiceEngine, VoiceEngine.gptLive)
     }

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Qo‘ng‘iroq tugadi</string>
     <string name="voice_call_ended_rejoin">Qayta qo‘shilish</string>
     <string name="voice_failure_title">Ovozga ulanib bo‘lmadi</string>
-    <string name="voice_failure_check_api_key">API kalitini tekshirish</string>
     <string name="voice_failure_start_title">Qo‘ng‘iroqni boshlab bo‘lmadi</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Kalit yo‘q</string>
     <string name="voice_provider_state_needs_update">OpenCode’ni yangilash</string>
     <string name="voice_provider_state_offline">Oflayn</string>
-    <string name="voice_provider_place_phone">Bu telefon</string>
-    <string name="voice_provider_brand_openai_account">OpenAI hisobingiz</string>
     <string name="voice_provider_name">%2$sdagi %1$s</string>
     <string name="voice_provider_subtitle">%1$sda</string>
-    <string name="voice_provider_key_row_title">%1$s kaliti</string>
-    <string name="voice_provider_key_placeholder">%1$s API kaliti</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Serveringizdagi kalit</string>
-    <string name="voice_key_source_phone_footer">Qo‘ng‘iroqlarda shaxsiy OpenAI yoki xAI kalitingiz ishlatiladi.</string>
     <string name="voice_key_source_server_footer">Qo‘ng‘iroqlarda serveringizdagi %1$s kaliti ishlatiladi.</string>
     <string name="voice_key_source_opencode_footer">Qo‘ng‘iroq haqi OpenCode Console ish maydoningiz hisobidan olinadi.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Bu telefonda sozlash</string>
     <string name="voice_fix_choose_provider">Provayderni tanlang</string>
     <string name="voice_fix_update_opencode">OpenCode’ni yangilash</string>
     <string name="voice_diagnosis_needs_update">%1$s uchun ovozli qo‘ng‘iroqlarga OpenCode’ning yangiroq versiyasi kerak.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Serveringizga ulanib bo‘lmadi.</string>
     <string name="voice_diagnosis_failed">%1$s qo‘ng‘iroqni boshlay olmadi.</string>
     <string name="voice_diagnosis_your_server_failed">Serveringiz qo‘ng‘iroqni boshlay olmadi.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI bu telefondagi kalitni qabul qilmadi.</string>
-    <string name="voice_diagnosis_missing_phone_key">Bu telefondan qo‘ng‘iroq qilish uchun %1$s API kalitingizni qo‘shing.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Sessiyangiz bilan gaplashish uchun sozlamalarda mikrofonga ruxsat bering.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Ovozni ishga tushirib bo‘lmadi: Server yaroqsiz javob qaytardi.</string>
     <string name="voice_error_start_voice_detail">Ovozni ishga tushirib bo‘lmadi: %1$s</string>
     <string name="voice_error_start_voice_http">Ovozni ishga tushirib bo‘lmadi (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI API kalitini rad etdi.</string>
-    <string name="voice_error_openai_verify_http">OpenAI bu kalitni tekshira olmadi (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Ulanish yo‘q.</string>
-    <string name="voice_error_model_address_invalid">Ovoz modeli manzili yaroqsiz.</string>
-    <string name="voice_error_xai_rejected_key">xAI API kalitini rad etdi.</string>
-    <string name="voice_error_xai_verify_http">xAI bu kalitni tekshira olmadi (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Bu xAI API kaliti o‘chirilgan.</string>
-    <string name="voice_error_xai_key_blocked">Bu xAI API kaliti bloklangan.</string>
     <string name="voice_error_service_address_invalid">Ovoz xizmati manzili yaroqsiz.</string>
     <string name="voice_error_connection_lost">Ovozli ulanish uzildi.</string>
     <string name="voice_error_connection_closed">Ovozli ulanish yopilgan.</string>
     <string name="voice_error_connection_setup">Ovozli ulanishni o‘rnatib bo‘lmadi.</string>
     <string name="voice_error_safety_filter">Xavfsizlik filtri ovozli qo‘ng‘iroqni tugatdi.</string>
     <string name="voice_error_audio_reset">Tizim audioni qayta tikladi. Qo‘ng‘iroqni qayta boshlang.</string>
-    <string name="voice_error_missing_phone_key">Ovozdan foydalanish uchun sozlamalarda %1$s API kalitingizni qo‘shing.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Avstraliya inglizchasi</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Braziliya portugalchasi</string>
     <string name="voice_accent_filipino_english">Filippin inglizchasi</string>
     <string name="voice_accent_southern_us_english">AQSh janubi inglizchasi</string>
-    <string name="voice_accent_indian_english">Hindiston inglizchasi</string>
-    <string name="voice_preview_error">Namunani ijro etib bo‘lmadi</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Nafas jarangi</string>

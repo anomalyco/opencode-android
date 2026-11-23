@@ -367,13 +367,6 @@ class VoiceSteeringInstructionsTests {
         assertTrue(realtime.contains("(gpt-realtime-2.1), inside OpenCode, whose sessions do the coding"))
         assertTrue(realtime.contains("Questions about GPT-Live, Realtime, Grok, or which voice model or provider you are refer to this voice engine: answer directly that you are the Realtime model (gpt-realtime-2.1)"))
         assertTrue(realtime.contains("say unknown rather than guessing"))
-
-        // Grok Voice shares Realtime's instructions but names itself.
-        val grok = VoiceInstructions.build(context, engine = VoiceEngine.grok)
-        assertTrue(grok.contains("Your voice layer is Grok Voice (grok-voice-3.0) from xAI, inside OpenCode, whose sessions do the coding."))
-        assertTrue(grok.contains("answer directly that you are Grok Voice (grok-voice-3.0) from xAI."))
-        assertFalse(grok.contains("gpt-realtime"))
-        assertEquals("A move replaces the whole instructions, as on Realtime", grok, VoiceInstructions.buildRetarget(context, engine = VoiceEngine.grok))
     }
 
     @Test fun capabilityDiscoveryDelegatesUnknownCapabilitiesWithoutAskingUserToPaste() {

@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Annar netþjónn</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Fela lykil</string>
-    <string name="settings_voice_key_show_description">Sýna lykil</string>
-    <string name="settings_voice_key_verify">Staðfesta</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Raddþjónustuveita</string>
     <string name="settings_voice_provider_place">Á %1$s</string>
-    <string name="settings_voice_api_key_title">API lykill</string>
     <string name="settings_voice_provider_automatic_footer">Þegar %1$s er ekki tilbúið nota símtöl aðra tiltæka þjónustu.</string>
     <string name="settings_voice_provider_choose_automatically">Velja sjálfkrafa</string>
     <string name="settings_voice_provider_others_header">Aðrir veitendur</string>
     <string name="settings_voice_provider_use_description">Nota %1$s</string>
     <string name="settings_voice_provider_use">Nota</string>
-    <string name="settings_voice_provider_set_up">Setja upp</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d ekki tiltækur</item>
         <item quantity="other">%d ekki tiltækir</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">OpenAI-reikningurinn þinn</string>
-    <string name="settings_voice_account_place">Á þessum síma</string>
-    <string name="settings_voice_account_key_footer">Símtöl nota OpenAI-reikninginn þinn í stað netþjóns.</string>
-    <string name="settings_voice_account_use_for_calls">Nota fyrir símtöl</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Raddsamtöl</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Lyfta til að tala</string>
     <string name="settings_voice_call_sounds">Símtalshljóð</string>
     <string name="settings_voice_call_history">Símtalaferill</string>
-    <string name="settings_voice_edit_key_label">Breyta API lyklinum þínum fyrir %1$s</string>
-    <string name="settings_voice_key_verified">Staðfestur</string>
-    <string name="settings_voice_key_checking">Athugar…</string>
-    <string name="settings_voice_key_saved">Vistaður</string>
-    <string name="settings_voice_key_missing">Vantar</string>
-    <string name="settings_voice_preview_disabled_hint">Bættu við %1$s-lyklinum þínum til að prófa raddir</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Bættu við %1$s-lyklinum þínum til að prófa raddir.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s er ekki tiltækt á %2$s, svo símtöl nota %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Stöðva prufu af %1$s</string>
-    <string name="settings_voice_preview_description">Prófa %1$s</string>
-    <string name="settings_voice_preview_playing">Spilar</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s ekki tiltækt</string>
 
     <!-- Settings root -->

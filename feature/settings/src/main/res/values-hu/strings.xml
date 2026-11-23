@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Másik kiszolgáló</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Kulcs elrejtése</string>
-    <string name="settings_voice_key_show_description">Kulcs megjelenítése</string>
-    <string name="settings_voice_key_verify">Ellenőrzés</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Hangszolgáltató</string>
     <string name="settings_voice_provider_place">Hely: %1$s</string>
-    <string name="settings_voice_api_key_title">API kulcs</string>
     <string name="settings_voice_provider_automatic_footer">Ha %1$s nem áll készen, a hívások egy elérhető szolgáltatót használnak.</string>
     <string name="settings_voice_provider_choose_automatically">Automatikus választás</string>
     <string name="settings_voice_provider_others_header">Más szolgáltatók</string>
     <string name="settings_voice_provider_use_description">%1$s használata</string>
     <string name="settings_voice_provider_use">Használat</string>
-    <string name="settings_voice_provider_set_up">Beállítás</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d nem érhető el</item>
         <item quantity="other">%d nem érhető el</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Az Ön OpenAI-fiókja</string>
-    <string name="settings_voice_account_place">Ezen a telefonon</string>
-    <string name="settings_voice_account_key_footer">A hívások kiszolgáló helyett az Ön OpenAI-fiókját használják.</string>
-    <string name="settings_voice_account_use_for_calls">Használat hívásokhoz</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Hang</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Beszéd felemeléskor</string>
     <string name="settings_voice_call_sounds">Híváshangok</string>
     <string name="settings_voice_call_history">Híváselőzmények</string>
-    <string name="settings_voice_edit_key_label">%1$s API kulcs szerkesztése</string>
-    <string name="settings_voice_key_verified">Ellenőrizve</string>
-    <string name="settings_voice_key_checking">Ellenőrzés…</string>
-    <string name="settings_voice_key_saved">Mentve</string>
-    <string name="settings_voice_key_missing">Hiányzik</string>
-    <string name="settings_voice_preview_disabled_hint">A hangmintákhoz adja meg a(z) %1$s kulcsát</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">A hangmintákhoz adja meg a(z) %1$s kulcsát.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s nem érhető el itt: %2$s. A hívások ezért ezt használják: %3$s.</string>
-    <string name="settings_voice_stop_preview_description">%1$s hangmintájának leállítása</string>
-    <string name="settings_voice_preview_description">%1$s hangmintájának lejátszása</string>
-    <string name="settings_voice_preview_playing">Lejátszás</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s nem érhető el</string>
 
     <!-- Settings root -->

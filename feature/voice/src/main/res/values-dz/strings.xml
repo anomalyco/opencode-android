@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">བོད་བརྡ་མཇུག་བསྡུ་ཡོདཔ།</string>
     <string name="voice_call_ended_rejoin">ལོག་མཐུད།</string>
     <string name="voice_failure_title">སྐད་མཐུད་མ་ཚུགས།</string>
-    <string name="voice_failure_check_api_key">APIལྡེ་མིག་ཞིབ་དཔྱད་འབད།</string>
     <string name="voice_failure_start_title">བོད་བརྡ་འགོ་བཙུགས་མ་ཚུགས།</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">ལྡེ་མིག་མེད།</string>
     <string name="voice_provider_state_needs_update">OpenCode དུས་མཐུན་བཟོ།</string>
     <string name="voice_provider_state_offline">མཐུད་ལམ་མེད།</string>
-    <string name="voice_provider_place_phone">འགྲུལ་འཕྲིན་འདི།</string>
-    <string name="voice_provider_brand_openai_account">ཁྱོད་ཀྱི་ OpenAI རྩིས་ཁྲ།</string>
     <string name="voice_provider_name">%2$s གུའི་ %1$s</string>
     <string name="voice_provider_subtitle">%1$s གུ།</string>
-    <string name="voice_provider_key_row_title">%1$s ལྡེ་མིག།</string>
-    <string name="voice_provider_key_placeholder">%1$s APIལྡེ་མིག།</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">ཁྱོད་ཀྱི་སར་བར་གུའི་ལྡེ་མིག།</string>
-    <string name="voice_key_source_phone_footer">བོད་བརྡ་ཚུ་གིས་ ཁྱོད་རའི་ OpenAI ཡང་ན་ xAI ལྡེ་མིག་ལག་ལེན་འཐབ་ཨིན།</string>
     <string name="voice_key_source_server_footer">བོད་བརྡ་ཚུ་གིས་ ཁྱོད་ཀྱི་སར་བར་གྱི་ %1$s ལྡེ་མིག་ལག་ལེན་འཐབ་ཨིན།</string>
     <string name="voice_key_source_opencode_footer">བོད་བརྡའི་འཐུས་ཚུ་ ཁྱོད་ཀྱི་ OpenCode Console ལཱ་གི་ས་སྒོ་ལུ་བཀལཝ་ཨིན།</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">འགྲུལ་འཕྲིན་འདི་གུ་གཞི་སྒྲིག་འབད།</string>
     <string name="voice_fix_choose_provider">བྱིན་མི་གདམ་ཁ་རྐྱབས།</string>
     <string name="voice_fix_update_opencode">OpenCode དུས་མཐུན་བཟོ།</string>
     <string name="voice_diagnosis_needs_update">%1$s ལུ་ སྐད་ཀྱི་བོད་བརྡའི་དོན་ལུ་ OpenCode གསརཔ་ཅིག་དགོཔ་ཨིན།</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">ཁྱོད་ཀྱི་སར་བར་ལུ་མཐུད་མ་ཚུགས།</string>
     <string name="voice_diagnosis_failed">%1$s གིས་བོད་བརྡ་འགོ་བཙུགས་མ་ཚུགས།</string>
     <string name="voice_diagnosis_your_server_failed">ཁྱོད་ཀྱི་སར་བར་གྱིས་བོད་བརྡ་འགོ་བཙུགས་མ་ཚུགས།</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI གིས་འགྲུལ་འཕྲིན་འདི་གུའི་ལྡེ་མིག་ངོས་ལེན་མ་འབད།</string>
-    <string name="voice_diagnosis_missing_phone_key">འགྲུལ་འཕྲིན་འདི་ལས་བོད་བརྡ་གཏང་ནི་ལུ་ ཁྱོད་ཀྱི་ %1$s APIལྡེ་མིག་ཁ་སྐོང་འབད།</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">ཁྱོད་ཀྱི་ལཱ་ཡུན་དང་ཁ་སླབ་ནི་ལུ་ སྒྲིག་སྟངས་ནང་མའི་ཀྲོ་ཕོན་ལག་ལེན་གྱི་གནང་བ་བྱིན།</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">སྐད་འགོ་བཙུགས་མ་ཚུགས། སར་བར་གྱིས་ལན་གསལ་ནུས་མེད་ཅིག་བཏང་ཡོདཔ།</string>
     <string name="voice_error_start_voice_detail">སྐད་འགོ་བཙུགས་མ་ཚུགས། %1$s</string>
     <string name="voice_error_start_voice_http">སྐད་འགོ་བཙུགས་མ་ཚུགས་ (HTTP %1$d)།</string>
-    <string name="voice_error_openai_rejected_key">OpenAI གིས་ APIལྡེ་མིག་ངོས་ལེན་མ་འབད།</string>
-    <string name="voice_error_openai_verify_http">OpenAI གིས་ལྡེ་མིག་འདི་བདེན་དཔྱད་འབད་མ་ཚུགས་ (HTTP %1$d)།</string>
-    <string name="voice_error_no_connection">མཐུད་ལམ་མེད།</string>
-    <string name="voice_error_model_address_invalid">སྐད་ཀྱི་དཔེ་ཚད་ཁ་བྱང་འདི་ནུས་མེད་ཨིན།</string>
-    <string name="voice_error_xai_rejected_key">xAI གིས་ APIལྡེ་མིག་ངོས་ལེན་མ་འབད།</string>
-    <string name="voice_error_xai_verify_http">xAI གིས་ལྡེ་མིག་འདི་བདེན་དཔྱད་འབད་མ་ཚུགས་ (HTTP %1$d)།</string>
-    <string name="voice_error_xai_key_disabled">xAI APIལྡེ་མིག་འདི་ལྕོགས་མིན་བཟོ་ཡོདཔ།</string>
-    <string name="voice_error_xai_key_blocked">xAI APIལྡེ་མིག་འདི་བཀག་བཞག་ཡོདཔ།</string>
     <string name="voice_error_service_address_invalid">སྐད་ཀྱི་ཞབས་ཏོག་ཁ་བྱང་འདི་ནུས་མེད་ཨིན།</string>
     <string name="voice_error_connection_lost">སྐད་ཀྱི་མཐུད་ལམ་ཆད་སོ་ཡི།</string>
     <string name="voice_error_connection_closed">སྐད་ཀྱི་མཐུད་ལམ་ཁ་བསྡམས་ཡོདཔ།</string>
     <string name="voice_error_connection_setup">སྐད་ཀྱི་མཐུད་ལམ་གཞི་སྒྲིག་འབད་མ་ཚུགས།</string>
     <string name="voice_error_safety_filter">ཉེན་སྲུང་ཚགས་མ་གིས་སྐད་ཀྱི་བོད་བརྡ་མཇུག་བསྡུ་ཡོདཔ།</string>
     <string name="voice_error_audio_reset">ལམ་ལུགས་ཀྱིས་སྒྲ་སླར་སྒྲིག་འབད་ཡོདཔ། བོད་བརྡ་ལོག་འགོ་བཙུགས།</string>
-    <string name="voice_error_missing_phone_key">སྐད་ལག་ལེན་འཐབ་ནི་ལུ་ སྒྲིག་སྟངས་ནང་ཁྱོད་ཀྱི་ %1$s APIལྡེ་མིག་ཁ་སྐོང་འབད།</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">ཨོས་ཊེ་ལི་ཡའི་ཨིང་ལིཤ།</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">བྲ་ཛིལ་གྱི་པོར་ཅུ་གིས།</string>
     <string name="voice_accent_filipino_english">ཕི་ལི་པིནས་ཀྱི་ཨིང་ལིཤ།</string>
     <string name="voice_accent_southern_us_english">ཨ་མི་རི་ཀའི་ལྷོ་ཕྱོགས་ཀྱི་ཨིང་ལིཤ།</string>
-    <string name="voice_accent_indian_english">རྒྱ་གར་གྱི་ཨིང་ལིཤ།</string>
-    <string name="voice_preview_error">སྔོན་ལྟའི་སྒྲ་གཏང་མ་ཚུགས།</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">དབུགས་ཀྱི་ཊིང་སྒྲ།</string>

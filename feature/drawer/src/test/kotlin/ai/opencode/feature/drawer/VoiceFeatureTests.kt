@@ -11,7 +11,7 @@ import ai.opencode.feature.drawer.HomeFeatureTestSupport.append
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.arguments
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.call
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.copy
-import ai.opencode.feature.drawer.VoiceHomeTestSupport.delegator
+import ai.opencode.feature.drawer.VoiceHomeTestSupport.delegating
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.eventually
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.live
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.openingScreens
@@ -25,7 +25,6 @@ import ai.opencode.feature.drawer.VoiceHomeTestSupport.voiceWork
 import ai.opencode.feature.drawer.VoiceHomeTestSupport.withCall
 import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceDelegator
-import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceHandoff
 import ai.opencode.feature.voice.VoiceRoute
@@ -71,7 +70,6 @@ class VoiceFeatureTests {
      */
     @Test fun delegatorMovesTheScreenSendsAVoiceMessageAndReportsTheReply() = voiceHomeTest { h ->
         val other = OpenCodeSession(id = "ses_math", serverTitle = "Math bug", projectID = "p", directory = "/Users/kit/math", updatedAt = distantPast)
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = emptyList(), sessions = listOf(session, other), activeSessionIDs = emptySet()))
             home = home.copy(transcriptCache = home.transcriptCache + (session.id to emptyList()) + (other.id to emptyList()))
@@ -82,29 +80,26 @@ class VoiceFeatureTests {
         }
 
         val requests = LockIsolated(listOf<List<VoiceDelegator.InputItem>>())
-        val previousIDs = LockIsolated(listOf<String?>())
         val prompts = LockIsolated(listOf<Pair<String, String>>())
         val deliveries = LockIsolated(listOf<OpenCodeDelivery?>())
         val backgrounded = LockIsolated(listOf<String>())
         val waited = LockIsolated(listOf<Pair<String, String>>())
-        val keys = LockIsolated(listOf<String>())
         val completed = LockIsolated(listOf<String>())
         val announced = LockIsolated(listOf<String>())
+        val respond: suspend (List<VoiceDelegator.InputItem>) -> VoiceDelegator.Response = { input ->
+            val round = synchronized(requests) {
+                requests.append(input)
+                requests.value.size
+            }
+            when (round) {
+                1 -> response("resp_1", listOf(call("t1", "open_session", """{"session_id":"ses_math"}""")))
+                2 -> response("resp_2", listOf(call("t2", "send_message", """{"text":"Fix add so it adds."}""")))
+                else -> response("resp_3", text = "Opened the math bug session and started the fix.")
+            }
+        }
         val store = h.store(home) {
             this[Clock] = ImmediateClock()
-            this[ai.opencode.feature.voice.VoiceDelegatorClient] = delegator { key, input, previous ->
-                keys.append(key)
-                val round = synchronized(requests) {
-                    requests.append(input)
-                    previousIDs.append(previous)
-                    requests.value.size
-                }
-                when (round) {
-                    1 -> response("resp_1", listOf(call("t1", "open_session", """{"session_id":"ses_math"}""")))
-                    2 -> response("resp_2", listOf(call("t2", "send_message", """{"text":"Fix add so it adds."}""")))
-                    else -> response("resp_3", text = "Opened the math bug session and started the fix.")
-                }
-            }
+            this[ai.opencode.feature.voice.VoiceDelegatorClient] = ai.opencode.feature.voice.VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.openingScreens { id -> if (id == other.id) other else session }.copy(
                 sendDeliveredPrompt = { _, sessionID, text, delivery ->
                     deliveries.append(delivery)
@@ -124,25 +119,18 @@ class VoiceFeatureTests {
                 copy(
                     completeFunction = { _, output -> completed.append(output) },
                     announce = { _, _, text -> announced.append(text) },
-                )
+                ).delegating(respond)
             }
         }
         store.exhaustive = false
 
-        store.send(voiceEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = arguments("Opening the math bug session."))))
+        store.send(voiceEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receiveVoice(VoiceFeature.Action.DelegatorFinished::class)
         store.drain { announced.value.isNotEmpty() }
 
-        assertTrue(keys.value.all { it == "sk-test" })
-        assertNull(previousIDs.value.firstOrNull())
         assertEquals(listOf(OpenCodeDelivery.Steer), deliveries.value)
         assertTrue(backgrounded.value.all { it == other.id })
         assertTrue(waited.value.all { it == (other.id to "msg_fix") })
-        // The delegator heard where the user was and what they said.
-        val request = (requests.value.firstOrNull()?.firstOrNull() as? VoiceDelegator.InputItem.User)?.text
-            ?: throw AssertionError("No request")
-        assertTrue(request.contains("\"Voice lab\""))
-        assertTrue(request.contains("Open the math bug session and fix it"))
         // The screen and the call moved to the session it opened.
         assertEquals(other.id, store.state.sessionDetail?.session?.id)
         assertEquals(other.id, store.state.sessionDetail?.voice?.target?.sessionID)
@@ -155,9 +143,8 @@ class VoiceFeatureTests {
         // not the spoken acknowledgement.
         assertNull(delegation.framing)
         assertEquals("Fix add so it adds.", delegation.displayText)
-        assertTrue(completed.value.size == 1 && completed.value[0].contains("started the fix"))
+        assertEquals(1, completed.value.size)
         assertTrue(announced.value.size == 1 && announced.value[0].contains("Fixed add"))
-        assertEquals("resp_3", store.state.sessionDetail?.voice?.delegatorResponseID)
         assertEquals(true, store.state.sessionDetail?.voice?.delegatorWork?.isEmpty())
     }
 
@@ -169,7 +156,6 @@ class VoiceFeatureTests {
         val math = OpenCodeSession(id = "ses_math", serverTitle = "Math bug", projectID = "p", directory = "/Users/kit/math", updatedAt = distantPast)
         val ios = OpenCodeProject(id = "ios", name = "opencode-ios", directory = "/Users/kit/opencode-ios")
         val other = OpenCodeProject(id = "p", name = "project", directory = "/Users/kit/project")
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         h.setShared(SharedKeys.pinnedSessionKeys, listOf("${server.persistenceID}|${math.id}"))
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = listOf(other, ios), sessions = listOf(session), activeSessionIDs = emptySet()))
@@ -182,10 +168,11 @@ class VoiceFeatureTests {
         val listed = LockIsolated("")
         val store = h.store(home) {
             this[Clock] = ImmediateClock()
-            this[ai.opencode.feature.voice.VoiceDelegatorClient] = delegator { _, input, _ ->
+            this[ai.opencode.feature.voice.VoiceDelegatorClient] = ai.opencode.feature.voice.VoiceDelegatorClient(isEnabled = true)
+            val respond: suspend (List<VoiceDelegator.InputItem>) -> VoiceDelegator.Response = { input ->
                 val first = input.firstOrNull()
                 when {
-                    first is VoiceDelegator.InputItem.User -> response(
+                    first == null -> response(
                         "r1",
                         listOf(
                             call("t1", "list_sessions", """{"pinned_only":true}"""),
@@ -203,11 +190,11 @@ class VoiceFeatureTests {
             this[OpenCodeClient] = OpenCodeClient.testValue.openingScreens { id -> if (id == math.id) math else session }.copy(
                 homeSnapshot = { _ -> OpenCodeHomeSnapshot(projects = listOf(other, ios), sessions = listOf(session, math), activeSessionIDs = emptySet()) },
             )
-            voiceCall { copy(completeFunction = { _, _ -> }) }
+            voiceCall { copy(completeFunction = { _, _ -> }).delegating(respond) }
         }
         store.exhaustive = false
 
-        store.send(voiceEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = arguments())))
+        store.send(voiceEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         store.receiveVoice(VoiceFeature.Action.DelegatorFinished::class)
         store.drain { store.state.sessionDetail?.session == null }
 
@@ -234,7 +221,7 @@ class VoiceFeatureTests {
         val home = h.state {
             var home = HomeFeature.State(server, OpenCodeHomeSnapshot(projects = listOf(project), sessions = listOf(a, b), activeSessionIDs = emptySet()))
             home = home.openingDetail(a)
-            home.withCall(VoiceFeature.State(server, a).live().copy(activeRoute = VoiceRoute.PhoneKey(VoiceEngine.realtime)))
+            home.withCall(VoiceFeature.State(server, a).live().copy(activeRoute = VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.realtime)))
         }
         val submitted = LockIsolated(listOf<String?>())
         val waited = LockIsolated(listOf<String>())

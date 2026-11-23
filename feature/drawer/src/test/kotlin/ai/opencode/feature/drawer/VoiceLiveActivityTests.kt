@@ -3,7 +3,6 @@ package ai.opencode.feature.drawer
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.LockIsolated
@@ -27,7 +26,6 @@ import ai.opencode.feature.system.liveactivity.VoiceLiveActivity
 import ai.opencode.feature.system.liveactivity.VoiceLiveActivityClient
 import ai.opencode.feature.system.liveactivity.VoiceCallActivityAttributes.ContentState.Phase
 import ai.opencode.feature.voice.DotScopeSimulation
-import ai.opencode.feature.voice.RealtimePreflightClient
 import ai.opencode.feature.voice.VoiceCallEvent
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.server.OpenCodeServer
@@ -62,8 +60,7 @@ class VoiceLiveActivityTests {
         VoiceLiveActivityClient(update = { content, _ -> pushes.append(content) }, endAll = {}, commands = { kotlinx.coroutines.flow.emptyFlow() })
 
     private fun ai.opencode.core.dependencies.DependencyValues.Builder.startableCall(ends: LockIsolated<Int>? = null) {
-        voiceCall { copy(start = { _, _ -> flow { awaitCancellation() } }, setMuted = { }, end = { ends?.increment() }) }
-        this[RealtimePreflightClient] = RealtimePreflightClient(verify = { _, _ -> })
+        voiceCall { copy(start = { _ -> flow { awaitCancellation() } }, setMuted = { }, end = { ends?.increment() }) }
     }
 
     /** Lets launched effects reach their sleep first, then reduces what they send. */
@@ -79,7 +76,6 @@ class VoiceLiveActivityTests {
     // MARK: Pushing from Home
 
     @Test fun homePushesOnlyWhenWhatTheActivityShowsChanges() = homeTest { h ->
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         val pushes = LockIsolated(listOf<VoiceCallActivityAttributes.ContentState?>())
         val clock = TestClock()
         val store = h.store(h.state { home() }) {
@@ -168,7 +164,6 @@ class VoiceLiveActivityTests {
     }
 
     @Test fun homeForwardsCommandsToTheCall() = homeTest { h ->
-        h.setShared(SharedKeys.openAIAPIKey, "sk-test")
         val clock = TestClock()
         val ends = LockIsolated(0)
         val store = h.store(h.state { home() }) {

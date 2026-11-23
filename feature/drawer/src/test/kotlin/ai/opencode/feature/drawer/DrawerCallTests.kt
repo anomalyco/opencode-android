@@ -51,7 +51,6 @@ class DrawerCallTests {
 
     private fun voiceSetUp(on: Boolean) = context.read {
         shared(SharedKeys.voiceModeEnabled).set(on)
-        shared(SharedKeys.openAIAPIKey).set(if (on) "sk-test" else null)
     }
 
     private fun home(

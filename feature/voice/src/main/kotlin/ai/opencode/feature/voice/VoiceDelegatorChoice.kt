@@ -106,7 +106,7 @@ sealed interface VoiceDelegatorRouteAvailability {
     /** Gemini Live delegates straight to the session on screen without a delegator. */
     data object GeminiLive : VoiceDelegatorRouteAvailability
 
-    /** Realtime and Grok Voice delegate straight to the session on screen without a delegator. */
+    /** Realtime delegates straight to the session on screen without a delegator. */
     data class UnsupportedEngine(val engine: VoiceEngine) : VoiceDelegatorRouteAvailability
 
     val isAvailable: Boolean get() = this == Available
@@ -120,7 +120,7 @@ sealed interface VoiceDelegatorRouteAvailability {
 
     companion object {
         fun resolve(route: VoiceRoute, selectedEngine: VoiceEngine, isGeminiProvider: Boolean = false): VoiceDelegatorRouteAvailability {
-            if (selectedEngine != VoiceEngine.grok && (route == VoiceRoute.serverGeminiLive || isGeminiProvider)) return GeminiLive
+            if (route == VoiceRoute.serverGeminiLive || isGeminiProvider) return GeminiLive
             if (selectedEngine != VoiceEngine.gptLive) return UnsupportedEngine(selectedEngine)
             return Available
         }

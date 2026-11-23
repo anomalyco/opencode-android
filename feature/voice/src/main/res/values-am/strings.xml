@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">ጥሪው ተጠናቋል</string>
     <string name="voice_call_ended_rejoin">እንደገና ተቀላቀል</string>
     <string name="voice_failure_title">ድምፅ ማገናኘት አልተቻለም</string>
-    <string name="voice_failure_check_api_key">API ቁልፍ አረጋግጥ</string>
     <string name="voice_failure_start_title">ጥሪ መጀመር አልተቻለም</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">ቁልፍ የለም</string>
     <string name="voice_provider_state_needs_update">OpenCodeን አዘምን</string>
     <string name="voice_provider_state_offline">ከመስመር ውጭ</string>
-    <string name="voice_provider_place_phone">ይህ ስልክ</string>
-    <string name="voice_provider_brand_openai_account">የእርስዎ OpenAI መለያ</string>
     <string name="voice_provider_name">%1$s በ%2$s ላይ</string>
     <string name="voice_provider_subtitle">በ%1$s ላይ</string>
-    <string name="voice_provider_key_row_title">የ%1$s ቁልፍ</string>
-    <string name="voice_provider_key_placeholder">የ%1$s API ቁልፍ</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">በእርስዎ አገልጋይ ላይ ያለ ቁልፍ</string>
-    <string name="voice_key_source_phone_footer">ጥሪዎች የራስዎን OpenAI ወይም xAI ቁልፍ ይጠቀማሉ።</string>
     <string name="voice_key_source_server_footer">ጥሪዎች በአገልጋይዎ ላይ ያለውን የ%1$s ቁልፍ ይጠቀማሉ።</string>
     <string name="voice_key_source_opencode_footer">የጥሪ ክፍያዎች በእርስዎ OpenCode Console የሥራ ቦታ ሂሳብ ላይ ይጨመራሉ።</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">በዚህ ስልክ ላይ አዋቅር</string>
     <string name="voice_fix_choose_provider">አቅራቢ ምረጥ</string>
     <string name="voice_fix_update_opencode">OpenCodeን አዘምን</string>
     <string name="voice_diagnosis_needs_update">%1$s ለድምፅ ጥሪዎች አዲስ የOpenCode ስሪት ያስፈልገዋል።</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">የእርስዎን አገልጋይ ማግኘት አልተቻለም።</string>
     <string name="voice_diagnosis_failed">%1$s ጥሪውን መጀመር አልቻለም።</string>
     <string name="voice_diagnosis_your_server_failed">የእርስዎ አገልጋይ ጥሪውን መጀመር አልቻለም።</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI በዚህ ስልክ ላይ ያለውን ቁልፍ አልተቀበለም።</string>
-    <string name="voice_diagnosis_missing_phone_key">ከዚህ ስልክ ለመደወል የእርስዎን %1$s API ቁልፍ ያክሉ።</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">ከክፍለ ጊዜዎ ጋር ለመነጋገር በቅንብሮች ውስጥ የማይክሮፎን ፈቃድ ይስጡ።</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">ድምፅ መጀመር አልተቻለም፦ አገልጋዩ ልክ ያልሆነ ምላሽ ሰጥቷል።</string>
     <string name="voice_error_start_voice_detail">ድምፅ መጀመር አልተቻለም፦ %1$s</string>
     <string name="voice_error_start_voice_http">ድምፅ መጀመር አልተቻለም (HTTP %1$d)።</string>
-    <string name="voice_error_openai_rejected_key">OpenAI የAPI ቁልፉን አልተቀበለም።</string>
-    <string name="voice_error_openai_verify_http">OpenAI ይህን ቁልፍ ማረጋገጥ አልቻለም (HTTP %1$d)።</string>
-    <string name="voice_error_no_connection">ግንኙነት የለም።</string>
-    <string name="voice_error_model_address_invalid">የድምፅ ሞዴሉ አድራሻ ልክ አይደለም።</string>
-    <string name="voice_error_xai_rejected_key">xAI የAPI ቁልፉን አልተቀበለም።</string>
-    <string name="voice_error_xai_verify_http">xAI ይህን ቁልፍ ማረጋገጥ አልቻለም (HTTP %1$d)።</string>
-    <string name="voice_error_xai_key_disabled">ይህ የxAI API ቁልፍ ተሰናክሏል።</string>
-    <string name="voice_error_xai_key_blocked">ይህ የxAI API ቁልፍ ታግዷል።</string>
     <string name="voice_error_service_address_invalid">የድምፅ አገልግሎቱ አድራሻ ልክ አይደለም።</string>
     <string name="voice_error_connection_lost">የድምፅ ግንኙነቱ ተቋርጧል።</string>
     <string name="voice_error_connection_closed">የድምፅ ግንኙነቱ ተዘግቷል።</string>
     <string name="voice_error_connection_setup">የድምፅ ግንኙነቱን ማዋቀር አልተቻለም።</string>
     <string name="voice_error_safety_filter">የደህንነት ማጣሪያ የድምፅ ጥሪውን አቋርጦታል።</string>
     <string name="voice_error_audio_reset">ስርዓቱ ድምጹን ዳግም አስጀምሯል። ጥሪውን እንደገና ይጀምሩ።</string>
-    <string name="voice_error_missing_phone_key">ድምፅን ለመጠቀም የእርስዎን %1$s API ቁልፍ በቅንብሮች ውስጥ ያክሉ።</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">የአውስትራሊያ እንግሊዝኛ</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">የብራዚል ፖርቱጋልኛ</string>
     <string name="voice_accent_filipino_english">የፊሊፒንስ እንግሊዝኛ</string>
     <string name="voice_accent_southern_us_english">የደቡብ አሜሪካ ግዛቶች እንግሊዝኛ</string>
-    <string name="voice_accent_indian_english">የሕንድ እንግሊዝኛ</string>
-    <string name="voice_preview_error">ናሙናውን ማጫወት አልተቻለም</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">የትንፋሽ ቃና</string>

@@ -61,11 +61,6 @@ class VoiceServerPickerTests {
         shared(VoiceSharedKeys.serverVoiceSupportByServer).set(support)
     }
 
-    private fun SpeechTestShared.savePhoneKey() = run {
-        shared(SharedKeys.openAIAPIKey).set("sk-phone")
-        shared(SharedKeys.verifiedVoiceKeyFingerprint).set(VoiceKeyFingerprint.make(key = "sk-phone", model = VoiceEngine.gptLive.modelID))
-    }
-
     private fun transcriptRecord(shared: SpeechTestShared): VoiceTranscriptRecord? =
         shared.run { shared(VoiceSharedKeys.voiceTranscripts).value["${server.id}:${session.id}"] }
 
@@ -152,12 +147,11 @@ class VoiceServerPickerTests {
     /**
      * Settings, the session and Home route by the chosen server's support,
      * never the connected server's. A picked server without the voice routes
-     * fails rather than move to the phone's key. (Home's `VoiceRoutePreferences` here.)
+     * fails. (Home's `VoiceRoutePreferences` here.)
      */
     @Test fun everyEntryPointRoutesByTheChosenServersSupport() {
         val shared = resetSharedState()
         shared.save(listOf(server, studio), choice = VoiceServerChoice.of(studio))
-        shared.savePhoneKey()
         shared.run { shared(SharedKeys.voiceModeEnabled).set(true) }
         val preferences = shared.run { VoiceRoutePreferences() }
 
@@ -175,7 +169,7 @@ class VoiceServerPickerTests {
         at: Long,
         checkSupport: suspend (OpenCodeServer) -> ServerVoiceSupport,
         recentMessages: suspend (OpenCodeServer, String, Int) -> List<String> = { _, _, _ -> emptyList() },
-        start: suspend (String, RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
+        start: suspend (RealtimeSessionConfig) -> kotlinx.coroutines.flow.Flow<VoiceCallEvent>,
         end: suspend () -> Unit,
     ): DependencyValues.Builder.() -> Unit = {
         this[SharedStore] = shared.store
@@ -210,8 +204,7 @@ class VoiceServerPickerTests {
                 shared, at = 1_000,
                 checkSupport = { requested -> probed.update { it + requested.persistenceID }; ServerVoiceSupport.supported },
                 recentMessages = { requested, _, _ -> read.update { it + requested.persistenceID }; emptyList() },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -273,7 +266,7 @@ class VoiceServerPickerTests {
             callDependencies(
                 shared, at = 2_000,
                 checkSupport = { requested -> probed.update { it + requested.persistenceID }; ServerVoiceSupport.supported },
-                start = { _, config ->
+                start = { config ->
                     configs.update { it + config }
                     connectGate.await()
                     stream.trySend(VoiceCallEvent.Connected)
@@ -318,63 +311,6 @@ class VoiceServerPickerTests {
     }
 
     /**
-     * This iPhone: with Server Voice on, calls use the phone's own key with no
-     * probe or broker, as Settings, the session and Home agree. Without a key
-     * nothing offers a call.
-     */
-    @Test fun thisIPhoneUsesThePhonesOwnKey() = runBlocking {
-        val shared = resetSharedState()
-        shared.save(listOf(server, studio), choice = VoiceServerChoice.Phone)
-        shared.setSupport(mapOf(server.persistenceID to ServerVoiceSupport.supported, studio.persistenceID to ServerVoiceSupport.supported))
-        shared.run { shared(SharedKeys.voiceModeEnabled).set(true) }
-        assertFalse(shared.run { VoiceRoutePreferences().isAvailable(server) })
-
-        shared.savePhoneKey()
-        assertEquals(VoiceRoute.PhoneKey(VoiceEngine.gptLive), shared.run { VoiceRoutePreferences().route(server) })
-
-        val configs = Locked(listOf<RealtimeSessionConfig>())
-        val asked = Locked(false)
-        val stream = Channel<VoiceCallEvent>(Channel.UNLIMITED)
-        val effects = detachedScope(coroutineContext)
-        val store = TestStore(
-            shared.run { VoiceFeature.State(server, session) }, VoiceFeature(), effects,
-            callDependencies(
-                shared, at = 3_000,
-                checkSupport = { asked.set(true); ServerVoiceSupport.supported },
-                start = { key, config ->
-                    assertEquals("sk-phone", key)
-                    configs.update { it + config }
-                    stream.trySend(VoiceCallEvent.Connected)
-                    stream.consumeAsFlow()
-                },
-                end = { stream.close() },
-            ),
-        )
-
-        store.send(VoiceFeature.Action.Start) {
-            it.copy(
-                diagnosesFailure = true,
-                startedTarget = VoiceWorkTarget(server = server, sessionID = session.id, directory = session.directory),
-                callPresenceID = presenceID,
-            )
-        }
-        store.receive(VoiceFeature.Action.CallEvent(VoiceCallEvent.Connected)) {
-            it.withPhase(VoiceFeature.State.Phase.Live).copy(connectedAt = Instant.ofEpochSecond(3_000))
-        }
-        stream.close()
-        store.receive(VoiceFeature.Action.CallEnded(errorMessage = null)) {
-            it.withPhase(VoiceFeature.State.Phase.Ended)
-        }
-        assertEquals(VoiceTranscriptRecord(endedAt = Instant.ofEpochSecond(3_000), tail = emptyList(), log = emptyList()), transcriptRecord(shared))
-        store.receive(VoiceFeature.Action.Delegate(VoiceFeature.DelegateAction.Ended))
-        store.finish()
-        effects.cancel()
-
-        assertFalse("This iPhone asks no server", asked.value)
-        assertEquals(listOf<OpenCodeServer?>(null), configs.value.map { it.serverVoice })
-    }
-
-    /**
      * A chosen server that's no longer saved: calls go through the connected
      * server, as they do by default.
      */
@@ -391,8 +327,7 @@ class VoiceServerPickerTests {
             callDependencies(
                 shared, at = 4_000,
                 checkSupport = { asked.set(true); ServerVoiceSupport.supported },
-                start = { key, config ->
-                    assertTrue(key.isEmpty())
+                start = { config ->
                     configs.update { it + config }
                     stream.trySend(VoiceCallEvent.Connected)
                     stream.consumeAsFlow()

@@ -1,9 +1,9 @@
 package ai.opencode.feature.voice
 
+import ai.opencode.feature.voice.VoiceFeatureTestSupport.delegating
 import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.ImmediateClock
-import ai.opencode.core.sharing.SharedKeys
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
@@ -14,7 +14,6 @@ import ai.opencode.server.model.OpenCodePendingRequests
 import ai.opencode.server.model.OpenCodeSession
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.JsonObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -258,7 +257,6 @@ class VoiceTurnStampTests {
         val answered = Locked(false)
         val shared = SpeechTestShared()
         val voice = shared.run {
-            shared(SharedKeys.openAIAPIKey).set("sk-test")
             VoiceFeature.State(server, home)
                 .withPhase(VoiceFeature.State.Phase.Live)
                 .copy(usesDelegator = true)
@@ -273,13 +271,7 @@ class VoiceTurnStampTests {
             this[SharedStore] = shared.store
             this[Clock] = ImmediateClock()
             this[DateClient] = DateClient.constant(Instant.EPOCH)
-            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true) { _, _, previous ->
-                if (previous != null) {
-                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "Sent.")
-                } else {
-                    VoiceDelegator.Response(id = "r1", calls = calls, text = "")
-                }
-            }
+            this[VoiceDelegatorClient] = VoiceDelegatorClient(isEnabled = true)
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 getSession = { _, id -> sessions[id] ?: throw OpenCodeClientError(message = "No session") },
                 sendDeliveredPrompt = { _, sessionID, _, _ -> "msg_$sessionID" },
@@ -301,13 +293,19 @@ class VoiceTurnStampTests {
                 completeFunction = { _, _ -> answered.set(true) },
                 announce = { _, _, text -> announced.update { it + text } },
                 cancelPendingAnnouncements = {},
-            )
+            ).delegating { input ->
+                if (input.isNotEmpty()) {
+                    VoiceDelegator.Response(id = "r2", calls = emptyList(), text = "Sent.")
+                } else {
+                    VoiceDelegator.Response(id = "r1", calls = calls, text = "")
+                }
+            }
         }
         store.exhaustive = false
         for ((index, turn) in turns.withIndex()) {
             store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.UserTranscript(itemID = "u$index", text = turn, final = true)))
         }
-        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.FunctionCall(callID = "d1", name = "delegate", arguments = JsonObject(emptyMap()))))
+        store.send(VoiceFeature.Action.CallEvent(VoiceCallEvent.ServerDelegation(callID = "d1")))
         assertEquals(turns.size + 1, store.state.replyWatch.userTurns)
         store.receive(::isDelegatorFinished, timeout = 5.seconds)
         store.eventuallyReducing(timeout = 5.seconds) { announced.value.size == sends.size }

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Poziv završen</string>
     <string name="voice_call_ended_rejoin">Pridruži se ponovo</string>
     <string name="voice_failure_title">Glasovno povezivanje nije uspjelo</string>
-    <string name="voice_failure_check_api_key">Provjeri API ključ</string>
     <string name="voice_failure_start_title">Pokretanje poziva nije uspjelo</string>
 
     <!-- Floating call -->
@@ -101,21 +100,14 @@
     <string name="voice_provider_state_no_key">Nema ključa</string>
     <string name="voice_provider_state_needs_update">Ažuriraj OpenCode</string>
     <string name="voice_provider_state_offline">Van mreže</string>
-    <string name="voice_provider_place_phone">Ovaj telefon</string>
-    <string name="voice_provider_brand_openai_account">Tvoj OpenAI račun</string>
     <string name="voice_provider_name">%1$s na %2$s</string>
     <string name="voice_provider_subtitle">Na %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s ključ</string>
-    <string name="voice_provider_key_placeholder">%1$s API ključ</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Ključ na tvom serveru</string>
-    <string name="voice_key_source_phone_footer">Pozivi koriste tvoj OpenAI ili xAI ključ.</string>
     <string name="voice_key_source_server_footer">Pozivi koriste %1$s ključ s tvog servera.</string>
     <string name="voice_key_source_opencode_footer">Pozivi se naplaćuju tvom radnom prostoru u OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Podesi na ovom telefonu</string>
     <string name="voice_fix_choose_provider">Odaberi provajdera</string>
     <string name="voice_fix_update_opencode">Ažuriraj OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s treba noviju verziju OpenCode za glasovne pozive.</string>
@@ -126,8 +118,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Nije moguće povezati se na tvoj server.</string>
     <string name="voice_diagnosis_failed">%1$s nije uspio pokrenuti poziv.</string>
     <string name="voice_diagnosis_your_server_failed">Tvoj server nije uspio pokrenuti poziv.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI nije prihvatio ključ na ovom telefonu.</string>
-    <string name="voice_diagnosis_missing_phone_key">Dodaj svoj %1$s API ključ za pozive s ovog telefona.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Dozvoli pristup mikrofonu u postavkama za razgovor sa svojom sesijom.</string>
@@ -138,21 +128,12 @@
     <string name="voice_error_invalid_response">Pokretanje glasovnog poziva nije uspjelo: server je vratio nevažeći odgovor.</string>
     <string name="voice_error_start_voice_detail">Pokretanje glasovnog poziva nije uspjelo: %1$s</string>
     <string name="voice_error_start_voice_http">Pokretanje glasovnog poziva nije uspjelo (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI je odbio API ključ.</string>
-    <string name="voice_error_openai_verify_http">OpenAI nije mogao provjeriti ovaj ključ (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Nema veze.</string>
-    <string name="voice_error_model_address_invalid">Adresa glasovnog modela nije važeća.</string>
-    <string name="voice_error_xai_rejected_key">xAI je odbio API ključ.</string>
-    <string name="voice_error_xai_verify_http">xAI nije mogao provjeriti ovaj ključ (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Ovaj xAI API ključ je onemogućen.</string>
-    <string name="voice_error_xai_key_blocked">Ovaj xAI API ključ je blokiran.</string>
     <string name="voice_error_service_address_invalid">Adresa usluge za glasovne pozive nije važeća.</string>
     <string name="voice_error_connection_lost">Veza za glasovni poziv je izgubljena.</string>
     <string name="voice_error_connection_closed">Veza za glasovni poziv je zatvorena.</string>
     <string name="voice_error_connection_setup">Nije moguće uspostaviti vezu za glasovni poziv.</string>
     <string name="voice_error_safety_filter">Sigurnosni filter je završio glasovni poziv.</string>
     <string name="voice_error_audio_reset">Sistem je resetovao zvuk. Pokreni poziv ponovo.</string>
-    <string name="voice_error_missing_phone_key">Dodaj svoj %1$s API ključ u postavkama za glasovne pozive.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australijski engleski</string>
@@ -162,8 +143,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazilski portugalski</string>
     <string name="voice_accent_filipino_english">Filipinski engleski</string>
     <string name="voice_accent_southern_us_english">Engleski juga SAD-a</string>
-    <string name="voice_accent_indian_english">Indijski engleski</string>
-    <string name="voice_preview_error">Preslušavanje nije uspjelo</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Zvonki dah</string>

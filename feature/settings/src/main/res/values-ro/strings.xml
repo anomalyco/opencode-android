@@ -107,20 +107,15 @@
     <string name="settings_delegator_another_server">%1$s · Alt server</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Ascunde cheia</string>
-    <string name="settings_voice_key_show_description">Arată cheia</string>
-    <string name="settings_voice_key_verify">Verifică</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Furnizor de voce</string>
     <string name="settings_voice_provider_place">Pe %1$s</string>
-    <string name="settings_voice_api_key_title">Cheie API</string>
     <string name="settings_voice_provider_automatic_footer">Când %1$s nu este disponibil, apelurile folosesc un furnizor disponibil.</string>
     <string name="settings_voice_provider_choose_automatically">Alege automat</string>
     <string name="settings_voice_provider_others_header">Alți furnizori</string>
     <string name="settings_voice_provider_use_description">Folosește %1$s</string>
     <string name="settings_voice_provider_use">Folosește</string>
-    <string name="settings_voice_provider_set_up">Configurează</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d furnizor indisponibil</item>
         <item quantity="few">%d furnizori indisponibili</item>
@@ -128,10 +123,6 @@
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Contul tău OpenAI</string>
-    <string name="settings_voice_account_place">Pe acest telefon</string>
-    <string name="settings_voice_account_key_footer">Apelurile folosesc contul tău OpenAI în locul unui server.</string>
-    <string name="settings_voice_account_use_for_calls">Folosește pentru apeluri</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Voce</string>
@@ -145,19 +136,9 @@
     <string name="settings_voice_raise_to_talk">Ridică pentru a vorbi</string>
     <string name="settings_voice_call_sounds">Sunete de apel</string>
     <string name="settings_voice_call_history">Istoric apeluri</string>
-    <string name="settings_voice_edit_key_label">Editează cheia API pentru %1$s</string>
-    <string name="settings_voice_key_verified">Verificată</string>
-    <string name="settings_voice_key_checking">Se verifică…</string>
-    <string name="settings_voice_key_saved">Salvată</string>
-    <string name="settings_voice_key_missing">Lipsește</string>
-    <string name="settings_voice_preview_disabled_hint">Adaugă cheia pentru %1$s ca să asculți vocile</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Adaugă cheia pentru %1$s ca să asculți vocile.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s nu este disponibil pe %2$s, așa că apelurile folosesc %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Oprește previzualizarea %1$s</string>
-    <string name="settings_voice_preview_description">Ascultă %1$s</string>
-    <string name="settings_voice_preview_playing">Se redă</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s indisponibil</string>
 
     <!-- Settings root -->

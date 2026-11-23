@@ -111,30 +111,21 @@
 
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Hide key</string>
-    <string name="settings_voice_key_show_description">Show key</string>
-    <string name="settings_voice_key_verify">Verify</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Voice Provider</string>
     <string name="settings_voice_provider_place">On %1$s</string>
-    <string name="settings_voice_api_key_title">API Key</string>
     <string name="settings_voice_provider_automatic_footer">When %1$s isn’t ready, calls use one that is.</string>
     <string name="settings_voice_provider_choose_automatically">Choose Automatically</string>
     <string name="settings_voice_provider_others_header">Other Providers</string>
     <string name="settings_voice_provider_use_description">Use %1$s</string>
     <string name="settings_voice_provider_use">Use</string>
-    <string name="settings_voice_provider_set_up">Set Up</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d Not Available</item>
         <item quantity="other">%d Not Available</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Your OpenAI Account</string>
-    <string name="settings_voice_account_place">On This Phone</string>
-    <string name="settings_voice_account_key_footer">Calls use your OpenAI account instead of a server.</string>
-    <string name="settings_voice_account_use_for_calls">Use for Calls</string>
 
 
     <!-- Voice -->
@@ -149,19 +140,9 @@
     <string name="settings_voice_raise_to_talk">Raise to Talk</string>
     <string name="settings_voice_call_sounds">Call Sounds</string>
     <string name="settings_voice_call_history">Call History</string>
-    <string name="settings_voice_edit_key_label">Edit your %1$s API key</string>
-    <string name="settings_voice_key_verified">Verified</string>
-    <string name="settings_voice_key_checking">Checking…</string>
-    <string name="settings_voice_key_saved">Saved</string>
-    <string name="settings_voice_key_missing">Missing</string>
-    <string name="settings_voice_preview_disabled_hint">Add your %1$s key to preview voices</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Add your %1$s key to preview voices.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s isn’t available on %2$s, so calls use %3$s.</string>
-    <string name="settings_voice_stop_preview_description">Stop %1$s preview</string>
-    <string name="settings_voice_preview_description">Preview %1$s</string>
-    <string name="settings_voice_preview_playing">Playing</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s unavailable</string>
 
 

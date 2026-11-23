@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · অন্য সার্ভার</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">কী লুকান</string>
-    <string name="settings_voice_key_show_description">কী দেখান</string>
-    <string name="settings_voice_key_verify">যাচাই করুন</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">ভয়েস প্রদানকারী</string>
     <string name="settings_voice_provider_place">%1$s-এ</string>
-    <string name="settings_voice_api_key_title">API কী</string>
     <string name="settings_voice_provider_automatic_footer">%1$s প্রস্তুত না থাকলে কলে অন্য প্রস্তুত প্রদানকারী ব্যবহার হয়।</string>
     <string name="settings_voice_provider_choose_automatically">স্বয়ংক্রিয়ভাবে বেছে নিন</string>
     <string name="settings_voice_provider_others_header">অন্যান্য প্রদানকারী</string>
     <string name="settings_voice_provider_use_description">%1$s ব্যবহার করুন</string>
     <string name="settings_voice_provider_use">ব্যবহার করুন</string>
-    <string name="settings_voice_provider_set_up">সেট আপ করুন</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%dটি উপলব্ধ নয়</item>
         <item quantity="other">%dটি উপলব্ধ নয়</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">আপনার OpenAI অ্যাকাউন্ট</string>
-    <string name="settings_voice_account_place">এই ফোনে</string>
-    <string name="settings_voice_account_key_footer">কলে সার্ভারের বদলে আপনার OpenAI অ্যাকাউন্ট ব্যবহার হয়।</string>
-    <string name="settings_voice_account_use_for_calls">কলে ব্যবহার করুন</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">ভয়েস</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">কানে তুলে কথা বলুন</string>
     <string name="settings_voice_call_sounds">কলের শব্দ</string>
     <string name="settings_voice_call_history">কলের ইতিহাস</string>
-    <string name="settings_voice_edit_key_label">আপনার %1$s API কী সম্পাদনা করুন</string>
-    <string name="settings_voice_key_verified">যাচাই করা হয়েছে</string>
-    <string name="settings_voice_key_checking">পরীক্ষা করা হচ্ছে…</string>
-    <string name="settings_voice_key_saved">সেভ করা হয়েছে</string>
-    <string name="settings_voice_key_missing">দেওয়া নেই</string>
-    <string name="settings_voice_preview_disabled_hint">কণ্ঠস্বর শুনতে আপনার %1$s কী যোগ করুন</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">কণ্ঠস্বর শুনতে আপনার %1$s কী যোগ করুন।</string>
     <string name="settings_voice_picker_unavailable_footer">%2$s-এ %1$s উপলব্ধ নয়, তাই কলে %3$s ব্যবহার হয়।</string>
-    <string name="settings_voice_stop_preview_description">%1$s-এর নমুনা বন্ধ করুন</string>
-    <string name="settings_voice_preview_description">%1$s-এর নমুনা শুনুন</string>
-    <string name="settings_voice_preview_playing">বাজছে</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s উপলব্ধ নয়</string>
 
     <!-- Settings root -->

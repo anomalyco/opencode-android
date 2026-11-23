@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Zəng bitdi</string>
     <string name="voice_call_ended_rejoin">Yenidən qoşul</string>
     <string name="voice_failure_title">Səsə qoşulmaq mümkün olmadı</string>
-    <string name="voice_failure_check_api_key">API açarını yoxla</string>
     <string name="voice_failure_start_title">Zəngi başlatmaq mümkün olmadı</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Açar yoxdur</string>
     <string name="voice_provider_state_needs_update">OpenCode-u yenilə</string>
     <string name="voice_provider_state_offline">Oflayn</string>
-    <string name="voice_provider_place_phone">Bu telefon</string>
-    <string name="voice_provider_brand_openai_account">OpenAI hesabınız</string>
     <string name="voice_provider_name">%2$s üzərində %1$s</string>
     <string name="voice_provider_subtitle">%1$s üzərində</string>
-    <string name="voice_provider_key_row_title">%1$s açarı</string>
-    <string name="voice_provider_key_placeholder">%1$s API açarı</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Serverinizdəki açar</string>
-    <string name="voice_key_source_phone_footer">Zənglərdə öz OpenAI və ya xAI açarınız istifadə olunur.</string>
     <string name="voice_key_source_server_footer">Zənglərdə serverinizin %1$s açarı istifadə olunur.</string>
     <string name="voice_key_source_opencode_footer">Zənglərin haqqı OpenCode Console iş sahənizin hesabından tutulur.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Bu telefonda quraşdır</string>
     <string name="voice_fix_choose_provider">Provayder seç</string>
     <string name="voice_fix_update_opencode">OpenCode-u yenilə</string>
     <string name="voice_diagnosis_needs_update">%1$s üçün səsli zənglərə daha yeni OpenCode lazımdır.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Serverinizlə əlaqə qurmaq mümkün olmadı.</string>
     <string name="voice_diagnosis_failed">%1$s zəngi başlada bilmədi.</string>
     <string name="voice_diagnosis_your_server_failed">Serveriniz zəngi başlada bilmədi.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI bu telefondakı açarı qəbul etmədi.</string>
-    <string name="voice_diagnosis_missing_phone_key">Bu telefondan zəng etmək üçün %1$s API açarınızı əlavə edin.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Sessiyanızla danışmaq üçün Tənzimləmələrdə mikrofona girişə icazə verin.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Səsi başlatmaq mümkün olmadı: server yanlış cavab qaytardı.</string>
     <string name="voice_error_start_voice_detail">Səsi başlatmaq mümkün olmadı: %1$s</string>
     <string name="voice_error_start_voice_http">Səsi başlatmaq mümkün olmadı (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI API açarını rədd etdi.</string>
-    <string name="voice_error_openai_verify_http">OpenAI bu açarı yoxlaya bilmədi (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Əlaqə yoxdur.</string>
-    <string name="voice_error_model_address_invalid">Səs modelinin ünvanı yanlışdır.</string>
-    <string name="voice_error_xai_rejected_key">xAI API açarını rədd etdi.</string>
-    <string name="voice_error_xai_verify_http">xAI bu açarı yoxlaya bilmədi (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Bu xAI API açarı deaktivdir.</string>
-    <string name="voice_error_xai_key_blocked">Bu xAI API açarı bloklanıb.</string>
     <string name="voice_error_service_address_invalid">Səs xidmətinin ünvanı yanlışdır.</string>
     <string name="voice_error_connection_lost">Səs əlaqəsi kəsildi.</string>
     <string name="voice_error_connection_closed">Səs əlaqəsi bağlıdır.</string>
     <string name="voice_error_connection_setup">Səs əlaqəsini qurmaq mümkün olmadı.</string>
     <string name="voice_error_safety_filter">Təhlükəsizlik filtri səsli zəngi bitirdi.</string>
     <string name="voice_error_audio_reset">Səs sistem tərəfindən sıfırlandı. Zəngi yenidən başladın.</string>
-    <string name="voice_error_missing_phone_key">Səsdən istifadə etmək üçün Tənzimləmələrdə %1$s API açarınızı əlavə edin.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Avstraliya ingiliscəsi</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Braziliya portuqalcası</string>
     <string name="voice_accent_filipino_english">Filippin ingiliscəsi</string>
     <string name="voice_accent_southern_us_english">ABŞ-nin cənub ingiliscəsi</string>
-    <string name="voice_accent_indian_english">Hindistan ingiliscəsi</string>
-    <string name="voice_preview_error">Sınaq səsini oynatmaq mümkün olmadı</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Nəfəs siqnalı</string>

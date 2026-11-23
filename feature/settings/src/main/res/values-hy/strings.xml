@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Այլ սերվեր</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Թաքցնել բանալին</string>
-    <string name="settings_voice_key_show_description">Ցույց տալ բանալին</string>
-    <string name="settings_voice_key_verify">Ստուգել</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Ձայնի մատակարար</string>
     <string name="settings_voice_provider_place">%1$s-ում</string>
-    <string name="settings_voice_api_key_title">API բանալի</string>
     <string name="settings_voice_provider_automatic_footer">Երբ %1$s-ը պատրաստ չէ, զանգերն օգտագործում են պատրաստ մատակարարին։</string>
     <string name="settings_voice_provider_choose_automatically">Ընտրել ավտոմատ</string>
     <string name="settings_voice_provider_others_header">Այլ մատակարարներ</string>
     <string name="settings_voice_provider_use_description">Օգտագործել %1$s</string>
     <string name="settings_voice_provider_use">Օգտագործել</string>
-    <string name="settings_voice_provider_set_up">Կարգավորել</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d-ը հասանելի չէ</item>
         <item quantity="other">%d-ը հասանելի չեն</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Ձեր OpenAI հաշիվը</string>
-    <string name="settings_voice_account_place">Այս հեռախոսում</string>
-    <string name="settings_voice_account_key_footer">Զանգերն օգտագործում են ձեր OpenAI հաշիվը՝ սերվերի փոխարեն։</string>
-    <string name="settings_voice_account_use_for_calls">Օգտագործել զանգերի համար</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Ձայն</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Մոտեցնել ականջին՝ խոսելու համար</string>
     <string name="settings_voice_call_sounds">Զանգի ձայներ</string>
     <string name="settings_voice_call_history">Զանգերի պատմություն</string>
-    <string name="settings_voice_edit_key_label">Խմբագրել ձեր %1$s API բանալին</string>
-    <string name="settings_voice_key_verified">Ստուգված</string>
-    <string name="settings_voice_key_checking">Ստուգում…</string>
-    <string name="settings_voice_key_saved">Պահված</string>
-    <string name="settings_voice_key_missing">Բացակայում է</string>
-    <string name="settings_voice_preview_disabled_hint">Ավելացրեք ձեր %1$s բանալին՝ ձայները լսելու համար</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Ավելացրեք ձեր %1$s բանալին՝ ձայները լսելու համար։</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s-ը հասանելի չէ %2$s-ում, ուստի զանգերն օգտագործում են %3$s-ը։</string>
-    <string name="settings_voice_stop_preview_description">Կանգնեցնել %1$s-ի փորձնական լսումը</string>
-    <string name="settings_voice_preview_description">Լսել %1$s-ը</string>
-    <string name="settings_voice_preview_playing">Նվագարկվում է</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s-ը հասանելի չէ</string>
 
     <!-- Settings root -->

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Звонок завершён</string>
     <string name="voice_call_ended_rejoin">Подключиться снова</string>
     <string name="voice_failure_title">Не удалось подключить голосовой режим</string>
-    <string name="voice_failure_check_api_key">Проверить ключ API</string>
     <string name="voice_failure_start_title">Не удалось начать звонок</string>
 
     <!-- Floating call -->
@@ -103,21 +102,14 @@
     <string name="voice_provider_state_no_key">Нет ключа</string>
     <string name="voice_provider_state_needs_update">Обновите OpenCode</string>
     <string name="voice_provider_state_offline">Не в сети</string>
-    <string name="voice_provider_place_phone">Этот телефон</string>
-    <string name="voice_provider_brand_openai_account">Ваш аккаунт OpenAI</string>
     <string name="voice_provider_name">%1$s на %2$s</string>
     <string name="voice_provider_subtitle">На %1$s</string>
-    <string name="voice_provider_key_row_title">Ключ %1$s</string>
-    <string name="voice_provider_key_placeholder">Ключ API %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Ключ на вашем сервере</string>
-    <string name="voice_key_source_phone_footer">Для звонков используется ваш ключ OpenAI или xAI.</string>
     <string name="voice_key_source_server_footer">Для звонков используется ключ %1$s с вашего сервера.</string>
     <string name="voice_key_source_opencode_footer">Звонки оплачиваются из вашего рабочего пространства OpenCode Console.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Настроить на этом телефоне</string>
     <string name="voice_fix_choose_provider">Выбрать провайдера</string>
     <string name="voice_fix_update_opencode">Обновить OpenCode</string>
     <string name="voice_diagnosis_needs_update">Для голосовых звонков на %1$s нужно обновить OpenCode.</string>
@@ -128,8 +120,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Не удалось подключиться к вашему серверу.</string>
     <string name="voice_diagnosis_failed">Не удалось начать звонок через %1$s.</string>
     <string name="voice_diagnosis_your_server_failed">Ваш сервер не смог начать звонок.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI не принял ключ на этом телефоне.</string>
-    <string name="voice_diagnosis_missing_phone_key">Добавьте свой ключ API %1$s, чтобы звонить с этого телефона.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Разрешите доступ к микрофону в настройках, чтобы общаться с сессией голосом.</string>
@@ -140,21 +130,12 @@
     <string name="voice_error_invalid_response">Не удалось включить голосовой режим: сервер вернул некорректный ответ.</string>
     <string name="voice_error_start_voice_detail">Не удалось включить голосовой режим: %1$s</string>
     <string name="voice_error_start_voice_http">Не удалось включить голосовой режим (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI отклонил ключ API.</string>
-    <string name="voice_error_openai_verify_http">OpenAI не смог проверить этот ключ (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Нет подключения.</string>
-    <string name="voice_error_model_address_invalid">Некорректный адрес голосовой модели.</string>
-    <string name="voice_error_xai_rejected_key">xAI отклонил ключ API.</string>
-    <string name="voice_error_xai_verify_http">xAI не смог проверить этот ключ (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Этот ключ API xAI отключён.</string>
-    <string name="voice_error_xai_key_blocked">Этот ключ API xAI заблокирован.</string>
     <string name="voice_error_service_address_invalid">Некорректный адрес голосового сервиса.</string>
     <string name="voice_error_connection_lost">Голосовое соединение потеряно.</string>
     <string name="voice_error_connection_closed">Голосовое соединение закрыто.</string>
     <string name="voice_error_connection_setup">Не удалось установить голосовое соединение.</string>
     <string name="voice_error_safety_filter">Фильтр безопасности завершил голосовой звонок.</string>
     <string name="voice_error_audio_reset">Аудио было сброшено системой. Начните звонок заново.</string>
-    <string name="voice_error_missing_phone_key">Добавьте свой ключ API %1$s в настройках, чтобы использовать голосовой режим.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Австралийский английский</string>
@@ -164,8 +145,6 @@
     <string name="voice_accent_brazilian_portuguese">Бразильский португальский</string>
     <string name="voice_accent_filipino_english">Филиппинский английский</string>
     <string name="voice_accent_southern_us_english">Английский юга США</string>
-    <string name="voice_accent_indian_english">Индийский английский</string>
-    <string name="voice_preview_error">Не удалось воспроизвести образец</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Воздушный сигнал</string>

@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Oproep beëindigd</string>
     <string name="voice_call_ended_rejoin">Opnieuw deelnemen</string>
     <string name="voice_failure_title">Spraakverbinding mislukt</string>
-    <string name="voice_failure_check_api_key">API-sleutel controleren</string>
     <string name="voice_failure_start_title">Oproep starten mislukt</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Geen sleutel</string>
     <string name="voice_provider_state_needs_update">OpenCode bijwerken</string>
     <string name="voice_provider_state_offline">Offline</string>
-    <string name="voice_provider_place_phone">Deze telefoon</string>
-    <string name="voice_provider_brand_openai_account">Je OpenAI-account</string>
     <string name="voice_provider_name">%1$s op %2$s</string>
     <string name="voice_provider_subtitle">Op %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-sleutel</string>
-    <string name="voice_provider_key_placeholder">API-sleutel van %1$s</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Sleutel op je server</string>
-    <string name="voice_key_source_phone_footer">Oproepen gebruiken je eigen OpenAI- of xAI-sleutel.</string>
     <string name="voice_key_source_server_footer">Oproepen gebruiken de %1$s-sleutel op je server.</string>
     <string name="voice_key_source_opencode_footer">Oproepen worden gefactureerd aan je OpenCode Console-werkruimte.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Instellen op deze telefoon</string>
     <string name="voice_fix_choose_provider">Aanbieder kiezen</string>
     <string name="voice_fix_update_opencode">OpenCode bijwerken</string>
     <string name="voice_diagnosis_needs_update">%1$s heeft een nieuwere versie van OpenCode nodig voor spraakoproepen.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Je server is niet bereikbaar.</string>
     <string name="voice_diagnosis_failed">%1$s kon de oproep niet starten.</string>
     <string name="voice_diagnosis_your_server_failed">Je server kon de oproep niet starten.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI heeft de sleutel op deze telefoon niet geaccepteerd.</string>
-    <string name="voice_diagnosis_missing_phone_key">Voeg je API-sleutel van %1$s toe om vanaf deze telefoon te bellen.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Sta microfoontoegang toe in Instellingen om met je sessie te praten.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Spraak starten mislukt: de server gaf een ongeldig antwoord.</string>
     <string name="voice_error_start_voice_detail">Spraak starten mislukt: %1$s</string>
     <string name="voice_error_start_voice_http">Spraak starten mislukt (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI heeft de API-sleutel geweigerd.</string>
-    <string name="voice_error_openai_verify_http">OpenAI kon deze sleutel niet controleren (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Geen verbinding.</string>
-    <string name="voice_error_model_address_invalid">Het adres van het spraakmodel is ongeldig.</string>
-    <string name="voice_error_xai_rejected_key">xAI heeft de API-sleutel geweigerd.</string>
-    <string name="voice_error_xai_verify_http">xAI kon deze sleutel niet controleren (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Deze xAI-API-sleutel is uitgeschakeld.</string>
-    <string name="voice_error_xai_key_blocked">Deze xAI-API-sleutel is geblokkeerd.</string>
     <string name="voice_error_service_address_invalid">Het adres van de spraakdienst is ongeldig.</string>
     <string name="voice_error_connection_lost">De spraakverbinding is verbroken.</string>
     <string name="voice_error_connection_closed">De spraakverbinding is gesloten.</string>
     <string name="voice_error_connection_setup">De spraakverbinding kon niet worden opgezet.</string>
     <string name="voice_error_safety_filter">Een veiligheidsfilter heeft de spraakoproep beëindigd.</string>
     <string name="voice_error_audio_reset">Het systeem heeft de audio opnieuw ingesteld. Start de oproep opnieuw.</string>
-    <string name="voice_error_missing_phone_key">Voeg je API-sleutel van %1$s toe in Instellingen om spraak te gebruiken.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australisch Engels</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Braziliaans Portugees</string>
     <string name="voice_accent_filipino_english">Filipijns Engels</string>
     <string name="voice_accent_southern_us_english">Zuidelijk Amerikaans Engels</string>
-    <string name="voice_accent_indian_english">Indiaas Engels</string>
-    <string name="voice_preview_error">Voorbeeld afspelen mislukt</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Ademping</string>

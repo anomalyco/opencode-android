@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">通話已結束</string>
     <string name="voice_call_ended_rejoin">重新加入</string>
     <string name="voice_failure_title">無法連線語音</string>
-    <string name="voice_failure_check_api_key">檢查 API 金鑰</string>
     <string name="voice_failure_start_title">無法開始通話</string>
 
     <!-- Floating call -->
@@ -97,21 +96,14 @@
     <string name="voice_provider_state_no_key">沒有金鑰</string>
     <string name="voice_provider_state_needs_update">更新 OpenCode</string>
     <string name="voice_provider_state_offline">離線</string>
-    <string name="voice_provider_place_phone">這台手機</string>
-    <string name="voice_provider_brand_openai_account">你的 OpenAI 帳號</string>
     <string name="voice_provider_name">%2$s 上的 %1$s</string>
     <string name="voice_provider_subtitle">在 %1$s 上</string>
-    <string name="voice_provider_key_row_title">%1$s 金鑰</string>
-    <string name="voice_provider_key_placeholder">%1$s API 金鑰</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">伺服器上的金鑰</string>
-    <string name="voice_key_source_phone_footer">通話使用你自己的 OpenAI 或 xAI 金鑰。</string>
     <string name="voice_key_source_server_footer">通話使用你伺服器上的 %1$s 金鑰。</string>
     <string name="voice_key_source_opencode_footer">通話費用計入你的 OpenCode Console 工作區。</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">在這台手機上設定</string>
     <string name="voice_fix_choose_provider">選擇提供者</string>
     <string name="voice_fix_update_opencode">更新 OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s 需要更新 OpenCode 才能使用語音通話。</string>
@@ -122,8 +114,6 @@
     <string name="voice_diagnosis_your_server_unreachable">無法連線至你的伺服器。</string>
     <string name="voice_diagnosis_failed">%1$s 無法開始通話。</string>
     <string name="voice_diagnosis_your_server_failed">你的伺服器無法開始通話。</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI 不接受這台手機上的金鑰。</string>
-    <string name="voice_diagnosis_missing_phone_key">新增你的 %1$s API 金鑰，即可從這台手機通話。</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">請在設定中允許存取麥克風，才能與工作階段通話。</string>
@@ -134,21 +124,12 @@
     <string name="voice_error_invalid_response">無法啟動語音：伺服器傳回的回覆無效。</string>
     <string name="voice_error_start_voice_detail">無法啟動語音：%1$s</string>
     <string name="voice_error_start_voice_http">無法啟動語音（HTTP %1$d）。</string>
-    <string name="voice_error_openai_rejected_key">OpenAI 拒絕了此 API 金鑰。</string>
-    <string name="voice_error_openai_verify_http">OpenAI 無法驗證此金鑰（HTTP %1$d）。</string>
-    <string name="voice_error_no_connection">無連線。</string>
-    <string name="voice_error_model_address_invalid">語音模型位址無效。</string>
-    <string name="voice_error_xai_rejected_key">xAI 拒絕了此 API 金鑰。</string>
-    <string name="voice_error_xai_verify_http">xAI 無法驗證此金鑰（HTTP %1$d）。</string>
-    <string name="voice_error_xai_key_disabled">此 xAI API 金鑰已停用。</string>
-    <string name="voice_error_xai_key_blocked">此 xAI API 金鑰已遭封鎖。</string>
     <string name="voice_error_service_address_invalid">語音服務位址無效。</string>
     <string name="voice_error_connection_lost">語音連線已中斷。</string>
     <string name="voice_error_connection_closed">語音連線已關閉。</string>
     <string name="voice_error_connection_setup">無法建立語音連線。</string>
     <string name="voice_error_safety_filter">安全篩選機制已結束語音通話。</string>
     <string name="voice_error_audio_reset">系統已重設音訊。請重新開始通話。</string>
-    <string name="voice_error_missing_phone_key">請在設定中新增你的 %1$s API 金鑰，以使用語音功能。</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">澳洲英語</string>
@@ -158,8 +139,6 @@
     <string name="voice_accent_brazilian_portuguese">巴西葡萄牙語</string>
     <string name="voice_accent_filipino_english">菲律賓英語</string>
     <string name="voice_accent_southern_us_english">美國南部英語</string>
-    <string name="voice_accent_indian_english">印度英語</string>
-    <string name="voice_preview_error">無法播放試聽</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">氣息輕響</string>

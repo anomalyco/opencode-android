@@ -106,30 +106,21 @@
     <string name="settings_delegator_another_server">%1$s · Сервери дигар</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">Калидро пинҳон кунед</string>
-    <string name="settings_voice_key_show_description">Калидро нишон диҳед</string>
-    <string name="settings_voice_key_verify">Санҷед</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">Таъминкунандаи овоз</string>
     <string name="settings_voice_provider_place">Дар %1$s</string>
-    <string name="settings_voice_api_key_title">API калид</string>
     <string name="settings_voice_provider_automatic_footer">Вақте %1$s омода нест, зангҳо аз таъминкунандаи омода истифода мебаранд.</string>
     <string name="settings_voice_provider_choose_automatically">Худкор интихоб кунед</string>
     <string name="settings_voice_provider_others_header">Таъминкунандагони дигар</string>
     <string name="settings_voice_provider_use_description">%1$s-ро истифода баред</string>
     <string name="settings_voice_provider_use">Истифода баред</string>
-    <string name="settings_voice_provider_set_up">Танзим кунед</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="one">%d дастрас нест</item>
         <item quantity="other">%d дастрас нест</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">Ҳисоби OpenAI-и шумо</string>
-    <string name="settings_voice_account_place">Дар ин телефон</string>
-    <string name="settings_voice_account_key_footer">Зангҳо ба ҷойи сервер ҳисоби OpenAI-и шуморо истифода мебаранд.</string>
-    <string name="settings_voice_account_use_for_calls">Барои зангҳо истифода баред</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">Овоз</string>
@@ -143,19 +134,9 @@
     <string name="settings_voice_raise_to_talk">Ба гӯш бареду суҳбат кунед</string>
     <string name="settings_voice_call_sounds">Садоҳои занг</string>
     <string name="settings_voice_call_history">Таърихи зангҳо</string>
-    <string name="settings_voice_edit_key_label">API калиди %1$s-и худро таҳрир кунед</string>
-    <string name="settings_voice_key_verified">Санҷида шуд</string>
-    <string name="settings_voice_key_checking">Санҷиш…</string>
-    <string name="settings_voice_key_saved">Захира шуд</string>
-    <string name="settings_voice_key_missing">Вуҷуд надорад</string>
-    <string name="settings_voice_preview_disabled_hint">Барои шунидани намунаи овозҳо калиди %1$s-и худро илова кунед</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">Барои шунидани намунаи овозҳо калиди %1$s-и худро илова кунед.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s дар %2$s дастрас нест, бинобар ин зангҳо %3$s-ро истифода мебаранд.</string>
-    <string name="settings_voice_stop_preview_description">Намунаи %1$s-ро қатъ кунед</string>
-    <string name="settings_voice_preview_description">Намунаи %1$s-ро гӯш кунед</string>
-    <string name="settings_voice_preview_playing">Пахш мешавад</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s дастрас нест</string>
 
     <!-- Settings root -->

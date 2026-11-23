@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · 其他服务器</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">隐藏密钥</string>
-    <string name="settings_voice_key_show_description">显示密钥</string>
-    <string name="settings_voice_key_verify">验证</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">语音提供商</string>
     <string name="settings_voice_provider_place">在 %1$s 上</string>
-    <string name="settings_voice_api_key_title">API 密钥</string>
     <string name="settings_voice_provider_automatic_footer">%1$s 不可用时，通话会使用其他可用的提供商。</string>
     <string name="settings_voice_provider_choose_automatically">自动选择</string>
     <string name="settings_voice_provider_others_header">其他提供商</string>
     <string name="settings_voice_provider_use_description">使用 %1$s</string>
     <string name="settings_voice_provider_use">使用</string>
-    <string name="settings_voice_provider_set_up">设置</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">%d 个不可用</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">你的 OpenAI 账户</string>
-    <string name="settings_voice_account_place">在此手机上</string>
-    <string name="settings_voice_account_key_footer">通话使用你的 OpenAI 账户，而非服务器。</string>
-    <string name="settings_voice_account_use_for_calls">用于通话</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">语音</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">抬起通话</string>
     <string name="settings_voice_call_sounds">通话音效</string>
     <string name="settings_voice_call_history">通话记录</string>
-    <string name="settings_voice_edit_key_label">编辑你的 %1$s API 密钥</string>
-    <string name="settings_voice_key_verified">已验证</string>
-    <string name="settings_voice_key_checking">检查中…</string>
-    <string name="settings_voice_key_saved">已保存</string>
-    <string name="settings_voice_key_missing">未添加</string>
-    <string name="settings_voice_preview_disabled_hint">添加你的 %1$s 密钥以试听音色</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">添加你的 %1$s 密钥以试听音色。</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s 在 %2$s 上不可用，通话将使用 %3$s。</string>
-    <string name="settings_voice_stop_preview_description">停止试听 %1$s</string>
-    <string name="settings_voice_preview_description">试听 %1$s</string>
-    <string name="settings_voice_preview_playing">正在播放</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s 不可用</string>
 
     <!-- Settings root -->

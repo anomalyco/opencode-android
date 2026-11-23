@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Дуудлага дууслаа</string>
     <string name="voice_call_ended_rejoin">Дахин нэгдэх</string>
     <string name="voice_failure_title">Дуу хоолойг холбож чадсангүй</string>
-    <string name="voice_failure_check_api_key">API түлхүүрийг шалгах</string>
     <string name="voice_failure_start_title">Дуудлага эхлүүлж чадсангүй</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Түлхүүр алга</string>
     <string name="voice_provider_state_needs_update">OpenCode-ийг шинэчлэх</string>
     <string name="voice_provider_state_offline">Офлайн</string>
-    <string name="voice_provider_place_phone">Энэ утас</string>
-    <string name="voice_provider_brand_openai_account">Таны OpenAI бүртгэл</string>
     <string name="voice_provider_name">%2$s дээрх %1$s</string>
     <string name="voice_provider_subtitle">%1$s дээр</string>
-    <string name="voice_provider_key_row_title">%1$s түлхүүр</string>
-    <string name="voice_provider_key_placeholder">%1$s API түлхүүр</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Таны сервер дээрх түлхүүр</string>
-    <string name="voice_key_source_phone_footer">Дуудлагад таны OpenAI эсвэл xAI түлхүүрийг ашиглана.</string>
     <string name="voice_key_source_server_footer">Дуудлагад таны серверийн %1$s түлхүүрийг ашиглана.</string>
     <string name="voice_key_source_opencode_footer">Дуудлагын төлбөрийг таны OpenCode Console ажлын талбарт тооцно.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Энэ утсан дээр тохируулах</string>
     <string name="voice_fix_choose_provider">Үйлчилгээ үзүүлэгч сонгох</string>
     <string name="voice_fix_update_opencode">OpenCode-ийг шинэчлэх</string>
     <string name="voice_diagnosis_needs_update">%1$s дээр дуут дуудлага хийхэд OpenCode-ийн шинэ хувилбар хэрэгтэй.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Таны сервер рүү холбогдож чадсангүй.</string>
     <string name="voice_diagnosis_failed">%1$s дуудлагыг эхлүүлж чадсангүй.</string>
     <string name="voice_diagnosis_your_server_failed">Таны сервер дуудлагыг эхлүүлж чадсангүй.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI энэ утсан дээрх түлхүүрийг зөвшөөрсөнгүй.</string>
-    <string name="voice_diagnosis_missing_phone_key">Энэ утаснаас дуудлага хийхийн тулд %1$s API түлхүүрээ нэмнэ үү.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Сесстэйгээ ярихын тулд Тохиргоо дотроос микрофон ашиглахыг зөвшөөрнө үү.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Дуут холболтыг эхлүүлж чадсангүй: Сервер буруу хариулт буцаалаа.</string>
     <string name="voice_error_start_voice_detail">Дуут холболтыг эхлүүлж чадсангүй: %1$s</string>
     <string name="voice_error_start_voice_http">Дуут холболтыг эхлүүлж чадсангүй (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI API түлхүүрийг зөвшөөрсөнгүй.</string>
-    <string name="voice_error_openai_verify_http">OpenAI энэ түлхүүрийг баталгаажуулж чадсангүй (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Холболт алга.</string>
-    <string name="voice_error_model_address_invalid">Дуу хоолойн загварын хаяг буруу байна.</string>
-    <string name="voice_error_xai_rejected_key">xAI API түлхүүрийг зөвшөөрсөнгүй.</string>
-    <string name="voice_error_xai_verify_http">xAI энэ түлхүүрийг баталгаажуулж чадсангүй (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Энэ xAI API түлхүүр идэвхгүй болсон.</string>
-    <string name="voice_error_xai_key_blocked">Энэ xAI API түлхүүрийг хориглосон байна.</string>
     <string name="voice_error_service_address_invalid">Дуу хоолойн үйлчилгээний хаяг буруу байна.</string>
     <string name="voice_error_connection_lost">Дуут холболт тасарлаа.</string>
     <string name="voice_error_connection_closed">Дуут холболт хаагдсан.</string>
     <string name="voice_error_connection_setup">Дуут холболт үүсгэж чадсангүй.</string>
     <string name="voice_error_safety_filter">Аюулгүй байдлын шүүлтүүр дуут дуудлагыг дуусгалаа.</string>
     <string name="voice_error_audio_reset">Систем аудиог дахин тохирууллаа. Дуудлагыг дахин эхлүүлнэ үү.</string>
-    <string name="voice_error_missing_phone_key">Дуу хоолойг ашиглахын тулд Тохиргоо дотор %1$s API түлхүүрээ нэмнэ үү.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Австрали англи</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Бразилын португал</string>
     <string name="voice_accent_filipino_english">Филиппиний англи</string>
     <string name="voice_accent_southern_us_english">АНУ-ын өмнөд нутгийн англи</string>
-    <string name="voice_accent_indian_english">Энэтхэгийн англи</string>
-    <string name="voice_preview_error">Сонсгож чадсангүй</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Амьсгалын дохио</string>

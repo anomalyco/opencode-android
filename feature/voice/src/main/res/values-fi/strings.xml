@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">Puhelu päättynyt</string>
     <string name="voice_call_ended_rejoin">Liity uudelleen</string>
     <string name="voice_failure_title">Ääniyhteys epäonnistui</string>
-    <string name="voice_failure_check_api_key">Tarkista API-avain</string>
     <string name="voice_failure_start_title">Puhelun aloitus epäonnistui</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Ei avainta</string>
     <string name="voice_provider_state_needs_update">Päivitä OpenCode</string>
     <string name="voice_provider_state_offline">Ei yhteyttä</string>
-    <string name="voice_provider_place_phone">Tämä puhelin</string>
-    <string name="voice_provider_brand_openai_account">OpenAI-tilisi</string>
     <string name="voice_provider_name">%1$s kohteessa %2$s</string>
     <string name="voice_provider_subtitle">Kohteessa %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-avain</string>
-    <string name="voice_provider_key_placeholder">%1$s-API-avain</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Avain palvelimellasi</string>
-    <string name="voice_key_source_phone_footer">Puheluissa käytetään omaa OpenAI- tai xAI-avaintasi.</string>
     <string name="voice_key_source_server_footer">Puheluissa käytetään palvelimesi %1$s-avainta.</string>
     <string name="voice_key_source_opencode_footer">Puhelut laskutetaan OpenCode Console -työtililtäsi.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Ota käyttöön tässä puhelimessa</string>
     <string name="voice_fix_choose_provider">Valitse palveluntarjoaja</string>
     <string name="voice_fix_update_opencode">Päivitä OpenCode</string>
     <string name="voice_diagnosis_needs_update">%1$s tarvitsee uudemman OpenCode-version äänipuheluihin.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Palvelimeesi ei saatu yhteyttä.</string>
     <string name="voice_diagnosis_failed">%1$s ei voinut aloittaa puhelua.</string>
     <string name="voice_diagnosis_your_server_failed">Palvelimesi ei voinut aloittaa puhelua.</string>
-    <string name="voice_diagnosis_key_rejected">OpenAI ei hyväksynyt tämän puhelimen avainta.</string>
-    <string name="voice_diagnosis_missing_phone_key">Lisää %1$s-API-avaimesi, jotta voit soittaa tästä puhelimesta.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Salli mikrofonin käyttö asetuksissa, jotta voit puhua istunnollesi.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Äänipuhelun aloitus epäonnistui: palvelin palautti virheellisen vastauksen.</string>
     <string name="voice_error_start_voice_detail">Äänipuhelun aloitus epäonnistui: %1$s</string>
     <string name="voice_error_start_voice_http">Äänipuhelun aloitus epäonnistui (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">OpenAI hylkäsi API-avaimen.</string>
-    <string name="voice_error_openai_verify_http">OpenAI ei voinut vahvistaa tätä avainta (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Ei yhteyttä.</string>
-    <string name="voice_error_model_address_invalid">Äänimallin osoite on virheellinen.</string>
-    <string name="voice_error_xai_rejected_key">xAI hylkäsi API-avaimen.</string>
-    <string name="voice_error_xai_verify_http">xAI ei voinut vahvistaa tätä avainta (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Tämä xAI-API-avain on poistettu käytöstä.</string>
-    <string name="voice_error_xai_key_blocked">Tämä xAI-API-avain on estetty.</string>
     <string name="voice_error_service_address_invalid">Äänipalvelun osoite on virheellinen.</string>
     <string name="voice_error_connection_lost">Ääniyhteys katkesi.</string>
     <string name="voice_error_connection_closed">Ääniyhteys on suljettu.</string>
     <string name="voice_error_connection_setup">Ääniyhteyden muodostus epäonnistui.</string>
     <string name="voice_error_safety_filter">Turvasuodatin päätti äänipuhelun.</string>
     <string name="voice_error_audio_reset">Järjestelmä nollasi äänen. Aloita puhelu uudelleen.</string>
-    <string name="voice_error_missing_phone_key">Lisää %1$s-API-avaimesi asetuksissa, jotta voit käyttää ääntä.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Australian englanti</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brasilian portugali</string>
     <string name="voice_accent_filipino_english">Filippiinien englanti</string>
     <string name="voice_accent_southern_us_english">Yhdysvaltain eteläosien englanti</string>
-    <string name="voice_accent_indian_english">Intian englanti</string>
-    <string name="voice_preview_error">Ääninäytteen toisto epäonnistui</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Henkäys</string>

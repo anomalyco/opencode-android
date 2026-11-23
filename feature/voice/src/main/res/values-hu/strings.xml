@@ -4,7 +4,6 @@
     <string name="voice_call_ended_title">A hívás véget ért</string>
     <string name="voice_call_ended_rejoin">Újracsatlakozás</string>
     <string name="voice_failure_title">Nem sikerült a hangkapcsolat</string>
-    <string name="voice_failure_check_api_key">API kulcs ellenőrzése</string>
     <string name="voice_failure_start_title">Nem sikerült elindítani a hívást</string>
 
     <!-- Floating call -->
@@ -99,21 +98,14 @@
     <string name="voice_provider_state_no_key">Nincs kulcs</string>
     <string name="voice_provider_state_needs_update">OpenCode frissítése</string>
     <string name="voice_provider_state_offline">Nincs kapcsolat</string>
-    <string name="voice_provider_place_phone">Ez a telefon</string>
-    <string name="voice_provider_brand_openai_account">Az Ön OpenAI-fiókja</string>
     <string name="voice_provider_name">%1$s (%2$s)</string>
     <string name="voice_provider_subtitle">Hely: %1$s</string>
-    <string name="voice_provider_key_row_title">%1$s-kulcs</string>
-    <string name="voice_provider_key_placeholder">%1$s API kulcs</string>
 
     <!-- Voice key source -->
-    <string name="voice_key_source_server_row_title">Kulcs az Ön kiszolgálóján</string>
-    <string name="voice_key_source_phone_footer">A hívások az Ön saját OpenAI- vagy xAI-kulcsát használják.</string>
     <string name="voice_key_source_server_footer">A hívások az Ön kiszolgálójának %1$s-kulcsát használják.</string>
     <string name="voice_key_source_opencode_footer">A hívások díját az Ön OpenCode Console-munkaterületére terheljük.</string>
 
     <!-- Call failure fixes and diagnosis -->
-    <string name="voice_fix_set_up_on_phone">Beállítás ezen a telefonon</string>
     <string name="voice_fix_choose_provider">Válasszon szolgáltatót</string>
     <string name="voice_fix_update_opencode">OpenCode frissítése</string>
     <string name="voice_diagnosis_needs_update">%1$s: a hanghívásokhoz újabb OpenCode szükséges.</string>
@@ -124,8 +116,6 @@
     <string name="voice_diagnosis_your_server_unreachable">Az Ön kiszolgálója nem érhető el.</string>
     <string name="voice_diagnosis_failed">%1$s nem tudta elindítani a hívást.</string>
     <string name="voice_diagnosis_your_server_failed">Az Ön kiszolgálója nem tudta elindítani a hívást.</string>
-    <string name="voice_diagnosis_key_rejected">Az OpenAI nem fogadta el a telefonon lévő kulcsot.</string>
-    <string name="voice_diagnosis_missing_phone_key">Adja meg %1$s API kulcsát, hogy erről a telefonról hívhasson.</string>
 
     <!-- Call errors -->
     <string name="voice_error_microphone_denied">Engedélyezze a mikrofon használatát a Beállításokban, hogy beszélhessen a munkamenettel.</string>
@@ -136,21 +126,12 @@
     <string name="voice_error_invalid_response">Nem sikerült elindítani a hangot: a kiszolgáló érvénytelen választ adott.</string>
     <string name="voice_error_start_voice_detail">Nem sikerült elindítani a hangot: %1$s</string>
     <string name="voice_error_start_voice_http">Nem sikerült elindítani a hangot (HTTP %1$d).</string>
-    <string name="voice_error_openai_rejected_key">Az OpenAI elutasította az API kulcsot.</string>
-    <string name="voice_error_openai_verify_http">Az OpenAI nem tudta ellenőrizni a kulcsot (HTTP %1$d).</string>
-    <string name="voice_error_no_connection">Nincs kapcsolat.</string>
-    <string name="voice_error_model_address_invalid">A hangmodell címe érvénytelen.</string>
-    <string name="voice_error_xai_rejected_key">Az xAI elutasította az API kulcsot.</string>
-    <string name="voice_error_xai_verify_http">Az xAI nem tudta ellenőrizni a kulcsot (HTTP %1$d).</string>
-    <string name="voice_error_xai_key_disabled">Ez az xAI API kulcs le van tiltva.</string>
-    <string name="voice_error_xai_key_blocked">Ez az xAI API kulcs blokkolva van.</string>
     <string name="voice_error_service_address_invalid">A hangszolgáltatás címe érvénytelen.</string>
     <string name="voice_error_connection_lost">A hangkapcsolat megszakadt.</string>
     <string name="voice_error_connection_closed">A hangkapcsolat lezárult.</string>
     <string name="voice_error_connection_setup">Nem sikerült létrehozni a hangkapcsolatot.</string>
     <string name="voice_error_safety_filter">Egy biztonsági szűrő megszakította a hanghívást.</string>
     <string name="voice_error_audio_reset">A rendszer alaphelyzetbe állította a hangot. Indítsa újra a hívást.</string>
-    <string name="voice_error_missing_phone_key">A hang használatához adja meg %1$s API kulcsát a Beállításokban.</string>
 
     <!-- Voice accents -->
     <string name="voice_accent_australian_english">Ausztrál angol</string>
@@ -160,8 +141,6 @@
     <string name="voice_accent_brazilian_portuguese">Brazil portugál</string>
     <string name="voice_accent_filipino_english">Fülöp-szigeteki angol</string>
     <string name="voice_accent_southern_us_english">Amerikai déli angol</string>
-    <string name="voice_accent_indian_english">Indiai angol</string>
-    <string name="voice_preview_error">Nem sikerült lejátszani a hangmintát</string>
 
     <!-- Call sound packs -->
     <string name="voice_sound_pack_breath_ping">Leheletnyi csengés</string>

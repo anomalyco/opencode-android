@@ -19,7 +19,6 @@ import ai.opencode.feature.session.missingFolderMoveTarget
 import ai.opencode.feature.voice.VoiceCallClient
 import ai.opencode.feature.voice.VoiceCallLogClient
 import ai.opencode.feature.voice.VoiceCallLogRecorder
-import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.voice.VoiceFeature
 import ai.opencode.feature.voice.VoiceRoute
 import ai.opencode.server.OpenCodeClient
@@ -162,7 +161,7 @@ class HomeFeatureTestsMovedSessions {
                 val (made, detail) = home.makeDetail(session, cachedItems = emptyList())
                 val voice = VoiceFeature.State(testServer, session)
                     .withPhase(VoiceFeature.State.Phase.Live)
-                    .copy(activeRoute = VoiceRoute.PhoneKey(VoiceEngine.realtime), callLogID = logID)
+                    .copy(activeRoute = VoiceRoute.serverOpenAI(VoiceRoute.OpenAI.realtime), callLogID = logID)
                 made.copy(sessionDetail = detail.copy(voice = voice))
             }
             var retargets = 0
@@ -170,7 +169,7 @@ class HomeFeatureTestsMovedSessions {
                 this[VoiceCallLogClient] = VoiceCallLogClient(recorder = recorder)
                 this[DateClient] = DateClient.constant(Instant.EPOCH)
                 this[VoiceCallClient] = VoiceCallClient(
-                    start = { _, _ -> emptyFlow() },
+                    start = { _ -> emptyFlow() },
                     completeFunction = { _, _ -> },
                     retarget = { retargets += 1 },
                     setMuted = { },

@@ -62,10 +62,6 @@ class VoiceServerPickerTests {
         store.receive(HomeSettingsFeature.Action.ServerVoiceSupportLoaded(serverID = studio.persistenceID, support = ServerVoiceSupport.supported))
         assertEquals(mapOf(studio.persistenceID to ServerVoiceSupport.supported), support())
 
-        store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Phone))
-        assertEquals(VoiceServerChoice.Phone, choice())
-        store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
-
         store.send(HomeSettingsFeature.Action.VoiceServerChanged(VoiceServerChoice.Saved(serverID = "srv_gone")))
         store.send(HomeSettingsFeature.Action.CheckServerVoiceSupport)
         // A stale pick falls back to Automatic, which also asks the connected server's models.

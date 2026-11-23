@@ -105,29 +105,20 @@
     <string name="settings_delegator_another_server">%1$s · ເຊີບເວີອື່ນ</string>
 
     <!-- Voice › Key Editor -->
-    <string name="settings_voice_key_hide_description">ຫລົບຊ່ອນລະຫັດ</string>
-    <string name="settings_voice_key_show_description">ສະແດງລະຫັດ</string>
-    <string name="settings_voice_key_verify">ກວດສອບ</string>
 
     <!-- Voice › Voice Provider -->
     <string name="settings_voice_provider_title">ຜູ້ໃຫ້ບໍລິການສຽງ</string>
     <string name="settings_voice_provider_place">ໃນ %1$s</string>
-    <string name="settings_voice_api_key_title">ລະຫັດ API</string>
     <string name="settings_voice_provider_automatic_footer">ເມື່ອ %1$s ບໍ່ພ້ອມ, ການໂທຈະໃຊ້ຜູ້ໃຫ້ບໍລິການທີ່ພ້ອມ.</string>
     <string name="settings_voice_provider_choose_automatically">ເລືອກອັດຕະໂນມັດ</string>
     <string name="settings_voice_provider_others_header">ຜູ້ໃຫ້ບໍລິການອື່ນໆ</string>
     <string name="settings_voice_provider_use_description">ໃຊ້ %1$s</string>
     <string name="settings_voice_provider_use">ໃຊ້</string>
-    <string name="settings_voice_provider_set_up">ຕັ້ງຄ່າ</string>
     <plurals name="settings_voice_provider_not_available_count">
         <item quantity="other">%d ລາຍການບໍ່ພ້ອມໃຊ້ງານ</item>
     </plurals>
 
     <!-- Voice › API Key -->
-    <string name="settings_voice_account_title">ບັນຊີ OpenAI ຂອງເຈົ້າ</string>
-    <string name="settings_voice_account_place">ໃນໂທລະສັບນີ້</string>
-    <string name="settings_voice_account_key_footer">ການໂທໃຊ້ບັນຊີ OpenAI ຂອງເຈົ້າແທນເຊີບເວີ.</string>
-    <string name="settings_voice_account_use_for_calls">ໃຊ້ສຳລັບການໂທ</string>
 
     <!-- Voice -->
     <string name="settings_voice_title">ສຽງ</string>
@@ -141,19 +132,9 @@
     <string name="settings_voice_raise_to_talk">ຍົກຂຶ້ນເພື່ອເວົ້າ</string>
     <string name="settings_voice_call_sounds">ສຽງການໂທ</string>
     <string name="settings_voice_call_history">ປະຫວັດການໂທ</string>
-    <string name="settings_voice_edit_key_label">ແກ້ໄຂລະຫັດ API ຂອງ %1$s</string>
-    <string name="settings_voice_key_verified">ກວດສອບແລ້ວ</string>
-    <string name="settings_voice_key_checking">ກຳລັງກວດສອບ…</string>
-    <string name="settings_voice_key_saved">ບັນທຶກແລ້ວ</string>
-    <string name="settings_voice_key_missing">ຍັງບໍ່ມີ</string>
-    <string name="settings_voice_preview_disabled_hint">ເພີ່ມລະຫັດ %1$s ເພື່ອຟັງຕົວຢ່າງສຽງ</string>
 
     <!-- Voice › Voice Picker -->
-    <string name="settings_voice_picker_add_key_footer">ເພີ່ມລະຫັດ %1$s ເພື່ອຟັງຕົວຢ່າງສຽງ.</string>
     <string name="settings_voice_picker_unavailable_footer">%1$s ບໍ່ພ້ອມໃຊ້ງານໃນ %2$s, ການໂທຈຶ່ງໃຊ້ %3$s.</string>
-    <string name="settings_voice_stop_preview_description">ຢຸດຕົວຢ່າງສຽງ %1$s</string>
-    <string name="settings_voice_preview_description">ຟັງຕົວຢ່າງ %1$s</string>
-    <string name="settings_voice_preview_playing">ກຳລັງຫຼິ້ນ</string>
     <string name="settings_voice_call_voice_unavailable">%1$s · %2$s ບໍ່ພ້ອມໃຊ້ງານ</string>
 
     <!-- Settings root -->
