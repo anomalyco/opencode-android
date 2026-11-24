@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">開啟工作階段清單</string>
     <string name="drawer_button_attention_state">有工作階段需要你回應</string>
     <string name="drawer_button_unread_state">有未讀工作階段</string>
-    <string name="drawer_notice_open_sessions_action">開啟工作階段清單</string>
-    <string name="drawer_notice_open_session_action">開啟此工作階段</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">搜尋工作階段</string>

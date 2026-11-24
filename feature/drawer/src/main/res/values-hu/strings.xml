@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Munkamenetek megnyitása</string>
     <string name="drawer_button_attention_state">Egy munkamenet beavatkozást igényel</string>
     <string name="drawer_button_unread_state">Olvasatlan munkamenetek</string>
-    <string name="drawer_notice_open_sessions_action">Munkamenetek megnyitása</string>
-    <string name="drawer_notice_open_session_action">Munkamenet megnyitása</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Munkamenetek keresése</string>

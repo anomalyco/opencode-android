@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">ເປີດເຊດຊັນ</string>
     <string name="drawer_button_attention_state">ມີເຊດຊັນທີ່ຕ້ອງການຄຳຕອບຈາກເຈົ້າ</string>
     <string name="drawer_button_unread_state">ເຊດຊັນທີ່ຍັງບໍ່ອ່ານ</string>
-    <string name="drawer_notice_open_sessions_action">ເປີດເຊດຊັນ</string>
-    <string name="drawer_notice_open_session_action">ເປີດເຊດຊັນນີ້</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">ເຊດຊັນຄົ້ນຫາ</string>

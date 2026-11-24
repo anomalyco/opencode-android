@@ -87,8 +87,6 @@
     <string name="drawer_button_open_sessions_description">Obre les sessions</string>
     <string name="drawer_button_attention_state">Una sessió necessita la teva resposta</string>
     <string name="drawer_button_unread_state">Sessions sense llegir</string>
-    <string name="drawer_notice_open_sessions_action">Obre les sessions</string>
-    <string name="drawer_notice_open_session_action">Obre la sessió</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Sessions de cerca</string>

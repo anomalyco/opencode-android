@@ -142,8 +142,6 @@ data class SessionListContext(
     val isMuted: Boolean = false,
     /** Another session needs input or is unread: the drawer button shows it. */
     val elsewhere: DrawerBadge? = null,
-    /** In-App Notices: what the drawer button says about another session. */
-    val notice: InAppNotice? = null,
     /** Server Flow: the server dropped; a pill above the composer says so. */
     val connection: ServerConnectionNotice? = null,
 ) {

@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">ክፍለ ጊዜዎችን ክፈት</string>
     <string name="drawer_button_attention_state">አንድ ክፍለ ጊዜ የእርስዎን ግቤት ይፈልጋል</string>
     <string name="drawer_button_unread_state">ያልተነበቡ ክፍለ ጊዜዎች</string>
-    <string name="drawer_notice_open_sessions_action">ክፍለ ጊዜዎችን ክፈት</string>
-    <string name="drawer_notice_open_session_action">ክፍለ ጊዜውን ክፈት</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">የፍለጋ ክፍለ-ጊዜዎች</string>

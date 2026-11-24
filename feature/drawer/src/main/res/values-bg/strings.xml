@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Отворете сесиите</string>
     <string name="drawer_button_attention_state">Сесия изисква вашия отговор</string>
     <string name="drawer_button_unread_state">Непрочетени сесии</string>
-    <string name="drawer_notice_open_sessions_action">Отворете сесиите</string>
-    <string name="drawer_notice_open_session_action">Отворете сесията</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Сесии за търсене</string>

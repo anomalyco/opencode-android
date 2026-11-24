@@ -87,8 +87,6 @@
     <string name="drawer_button_open_sessions_description">Ouvrir les sessions</string>
     <string name="drawer_button_attention_state">Une session nécessite votre intervention</string>
     <string name="drawer_button_unread_state">Sessions non lues</string>
-    <string name="drawer_notice_open_sessions_action">Ouvrir les sessions</string>
-    <string name="drawer_notice_open_session_action">Ouvrir la session</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Rechercher des sessions</string>

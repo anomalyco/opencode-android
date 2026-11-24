@@ -149,7 +149,7 @@ import kotlinx.coroutines.flow.map
  *
  * @param navigationIcon the drawer button Home supplies (iOS `drawerControl`); unused while
  *   [onBack] or [onCatchUpOpen] is set.
- * @param listContext what Home knows about this session (project, pin, unread, mute, notices).
+ * @param listContext what Home knows about this session (project, pin, unread, mute).
  * @param onConnectionAction Server Flow: the connection pill was acted on.
  * @param onBack set on a subagent pushed over its parent: the header trades the drawer button for Back.
  * @param onCatchUpOpen set while the session is a catch-up card: the title leaves Catch Up for the session.

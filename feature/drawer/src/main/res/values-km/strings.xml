@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">បើកសម័យ</string>
     <string name="drawer_button_attention_state">មានសម័យត្រូវការការឆ្លើយតបពីអ្នក</string>
     <string name="drawer_button_unread_state">សម័យមិនទាន់អាន</string>
-    <string name="drawer_notice_open_sessions_action">បើកសម័យ</string>
-    <string name="drawer_notice_open_session_action">បើកសម័យនេះ</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">សម័យស្វែងរក</string>

@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Öppna sessioner</string>
     <string name="drawer_button_attention_state">En session behöver ditt svar</string>
     <string name="drawer_button_unread_state">Olästa sessioner</string>
-    <string name="drawer_notice_open_sessions_action">Öppna sessioner</string>
-    <string name="drawer_notice_open_session_action">Öppna sessionen</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Sök sessioner</string>

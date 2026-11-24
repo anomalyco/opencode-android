@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Բացել նիստերը</string>
     <string name="drawer_button_attention_state">Նիստերից մեկին ձեր արձագանքն է պետք</string>
     <string name="drawer_button_unread_state">Չընթերցված նիստեր</string>
-    <string name="drawer_notice_open_sessions_action">Բացել նիստերը</string>
-    <string name="drawer_notice_open_session_action">Բացել նիստը</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Որոնման նիստեր</string>

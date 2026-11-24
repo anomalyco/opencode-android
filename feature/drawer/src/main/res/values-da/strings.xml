@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Åbn sessioner</string>
     <string name="drawer_button_attention_state">En session har brug for dit input</string>
     <string name="drawer_button_unread_state">Ulæste sessioner</string>
-    <string name="drawer_notice_open_sessions_action">Åbn sessioner</string>
-    <string name="drawer_notice_open_session_action">Åbn sessionen</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Søg i sessioner</string>

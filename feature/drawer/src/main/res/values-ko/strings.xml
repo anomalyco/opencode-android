@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">세션 열기</string>
     <string name="drawer_button_attention_state">입력이 필요한 세션이 있어요</string>
     <string name="drawer_button_unread_state">읽지 않은 세션</string>
-    <string name="drawer_notice_open_sessions_action">세션 열기</string>
-    <string name="drawer_notice_open_session_action">세션 열기</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">세션 검색</string>

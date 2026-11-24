@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Ava seansid</string>
     <string name="drawer_button_attention_state">Seanss vajab sinu sisendit</string>
     <string name="drawer_button_unread_state">Lugemata seansid</string>
-    <string name="drawer_notice_open_sessions_action">Ava seansid</string>
-    <string name="drawer_notice_open_session_action">Ava seanss</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Otsi seansse</string>

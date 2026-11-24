@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">ལཱ་ཡུན་ཚུ་ཁ་ཕྱེ།</string>
     <string name="drawer_button_attention_state">ལཱ་ཡུན་ཅིག་ལུ་ཁྱོད་ཀྱི་ལན་དགོཔ་ཨིན།</string>
     <string name="drawer_button_unread_state">མ་ལྷག་པའི་ལཱ་ཡུན་ཚུ།</string>
-    <string name="drawer_notice_open_sessions_action">ལཱ་ཡུན་ཚུ་ཁ་ཕྱེ།</string>
-    <string name="drawer_notice_open_session_action">ལཱ་ཡུན་འདི་ཁ་ཕྱེ།</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">འཚོལ་ཞིབ་ལཱ་ཡུན་ཚུ།</string>

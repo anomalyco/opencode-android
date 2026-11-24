@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Hap sesionet</string>
     <string name="drawer_button_attention_state">Një sesion kërkon përgjigjen tënde</string>
     <string name="drawer_button_unread_state">Sesione të palexuara</string>
-    <string name="drawer_notice_open_sessions_action">Hap sesionet</string>
-    <string name="drawer_notice_open_session_action">Hap sesionin</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Kërko seancat</string>

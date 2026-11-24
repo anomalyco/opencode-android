@@ -101,7 +101,7 @@ internal inline fun HomeFeature.State.updatingSession(sessionID: String, transfo
 
 /**
  * Home's list and remembered snapshot learn the first prompt a session's screen just learned
- * ([learningFirstPrompt]), so its row, Catch Up card, notices and system surfaces read the same.
+ * ([learningFirstPrompt]), so its row, Catch Up card and system surfaces read the same.
  */
 internal fun HomeFeature.State.learningFirstPrompt(session: OpenCodeSession?): HomeFeature.State {
     val preview = session?.firstPrompt ?: return this
@@ -654,10 +654,6 @@ val HomeFeature.State.sessionIndicators: Map<String, Indicator>
         val status = statusSnapshot()
         return sessions.associate { it.id to status.indicator(it) }
     }
-
-/** Whether a notice may show now: the app is in front on a session, and neither the drawer, Settings, nor Catch Up is up. */
-val HomeFeature.State.canShowInAppNotice: Boolean
-    get() = sessionDetail?.isVisible == true && !isDrawerOpen && !isSettingsShown && catchUp == null
 
 /** The open session and its family's root. */
 val HomeFeature.State.openSessionIDs: Set<String>

@@ -87,8 +87,6 @@
     <string name="drawer_button_open_sessions_description">Atvērt sesijas</string>
     <string name="drawer_button_attention_state">Sesijai vajadzīga tava ievade</string>
     <string name="drawer_button_unread_state">Nelasītas sesijas</string>
-    <string name="drawer_notice_open_sessions_action">Atvērt sesijas</string>
-    <string name="drawer_notice_open_session_action">Atvērt sesiju</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Meklēt sesijas</string>

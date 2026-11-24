@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">Buka sesi</string>
     <string name="drawer_button_attention_state">Ada sesi yang perlu masukan Anda</string>
     <string name="drawer_button_unread_state">Sesi belum dibaca</string>
-    <string name="drawer_notice_open_sessions_action">Buka sesi</string>
-    <string name="drawer_notice_open_session_action">Buka sesi</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Cari sesi</string>
