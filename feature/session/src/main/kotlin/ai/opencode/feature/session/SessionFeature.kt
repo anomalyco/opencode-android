@@ -720,10 +720,11 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class ComposerAttachments(val action: ComposerAttachmentsFeature.Action) : Action
         /**
          * A drawn image for the session whose viewer it came from ([from]), added by the rules a
-         * pasted image follows. A session action, since [State.TaskIdentity] is this module's,
-         * above the composer's.
+         * pasted image follows. It takes the place of the pending photo it was drawn on
+         * ([replacing], an attachment ID). A session action, since [State.TaskIdentity] is this
+         * module's, above the composer's.
          */
-        data class DrawingAdded(val attachment: OpenCodeOutgoingAttachment, val from: State.TaskIdentity) : Action
+        data class DrawingAdded(val attachment: OpenCodeOutgoingAttachment, val from: State.TaskIdentity, val replacing: String? = null) : Action
         /** An upward swipe on the unfocused composer asks for the keyboard. */
         data object ComposerSwipedUp : Action
         /** Send a failed message again, with its ID and delivery. */

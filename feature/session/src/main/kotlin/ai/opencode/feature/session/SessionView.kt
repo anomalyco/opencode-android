@@ -17,6 +17,7 @@ import ai.opencode.core.motion.MotionPhase
 import ai.opencode.core.motion.rememberReduceMotion
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.PresentationAction
+import ai.opencode.core.store.Store
 import ai.opencode.core.store.StoreOf
 import ai.opencode.core.store.observe
 import ai.opencode.core.store.scope
@@ -39,6 +40,7 @@ import ai.opencode.feature.composer.composerKeyboardStepHold
 import ai.opencode.feature.media.LocalMediaPresenter
 import ai.opencode.feature.media.MediaPresenter
 import ai.opencode.feature.media.FullscreenViewer
+import ai.opencode.feature.media.FullscreenViewerFeature
 import ai.opencode.feature.media.TranscriptMetrics
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.State
@@ -864,7 +866,9 @@ private fun presentComposerPhoto(
     ) ?: return
     val restoresFocus = host?.messageFieldFocused == true
     if (restoresFocus) host?.dismissComposerKeyboard()
-    val viewerStore = ComposerPhotoViewer.store(preview, addDrawing = drawingHandler(store)) { removed ->
+    lateinit var viewerStore: Store<FullscreenViewerFeature.State, FullscreenViewerFeature.Action>
+    val addDrawing = drawingHandler(store, drawnOn = { viewerStore.state.selectedPage })
+    viewerStore = ComposerPhotoViewer.store(preview, addDrawing) { removed ->
         val index = store.state.pendingAttachments.indexOfFirst { it.id == removed }
         if (index >= 0) store.send(Action.attachmentRemoved(index))
         else store.state.pendingFiles.firstOrNull { it.id.toString() == removed }?.let { store.send(Action.fileRemoved(it.id)) }
