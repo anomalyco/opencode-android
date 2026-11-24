@@ -2,6 +2,7 @@ package ai.opencode.feature.session
 
 import ai.opencode.core.ui.openCodeHairline
 import ai.opencode.core.ui.OpenCodeSurfaces
+import ai.opencode.core.ui.OpenCodeShape
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.diagnostics.LabMarks
 import ai.opencode.core.haptics.Haptic
@@ -20,8 +21,6 @@ import ai.opencode.core.strings.localizedPlural
 import ai.opencode.core.tuning.InternalBuild
 import ai.opencode.core.ui.OpenCodeFonts
 import ai.opencode.core.ui.OpenCodeIcon
-import ai.opencode.core.ui.OpenCodeIconButton
-import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.RollingNumber
@@ -1151,18 +1150,20 @@ private fun BackgroundWorkRow(
             }
         }
         if (onStop != null) {
-            OpenCodeIconButton(
-                symbol = SFSymbol.Xmark,
-                contentDescription = stopLabel ?: "",
-                onClick = onStop,
-                // The row's semantics carry Open's custom Stop action; a script row's own Stop stays its button.
-                modifier = if (onTap != null) Modifier.clearAndSetSemantics { } else Modifier,
-                style = OpenCodeIconButtonStyle.Standard,
-                iconSize = 16.dp,
-                enabled = !isStopping,
-            )
+            Box(
+                (if (onTap != null) Modifier.clearAndSetSemantics { } else Modifier)
+                    .size(48.dp)
+                    .clickable(enabled = !isStopping, role = Role.Button, onClickLabel = stopLabel, onClick = onStop),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                Box(
+                    Modifier.size(28.dp).clip(OpenCodeShape.control).background(OpenCodeSurfaces.neutralFill).openCodeHairline(OpenCodeShape.control),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    OpenCodeIcon(SFSymbol.StopFill, contentDescription = null, size = 14.dp, tint = if (isStopping) OpenCodeTheme.colors.tertiaryText else OpenCodeTheme.colors.text)
+                }
+            }
         }
-        if (onTap != null) OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
     }
 }
 
