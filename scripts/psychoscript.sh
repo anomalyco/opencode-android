@@ -16,7 +16,7 @@
 # without Rust compile; this script refreshes them. Without the libraries, widgets show "The widget
 # runtime isn't available".
 set -euo pipefail
-REV=6463778580c8ab2c2adac742e9da2bcc918fa514
+REV=ffb5098f3646396e6288de5c743a637224cd8266
 cd "$(dirname "$0")/.."
 out=vendor/psychoscript
 bindings=feature/transcript/src/main/kotlin/com/anomalyco/psychoscript
@@ -60,7 +60,7 @@ else
 fi
 
 grep -q "$REV" "$out/REVISION" || { echo "Built $(cat "$out/REVISION"), not $REV" >&2; exit 1; }
-for f in psychoscript_mobile.kt PsychoScriptGpu.kt; do
+for f in psychoscript_mobile.kt PsychoScriptGpu.kt LiveFrames.kt; do
   if [[ -f "$out/kotlin/com/anomalyco/psychoscript/$f" ]] && ! cmp -s "$out/kotlin/com/anomalyco/psychoscript/$f" "$bindings/$f"; then
     mkdir -p "$bindings"
     cp "$out/kotlin/com/anomalyco/psychoscript/$f" "$bindings/"

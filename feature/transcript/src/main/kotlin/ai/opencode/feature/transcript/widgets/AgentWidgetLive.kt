@@ -65,6 +65,14 @@ internal class AgentWidgetLiveDriver(
         if (!finished) run?.deliver(messageJson)
     }
 
+    /** A frame for the program ([AgentWidgetLiveRun.deliverFrame]). Any thread. */
+    fun deliverFrame(
+        t: Double, dt: Double, width: Float, height: Float, scale: Float,
+        pointer: FloatArray?, dark: Boolean, fullscreen: Boolean, close: AgentWidgetRect?,
+    ) {
+        if (!finished) run?.deliverFrame(t, dt, width, height, scale, pointer, dark, fullscreen, close)
+    }
+
     /** Starts over from `main` (Restart after an error). */
     fun restart() {
         stopRun()

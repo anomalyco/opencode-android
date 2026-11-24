@@ -142,6 +142,23 @@ interface AgentWidgetLiveProgram : AutoCloseable {
 /** One running live program. Calls never block; a call on a run that ended does nothing. */
 interface AgentWidgetLiveRun {
     fun deliver(messageJson: String)
+    /**
+     * The frame the program asked for, `{ type: "frame", frame }`: [pointer] `x, y` while down (else none), [close] the
+     * full-screen close area over the frame's canvas (else none).
+     */
+    fun deliverFrame(
+        t: Double, dt: Double, width: Float, height: Float, scale: Float,
+        pointer: FloatArray?, dark: Boolean, fullscreen: Boolean, close: AgentWidgetRect?,
+    ) = deliver(
+        buildString(180) {
+            append("{\"type\":\"frame\",\"frame\":{\"t\":").append(t).append(",\"dt\":").append(dt)
+            append(",\"width\":").append(width).append(",\"height\":").append(height).append(",\"scale\":").append(scale)
+            append(",\"pointer\":")
+            if (pointer == null) append("null") else append("{\"x\":").append(pointer[0]).append(",\"y\":").append(pointer[1]).append(",\"down\":true}")
+            append(",\"dark\":").append(dark).append(",\"fullscreen\":").append(fullscreen)
+            append(",\"close\":").append(close?.json ?: "null").append("}}")
+        },
+    )
     fun pause()
     /** The program's next message is `{ type: "resumed", pausedMs }`. */
     fun resume()

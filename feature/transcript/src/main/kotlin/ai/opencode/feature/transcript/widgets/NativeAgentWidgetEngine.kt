@@ -2,6 +2,7 @@ package ai.opencode.feature.transcript.widgets
 
 import ai.opencode.core.log.AppLog
 import com.anomalyco.psychoscript.LiveExit
+import com.anomalyco.psychoscript.LiveFrames
 import com.anomalyco.psychoscript.LiveHandler
 import com.anomalyco.psychoscript.LiveOptions
 import com.anomalyco.psychoscript.LiveRun
@@ -59,11 +60,20 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
         val compiled = mapping { Program(program + LIVE_ENTRY) }
         return object : AgentWidgetLiveProgram {
             override fun start(inputJson: String, listener: AgentWidgetLiveListener, httpsHosts: List<String>?): AgentWidgetLiveRun {
+                val ended = Any()
+                var started: NativeLiveRun? = null
+                var exited = false
                 val handler = object : LiveHandler {
                     override fun onPosts(messagesJson: List<String>) = Unit
                     override fun onPostsBytes(messages: List<ByteArray>) = listener.posted(messages)
                     override fun onWarning(message: String) = listener.warned(message)
-                    override fun onExit(exit: LiveExit) = listener.exited((exit as? LiveExit.Failed)?.error?.let { mapped(it, draw = false) })
+                    override fun onExit(exit: LiveExit) {
+                        synchronized(ended) {
+                            exited = true
+                            started?.ended()
+                        }
+                        listener.exited((exit as? LiveExit.Failed)?.error?.let { mapped(it, draw = false) })
+                    }
                     override fun onGpuCanvas(key: String?, state: GpuCanvasState) = listener.gpuCanvas(
                         key,
                         when (state) {
@@ -82,7 +92,12 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                 )
                 val transport = if (httpsHosts.isNullOrEmpty()) null else AgentWidgetFetchTransport(listener::fetchFailed)
                 val live = mapping { compiled.startLive(inputJson, handler, options, transport, encoder) }
-                return NativeLiveRun(live)
+                val run = NativeLiveRun(live)
+                synchronized(ended) {
+                    started = run
+                    if (exited) run.ended()
+                }
+                return run
             }
 
             override fun close() = compiled.close()
@@ -90,7 +105,23 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     }
 
     private class NativeLiveRun(private val live: LiveRun) : AgentWidgetLiveRun {
+        /** Frames through one JNI call: a reference to the run of its own, let go when the run ends. */
+        private val frames = LiveFrames(live)
+
+        fun ended() = frames.close()
+
         override fun deliver(messageJson: String) = quietly { live.deliver(messageJson) }
+        override fun deliverFrame(
+            t: Double, dt: Double, width: Float, height: Float, scale: Float,
+            pointer: FloatArray?, dark: Boolean, fullscreen: Boolean, close: AgentWidgetRect?,
+        ) = quietly {
+            frames.deliver(
+                t, dt, width, height, scale,
+                pointer != null, pointer?.get(0) ?: 0f, pointer?.get(1) ?: 0f, pointer != null,
+                dark, fullscreen,
+                close != null, rounded(close?.x), rounded(close?.y), rounded(close?.width), rounded(close?.height),
+            )
+        }
         override fun pause() = quietly { live.pause() }
         override fun resume() = quietly { live.resume() }
         override fun snapshot(): Boolean = try {
@@ -100,10 +131,16 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             AppLog.app.notice { "Live widget snapshot failed: ${reason(error).take(120)}" }
             false
         }
-        override fun stop() = live.stop()
+        override fun stop() {
+            live.stop()
+            frames.close()
+        }
         override fun attachSurface(key: String, surface: AgentWidgetGpuSurface, width: Int, height: Int) =
             live.attachSurface(key, surface.handle as GpuSurface, width.coerceAtLeast(0).toUInt(), height.coerceAtLeast(0).toUInt())
         override fun detachSurface(key: String) = live.detachSurface(key)
+
+        /** As [AgentWidgetRect.json] prints it: two decimals. */
+        private fun rounded(value: Float?): Double = if (value == null) 0.0 else Math.round(value * 100.0) / 100.0
 
         private inline fun quietly(block: () -> Unit) {
             try {

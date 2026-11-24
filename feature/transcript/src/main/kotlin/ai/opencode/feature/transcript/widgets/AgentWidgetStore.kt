@@ -604,15 +604,7 @@ class AgentWidgetController internal constructor(
         val t = (nanos - liveStartNanos) / 1e9
         val dt = if (lastFrameNanos == 0L) 0.0 else (nanos - lastFrameNanos) / 1e9
         lastFrameNanos = nanos
-        val frame = buildString(180) {
-            append("{\"type\":\"frame\",\"frame\":{\"t\":").append(t).append(",\"dt\":").append(dt)
-            append(",\"width\":").append(width).append(",\"height\":").append(height).append(",\"scale\":").append(scale)
-            append(",\"pointer\":")
-            if (p == null) append("null") else append("{\"x\":").append(p[0]).append(",\"y\":").append(p[1]).append(",\"down\":true}")
-            append(",\"dark\":").append(dark).append(",\"fullscreen\":").append(fullscreen)
-            append(",\"close\":").append(close?.json ?: "null").append("}}")
-        }
-        live?.deliver(frame)
+        live?.deliverFrame(t, dt, width, height, scale, p, dark, fullscreen, close)
         liveFrameMeter?.let { it.frames++ }
     }
 
