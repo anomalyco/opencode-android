@@ -210,8 +210,14 @@ internal class AgentWidgetLiveDriver(
     /** GPU canvases whose surface failed: the runtime dropped it and presents again once another is attached. */
     private val surfaceFailed = HashSet<String>()
 
+    /** Each GPU canvas's last told opacity (the runtime tells it only on a change). */
+    private val liveOpaque = HashMap<String, Boolean>()
+
     private fun gpuCanvasChanged(key: String?, state: AgentWidgetGpuState) {
         // The runtime's surface failures all start so ("the surface was lost", "the surface failed: …").
+        if (state is AgentWidgetGpuState.Live) {
+            if (key != null) liveOpaque[key] = state.opaque else liveOpaque.keys.forEach { liveOpaque[it] = state.opaque }
+        }
         val surface = key != null && state is AgentWidgetGpuState.Stopped && !state.program && state.message.startsWith("the surface")
         if (surface) {
             surfaceFailed += key!!
@@ -228,7 +234,7 @@ internal class AgentWidgetLiveDriver(
 
     /** A new surface presents for [key]: a canvas stopped only by its old surface's failure is live again. */
     private fun presentsAgain(key: String) {
-        if (surfaceFailed.remove(key)) events.gpuCanvas(key, AgentWidgetGpuState.Live)
+        if (surfaceFailed.remove(key)) events.gpuCanvas(key, AgentWidgetGpuState.Live(liveOpaque[key] ?: false))
     }
 
     private fun attachAll() {

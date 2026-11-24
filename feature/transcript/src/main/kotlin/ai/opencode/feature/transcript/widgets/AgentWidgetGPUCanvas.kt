@@ -76,7 +76,6 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     val frame = rememberGpuCanvasFrame(node, scope)
     val size = canvasSize(node, modifier)
     val fps = rememberAgentWidgetFpsMeter()
-    val fullscreen = LocalAgentWidgetFullscreen.current
 
     val error = failure
     if (error != null) {
@@ -105,8 +104,6 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
                 if (stopped.program) scope.controller?.reportError("gpu", stopped.message) else scope.controller?.clientError("gpu", stopped.message)
                 break
             }
-            // A SurfaceView reports no presents: count the frames recorded.
-            if (fps != null && fullscreen) fps.frames++
             if (node.fps == 0) break
         }
     }
@@ -114,7 +111,10 @@ fun AgentWidgetGPUCanvas(node: AgentWidgetNode.Canvas, scope: AgentWidgetScope, 
     Box(size.then(frame.modifier).agentWidgetFpsBadge(fps)) {
         key(wgsl) {
             val held = remember { arrayOfNulls<AutoCloseable>(2) }
+            // Never opaque (its shader returns premultiplied RGBA), so never on a SurfaceView either.
             GpuSurfaceHost(
+                surfaceView = false,
+                opaque = false,
                 fps = fps,
                 onAvailable = { surface, width, height ->
                     try {
@@ -156,7 +156,10 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
     val frame = rememberGpuCanvasFrame(node, scope)
 
     val fps = rememberAgentWidgetFpsMeter()
-    if (fps != null && controller != null && LocalAgentWidgetFullscreen.current) {
+    val opaque = (state as? AgentWidgetGpuState.Live)?.opaque == true
+    // A translucent canvas stays on a TextureView: a translucent SurfaceView would show the window under full screen.
+    val surfaceView = LocalAgentWidgetFullscreen.current && opaque
+    if (fps != null && controller != null && surfaceView) {
         // A SurfaceView reports no presents: count the frames the program was given.
         DisposableEffect(controller, fps) {
             controller.liveFrameMeter = fps
@@ -165,9 +168,11 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
     }
     Box(canvasSize(node, modifier).then(frame.modifier).agentWidgetFpsBadge(fps)) {
         if (running && canvasKey != null && controller != null) {
-            key(canvasKey) {
+            key(canvasKey, surfaceView) {
                 val held = remember { arrayOfNulls<AgentWidgetGpuSurface>(1) }
                 GpuSurfaceHost(
+                    surfaceView = surfaceView,
+                    opaque = opaque,
                     fps = fps,
                     onAvailable = { surface, width, height ->
                         try {
@@ -187,7 +192,7 @@ internal fun AgentWidgetLiveGPUCanvas(node: AgentWidgetNode.Canvas, scope: Agent
                 )
             }
         }
-        val shown = running && noSurface == null && (state == null || state == AgentWidgetGpuState.Live)
+        val shown = running && noSurface == null && (state == null || state is AgentWidgetGpuState.Live)
         if (!shown) {
             // A program error shows its message; the client's reasons are for developers.
             val reason = when (state) {
@@ -265,22 +270,28 @@ private fun canvasSize(node: AgentWidgetNode.Canvas, modifier: Modifier): Modifi
 }
 
 /**
- * Where a GPU canvas presents: a [GpuTexture] inline, a [GpuSurfaceView] full screen, where nothing clips or fades it
- * and a frame then costs the app's threads nothing.
+ * Where a GPU canvas presents: a [GpuSurfaceView] for an opaque canvas full screen, where nothing clips or fades it
+ * and a frame then costs the app's threads nothing; else a [GpuTexture], opaque when the canvas is.
  */
 @Composable
-private fun GpuSurfaceHost(fps: AgentWidgetFpsMeter?, onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
-    if (LocalAgentWidgetFullscreen.current) {
+private fun GpuSurfaceHost(
+    surfaceView: Boolean,
+    opaque: Boolean,
+    fps: AgentWidgetFpsMeter?,
+    onAvailable: (Surface, Int, Int) -> Unit,
+    onResized: (Int, Int) -> Unit,
+    onGone: () -> Unit,
+) {
+    if (surfaceView) {
         GpuSurfaceView(onAvailable, onResized, onGone)
     } else {
-        GpuTexture(fps, onAvailable, onResized, onGone)
+        GpuTexture(fps, opaque, onAvailable, onResized, onGone)
     }
 }
 
 /**
- * A `SurfaceView` the runtime presents into, below the full-screen window (its HUD layers draw over it): [onAvailable]
- * at the first size, [onResized] on a new one, [onGone] before the surface goes. Opaque: a translucent surface there
- * would show the transcript's window through it. Main thread.
+ * A `SurfaceView` the runtime presents into, below the full-screen window (its HUD layers draw over it), for an opaque
+ * canvas: [onAvailable] at the first size, [onResized] on a new one, [onGone] before the surface goes. Main thread.
  */
 @Composable
 private fun GpuSurfaceView(onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
@@ -322,7 +333,7 @@ private fun GpuSurfaceView(onAvailable: (Surface, Int, Int) -> Unit, onResized: 
  * on a new size, and [onGone] before the surface is released (the view leaving, or its texture destroyed). Main thread.
  */
 @Composable
-private fun GpuTexture(fps: AgentWidgetFpsMeter?, onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
+private fun GpuTexture(fps: AgentWidgetFpsMeter?, opaque: Boolean, onAvailable: (Surface, Int, Int) -> Unit, onResized: (Int, Int) -> Unit, onGone: () -> Unit) {
     val available by rememberUpdatedState(onAvailable)
     val resized by rememberUpdatedState(onResized)
     val gone by rememberUpdatedState(onGone)
@@ -354,6 +365,7 @@ private fun GpuTexture(fps: AgentWidgetFpsMeter?, onAvailable: (Surface, Int, In
                 }
             }
         },
+        update = { it.isOpaque = opaque },
         modifier = Modifier.fillMaxSize(),
     )
 }

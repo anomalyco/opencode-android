@@ -67,7 +67,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                     override fun onGpuCanvas(key: String?, state: GpuCanvasState) = listener.gpuCanvas(
                         key,
                         when (state) {
-                            GpuCanvasState.Live -> AgentWidgetGpuState.Live
+                            is GpuCanvasState.Live -> AgentWidgetGpuState.Live(state.opaque)
                             is GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable(state.reason)
                             is GpuCanvasState.Lost -> AgentWidgetGpuState.Lost(state.reason)
                             is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(state.kind == GpuErrorKind.PROGRAM, state.message, state.report)

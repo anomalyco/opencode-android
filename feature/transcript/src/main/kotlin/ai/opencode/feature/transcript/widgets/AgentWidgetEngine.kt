@@ -121,7 +121,8 @@ interface AgentWidgetShaderCanvas : AutoCloseable {
 
 /** A live run's GPU canvas state (widgets-gpu.md): [Live] shows the surface, anything else its placeholder. */
 sealed interface AgentWidgetGpuState {
-    data object Live : AgentWidgetGpuState
+    /** It has an image: show its surface. [opaque]: configured `alphaMode: "opaque"`, so no transparency. */
+    data class Live(val opaque: Boolean) : AgentWidgetGpuState
     /** No GPU canvases on this device; [reason] is for developers (the Android version, adapter, limits, …). */
     data class Unavailable(val reason: String) : AgentWidgetGpuState
     /** The device was lost until the program draws again; [reason] is wgpu's, for developers. */

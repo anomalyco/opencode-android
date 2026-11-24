@@ -540,7 +540,7 @@ class AgentWidgetController internal constructor(
     }
 
     private fun describe(state: AgentWidgetGpuState): String = when (state) {
-        AgentWidgetGpuState.Live -> "live"
+        is AgentWidgetGpuState.Live -> if (state.opaque) "live (opaque)" else "live (translucent)"
         is AgentWidgetGpuState.Unavailable -> "unavailable: ${state.reason}"
         is AgentWidgetGpuState.Lost -> "lost: ${state.reason}"
         is AgentWidgetGpuState.Stopped ->

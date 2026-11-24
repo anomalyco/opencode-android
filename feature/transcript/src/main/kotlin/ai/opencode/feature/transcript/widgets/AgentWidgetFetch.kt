@@ -48,7 +48,7 @@ internal object AgentWidgetDiagnostics {
     /** The GPU's start, once per process: ready at the first live canvas, or why there is none. */
     fun gpuStarted(state: AgentWidgetGpuState) {
         val line = when (state) {
-            AgentWidgetGpuState.Live -> "GPU initialized: device ready (Vulkan), canvases live"
+            is AgentWidgetGpuState.Live -> "GPU initialized: device ready (Vulkan), canvases live"
             is AgentWidgetGpuState.Unavailable -> "GPU initialization failed: ${state.reason}"
             else -> return
         }

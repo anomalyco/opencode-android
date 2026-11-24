@@ -4534,10 +4534,18 @@ public object FfiConverterTypeRunOptions: FfiConverterRustBuffer<RunOptions> {
 sealed class GpuCanvasState {
     
     /**
-     * It has an image: show its surface, without the placeholder.
+     * It has an image: show its surface, without the placeholder. `opaque`: the program configured its context
+     * with `alphaMode: "opaque"` (the default), so its pixels have no transparency (Android: `TextureView.setOpaque`);
+     * else `"premultiplied"`. Told when the canvas goes live, and again only if a reconfigure changes it.
      */
-    object Live : GpuCanvasState()
-    
+    data class Live(
+        val `opaque`: kotlin.Boolean) : GpuCanvasState()
+        
+    {
+        
+
+        companion object
+    }
     
     /**
      * There is no GPU here: every GPU canvas of the run shows its placeholder (`poster`, else `alt`, else "GPU
@@ -4598,7 +4606,9 @@ sealed class GpuCanvasState {
 public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasState>{
     override fun read(buf: ByteBuffer): GpuCanvasState {
         return when(buf.getInt()) {
-            1 -> GpuCanvasState.Live
+            1 -> GpuCanvasState.Live(
+                FfiConverterBoolean.read(buf),
+                )
             2 -> GpuCanvasState.Unavailable(
                 FfiConverterString.read(buf),
                 )
@@ -4619,6 +4629,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
             // Add the size for the Int that specifies the variant plus the size needed for all fields
             (
                 4UL
+                + FfiConverterBoolean.allocationSize(value.`opaque`)
             )
         }
         is GpuCanvasState.Unavailable -> {
@@ -4650,6 +4661,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
         when(value) {
             is GpuCanvasState.Live -> {
                 buf.putInt(1)
+                FfiConverterBoolean.write(value.`opaque`, buf)
                 Unit
             }
             is GpuCanvasState.Unavailable -> {
