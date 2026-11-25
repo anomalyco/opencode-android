@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Aktivitet i ri</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Të ekzekutoj %1$d komandë?</item>
+        <item quantity="other">Të ekzekutoj %1$d komanda?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Të redaktoj %1$d skedar?</item>
+        <item quantity="other">Të redaktoj %1$d skedarë?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Të lexoj %1$d skedar?</item>
+        <item quantity="other">Të lexoj %1$d skedarë?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Të hap një faqe uebi?</string>
+    <string name="system_push_permission_websearch">Të kërkoj në ueb?</string>
+    <string name="system_push_permission_external_directory">Të kem qasje në një dosje?</string>
+    <string name="system_push_permission_other">Të përdor %1$s?</string>
+    <string name="system_push_allow">Lejo</string>
+    <string name="system_push_deny">Moho</string>
+    <string name="system_push_reply">Përgjigju</string>
+    <string name="system_push_message_hint">Mesazh</string>
+    <string name="system_push_sending">Po dërgohet…</string>
+    <string name="system_push_send_failed">Nuk u dërgua dot. Hape për të provuar sërish.</string>
+    <string name="system_push_detail_more">Hap për t’i parë të gjitha</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Thirrje zanore</string>

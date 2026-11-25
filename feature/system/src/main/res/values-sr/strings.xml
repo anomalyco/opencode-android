@@ -75,6 +75,32 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Нова активност</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Покренути %1$d команду?</item>
+        <item quantity="few">Покренути %1$d команде?</item>
+        <item quantity="other">Покренути %1$d команди?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Уредити %1$d датотеку?</item>
+        <item quantity="few">Уредити %1$d датотеке?</item>
+        <item quantity="other">Уредити %1$d датотека?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Прочитати %1$d датотеку?</item>
+        <item quantity="few">Прочитати %1$d датотеке?</item>
+        <item quantity="other">Прочитати %1$d датотека?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Отворити веб-сајт?</string>
+    <string name="system_push_permission_websearch">Претражити веб?</string>
+    <string name="system_push_permission_external_directory">Приступити фасцикли?</string>
+    <string name="system_push_permission_other">Користити %1$s?</string>
+    <string name="system_push_allow">Дозволи</string>
+    <string name="system_push_deny">Одбиј</string>
+    <string name="system_push_reply">Одговори</string>
+    <string name="system_push_message_hint">Порука</string>
+    <string name="system_push_sending">Слање…</string>
+    <string name="system_push_send_failed">Слање није успело. Отворите да покушате поново.</string>
+    <string name="system_push_detail_more">Отворите да видите све</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Гласовни позиви</string>

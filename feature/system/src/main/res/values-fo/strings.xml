@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nýtt virksemi</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Koyra %1$d skipan?</item>
+        <item quantity="other">Koyra %1$d skipanir?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Rætta %1$d fílu?</item>
+        <item quantity="other">Rætta %1$d fílur?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Lesa %1$d fílu?</item>
+        <item quantity="other">Lesa %1$d fílur?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Opna eina heimasíðu?</string>
+    <string name="system_push_permission_websearch">Leita á netinum?</string>
+    <string name="system_push_permission_external_directory">Fáa atgongd til eina mappu?</string>
+    <string name="system_push_permission_other">Brúka %1$s?</string>
+    <string name="system_push_allow">Loyv</string>
+    <string name="system_push_deny">Neita</string>
+    <string name="system_push_reply">Svara</string>
+    <string name="system_push_message_hint">Boð</string>
+    <string name="system_push_sending">Sendir…</string>
+    <string name="system_push_send_failed">Kundi ikki senda. Opna fyri at royna aftur.</string>
+    <string name="system_push_detail_more">Opna fyri at síggja alt</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Raddsamrøður</string>

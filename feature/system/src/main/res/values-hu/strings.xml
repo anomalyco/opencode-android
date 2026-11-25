@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Új tevékenység</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d parancs futtatása?</item>
+        <item quantity="other">%1$d parancs futtatása?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d fájl szerkesztése?</item>
+        <item quantity="other">%1$d fájl szerkesztése?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d fájl olvasása?</item>
+        <item quantity="other">%1$d fájl olvasása?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Weboldal megnyitása?</string>
+    <string name="system_push_permission_websearch">Keresés a weben?</string>
+    <string name="system_push_permission_external_directory">Hozzáférés egy mappához?</string>
+    <string name="system_push_permission_other">%1$s használata?</string>
+    <string name="system_push_allow">Engedélyezés</string>
+    <string name="system_push_deny">Megtagadás</string>
+    <string name="system_push_reply">Válasz</string>
+    <string name="system_push_message_hint">Üzenet</string>
+    <string name="system_push_sending">Küldés…</string>
+    <string name="system_push_send_failed">Nem sikerült elküldeni. Nyissa meg, és próbálja újra.</string>
+    <string name="system_push_detail_more">Nyissa meg az összes megtekintéséhez</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Hanghívások</string>

@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">නව ක්‍රියාකාරකමක්</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">විධාන %1$dක් ධාවනය කරන්නද?</item>
+        <item quantity="other">විධාන %1$dක් ධාවනය කරන්නද?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">ගොනු %1$dක් සංස්කරණය කරන්නද?</item>
+        <item quantity="other">ගොනු %1$dක් සංස්කරණය කරන්නද?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">ගොනු %1$dක් කියවන්නද?</item>
+        <item quantity="other">ගොනු %1$dක් කියවන්නද?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">වෙබ් අඩවියක් විවෘත කරන්නද?</string>
+    <string name="system_push_permission_websearch">වෙබයේ සොයන්නද?</string>
+    <string name="system_push_permission_external_directory">ෆෝල්ඩරයකට ප්‍රවේශ වන්නද?</string>
+    <string name="system_push_permission_other">%1$s භාවිත කරන්නද?</string>
+    <string name="system_push_allow">ඉඩ දෙන්න</string>
+    <string name="system_push_deny">ප්‍රතික්ෂේප කරන්න</string>
+    <string name="system_push_reply">පිළිතුරු දෙන්න</string>
+    <string name="system_push_message_hint">පණිවිඩය</string>
+    <string name="system_push_sending">යවමින්…</string>
+    <string name="system_push_send_failed">යැවීමට නොහැකි විය. නැවත උත්සාහ කිරීමට විවෘත කරන්න.</string>
+    <string name="system_push_detail_more">සියල්ල බැලීමට විවෘත කරන්න</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">හඬ ඇමතුම්</string>

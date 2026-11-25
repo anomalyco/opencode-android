@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Шинэ үйлдэл</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d тушаал ажиллуулах уу?</item>
+        <item quantity="other">%1$d тушаал ажиллуулах уу?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d файл засварлах уу?</item>
+        <item quantity="other">%1$d файл засварлах уу?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d файл унших уу?</item>
+        <item quantity="other">%1$d файл унших уу?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Вэбсайт нээх үү?</string>
+    <string name="system_push_permission_websearch">Вэбээс хайх уу?</string>
+    <string name="system_push_permission_external_directory">Фолдерт хандах уу?</string>
+    <string name="system_push_permission_other">%1$s ашиглах уу?</string>
+    <string name="system_push_allow">Зөвшөөрөх</string>
+    <string name="system_push_deny">Үгүйсгэх</string>
+    <string name="system_push_reply">Хариулах</string>
+    <string name="system_push_message_hint">Мессеж</string>
+    <string name="system_push_sending">Илгээж байна…</string>
+    <string name="system_push_send_failed">Илгээж чадсангүй. Нээгээд дахин оролдоно уу.</string>
+    <string name="system_push_detail_more">Нээж бүгдийг харна уу</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Дуут дуудлага</string>

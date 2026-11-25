@@ -119,6 +119,10 @@
         <receiver
             android:name=".liveactivity.LiveActivityActionReceiver"
             android:exported="false" />
+        <!-- Session notification buttons: Allow, Deny, Reply. -->
+        <receiver
+            android:name=".notifications.PushActionReceiver"
+            android:exported="false" />
 
         <!-- Quick Settings tiles (iOS Control Center controls). -->
         <service

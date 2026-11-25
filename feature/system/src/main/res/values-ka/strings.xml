@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">ახალი აქტივობა</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ბრძანების გაშვება?</item>
+        <item quantity="other">%1$d ბრძანების გაშვება?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ფაილის რედაქტირება?</item>
+        <item quantity="other">%1$d ფაილის რედაქტირება?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ფაილის წაკითხვა?</item>
+        <item quantity="other">%1$d ფაილის წაკითხვა?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ვებსაიტის გახსნა?</string>
+    <string name="system_push_permission_websearch">ვებში ძიება?</string>
+    <string name="system_push_permission_external_directory">საქაღალდეზე წვდომა?</string>
+    <string name="system_push_permission_other">%1$s-ის გამოყენება?</string>
+    <string name="system_push_allow">დაშვება</string>
+    <string name="system_push_deny">უარი</string>
+    <string name="system_push_reply">პასუხი</string>
+    <string name="system_push_message_hint">შეტყობინება</string>
+    <string name="system_push_sending">იგზავნება…</string>
+    <string name="system_push_send_failed">გაგზავნა ვერ მოხერხდა. ხელახლა საცდელად გახსენით.</string>
+    <string name="system_push_detail_more">გახსენით ყველას სანახავად</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">ხმოვანი ზარები</string>

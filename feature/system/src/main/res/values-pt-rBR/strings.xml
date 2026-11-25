@@ -75,6 +75,32 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova atividade</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Executar %1$d comando?</item>
+        <item quantity="many">Executar %1$d comandos?</item>
+        <item quantity="other">Executar %1$d comandos?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Editar %1$d arquivo?</item>
+        <item quantity="many">Editar %1$d arquivos?</item>
+        <item quantity="other">Editar %1$d arquivos?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Ler %1$d arquivo?</item>
+        <item quantity="many">Ler %1$d arquivos?</item>
+        <item quantity="other">Ler %1$d arquivos?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Abrir um site?</string>
+    <string name="system_push_permission_websearch">Pesquisar na web?</string>
+    <string name="system_push_permission_external_directory">Acessar uma pasta?</string>
+    <string name="system_push_permission_other">Usar %1$s?</string>
+    <string name="system_push_allow">Permitir</string>
+    <string name="system_push_deny">Negar</string>
+    <string name="system_push_reply">Responder</string>
+    <string name="system_push_message_hint">Mensagem</string>
+    <string name="system_push_sending">Enviando…</string>
+    <string name="system_push_send_failed">Não foi possível enviar. Abra para tentar novamente.</string>
+    <string name="system_push_detail_more">Abra para ver tudo</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Chamadas de voz</string>

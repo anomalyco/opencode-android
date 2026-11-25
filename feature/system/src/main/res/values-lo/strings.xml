@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">ມີການເຄື່ອນໄຫວໃໝ່</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">ແລ່ນ %1$d ຄຳສັ່ງບໍ?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ແກ້ໄຂ %1$d ໄຟລ໌ບໍ?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ອ່ານ %1$d ໄຟລ໌ບໍ?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ເປີດເວັບໄຊບໍ?</string>
+    <string name="system_push_permission_websearch">ຄົ້ນຫາເວັບບໍ?</string>
+    <string name="system_push_permission_external_directory">ເຂົ້າເຖິງໂຟນເດີບໍ?</string>
+    <string name="system_push_permission_other">ໃຊ້ %1$s ບໍ?</string>
+    <string name="system_push_allow">ອະນຸຍາດ</string>
+    <string name="system_push_deny">ປະຕິເສດ</string>
+    <string name="system_push_reply">ຕອບກັບ</string>
+    <string name="system_push_message_hint">ຂໍ້ຄວາມ</string>
+    <string name="system_push_sending">ກຳລັງສົ່ງ…</string>
+    <string name="system_push_send_failed">ສົ່ງບໍ່ໄດ້. ເປີດເພື່ອລອງໃໝ່.</string>
+    <string name="system_push_detail_more">ເປີດເພື່ອເບິ່ງທັງໝົດ</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">ການໂທດ້ວຍສຽງ</string>

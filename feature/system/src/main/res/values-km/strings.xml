@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">សកម្មភាពថ្មី</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">ដំណើរការពាក្យបញ្ជាចំនួន %1$d?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">កែសម្រួលឯកសារចំនួន %1$d?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">អានឯកសារចំនួន %1$d?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">បើកគេហទំព័រ?</string>
+    <string name="system_push_permission_websearch">ស្វែងរកគេហទំព័រ?</string>
+    <string name="system_push_permission_external_directory">ចូលប្រើថត?</string>
+    <string name="system_push_permission_other">ប្រើ %1$s?</string>
+    <string name="system_push_allow">អនុញ្ញាត</string>
+    <string name="system_push_deny">បដិសេធ</string>
+    <string name="system_push_reply">ឆ្លើយតប</string>
+    <string name="system_push_message_hint">សារ</string>
+    <string name="system_push_sending">កំពុងផ្ញើ…</string>
+    <string name="system_push_send_failed">មិនអាចផ្ញើបានទេ។ បើកដើម្បីព្យាយាមម្តងទៀត។</string>
+    <string name="system_push_detail_more">បើកដើម្បីមើលទាំងអស់</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">ការហៅជាសំឡេង</string>

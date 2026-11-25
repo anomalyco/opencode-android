@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Täze işjeňlik</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d buýruk işletmelimi?</item>
+        <item quantity="other">%1$d buýruk işletmelimi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d faýl redaktirlemelimi?</item>
+        <item quantity="other">%1$d faýl redaktirlemelimi?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d faýl okamalymy?</item>
+        <item quantity="other">%1$d faýl okamalymy?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Web-saýt açmalymy?</string>
+    <string name="system_push_permission_websearch">Webde gözlemelimi?</string>
+    <string name="system_push_permission_external_directory">Papka giriş bermelimi?</string>
+    <string name="system_push_permission_other">%1$s ulanmalymy?</string>
+    <string name="system_push_allow">Rugsat ber</string>
+    <string name="system_push_deny">Inkär et</string>
+    <string name="system_push_reply">Jogap ber</string>
+    <string name="system_push_message_hint">Habar</string>
+    <string name="system_push_sending">Iberilýär…</string>
+    <string name="system_push_send_failed">Iberip bolmady. Täzeden synanyşmak üçin açyň.</string>
+    <string name="system_push_detail_more">Hemmesini görmek üçin açyň</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Sesli jaňlar</string>

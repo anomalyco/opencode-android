@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Ny aktivitet</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Köra %1$d kommando?</item>
+        <item quantity="other">Köra %1$d kommandon?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Redigera %1$d fil?</item>
+        <item quantity="other">Redigera %1$d filer?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Läsa %1$d fil?</item>
+        <item quantity="other">Läsa %1$d filer?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Öppna en webbplats?</string>
+    <string name="system_push_permission_websearch">Söka på webben?</string>
+    <string name="system_push_permission_external_directory">Komma åt en mapp?</string>
+    <string name="system_push_permission_other">Använda %1$s?</string>
+    <string name="system_push_allow">Tillåt</string>
+    <string name="system_push_deny">Neka</string>
+    <string name="system_push_reply">Svara</string>
+    <string name="system_push_message_hint">Meddelande</string>
+    <string name="system_push_sending">Skickar…</string>
+    <string name="system_push_send_failed">Kunde inte skicka. Öppna för att försöka igen.</string>
+    <string name="system_push_detail_more">Öppna för att se allt</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Röstsamtal</string>

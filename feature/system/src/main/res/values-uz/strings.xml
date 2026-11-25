@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Yangi faollik</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ta buyruq ishga tushirilsinmi?</item>
+        <item quantity="other">%1$d ta buyruq ishga tushirilsinmi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ta fayl tahrirlansinmi?</item>
+        <item quantity="other">%1$d ta fayl tahrirlansinmi?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ta fayl o‘qilsinmi?</item>
+        <item quantity="other">%1$d ta fayl o‘qilsinmi?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Veb-sayt ochilsinmi?</string>
+    <string name="system_push_permission_websearch">Internetda qidirilsinmi?</string>
+    <string name="system_push_permission_external_directory">Jildga kirilsinmi?</string>
+    <string name="system_push_permission_other">%1$s dan foydalanilsinmi?</string>
+    <string name="system_push_allow">Ruxsat berish</string>
+    <string name="system_push_deny">Rad etish</string>
+    <string name="system_push_reply">Javob berish</string>
+    <string name="system_push_message_hint">Xabar</string>
+    <string name="system_push_sending">Yuborilmoqda…</string>
+    <string name="system_push_send_failed">Yuborib bo‘lmadi. Qayta urinish uchun oching.</string>
+    <string name="system_push_detail_more">Barchasini ko‘rish uchun oching</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Ovozli qo‘ng‘iroqlar</string>

@@ -75,6 +75,32 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova activitat</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Executar %1$d ordre?</item>
+        <item quantity="many">Executar %1$d d\'ordres?</item>
+        <item quantity="other">Executar %1$d ordres?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Editar %1$d fitxer?</item>
+        <item quantity="many">Editar %1$d de fitxers?</item>
+        <item quantity="other">Editar %1$d fitxers?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Llegir %1$d fitxer?</item>
+        <item quantity="many">Llegir %1$d de fitxers?</item>
+        <item quantity="other">Llegir %1$d fitxers?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Obrir un lloc web?</string>
+    <string name="system_push_permission_websearch">Cercar al web?</string>
+    <string name="system_push_permission_external_directory">Accedir a una carpeta?</string>
+    <string name="system_push_permission_other">Fer servir %1$s?</string>
+    <string name="system_push_allow">Permet</string>
+    <string name="system_push_deny">Negar</string>
+    <string name="system_push_reply">Respon</string>
+    <string name="system_push_message_hint">Missatge</string>
+    <string name="system_push_sending">S\'està enviant…</string>
+    <string name="system_push_send_failed">No s\'ha pogut enviar. Obre per tornar-ho a provar.</string>
+    <string name="system_push_detail_more">Obre per veure-ho tot</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Trucades de veu</string>

@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">새 활동</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">명령어 %1$d개를 실행할까요?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">파일 %1$d개를 편집할까요?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">파일 %1$d개를 읽을까요?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">웹사이트를 열까요?</string>
+    <string name="system_push_permission_websearch">웹을 검색할까요?</string>
+    <string name="system_push_permission_external_directory">폴더에 접근할까요?</string>
+    <string name="system_push_permission_other">%1$s 사용할까요?</string>
+    <string name="system_push_allow">허용</string>
+    <string name="system_push_deny">거부</string>
+    <string name="system_push_reply">답장</string>
+    <string name="system_push_message_hint">메시지</string>
+    <string name="system_push_sending">보내는 중…</string>
+    <string name="system_push_send_failed">보낼 수 없어요. 열어서 다시 시도해 주세요.</string>
+    <string name="system_push_detail_more">열어서 모두 보기</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">음성 통화</string>

@@ -108,7 +108,7 @@ class AppIconBadgeTests {
     @Test
     fun encryptedNotificationMatchesNodeCrypto() {
         val payload = NotificationCrypto.open(encryptedBox, encryptedRef, notificationKey())
-        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result.", id = "ses_interop", outcome = "succeeded"), payload)
+        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result.", id = "ses_interop", data = mapOf("outcome" to "succeeded")), payload)
     }
 
     @Test
@@ -203,7 +203,7 @@ class AppIconBadgeTests {
         val idle = NotificationCrypto.Payload.parse(
             """{"v":1,"id":"ses_a","type":"session.idle","sessionID":"ses_a","title":"Fix the login bug","body":"Finished","data":{"outcome":"succeeded"},"extra":true}""",
         )
-        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished", "ses_a", "succeeded"), idle)
+        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished", "ses_a", mapOf("outcome" to "succeeded")), idle)
         val permission = NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"permission","sessionID":"ses_a","title":"Run tests?","body":"bun test","data":{"requestID":"per_1","action":"bash"}}""")
         assertEquals("permission", permission?.type)
         assertEquals("per_1", permission?.id)
@@ -241,6 +241,42 @@ class AppIconBadgeTests {
         val opened = NotificationContent.verifiedPayload(data) { key }
         assertNull(opened)
         assertEquals("New activity", NotificationContent.content(data, opened)?.body)
+    }
+
+    @Test
+    fun permissionsShowWhatTheyAskAndAllowOnlyWhatShows() {
+        fun permission(data: String) = RichPush.from(
+            requireNotNull(NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"permission","sessionID":"ses_a","title":"Fix login","body":"Needs permission","data":$data}""")),
+        )
+        val shell = permission("""{"requestID":"per_1","sessionID":"ses_a","action":"shell","resources":["bun install","bun test"]}""")
+        assertEquals("Run 2 commands?", shell.title)
+        assertEquals("Fix login", shell.subText)
+        assertEquals("bun install; bun test", shell.text)
+        assertEquals(PushDetail("bun install\nbun test", cut = false), shell.detail)
+        assertEquals(listOf(PushAction.Allow, PushAction.Deny), shell.actions)
+
+        // The server cut the list, or the notification can't show all of it: Allow opens the app.
+        val truncated = permission("""{"requestID":"per_1","action":"edit","resources":["src/a.ts","src/b…"],"truncated":"true"}""")
+        assertEquals(listOf(PushAction.Review, PushAction.Deny), truncated.actions)
+        assertEquals(true, truncated.detail?.cut)
+        val steps = (1..12).joinToString(",") { "\"step $it\"" }
+        val long = permission("""{"requestID":"per_1","action":"shell","resources":[$steps]}""")
+        assertEquals(listOf(PushAction.Review, PushAction.Deny), long.actions)
+        assertEquals(10, long.detail?.text?.lines()?.size)
+        assertTrue(long.detail?.text.orEmpty().endsWith("…"))
+
+        // "*" or nothing names no resource.
+        val any = permission("""{"requestID":"per_1","action":"github_create_issue","resources":["*"]}""")
+        assertEquals("Use github_create_issue?", any.title)
+        assertNull(any.detail)
+        assertEquals(listOf(PushAction.Review, PushAction.Deny), any.actions)
+        assertEquals(listOf(PushAction.Review, PushAction.Deny), permission("""{"requestID":"per_1","action":"read","resources":[]}""").actions)
+
+        val failed = RichPush.from(NotificationCrypto.Payload("session.idle", "ses_a", "Fix login", "Failed", "ses_a", mapOf("outcome" to "failed")))
+        assertTrue(failed.isFailure)
+        assertEquals("Failed", failed.subText)
+        assertEquals(listOf(PushAction.FollowUp), failed.actions)
+        assertEquals(emptyList<PushAction>(), RichPush.from(NotificationCrypto.Payload("question", "ses_a", "Fix login", "Which one?", "frm_1")).actions)
     }
 
     @Test

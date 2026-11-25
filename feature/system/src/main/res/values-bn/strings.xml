@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">নতুন কার্যকলাপ</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$dটি কমান্ড চালাবেন?</item>
+        <item quantity="other">%1$dটি কমান্ড চালাবেন?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$dটি ফাইল সম্পাদনা করবেন?</item>
+        <item quantity="other">%1$dটি ফাইল সম্পাদনা করবেন?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$dটি ফাইল পড়বেন?</item>
+        <item quantity="other">%1$dটি ফাইল পড়বেন?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">একটি ওয়েবসাইট খুলবেন?</string>
+    <string name="system_push_permission_websearch">ওয়েবে অনুসন্ধান করবেন?</string>
+    <string name="system_push_permission_external_directory">একটি ফোল্ডার অ্যাক্সেস করবেন?</string>
+    <string name="system_push_permission_other">%1$s ব্যবহার করবেন?</string>
+    <string name="system_push_allow">অনুমতি দিন</string>
+    <string name="system_push_deny">অস্বীকার করুন</string>
+    <string name="system_push_reply">উত্তর দিন</string>
+    <string name="system_push_message_hint">বার্তা</string>
+    <string name="system_push_sending">পাঠানো হচ্ছে…</string>
+    <string name="system_push_send_failed">পাঠানো যায়নি। আবার চেষ্টা করতে খুলুন।</string>
+    <string name="system_push_detail_more">সব দেখতে খুলুন</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">ভয়েস কল</string>

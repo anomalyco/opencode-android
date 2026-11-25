@@ -75,6 +75,35 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nová aktivita</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Spustiť %1$d príkaz?</item>
+        <item quantity="few">Spustiť %1$d príkazy?</item>
+        <item quantity="many">Spustiť %1$d príkazu?</item>
+        <item quantity="other">Spustiť %1$d príkazov?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Upraviť %1$d súbor?</item>
+        <item quantity="few">Upraviť %1$d súbory?</item>
+        <item quantity="many">Upraviť %1$d súboru?</item>
+        <item quantity="other">Upraviť %1$d súborov?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Prečítať %1$d súbor?</item>
+        <item quantity="few">Prečítať %1$d súbory?</item>
+        <item quantity="many">Prečítať %1$d súboru?</item>
+        <item quantity="other">Prečítať %1$d súborov?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Otvoriť webovú stránku?</string>
+    <string name="system_push_permission_websearch">Hľadať na webe?</string>
+    <string name="system_push_permission_external_directory">Povoliť prístup k priečinku?</string>
+    <string name="system_push_permission_other">Použiť %1$s?</string>
+    <string name="system_push_allow">Povoliť</string>
+    <string name="system_push_deny">Odmietnuť</string>
+    <string name="system_push_reply">Odpovedať</string>
+    <string name="system_push_message_hint">Správa</string>
+    <string name="system_push_sending">Odosiela sa…</string>
+    <string name="system_push_send_failed">Nepodarilo sa odoslať. Otvorte a skúste znova.</string>
+    <string name="system_push_detail_more">Otvorte a pozrite si všetko</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Hlasové hovory</string>

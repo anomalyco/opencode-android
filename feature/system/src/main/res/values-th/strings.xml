@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">กิจกรรมใหม่</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">เรียกใช้ %1$d คำสั่งไหม?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">แก้ไข %1$d ไฟล์ไหม?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">อ่าน %1$d ไฟล์ไหม?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">เปิดเว็บไซต์ไหม?</string>
+    <string name="system_push_permission_websearch">ค้นหาบนเว็บไหม?</string>
+    <string name="system_push_permission_external_directory">เข้าถึงโฟลเดอร์ไหม?</string>
+    <string name="system_push_permission_other">ใช้ %1$s ไหม?</string>
+    <string name="system_push_allow">อนุญาต</string>
+    <string name="system_push_deny">ปฏิเสธ</string>
+    <string name="system_push_reply">ตอบกลับ</string>
+    <string name="system_push_message_hint">ข้อความ</string>
+    <string name="system_push_sending">กำลังส่ง…</string>
+    <string name="system_push_send_failed">ส่งไม่ได้ เปิดเพื่อลองอีกครั้ง</string>
+    <string name="system_push_detail_more">เปิดเพื่อดูทั้งหมด</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">โทรด้วยเสียง</string>

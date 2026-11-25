@@ -75,6 +75,32 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Activitate nouă</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Să ruleze %1$d comandă?</item>
+        <item quantity="few">Să ruleze %1$d comenzi?</item>
+        <item quantity="other">Să ruleze %1$d de comenzi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Să editeze %1$d fișier?</item>
+        <item quantity="few">Să editeze %1$d fișiere?</item>
+        <item quantity="other">Să editeze %1$d de fișiere?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Să citească %1$d fișier?</item>
+        <item quantity="few">Să citească %1$d fișiere?</item>
+        <item quantity="other">Să citească %1$d de fișiere?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Să deschidă un site web?</string>
+    <string name="system_push_permission_websearch">Să caute pe web?</string>
+    <string name="system_push_permission_external_directory">Să acceseze un folder?</string>
+    <string name="system_push_permission_other">Să folosească %1$s?</string>
+    <string name="system_push_allow">Permite</string>
+    <string name="system_push_deny">Refuză</string>
+    <string name="system_push_reply">Răspunde</string>
+    <string name="system_push_message_hint">Mesaj</string>
+    <string name="system_push_sending">Se trimite…</string>
+    <string name="system_push_send_failed">Trimiterea nu a reușit. Deschide pentru a reîncerca.</string>
+    <string name="system_push_detail_more">Deschide ca să vezi tot</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Apeluri vocale</string>

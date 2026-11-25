@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Ny aktivitet</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Kør %1$d kommando?</item>
+        <item quantity="other">Kør %1$d kommandoer?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Rediger %1$d fil?</item>
+        <item quantity="other">Rediger %1$d filer?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Læs %1$d fil?</item>
+        <item quantity="other">Læs %1$d filer?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Åbn en hjemmeside?</string>
+    <string name="system_push_permission_websearch">Søg på nettet?</string>
+    <string name="system_push_permission_external_directory">Få adgang til en mappe?</string>
+    <string name="system_push_permission_other">Brug %1$s?</string>
+    <string name="system_push_allow">Tillad</string>
+    <string name="system_push_deny">Afvis</string>
+    <string name="system_push_reply">Svar</string>
+    <string name="system_push_message_hint">Besked</string>
+    <string name="system_push_sending">Sender…</string>
+    <string name="system_push_send_failed">Kunne ikke sende. Åbn for at prøve igen.</string>
+    <string name="system_push_detail_more">Åbn for at se alt</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Stemmeopkald</string>

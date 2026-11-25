@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nieuwe activiteit</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d opdracht uitvoeren?</item>
+        <item quantity="other">%1$d opdrachten uitvoeren?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d bestand bewerken?</item>
+        <item quantity="other">%1$d bestanden bewerken?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d bestand lezen?</item>
+        <item quantity="other">%1$d bestanden lezen?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Een website openen?</string>
+    <string name="system_push_permission_websearch">Op internet zoeken?</string>
+    <string name="system_push_permission_external_directory">Toegang tot een map?</string>
+    <string name="system_push_permission_other">%1$s gebruiken?</string>
+    <string name="system_push_allow">Toestaan</string>
+    <string name="system_push_deny">Weigeren</string>
+    <string name="system_push_reply">Beantwoorden</string>
+    <string name="system_push_message_hint">Bericht</string>
+    <string name="system_push_sending">Verzenden…</string>
+    <string name="system_push_send_failed">Verzenden mislukt. Open om opnieuw te proberen.</string>
+    <string name="system_push_detail_more">Open om alles te zien</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Spraakoproepen</string>

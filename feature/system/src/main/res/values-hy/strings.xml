@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Նոր ակտիվություն</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Գործարկե՞լ %1$d հրաման</item>
+        <item quantity="other">Գործարկե՞լ %1$d հրաման</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Խմբագրե՞լ %1$d ֆայլ</item>
+        <item quantity="other">Խմբագրե՞լ %1$d ֆայլ</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Կարդա՞լ %1$d ֆայլ</item>
+        <item quantity="other">Կարդա՞լ %1$d ֆայլ</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Բացե՞լ կայք</string>
+    <string name="system_push_permission_websearch">Որոնե՞լ համացանցում</string>
+    <string name="system_push_permission_external_directory">Մուտք գործե՞լ թղթապանակ</string>
+    <string name="system_push_permission_other">Օգտագործե՞լ %1$s</string>
+    <string name="system_push_allow">Թույլատրել</string>
+    <string name="system_push_deny">Մերժել</string>
+    <string name="system_push_reply">Պատասխանել</string>
+    <string name="system_push_message_hint">Հաղորդագրություն</string>
+    <string name="system_push_sending">Ուղարկվում է…</string>
+    <string name="system_push_send_failed">Չհաջողվեց ուղարկել։ Բացեք կրկին փորձելու համար։</string>
+    <string name="system_push_detail_more">Բացեք՝ բոլորը տեսնելու համար</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Ձայնային զանգեր</string>

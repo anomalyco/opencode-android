@@ -1,5 +1,6 @@
 package ai.opencode.feature.system.notifications
 
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.intOrNull
@@ -52,10 +53,20 @@ object NotificationCrypto {
     /**
      * A decrypted message, `{v:1, id, type, sessionID, title, body, data}`. A known type needs a session
      * and a title; an unknown one may have neither, and without a title it isn't shown. A `clear`
-     * names the earlier message's [id].
+     * names the earlier message's [id]. [data] keeps the message's string values and [resources] its
+     * `data.resources` list.
      */
-    data class Payload(val type: String, val sessionID: String?, val title: String, val body: String, val id: String, val outcome: String? = null) {
+    data class Payload(
+        val type: String,
+        val sessionID: String?,
+        val title: String,
+        val body: String,
+        val id: String,
+        val data: Map<String, String> = emptyMap(),
+        val resources: List<String> = emptyList(),
+    ) {
         val isKnownType: Boolean get() = type in KNOWN_TYPES
+        val outcome: String? get() = data["outcome"]
 
         companion object {
             val KNOWN_TYPES = setOf("session.idle", "question", "permission")
@@ -71,8 +82,23 @@ object NotificationCrypto {
                 var sessionID = stringOf(root, "sessionID")
                 if (sessionID != null && !isValid(sessionID = sessionID)) sessionID = null
                 if (type in KNOWN_TYPES && (sessionID == null || title.isEmpty())) return null
-                val outcome = (root["data"] as? JsonObject)?.let { stringOf(it, "outcome") }
-                return Payload(type, sessionID, title, body, id, outcome)
+                val data = mutableMapOf<String, String>()
+                val resources = mutableListOf<String>()
+                val values = root["data"] as? JsonObject
+                if (values != null) {
+                    for (key in values.keys) {
+                        val value = stringOf(values, key) ?: continue
+                        data[key] = value
+                    }
+                    val list = values["resources"] as? JsonArray
+                    if (list != null) {
+                        for (item in list) {
+                            val resource = (item as? JsonPrimitive)?.takeIf { it.isString }?.content ?: continue
+                            resources.add(resource)
+                        }
+                    }
+                }
+                return Payload(type, sessionID, title, body, id, data, resources)
             }
 
             private fun stringOf(root: JsonObject, key: String): String? =

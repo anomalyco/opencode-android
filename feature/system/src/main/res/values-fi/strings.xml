@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Uutta toimintaa</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Suoritetaanko %1$d komento?</item>
+        <item quantity="other">Suoritetaanko %1$d komentoa?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Muokataanko %1$d tiedostoa?</item>
+        <item quantity="other">Muokataanko %1$d tiedostoa?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Luetaanko %1$d tiedosto?</item>
+        <item quantity="other">Luetaanko %1$d tiedostoa?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Avataanko verkkosivu?</string>
+    <string name="system_push_permission_websearch">Haetaanko verkosta?</string>
+    <string name="system_push_permission_external_directory">Sallitaanko pääsy kansioon?</string>
+    <string name="system_push_permission_other">Käytetäänkö kohdetta %1$s?</string>
+    <string name="system_push_allow">Salli</string>
+    <string name="system_push_deny">Kiellä</string>
+    <string name="system_push_reply">Vastaa</string>
+    <string name="system_push_message_hint">Viesti</string>
+    <string name="system_push_sending">Lähetetään…</string>
+    <string name="system_push_send_failed">Lähetys epäonnistui. Avaa ja yritä uudelleen.</string>
+    <string name="system_push_detail_more">Avaa nähdäksesi kaikki</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Äänipuhelut</string>

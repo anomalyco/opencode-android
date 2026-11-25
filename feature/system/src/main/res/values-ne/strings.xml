@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">नयाँ गतिविधि</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d आदेश चलाउने?</item>
+        <item quantity="other">%1$d आदेशहरू चलाउने?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d फाइल सम्पादन गर्ने?</item>
+        <item quantity="other">%1$d फाइलहरू सम्पादन गर्ने?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d फाइल पढ्ने?</item>
+        <item quantity="other">%1$d फाइलहरू पढ्ने?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">वेबसाइट खोल्ने?</string>
+    <string name="system_push_permission_websearch">वेब खोज्ने?</string>
+    <string name="system_push_permission_external_directory">फोल्डरमा पहुँच दिने?</string>
+    <string name="system_push_permission_other">%1$s प्रयोग गर्ने?</string>
+    <string name="system_push_allow">अनुमति दिनुहोस्</string>
+    <string name="system_push_deny">अस्वीकार गर्नुहोस्</string>
+    <string name="system_push_reply">जवाफ दिनुहोस्</string>
+    <string name="system_push_message_hint">सन्देश</string>
+    <string name="system_push_sending">पठाउँदै…</string>
+    <string name="system_push_send_failed">पठाउन सकिएन। फेरि प्रयास गर्न खोल्नुहोस्।</string>
+    <string name="system_push_detail_more">सबै हेर्न खोल्नुहोस्</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">आवाज कलहरू</string>

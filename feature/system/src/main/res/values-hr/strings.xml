@@ -75,6 +75,32 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova aktivnost</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Pokrenuti %1$d naredbu?</item>
+        <item quantity="few">Pokrenuti %1$d naredbe?</item>
+        <item quantity="other">Pokrenuti %1$d naredbi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Urediti %1$d datoteku?</item>
+        <item quantity="few">Urediti %1$d datoteke?</item>
+        <item quantity="other">Urediti %1$d datoteka?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Pročitati %1$d datoteku?</item>
+        <item quantity="few">Pročitati %1$d datoteke?</item>
+        <item quantity="other">Pročitati %1$d datoteka?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Otvoriti web-stranicu?</string>
+    <string name="system_push_permission_websearch">Pretražiti web?</string>
+    <string name="system_push_permission_external_directory">Pristupiti mapi?</string>
+    <string name="system_push_permission_other">Koristiti %1$s?</string>
+    <string name="system_push_allow">Dopusti</string>
+    <string name="system_push_deny">Odbij</string>
+    <string name="system_push_reply">Odgovori</string>
+    <string name="system_push_message_hint">Poruka</string>
+    <string name="system_push_sending">Slanje…</string>
+    <string name="system_push_send_failed">Slanje nije uspjelo. Otvorite za ponovni pokušaj.</string>
+    <string name="system_push_detail_more">Otvorite da vidite sve</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Glasovni pozivi</string>

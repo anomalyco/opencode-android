@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Нова активност</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Да се изпълни ли %1$d команда?</item>
+        <item quantity="other">Да се изпълнят ли %1$d команди?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Да се редактира ли %1$d файл?</item>
+        <item quantity="other">Да се редактират ли %1$d файла?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Да се прочете ли %1$d файл?</item>
+        <item quantity="other">Да се прочетат ли %1$d файла?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Да се отвори ли уебсайт?</string>
+    <string name="system_push_permission_websearch">Да се търси ли в мрежата?</string>
+    <string name="system_push_permission_external_directory">Да се разреши ли достъп до папка?</string>
+    <string name="system_push_permission_other">Да се използва ли %1$s?</string>
+    <string name="system_push_allow">Разреши</string>
+    <string name="system_push_deny">Откажи</string>
+    <string name="system_push_reply">Отговори</string>
+    <string name="system_push_message_hint">Съобщение</string>
+    <string name="system_push_sending">Изпращане…</string>
+    <string name="system_push_send_failed">Неуспешно изпращане. Отворете за повторен опит.</string>
+    <string name="system_push_detail_more">Отворете, за да видите всичко</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Гласови обаждания</string>

@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Νέα δραστηριότητα</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Εκτέλεση %1$d εντολής;</item>
+        <item quantity="other">Εκτέλεση %1$d εντολών;</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Επεξεργασία %1$d αρχείου;</item>
+        <item quantity="other">Επεξεργασία %1$d αρχείων;</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Ανάγνωση %1$d αρχείου;</item>
+        <item quantity="other">Ανάγνωση %1$d αρχείων;</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Άνοιγμα ιστότοπου;</string>
+    <string name="system_push_permission_websearch">Αναζήτηση στον ιστό;</string>
+    <string name="system_push_permission_external_directory">Πρόσβαση σε φάκελο;</string>
+    <string name="system_push_permission_other">Χρήση %1$s;</string>
+    <string name="system_push_allow">Να επιτρέπεται</string>
+    <string name="system_push_deny">Απόρριψη</string>
+    <string name="system_push_reply">Απάντηση</string>
+    <string name="system_push_message_hint">Μήνυμα</string>
+    <string name="system_push_sending">Αποστολή…</string>
+    <string name="system_push_send_failed">Αδυναμία αποστολής. Ανοίξτε για επανάληψη.</string>
+    <string name="system_push_detail_more">Ανοίξτε για να τα δείτε όλα</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Φωνητικές κλήσεις</string>

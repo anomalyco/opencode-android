@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Hoạt động mới</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">Chạy %1$d lệnh?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">Chỉnh sửa %1$d tệp?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">Đọc %1$d tệp?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Mở trang web?</string>
+    <string name="system_push_permission_websearch">Tìm kiếm trên web?</string>
+    <string name="system_push_permission_external_directory">Truy cập thư mục?</string>
+    <string name="system_push_permission_other">Dùng %1$s?</string>
+    <string name="system_push_allow">Cho phép</string>
+    <string name="system_push_deny">Từ chối</string>
+    <string name="system_push_reply">Trả lời</string>
+    <string name="system_push_message_hint">Tin nhắn</string>
+    <string name="system_push_sending">Đang gửi…</string>
+    <string name="system_push_send_failed">Không thể gửi. Mở để thử lại.</string>
+    <string name="system_push_detail_more">Mở để xem tất cả</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Cuộc gọi thoại</string>

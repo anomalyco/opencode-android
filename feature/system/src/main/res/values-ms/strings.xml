@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Aktiviti baharu</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">Jalankan %1$d arahan?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">Sunting %1$d fail?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">Baca %1$d fail?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Buka laman web?</string>
+    <string name="system_push_permission_websearch">Cari di web?</string>
+    <string name="system_push_permission_external_directory">Akses folder?</string>
+    <string name="system_push_permission_other">Gunakan %1$s?</string>
+    <string name="system_push_allow">Benarkan</string>
+    <string name="system_push_deny">Tolak</string>
+    <string name="system_push_reply">Balas</string>
+    <string name="system_push_message_hint">Mesej</string>
+    <string name="system_push_sending">Menghantar…</string>
+    <string name="system_push_send_failed">Tidak dapat menghantar. Buka untuk cuba semula.</string>
+    <string name="system_push_detail_more">Buka untuk lihat semua</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Panggilan suara</string>

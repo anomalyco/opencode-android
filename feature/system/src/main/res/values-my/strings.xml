@@ -75,6 +75,26 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">လုပ်ဆောင်ချက်အသစ်</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">အမိန့် %1$d ခု လုပ်ဆောင်မလား?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ဖိုင် %1$d ခု တည်းဖြတ်မလား?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ဖိုင် %1$d ခု ဖတ်မလား?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ဝဘ်ဆိုက်တစ်ခု ဖွင့်မလား?</string>
+    <string name="system_push_permission_websearch">ဝဘ်ကို ရှာမလား?</string>
+    <string name="system_push_permission_external_directory">ဖိုင်တွဲတစ်ခု ဝင်သုံးမလား?</string>
+    <string name="system_push_permission_other">%1$s ကို သုံးမလား?</string>
+    <string name="system_push_allow">ခွင့်ပြု</string>
+    <string name="system_push_deny">ငြင်းဆို</string>
+    <string name="system_push_reply">ပြန်ဖြေ</string>
+    <string name="system_push_message_hint">မက်ဆေ့ဂျ်</string>
+    <string name="system_push_sending">ပို့နေသည်…</string>
+    <string name="system_push_send_failed">မပို့နိုင်ပါ။ ပြန်ကြိုးစားရန် ဖွင့်ပါ။</string>
+    <string name="system_push_detail_more">အားလုံးကြည့်ရန် ဖွင့်ပါ</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">အသံခေါ်ဆိုမှုများ</string>

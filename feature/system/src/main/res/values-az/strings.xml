@@ -75,6 +75,29 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Yeni fəaliyyət</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d əmr icra edilsin?</item>
+        <item quantity="other">%1$d əmr icra edilsin?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d fayl redaktə edilsin?</item>
+        <item quantity="other">%1$d fayl redaktə edilsin?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d fayl oxunsun?</item>
+        <item quantity="other">%1$d fayl oxunsun?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Veb-sayt açılsın?</string>
+    <string name="system_push_permission_websearch">Vebdə axtarış edilsin?</string>
+    <string name="system_push_permission_external_directory">Qovluğa giriş verilsin?</string>
+    <string name="system_push_permission_other">%1$s istifadə edilsin?</string>
+    <string name="system_push_allow">İcazə ver</string>
+    <string name="system_push_deny">Rədd et</string>
+    <string name="system_push_reply">Cavabla</string>
+    <string name="system_push_message_hint">Mesaj</string>
+    <string name="system_push_sending">Göndərilir…</string>
+    <string name="system_push_send_failed">Göndərmək mümkün olmadı. Yenidən cəhd etmək üçün açın.</string>
+    <string name="system_push_detail_more">Hamısını görmək üçün açın</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Səsli zənglər</string>
