@@ -168,7 +168,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         val s = state.returnedToApp(dependency(AppAwayDate).now())
         // Decided on the connection's state before it settles this action.
         val silence = dependency(ServerLinkClient).streamSilence(s.server.persistenceID)
-        if (!s.connection.resyncsWhenActive(silence)) Reduced(s) else refreshSnapshot(s.unsettlingNotices())
+        if (!s.connection.resyncsWhenActive(silence)) Reduced(s, removeStaleNotifications(s)) else refreshSnapshot(s.unsettlingNotices())
     }
 
     Action.ReconnectingGraceElapsed, is Action.OfflineGraceElapsed -> Reduced(state)

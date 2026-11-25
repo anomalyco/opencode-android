@@ -78,7 +78,7 @@ class SoundEffectsTests {
             this[SoundEffectsClient] = recording(log)
             this[ExperimentalFeatures] = features(on)
             this[AccessibilityAnnouncer] = AccessibilityAnnouncer { _, _ -> }
-            this[DeliveredNotificationsClient] = DeliveredNotificationsClient(removeAll = { }, removeNeedsInput = { })
+            this[DeliveredNotificationsClient] = DeliveredNotificationsClient(removeAll = { }, removeNeedsInput = { }, removeStale = { _, _, _ -> })
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 viewSession = { _, _, _ -> },
                 transcript = { _, _, _ -> emptyList() },

@@ -67,6 +67,7 @@ class InAppNoticeTests {
         val announcements: MutableList<String> = Collections.synchronizedList(mutableListOf())
         val cleared: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
         val clearedNeedsInput: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
+        val clearedStale: MutableList<Triple<String, Set<String>, Set<String>>> = Collections.synchronizedList(mutableListOf())
     }
 
     private fun CoroutineScope.store(
@@ -88,6 +89,7 @@ class InAppNoticeTests {
             this[DeliveredNotificationsClient] = DeliveredNotificationsClient(
                 removeAll = { ids -> recorded.cleared += ids },
                 removeNeedsInput = { ids -> recorded.clearedNeedsInput += ids },
+                removeStale = { serverKey, read, waiting -> recorded.clearedStale += Triple(serverKey, read, waiting) },
             )
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 viewSession = { _, _, _ -> },
@@ -402,5 +404,28 @@ class InAppNoticeTests {
         store.send(Action.AttentionRefreshed(setOf("login")))
         store.finish()
         assertEquals(listOf(setOf("upload")), recorded.clearedNeedsInput.toList())
+    }
+
+    @Test fun freshStateClearsThisServersStaleNotifications() = runTest {
+        val sessions = listOf(
+            session("upload", "Upload tests", idle = 2_000),
+            session("login", "Fix login flow"),
+            session("sub", "UI checks", parent = "login"),
+        )
+        val state = home().copy(sessions = sessions, noticeReadiness = HomeFeature.State.NoticeReadiness.listed)
+        val recorded = Recorded()
+        val store = store(state, InAppNoticeMode.off, recorded = recorded)
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        store.finish()
+        assertEquals(listOf(Triple(server.persistenceID, setOf("login"), setOf("upload"))), recorded.clearedStale.toList())
+    }
+
+    @Test fun markingReadClearsItsDeliveredNotifications() = runTest {
+        val state = home().copy(sessions = listOf(session("upload", "Upload tests", idle = 2_000)))
+        val recorded = Recorded()
+        val store = store(state, InAppNoticeMode.off, recorded = recorded)
+        store.send(Action.MarkRead("upload"))
+        store.finish()
+        assertEquals(listOf(setOf("upload")), recorded.cleared.toList())
     }
 }

@@ -121,6 +121,24 @@ object SessionPushNotifications {
         }
     }
 
+    /**
+     * This server's notifications its fresh session list says no longer need the person: a
+     * needs-input one whose session isn't [waiting] any more, and any other whose session is [read].
+     */
+    fun removeStale(context: Context, serverKey: String, read: Set<String>, waiting: Set<String>) {
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        for (notification in manager.activeNotifications) {
+            if (notification.id != NOTIFICATION_ID) continue
+            val content = delivered(notification)
+            if (content.status == null) continue
+            val envelope = NotificationContent.Envelope.from(content.envelope) ?: continue
+            val sessionID = sessionID(content) ?: continue
+            if (SessionNotifications.shared.destination(envelope.ref, sessionID)?.serverKey != serverKey) continue
+            val stale = if (isNeedsInput(content)) sessionID !in waiting else sessionID in read
+            if (stale) manager.cancel(notification.tag, notification.id)
+        }
+    }
+
     private fun delivered(notification: StatusBarNotification): Delivered {
         val extras = notification.notification.extras
         return Delivered(

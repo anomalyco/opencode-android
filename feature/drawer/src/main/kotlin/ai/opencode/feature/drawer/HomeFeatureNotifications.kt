@@ -14,6 +14,7 @@ import ai.opencode.core.store.cancellable
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
 import ai.opencode.feature.drawer.notices.AccessibilityAnnouncer
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 import ai.opencode.feature.session.InAppNotice
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.feature.drawer.notices.InAppNoticeSettings
@@ -190,4 +191,23 @@ internal fun HomeFeature.inAppNoticeSignalChanged(oldInput: InAppNoticeInput, ne
             send(Action.InAppNoticeExpired(id))
         }.cancellable(HomeFeature.CancelID.InAppNotice, cancelInFlight = true),
     )
+}
+
+/** The session list and its pending requests are fresh from the server. */
+internal val State.notificationsReconcilable: Boolean
+    get() = isConnected && snapshotLoaded && noticeReadiness == State.NoticeReadiness.settled
+
+/** Removes this server's notifications a lost clear left behind: a read session's, or an answered request's. */
+internal fun removeStaleNotifications(state: State): Effect<Action> {
+    if (!state.notificationsReconcilable) return Effect.none()
+    val status = state.statusSnapshot()
+    val read = HashSet<String>()
+    for (session in state.sessions) {
+        if (session.parentID != null) continue
+        if (session.isArchived || !status.isUnread(session)) read.add(session.id)
+    }
+    val waiting = state.attentionSessionIDs
+    val serverKey = state.server.persistenceID
+    val delivered = dependency(DeliveredNotificationsClient)
+    return Effect.run { delivered.removeStale(serverKey, read, waiting) }
 }

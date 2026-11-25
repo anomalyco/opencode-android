@@ -35,6 +35,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 
 /*
  * The drawer's own actions — opening sessions and drafts, pins, read state, deletion, and
@@ -314,7 +315,11 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
         is Action.MarkRead -> {
             val session = state.sessions.firstOrNull { it.id == action.sessionID } ?: return Reduced(state)
             haptics.play(Haptic.selection)
-            return Reduced(state.markingReadLocally(session).clearingUnseenBaseline(session.id), acknowledgeView(session, state.server))
+            val delivered = dependency(DeliveredNotificationsClient)
+            return Reduced(
+                state.markingReadLocally(session).clearingUnseenBaseline(session.id),
+                Effect.merge(acknowledgeView(session, state.server), Effect.run { delivered.removeAll(setOf(session.id)) }),
+            )
         }
 
         is Action.MarkUnread -> {

@@ -439,7 +439,7 @@ private fun homeAction(action: HomeConnectionFeature.Action): Action = when (act
 
 /**
  * In-App Notices follow Home's live state, a session on screen clears its delivered notifications,
- * an answered request clears its needs-input notifications, the share sheet offers what the drawer does, and the system publication follows the list.
+ * an answered request clears its needs-input notifications, fresh state clears stale ones, the share sheet offers what the drawer does, and the system publication follows the list.
  */
 private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): Reducer<State, Action> =
     onChange({ feature.noticeInput(it) }) { old, _, state ->
@@ -456,6 +456,10 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
             if (answered.isEmpty() || !state.isConnected) return@onChange Reduced(state)
             val delivered = dependency(DeliveredNotificationsClient)
             Reduced(state, Effect.run { delivered.removeNeedsInput(answered) })
+        }
+        .onChange({ it.notificationsReconcilable }) { _, ready, state ->
+            if (!ready) return@onChange Reduced(state)
+            Reduced(state, removeStaleNotifications(state))
         }
         // The share sheet offers what the drawer does, kept current for a share sheet opened over the app.
         .onChange({ it.shareTargetsPublication }) { old, _, state ->
