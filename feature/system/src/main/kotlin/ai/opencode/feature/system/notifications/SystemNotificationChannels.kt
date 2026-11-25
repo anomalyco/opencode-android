@@ -54,7 +54,7 @@ object SystemNotificationChannels {
                     enableVibration(false)
                     setShowBadge(false)
                 },
-                NotificationChannel(SESSION_FINISHED, context.getString(R.string.system_channel_session_finished), NotificationManager.IMPORTANCE_HIGH),
+                NotificationChannel(SESSION_FINISHED, context.getString(R.string.system_channel_session_finished), NotificationManager.IMPORTANCE_DEFAULT),
                 NotificationChannel(SESSION_QUESTIONS, context.getString(R.string.system_channel_session_questions), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SESSION_PERMISSIONS, context.getString(R.string.system_channel_session_permissions), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SESSION_OTHER, context.getString(R.string.system_channel_session_other), NotificationManager.IMPORTANCE_DEFAULT),
