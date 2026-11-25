@@ -50,10 +50,11 @@ object NotificationCrypto {
     }
 
     /**
-     * A decrypted message, `{v:1, type, sessionID, title, body, data}`. A known type needs a session
-     * and a title; an unknown one may have neither, and without a title it isn't shown.
+     * A decrypted message, `{v:1, id, type, sessionID, title, body, data}`. A known type needs a session
+     * and a title; an unknown one may have neither, and without a title it isn't shown. A `clear`
+     * names the earlier message's [id].
      */
-    data class Payload(val type: String, val sessionID: String?, val title: String, val body: String) {
+    data class Payload(val type: String, val sessionID: String?, val title: String, val body: String, val id: String? = null) {
         val isKnownType: Boolean get() = type in KNOWN_TYPES
 
         companion object {
@@ -69,7 +70,7 @@ object NotificationCrypto {
                 var sessionID = stringOf(root, "sessionID")
                 if (sessionID != null && !isValid(sessionID = sessionID)) sessionID = null
                 if (type in KNOWN_TYPES && (sessionID == null || title.isEmpty())) return null
-                return Payload(type, sessionID, title, body)
+                return Payload(type, sessionID, title, body, stringOf(root, "id"))
             }
 
             private fun stringOf(root: JsonObject, key: String): String? =

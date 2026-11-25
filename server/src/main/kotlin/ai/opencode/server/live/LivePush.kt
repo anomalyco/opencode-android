@@ -59,7 +59,10 @@ private data class DeviceBody(
 }
 
 @Serializable
-private data class DeviceReply(val publicKey: String)
+private data class DeviceReply(val data: Registered) {
+    @Serializable
+    data class Registered(val publicKey: String)
+}
 
 /** Registers this phone and returns the server's public key. The same registration twice gives the same answer. */
 internal suspend fun requestRegisterPushDevice(server: OpenCodeServer, id: String, registration: OpenCodePushRegistration): String {
@@ -75,7 +78,7 @@ internal suspend fun requestRegisterPushDevice(server: OpenCodeServer, id: Strin
         "$PUSH/device/$id", method = "PUT", body = encodedBody(body),
         idempotency = RequestIdempotency.Idempotent, retry = RetryPolicy.once, server = server,
     )
-    return reply.publicKey
+    return reply.data.publicKey
 }
 
 internal suspend fun requestRemovePushDevice(server: OpenCodeServer, id: String) {
@@ -98,7 +101,7 @@ internal suspend fun requestSetPushSessionBell(server: OpenCodeServer, id: Strin
 }
 
 internal fun decodePushState(element: JsonElement): OpenCodePushState {
-    val root = element.obj()
+    val root = element.obj().req("data") { it.obj() }
     val settings = root.opt("settings") { it.obj() }
     val devices = mutableListOf<OpenCodePushDevice>()
     val deviceList = root["devices"] as? JsonArray

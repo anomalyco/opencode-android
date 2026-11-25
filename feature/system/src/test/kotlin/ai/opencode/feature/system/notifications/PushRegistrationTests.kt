@@ -2,6 +2,7 @@ package ai.opencode.feature.system.notifications
 
 import ai.opencode.core.dependencies.AppContext
 import ai.opencode.core.dependencies.DateClient
+import ai.opencode.core.dependencies.withDependencies
 import ai.opencode.core.dependencies.withDependenciesSuspending
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
@@ -14,6 +15,7 @@ import ai.opencode.server.model.OpenCodePushLevel
 import ai.opencode.server.model.OpenCodePushState
 import ai.opencode.server.testing.WireFixture
 import ai.opencode.server.testing.WireFixture.Reply
+import android.app.NotificationManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -28,7 +30,11 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import java.time.Instant
+import java.util.Base64
 import java.util.concurrent.atomic.AtomicInteger
+import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.SecretKeySpec
 import kotlin.time.Duration.Companion.days
 
 /** Registration once per server: one token request, a callback reused until three days are left. */
@@ -39,6 +45,42 @@ class PushRegistrationTests {
 
     private val start = Instant.parse("2026-11-01T00:00:00Z")
     private val relay = SessionNotifications.RELAY_URL.trimEnd('/')
+
+    @Test
+    fun aClearRemovesOnlyTheNotificationPostedForItsID() {
+        val context = RuntimeEnvironment.getApplication()
+        val ref = "12345678-1234-1234-1234-123456789abc"
+        val key = ByteArray(32) { it.toByte() }
+        fun handle(message: String) {
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            val nonce = ByteArray(12)
+            cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(key, "AES"), GCMParameterSpec(128, nonce))
+            cipher.updateAAD("${NotificationCrypto.CONTEXT}:$ref".toByteArray(Charsets.UTF_8))
+            val box = Base64.getEncoder().encodeToString(nonce + cipher.doFinal(message.toByteArray(Charsets.UTF_8)))
+            val data = mapOf(NotificationContent.ENVELOPE_KEY to """{"v":2,"ref":"$ref","box":"$box"}""")
+            withDependencies({
+                this[SharedStore] = SharedStore.inMemory()
+                this[AppContext] = context
+            }) { SessionPushNotifications.handle(context, data) { key } }
+        }
+        val manager = context.getSystemService(NotificationManager::class.java)
+        fun shown() = manager.activeNotifications.map { it.tag }.sorted()
+
+        handle("""{"v":1,"id":"per_a","type":"permission","sessionID":"ses_a","title":"Fix","body":"Needs permission: bash","data":{}}""")
+        handle("""{"v":1,"id":"ses_b","type":"session.idle","sessionID":"ses_b","title":"Docs","body":"Finished","data":{}}""")
+        assertEquals(listOf("ses_a", "ses_b"), shown())
+        // A clear for something no longer showing posts nothing.
+        handle("""{"v":1,"id":"per_gone","type":"clear","sessionID":"ses_a"}""")
+        assertEquals(listOf("ses_a", "ses_b"), shown())
+        handle("""{"v":1,"id":"per_a","type":"clear","sessionID":"ses_a"}""")
+        assertEquals(listOf("ses_b"), shown())
+        // A later notification for the session replaced the one the clear names, so it stays.
+        handle("""{"v":1,"id":"frm_c","type":"question","sessionID":"ses_b","title":"Docs","body":"Which one?","data":{}}""")
+        handle("""{"v":1,"id":"ses_b","type":"clear","sessionID":"ses_b"}""")
+        assertEquals(listOf("ses_b"), shown())
+        handle("""{"v":1,"id":"frm_c","type":"clear","sessionID":"ses_b"}""")
+        assertEquals(emptyList<String>(), shown())
+    }
 
     @Test
     fun registrationReusesTheCallbackUntilItNeedsRenewing() = runBlocking {
@@ -56,7 +98,7 @@ class PushRegistrationTests {
             },
         )
         val fixture = WireFixture { request ->
-            if (request.method == "PUT") Reply.Json(200, """{"publicKey":"server-key"}""") else Reply.status(404)
+            if (request.method == "PUT") Reply.Json(200, """{"data":{"publicKey":"server-key"}}""") else Reply.status(404)
         }
         var now = start
         try {

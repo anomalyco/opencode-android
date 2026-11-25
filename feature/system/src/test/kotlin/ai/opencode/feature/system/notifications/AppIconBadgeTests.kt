@@ -301,8 +301,14 @@ class AppIconBadgeTests {
             """{"v":1,"type":"session.idle","sessionID":"ses_a","title":"Fix the login bug","body":"Finished","data":{"outcome":"succeeded"},"extra":true}""",
         )
         assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished"), idle)
-        val permission = NotificationCrypto.Payload.parse("""{"v":1,"type":"permission","sessionID":"ses_a","title":"Run tests?","body":"bun test","data":{"requestID":"per_1","action":"bash"}}""")
+        val permission = NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"permission","sessionID":"ses_a","title":"Run tests?","body":"bun test","data":{"requestID":"per_1","action":"bash"}}""")
         assertEquals("permission", permission?.type)
+        assertEquals("per_1", permission?.id)
+        // A clear has no title or body; it names the message it removes.
+        assertEquals(
+            NotificationCrypto.Payload("clear", "ses_a", "", "", id = "per_1"),
+            NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"clear","sessionID":"ses_a"}"""),
+        )
         // A known type needs a session and a title.
         assertNull(NotificationCrypto.Payload.parse("""{"v":1,"type":"question","title":"Which one?","body":""}"""))
         assertNull(NotificationCrypto.Payload.parse("""{"v":1,"type":"question","sessionID":"ses_a","title":"","body":"x"}"""))

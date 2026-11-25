@@ -21,7 +21,8 @@ import kotlinx.serialization.json.jsonObject
  * type show only once [NotificationContent.verifiedPayload] opens the box with this phone's key for
  * its ref; a box that can't be opened or read shows the generic "OpenCode" / "New activity"
  * notification, never clear text from the transport. Each type posts on its own channel. The
- * badge counts verified pushes for a session only.
+ * badge counts verified pushes for a session only. A verified `clear` removes the notification
+ * posted for its `id`, if it still shows, and posts nothing.
  *
  * Taps: the content intent is built from the verified payload and targets the unexported
  * [SystemActionActivity], so only this app can send it.
@@ -36,10 +37,19 @@ object SessionPushNotifications {
     private const val EXTRA_SESSION = "opencode.sessionID"
     private const val EXTRA_STATUS = "opencode.status"
     private const val EXTRA_ENVELOPE = "opencode.envelope"
+    private const val EXTRA_ID = "opencode.id"
 
     @SuppressLint("MissingPermission")
-    fun handle(context: Context, data: Map<String, String>) {
-        val verified = NotificationContent.verifiedPayload(data)
+    fun handle(
+        context: Context,
+        data: Map<String, String>,
+        sharedKey: (String) -> ByteArray = { NotificationKeyStore.live.sharedKey(it) },
+    ) {
+        val verified = NotificationContent.verifiedPayload(data, sharedKey)
+        if (verified?.payload?.type == "clear") {
+            verified.payload.id?.let { clear(context, it) }
+            return
+        }
         val shown = NotificationContent.content(data, verified) ?: return
         val sessionID = verified?.payload?.sessionID
         val notifications = SessionNotifications.shared
@@ -61,6 +71,7 @@ object SessionPushNotifications {
         builder.extras.putString(EXTRA_SESSION, sessionID)
         builder.extras.putString(EXTRA_STATUS, shown.type)
         builder.extras.putString(EXTRA_ENVELOPE, shown.envelope?.toString())
+        builder.extras.putString(EXTRA_ID, verified?.payload?.id)
         if (verified != null && sessionID != null) {
             // The badge the ledger counts for its session.
             val defaults = AppBadgeLedger.groupDefaults(context)
@@ -105,6 +116,16 @@ object SessionPushNotifications {
             if (needsInputOnly && !isNeedsInput(content)) continue
             val id = sessionID(content) ?: continue
             if (id !in sessionIDs) continue
+            manager.cancel(notification.tag, notification.id)
+        }
+    }
+
+    /** The notification posted for a message's [id]; it may have been replaced by a later one for its session. */
+    private fun clear(context: Context, id: String) {
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        for (notification in manager.activeNotifications) {
+            if (notification.id != NOTIFICATION_ID) continue
+            if (notification.notification.extras.getString(EXTRA_ID) != id) continue
             manager.cancel(notification.tag, notification.id)
         }
     }

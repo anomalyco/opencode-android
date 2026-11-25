@@ -48,7 +48,7 @@ class PushWireTests {
 
     @Test fun registrationPutsTheDeviceAndReadsTheServersKey() = runTest {
         val fixture = WireFixture { request ->
-            if (request.route == "PUT /api/experimental/push/device/3f0c9a52-7d1e-4b8a-9c6f-1e2d3c4b5a69") Reply.Json(200, """{"publicKey":"server-key","extra":1}""") else Reply.status(404)
+            if (request.route == "PUT /api/experimental/push/device/3f0c9a52-7d1e-4b8a-9c6f-1e2d3c4b5a69") Reply.Json(200, """{"data":{"publicKey":"server-key","extra":1}}""") else Reply.status(404)
         }
         try {
             val registration = OpenCodePushRegistration(
@@ -69,12 +69,12 @@ class PushWireTests {
     }
 
     @Test fun stateDecodesDevicesAndBellsAndSkipsUnknownLevels() = runTest {
-        val body = """{
+        val body = """{"data":{
             "settings":{"paused":true,"until":5000},
             "devices":[{"id":"3f0c9a52-7d1e-4b8a-9c6f-1e2d3c4b5a69","name":"Pixel","platform":"android","expiresAt":9000,"settings":{"default":"attention"},"paused":false,
                 "sessions":{"ses_a":{"level":"none","until":7000},"ses_b":{"level":"loud"}},"time":{"created":1,"updated":2}}],
             "sessions":{"ses_c":{"level":"all"}}
-        }"""
+        }}"""
         val fixture = WireFixture { request ->
             if (request.route == "GET /api/experimental/push") Reply.Json(200, body) else Reply.status(404)
         }
