@@ -18,6 +18,8 @@ object SystemNotificationChannels {
     const val SESSION_RUN = "session-run"
     /** A session finished. */
     const val SESSION_FINISHED = "session-finished"
+    /** A session failed. */
+    const val SESSION_FAILED = "session-failed"
     /** A session asks a question. */
     const val SESSION_QUESTIONS = "session-questions"
     /** A session asks for permission. */
@@ -26,8 +28,8 @@ object SystemNotificationChannels {
     const val SESSION_OTHER = "session-other"
 
     /** The channel for a message type; null (unreadable) goes to [SESSION_OTHER]. */
-    fun forType(type: String?): String = when (type) {
-        "session.idle" -> SESSION_FINISHED
+    fun forType(type: String?, outcome: String? = null): String = when (type) {
+        "session.idle" -> if (outcome == "failed") SESSION_FAILED else SESSION_FINISHED
         "question" -> SESSION_QUESTIONS
         "permission" -> SESSION_PERMISSIONS
         else -> SESSION_OTHER
@@ -55,6 +57,7 @@ object SystemNotificationChannels {
                     setShowBadge(false)
                 },
                 NotificationChannel(SESSION_FINISHED, context.getString(R.string.system_channel_session_finished), NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel(SESSION_FAILED, context.getString(R.string.system_channel_session_failed), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SESSION_QUESTIONS, context.getString(R.string.system_channel_session_questions), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SESSION_PERMISSIONS, context.getString(R.string.system_channel_session_permissions), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SESSION_OTHER, context.getString(R.string.system_channel_session_other), NotificationManager.IMPORTANCE_DEFAULT),

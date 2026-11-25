@@ -81,6 +81,7 @@
     <string name="system_channel_recording">กำลังบันทึกเสียง</string>
     <string name="system_channel_session_runs">การทำงานของเซสชัน</string>
     <string name="system_channel_session_finished">เซสชันที่เสร็จสิ้นแล้ว</string>
+    <string name="system_channel_session_failed">เซสชันที่ล้มเหลว</string>
     <string name="system_channel_session_questions">คำถาม</string>
     <string name="system_channel_session_permissions">คำขอสิทธิ์</string>
     <string name="system_channel_session_other">อัปเดตเซสชันอื่น ๆ</string>

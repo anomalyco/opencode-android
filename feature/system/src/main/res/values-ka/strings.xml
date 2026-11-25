@@ -81,6 +81,7 @@
     <string name="system_channel_recording">ჩაწერა</string>
     <string name="system_channel_session_runs">სესიების გაშვება</string>
     <string name="system_channel_session_finished">დასრულებული სესიები</string>
+    <string name="system_channel_session_failed">წარუმატებელი სესიები</string>
     <string name="system_channel_session_questions">კითხვები</string>
     <string name="system_channel_session_permissions">ნებართვის მოთხოვნები</string>
     <string name="system_channel_session_other">სესიის სხვა განახლებები</string>

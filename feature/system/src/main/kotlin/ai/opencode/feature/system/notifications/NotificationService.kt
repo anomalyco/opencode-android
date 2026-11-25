@@ -60,7 +60,7 @@ object SessionPushNotifications {
         if (presentation == NotificationPresentation.None) return
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
         SystemNotificationChannels.ensure(context)
-        val builder = NotificationCompat.Builder(context, SystemNotificationChannels.forType(shown.type))
+        val builder = NotificationCompat.Builder(context, SystemNotificationChannels.forType(shown.type, verified?.payload?.outcome))
             .setSmallIcon(R.drawable.ic_opencode_mark)
             .setContentTitle(shown.title)
             .setContentText(shown.body)

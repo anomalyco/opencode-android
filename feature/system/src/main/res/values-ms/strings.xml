@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Rakaman</string>
     <string name="system_channel_session_runs">Pelaksanaan sesi</string>
     <string name="system_channel_session_finished">Sesi selesai</string>
+    <string name="system_channel_session_failed">Sesi gagal</string>
     <string name="system_channel_session_questions">Soalan</string>
     <string name="system_channel_session_permissions">Permintaan kebenaran</string>
     <string name="system_channel_session_other">Kemas kini sesi lain</string>

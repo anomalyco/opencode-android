@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Salvestamine</string>
     <string name="system_channel_session_runs">Seansside käivitused</string>
     <string name="system_channel_session_finished">Lõpetatud seansid</string>
+    <string name="system_channel_session_failed">Ebaõnnestunud seansid</string>
     <string name="system_channel_session_questions">Küsimused</string>
     <string name="system_channel_session_permissions">Loataotlused</string>
     <string name="system_channel_session_other">Muud seansi uuendused</string>

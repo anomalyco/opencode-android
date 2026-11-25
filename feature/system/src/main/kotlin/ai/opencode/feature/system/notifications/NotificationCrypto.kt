@@ -54,7 +54,7 @@ object NotificationCrypto {
      * and a title; an unknown one may have neither, and without a title it isn't shown. A `clear`
      * names the earlier message's [id].
      */
-    data class Payload(val type: String, val sessionID: String?, val title: String, val body: String, val id: String) {
+    data class Payload(val type: String, val sessionID: String?, val title: String, val body: String, val id: String, val outcome: String? = null) {
         val isKnownType: Boolean get() = type in KNOWN_TYPES
 
         companion object {
@@ -71,7 +71,8 @@ object NotificationCrypto {
                 var sessionID = stringOf(root, "sessionID")
                 if (sessionID != null && !isValid(sessionID = sessionID)) sessionID = null
                 if (type in KNOWN_TYPES && (sessionID == null || title.isEmpty())) return null
-                return Payload(type, sessionID, title, body, id)
+                val outcome = (root["data"] as? JsonObject)?.let { stringOf(it, "outcome") }
+                return Payload(type, sessionID, title, body, id, outcome)
             }
 
             private fun stringOf(root: JsonObject, key: String): String? =

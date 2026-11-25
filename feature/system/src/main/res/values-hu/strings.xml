@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Hangfelvétel</string>
     <string name="system_channel_session_runs">Munkamenetek futtatása</string>
     <string name="system_channel_session_finished">Befejezett munkamenetek</string>
+    <string name="system_channel_session_failed">Sikertelen munkamenetek</string>
     <string name="system_channel_session_questions">Kérdések</string>
     <string name="system_channel_session_permissions">Engedélykérések</string>
     <string name="system_channel_session_other">Egyéb munkamenet-frissítések</string>

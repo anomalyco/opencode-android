@@ -81,6 +81,7 @@
     <string name="system_channel_recording">正在录音</string>
     <string name="system_channel_session_runs">会话运行</string>
     <string name="system_channel_session_finished">已完成的会话</string>
+    <string name="system_channel_session_failed">失败的会话</string>
     <string name="system_channel_session_questions">问题</string>
     <string name="system_channel_session_permissions">权限请求</string>
     <string name="system_channel_session_other">其他会话更新</string>

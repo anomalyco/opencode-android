@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Снимање</string>
     <string name="system_channel_session_runs">Извршувања на сесии</string>
     <string name="system_channel_session_finished">Завршени сесии</string>
+    <string name="system_channel_session_failed">Неуспешни сесии</string>
     <string name="system_channel_session_questions">Прашања</string>
     <string name="system_channel_session_permissions">Барања за дозвола</string>
     <string name="system_channel_session_other">Други ажурирања на сесии</string>

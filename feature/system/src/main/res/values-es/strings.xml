@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Grabación</string>
     <string name="system_channel_session_runs">Ejecuciones de sesiones</string>
     <string name="system_channel_session_finished">Sesiones terminadas</string>
+    <string name="system_channel_session_failed">Sesiones fallidas</string>
     <string name="system_channel_session_questions">Preguntas</string>
     <string name="system_channel_session_permissions">Solicitudes de permiso</string>
     <string name="system_channel_session_other">Otras actualizaciones de sesión</string>

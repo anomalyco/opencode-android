@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Opptak</string>
     <string name="system_channel_session_runs">Sesjonskjøringer</string>
     <string name="system_channel_session_finished">Fullførte sesjoner</string>
+    <string name="system_channel_session_failed">Mislykkede sesjoner</string>
     <string name="system_channel_session_questions">Spørsmål</string>
     <string name="system_channel_session_permissions">Forespørsler om tillatelse</string>
     <string name="system_channel_session_other">Andre sesjonsoppdateringer</string>

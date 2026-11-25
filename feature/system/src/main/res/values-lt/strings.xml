@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Įrašoma</string>
     <string name="system_channel_session_runs">Seansų vykdymas</string>
     <string name="system_channel_session_finished">Baigti seansai</string>
+    <string name="system_channel_session_failed">Nepavykę seansai</string>
     <string name="system_channel_session_questions">Klausimai</string>
     <string name="system_channel_session_permissions">Leidimų užklausos</string>
     <string name="system_channel_session_other">Kiti seansų atnaujinimai</string>

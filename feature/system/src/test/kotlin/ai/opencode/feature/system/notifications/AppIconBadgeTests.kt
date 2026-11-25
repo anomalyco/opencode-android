@@ -108,7 +108,7 @@ class AppIconBadgeTests {
     @Test
     fun encryptedNotificationMatchesNodeCrypto() {
         val payload = NotificationCrypto.open(encryptedBox, encryptedRef, notificationKey())
-        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result.", id = "ses_interop"), payload)
+        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result.", id = "ses_interop", outcome = "succeeded"), payload)
     }
 
     @Test
@@ -203,7 +203,7 @@ class AppIconBadgeTests {
         val idle = NotificationCrypto.Payload.parse(
             """{"v":1,"id":"ses_a","type":"session.idle","sessionID":"ses_a","title":"Fix the login bug","body":"Finished","data":{"outcome":"succeeded"},"extra":true}""",
         )
-        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished", "ses_a"), idle)
+        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished", "ses_a", "succeeded"), idle)
         val permission = NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"permission","sessionID":"ses_a","title":"Run tests?","body":"bun test","data":{"requestID":"per_1","action":"bash"}}""")
         assertEquals("permission", permission?.type)
         assertEquals("per_1", permission?.id)
@@ -231,7 +231,8 @@ class AppIconBadgeTests {
         assertNull(NotificationContent.content(emptyMap(), verified("""{"v":1,"id":"x_1","type":"later.kind","body":"quiet"}""")))
         assertEquals(SystemNotificationChannels.SESSION_QUESTIONS, SystemNotificationChannels.forType("question"))
         assertEquals(SystemNotificationChannels.SESSION_PERMISSIONS, SystemNotificationChannels.forType("permission"))
-        assertEquals(SystemNotificationChannels.SESSION_FINISHED, SystemNotificationChannels.forType("session.idle"))
+        assertEquals(SystemNotificationChannels.SESSION_FINISHED, SystemNotificationChannels.forType("session.idle", idle?.outcome))
+        assertEquals(SystemNotificationChannels.SESSION_FAILED, SystemNotificationChannels.forType("session.idle", "failed"))
 
         // A box that opens but isn't a message shows the generic notification.
         val key = notificationKey()

@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Запис</string>
     <string name="system_channel_session_runs">Изпълнения на сесии</string>
     <string name="system_channel_session_finished">Завършени сесии</string>
+    <string name="system_channel_session_failed">Неуспешни сесии</string>
     <string name="system_channel_session_questions">Въпроси</string>
     <string name="system_channel_session_permissions">Заявки за разрешение</string>
     <string name="system_channel_session_other">Други актуализации на сесии</string>

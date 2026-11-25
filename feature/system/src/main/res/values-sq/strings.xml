@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Po regjistrohet</string>
     <string name="system_channel_session_runs">Ekzekutimet e sesioneve</string>
     <string name="system_channel_session_finished">Sesione të përfunduara</string>
+    <string name="system_channel_session_failed">Sesione të dështuara</string>
     <string name="system_channel_session_questions">Pyetje</string>
     <string name="system_channel_session_permissions">Kërkesa për leje</string>
     <string name="system_channel_session_other">Përditësime të tjera të sesionit</string>

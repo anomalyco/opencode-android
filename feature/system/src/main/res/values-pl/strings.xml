@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Nagrywanie</string>
     <string name="system_channel_session_runs">Uruchomienia sesji</string>
     <string name="system_channel_session_finished">Zakończone sesje</string>
+    <string name="system_channel_session_failed">Nieudane sesje</string>
     <string name="system_channel_session_questions">Pytania</string>
     <string name="system_channel_session_permissions">Prośby o uprawnienia</string>
     <string name="system_channel_session_other">Inne aktualizacje sesji</string>

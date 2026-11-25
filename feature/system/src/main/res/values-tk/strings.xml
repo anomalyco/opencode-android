@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Ses ýazylýar</string>
     <string name="system_channel_session_runs">Sessiýa işledilişleri</string>
     <string name="system_channel_session_finished">Tamamlanan sessiýalar</string>
+    <string name="system_channel_session_failed">Şowsuz sessiýalar</string>
     <string name="system_channel_session_questions">Soraglar</string>
     <string name="system_channel_session_permissions">Rugsat talaplary</string>
     <string name="system_channel_session_other">Beýleki sessiýa täzelenmeleri</string>

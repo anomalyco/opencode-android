@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Recording</string>
     <string name="system_channel_session_runs">Session Runs</string>
     <string name="system_channel_session_finished">Finished Sessions</string>
+    <string name="system_channel_session_failed">Failed Sessions</string>
     <string name="system_channel_session_questions">Questions</string>
     <string name="system_channel_session_permissions">Permission Requests</string>
     <string name="system_channel_session_other">Other Session Updates</string>

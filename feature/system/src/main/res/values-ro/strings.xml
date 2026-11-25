@@ -81,6 +81,7 @@
     <string name="system_channel_recording">Înregistrare</string>
     <string name="system_channel_session_runs">Rulări de sesiuni</string>
     <string name="system_channel_session_finished">Sesiuni încheiate</string>
+    <string name="system_channel_session_failed">Sesiuni eșuate</string>
     <string name="system_channel_session_questions">Întrebări</string>
     <string name="system_channel_session_permissions">Cereri de permisiune</string>
     <string name="system_channel_session_other">Alte actualizări de sesiune</string>
