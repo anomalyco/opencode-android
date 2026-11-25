@@ -64,23 +64,24 @@ class PushRegistrationTests {
             }) { SessionPushNotifications.handle(context, data) { key } }
         }
         val manager = context.getSystemService(NotificationManager::class.java)
-        fun shown() = manager.activeNotifications.map { it.tag }.sorted()
+        fun shown() = manager.activeNotifications.map { it.tag ?: "summary" }.sorted()
 
         handle("""{"v":1,"id":"per_a","type":"permission","sessionID":"ses_a","title":"Fix","body":"Needs permission: bash","data":{}}""")
         handle("""{"v":1,"id":"ses_b","type":"session.idle","sessionID":"ses_b","title":"Docs","body":"Finished","data":{}}""")
-        assertEquals(listOf("ses_a:per_a", "ses_b"), shown())
+        assertEquals(listOf("ses_a:per_a", "ses_b", "summary"), shown())
+        assertTrue(manager.activeNotifications.all { it.notification.group == "sessions" })
         // A clear for something no longer showing posts nothing.
         handle("""{"v":1,"id":"per_gone","type":"clear","sessionID":"ses_a"}""")
-        assertEquals(listOf("ses_a:per_a", "ses_b"), shown())
+        assertEquals(listOf("ses_a:per_a", "ses_b", "summary"), shown())
         handle("""{"v":1,"id":"per_a","type":"clear","sessionID":"ses_a"}""")
-        assertEquals(listOf("ses_b"), shown())
+        assertEquals(listOf("ses_b", "summary"), shown())
         // Each request keeps its own notification beside the session's Finished.
         handle("""{"v":1,"id":"frm_c","type":"question","sessionID":"ses_b","title":"Docs","body":"Which one?","data":{}}""")
         handle("""{"v":1,"id":"per_d","type":"permission","sessionID":"ses_b","title":"Docs","body":"Needs permission: bash","data":{}}""")
-        assertEquals(listOf("ses_b", "ses_b:frm_c", "ses_b:per_d"), shown())
+        assertEquals(listOf("ses_b", "ses_b:frm_c", "ses_b:per_d", "summary"), shown())
         handle("""{"v":1,"id":"ses_b","type":"clear","sessionID":"ses_b"}""")
         handle("""{"v":1,"id":"per_d","type":"clear","sessionID":"ses_b"}""")
-        assertEquals(listOf("ses_b:frm_c"), shown())
+        assertEquals(listOf("ses_b:frm_c", "summary"), shown())
         handle("""{"v":1,"id":"frm_c","type":"clear","sessionID":"ses_b"}""")
         assertEquals(emptyList<String>(), shown())
     }

@@ -24,6 +24,9 @@ import androidx.core.app.NotificationManagerCompat
  * showing. A verified `clear` removes the notification posted for its `id`, if it still shows,
  * and posts nothing.
  *
+ * All share one group with a silent summary, so Android never autogroups them: Android 16 marks an
+ * autogrouped notification silent, and it no longer pops up.
+ *
  * Taps: the content intent is built from the verified payload and targets the unexported
  * [SystemActionActivity], so only this app can send it.
  *
@@ -69,6 +72,8 @@ object SessionPushNotifications {
             .setOnlyAlertOnce(verified == null)
             .setSilent(presentation == NotificationPresentation.ListOnly)
             .setPriority(if (presentation == NotificationPresentation.ListOnly) NotificationCompat.PRIORITY_LOW else NotificationCompat.PRIORITY_HIGH)
+            .setGroup(GROUP)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
         builder.extras.putString(EXTRA_SESSION, sessionID)
         builder.extras.putString(EXTRA_STATUS, shown.type)
         builder.extras.putString(EXTRA_ENVELOPE, shown.envelope?.toString())
@@ -87,8 +92,11 @@ object SessionPushNotifications {
             }
         }
         val tag = tag(verified, data)
-        runCatching { NotificationManagerCompat.from(context).notify(tag, NOTIFICATION_ID, builder.build()) }
-            .onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
+        runCatching {
+            val manager = NotificationManagerCompat.from(context)
+            manager.notify(SUMMARY_ID, summary(context))
+            manager.notify(tag, NOTIFICATION_ID, builder.build())
+        }.onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
     }
 
     /**
@@ -119,6 +127,7 @@ object SessionPushNotifications {
             if (id !in sessionIDs) continue
             manager.cancel(notification.tag, notification.id)
         }
+        removeSummaryIfEmpty(manager)
     }
 
     /**
@@ -137,6 +146,24 @@ object SessionPushNotifications {
             val stale = if (isNeedsInput(content)) sessionID !in waiting else sessionID in read
             if (stale) manager.cancel(notification.tag, notification.id)
         }
+        removeSummaryIfEmpty(manager)
+    }
+
+    private fun summary(context: Context) =
+        NotificationCompat.Builder(context, SystemNotificationChannels.SESSION_OTHER)
+            .setSmallIcon(R.drawable.ic_opencode_mark)
+            .setGroup(GROUP)
+            .setGroupSummary(true)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+            .setSilent(true)
+            .setAutoCancel(true)
+            .build()
+
+    private fun removeSummaryIfEmpty(manager: NotificationManager) {
+        for (notification in manager.activeNotifications) {
+            if (notification.id == NOTIFICATION_ID) return
+        }
+        manager.cancel(SUMMARY_ID)
     }
 
     private fun delivered(notification: StatusBarNotification): Delivered {
@@ -156,6 +183,7 @@ object SessionPushNotifications {
             if (notification.notification.extras.getString(EXTRA_ID) != id) continue
             manager.cancel(notification.tag, notification.id)
         }
+        removeSummaryIfEmpty(manager)
     }
 
     /** What [remove] reads from a shown notification. */
@@ -181,4 +209,6 @@ object SessionPushNotifications {
     internal fun isNeedsInput(content: Delivered): Boolean = content.status in needsInputStatuses
 
     private const val NOTIFICATION_ID = 4201
+    private const val SUMMARY_ID = 4202
+    private const val GROUP = "sessions"
 }
