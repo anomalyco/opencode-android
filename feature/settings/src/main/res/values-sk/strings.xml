@@ -226,7 +226,6 @@
     <string name="settings_notifications_status_checking">Kontroluje sa server…</string>
     <string name="settings_notifications_status_no_permission">Najprv povoľte upozornenia vyššie.</string>
     <string name="settings_notifications_status_outdated">Tento server nepodporuje upozornenia. Možno potrebuje aktualizáciu OpenCode.</string>
-    <string name="settings_notifications_status_relay">Tento server neprijíma prenosovú službu upozornení tejto aplikácie.</string>
     <string name="settings_notifications_status_failed">Na tomto serveri sa nepodarilo nastaviť upozornenia. OpenCode to skúsi znova po opätovnom pripojení.</string>
     <string name="settings_notifications_status_disabled">Upozornenia sú na tomto serveri zakázané.</string>
     <string name="settings_notifications_change_failed_title">Nepodarilo sa zmeniť upozornenia</string>

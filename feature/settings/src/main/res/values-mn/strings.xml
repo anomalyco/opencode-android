@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Серверийг шалгаж байна…</string>
     <string name="settings_notifications_status_no_permission">Эхлээд дээрх мэдэгдлийг зөвшөөрнө үү.</string>
     <string name="settings_notifications_status_outdated">Энэ сервер мэдэгдэл дэмждэггүй. OpenCode-ийг шинэчлэх шаардлагатай байж магадгүй.</string>
-    <string name="settings_notifications_status_relay">Энэ сервер уг аппын мэдэгдэл дамжуулагчийг хүлээн авахгүй байна.</string>
     <string name="settings_notifications_status_failed">Энэ сервер дээр мэдэгдэл тохируулж чадсангүй. OpenCode дахин холбогдохдоо дахин оролдоно.</string>
     <string name="settings_notifications_status_disabled">Энэ сервер дээр мэдэгдэл идэвхгүй байна.</string>
     <string name="settings_notifications_change_failed_title">Мэдэгдлийг өөрчилж чадсангүй</string>

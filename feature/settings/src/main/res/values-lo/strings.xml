@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">ກຳລັງກວດສອບເຊີບເວີ…</string>
     <string name="settings_notifications_status_no_permission">ອະນຸຍາດການແຈ້ງເຕືອນຂ້າງເທິງກ່ອນ.</string>
     <string name="settings_notifications_status_outdated">ເຊີບເວີນີ້ບໍ່ຮອງຮັບການແຈ້ງເຕືອນ. ອາດຈະຕ້ອງອັບເດດ OpenCode.</string>
-    <string name="settings_notifications_status_relay">ເຊີບເວີນີ້ບໍ່ຮັບຕົວສົ່ງຕໍ່ການແຈ້ງເຕືອນຂອງແອັບນີ້.</string>
     <string name="settings_notifications_status_failed">ຕັ້ງຄ່າການແຈ້ງເຕືອນໃນເຊີບເວີນີ້ບໍ່ໄດ້. OpenCode ຈະລອງໃໝ່ເມື່ອເຊື່ອມຕໍ່ອີກຄັ້ງ.</string>
     <string name="settings_notifications_status_disabled">ການແຈ້ງເຕືອນຖືກປິດໃຊ້ງານໃນເຊີບເວີນີ້.</string>
     <string name="settings_notifications_change_failed_title">ປ່ຽນການແຈ້ງເຕືອນບໍ່ໄດ້</string>

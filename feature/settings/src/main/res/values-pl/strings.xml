@@ -226,7 +226,6 @@
     <string name="settings_notifications_status_checking">Sprawdzanie serwera…</string>
     <string name="settings_notifications_status_no_permission">Najpierw zezwól na powiadomienia powyżej.</string>
     <string name="settings_notifications_status_outdated">Ten serwer nie obsługuje powiadomień. Może wymagać aktualizacji OpenCode.</string>
-    <string name="settings_notifications_status_relay">Ten serwer nie akceptuje przekaźnika powiadomień tej aplikacji.</string>
     <string name="settings_notifications_status_failed">Nie udało się skonfigurować powiadomień na tym serwerze. OpenCode spróbuje ponownie po ponownym połączeniu.</string>
     <string name="settings_notifications_status_disabled">Powiadomienia są wyłączone na tym serwerze.</string>
     <string name="settings_notifications_change_failed_title">Nie udało się zmienić ustawień powiadomień</string>

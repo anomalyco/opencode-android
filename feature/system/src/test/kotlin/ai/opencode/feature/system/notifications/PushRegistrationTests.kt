@@ -168,22 +168,12 @@ class PushRegistrationTests {
     }
 }
 
-/** The relay match, and the bell a send turns on. */
+/** The bell a send turns on. */
 class PushBellTests {
     private val device = OpenCodePushDevice(
         id = "ref-1", name = "Pixel", platform = "android", expiresAt = 1,
         defaultLevel = OpenCodePushLevel.attention, paused = false, sessions = emptyMap(),
     )
-
-    @Test
-    fun theRelayIsMatchedByItsOrigin() {
-        val relays = listOf("https://relay.example", "http://localhost:8787")
-        assertTrue(PushSync.isListed("https://relay.example/", relays))
-        assertTrue(PushSync.isListed("https://relay.example:443", relays))
-        assertTrue(PushSync.isListed("http://localhost:8787", relays))
-        assertFalse(PushSync.isListed("https://relay.example:8443", relays))
-        assertFalse(PushSync.isListed("https://other.example", relays))
-    }
 
     @Test
     fun aSendTurnsThisPhonesBellOnUnlessItHasOneThatStillHolds() = runBlocking {

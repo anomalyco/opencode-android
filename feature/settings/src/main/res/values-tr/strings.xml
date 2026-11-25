@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Sunucu kontrol ediliyor…</string>
     <string name="settings_notifications_status_no_permission">Önce yukarıdan bildirimlere izin verin.</string>
     <string name="settings_notifications_status_outdated">Bu sunucu bildirimleri desteklemiyor. OpenCode güncellemesi gerekebilir.</string>
-    <string name="settings_notifications_status_relay">Bu sunucu, bu uygulamanın bildirim aktarıcısını kabul etmiyor.</string>
     <string name="settings_notifications_status_failed">Bu sunucuda bildirimler ayarlanamadı. OpenCode yeniden bağlandığında tekrar dener.</string>
     <string name="settings_notifications_status_disabled">Bu sunucuda bildirimler devre dışı.</string>
     <string name="settings_notifications_change_failed_title">Bildirimler değiştirilemedi</string>

@@ -226,7 +226,6 @@
     <string name="settings_notifications_status_checking">Перевірка сервера…</string>
     <string name="settings_notifications_status_no_permission">Спочатку дозвольте сповіщення вище.</string>
     <string name="settings_notifications_status_outdated">Цей сервер не підтримує сповіщення. Можливо, потрібно оновити OpenCode.</string>
-    <string name="settings_notifications_status_relay">Цей сервер не приймає ретранслятор сповіщень цього застосунку.</string>
     <string name="settings_notifications_status_failed">Не вдалося налаштувати сповіщення на цьому сервері. OpenCode спробує ще раз після повторного підключення.</string>
     <string name="settings_notifications_status_disabled">Сповіщення на цьому сервері вимкнено.</string>
     <string name="settings_notifications_change_failed_title">Не вдалося змінити сповіщення</string>

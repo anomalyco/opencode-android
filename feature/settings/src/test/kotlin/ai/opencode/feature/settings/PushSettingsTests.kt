@@ -11,8 +11,7 @@ import ai.opencode.feature.system.notifications.PushStatus
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
-import ai.opencode.server.model.OpenCodePushCapability
-import ai.opencode.server.model.OpenCodePushLevel
+import ai.opencode.server.model.OpenCodePushState
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -34,17 +33,16 @@ class PushSettingsTests {
             this[HapticsClient] = haptics.client
             this[SessionNotificationsClient] = SessionNotificationsClient(
                 isAvailable = true,
-                relay = "https://relay.example",
                 unregister = { unregistered.value },
             )
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                pushCapability = { OpenCodePushCapability(1, listOf("https://relay.example"), OpenCodePushLevel.entries) },
+                pushState = { OpenCodePushState() },
             )
         }
         val off = PushChoice(enabled = false)
 
         store.send(PushSettingsFeature.Action.EnabledChanged(false)) { it.copy(pendingChoice = off) }
-        store.receive(PushSettingsFeature.Action.ChoiceSynced(off, PushServer(PushStatus.Failed, OpenCodePushLevel.entries))) {
+        store.receive(PushSettingsFeature.Action.ChoiceSynced(off, PushServer(PushStatus.Failed))) {
             it.copy(pendingChoice = null, failure = failure)
         }
         assertEquals(emptyMap<String, PushChoice>(), shared.get(PushSharedKeys.choices))
@@ -53,7 +51,7 @@ class PushSettingsTests {
         unregistered.set(true)
         store.send(PushSettingsFeature.Action.FailureDismissed) { it.copy(failure = null) }
         store.send(PushSettingsFeature.Action.EnabledChanged(false)) { it.copy(pendingChoice = off) }
-        val result = PushServer(PushStatus.Off, OpenCodePushLevel.entries)
+        val result = PushServer(PushStatus.Off)
         store.receive(PushSettingsFeature.Action.ChoiceSynced(off, result)) { it.copy(pendingChoice = null) }
         assertEquals(mapOf(server.persistenceID to off), shared.get(PushSharedKeys.choices))
         assertEquals(mapOf(server.persistenceID to result), shared.get(PushSharedKeys.servers))

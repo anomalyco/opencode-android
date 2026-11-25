@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">Memeriksa server…</string>
     <string name="settings_notifications_status_no_permission">Izinkan notifikasi di atas terlebih dahulu.</string>
     <string name="settings_notifications_status_outdated">Server ini tidak mendukung notifikasi. Mungkin perlu pembaruan OpenCode.</string>
-    <string name="settings_notifications_status_relay">Server ini tidak menerima relai notifikasi aplikasi ini.</string>
     <string name="settings_notifications_status_failed">Gagal menyiapkan notifikasi di server ini. OpenCode akan mencoba lagi saat terhubung kembali.</string>
     <string name="settings_notifications_status_disabled">Notifikasi dinonaktifkan di server ini.</string>
     <string name="settings_notifications_change_failed_title">Gagal mengubah notifikasi</string>

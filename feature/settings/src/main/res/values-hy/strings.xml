@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Սերվերը ստուգվում է…</string>
     <string name="settings_notifications_status_no_permission">Նախ թույլատրեք ծանուցումները վերևում։</string>
     <string name="settings_notifications_status_outdated">Այս սերվերը ծանուցումներ չի տրամադրում։ Հնարավոր է՝ OpenCode-ի թարմացում է պետք։</string>
-    <string name="settings_notifications_status_relay">Այս սերվերը չի ընդունում այս հավելվածի ծանուցումների միջնորդ սերվերը։</string>
     <string name="settings_notifications_status_failed">Չհաջողվեց կարգավորել ծանուցումներն այս սերվերում։ OpenCode-ը կրկին կփորձի վերամիանալիս։</string>
     <string name="settings_notifications_status_disabled">Այս սերվերում ծանուցումներն անջատված են։</string>
     <string name="settings_notifications_change_failed_title">Չհաջողվեց փոխել ծանուցումները</string>

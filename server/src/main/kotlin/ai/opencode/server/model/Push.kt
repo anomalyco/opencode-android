@@ -17,13 +17,6 @@ enum class OpenCodePushLevel {
     }
 }
 
-/** `capabilities.push` from `GET /api/info`. */
-data class OpenCodePushCapability(
-    val version: Int,
-    val relays: List<String>,
-    val levels: List<OpenCodePushLevel>,
-)
-
 /** A bell on one session; [until] is in epoch milliseconds, null for forever. */
 @Serializable
 data class OpenCodePushBell(val level: OpenCodePushLevel, val until: Long? = null)

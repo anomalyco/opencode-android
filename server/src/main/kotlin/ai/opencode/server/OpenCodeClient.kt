@@ -73,7 +73,6 @@ import ai.opencode.server.live.requestViewSession
 import ai.opencode.server.live.requestWaitForIdle
 import ai.opencode.server.live.subscribeEventsSharingWindows
 import ai.opencode.server.live.uploadFile
-import ai.opencode.server.live.requestPushCapability
 import ai.opencode.server.live.requestPushState
 import ai.opencode.server.live.requestRegisterPushDevice
 import ai.opencode.server.live.requestRemovePushDevice
@@ -97,7 +96,6 @@ import ai.opencode.server.model.OpenCodeOAuthStatus
 import ai.opencode.server.model.OpenCodeOutgoingAttachment
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePushBell
-import ai.opencode.server.model.OpenCodePushCapability
 import ai.opencode.server.model.OpenCodePushRegistration
 import ai.opencode.server.model.OpenCodePushState
 import ai.opencode.server.model.OpenCodePendingRequests
@@ -213,8 +211,6 @@ data class OpenCodeClient(
     val unarchiveSession: suspend (server: OpenCodeServer, sessionID: String) -> Unit,
     /** The newest archived root sessions (`archived=true`) matching `search` (all when empty), as desktop's Archived list. */
     val archivedSessions: suspend (server: OpenCodeServer, search: String, limit: Int) -> List<OpenCodeSession>,
-    /** `capabilities.push` from `GET /api/info`; null on a server without push. */
-    val pushCapability: suspend (server: OpenCodeServer) -> OpenCodePushCapability?,
     /** Registers this phone under `id` (its ref) and returns the server's public key. */
     val registerPushDevice: suspend (server: OpenCodeServer, id: String, registration: OpenCodePushRegistration) -> String,
     val removePushDevice: suspend (server: OpenCodeServer, id: String) -> Unit,
@@ -329,7 +325,6 @@ data class OpenCodeClient(
             archiveSession = ::requestArchiveSession,
             unarchiveSession = ::requestUnarchiveSession,
             archivedSessions = ::requestArchivedSessions,
-            pushCapability = ::requestPushCapability,
             registerPushDevice = ::requestRegisterPushDevice,
             removePushDevice = ::requestRemovePushDevice,
             pushState = ::requestPushState,
@@ -413,10 +408,9 @@ data class OpenCodeClient(
                     archiveSession = { _, _ -> unimplemented("archiveSession") },
                     unarchiveSession = { _, _ -> unimplemented("unarchiveSession") },
                     archivedSessions = { _, _, _ -> unimplemented("archivedSessions") },
-                    pushCapability = { null },
                     registerPushDevice = { _, _, _ -> unimplemented("registerPushDevice") },
                     removePushDevice = { _, _ -> },
-                    pushState = { unimplemented("pushState") },
+                    pushState = { throw OpenCodeClientError(message = "Not found", statusCode = 404) },
                     setPushSessionBell = { _, _, _, _ -> unimplemented("setPushSessionBell") },
                     compactSession = { _, _ -> unimplemented("compactSession") },
                     stageRevert = { _, _, _ -> unimplemented("stageRevert") },

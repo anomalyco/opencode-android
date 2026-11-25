@@ -223,7 +223,6 @@
     <string name="settings_notifications_status_checking">Pārbauda serveri…</string>
     <string name="settings_notifications_status_no_permission">Vispirms atļauj paziņojumus augstāk.</string>
     <string name="settings_notifications_status_outdated">Šis serveris nepiedāvā paziņojumus. Iespējams, tam nepieciešams OpenCode atjauninājums.</string>
-    <string name="settings_notifications_status_relay">Šis serveris nepieņem šīs lietotnes paziņojumu starpniekserveri.</string>
     <string name="settings_notifications_status_failed">Neizdevās iestatīt paziņojumus šajā serverī. OpenCode mēģinās vēlreiz, kad atkal savienosies.</string>
     <string name="settings_notifications_status_disabled">Paziņojumi šajā serverī ir atspējoti.</string>
     <string name="settings_notifications_change_failed_title">Neizdevās mainīt paziņojumus</string>

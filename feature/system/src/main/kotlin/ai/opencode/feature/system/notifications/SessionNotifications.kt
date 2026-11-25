@@ -124,8 +124,6 @@ class NotificationKeysClient(
 class SessionNotificationsClient(
     /** Whether this build has a relay and a push channel to offer at all. */
     val isAvailable: Boolean,
-    /** The relay this build registers with, as a server lists it in `capabilities.push.relays`. */
-    val relay: String = SessionNotifications.RELAY_URL,
     /** Registers this phone with the server, hearing [OpenCodePushLevel] by default; false when a step fails. */
     val register: suspend (OpenCodeServer, OpenCodePushLevel) -> Boolean = { _, _ -> false },
     /** Removes this phone from the server, when it was ever registered there; false when the server didn't answer. */

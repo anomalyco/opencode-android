@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Server yoxlanılır…</string>
     <string name="settings_notifications_status_no_permission">Əvvəlcə yuxarıda bildirişlərə icazə verin.</string>
     <string name="settings_notifications_status_outdated">Bu server bildirişləri dəstəkləmir. OpenCode yeniləməsi lazım ola bilər.</string>
-    <string name="settings_notifications_status_relay">Bu server bu tətbiqin bildiriş ötürücüsünü qəbul etmir.</string>
     <string name="settings_notifications_status_failed">Bu serverdə bildirişləri quraşdırmaq mümkün olmadı. OpenCode yenidən qoşulduqda təkrar cəhd edəcək.</string>
     <string name="settings_notifications_status_disabled">Bu serverdə bildirişlər söndürülüb.</string>
     <string name="settings_notifications_change_failed_title">Bildirişləri dəyişmək mümkün olmadı</string>

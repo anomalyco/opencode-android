@@ -223,7 +223,6 @@
     <string name="settings_notifications_status_checking">Se verifică serverul…</string>
     <string name="settings_notifications_status_no_permission">Permite mai întâi notificările mai sus.</string>
     <string name="settings_notifications_status_outdated">Acest server nu oferă notificări. Ar putea necesita o actualizare OpenCode.</string>
-    <string name="settings_notifications_status_relay">Acest server nu acceptă releul de notificări al acestei aplicații.</string>
     <string name="settings_notifications_status_failed">Notificările nu au putut fi configurate pe acest server. OpenCode va încerca din nou la reconectare.</string>
     <string name="settings_notifications_status_disabled">Notificările sunt dezactivate pe acest server.</string>
     <string name="settings_notifications_change_failed_title">Nu s-au putut modifica notificările</string>

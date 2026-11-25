@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Server tekshirilmoqda…</string>
     <string name="settings_notifications_status_no_permission">Avval yuqorida bildirishnomalarga ruxsat bering.</string>
     <string name="settings_notifications_status_outdated">Bu server bildirishnomalarni qo‘llab-quvvatlamaydi. OpenCode’ni yangilash kerak bo‘lishi mumkin.</string>
-    <string name="settings_notifications_status_relay">Bu server ushbu ilovaning bildirishnoma uzatuvchi serverini qabul qilmaydi.</string>
     <string name="settings_notifications_status_failed">Bu serverda bildirishnomalarni sozlab bo‘lmadi. OpenCode qayta ulanganda yana urinib ko‘radi.</string>
     <string name="settings_notifications_status_disabled">Bu serverda bildirishnomalar o‘chirilgan.</string>
     <string name="settings_notifications_change_failed_title">Bildirishnomalarni o‘zgartirib bo‘lmadi</string>

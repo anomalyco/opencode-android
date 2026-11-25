@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">সার্ভার পরীক্ষা করা হচ্ছে…</string>
     <string name="settings_notifications_status_no_permission">প্রথমে উপরে বিজ্ঞপ্তির অনুমতি দিন।</string>
     <string name="settings_notifications_status_outdated">এই সার্ভারে বিজ্ঞপ্তির সুবিধা নেই। এতে OpenCode আপডেট করতে হতে পারে।</string>
-    <string name="settings_notifications_status_relay">এই সার্ভার এই অ্যাপের বিজ্ঞপ্তি রিলে গ্রহণ করে না।</string>
     <string name="settings_notifications_status_failed">এই সার্ভারে বিজ্ঞপ্তি সেট আপ করা যায়নি। পুনরায় সংযুক্ত হলে OpenCode আবার চেষ্টা করবে।</string>
     <string name="settings_notifications_status_disabled">এই সার্ভারে বিজ্ঞপ্তি নিষ্ক্রিয় করা আছে।</string>
     <string name="settings_notifications_change_failed_title">বিজ্ঞপ্তি পরিবর্তন করা যায়নি</string>

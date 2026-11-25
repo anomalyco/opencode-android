@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">सर्वर की जाँच हो रही है…</string>
     <string name="settings_notifications_status_no_permission">पहले ऊपर सूचनाओं की अनुमति दें।</string>
     <string name="settings_notifications_status_outdated">यह सर्वर सूचनाएँ नहीं देता। इसमें OpenCode अपडेट की ज़रूरत हो सकती है।</string>
-    <string name="settings_notifications_status_relay">यह सर्वर इस ऐप के सूचना रिले को स्वीकार नहीं करता।</string>
     <string name="settings_notifications_status_failed">इस सर्वर पर सूचनाएँ सेट अप नहीं हो सकीं। फिर से कनेक्ट होने पर OpenCode फिर से कोशिश करेगा।</string>
     <string name="settings_notifications_status_disabled">इस सर्वर पर सूचनाएँ अक्षम हैं।</string>
     <string name="settings_notifications_change_failed_title">सूचना सेटिंग नहीं बदल सकी</string>

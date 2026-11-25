@@ -47,7 +47,7 @@ object SessionPushNotifications {
     ) {
         val verified = NotificationContent.verifiedPayload(data, sharedKey)
         if (verified?.payload?.type == "clear") {
-            verified.payload.id?.let { clear(context, it) }
+            clear(context, verified.payload.id)
             return
         }
         val shown = NotificationContent.content(data, verified) ?: return

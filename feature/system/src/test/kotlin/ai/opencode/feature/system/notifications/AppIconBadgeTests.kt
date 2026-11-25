@@ -137,7 +137,7 @@ class AppIconBadgeTests {
     // Node crypto ECDH/HKDF/AES-GCM vector: private scalars 1 and 2, nonce 00…0b.
     // Synthetic keys only; this also pins UTF-8, padded base64 and wire ordering.
     private val encryptedRef = "12345678-1234-1234-1234-123456789abc"
-    private val encryptedBox = "AAECAwQFBgcICQoLC4dLgkSzfl+98ep/BKIY+djn2FrPpPbsRG6xVWvC0LGdiJ+fhuJx2fKFscrpWVxlzB3uFdi0iq+VfXmht68BkPOC8SRDnQK5ggEssE3Qov03b9mfI9rc95GN02eZrzlQtY7phGFGx3HF1/2Ikk0wYGvcggE1EvIVdD68PH/715rpVZMXyR5Hjp6bnwEXgYmoVC/eMTk="
+    private val encryptedBox = "AAECAwQFBgcICQoLC4dLgkSzfl+g7LggBOtf+eL9xUfFuLf1Ai72Az6QxvbU2YWVm9hclKaJq8v2Yxcnmgv5Cdv/yeOoUC/38P5ewf6O/jRfz49VMw8i5kbLquE3b9mMZsvK58cOO5Gb8X5Br4bkiHlIpDXU0fXcyUJ3L2zNkhs0A/4Nem+tPmj/kMT3E94fwLruWg5HtDOzYER4G/X/NjZbdtArchD7gAnz/YWFd2e01JwZ"
 
     private fun notificationKey(): ByteArray = NotificationCrypto.sharedKey(
         privateKey = NotificationCrypto.privateKey(ByteArray(31) + byteArrayOf(1)),
@@ -146,7 +146,7 @@ class AppIconBadgeTests {
     )
 
     private fun message(type: String, sessionID: String, title: String, body: String): String =
-        """{"v":1,"type":"$type","sessionID":"$sessionID","title":"$title","body":"$body","data":{}}"""
+        """{"v":1,"id":"frm_1","type":"$type","sessionID":"$sessionID","title":"$title","body":"$body","data":{}}"""
 
     /** Nonce, ciphertext and tag. */
     private fun seal(text: String, key: ByteArray, ref: String): ByteArray {
@@ -187,7 +187,7 @@ class AppIconBadgeTests {
         val remote = envelope(ref, base64(seal(message("question", "ses_device", "Ready", "Review the change"), peer, ref)))
         val key: (String) -> ByteArray = { store.sharedKey(it) }
         assertEquals(
-            NotificationCrypto.Payload(type = "question", sessionID = "ses_device", title = "Ready", body = "Review the change"),
+            NotificationCrypto.Payload(type = "question", sessionID = "ses_device", title = "Ready", body = "Review the change", id = "frm_1"),
             NotificationContent.verifiedPayload(remote, key)?.payload,
         )
         // Pairing again replaces the cached key.
@@ -203,7 +203,7 @@ class AppIconBadgeTests {
     @Test
     fun encryptedNotificationMatchesNodeCrypto() {
         val payload = NotificationCrypto.open(encryptedBox, encryptedRef, notificationKey())
-        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result."), payload)
+        assertEquals(NotificationCrypto.Payload(type = "session.idle", sessionID = "ses_interop", title = "Ready ✓", body = "A private result.", id = "ses_interop"), payload)
     }
 
     @Test
@@ -298,20 +298,21 @@ class AppIconBadgeTests {
     @Test
     fun messagesFollowTheContract() {
         val idle = NotificationCrypto.Payload.parse(
-            """{"v":1,"type":"session.idle","sessionID":"ses_a","title":"Fix the login bug","body":"Finished","data":{"outcome":"succeeded"},"extra":true}""",
+            """{"v":1,"id":"ses_a","type":"session.idle","sessionID":"ses_a","title":"Fix the login bug","body":"Finished","data":{"outcome":"succeeded"},"extra":true}""",
         )
-        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished"), idle)
+        assertEquals(NotificationCrypto.Payload("session.idle", "ses_a", "Fix the login bug", "Finished", "ses_a"), idle)
         val permission = NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"permission","sessionID":"ses_a","title":"Run tests?","body":"bun test","data":{"requestID":"per_1","action":"bash"}}""")
         assertEquals("permission", permission?.type)
         assertEquals("per_1", permission?.id)
         // A clear has no title or body; it names the message it removes.
         assertEquals(
-            NotificationCrypto.Payload("clear", "ses_a", "", "", id = "per_1"),
+            NotificationCrypto.Payload("clear", "ses_a", "", "", "per_1"),
             NotificationCrypto.Payload.parse("""{"v":1,"id":"per_1","type":"clear","sessionID":"ses_a"}"""),
         )
-        // A known type needs a session and a title.
-        assertNull(NotificationCrypto.Payload.parse("""{"v":1,"type":"question","title":"Which one?","body":""}"""))
-        assertNull(NotificationCrypto.Payload.parse("""{"v":1,"type":"question","sessionID":"ses_a","title":"","body":"x"}"""))
+        // Every message names itself, and a known type needs a session and a title.
+        assertNull(NotificationCrypto.Payload.parse("""{"v":1,"type":"question","sessionID":"ses_a","title":"Which one?","body":""}"""))
+        assertNull(NotificationCrypto.Payload.parse("""{"v":1,"id":"frm_1","type":"question","title":"Which one?","body":""}"""))
+        assertNull(NotificationCrypto.Payload.parse("""{"v":1,"id":"frm_1","type":"question","sessionID":"ses_a","title":"","body":"x"}"""))
         // Another version, or not JSON at all, can't be read.
         assertNull(NotificationCrypto.Payload.parse("""{"v":2,"type":"session.idle","sessionID":"ses_a","title":"t","body":"b"}"""))
         assertNull(NotificationCrypto.Payload.parse("not json"))
@@ -320,12 +321,12 @@ class AppIconBadgeTests {
         val verified = { text: String ->
             NotificationContent.Verified(encryptedRef, encryptedBox, requireNotNull(NotificationCrypto.Payload.parse(text)))
         }
-        val unknown = NotificationContent.content(emptyMap(), verified("""{"v":1,"type":"later.kind","title":"Deploy done","body":"prod"}"""))
+        val unknown = NotificationContent.content(emptyMap(), verified("""{"v":1,"id":"x_1","type":"later.kind","title":"Deploy done","body":"prod"}"""))
         assertEquals("Deploy done", unknown?.title)
         assertEquals("prod", unknown?.body)
         assertNull(unknown?.thread)
         assertEquals(SystemNotificationChannels.SESSION_OTHER, SystemNotificationChannels.forType(unknown?.type))
-        assertNull(NotificationContent.content(emptyMap(), verified("""{"v":1,"type":"later.kind","body":"quiet"}""")))
+        assertNull(NotificationContent.content(emptyMap(), verified("""{"v":1,"id":"x_1","type":"later.kind","body":"quiet"}""")))
         assertEquals(SystemNotificationChannels.SESSION_QUESTIONS, SystemNotificationChannels.forType("question"))
         assertEquals(SystemNotificationChannels.SESSION_PERMISSIONS, SystemNotificationChannels.forType("permission"))
         assertEquals(SystemNotificationChannels.SESSION_FINISHED, SystemNotificationChannels.forType("session.idle"))

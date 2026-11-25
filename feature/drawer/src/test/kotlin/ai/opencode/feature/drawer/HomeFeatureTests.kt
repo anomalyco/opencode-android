@@ -284,7 +284,7 @@ class HomeFeatureTests {
             val store = h.store(state) {
                 this[NotificationPermissionClient] = NotificationPermissionClient(status = { permission }, request = { permission }, openSettings = { true })
                 this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true)
-                this[OpenCodeClient] = OpenCodeClient.testValue.copy(pushCapability = { server -> asked.append(server); null })
+                this[OpenCodeClient] = OpenCodeClient.testValue.copy(pushState = { server -> asked.append(server); throw OpenCodeClientError(message = "Not found", statusCode = 404) })
             }
             store.send(Action.EnableNotificationsTapped) {
                 it.copy(notificationState = it.notificationState.copy(isRequestingNotifications = true))

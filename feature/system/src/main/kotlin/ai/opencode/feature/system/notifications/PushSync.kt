@@ -21,8 +21,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 /** What this phone asks of a server when a session has no bell. */
 @Serializable
@@ -52,10 +50,8 @@ enum class PushStatus {
     Unavailable,
     /** The app can't post notifications. */
     NoPermission,
-    /** The server has no `capabilities.push` version 1. */
+    /** The server has no push (`GET /api/experimental/push` is a 404). */
     Outdated,
-    /** The server doesn't accept this build's relay. */
-    RelayNotAllowed,
     /** Turned off for this server. */
     Off,
     /** A step failed; the next connect tries again. */
@@ -67,7 +63,6 @@ enum class PushStatus {
 @Serializable
 data class PushServer(
     val status: PushStatus = PushStatus.Unknown,
-    val levels: List<OpenCodePushLevel> = emptyList(),
     /** This phone's device ID there (its ref). */
     val deviceID: String? = null,
     val state: OpenCodePushState? = null,
@@ -96,37 +91,32 @@ object PushBells {
 
 /** Registration and the server's copy, as the drawer runs them on every connect. */
 object PushSync {
-    /** Checks the server, registers (or removes) this phone, then fetches the server's copy. */
+    /** Checks the server has push, registers (or removes) this phone, then fetches the server's copy. */
     suspend fun sync(server: OpenCodeServer, choice: PushChoice): PushServer {
         val notifications = dependency(SessionNotificationsClient)
         if (!notifications.isAvailable) return PushServer(PushStatus.Unavailable)
-        val capability = try {
-            dependency(OpenCodeClient).pushCapability(server)
+        try {
+            dependency(OpenCodeClient).pushState(server)
         } catch (cancellation: CancellationException) {
             throw cancellation
         } catch (error: Exception) {
-            AppLog.app.error { "Push capability unread: ${describe(error)}" }
+            if ((error as? OpenCodeClientError)?.statusCode == 404) {
+                AppLog.app.info("Push not offered by this server")
+                return PushServer(PushStatus.Outdated)
+            }
+            AppLog.app.error { "Push state unread: ${describe(error)}" }
             return PushServer(PushStatus.Failed)
         }
-        if (capability == null || capability.version != 1) {
-            AppLog.app.info("Push not offered by this server")
-            return PushServer(PushStatus.Outdated)
-        }
-        if (!isListed(notifications.relay, capability.relays)) {
-            AppLog.app.info("Push relay not accepted by this server")
-            return PushServer(PushStatus.RelayNotAllowed)
-        }
-        val levels = capability.levels
         if (!choice.enabled) {
-            if (!notifications.unregister(server)) return PushServer(PushStatus.Failed, levels)
-            return PushServer(PushStatus.Off, levels)
+            if (!notifications.unregister(server)) return PushServer(PushStatus.Failed)
+            return PushServer(PushStatus.Off)
         }
         if (dependency(NotificationPermissionClient).status() != NotificationPermission.Enabled) {
-            return PushServer(PushStatus.NoPermission, levels)
+            return PushServer(PushStatus.NoPermission)
         }
-        if (!notifications.register(server, choice.defaultLevel)) return PushServer(PushStatus.Failed, levels)
-        val state = fetchState(server) ?: return PushServer(PushStatus.Failed, levels)
-        return PushServer(PushStatus.Ready, levels, notifications.ref(server.persistenceID), state)
+        if (!notifications.register(server, choice.defaultLevel)) return PushServer(PushStatus.Failed)
+        val state = fetchState(server) ?: return PushServer(PushStatus.Failed)
+        return PushServer(PushStatus.Ready, notifications.ref(server.persistenceID), state)
     }
 
     /** `GET /api/experimental/push`; null when it fails. */
@@ -199,13 +189,5 @@ object PushSync {
     fun describe(error: Throwable): String {
         val status = (error as? OpenCodeClientError)?.statusCode
         return status?.toString() ?: error::class.java.simpleName
-    }
-
-    /** The server lists relays as exact origins (`https://host` or `https://host:port`). */
-    fun isListed(relay: String, relays: List<String>): Boolean {
-        val url = relay.toHttpUrlOrNull() ?: return false
-        var ours = url.scheme + "://" + url.host
-        if (url.port != HttpUrl.defaultPort(url.scheme)) ours += ":" + url.port
-        return ours in relays
     }
 }

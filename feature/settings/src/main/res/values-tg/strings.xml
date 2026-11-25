@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Сервер санҷида мешавад…</string>
     <string name="settings_notifications_status_no_permission">Аввал дар боло ба огоҳиҳо иҷозат диҳед.</string>
     <string name="settings_notifications_status_outdated">Ин сервер огоҳиҳоро пешниҳод намекунад. Шояд навсозии OpenCode лозим бошад.</string>
-    <string name="settings_notifications_status_relay">Ин сервер миёнарави огоҳиҳои ин барномаро қабул намекунад.</string>
     <string name="settings_notifications_status_failed">Огоҳиҳоро дар ин сервер танзим карда нашуд. OpenCode ҳангоми пайвасти дубора боз кӯшиш мекунад.</string>
     <string name="settings_notifications_status_disabled">Огоҳиҳо дар ин сервер хомӯш карда шудаанд.</string>
     <string name="settings_notifications_change_failed_title">Огоҳиҳоро тағйир дода нашуд</string>

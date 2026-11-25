@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">กำลังตรวจสอบเซิร์ฟเวอร์…</string>
     <string name="settings_notifications_status_no_permission">อนุญาตการแจ้งเตือนด้านบนก่อน</string>
     <string name="settings_notifications_status_outdated">เซิร์ฟเวอร์นี้ไม่รองรับการแจ้งเตือน อาจต้องอัปเดต OpenCode</string>
-    <string name="settings_notifications_status_relay">เซิร์ฟเวอร์นี้ไม่ยอมรับรีเลย์การแจ้งเตือนของแอปนี้</string>
     <string name="settings_notifications_status_failed">ตั้งค่าการแจ้งเตือนบนเซิร์ฟเวอร์นี้ไม่ได้ OpenCode จะลองอีกครั้งเมื่อเชื่อมต่อใหม่</string>
     <string name="settings_notifications_status_disabled">เซิร์ฟเวอร์นี้ปิดใช้งานการแจ้งเตือนอยู่</string>
     <string name="settings_notifications_change_failed_title">เปลี่ยนการแจ้งเตือนไม่ได้</string>

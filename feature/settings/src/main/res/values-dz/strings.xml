@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">སར་བར་ཞིབ་དཔྱད་འབད་དོ…</string>
     <string name="settings_notifications_status_no_permission">དང་པ་ལྟག་ལུ་བརྡ་བསྐུལ་ཚུ་གནང་བ་བྱིན།</string>
     <string name="settings_notifications_status_outdated">སར་བར་འདི་གིས་བརྡ་བསྐུལ་ཚུ་མི་བྱིན། OpenCode དུས་མཐུན་བཟོ་དགོཔ་འོང་།</string>
-    <string name="settings_notifications_status_relay">སར་བར་འདི་གིས་ གློག་རིམ་འདི་གི་བརྡ་བསྐུལ་བརྒྱུད་སྤྲོད་དང་ལེན་མི་འབད།</string>
     <string name="settings_notifications_status_failed">སར་བར་འདི་གུ་ བརྡ་བསྐུལ་ཚུ་གཞི་སྒྲིག་འབད་མ་ཚུགས། ལོག་མཐུདཔ་ད་ OpenCode གིས་ལོག་འབད་རྩོལ་བསྐྱེད་འོང་།</string>
     <string name="settings_notifications_status_disabled">སར་བར་འདི་གུ་བརྡ་བསྐུལ་ཚུ་ལྕོགས་མིན་བཟོ་སྟེ་ཡོད།</string>
     <string name="settings_notifications_change_failed_title">བརྡ་བསྐུལ་ཚུ་བསྒྱུར་བཅོས་འབད་མ་ཚུགས།</string>

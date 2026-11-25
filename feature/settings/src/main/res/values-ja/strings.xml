@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">サーバーを確認中…</string>
     <string name="settings_notifications_status_no_permission">先に上で通知を許可してください。</string>
     <string name="settings_notifications_status_outdated">このサーバーは通知に対応していません。OpenCodeの更新が必要な場合があります。</string>
-    <string name="settings_notifications_status_relay">このサーバーはこのアプリの通知リレーを受け付けていません。</string>
     <string name="settings_notifications_status_failed">このサーバーで通知を設定できませんでした。再接続時にOpenCodeが再試行します。</string>
     <string name="settings_notifications_status_disabled">このサーバーでは通知が無効になっています。</string>
     <string name="settings_notifications_change_failed_title">通知の設定を変更できませんでした</string>

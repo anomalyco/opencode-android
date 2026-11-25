@@ -226,7 +226,6 @@
     <string name="settings_notifications_status_checking">Kontrola serveru…</string>
     <string name="settings_notifications_status_no_permission">Nejprve výše povolte oznámení.</string>
     <string name="settings_notifications_status_outdated">Tento server nepodporuje oznámení. Možná je potřeba aktualizovat OpenCode.</string>
-    <string name="settings_notifications_status_relay">Tento server nepřijímá přenosovou službu oznámení této aplikace.</string>
     <string name="settings_notifications_status_failed">Na tomto serveru se nepodařilo nastavit oznámení. OpenCode to zkusí znovu po opětovném připojení.</string>
     <string name="settings_notifications_status_disabled">Oznámení jsou na tomto serveru zakázána.</string>
     <string name="settings_notifications_change_failed_title">Nepodařilo se změnit oznámení</string>

@@ -456,7 +456,7 @@ private val HANDLED_TYPES = setOf(
     "shell.created", "shell.exited", "shell.deleted", "experimental.job.updated",
     "project.updated",
     "model.updated", "provider.updated", "agent.updated",
-    "push.updated",
+    "experimental.push.updated",
 )
 
 /**
@@ -554,7 +554,7 @@ private fun serverEvent(type: String, data: EventPayload?): OpenCodeServerEvent?
         }
         "model.updated", "provider.updated" -> OpenCodeServerEvent.ModelsChanged
         "agent.updated" -> OpenCodeServerEvent.AgentsChanged
-        "push.updated" -> OpenCodeServerEvent.PushUpdated
+        "experimental.push.updated" -> OpenCodeServerEvent.PushUpdated
         "session.inbox.cancelled" -> {
             val id = data?.sessionID ?: return null
             val inputID = data.inboxID ?: return null

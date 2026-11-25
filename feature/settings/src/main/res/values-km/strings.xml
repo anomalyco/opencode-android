@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">កំពុងពិនិត្យម៉ាស៊ីនមេ…</string>
     <string name="settings_notifications_status_no_permission">អនុញ្ញាតការជូនដំណឹងខាងលើជាមុនសិន។</string>
     <string name="settings_notifications_status_outdated">ម៉ាស៊ីនមេនេះមិនផ្តល់ការជូនដំណឹងទេ។ វាប្រហែលជាត្រូវការធ្វើបច្ចុប្បន្នភាព OpenCode។</string>
-    <string name="settings_notifications_status_relay">ម៉ាស៊ីនមេនេះមិនទទួលយកប្រព័ន្ធបញ្ជូនបន្តការជូនដំណឹងរបស់កម្មវិធីនេះទេ។</string>
     <string name="settings_notifications_status_failed">មិនអាចរៀបចំការជូនដំណឹងលើម៉ាស៊ីនមេនេះបានទេ។ OpenCode នឹងព្យាយាមម្តងទៀតពេលភ្ជាប់ឡើងវិញ។</string>
     <string name="settings_notifications_status_disabled">ការជូនដំណឹងត្រូវបានបិទនៅលើម៉ាស៊ីនមេនេះ។</string>
     <string name="settings_notifications_change_failed_title">មិនអាចប្តូរការជូនដំណឹងបាន</string>

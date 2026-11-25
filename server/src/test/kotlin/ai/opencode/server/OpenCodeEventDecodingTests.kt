@@ -324,5 +324,6 @@ class OpenCodeEventDecodingTests {
         assertEquals(OpenCodeServerEvent.ModelsChanged, decodeStreamFrame("""{"type":"provider.updated","data":{"providers":[1,2,3]}}"""))
         assertEquals(OpenCodeServerEvent.AgentsChanged, decodeStreamFrame("""{"type":"agent.updated"$location,"data":{}}"""))
         assertEquals(OpenCodeServerEvent.ModelsChanged, decodeStreamFrame("""{"type":"model.updated"}"""))
+        assertEquals(OpenCodeServerEvent.PushUpdated, decodeStreamFrame("""{"type":"experimental.push.updated","data":{}}"""))
     }
 }

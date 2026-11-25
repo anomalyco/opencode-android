@@ -2,7 +2,6 @@ package ai.opencode.server
 
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.server.model.OpenCodePushBell
-import ai.opencode.server.model.OpenCodePushCapability
 import ai.opencode.server.model.OpenCodePushDevice
 import ai.opencode.server.model.OpenCodePushLevel
 import ai.opencode.server.model.OpenCodePushRegistration
@@ -13,38 +12,14 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
-/** The push routes' exact shapes: capability, registration, the server's copy and its writes. */
+/** The push routes' exact shapes: registration, the server's copy and its writes. */
 class PushWireTests {
     @get:Rule val isolation = TestIsolationRule()
 
     private fun json(text: String): JsonElement = Json.parseToJsonElement(text)
-
-    @Test fun capabilityIsReadFromInfoAndMissingOnAnOlderServer() = runTest {
-        val bodies = listOf(
-            """{"urls":[],"capabilities":{"push":{"version":1,"relays":["https://relay.example"],"levels":["all","attention","none","later"]}}}""",
-            """{"urls":[]}""",
-        )
-        var answered = 0
-        val fixture = WireFixture { request ->
-            if (request.route != "GET /api/info") return@WireFixture Reply.status(404)
-            answered += 1
-            Reply.Json(200, bodies[answered - 1])
-        }
-        try {
-            val client = OpenCodeClient.liveValue
-            assertEquals(
-                OpenCodePushCapability(1, listOf("https://relay.example"), listOf(OpenCodePushLevel.all, OpenCodePushLevel.attention, OpenCodePushLevel.none)),
-                client.pushCapability(fixture.server),
-            )
-            assertNull(client.pushCapability(fixture.server))
-        } finally {
-            fixture.close()
-        }
-    }
 
     @Test fun registrationPutsTheDeviceAndReadsTheServersKey() = runTest {
         val fixture = WireFixture { request ->

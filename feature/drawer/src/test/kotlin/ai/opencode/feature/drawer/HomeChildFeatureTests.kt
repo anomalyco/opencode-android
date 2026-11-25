@@ -20,7 +20,6 @@ import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
-import ai.opencode.server.model.OpenCodePushCapability
 import ai.opencode.server.model.OpenCodePushDevice
 import ai.opencode.server.model.OpenCodePushLevel
 import ai.opencode.server.model.OpenCodePushState
@@ -62,7 +61,7 @@ class HomeChildFeatureTests {
                     openSettings = { true },
                 )
                 this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true)
-                this[OpenCodeClient] = this[OpenCodeClient].copy(pushCapability = { asked += it; null })
+                this[OpenCodeClient] = this[OpenCodeClient].copy(pushState = { asked += it; throw OpenCodeClientError(message = "Not found", statusCode = 404) })
             }
             store.send(HomeNotificationsFeature.Action.EnableNotificationsTapped) {
                 it.copy(status = it.status.copy(isRequestingNotifications = true))
@@ -99,7 +98,7 @@ class HomeChildFeatureTests {
         }
     }
 
-    /** A connect registers this phone and keeps the server's copy; `push.updated` replaces it whole. */
+    /** A connect registers this phone and keeps the server's copy; `experimental.push.updated` replaces it whole. */
     @Test fun pushSyncRegistersThenFetchReplacesTheCopy() = runTest {
         val shared = SharedStore.inMemory()
         val first = OpenCodePushState(devices = listOf(device(paused = false)))
@@ -111,21 +110,17 @@ class HomeChildFeatureTests {
             this[NotificationPermissionClient] = NotificationPermissionClient(status = { NotificationPermission.Enabled }, request = { NotificationPermission.Enabled }, openSettings = { true })
             this[SessionNotificationsClient] = SessionNotificationsClient(
                 isAvailable = true,
-                relay = "https://relay.example",
                 register = { _, level -> registered += level; true },
                 ref = { "ref-1" },
             )
             this[OpenCodeClient] = this[OpenCodeClient].copy(
-                pushCapability = {
-                    OpenCodePushCapability(1, listOf("https://relay.example"), listOf(OpenCodePushLevel.all, OpenCodePushLevel.none))
-                },
                 pushState = {
                     fetches += 1
-                    if (fetches == 1) first else second
+                    if (fetches <= 2) first else second
                 },
             )
         }
-        val ready = PushServer(PushStatus.Ready, listOf(OpenCodePushLevel.all, OpenCodePushLevel.none), "ref-1", first)
+        val ready = PushServer(PushStatus.Ready, "ref-1", first)
         store.send(HomeNotificationsFeature.Action.PushSyncRequested)
         store.receive(HomeNotificationsFeature.Action.PushSynced(server.persistenceID, ready))
         assertEquals(ready, servers(shared))
@@ -135,26 +130,6 @@ class HomeChildFeatureTests {
         store.receive(HomeNotificationsFeature.Action.PushFetched(server.persistenceID, second))
         assertEquals(ready.copy(state = second), servers(shared))
         store.finish()
-    }
-
-    /** A server that doesn't list this build's relay isn't registered with. */
-    @Test fun pushSyncSkipsAServerWithoutThisRelay() = runTest {
-        val registered = Collections.synchronizedList(mutableListOf<OpenCodePushLevel>())
-        val store = TestStore(HomeNotificationsFeature.State(server = server), HomeNotificationsFeature(), this) {
-            this[SharedStore] = SharedStore.inMemory()
-            this[SessionNotificationsClient] = SessionNotificationsClient(
-                isAvailable = true,
-                relay = "https://relay.example",
-                register = { _, level -> registered += level; true },
-            )
-            this[OpenCodeClient] = this[OpenCodeClient].copy(
-                pushCapability = { OpenCodePushCapability(1, listOf("https://other.example"), listOf(OpenCodePushLevel.all)) },
-            )
-        }
-        store.send(HomeNotificationsFeature.Action.PushSyncRequested)
-        store.receive(HomeNotificationsFeature.Action.PushSynced(server.persistenceID, PushServer(PushStatus.RelayNotAllowed)))
-        store.finish()
-        assertTrue(registered.isEmpty())
     }
 
     private fun device(paused: Boolean) = OpenCodePushDevice(

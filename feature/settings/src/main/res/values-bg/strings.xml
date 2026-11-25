@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Проверка на сървъра…</string>
     <string name="settings_notifications_status_no_permission">Първо разрешете известията по-горе.</string>
     <string name="settings_notifications_status_outdated">Този сървър не поддържа известия. Може да е нужна актуализация на OpenCode.</string>
-    <string name="settings_notifications_status_relay">Този сървър не приема препредавателя за известия на това приложение.</string>
     <string name="settings_notifications_status_failed">Неуспешно настройване на известията за този сървър. OpenCode ще опита отново при повторно свързване.</string>
     <string name="settings_notifications_status_disabled">Известията са деактивирани на този сървър.</string>
     <string name="settings_notifications_change_failed_title">Неуспешна промяна на известията</string>

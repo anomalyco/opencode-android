@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Kannar ambætaran…</string>
     <string name="settings_notifications_status_no_permission">Loyv fráboðanum omanfyri fyrst.</string>
     <string name="settings_notifications_status_outdated">Hesin ambætarin bjóðar ikki fráboðanir. Hann hevur kanska tørv á eini OpenCode-dagføring.</string>
-    <string name="settings_notifications_status_relay">Hesin ambætarin góðtekur ikki millumsendaran til fráboðanir hjá hesum forritinum.</string>
     <string name="settings_notifications_status_failed">Kundi ikki seta fráboðanir upp á hesum ambætaranum. OpenCode roynir aftur, tá ið samband kemur aftur.</string>
     <string name="settings_notifications_status_disabled">Fráboðanir eru sløktar á hesum ambætaranum.</string>
     <string name="settings_notifications_change_failed_title">Kundi ikki broyta fráboðanir</string>

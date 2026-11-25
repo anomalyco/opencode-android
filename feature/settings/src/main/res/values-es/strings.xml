@@ -223,7 +223,6 @@
     <string name="settings_notifications_status_checking">Comprobando el servidor…</string>
     <string name="settings_notifications_status_no_permission">Primero permite las notificaciones arriba.</string>
     <string name="settings_notifications_status_outdated">Este servidor no ofrece notificaciones. Puede que necesite una actualización de OpenCode.</string>
-    <string name="settings_notifications_status_relay">Este servidor no acepta el retransmisor de notificaciones de esta aplicación.</string>
     <string name="settings_notifications_status_failed">No se pudieron configurar las notificaciones en este servidor. OpenCode volverá a intentarlo al reconectarse.</string>
     <string name="settings_notifications_status_disabled">Las notificaciones están desactivadas en este servidor.</string>
     <string name="settings_notifications_change_failed_title">No se pudieron cambiar las notificaciones</string>

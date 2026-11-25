@@ -226,7 +226,6 @@
     <string name="settings_notifications_status_checking">Preverjanje strežnika …</string>
     <string name="settings_notifications_status_no_permission">Najprej dovolite obvestila zgoraj.</string>
     <string name="settings_notifications_status_outdated">Ta strežnik ne ponuja obvestil. Morda je treba posodobiti OpenCode.</string>
-    <string name="settings_notifications_status_relay">Ta strežnik ne sprejema posrednika za obvestila te aplikacije.</string>
     <string name="settings_notifications_status_failed">Obvestil na tem strežniku ni bilo mogoče nastaviti. OpenCode bo poskusil znova, ko se ponovno poveže.</string>
     <string name="settings_notifications_status_disabled">Obvestila so na tem strežniku onemogočena.</string>
     <string name="settings_notifications_change_failed_title">Obvestil ni bilo mogoče spremeniti</string>

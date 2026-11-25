@@ -223,7 +223,6 @@
     <string name="settings_notifications_status_checking">Provjera poslužitelja…</string>
     <string name="settings_notifications_status_no_permission">Prvo dopustite obavijesti iznad.</string>
     <string name="settings_notifications_status_outdated">Ovaj poslužitelj ne podržava obavijesti. Možda je potrebno ažurirati OpenCode.</string>
-    <string name="settings_notifications_status_relay">Ovaj poslužitelj ne prihvaća posrednik za obavijesti ove aplikacije.</string>
     <string name="settings_notifications_status_failed">Nije moguće postaviti obavijesti na ovom poslužitelju. OpenCode će pokušati ponovno kad se opet poveže.</string>
     <string name="settings_notifications_status_disabled">Obavijesti su onemogućene na ovom poslužitelju.</string>
     <string name="settings_notifications_change_failed_title">Nije moguće promijeniti obavijesti</string>

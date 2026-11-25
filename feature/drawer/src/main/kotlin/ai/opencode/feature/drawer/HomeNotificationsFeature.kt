@@ -48,7 +48,7 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
         /** Registers this phone with the current server (or removes it) and fetches the server's copy. */
         data object PushSyncRequested : Action
         data class PushSynced(val serverID: String, val result: PushServer) : Action
-        /** The server said push changed (`push.updated`). */
+        /** The server said push changed (`experimental.push.updated`). */
         data object PushFetchRequested : Action
         data class PushFetched(val serverID: String, val state: OpenCodePushState?) : Action
     }

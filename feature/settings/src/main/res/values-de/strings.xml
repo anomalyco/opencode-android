@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Server wird geprüft…</string>
     <string name="settings_notifications_status_no_permission">Erlaube oben zuerst Benachrichtigungen.</string>
     <string name="settings_notifications_status_outdated">Dieser Server unterstützt keine Benachrichtigungen. Möglicherweise ist ein OpenCode-Update nötig.</string>
-    <string name="settings_notifications_status_relay">Dieser Server akzeptiert das Benachrichtigungs-Relay dieser App nicht.</string>
     <string name="settings_notifications_status_failed">Benachrichtigungen konnten auf diesem Server nicht eingerichtet werden. OpenCode versucht es bei der nächsten Verbindung erneut.</string>
     <string name="settings_notifications_status_disabled">Benachrichtigungen sind auf diesem Server deaktiviert.</string>
     <string name="settings_notifications_change_failed_title">Benachrichtigungen konnten nicht geändert werden</string>

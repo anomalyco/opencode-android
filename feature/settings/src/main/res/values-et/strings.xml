@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Serveri kontrollimine…</string>
     <string name="settings_notifications_status_no_permission">Luba esmalt ülalpool teavitused.</string>
     <string name="settings_notifications_status_outdated">See server ei paku teavitusi. OpenCode võib vajada uuendamist.</string>
-    <string name="settings_notifications_status_relay">See server ei aktsepteeri selle rakenduse teavituste vahendusserverit.</string>
     <string name="settings_notifications_status_failed">Selles serveris ei õnnestunud teavitusi seadistada. OpenCode proovib uuesti, kui ühendus taastub.</string>
     <string name="settings_notifications_status_disabled">Teavitused on selles serveris keelatud.</string>
     <string name="settings_notifications_change_failed_title">Teavitusi ei õnnestunud muuta</string>

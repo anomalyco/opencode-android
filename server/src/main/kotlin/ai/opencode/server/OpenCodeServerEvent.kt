@@ -67,7 +67,7 @@ sealed interface OpenCodeServerEvent {
     /** `agent.updated`: the server's agents changed. */
     data object AgentsChanged : OpenCodeServerEvent
 
-    /** `push.updated`: the server's push settings, devices or bells changed; read them again. */
+    /** `experimental.push.updated`: the server's push settings, devices or bells changed; read them again. */
     data object PushUpdated : OpenCodeServerEvent
 
     /** The single session this event is scoped to, when its ordering depends only on that session's pending deltas. */

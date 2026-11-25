@@ -2,14 +2,12 @@ package ai.opencode.server.live
 
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.internal.bool
-import ai.opencode.server.internal.int
 import ai.opencode.server.internal.lng
 import ai.opencode.server.internal.obj
 import ai.opencode.server.internal.opt
 import ai.opencode.server.internal.req
 import ai.opencode.server.internal.str
 import ai.opencode.server.model.OpenCodePushBell
-import ai.opencode.server.model.OpenCodePushCapability
 import ai.opencode.server.model.OpenCodePushDevice
 import ai.opencode.server.model.OpenCodePushLevel
 import ai.opencode.server.model.OpenCodePushRegistration
@@ -22,28 +20,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 
 private const val PUSH = "/api/experimental/push"
-
-/** `capabilities.push` from `GET /api/info`; null when the server doesn't send it. */
-internal suspend fun requestPushCapability(server: OpenCodeServer): OpenCodePushCapability? {
-    val response = perform("/api/info", server = server)
-    return decoded(response.data) { element ->
-        val push = element.obj().opt("capabilities") { it.obj().opt("push") { push -> push.obj() } } ?: return@decoded null
-        val relays = mutableListOf<String>()
-        val relayList = push["relays"] as? JsonArray
-        if (relayList != null) {
-            for (relay in relayList) relays += relay.str()
-        }
-        val levels = mutableListOf<OpenCodePushLevel>()
-        val levelList = push["levels"] as? JsonArray
-        if (levelList != null) {
-            for (value in levelList) {
-                val level = OpenCodePushLevel.of(value.str()) ?: continue
-                levels += level
-            }
-        }
-        OpenCodePushCapability(version = push.req("version") { it.int() }, relays = relays, levels = levels)
-    }
-}
 
 @Serializable
 private data class DeviceBody(

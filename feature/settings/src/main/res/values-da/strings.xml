@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Tjekker serveren…</string>
     <string name="settings_notifications_status_no_permission">Tillad meddelelser ovenfor først.</string>
     <string name="settings_notifications_status_outdated">Denne server understøtter ikke meddelelser. Den har muligvis brug for en OpenCode-opdatering.</string>
-    <string name="settings_notifications_status_relay">Denne server accepterer ikke denne apps meddelelsesrelæ.</string>
     <string name="settings_notifications_status_failed">Kunne ikke opsætte meddelelser på denne server. OpenCode prøver igen, når forbindelsen genoprettes.</string>
     <string name="settings_notifications_status_disabled">Meddelelser er deaktiveret på denne server.</string>
     <string name="settings_notifications_change_failed_title">Kunne ikke ændre meddelelser</string>

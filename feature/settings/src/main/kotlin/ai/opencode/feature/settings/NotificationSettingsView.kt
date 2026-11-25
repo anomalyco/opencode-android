@@ -13,7 +13,6 @@ import ai.opencode.feature.system.notifications.PushServer
 import ai.opencode.feature.system.notifications.PushSharedKeys
 import ai.opencode.feature.system.notifications.PushStatus
 import ai.opencode.feature.system.notifications.rememberPushNow
-import ai.opencode.server.model.OpenCodePushLevel
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -89,7 +88,7 @@ fun NotificationSettingsView(store: SettingsStore) {
                 header = serverHeader,
                 footer = serverFooter?.let { footerText(it) },
             ) {
-                val canTurnOn = push.status != PushStatus.Outdated && push.status != PushStatus.RelayNotAllowed
+                val canTurnOn = push.status != PushStatus.Outdated
                 SettingsToggleRow(
                     title = stringResource(R.string.settings_notifications_server_toggle),
                     checked = choice.enabled && canTurnOn,
@@ -97,7 +96,7 @@ fun NotificationSettingsView(store: SettingsStore) {
                     enabled = canTurnOn,
                 )
                 if (isReady) {
-                    val modes = pushModes(push.levels)
+                    val modes = listOf(PushMode.all, PushMode.attention, PushMode.fromThisPhone, PushMode.none)
                     SettingsDivider()
                     SettingsMenuRow(
                         title = stringResource(R.string.settings_notifications_mode),
@@ -123,16 +122,6 @@ fun NotificationSettingsView(store: SettingsStore) {
     }
 }
 
-/** The phone's choices the server's levels allow; Only Sessions I Use needs both Everything and Nothing. */
-private fun pushModes(levels: List<OpenCodePushLevel>): List<PushMode> {
-    val modes = mutableListOf<PushMode>()
-    if (OpenCodePushLevel.all in levels) modes.add(PushMode.all)
-    if (OpenCodePushLevel.attention in levels) modes.add(PushMode.attention)
-    if (OpenCodePushLevel.all in levels && OpenCodePushLevel.none in levels) modes.add(PushMode.fromThisPhone)
-    if (OpenCodePushLevel.none in levels) modes.add(PushMode.none)
-    return modes
-}
-
 @Composable
 private fun pushModeTitle(mode: PushMode): String = when (mode) {
     PushMode.all -> stringResource(R.string.settings_notifications_mode_all)
@@ -146,7 +135,6 @@ private fun pushStatusFooter(status: PushStatus): String? = when (status) {
     PushStatus.Unknown -> stringResource(R.string.settings_notifications_status_checking)
     PushStatus.NoPermission -> stringResource(R.string.settings_notifications_status_no_permission)
     PushStatus.Outdated -> stringResource(R.string.settings_notifications_status_outdated)
-    PushStatus.RelayNotAllowed -> stringResource(R.string.settings_notifications_status_relay)
     PushStatus.Failed -> stringResource(R.string.settings_notifications_status_failed)
     PushStatus.Unavailable, PushStatus.Off, PushStatus.Ready -> null
 }

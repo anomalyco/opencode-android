@@ -217,7 +217,6 @@
     <string name="settings_notifications_status_checking">ဆာဗာကို စစ်ဆေးနေသည်…</string>
     <string name="settings_notifications_status_no_permission">အပေါ်တွင် အကြောင်းကြားချက်များကို အရင်ခွင့်ပြုပါ။</string>
     <string name="settings_notifications_status_outdated">ဤဆာဗာသည် အကြောင်းကြားချက်များကို မပံ့ပိုးပါ။ OpenCode အပ်ဒိတ် လိုအပ်နိုင်သည်။</string>
-    <string name="settings_notifications_status_relay">ဤဆာဗာသည် ဤအက်ပ်၏ အကြောင်းကြားချက် relay ကို လက်မခံပါ။</string>
     <string name="settings_notifications_status_failed">ဤဆာဗာတွင် အကြောင်းကြားချက်များကို စနစ်ထည့်သွင်း၍ မရပါ။ ပြန်လည်ချိတ်ဆက်သည့်အခါ OpenCode မှ ပြန်ကြိုးစားပါမည်။</string>
     <string name="settings_notifications_status_disabled">ဤဆာဗာတွင် အကြောင်းကြားချက်များကို ပိတ်ထားသည်။</string>
     <string name="settings_notifications_change_failed_title">အကြောင်းကြားချက်များကို မပြောင်းလဲနိုင်ပါ</string>

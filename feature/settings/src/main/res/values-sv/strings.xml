@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">Kontrollerar servern…</string>
     <string name="settings_notifications_status_no_permission">Tillåt aviseringar ovan först.</string>
     <string name="settings_notifications_status_outdated">Den här servern stöder inte aviseringar. Den kan behöva en OpenCode-uppdatering.</string>
-    <string name="settings_notifications_status_relay">Den här servern accepterar inte appens aviseringsrelä.</string>
     <string name="settings_notifications_status_failed">Kunde inte konfigurera aviseringar på den här servern. OpenCode försöker igen vid återanslutning.</string>
     <string name="settings_notifications_status_disabled">Aviseringar är inaktiverade på den här servern.</string>
     <string name="settings_notifications_change_failed_title">Kunde inte ändra aviseringar</string>

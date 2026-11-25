@@ -220,7 +220,6 @@
     <string name="settings_notifications_status_checking">සේවාදායකය පරීක්ෂා කරමින්…</string>
     <string name="settings_notifications_status_no_permission">පළමුව ඉහතින් දැනුම්දීම්වලට ඉඩ දෙන්න.</string>
     <string name="settings_notifications_status_outdated">මෙම සේවාදායකය දැනුම්දීම් ලබා නොදෙයි. එයට OpenCode යාවත්කාලීනයක් අවශ්‍ය විය හැක.</string>
-    <string name="settings_notifications_status_relay">මෙම සේවාදායකය මෙම යෙදුමේ දැනුම්දීම් රිලේ එක පිළිගන්නේ නැත.</string>
     <string name="settings_notifications_status_failed">මෙම සේවාදායකයේ දැනුම්දීම් සැකසීමට නොහැකි විය. OpenCode නැවත සම්බන්ධ වූ විට යළි උත්සාහ කරයි.</string>
     <string name="settings_notifications_status_disabled">මෙම සේවාදායකයේ දැනුම්දීම් අක්‍රිය කර ඇත.</string>
     <string name="settings_notifications_change_failed_title">දැනුම්දීම් වෙනස් කිරීමට නොහැකි විය</string>
