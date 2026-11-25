@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Kérdések</string>
     <string name="system_channel_session_permissions">Engedélykérések</string>
     <string name="system_channel_session_other">Egyéb munkamenet-frissítések</string>
+    <string name="system_channel_session_runs_description">Erről a telefonról küldött munkamenet előrehaladása</string>
+    <string name="system_channel_session_finished_description">Egy munkamenet befejezte a körét</string>
+    <string name="system_channel_session_failed_description">Egy munkamenet hibával leállt</string>
+    <string name="system_channel_session_questions_description">Egy munkamenet kérdést tesz fel Önnek</string>
+    <string name="system_channel_session_permissions_description">Egy munkamenetnek az Ön engedélyére van szüksége a folytatáshoz</string>
+    <string name="system_channel_session_other_description">Egyéb frissítések a munkameneteiből</string>
     <string name="system_channel_shared_items">Megosztott elemek</string>
 
     <!-- Share sheet: notifications -->

@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Suallar</string>
     <string name="system_channel_session_permissions">İcazə sorğuları</string>
     <string name="system_channel_session_other">Digər sessiya yeniləmələri</string>
+    <string name="system_channel_session_runs_description">Bu telefondan göndərdiyiniz sessiyanın gedişatı</string>
+    <string name="system_channel_session_finished_description">Sessiya növbəsini tamamladı</string>
+    <string name="system_channel_session_failed_description">Sessiya xəta ilə dayandı</string>
+    <string name="system_channel_session_questions_description">Sessiya sizə sual verir</string>
+    <string name="system_channel_session_permissions_description">Sessiyanın davam etməsi üçün icazəniz lazımdır</string>
+    <string name="system_channel_session_other_description">Sessiyalarınızdan digər yeniləmələr</string>
     <string name="system_channel_shared_items">Paylaşılan elementlər</string>
 
     <!-- Share sheet: notifications -->

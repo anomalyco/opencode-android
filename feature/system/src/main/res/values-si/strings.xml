@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">ප්‍රශ්න</string>
     <string name="system_channel_session_permissions">අවසර ඉල්ලීම්</string>
     <string name="system_channel_session_other">වෙනත් සැසි යාවත්කාලීන</string>
+    <string name="system_channel_session_runs_description">මෙම දුරකථනයෙන් ඔබ යැවූ සැසියක ප්‍රගතිය</string>
+    <string name="system_channel_session_finished_description">සැසියක වාරය අවසන් විය</string>
+    <string name="system_channel_session_failed_description">සැසියක් දෝෂයක් නිසා නතර විය</string>
+    <string name="system_channel_session_questions_description">සැසියක් ඔබෙන් ප්‍රශ්නයක් අසයි</string>
+    <string name="system_channel_session_permissions_description">දිගටම කරගෙන යාමට සැසියකට ඔබේ අවසරය අවශ්‍යයි</string>
+    <string name="system_channel_session_other_description">ඔබේ සැසිවලින් ලැබෙන වෙනත් යාවත්කාලීන</string>
     <string name="system_channel_shared_items">බෙදාගත් අයිතම</string>
 
     <!-- Share sheet: notifications -->

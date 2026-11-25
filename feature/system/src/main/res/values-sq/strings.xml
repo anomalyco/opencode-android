@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Pyetje</string>
     <string name="system_channel_session_permissions">Kërkesa për leje</string>
     <string name="system_channel_session_other">Përditësime të tjera të sesionit</string>
+    <string name="system_channel_session_runs_description">Ecuria e një sesioni që dërgove nga ky telefon</string>
+    <string name="system_channel_session_finished_description">Një sesion përfundoi hapin e tij</string>
+    <string name="system_channel_session_failed_description">Një sesion u ndal me gabim</string>
+    <string name="system_channel_session_questions_description">Një sesion po të bën një pyetje</string>
+    <string name="system_channel_session_permissions_description">Një sesion kërkon lejen tënde për të vazhduar</string>
+    <string name="system_channel_session_other_description">Përditësime të tjera nga sesionet e tua</string>
     <string name="system_channel_shared_items">Artikujt e ndarë</string>
 
     <!-- Share sheet: notifications -->

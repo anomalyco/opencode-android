@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">ຄຳຖາມ</string>
     <string name="system_channel_session_permissions">ຄຳຂໍອະນຸຍາດ</string>
     <string name="system_channel_session_other">ອັບເດດເຊດຊັນອື່ນໆ</string>
+    <string name="system_channel_session_runs_description">ຄວາມຄືບໜ້າຂອງເຊດຊັນທີ່ເຈົ້າສົ່ງຈາກໂທລະສັບນີ້</string>
+    <string name="system_channel_session_finished_description">ເຊດຊັນເຮັດວຽກຮອບນີ້ສຳເລັດແລ້ວ</string>
+    <string name="system_channel_session_failed_description">ເຊດຊັນຢຸດເຮັດວຽກເນື່ອງຈາກມີຂໍ້ຜິດພາດ</string>
+    <string name="system_channel_session_questions_description">ເຊດຊັນກຳລັງຖາມຄຳຖາມເຈົ້າ</string>
+    <string name="system_channel_session_permissions_description">ເຊດຊັນຕ້ອງການການອະນຸຍາດຈາກເຈົ້າເພື່ອສືບຕໍ່</string>
+    <string name="system_channel_session_other_description">ອັບເດດອື່ນໆ ຈາກເຊດຊັນຂອງເຈົ້າ</string>
     <string name="system_channel_shared_items">ລາຍການທີ່ແບ່ງປັນ</string>
 
     <!-- Share sheet: notifications -->

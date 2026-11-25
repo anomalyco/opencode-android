@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Vragen</string>
     <string name="system_channel_session_permissions">Toestemmingsverzoeken</string>
     <string name="system_channel_session_other">Overige sessie-updates</string>
+    <string name="system_channel_session_runs_description">Voortgang van een sessie die je vanaf deze telefoon hebt verzonden</string>
+    <string name="system_channel_session_finished_description">Een sessie heeft de beurt voltooid</string>
+    <string name="system_channel_session_failed_description">Een sessie is gestopt door een fout</string>
+    <string name="system_channel_session_questions_description">Een sessie stelt je een vraag</string>
+    <string name="system_channel_session_permissions_description">Een sessie heeft je toestemming nodig om door te gaan</string>
+    <string name="system_channel_session_other_description">Overige updates van je sessies</string>
     <string name="system_channel_shared_items">Gedeelde items</string>
 
     <!-- Share sheet: notifications -->

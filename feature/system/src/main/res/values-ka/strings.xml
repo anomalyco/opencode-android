@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">კითხვები</string>
     <string name="system_channel_session_permissions">ნებართვის მოთხოვნები</string>
     <string name="system_channel_session_other">სესიის სხვა განახლებები</string>
+    <string name="system_channel_session_runs_description">ამ ტელეფონიდან გაგზავნილი სესიის მიმდინარეობა</string>
+    <string name="system_channel_session_finished_description">სესიამ მუშაობა დაასრულა</string>
+    <string name="system_channel_session_failed_description">სესია შეცდომით შეჩერდა</string>
+    <string name="system_channel_session_questions_description">სესია კითხვას გისვამთ</string>
+    <string name="system_channel_session_permissions_description">სესიას გასაგრძელებლად თქვენი ნებართვა სჭირდება</string>
+    <string name="system_channel_session_other_description">სხვა განახლებები თქვენი სესიებიდან</string>
     <string name="system_channel_shared_items">გაზიარებული ელემენტები</string>
 
     <!-- Share sheet: notifications -->

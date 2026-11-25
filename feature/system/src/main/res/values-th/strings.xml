@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">คำถาม</string>
     <string name="system_channel_session_permissions">คำขอสิทธิ์</string>
     <string name="system_channel_session_other">อัปเดตเซสชันอื่น ๆ</string>
+    <string name="system_channel_session_runs_description">ความคืบหน้าของเซสชันที่คุณส่งจากมือถือเครื่องนี้</string>
+    <string name="system_channel_session_finished_description">เซสชันทำงานจบรอบแล้ว</string>
+    <string name="system_channel_session_failed_description">เซสชันหยุดทำงานเพราะเกิดข้อผิดพลาด</string>
+    <string name="system_channel_session_questions_description">เซสชันกำลังถามคำถามคุณ</string>
+    <string name="system_channel_session_permissions_description">เซสชันต้องการสิทธิ์จากคุณเพื่อดำเนินการต่อ</string>
+    <string name="system_channel_session_other_description">อัปเดตอื่น ๆ จากเซสชันของคุณ</string>
     <string name="system_channel_shared_items">รายการที่แชร์</string>
 
     <!-- Share sheet: notifications -->

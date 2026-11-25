@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Вопросы</string>
     <string name="system_channel_session_permissions">Запросы разрешений</string>
     <string name="system_channel_session_other">Другие обновления сессий</string>
+    <string name="system_channel_session_runs_description">Прогресс сессии, отправленной с этого телефона</string>
+    <string name="system_channel_session_finished_description">Сессия завершила ход</string>
+    <string name="system_channel_session_failed_description">Сессия остановилась с ошибкой</string>
+    <string name="system_channel_session_questions_description">Сессия задаёт вам вопрос</string>
+    <string name="system_channel_session_permissions_description">Сессии нужно ваше разрешение, чтобы продолжить</string>
+    <string name="system_channel_session_other_description">Другие обновления ваших сессий</string>
     <string name="system_channel_shared_items">Отправленные материалы</string>
 
     <!-- Share sheet: notifications -->

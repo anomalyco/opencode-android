@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Pitanja</string>
     <string name="system_channel_session_permissions">Zahtjevi za dozvolu</string>
     <string name="system_channel_session_other">Ostala ažuriranja sesije</string>
+    <string name="system_channel_session_runs_description">Napredak sesije poslane s ovog telefona</string>
+    <string name="system_channel_session_finished_description">Sesija je završila svoj potez</string>
+    <string name="system_channel_session_failed_description">Sesija se zaustavila zbog greške</string>
+    <string name="system_channel_session_questions_description">Sesija ti postavlja pitanje</string>
+    <string name="system_channel_session_permissions_description">Sesiji je potrebna tvoja dozvola za nastavak</string>
+    <string name="system_channel_session_other_description">Ostala ažuriranja iz tvojih sesija</string>
     <string name="system_channel_shared_items">Podijeljene stavke</string>
 
     <!-- Share sheet: notifications -->

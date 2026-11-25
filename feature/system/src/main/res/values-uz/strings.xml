@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Savollar</string>
     <string name="system_channel_session_permissions">Ruxsat so‘rovlari</string>
     <string name="system_channel_session_other">Sessiyaning boshqa yangilanishlari</string>
+    <string name="system_channel_session_runs_description">Bu telefondan yuborgan sessiyangizning borishi</string>
+    <string name="system_channel_session_finished_description">Sessiya o‘z qadamini yakunladi</string>
+    <string name="system_channel_session_failed_description">Sessiya xato bilan to‘xtadi</string>
+    <string name="system_channel_session_questions_description">Sessiya sizga savol bermoqda</string>
+    <string name="system_channel_session_permissions_description">Sessiya davom etishi uchun ruxsatingiz kerak</string>
+    <string name="system_channel_session_other_description">Sessiyalaringizdan boshqa yangilanishlar</string>
     <string name="system_channel_shared_items">Ulashilgan elementlar</string>
 
     <!-- Share sheet: notifications -->

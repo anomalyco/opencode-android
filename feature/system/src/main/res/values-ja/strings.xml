@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">質問</string>
     <string name="system_channel_session_permissions">権限のリクエスト</string>
     <string name="system_channel_session_other">その他のセッション更新</string>
+    <string name="system_channel_session_runs_description">このスマホから送信したセッションの進行状況</string>
+    <string name="system_channel_session_finished_description">セッションのターンが完了したとき</string>
+    <string name="system_channel_session_failed_description">セッションがエラーで停止したとき</string>
+    <string name="system_channel_session_questions_description">セッションから質問があるとき</string>
+    <string name="system_channel_session_permissions_description">セッションの続行に権限が必要なとき</string>
+    <string name="system_channel_session_other_description">セッションからのその他の更新</string>
     <string name="system_channel_shared_items">共有アイテム</string>
 
     <!-- Share sheet: notifications -->

@@ -52,15 +52,26 @@ object SystemNotificationChannels {
                     setShowBadge(false)
                 },
                 NotificationChannel(SESSION_RUN, context.getString(R.string.system_channel_session_runs), NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = context.getString(R.string.system_channel_session_runs_description)
                     setSound(null, null)
                     enableVibration(false)
                     setShowBadge(false)
                 },
-                NotificationChannel(SESSION_FINISHED, context.getString(R.string.system_channel_session_finished), NotificationManager.IMPORTANCE_DEFAULT),
-                NotificationChannel(SESSION_FAILED, context.getString(R.string.system_channel_session_failed), NotificationManager.IMPORTANCE_HIGH),
-                NotificationChannel(SESSION_QUESTIONS, context.getString(R.string.system_channel_session_questions), NotificationManager.IMPORTANCE_HIGH),
-                NotificationChannel(SESSION_PERMISSIONS, context.getString(R.string.system_channel_session_permissions), NotificationManager.IMPORTANCE_HIGH),
-                NotificationChannel(SESSION_OTHER, context.getString(R.string.system_channel_session_other), NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel(SESSION_FINISHED, context.getString(R.string.system_channel_session_finished), NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = context.getString(R.string.system_channel_session_finished_description)
+                },
+                NotificationChannel(SESSION_FAILED, context.getString(R.string.system_channel_session_failed), NotificationManager.IMPORTANCE_HIGH).apply {
+                    description = context.getString(R.string.system_channel_session_failed_description)
+                },
+                NotificationChannel(SESSION_QUESTIONS, context.getString(R.string.system_channel_session_questions), NotificationManager.IMPORTANCE_HIGH).apply {
+                    description = context.getString(R.string.system_channel_session_questions_description)
+                },
+                NotificationChannel(SESSION_PERMISSIONS, context.getString(R.string.system_channel_session_permissions), NotificationManager.IMPORTANCE_HIGH).apply {
+                    description = context.getString(R.string.system_channel_session_permissions_description)
+                },
+                NotificationChannel(SESSION_OTHER, context.getString(R.string.system_channel_session_other), NotificationManager.IMPORTANCE_DEFAULT).apply {
+                    description = context.getString(R.string.system_channel_session_other_description)
+                },
                 NotificationChannel(SHARE, context.getString(R.string.system_channel_shared_items), NotificationManager.IMPORTANCE_DEFAULT).apply {
                     setShowBadge(false)
                 },

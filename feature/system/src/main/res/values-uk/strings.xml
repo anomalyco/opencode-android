@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Запитання</string>
     <string name="system_channel_session_permissions">Запити на дозвіл</string>
     <string name="system_channel_session_other">Інші оновлення сесій</string>
+    <string name="system_channel_session_runs_description">Перебіг сесії, яку ви надіслали з цього телефону</string>
+    <string name="system_channel_session_finished_description">Сесія завершила крок</string>
+    <string name="system_channel_session_failed_description">Сесія зупинилася через помилку</string>
+    <string name="system_channel_session_questions_description">Сесія ставить вам запитання</string>
+    <string name="system_channel_session_permissions_description">Сесії потрібен ваш дозвіл, щоб продовжити</string>
+    <string name="system_channel_session_other_description">Інші оновлення ваших сесій</string>
     <string name="system_channel_shared_items">Надіслані елементи</string>
 
     <!-- Share sheet: notifications -->

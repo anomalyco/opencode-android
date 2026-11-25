@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Саволҳо</string>
     <string name="system_channel_session_permissions">Дархостҳои иҷозат</string>
     <string name="system_channel_session_other">Навсозиҳои дигари сессия</string>
+    <string name="system_channel_session_runs_description">Раванди сессияе, ки аз ин телефон фиристодед</string>
+    <string name="system_channel_session_finished_description">Сессия навбати худро анҷом дод</string>
+    <string name="system_channel_session_failed_description">Сессия бо хатогӣ қатъ шуд</string>
+    <string name="system_channel_session_questions_description">Сессия ба шумо савол медиҳад</string>
+    <string name="system_channel_session_permissions_description">Сессия барои идома додан ба иҷозати шумо ниёз дорад</string>
+    <string name="system_channel_session_other_description">Навсозиҳои дигар аз сессияҳои шумо</string>
     <string name="system_channel_shared_items">Маводҳои мубодилашуда</string>
 
     <!-- Share sheet: notifications -->

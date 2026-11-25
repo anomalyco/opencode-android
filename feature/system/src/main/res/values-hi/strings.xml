@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">प्रश्न</string>
     <string name="system_channel_session_permissions">अनुमति के अनुरोध</string>
     <string name="system_channel_session_other">अन्य सेशन अपडेट</string>
+    <string name="system_channel_session_runs_description">इस फ़ोन से भेजे गए आपके सेशन की प्रगति</string>
+    <string name="system_channel_session_finished_description">किसी सेशन ने अपना टर्न पूरा कर लिया</string>
+    <string name="system_channel_session_failed_description">कोई सेशन त्रुटि के कारण रुक गया</string>
+    <string name="system_channel_session_questions_description">कोई सेशन आपसे प्रश्न पूछ रहा है</string>
+    <string name="system_channel_session_permissions_description">किसी सेशन को जारी रखने के लिए आपकी अनुमति चाहिए</string>
+    <string name="system_channel_session_other_description">आपके सेशन के अन्य अपडेट</string>
     <string name="system_channel_shared_items">शेयर किए गए आइटम</string>
 
     <!-- Share sheet: notifications -->

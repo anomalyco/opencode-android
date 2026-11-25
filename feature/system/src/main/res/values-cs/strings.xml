@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Otázky</string>
     <string name="system_channel_session_permissions">Žádosti o oprávnění</string>
     <string name="system_channel_session_other">Ostatní aktualizace relací</string>
+    <string name="system_channel_session_runs_description">Průběh relace odeslané z tohoto telefonu</string>
+    <string name="system_channel_session_finished_description">Relace dokončila svůj krok</string>
+    <string name="system_channel_session_failed_description">Relace se zastavila s chybou</string>
+    <string name="system_channel_session_questions_description">Relace má pro vás otázku</string>
+    <string name="system_channel_session_permissions_description">Relace potřebuje vaše povolení k pokračování</string>
+    <string name="system_channel_session_other_description">Ostatní aktualizace z vašich relací</string>
     <string name="system_channel_shared_items">Sdílené položky</string>
 
     <!-- Share sheet: notifications -->

@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Հարցեր</string>
     <string name="system_channel_session_permissions">Թույլտվության հարցումներ</string>
     <string name="system_channel_session_other">Նիստի այլ թարմացումներ</string>
+    <string name="system_channel_session_runs_description">Այս հեռախոսից ձեր ուղարկած նիստի ընթացքը</string>
+    <string name="system_channel_session_finished_description">Նիստն ավարտել է աշխատանքը</string>
+    <string name="system_channel_session_failed_description">Նիստը կանգ է առել սխալի պատճառով</string>
+    <string name="system_channel_session_questions_description">Նիստը ձեզ հարց է տալիս</string>
+    <string name="system_channel_session_permissions_description">Շարունակելու համար նիստին ձեր թույլտվությունն է պետք</string>
+    <string name="system_channel_session_other_description">Այլ թարմացումներ ձեր նիստերից</string>
     <string name="system_channel_shared_items">Կիսված տարրեր</string>
 
     <!-- Share sheet: notifications -->

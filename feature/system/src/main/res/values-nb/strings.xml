@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Spørsmål</string>
     <string name="system_channel_session_permissions">Forespørsler om tillatelse</string>
     <string name="system_channel_session_other">Andre sesjonsoppdateringer</string>
+    <string name="system_channel_session_runs_description">Fremdrift for en sesjon du sendte fra denne telefonen</string>
+    <string name="system_channel_session_finished_description">En sesjon fullførte runden sin</string>
+    <string name="system_channel_session_failed_description">En sesjon stoppet med en feil</string>
+    <string name="system_channel_session_questions_description">En sesjon stiller deg et spørsmål</string>
+    <string name="system_channel_session_permissions_description">En sesjon trenger tillatelse fra deg for å fortsette</string>
+    <string name="system_channel_session_other_description">Andre oppdateringer fra sesjonene dine</string>
     <string name="system_channel_shared_items">Delte elementer</string>
 
     <!-- Share sheet: notifications -->

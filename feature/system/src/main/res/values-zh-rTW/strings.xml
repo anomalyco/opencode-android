@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">問題</string>
     <string name="system_channel_session_permissions">權限要求</string>
     <string name="system_channel_session_other">其他工作階段更新</string>
+    <string name="system_channel_session_runs_description">你從這台手機傳送的工作階段進度</string>
+    <string name="system_channel_session_finished_description">工作階段已完成這一輪</string>
+    <string name="system_channel_session_failed_description">工作階段因錯誤而停止</string>
+    <string name="system_channel_session_questions_description">工作階段有問題要問你</string>
+    <string name="system_channel_session_permissions_description">工作階段需要你授予權限才能繼續</string>
+    <string name="system_channel_session_other_description">工作階段的其他更新</string>
     <string name="system_channel_shared_items">分享的項目</string>
 
     <!-- Share sheet: notifications -->

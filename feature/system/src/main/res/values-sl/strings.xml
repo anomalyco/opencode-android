@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Vprašanja</string>
     <string name="system_channel_session_permissions">Zahteve za dovoljenje</string>
     <string name="system_channel_session_other">Druge posodobitve sej</string>
+    <string name="system_channel_session_runs_description">Napredek seje, ki ste jo poslali s tega telefona</string>
+    <string name="system_channel_session_finished_description">Seja je končala svoj korak</string>
+    <string name="system_channel_session_failed_description">Seja se je ustavila zaradi napake</string>
+    <string name="system_channel_session_questions_description">Seja vam zastavlja vprašanje</string>
+    <string name="system_channel_session_permissions_description">Seja potrebuje vaše dovoljenje za nadaljevanje</string>
+    <string name="system_channel_session_other_description">Druge posodobitve vaših sej</string>
     <string name="system_channel_shared_items">Deljeni elementi</string>
 
     <!-- Share sheet: notifications -->

@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">问题</string>
     <string name="system_channel_session_permissions">权限请求</string>
     <string name="system_channel_session_other">其他会话更新</string>
+    <string name="system_channel_session_runs_description">你从此手机发送的会话进度</string>
+    <string name="system_channel_session_finished_description">会话已完成当前轮次</string>
+    <string name="system_channel_session_failed_description">会话因错误而停止</string>
+    <string name="system_channel_session_questions_description">会话正在向你提问</string>
+    <string name="system_channel_session_permissions_description">会话需要你授予权限才能继续</string>
+    <string name="system_channel_session_other_description">会话的其他更新</string>
     <string name="system_channel_shared_items">分享的内容</string>
 
     <!-- Share sheet: notifications -->

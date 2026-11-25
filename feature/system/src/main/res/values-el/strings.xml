@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Ερωτήσεις</string>
     <string name="system_channel_session_permissions">Αιτήματα άδειας</string>
     <string name="system_channel_session_other">Άλλες ενημερώσεις συνεδρίας</string>
+    <string name="system_channel_session_runs_description">Πρόοδος μιας συνεδρίας που στείλατε από αυτό το κινητό</string>
+    <string name="system_channel_session_finished_description">Μια συνεδρία ολοκλήρωσε τη σειρά της</string>
+    <string name="system_channel_session_failed_description">Μια συνεδρία διακόπηκε με σφάλμα</string>
+    <string name="system_channel_session_questions_description">Μια συνεδρία σάς κάνει μια ερώτηση</string>
+    <string name="system_channel_session_permissions_description">Μια συνεδρία χρειάζεται την άδειά σας για να συνεχίσει</string>
+    <string name="system_channel_session_other_description">Άλλες ενημερώσεις από τις συνεδρίες σας</string>
     <string name="system_channel_shared_items">Κοινοποιημένα στοιχεία</string>
 
     <!-- Share sheet: notifications -->

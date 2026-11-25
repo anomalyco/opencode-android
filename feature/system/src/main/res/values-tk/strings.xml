@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Soraglar</string>
     <string name="system_channel_session_permissions">Rugsat talaplary</string>
     <string name="system_channel_session_other">Beýleki sessiýa täzelenmeleri</string>
+    <string name="system_channel_session_runs_description">Bu telefondan iberen sessiýaňyzyň gidişi</string>
+    <string name="system_channel_session_finished_description">Sessiýa öz ädimini tamamlady</string>
+    <string name="system_channel_session_failed_description">Sessiýa ýalňyşlyk sebäpli durdy</string>
+    <string name="system_channel_session_questions_description">Sessiýa size sorag berýär</string>
+    <string name="system_channel_session_permissions_description">Sessiýanyň dowam etmegi üçin rugsadyňyz gerek</string>
+    <string name="system_channel_session_other_description">Sessiýalaryňyzdan beýleki täzelenmeler</string>
     <string name="system_channel_shared_items">Paýlaşylan zatlar</string>
 
     <!-- Share sheet: notifications -->

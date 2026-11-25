@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Kysymykset</string>
     <string name="system_channel_session_permissions">Lupapyynnöt</string>
     <string name="system_channel_session_other">Muut istuntopäivitykset</string>
+    <string name="system_channel_session_runs_description">Tästä puhelimesta lähettämäsi istunnon eteneminen</string>
+    <string name="system_channel_session_finished_description">Istunto sai vuoronsa valmiiksi</string>
+    <string name="system_channel_session_failed_description">Istunto pysähtyi virheeseen</string>
+    <string name="system_channel_session_questions_description">Istunto esittää sinulle kysymyksen</string>
+    <string name="system_channel_session_permissions_description">Istunto tarvitsee lupasi jatkaakseen</string>
+    <string name="system_channel_session_other_description">Muut päivitykset istunnoistasi</string>
     <string name="system_channel_shared_items">Jaetut kohteet</string>
 
     <!-- Share sheet: notifications -->

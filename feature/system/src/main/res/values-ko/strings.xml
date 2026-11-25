@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">질문</string>
     <string name="system_channel_session_permissions">권한 요청</string>
     <string name="system_channel_session_other">기타 세션 업데이트</string>
+    <string name="system_channel_session_runs_description">이 휴대폰에서 보낸 세션의 진행 상황</string>
+    <string name="system_channel_session_finished_description">세션이 턴을 마쳤을 때</string>
+    <string name="system_channel_session_failed_description">세션이 오류로 중지됐을 때</string>
+    <string name="system_channel_session_questions_description">세션이 질문할 때</string>
+    <string name="system_channel_session_permissions_description">세션을 계속하려면 권한이 필요할 때</string>
+    <string name="system_channel_session_other_description">내 세션의 기타 업데이트</string>
     <string name="system_channel_shared_items">공유 항목</string>
 
     <!-- Share sheet: notifications -->

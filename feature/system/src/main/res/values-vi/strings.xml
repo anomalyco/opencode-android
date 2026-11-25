@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Câu hỏi</string>
     <string name="system_channel_session_permissions">Yêu cầu cấp quyền</string>
     <string name="system_channel_session_other">Cập nhật phiên khác</string>
+    <string name="system_channel_session_runs_description">Tiến trình của phiên bạn gửi từ điện thoại này</string>
+    <string name="system_channel_session_finished_description">Một phiên đã hoàn tất lượt chạy</string>
+    <string name="system_channel_session_failed_description">Một phiên đã dừng do lỗi</string>
+    <string name="system_channel_session_questions_description">Một phiên đang đặt câu hỏi cho bạn</string>
+    <string name="system_channel_session_permissions_description">Một phiên cần bạn cấp quyền để tiếp tục</string>
+    <string name="system_channel_session_other_description">Các cập nhật khác từ phiên của bạn</string>
     <string name="system_channel_shared_items">Mục được chia sẻ</string>
 
     <!-- Share sheet: notifications -->

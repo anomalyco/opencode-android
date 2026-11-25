@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Въпроси</string>
     <string name="system_channel_session_permissions">Заявки за разрешение</string>
     <string name="system_channel_session_other">Други актуализации на сесии</string>
+    <string name="system_channel_session_runs_description">Напредък на сесия, изпратена от този телефон</string>
+    <string name="system_channel_session_finished_description">Сесия завърши стъпката си</string>
+    <string name="system_channel_session_failed_description">Сесия спря с грешка</string>
+    <string name="system_channel_session_questions_description">Сесия ви задава въпрос</string>
+    <string name="system_channel_session_permissions_description">Сесия се нуждае от разрешението ви, за да продължи</string>
+    <string name="system_channel_session_other_description">Други актуализации от вашите сесии</string>
     <string name="system_channel_shared_items">Споделени елементи</string>
 
     <!-- Share sheet: notifications -->

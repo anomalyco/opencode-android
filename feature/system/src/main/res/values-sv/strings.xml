@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Frågor</string>
     <string name="system_channel_session_permissions">Behörighetsförfrågningar</string>
     <string name="system_channel_session_other">Övriga sessionsuppdateringar</string>
+    <string name="system_channel_session_runs_description">Förlopp för en session du skickat från den här telefonen</string>
+    <string name="system_channel_session_finished_description">En session är klar med sin tur</string>
+    <string name="system_channel_session_failed_description">En session stoppades med ett fel</string>
+    <string name="system_channel_session_questions_description">En session ställer en fråga till dig</string>
+    <string name="system_channel_session_permissions_description">En session behöver behörighet från dig för att fortsätta</string>
+    <string name="system_channel_session_other_description">Övriga uppdateringar från dina sessioner</string>
     <string name="system_channel_shared_items">Delade objekt</string>
 
     <!-- Share sheet: notifications -->

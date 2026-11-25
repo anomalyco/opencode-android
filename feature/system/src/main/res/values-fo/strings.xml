@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Spurningar</string>
     <string name="system_channel_session_permissions">Umbønir um loyvi</string>
     <string name="system_channel_session_other">Aðrar setudagføringar</string>
+    <string name="system_channel_session_runs_description">Framgongd í eini setu, tú sendi frá hesi telefonini</string>
+    <string name="system_channel_session_finished_description">Ein seta er liðug við sítt umfar</string>
+    <string name="system_channel_session_failed_description">Ein seta steðgaði við einum feili</string>
+    <string name="system_channel_session_questions_description">Ein seta setir tær ein spurning</string>
+    <string name="system_channel_session_permissions_description">Ein seta krevur títt loyvi fyri at halda fram</string>
+    <string name="system_channel_session_other_description">Aðrar dagføringar frá tínum setum</string>
     <string name="system_channel_shared_items">Deildir lutir</string>
 
     <!-- Share sheet: notifications -->

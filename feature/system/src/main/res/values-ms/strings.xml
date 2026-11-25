@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Soalan</string>
     <string name="system_channel_session_permissions">Permintaan kebenaran</string>
     <string name="system_channel_session_other">Kemas kini sesi lain</string>
+    <string name="system_channel_session_runs_description">Kemajuan sesi yang anda hantar dari telefon ini</string>
+    <string name="system_channel_session_finished_description">Sesi telah menyelesaikan gilirannya</string>
+    <string name="system_channel_session_failed_description">Sesi terhenti dengan ralat</string>
+    <string name="system_channel_session_questions_description">Sesi menanyakan soalan kepada anda</string>
+    <string name="system_channel_session_permissions_description">Sesi memerlukan kebenaran anda untuk meneruskan</string>
+    <string name="system_channel_session_other_description">Kemas kini lain daripada sesi anda</string>
     <string name="system_channel_shared_items">Item dikongsi</string>
 
     <!-- Share sheet: notifications -->

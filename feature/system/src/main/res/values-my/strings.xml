@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">မေးခွန်းများ</string>
     <string name="system_channel_session_permissions">ခွင့်ပြုချက် တောင်းဆိုမှုများ</string>
     <string name="system_channel_session_other">အခြား စက်ရှင် အပ်ဒိတ်များ</string>
+    <string name="system_channel_session_runs_description">ဤဖုန်းမှ သင်ပို့ထားသော စက်ရှင်၏ လုပ်ဆောင်မှု အခြေအနေ</string>
+    <string name="system_channel_session_finished_description">စက်ရှင်တစ်ခု ၎င်း၏အလှည့် ပြီးဆုံးသွားသည်</string>
+    <string name="system_channel_session_failed_description">စက်ရှင်တစ်ခု အမှားဖြင့် ရပ်သွားသည်</string>
+    <string name="system_channel_session_questions_description">စက်ရှင်တစ်ခုက သင့်ကို မေးခွန်းမေးနေသည်</string>
+    <string name="system_channel_session_permissions_description">စက်ရှင်တစ်ခု ဆက်လုပ်ရန် သင့်ခွင့်ပြုချက် လိုအပ်သည်</string>
+    <string name="system_channel_session_other_description">သင့်စက်ရှင်များမှ အခြား အပ်ဒိတ်များ</string>
     <string name="system_channel_shared_items">မျှဝေထားသော အရာများ</string>
 
     <!-- Share sheet: notifications -->

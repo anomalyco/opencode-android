@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Questions</string>
     <string name="system_channel_session_permissions">Demandes de permission</string>
     <string name="system_channel_session_other">Autres mises à jour de session</string>
+    <string name="system_channel_session_runs_description">Progression d’une session envoyée depuis ce téléphone</string>
+    <string name="system_channel_session_finished_description">Une session a terminé son tour</string>
+    <string name="system_channel_session_failed_description">Une session s’est arrêtée avec une erreur</string>
+    <string name="system_channel_session_questions_description">Une session vous pose une question</string>
+    <string name="system_channel_session_permissions_description">Une session a besoin de votre permission pour continuer</string>
+    <string name="system_channel_session_other_description">Autres mises à jour de vos sessions</string>
     <string name="system_channel_shared_items">Éléments partagés</string>
 
     <!-- Share sheet: notifications -->

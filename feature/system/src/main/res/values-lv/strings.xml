@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Jautājumi</string>
     <string name="system_channel_session_permissions">Atļauju pieprasījumi</string>
     <string name="system_channel_session_other">Citi sesiju atjauninājumi</string>
+    <string name="system_channel_session_runs_description">No šī tālruņa nosūtītas sesijas gaita</string>
+    <string name="system_channel_session_finished_description">Sesija pabeidza darbību</string>
+    <string name="system_channel_session_failed_description">Sesija apstājās kļūdas dēļ</string>
+    <string name="system_channel_session_questions_description">Sesija tev uzdod jautājumu</string>
+    <string name="system_channel_session_permissions_description">Sesijai vajadzīga tava atļauja, lai turpinātu</string>
+    <string name="system_channel_session_other_description">Citi atjauninājumi no tavām sesijām</string>
     <string name="system_channel_shared_items">Kopīgotie vienumi</string>
 
     <!-- Share sheet: notifications -->

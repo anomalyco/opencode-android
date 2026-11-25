@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Асуултууд</string>
     <string name="system_channel_session_permissions">Зөвшөөрлийн хүсэлтүүд</string>
     <string name="system_channel_session_other">Сессийн бусад шинэчлэлт</string>
+    <string name="system_channel_session_runs_description">Энэ утаснаас таны илгээсэн сессийн явц</string>
+    <string name="system_channel_session_finished_description">Сесс ээлжит үйлдлээ дуусгасан</string>
+    <string name="system_channel_session_failed_description">Сесс алдаа гарч зогссон</string>
+    <string name="system_channel_session_questions_description">Сесс танаас асуулт асууж байна</string>
+    <string name="system_channel_session_permissions_description">Сессийг үргэлжлүүлэхэд таны зөвшөөрөл шаардлагатай</string>
+    <string name="system_channel_session_other_description">Таны сессүүдийн бусад шинэчлэлт</string>
     <string name="system_channel_shared_items">Хуваалцсан зүйлс</string>
 
     <!-- Share sheet: notifications -->

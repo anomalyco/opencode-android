@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Preguntes</string>
     <string name="system_channel_session_permissions">Sol·licituds de permís</string>
     <string name="system_channel_session_other">Altres actualitzacions de sessió</string>
+    <string name="system_channel_session_runs_description">Progrés d\'una sessió que has enviat des d\'aquest mòbil</string>
+    <string name="system_channel_session_finished_description">Una sessió ha acabat el seu torn</string>
+    <string name="system_channel_session_failed_description">Una sessió s\'ha aturat amb un error</string>
+    <string name="system_channel_session_questions_description">Una sessió et fa una pregunta</string>
+    <string name="system_channel_session_permissions_description">Una sessió necessita el teu permís per continuar</string>
+    <string name="system_channel_session_other_description">Altres actualitzacions de les teves sessions</string>
     <string name="system_channel_shared_items">Elements compartits</string>
 
     <!-- Share sheet: notifications -->

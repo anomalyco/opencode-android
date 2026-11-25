@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">Sorular</string>
     <string name="system_channel_session_permissions">İzin istekleri</string>
     <string name="system_channel_session_other">Diğer oturum güncellemeleri</string>
+    <string name="system_channel_session_runs_description">Bu telefondan gönderdiğiniz bir oturumun ilerleyişi</string>
+    <string name="system_channel_session_finished_description">Bir oturum turunu tamamladı</string>
+    <string name="system_channel_session_failed_description">Bir oturum hata nedeniyle durdu</string>
+    <string name="system_channel_session_questions_description">Bir oturum size soru soruyor</string>
+    <string name="system_channel_session_permissions_description">Bir oturumun devam etmesi için izniniz gerekiyor</string>
+    <string name="system_channel_session_other_description">Oturumlarınızdan diğer güncellemeler</string>
     <string name="system_channel_shared_items">Paylaşılan öğeler</string>
 
     <!-- Share sheet: notifications -->

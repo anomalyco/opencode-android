@@ -85,6 +85,12 @@
     <string name="system_channel_session_questions">ጥያቄዎች</string>
     <string name="system_channel_session_permissions">የፈቃድ ጥያቄዎች</string>
     <string name="system_channel_session_other">ሌሎች የክፍለ ጊዜ ዝማኔዎች</string>
+    <string name="system_channel_session_runs_description">ከዚህ ስልክ የላኩት የክፍለ ጊዜ ሂደት</string>
+    <string name="system_channel_session_finished_description">አንድ ክፍለ ጊዜ ዙሩን አጠናቋል</string>
+    <string name="system_channel_session_failed_description">አንድ ክፍለ ጊዜ በስህተት ምክንያት ቆሟል</string>
+    <string name="system_channel_session_questions_description">አንድ ክፍለ ጊዜ ጥያቄ እየጠየቀዎት ነው</string>
+    <string name="system_channel_session_permissions_description">አንድ ክፍለ ጊዜ ለመቀጠል ፈቃድዎ ያስፈልገዋል</string>
+    <string name="system_channel_session_other_description">ከክፍለ ጊዜዎችዎ የሚመጡ ሌሎች ዝማኔዎች</string>
     <string name="system_channel_shared_items">የተጋሩ ንጥሎች</string>
 
     <!-- Share sheet: notifications -->
