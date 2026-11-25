@@ -134,8 +134,6 @@ class SessionNotificationsClient(
     val ref: (String) -> String = { "" },
     /** Registers again with every saved server whose callback is old or near its end. */
     val renew: suspend () -> Unit = {},
-    /** Android grants the badge count with notifications. */
-    val includeBadges: suspend () -> Unit = {},
     /** Tells notifications which session is on screen so its own don't show. */
     val setVisibleSession: (shown: Boolean, sessionID: String?) -> Unit = { _, _ -> },
     /** Whether the drawer button can show In-App Notices' label. */
@@ -155,7 +153,6 @@ class SessionNotificationsClient(
                 forget = { key, server -> SessionNotifications.shared.forget(key, server) },
                 ref = { SessionNotifications.shared.ref(it) },
                 renew = { SessionNotifications.shared.renew() },
-                includeBadges = {},
                 setVisibleSession = { shown, sessionID ->
                     val id = if (shown) sessionID else null
                     if (shown || SessionNotifications.shared.visibleSessionID == sessionID) {

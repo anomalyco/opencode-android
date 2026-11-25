@@ -20,9 +20,10 @@ import kotlinx.serialization.json.jsonObject
  * A push carries only the encrypted `v2` envelope under `opencode`. Its title, body, session and
  * type show only once [NotificationContent.verifiedPayload] opens the box with this phone's key for
  * its ref; a box that can't be opened or read shows the generic "OpenCode" / "New activity"
- * notification, never clear text from the transport. Each type posts on its own channel. The
- * badge counts verified pushes for a session only. A verified `clear` removes the notification
- * posted for its `id`, if it still shows, and posts nothing.
+ * notification, never clear text from the transport. Each type posts on its own channel. No
+ * notification sets a `number`: launchers add them up, so the icon counts the notifications
+ * showing. A verified `clear` removes the notification posted for its `id`, if it still shows,
+ * and posts nothing.
  *
  * Taps: the content intent is built from the verified payload and targets the unexported
  * [SystemActionActivity], so only this app can send it.
@@ -73,12 +74,6 @@ object SessionPushNotifications {
         builder.extras.putString(EXTRA_ENVELOPE, shown.envelope?.toString())
         builder.extras.putString(EXTRA_ID, verified?.payload?.id)
         if (verified != null && sessionID != null) {
-            // The badge the ledger counts for its session.
-            val defaults = AppBadgeLedger.groupDefaults(context)
-            AppBadgeLedger.load(defaults)?.badgeAfterPush(sessionID = sessionID, ref = verified.ref)?.let { (ledger, badge) ->
-                ledger.save(defaults)
-                builder.setNumber(badge)
-            }
             builder.setContentIntent(
                 PendingIntent.getActivity(
                     context, sessionID.hashCode(),
@@ -163,26 +158,6 @@ object SessionPushNotifications {
         content.envelope
             ?.let { runCatching { Json.parseToJsonElement(it).jsonObject }.getOrNull() }
             ?.takeIf { "v" in it }
-
-    /**
-     * The app icon's count: launchers count from the shown notifications' `number`, so the session
-     * notifications still in the shade are reposted silently with the ledger's count.
-     */
-    @SuppressLint("MissingPermission")
-    fun applyBadge(context: Context, count: Int) {
-        val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
-        for (shown in manager.activeNotifications) {
-            if (shown.id != NOTIFICATION_ID || shown.notification.number == count) continue
-            runCatching {
-                val updated = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
-                    .setNumber(count)
-                    .setOnlyAlertOnce(true)
-                    .build()
-                manager.notify(shown.tag, shown.id, updated)
-            }.onFailure { AppLog.app.debug { "App badge not set: ${it::class.java.simpleName}" } }
-        }
-    }
 
     private const val NOTIFICATION_ID = 4201
 }

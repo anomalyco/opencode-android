@@ -4,7 +4,6 @@ import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.system.SystemIntegrationClient
-import ai.opencode.feature.system.notifications.AppIconBadgeClient
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.system.share.ShareConversation
 import ai.opencode.server.OpenCodeClient
@@ -28,14 +27,12 @@ class AppIconBadgeTests {
     private val savedServers get() = shared.run { shared(ServerSharedKeys.savedServers).value }
 
     class Forgotten {
-        val badges = Locked<List<String>>(emptyList())
         val notifications = Locked<List<String>>(emptyList())
         val unregistered = Locked<List<String>>(emptyList())
         val system = Locked<List<String>>(emptyList())
     }
 
     private fun DependencyValues.Builder.forgetting(forgotten: Forgotten) {
-        this[AppIconBadgeClient] = AppIconBadgeClient(publish = { _, _ -> }, forget = { id -> forgotten.badges.update { it + id } })
         val notifications = SessionNotificationsClient.testValue
         this[SessionNotificationsClient] = SessionNotificationsClient(
             isAvailable = notifications.isAvailable,
@@ -53,7 +50,7 @@ class AppIconBadgeTests {
     }
 
     @Test
-    fun removingTheServerForgetsItsBadge() = runTest {
+    fun removingTheServerForgetsItsNotifications() = runTest {
         val saved = OpenCodeServer(url = "http://192.168.1.20:4096", username = "opencode", password = "")
         val forgotten = Forgotten()
         shared.run { shared(ServerSharedKeys.savedServers).set(listOf(saved)) }
@@ -61,7 +58,6 @@ class AppIconBadgeTests {
         store.exhaustive = false
         store.send(AppFeature.Action.ServerDeleted(saved))
         store.finish()
-        assertEquals(listOf(saved.persistenceID), forgotten.badges.value)
         // Removing a server also removes this phone from its notifications.
         assertEquals(listOf(saved.persistenceID), forgotten.unregistered.value)
         assertEquals(listOf(saved.persistenceID), forgotten.notifications.value)
@@ -87,7 +83,6 @@ class AppIconBadgeTests {
         store.receiveCase<AppFeature.Action.HomeResponse>()
         store.finish()
         assertEquals(listOf(repaired), savedServers)
-        assertEquals(listOf(old.persistenceID), forgotten.badges.value)
         assertEquals(listOf(old.persistenceID), forgotten.notifications.value)
         assertEquals(listOf(old.persistenceID), forgotten.unregistered.value)
         assertEquals(listOf(ShareConversation.serverKey(old.persistenceID)), forgotten.system.value)
@@ -122,7 +117,6 @@ class AppIconBadgeTests {
         store.skipReceivedActions()
         eventually { forgotten.notifications.value.isNotEmpty() }
         assertNotEquals(original.persistenceID, savedServer?.persistenceID)
-        assertEquals(listOf(original.persistenceID), forgotten.badges.value)
         assertEquals(listOf(original.persistenceID), forgotten.notifications.value)
         assertEquals(listOf(original.persistenceID), forgotten.unregistered.value)
     }
@@ -140,7 +134,6 @@ class AppIconBadgeTests {
         store.finish()
         // The original is still the saved server under its own identity.
         assertEquals(original, savedServer)
-        assertTrue(forgotten.badges.value.isEmpty())
         assertTrue(forgotten.notifications.value.isEmpty())
     }
 }
