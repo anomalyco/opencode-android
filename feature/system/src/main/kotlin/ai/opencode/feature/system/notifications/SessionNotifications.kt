@@ -96,8 +96,6 @@ class NotificationKeysClient(
     val prepare: suspend (ref: String) -> String,
     val establish: suspend (ref: String, serverPublicKey: String) -> Unit,
     val remove: suspend (ref: String) -> Unit,
-    /** The authenticated payload, or null when the box or key doesn't hold. */
-    val verify: suspend (NotificationContent.Envelope) -> NotificationContent.Verified?,
 ) {
     companion object Key : DependencyKey<NotificationKeysClient> {
         override val liveValue: NotificationKeysClient by lazy {
@@ -105,14 +103,12 @@ class NotificationKeysClient(
                 prepare = { ref -> withContext(Dispatchers.IO) { NotificationKeyStore.live.prepare(ref) } },
                 establish = { ref, serverKey -> withContext(Dispatchers.IO) { NotificationKeyStore.live.establish(ref, serverKey) } },
                 remove = { ref -> withContext(Dispatchers.IO) { NotificationKeyStore.live.remove(ref) } },
-                verify = { envelope -> withContext(Dispatchers.IO) { NotificationContent.verify(envelope) } },
             )
         }
         override val testValue = NotificationKeysClient(
             prepare = { throw NotificationKeyStore.Failure.MissingKey },
             establish = { _, _ -> throw NotificationKeyStore.Failure.MissingKey },
             remove = {},
-            verify = { null },
         )
     }
 }
@@ -206,18 +202,6 @@ class SessionNotifications internal constructor(
         return if (off) NotificationPresentation.Banner else NotificationPresentation.ListOnly
     }
 
-    /** A tapped notification's destination, delivered once something routes it. */
-    var onOpen: ((NotificationDestination) -> Unit)? = null
-        set(value) {
-            field = value
-            val pending = pendingDestination
-            if (value != null && pending != null) {
-                pendingDestination = null
-                value(pending)
-            }
-        }
-
-    private var pendingDestination: NotificationDestination? = null
     @Volatile private var confirmedToken: String? = null
     private val lock = Any()
     private val registering = Mutex()
@@ -406,9 +390,6 @@ class SessionNotifications internal constructor(
         false
     }
 
-    /** The authenticated payload of a push envelope. */
-    suspend fun verify(envelope: NotificationContent.Envelope): NotificationContent.Verified? = keys.verify(envelope)
-
     /** FCM handed out a new token: every saved server hears of it now. */
     fun didChangeToken(token: String) {
         if (token.isEmpty() || token == confirmedToken) return
@@ -420,20 +401,6 @@ class SessionNotifications internal constructor(
     fun destination(ref: String, sessionID: String): NotificationDestination? {
         val serverKey = saved.value.refs.entries.firstOrNull { it.value == ref }?.key ?: return null
         return NotificationDestination(serverKey, sessionID).takeIf { it.isValid }
-    }
-
-    /** A tapped notification: its envelope is authenticated again, then routed. */
-    suspend fun open(envelope: NotificationContent.Envelope) {
-        val verified = verify(envelope) ?: return
-        val sessionID = verified.payload.sessionID ?: return
-        open(verified.ref, sessionID)
-    }
-
-    /** Routes a tapped notification's `ref` to the server it was minted for. */
-    fun open(ref: String, sessionID: String) {
-        val destination = destination(ref, sessionID) ?: return
-        val onOpen = onOpen
-        if (onOpen != null) onOpen(destination) else pendingDestination = destination
     }
 
     /** The push token; one request at a time, however many servers ask. */

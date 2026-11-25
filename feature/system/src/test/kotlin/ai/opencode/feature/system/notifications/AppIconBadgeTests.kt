@@ -151,7 +151,6 @@ class AppIconBadgeTests {
         val content = requireNotNull(NotificationContent.content(original, verified))
         assertEquals("Ready ✓", content.title)
         assertEquals("A private result.", content.body)
-        assertEquals("$encryptedRef:ses_interop", content.thread)
         val envelope = requireNotNull(content.envelope)
         assertEquals(setOf("v", "ref", "box"), envelope.keys)
         assertEquals(encryptedBox, envelope["box"]?.jsonPrimitive?.content)
@@ -168,7 +167,6 @@ class AppIconBadgeTests {
         val fallback = requireNotNull(NotificationContent.content(original, blocked))
         assertEquals("OpenCode", fallback.title)
         assertEquals("New activity", fallback.body)
-        assertNull(fallback.thread)
         val envelope = requireNotNull(fallback.envelope)
         assertNull(envelope["sessionID"])
         assertEquals(encryptedBox, envelope["box"]?.jsonPrimitive?.content)
@@ -229,7 +227,6 @@ class AppIconBadgeTests {
         val unknown = NotificationContent.content(emptyMap(), verified("""{"v":1,"id":"x_1","type":"later.kind","title":"Deploy done","body":"prod"}"""))
         assertEquals("Deploy done", unknown?.title)
         assertEquals("prod", unknown?.body)
-        assertNull(unknown?.thread)
         assertEquals(SystemNotificationChannels.SESSION_OTHER, SystemNotificationChannels.forType(unknown?.type))
         assertNull(NotificationContent.content(emptyMap(), verified("""{"v":1,"id":"x_1","type":"later.kind","body":"quiet"}""")))
         assertEquals(SystemNotificationChannels.SESSION_QUESTIONS, SystemNotificationChannels.forType("question"))
@@ -246,26 +243,18 @@ class AppIconBadgeTests {
     }
 
     @Test
-    fun clearingReadsTheVerifiedThreadWithoutTheKeychain() {
-        fun envelopeOf(ref: String = encryptedRef) = NotificationContent.Envelope(ref, encryptedBox)
-        fun content(thread: String, ref: String = encryptedRef) = SessionPushNotifications.Delivered(
-            group = thread,
-            envelope = "{\"v\":2,\"ref\":\"$ref\",\"box\":\"$encryptedBox\"}",
-        )
+    fun clearingReadsTheVerifiedSessionWithoutTheKeychain() {
+        val envelope = "{\"v\":2,\"ref\":\"$encryptedRef\",\"box\":\"$encryptedBox\"}"
         val noKeychain: (String) -> ByteArray = { error("The key store isn't read") }
-        val verified = content(thread = "$encryptedRef:ses_interop")
-        assertEquals("ses_interop", NotificationContent.threadSessionID("$encryptedRef:ses_interop", envelopeOf()))
+        val verified = SessionPushNotifications.Delivered(sessionID = "ses_interop", envelope = envelope)
         assertEquals("ses_interop", SessionPushNotifications.sessionID(verified, noKeychain))
         assertFalse(SessionPushNotifications.isNeedsInput(verified))
         assertTrue(SessionPushNotifications.isNeedsInput(verified.copy(status = "question")))
-        // Only a thread the extension wrote for this envelope's ref counts.
-        assertNull(NotificationContent.threadSessionID("ses_interop", envelopeOf()))
-        assertNull(NotificationContent.threadSessionID("12345678-1234-1234-1234-123456789abd:ses_interop", envelopeOf()))
-        assertNull(NotificationContent.threadSessionID("$encryptedRef:not-a-session", envelopeOf()))
-        assertNull(NotificationContent.threadSessionID("$encryptedRef:", envelopeOf()))
-        val v1 = NotificationContent.Envelope.from(mapOf(NotificationContent.ENVELOPE_KEY to "{\"sessionID\":\"ses_v1\"}"))
-        assertNull(NotificationContent.threadSessionID("$encryptedRef:ses_interop", v1))
-        val v1Content = SessionPushNotifications.Delivered(group = "$encryptedRef:ses_interop", sessionID = "ses_v1")
-        assertEquals("ses_v1", SessionPushNotifications.sessionID(v1Content, noKeychain))
+        // A push that couldn't be read when it arrived is verified again.
+        val key = notificationKey()
+        val generic = SessionPushNotifications.Delivered(envelope = envelope)
+        assertEquals("ses_interop", SessionPushNotifications.sessionID(generic) { key })
+        assertNull(SessionPushNotifications.sessionID(generic) { throw NotificationKeyStore.Failure.MissingKey })
+        assertNull(SessionPushNotifications.sessionID(SessionPushNotifications.Delivered(), noKeychain))
     }
 }

@@ -25,7 +25,7 @@ class OpenCodeMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        SessionPushNotifications.handle(applicationContext, message.data)
+        SessionPushNotifications.handle(applicationContext, message.data, message.originalPriority == RemoteMessage.PRIORITY_HIGH)
     }
 }
 

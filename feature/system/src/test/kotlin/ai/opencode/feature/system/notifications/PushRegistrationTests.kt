@@ -68,16 +68,19 @@ class PushRegistrationTests {
 
         handle("""{"v":1,"id":"per_a","type":"permission","sessionID":"ses_a","title":"Fix","body":"Needs permission: bash","data":{}}""")
         handle("""{"v":1,"id":"ses_b","type":"session.idle","sessionID":"ses_b","title":"Docs","body":"Finished","data":{}}""")
-        assertEquals(listOf("ses_a", "ses_b"), shown())
+        assertEquals(listOf("ses_a:per_a", "ses_b"), shown())
         // A clear for something no longer showing posts nothing.
         handle("""{"v":1,"id":"per_gone","type":"clear","sessionID":"ses_a"}""")
-        assertEquals(listOf("ses_a", "ses_b"), shown())
+        assertEquals(listOf("ses_a:per_a", "ses_b"), shown())
         handle("""{"v":1,"id":"per_a","type":"clear","sessionID":"ses_a"}""")
         assertEquals(listOf("ses_b"), shown())
-        // A later notification for the session replaced the one the clear names, so it stays.
+        // Each request keeps its own notification beside the session's Finished.
         handle("""{"v":1,"id":"frm_c","type":"question","sessionID":"ses_b","title":"Docs","body":"Which one?","data":{}}""")
+        handle("""{"v":1,"id":"per_d","type":"permission","sessionID":"ses_b","title":"Docs","body":"Needs permission: bash","data":{}}""")
+        assertEquals(listOf("ses_b", "ses_b:frm_c", "ses_b:per_d"), shown())
         handle("""{"v":1,"id":"ses_b","type":"clear","sessionID":"ses_b"}""")
-        assertEquals(listOf("ses_b"), shown())
+        handle("""{"v":1,"id":"per_d","type":"clear","sessionID":"ses_b"}""")
+        assertEquals(listOf("ses_b:frm_c"), shown())
         handle("""{"v":1,"id":"frm_c","type":"clear","sessionID":"ses_b"}""")
         assertEquals(emptyList<String>(), shown())
     }
@@ -111,7 +114,6 @@ class PushRegistrationTests {
                     prepare = { "phone-key" },
                     establish = { _, key -> established += key },
                     remove = {},
-                    verify = { null },
                 )
             }) {
                 // Four callers at once ask the push channel for one token.
@@ -160,7 +162,7 @@ class PushRegistrationTests {
         withDependenciesSuspending({
             this[SharedStore] = SharedStore.inMemory()
             this[AppContext] = RuntimeEnvironment.getApplication()
-            this[NotificationKeysClient] = NotificationKeysClient(prepare = { "phone-key" }, establish = { _, _ -> }, remove = {}, verify = { null })
+            this[NotificationKeysClient] = NotificationKeysClient(prepare = { "phone-key" }, establish = { _, _ -> }, remove = {})
         }) {
             val server = OpenCodeServer(url = "https://unused.invalid", username = "", password = "")
             assertFalse(notifications.register(server, OpenCodePushLevel.all))
