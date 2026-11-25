@@ -86,5 +86,8 @@ dependencies {
         implementation(libs.androidx.fragment) {
             because("Firebase Messaging's Play services pull in fragment 1.1.0, which Google Play flags as outdated")
         }
+        implementation(libs.androidx.navigationevent) {
+            because("1.1.x throws when a popup closes during a predictive back gesture")
+        }
     }
 }

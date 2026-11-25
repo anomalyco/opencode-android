@@ -205,6 +205,7 @@ Add a new library only with a one-line justification here.
 - `androidx.media3:media3-exoplayer` (voice): plays an agent's audio on a call (iOS `CallAudioPlayer` uses AVAudioPlayerNode on the call's engine); ExoPlayer streams and decodes what MediaPlayer can't, on the call's voice-communication attributes.
 - `androidx.profileinstaller:profileinstaller` (app): installs the packaged app and library Baseline Profiles for ART compilation, including sideloaded builds.
 - `androidx.fragment:fragment` (app, constraint only): raises the fragment 1.1.0 that Firebase Messaging's Play services libraries pull in, which Google Play's SDK index flags as outdated; the app has no Fragments of its own.
+- `androidx.navigationevent:navigationevent` (app, constraint only): raises the 1.1.x that Compose 1.13 and Navigation 3 pull in, which crashes when a focusable popup closes during a predictive back gesture; 1.2.0 ignores back events sent to a removed input.
 
 ## Check and run
 

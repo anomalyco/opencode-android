@@ -39,6 +39,14 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
+import android.os.Looper
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.ComposeView
 import java.io.File
 import java.nio.file.Files
 import java.time.Instant
@@ -559,3 +567,17 @@ class VoiceFeatureTestsCallLog {
     }
 }
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [35], qualifiers = "xxhdpi")
+class VoiceCallReplayViewTests {
+    /** An hour-long call's replay opens. */
+    @Test fun anHourLongCallOpens() {
+        val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
+        val view = ComposeView(activity)
+        activity.setContentView(view)
+        val log = VoiceCallLog(id = UUID(0, 1), startedAt = Instant.EPOCH, endedAt = Instant.EPOCH.plusSeconds(3_600), title = "Call", engine = "test")
+        view.setContent { VoiceCallReplayView(log, onBack = {}) }
+        shadowOf(Looper.getMainLooper()).idle()
+        view.disposeComposition()
+    }
+}
