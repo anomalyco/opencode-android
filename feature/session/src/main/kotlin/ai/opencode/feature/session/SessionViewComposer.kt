@@ -240,6 +240,7 @@ class SessionComposerHost {
     val composerPanelCovers: Boolean get() = modelPanels?.covers == true || autocompleteCovers || floatingCallCovers || commentingQuoteID != null
     /** One Picker is shown: the composer stays expanded under it. */
     val keepsComposerExpanded: Boolean get() = modelPanels?.keepsComposerExpanded == true
+    val keepsDraftProjectsFolded: Boolean get() = modelPanels?.keepsDraftProjectsFolded == true
     /** A panel or overlay owns downward drags now (iOS `composerSwipeYields`' panels). */
     val swipeYields: Boolean get() = modelPanels?.swipeYields == true
     /** iOS `UIAccessibility.post(.announcement)`, set by the composer (the view announces). */
@@ -855,7 +856,7 @@ internal class SessionComposerEnv(
         get() {
             if (s.hasCall) return false
             return messageFieldFocused || s.hasPromptContent || s.dictationHold != null || s.isDictating ||
-                s.isFinishingDictation || host.isAttachmentMenuOpen || host.keepsComposerExpanded
+                s.isFinishingDictation || host.isAttachmentMenuOpen || host.keepsDraftProjectsFolded
         }
 
     /** iOS `composerSwipeYields(from:)`: a touch another control owns. */
