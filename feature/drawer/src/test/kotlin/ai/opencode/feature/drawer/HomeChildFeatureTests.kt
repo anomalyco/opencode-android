@@ -7,6 +7,7 @@ import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.sharing.SharedStore
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.dependencies.TestClock
+import ai.opencode.core.scene.SceneWindowClient
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.system.notifications.NotificationPermission
@@ -34,6 +35,7 @@ import org.junit.Test
 import java.io.IOException
 import java.time.Instant
 import java.util.Collections
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.time.Duration.Companion.seconds
 
 /**
@@ -95,6 +97,52 @@ class HomeChildFeatureTests {
                 if (permission == NotificationPermission.Enabled) listOf(server) else emptyList(),
                 asked.toList(),
             )
+        }
+    }
+
+    /** A connect that needs the permission asks for it once, only if it was never asked and the app is in front. */
+    @Test fun pushSyncWithoutPermissionAsksOnce() = runTest {
+        data class Case(val result: PushStatus, val permission: NotificationPermission, val isFront: Boolean, val asks: Boolean)
+        val cases = listOf(
+            Case(PushStatus.NoPermission, NotificationPermission.NotDetermined, isFront = true, asks = true),
+            Case(PushStatus.NoPermission, NotificationPermission.NotDetermined, isFront = false, asks = false),
+            Case(PushStatus.NoPermission, NotificationPermission.Disabled, isFront = true, asks = false),
+            Case(PushStatus.NoPermission, NotificationPermission.Enabled, isFront = true, asks = false),
+            Case(PushStatus.Outdated, NotificationPermission.NotDetermined, isFront = true, asks = false),
+            Case(PushStatus.Off, NotificationPermission.NotDetermined, isFront = true, asks = false),
+            Case(PushStatus.Unavailable, NotificationPermission.NotDetermined, isFront = true, asks = false),
+        )
+        for (case in cases) {
+            val state = HomeNotificationsFeature.State(
+                server = server,
+                status = HomeNotificationsFeature.Status(notificationPermission = case.permission),
+            )
+            val requests = AtomicInteger()
+            val store = TestStore(state, HomeNotificationsFeature(), this) {
+                this[SharedStore] = SharedStore.inMemory()
+                this[SceneWindowClient] = SceneWindowClient(front = { case.isFront })
+                this[NotificationPermissionClient] = NotificationPermissionClient(
+                    status = { case.permission },
+                    request = { requests.incrementAndGet(); NotificationPermission.Disabled },
+                    openSettings = { true },
+                )
+            }
+            val synced = HomeNotificationsFeature.Action.PushSynced(server.persistenceID, PushServer(case.result))
+            store.send(synced)
+            if (case.asks) {
+                store.receive(HomeNotificationsFeature.Action.EnableNotificationsTapped) {
+                    it.copy(status = it.status.copy(isRequestingNotifications = true))
+                }
+                store.receive(HomeNotificationsFeature.Action.NotificationPermissionRequested(NotificationPermission.Disabled)) {
+                    it.copy(status = it.status.copy(isRequestingNotifications = false))
+                }
+                store.receive(HomeNotificationsFeature.Action.NotificationPermissionLoaded(NotificationPermission.Disabled)) {
+                    it.copy(status = it.status.copy(notificationPermission = NotificationPermission.Disabled))
+                }
+                store.send(synced)
+            }
+            store.finish()
+            assertEquals("$case", if (case.asks) 1 else 0, requests.get())
         }
     }
 

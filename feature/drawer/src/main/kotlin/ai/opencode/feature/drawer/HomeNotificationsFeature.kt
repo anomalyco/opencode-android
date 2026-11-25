@@ -2,6 +2,7 @@ package ai.opencode.feature.drawer
 
 import ai.opencode.core.strings.localized
 import ai.opencode.core.dependencies.dependency
+import ai.opencode.core.scene.SceneWindowClient
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
@@ -20,7 +21,8 @@ import ai.opencode.server.model.OpenCodePushState
 
 /**
  * This phone's notification permission, and push on the current server: registering on every
- * connect and when the push token changes, and replacing the server's copy
+ * connect (asking for the permission the first time a connect needs it, while the app is in front)
+ * and when the push token changes, and replacing the server's copy
  * ([PushSharedKeys.servers]) whenever it says something changed. Home supplies the current server
  * and keeps [Status] as `notificationState`.
  */
@@ -129,6 +131,10 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
                 if (action.result.status == PushStatus.Failed && current?.status == PushStatus.Ready) return Reduced(state)
                 if (current != action.result) {
                     servers.update { it + (action.serverID to action.result) }
+                }
+                val neverAsked = status.notificationPermission == NotificationPermission.NotDetermined
+                if (action.result.status == PushStatus.NoPermission && neverAsked && dependency(SceneWindowClient).isFront) {
+                    return Reduced(state, Effect.send(Action.EnableNotificationsTapped))
                 }
                 Reduced(state)
             }
