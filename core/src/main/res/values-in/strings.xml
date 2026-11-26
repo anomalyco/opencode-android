@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Bagikan layar dengan agen</string>
     <string name="core_experiment_inbox_sidebar_title">Panel samping kotak masuk</string>
     <string name="core_experiment_session_live_activity_title">Pembaruan sesi langsung</string>
+    <string name="core_experiment_background_runs_title">Tetap terhubung saat sesi berjalan</string>
     <string name="core_experiment_sound_effects_title">Efek suara</string>
     <string name="core_experiment_server_address_links_title">Buka tautan berdasarkan alamat server</string>
     <string name="core_experiment_in_app_browser_title">Peramban dalam aplikasi</string>

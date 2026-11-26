@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Pokretanja sesija</string>
     <string name="system_channel_session_updates">Ažuriranja sesija</string>
     <string name="system_channel_shared_items">Podijeljene stavke</string>
+    <string name="system_channel_background_connection">Veza u pozadini</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Veza ostaje aktivna dok tvoji agenti rade</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Dodirni za nastavak u OpenCode</string>

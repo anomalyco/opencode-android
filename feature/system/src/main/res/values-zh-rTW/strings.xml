@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">工作階段執行</string>
     <string name="system_channel_session_updates">工作階段更新</string>
     <string name="system_channel_shared_items">分享的項目</string>
+    <string name="system_channel_background_connection">背景連線</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">代理程式工作時保持連線</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">點一下以在 OpenCode 中繼續</string>

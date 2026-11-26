@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Կիսվել էկրանով գործակալների հետ</string>
     <string name="core_experiment_inbox_sidebar_title">Մուտքայինների կողագոտի</string>
     <string name="core_experiment_session_live_activity_title">Նիստի թարմացումներ իրական ժամանակում</string>
+    <string name="core_experiment_background_runs_title">Կապված մնալ գործարկումների ընթացքում</string>
     <string name="core_experiment_sound_effects_title">Ձայնային էֆեկտներ</string>
     <string name="core_experiment_server_address_links_title">Բացել հղումները սերվերի հասցեով</string>
     <string name="core_experiment_in_app_browser_title">Ներհավելվածային բրաուզեր</string>

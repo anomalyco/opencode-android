@@ -84,6 +84,7 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     Action.ReconnectingGraceElapsed,
     is Action.OfflineGraceElapsed,
     Action.NetworkRerouted,
+    is Action.BackgroundHoldChanged,
     is Action.SnapshotRefreshed,
     is Action.ActiveAncestryResolved,
     is Action.AttentionRefreshed,
@@ -239,6 +240,9 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
         if (action.action == HomeSettingsFeature.Action.WelcomeOpened) {
             // Show Welcome, over Settings and Home.
             Reduced(state.copy(welcome = WelcomeFeature.State(isPreview = true)))
+        } else if (action.action.switchesBackgroundRuns) {
+            val synced = syncBackgroundRuns(reduced.state)
+            Reduced(synced.state, Effect.merge(reduced.effect, synced.effect))
         } else if (!action.action.switchesOffSessionLiveActivity) {
             reduced
         } else {

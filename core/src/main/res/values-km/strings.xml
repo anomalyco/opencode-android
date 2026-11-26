@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">ចែករំលែកអេក្រង់ជាមួយភ្នាក់ងារ</string>
     <string name="core_experiment_inbox_sidebar_title">របារចំហៀងប្រអប់ទទួល</string>
     <string name="core_experiment_session_live_activity_title">បច្ចុប្បន្នភាពសម័យផ្ទាល់</string>
+    <string name="core_experiment_background_runs_title">បន្តភ្ជាប់ពេលកំពុងដំណើរការ</string>
     <string name="core_experiment_sound_effects_title">បែបផែនសំឡេង</string>
     <string name="core_experiment_server_address_links_title">បើកតំណតាមអាសយដ្ឋានម៉ាស៊ីនមេ</string>
     <string name="core_experiment_in_app_browser_title">ម៉ាស៊ីនរកមើលក្នុងកម្មវិធី</string>

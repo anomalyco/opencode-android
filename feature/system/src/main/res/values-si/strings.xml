@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">සැසි ධාවන</string>
     <string name="system_channel_session_updates">සැසි යාවත්කාලීන</string>
     <string name="system_channel_shared_items">බෙදාගත් අයිතම</string>
+    <string name="system_channel_background_connection">පසුබිම් සම්බන්ධතාවය</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">ඔබේ නියෝජිතයන් වැඩ කරන අතරතුර සම්බන්ධව සිටී</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode තුළ දිගටම කරගෙන යාමට තට්ටු කරන්න</string>

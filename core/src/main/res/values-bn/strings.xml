@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">এজেন্টদের সাথে স্ক্রিন শেয়ার করুন</string>
     <string name="core_experiment_inbox_sidebar_title">ইনবক্স সাইডবার</string>
     <string name="core_experiment_session_live_activity_title">সেশনের লাইভ আপডেট</string>
+    <string name="core_experiment_background_runs_title">কাজ চলার সময় সংযুক্ত থাকুন</string>
     <string name="core_experiment_sound_effects_title">শব্দ প্রভাব</string>
     <string name="core_experiment_server_address_links_title">সার্ভারের ঠিকানা অনুযায়ী লিঙ্ক খুলুন</string>
     <string name="core_experiment_in_app_browser_title">অ্যাপের ভেতরে ব্রাউজার</string>

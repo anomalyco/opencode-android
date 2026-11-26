@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">แชร์หน้าจอกับเอเจนต์</string>
     <string name="core_experiment_inbox_sidebar_title">แถบด้านข้างกล่องข้อความ</string>
     <string name="core_experiment_session_live_activity_title">อัปเดตเซสชันแบบสด</string>
+    <string name="core_experiment_background_runs_title">เชื่อมต่อไว้ระหว่างการทำงาน</string>
     <string name="core_experiment_sound_effects_title">เสียงเอฟเฟกต์</string>
     <string name="core_experiment_server_address_links_title">เปิดลิงก์ตาม URL เซิร์ฟเวอร์</string>
     <string name="core_experiment_in_app_browser_title">เบราว์เซอร์ในแอป</string>

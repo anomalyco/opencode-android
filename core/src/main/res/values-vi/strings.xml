@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Chia sẻ màn hình với tác nhân</string>
     <string name="core_experiment_inbox_sidebar_title">Thanh bên hộp thư</string>
     <string name="core_experiment_session_live_activity_title">Cập nhật phiên trực tiếp</string>
+    <string name="core_experiment_background_runs_title">Giữ kết nối khi chạy</string>
     <string name="core_experiment_sound_effects_title">Hiệu ứng âm thanh</string>
     <string name="core_experiment_server_address_links_title">Mở liên kết theo địa chỉ máy chủ</string>
     <string name="core_experiment_in_app_browser_title">Trình duyệt trong ứng dụng</string>

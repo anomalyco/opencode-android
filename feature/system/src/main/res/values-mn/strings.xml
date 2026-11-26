@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Сессийн ажиллуулалт</string>
     <string name="system_channel_session_updates">Сессийн шинэчлэлтүүд</string>
     <string name="system_channel_shared_items">Хуваалцсан зүйлс</string>
+    <string name="system_channel_background_connection">Арын горимын холболт</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Агентууд ажиллаж байх үед холболтыг хадгалж байна</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-д үргэлжлүүлэхийн тулд товшино уу</string>

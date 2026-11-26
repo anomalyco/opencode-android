@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Sesi berjalan</string>
     <string name="system_channel_session_updates">Pembaruan sesi</string>
     <string name="system_channel_shared_items">Item yang dibagikan</string>
+    <string name="system_channel_background_connection">Koneksi latar belakang</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Tetap terhubung saat agen Anda bekerja</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Ketuk untuk melanjutkan di OpenCode</string>

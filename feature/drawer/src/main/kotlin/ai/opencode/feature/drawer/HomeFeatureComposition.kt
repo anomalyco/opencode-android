@@ -62,6 +62,10 @@ internal fun HomeFeature.builtBody(): Reducer<State, Action> {
             val synced = syncSessionActivity(reduced.state)
             reduced = Reduced(synced.state, Effect.merge(reduced.effect, synced.effect))
         }
+        if (isFast && reduced.state.backgroundRunDemand != state.backgroundRunDemand) {
+            val synced = syncBackgroundRuns(reduced.state)
+            reduced = Reduced(synced.state, Effect.merge(reduced.effect, synced.effect))
+        }
         var s = reduced.state
         // The Catch Up preview's revision bumps when its inputs change for the same session.
         val oldSlice = state.catchUpPreviewSlice
@@ -411,6 +415,7 @@ private fun connectionAction(action: Action): HomeConnectionFeature.Action? = wh
     Action.ReconnectingGraceElapsed -> HomeConnectionFeature.Action.ReconnectingGraceElapsed
     is Action.OfflineGraceElapsed -> HomeConnectionFeature.Action.OfflineGraceElapsed(action.pathDown)
     is Action.ServerEvent -> HomeConnectionFeature.Action.ServerEvent(action.event)
+    is Action.BackgroundHoldChanged -> HomeConnectionFeature.Action.BackgroundHoldChanged(action.held)
     else -> null
 }
 
@@ -429,6 +434,7 @@ private fun homeAction(action: HomeConnectionFeature.Action): Action = when (act
     HomeConnectionFeature.Action.ReconnectingGraceElapsed -> Action.ReconnectingGraceElapsed
     is HomeConnectionFeature.Action.OfflineGraceElapsed -> Action.OfflineGraceElapsed(action.pathDown)
     is HomeConnectionFeature.Action.ServerEvent -> Action.ServerEvent(action.event)
+    is HomeConnectionFeature.Action.BackgroundHoldChanged -> Action.BackgroundHoldChanged(action.held)
 }
 
 /**
@@ -500,6 +506,7 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
         // A run a send started follows its session's state here, from wherever it changes (stream,
         // snapshots, the open screen, the background wait).
         .onChange({ it.sessionActivityRun }) { _, _, state -> feature.syncSessionActivity(state) }
+        .onChange({ it.backgroundRunDemand }) { _, _, state -> syncBackgroundRuns(state) }
         .onChange({ if (LabMarks.isEnabled) it.sessionIndicators else emptyMap() }) { old, _, state ->
             for ((sessionID, indicator) in state.sessionIndicators) {
                 if (old[sessionID] != indicator) LabMarks.mark("indicator:${indicator.labMarkName}", sessionID = sessionID)

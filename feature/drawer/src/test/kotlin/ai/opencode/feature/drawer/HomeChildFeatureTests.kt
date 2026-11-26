@@ -197,6 +197,55 @@ class HomeChildFeatureTests {
         assertEquals(1, subscriptions)
     }
 
+    @Test fun aHeldBackgroundStreamReconnectsUntilTheHoldEnds() = runTest {
+        val clock = TestClock()
+        var subscriptions = 0
+        val holds = Collections.synchronizedList(mutableListOf<String>())
+        val second = Channel<OpenCodeServerEvent>(Channel.UNLIMITED)
+        val now = Instant.ofEpochSecond(100)
+        val state = HomeConnectionFeature.State(server = server, isStreaming = true, isInBackground = true, isBackgroundHeld = true)
+        val store = TestStore(state, HomeConnectionFeature(), this) {
+            this[Clock] = clock
+            this[HomeSnapshotDate] = DateClient.constant(now)
+            this[OpenCodeClient] = this[OpenCodeClient].copy(
+                events = {
+                    subscriptions += 1
+                    if (subscriptions > 1) {
+                        second.consumeAsFlow()
+                    } else {
+                        flow {
+                            emit(OpenCodeServerEvent.Connected)
+                            throw IOException("connection reset")
+                        }
+                    }
+                },
+            )
+            this[BackgroundTimeClient] = BackgroundTimeClient { name, _ -> holds += name }
+        }
+        store.send(HomeConnectionFeature.Action.NetworkRerouted)
+        store.receive(HomeConnectionFeature.Action.ServerConnected(server)) {
+            it.copy(hasConnected = true, isEventStreamLive = true)
+        }
+        store.receive(HomeConnectionFeature.Action.ConnectionLost) {
+            it.copy(
+                connectionStatus = HomeConnectionFeature.State.ConnectionStatus.reconnecting,
+                isEventStreamLive = false,
+                lastKnownActivityDeadline = now.plusMillis(HomeFeature.lastKnownActivityLifetime.inWholeMilliseconds),
+            )
+        }
+        clock.advance(5.seconds)
+        second.send(OpenCodeServerEvent.Connected)
+        store.receive(HomeConnectionFeature.Action.ServerConnected(server)) { it.copy(isEventStreamLive = true) }
+        assertEquals(2, subscriptions)
+        store.send(HomeConnectionFeature.Action.BackgroundHoldChanged(false)) { it.copy(isBackgroundHeld = false) }
+        assertEquals(listOf("Live updates"), holds.toList())
+        store.send(HomeConnectionFeature.Action.ConnectionLost) { it.copy(isEventStreamLive = false) }
+        clock.advance(HomeFeature.lastKnownActivityLifetime)
+        store.receive(HomeConnectionFeature.Action.LastKnownActivityExpired) { it.copy(lastKnownActivityDeadline = null) }
+        store.finish()
+        assertEquals(2, subscriptions)
+    }
+
     @Test fun rejectedCredentialsDoNotRestartTheChildStream() = runTest {
         val state = HomeConnectionFeature.State(server = server, isStreaming = true, isEventStreamLive = true)
         val store = TestStore(state, HomeConnectionFeature(), this)

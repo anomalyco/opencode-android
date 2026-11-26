@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Partager l’écran avec les agents</string>
     <string name="core_experiment_inbox_sidebar_title">Volet de réception</string>
     <string name="core_experiment_session_live_activity_title">Suivi de session en direct</string>
+    <string name="core_experiment_background_runs_title">Rester connecté pendant les exécutions</string>
     <string name="core_experiment_sound_effects_title">Effets sonores</string>
     <string name="core_experiment_server_address_links_title">Ouvrir les liens selon l’URL du serveur</string>
     <string name="core_experiment_in_app_browser_title">Navigateur intégré</string>
