@@ -144,6 +144,10 @@ or Developer Mode). Cleartext `http:` still needs the debug network security con
 - Dev server: Enter a Server Manually → `http://10.0.2.2:4097`, user `opencode`, password from
   `oc-server.log`. Session lab: `python3 -B …/opencode-ios/scripts/session-lab.py --port 4112
   serve --checkpoint widgets`, connect to `http://10.0.2.2:4112`.
+- The emulator's Vulkan on the Mac is SwiftShader (software; its log says `ICD set to 'swiftshader'`): the cube and
+  aurora animate (45–49 fps inline with the Mac loaded; the aurora 21 full screen), but Glass Canyon draws at 1–2 fps
+  inline and full screen stops on the runtime's GPU hang (a submit unfinished after 250 ms). Measure heavy GPU
+  widgets on a phone.
 
 ## Handlers, hooks and input (server `a405b4f066`/`deb8e2315a` on)
 
