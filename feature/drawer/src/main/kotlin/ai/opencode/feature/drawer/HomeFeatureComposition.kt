@@ -62,6 +62,7 @@ internal fun HomeFeature.builtBody(): Reducer<State, Action> {
             val synced = syncSessionActivity(reduced.state)
             reduced = Reduced(synced.state, Effect.merge(reduced.effect, synced.effect))
         }
+        reduced = syncingPins(state, reduced, action)
         var s = reduced.state
         // The Catch Up preview's revision bumps when its inputs change for the same session.
         val oldSlice = state.catchUpPreviewSlice

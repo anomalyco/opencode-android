@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Sesijas atjauninājumi reāllaikā</string>
     <string name="core_experiment_sound_effects_title">Skaņas efekti</string>
     <string name="core_experiment_server_address_links_title">Atvērt saites pēc servera adreses</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sinhronizēt piespraustās sesijas</string>
     <string name="core_experiment_in_app_browser_title">Lietotnes pārlūkprogramma</string>
     <string name="core_experiment_welcome_preview_title">Sveiciena priekšskatījums</string>
     <string name="core_experiment_since_you_left_title">Kopš pēdējā apmeklējuma</string>

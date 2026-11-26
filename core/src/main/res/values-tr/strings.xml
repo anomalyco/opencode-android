@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Canlı oturum güncellemeleri</string>
     <string name="core_experiment_sound_effects_title">Ses efektleri</string>
     <string name="core_experiment_server_address_links_title">Sunucu URL\'sine göre bağlantıları aç</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sabitlenmiş oturumları eşitle</string>
     <string name="core_experiment_in_app_browser_title">Uygulama içi tarayıcı</string>
     <string name="core_experiment_welcome_preview_title">Karşılama önizlemesi</string>
     <string name="core_experiment_since_you_left_title">Siz yokken</string>

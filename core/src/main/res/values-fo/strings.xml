@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Beinleiðis setudagføringar</string>
     <string name="core_experiment_sound_effects_title">Ljóðeffektir</string>
     <string name="core_experiment_server_address_links_title">Opna leinkjur eftir ambætaraadressu</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Samstilla festar setur</string>
     <string name="core_experiment_in_app_browser_title">Kagi í forritinum</string>
     <string name="core_experiment_welcome_preview_title">Forskoðan av vælkomu</string>
     <string name="core_experiment_since_you_left_title">Síðan tú fórt</string>

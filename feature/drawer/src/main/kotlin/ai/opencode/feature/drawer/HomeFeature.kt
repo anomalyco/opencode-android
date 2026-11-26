@@ -678,6 +678,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** The network path came back or moved to another interface. */
         data object NetworkRerouted : Action
         data class ServerEvent(val event: OpenCodeServerEvent) : Action
+        /** Sync Pinned Sessions: the server's pinned session IDs (`HomeFeaturePinSync.kt`). */
+        data class PinSpaceChanged(val sessionIDs: List<String>) : Action
         /** Handled by `AppFeature`. */
         data class Delegate(val action: DelegateAction) : Action
         data object NotificationSettingsRequested : Action
@@ -816,6 +818,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data class ViewReceipt(val sessionID: String) : CancelID
         data object SessionSearch : CancelID
         data object OlderSessions : CancelID
+        data object PinSync : CancelID
     }
 
     /** The assembled body (`HomeFeatureComposition.kt`). */

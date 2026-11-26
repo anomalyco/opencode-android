@@ -74,6 +74,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
                     .cancellable(HomeFeature.CancelID.DictationCommands, cancelInFlight = true),
                 Effect.run<Action> { send -> composerPersistence.outboxChanges.collect { send(Action.UnsentDraftsChanged) } }
                     .cancellable(HomeFeature.CancelID.UnsentDrafts, cancelInFlight = true),
+                if (isPinSyncOn) followPins(load.state) else Effect.none(),
             ),
         )
     }

@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">세션 실시간 업데이트</string>
     <string name="core_experiment_sound_effects_title">효과음</string>
     <string name="core_experiment_server_address_links_title">서버 URL로 링크 열기</string>
+    <string name="core_experiment_sync_pinned_sessions_title">고정된 세션 동기화</string>
     <string name="core_experiment_in_app_browser_title">앱 내 브라우저</string>
     <string name="core_experiment_welcome_preview_title">환영 화면 미리보기</string>
     <string name="core_experiment_since_you_left_title">자리를 비운 동안</string>

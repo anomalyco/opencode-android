@@ -19,6 +19,7 @@ import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.server.OpenCodeLiveContentEvent
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.model.OpenCodeProject
+import ai.opencode.server.spaces.SpacesClient
 
 /*
  * The event stream projected onto Home's list and forwarded to the screens that care. REST
@@ -43,6 +44,12 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
             if (key in s.manuallyUnreadSessionKeys) s = s.updatingManuallyUnreadSessionKeys { it - key }
             if (becameRead) s = s.clearingUnseenBaseline(event.sessionID)
             return Reduced(s)
+        }
+
+        is OpenCodeServerEvent.StreamOpened, is OpenCodeServerEvent.SpaceEvent -> {
+            val spaces = dependency(SpacesClient)
+            val server = state.server
+            return Reduced(state, Effect.run { spaces.receive(server, event) })
         }
 
         OpenCodeServerEvent.Connected -> {

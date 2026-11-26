@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">စက်ရှင် တိုက်ရိုက်အပ်ဒိတ်များ</string>
     <string name="core_experiment_sound_effects_title">အသံသက်ရောက်မှု</string>
     <string name="core_experiment_server_address_links_title">ဆာဗာလိပ်စာအလိုက် လင့်ခ်များကို ဖွင့်ပါ</string>
+    <string name="core_experiment_sync_pinned_sessions_title">ထိပ်တွင် ချိတ်ထားသော ဆက်ရှင်များကို စင့်ခ်လုပ်ရန်</string>
     <string name="core_experiment_in_app_browser_title">အက်ပ်တွင်း ဘရောက်ဇာ</string>
     <string name="core_experiment_welcome_preview_title">ကြိုဆိုမျက်နှာပြင် အစမ်းကြည့်ရန်</string>
     <string name="core_experiment_since_you_left_title">သင်ထွက်သွားပြီးနောက်</string>

@@ -109,6 +109,9 @@ object SharedKeys {
     /** Pinned sessions. */
     val pinnedSessionKeys = SharedKey.fileStorage<List<String>>(FileDirectory.Documents, "followed-sessions.json", emptyList())
 
+    /** Servers whose pins Sync Pinned Sessions has merged into the server's: from then on the server's decide. */
+    val pinSyncServerIDs = SharedKey.fileStorage<Set<String>>(FileDirectory.Documents, "pin-sync-servers.json", emptySet())
+
     /** Recently picked models (`model.id`), most recent first. */
     val recentModelIDs = SharedKey.fileStorage<List<String>>(FileDirectory.Documents, "recent-models.json", emptyList())
 }

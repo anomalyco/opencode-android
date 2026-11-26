@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Cập nhật phiên trực tiếp</string>
     <string name="core_experiment_sound_effects_title">Hiệu ứng âm thanh</string>
     <string name="core_experiment_server_address_links_title">Mở liên kết theo địa chỉ máy chủ</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Đồng bộ phiên đã ghim</string>
     <string name="core_experiment_in_app_browser_title">Trình duyệt trong ứng dụng</string>
     <string name="core_experiment_welcome_preview_title">Xem trước màn hình chào mừng</string>
     <string name="core_experiment_since_you_left_title">Từ khi bạn rời đi</string>
