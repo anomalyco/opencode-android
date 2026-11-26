@@ -72,6 +72,7 @@
     <string name="system_session_input">Bemenet</string>
     <string name="system_session_done">Kész</string>
     <string name="system_session_failed">Sikertelen</string>
+    <string name="system_session_answer_unsent">Nem sikerült elküldeni a válaszát. Az újrapróbálkozáshoz nyissa meg a munkamenetet.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Új tevékenység</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Munkamenetek futtatása</string>
     <string name="system_channel_session_updates">Munkamenetek frissítései</string>
     <string name="system_channel_shared_items">Megosztott elemek</string>
+    <string name="system_channel_background_connection">Háttérkapcsolat</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Kapcsolat fenntartása az ügynökök munkája közben</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Koppintson a folytatáshoz az OpenCode-ban</string>

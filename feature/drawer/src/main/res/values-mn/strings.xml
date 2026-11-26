@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Сессийн дэлгэцийг сайжруулахад туслаач. Олсон зүйлсээ харуулаад өөрчлөлтүүдийг тайлбарлаарай.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` дотроос байрлалын алдааг оллоо. Ярианы бичвэр болон мессеж бичих хэсэг боломжит өндрийг хуваан ашигладаг тул гар нээж шалгах нь зай багатай үед хэрхэн ажиллахыг туршихад тустай.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Хариулах</string>
 </resources>

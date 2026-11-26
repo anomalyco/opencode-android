@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Deli zaslon z agenti</string>
     <string name="core_experiment_inbox_sidebar_title">Stranska vrstica nabiralnika</string>
     <string name="core_experiment_session_live_activity_title">Sprotne posodobitve sej</string>
+    <string name="core_experiment_background_runs_title">Ohrani povezavo med izvajanjem</string>
     <string name="core_experiment_sound_effects_title">Zvočni učinki</string>
     <string name="core_experiment_server_address_links_title">Odpiranje povezav po naslovu strežnika</string>
     <string name="core_experiment_in_app_browser_title">Brskalnik v aplikaciji</string>

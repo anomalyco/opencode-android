@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya memperbaiki layar sesi. Tunjukkan temuan Anda dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemukan masalah tata letak di `SessionView.swift`. Transkrip dan kolom pesan berbagi ruang vertikal yang tersedia, jadi keyboard berguna untuk menguji batas tata letaknya.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Jawab</string>
 </resources>

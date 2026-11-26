@@ -72,6 +72,7 @@
     <string name="system_session_input">Giriş</string>
     <string name="system_session_done">Hazırdır</string>
     <string name="system_session_failed">Uğursuz</string>
+    <string name="system_session_answer_unsent">Cavabınızı göndərmək mümkün olmadı. Yenidən cəhd etmək üçün sessiyanı açın.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Yeni fəaliyyət</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Sessiya icraları</string>
     <string name="system_channel_session_updates">Sessiya yeniləmələri</string>
     <string name="system_channel_shared_items">Paylaşılan elementlər</string>
+    <string name="system_channel_background_connection">Arxa plan bağlantısı</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Agentləriniz işləyərkən bağlantı saxlanılır</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-da davam etmək üçün toxunun</string>

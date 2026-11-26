@@ -72,6 +72,7 @@
     <string name="system_session_input">Giriş</string>
     <string name="system_session_done">Taýýar</string>
     <string name="system_session_failed">Şowsuz</string>
+    <string name="system_session_answer_unsent">Jogabyňyzy iberip bolmady. Täzeden synanyşmak üçin sessiýany açyň.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Täze işjeňlik</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Sessiýa işledilişleri</string>
     <string name="system_channel_session_updates">Sessiýa täzelenmeleri</string>
     <string name="system_channel_shared_items">Paýlaşylan zatlar</string>
+    <string name="system_channel_background_connection">Fon baglanyşygy</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Agentleriňiz işleýärkä baglanyşyk saklanýar</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-da dowam etmek üçin basyň</string>

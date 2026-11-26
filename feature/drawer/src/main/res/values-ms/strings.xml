@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya menambah baik skrin sesi. Tunjukkan apa yang anda temui dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemui masalah susun atur dalam `SessionView.swift`. Transkrip dan ruang karang berkongsi ketinggian yang tersedia, jadi papan kekunci berguna untuk menguji had susun atur ini.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Jawab</string>
 </resources>

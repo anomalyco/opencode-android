@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Help me het sessiescherm te verbeteren. Laat zien wat je vindt en leg de wijzigingen uit.</string>
     <string name="drawer_appearance_preview_assistant_text">Ik heb het indelingsprobleem gevonden in `SessionView.swift`. De transcriptie en berichtinvoer delen de beschikbare hoogte, dus het toetsenbord is een goede stresstest.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Antwoorden</string>
 </resources>

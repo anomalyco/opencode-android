@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Օգնիր բարելավել նիստի էկրանը։ Ցույց տուր՝ ինչ ես գտել, և բացատրիր փոփոխությունները։</string>
     <string name="drawer_appearance_preview_assistant_text">Դասավորության խնդիրը գտա `SessionView.swift`-ում։ Սղագրությունն ու հաղորդագրության խմբագրիչը կիսում են հասանելի բարձրությունը, ուստի ստեղնաշարը լավ միջոց է դասավորությունը փորձարկելու համար։</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Պատասխանել</string>
 </resources>

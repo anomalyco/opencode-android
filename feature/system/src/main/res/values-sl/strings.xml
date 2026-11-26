@@ -72,6 +72,7 @@
     <string name="system_session_input">Vnos</string>
     <string name="system_session_done">Končano</string>
     <string name="system_session_failed">Ni uspelo</string>
+    <string name="system_session_answer_unsent">Odgovora ni bilo mogoče poslati. Odprite sejo in poskusite znova.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova dejavnost</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Izvajanja sej</string>
     <string name="system_channel_session_updates">Posodobitve sej</string>
     <string name="system_channel_shared_items">Deljeni elementi</string>
+    <string name="system_channel_background_connection">Povezava v ozadju</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Ohranjanje povezave med delom vaših agentov</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tapni za nadaljevanje v OpenCode</string>

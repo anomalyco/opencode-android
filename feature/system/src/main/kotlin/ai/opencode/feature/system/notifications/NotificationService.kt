@@ -36,6 +36,7 @@ object SessionPushNotifications {
     private const val EXTRA_SESSION = "opencode.sessionID"
     private const val EXTRA_STATUS = "opencode.status"
     private const val EXTRA_ENVELOPE = "opencode.envelope"
+    private const val EXTRA_LOCAL_KEY = "opencode.localKey"
 
     @SuppressLint("MissingPermission")
     fun handle(context: Context, data: Map<String, String>) {
@@ -83,6 +84,90 @@ object SessionPushNotifications {
         val tag = sessionID ?: shown.envelope?.toString()?.hashCode()?.toString()
         runCatching { NotificationManagerCompat.from(context).notify(tag, NOTIFICATION_ID, builder.build()) }
             .onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
+    }
+
+    const val STATUS_NEEDS_INPUT = "needs-input"
+    const val STATUS_SUCCEEDED = "succeeded"
+    const val STATUS_FAILED = "failed"
+
+    /**
+     * A session's notification from the app's own live stream (Stay Connected During Runs), in the
+     * same slot a push for that session takes, so the two replace each other rather than stack.
+     */
+    @SuppressLint("MissingPermission")
+    fun postLocal(
+        context: Context,
+        serverKey: String,
+        sessionID: String,
+        title: String,
+        status: String,
+        request: SessionNotificationRequest? = null,
+        failure: String? = null,
+    ) {
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        val shownKey = listOf(status, request?.requestID, failure).joinToString("|")
+        for (shown in manager.activeNotifications) {
+            if (shown.id != NOTIFICATION_ID || shown.tag != sessionID) continue
+            if (shown.notification.extras.getString(EXTRA_LOCAL_KEY) == shownKey) return
+        }
+        SystemNotificationChannels.ensure(context)
+        val ref = SessionNotifications.shared.ref(serverKey)
+        val body = when (status) {
+            STATUS_NEEDS_INPUT -> context.getString(R.string.system_session_needs_input)
+            STATUS_FAILED -> context.getString(R.string.system_session_failed)
+            else -> context.getString(R.string.system_session_done)
+        }
+        val tap = PendingIntent.getActivity(
+            context, sessionID.hashCode(),
+            SystemActionActivity.pushIntent(context, ref, sessionID),
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
+        val builder = NotificationCompat.Builder(context, SystemNotificationChannels.SESSIONS)
+            .setSmallIcon(R.drawable.ic_opencode_mark)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setAutoCancel(true)
+            .setOnlyAlertOnce(true)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setGroup("$ref:$sessionID")
+            .setContentIntent(tap)
+        if (request != null || failure != null) {
+            val lines = mutableListOf<String>()
+            if (request != null) {
+                lines += request.heading
+                if (request.detail.isNotEmpty()) lines += request.detail
+            }
+            if (failure != null) lines += failure
+            val expanded = lines.joinToString("\n")
+            builder.setContentText(if (failure != null) failure else request?.heading ?: body)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(expanded))
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setPublicVersion(
+                    NotificationCompat.Builder(context, SystemNotificationChannels.SESSIONS)
+                        .setSmallIcon(R.drawable.ic_opencode_mark)
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setContentIntent(tap)
+                        .build(),
+                )
+        }
+        if (request != null && failure == null) {
+            for (action in SessionNotificationActionReceiver.actions(context, ref, sessionID, title, request)) {
+                builder.addAction(action)
+            }
+        }
+        builder.extras.putString(EXTRA_SESSION, sessionID)
+        builder.extras.putString(EXTRA_STATUS, status)
+        builder.extras.putString(EXTRA_LOCAL_KEY, shownKey)
+        runCatching { NotificationManagerCompat.from(context).notify(sessionID, NOTIFICATION_ID, builder.build()) }
+            .onFailure { AppLog.app.error { "Session notification not posted: ${it::class.java.simpleName}" } }
+    }
+
+    /** Clears a session's notification after an answer from it went through. */
+    fun cancel(context: Context, sessionID: String) {
+        NotificationManagerCompat.from(context).cancel(sessionID, NOTIFICATION_ID)
     }
 
     /**

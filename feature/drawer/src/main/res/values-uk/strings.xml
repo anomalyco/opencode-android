@@ -191,4 +191,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Допоможи покращити екран сесії. Покажи, що знайдеш, і поясни зміни.</string>
     <string name="drawer_appearance_preview_assistant_text">Проблема з компонуванням знайшлася в `SessionView.swift`. Розшифровка й редактор повідомлень ділять доступну висоту, тож клавіатура добре допомагає перевірити поведінку за браку місця.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Відповісти</string>
 </resources>

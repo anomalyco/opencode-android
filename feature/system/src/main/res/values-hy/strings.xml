@@ -72,6 +72,7 @@
     <string name="system_session_input">Մուտքագրում</string>
     <string name="system_session_done">Պատրաստ է</string>
     <string name="system_session_failed">Չհաջողվեց</string>
+    <string name="system_session_answer_unsent">Չհաջողվեց ուղարկել ձեր պատասխանը։ Բացեք նիստը՝ կրկին փորձելու համար։</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Նոր ակտիվություն</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Նիստերի գործարկումներ</string>
     <string name="system_channel_session_updates">Նիստերի թարմացումներ</string>
     <string name="system_channel_shared_items">Կիսված տարրեր</string>
+    <string name="system_channel_background_connection">Ֆոնային կապ</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Կապը պահպանվում է, մինչ ձեր գործակալներն աշխատում են</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Հպեք՝ OpenCode-ում շարունակելու համար</string>

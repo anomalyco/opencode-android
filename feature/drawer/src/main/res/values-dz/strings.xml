@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ལཱ་ཡུན་གྱི་གསལ་གཞི་ལེགས་བཅོས་འབད་ནི་ལུ་ཆ་རོགས་འབད། འཚོལ་ཐོབ་མི་ཚུ་སྟོན་ཏེ་ བསྒྱུར་བཅོས་ཚུ་འགྲེལ་བཤད་འབད།</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` ནང་བཀོད་རིས་ཀྱི་དཀའ་ངལ་འཚོལ་ཐོབ་ཅི། ཁ་སླབ་ཡིག་འབེབས་དང་འཕྲིན་དོན་འབྲི་ས་གཉིས་ཀྱིས་ ཡོད་པའི་མཐོ་ཚད་བགོ་སྟེ་ལག་ལེན་འཐབ་དོ། དེ་འབདཝ་ལས་ ལྡེ་སྒྲོམ་ཁ་ཕྱེ་སྟེ་ས་སྟོང་ཉུངམ་ད་ཚོད་ལྟ་འབད་བཏུབ།</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">ལན་རྐྱབས།</string>
 </resources>

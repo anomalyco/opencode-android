@@ -72,6 +72,7 @@
     <string name="system_session_input">इनपुट</string>
     <string name="system_session_done">सकियो</string>
     <string name="system_session_failed">असफल</string>
+    <string name="system_session_answer_unsent">तपाईंको उत्तर पठाउन सकिएन। फेरि प्रयास गर्न सत्र खोल्नुहोस्।</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">नयाँ गतिविधि</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">सत्र सञ्चालनहरू</string>
     <string name="system_channel_session_updates">सत्र अपडेटहरू</string>
     <string name="system_channel_shared_items">साझा गरिएका सामग्री</string>
+    <string name="system_channel_background_connection">पृष्ठभूमि जडान</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">तपाईंका एजेन्टहरूले काम गर्दा जडान कायम राख्दै</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode मा जारी राख्न ट्याप गर्नुहोस्</string>

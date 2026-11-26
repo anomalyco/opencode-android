@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помогни ми да подобря екрана на сесията. Покажи ми какво откриеш и обясни промените.</string>
     <string name="drawer_appearance_preview_assistant_text">Открих проблема с оформлението в `SessionView.swift`. Преписът и редакторът на съобщения си поделят наличната височина, затова клавиатурата е добър тест за ограничено пространство.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Отговор</string>
 </resources>

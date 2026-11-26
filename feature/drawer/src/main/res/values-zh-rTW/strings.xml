@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">幫我改善工作階段畫面。讓我看看你發現了什麼，並說明修改內容。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 找到了版面配置問題。對話紀錄和輸入區共用可用高度，所以可以用鍵盤來測試版面能否正常運作。</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">回答</string>
 </resources>

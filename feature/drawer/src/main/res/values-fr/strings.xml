@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aide-moi à améliorer l’écran de session. Montre-moi ce que tu trouves et explique les changements.</string>
     <string name="drawer_appearance_preview_assistant_text">J’ai trouvé le problème de mise en page dans `SessionView.swift`. La transcription et la zone de saisie se partagent la hauteur disponible : le clavier permet donc de bien tester les limites.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Répondre</string>
 </resources>

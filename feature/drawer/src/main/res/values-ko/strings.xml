@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">세션 화면을 개선해 주세요. 발견한 문제를 보여 주고 변경 사항을 설명해 주세요.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`에서 레이아웃 문제를 찾았어요. 대화 기록과 입력창이 사용 가능한 높이를 나눠 쓰기 때문에 키보드를 띄워 보면 레이아웃을 점검하기 좋아요.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">답변하기</string>
 </resources>

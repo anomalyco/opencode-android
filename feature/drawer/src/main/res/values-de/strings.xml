@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hilf mir, die Sitzungsansicht zu verbessern. Zeig mir, was du findest, und erkläre die Änderungen.</string>
     <string name="drawer_appearance_preview_assistant_text">Ich habe das Layoutproblem in `SessionView.swift` gefunden. Transkript und Nachrichteneingabe teilen sich die verfügbare Höhe. Die Tastatur ist daher ein guter Belastungstest.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Antworten</string>
 </resources>

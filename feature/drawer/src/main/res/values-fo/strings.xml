@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálp mær at bøta um setuvísingina. Vís mær, hvat tú finnur, og greið frá broytingunum.</string>
     <string name="drawer_appearance_preview_assistant_text">Eg fann uppsetingarfeilin í `SessionView.swift`. Samrøðuteksturin og skriviteigurin deilast um tøku hæddina, so knappaborðið er ein góð roynd undir trýsti.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Svara</string>
 </resources>

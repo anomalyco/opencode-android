@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjelp meg å forbedre sesjonsvisningen. Vis meg hva du finner, og forklar endringene.</string>
     <string name="drawer_appearance_preview_assistant_text">Jeg fant layoutproblemet i `SessionView.swift`. Samtaleloggen og skrivefeltet deler den tilgjengelige høyden, så tastaturet er en nyttig stresstest.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Svar</string>
 </resources>

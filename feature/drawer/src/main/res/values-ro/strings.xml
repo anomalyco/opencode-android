@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajută-mă să îmbunătățesc ecranul sesiunii. Arată-mi ce găsești și explică modificările.</string>
     <string name="drawer_appearance_preview_assistant_text">Am găsit problema de aranjare în `SessionView.swift`. Transcrierea și editorul de mesaje împart înălțimea disponibilă, așa că tastatura e utilă pentru a testa limitele.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Răspunde</string>
 </resources>

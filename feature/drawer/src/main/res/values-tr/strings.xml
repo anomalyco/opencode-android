@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Oturum ekranını iyileştirmeme yardım et. Bulduklarını göster ve değişiklikleri açıkla.</string>
     <string name="drawer_appearance_preview_assistant_text">Yerleşim sorununu `SessionView.swift` dosyasında buldum. Konuşma dökümü ve mesaj yazma alanı mevcut yüksekliği paylaşıyor, bu yüzden klavye iyi bir zorlayıcı test oluyor.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Yanıtla</string>
 </resources>

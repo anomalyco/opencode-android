@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">與代理程式分享螢幕</string>
     <string name="core_experiment_inbox_sidebar_title">收件匣側邊欄</string>
     <string name="core_experiment_session_live_activity_title">工作階段即時更新</string>
+    <string name="core_experiment_background_runs_title">執行期間保持連線</string>
     <string name="core_experiment_sound_effects_title">音效</string>
     <string name="core_experiment_server_address_links_title">依伺服器 URL 開啟連結</string>
     <string name="core_experiment_in_app_browser_title">應用程式內瀏覽器</string>

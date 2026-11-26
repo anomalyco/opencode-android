@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">সেশন স্ক্রিন আরও ভালো করতে সাহায্য করুন। কী পেলেন দেখান আর পরিবর্তনগুলো বুঝিয়ে দিন।</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-এ লেআউটের সমস্যাটি পেয়েছি। ট্রান্সক্রিপ্ট আর কম্পোজার উপলব্ধ উচ্চতা ভাগ করে নেয়, তাই কীবোর্ড দিয়ে লেআউটটি ভালোভাবে পরীক্ষা করা যায়।</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">উত্তর দিন</string>
 </resources>

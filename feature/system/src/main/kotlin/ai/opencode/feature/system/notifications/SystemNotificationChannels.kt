@@ -18,6 +18,8 @@ object SystemNotificationChannels {
     const val SESSION_RUN = "session-run"
     /** A session finished or needs input. */
     const val SESSIONS = "sessions"
+    /** Stay Connected During Runs: the service that keeps the stream while the app is away. */
+    const val BACKGROUND_RUNS = "background-runs"
     /** The share sheet's “sent” and “continue” notices. */
     const val SHARE = "share"
 
@@ -41,6 +43,9 @@ object SystemNotificationChannels {
                     setShowBadge(false)
                 },
                 NotificationChannel(SESSIONS, context.getString(R.string.system_channel_session_updates), NotificationManager.IMPORTANCE_HIGH),
+                NotificationChannel(BACKGROUND_RUNS, context.getString(R.string.system_channel_background_connection), NotificationManager.IMPORTANCE_LOW).apply {
+                    setShowBadge(false)
+                },
                 NotificationChannel(SHARE, context.getString(R.string.system_channel_shared_items), NotificationManager.IMPORTANCE_DEFAULT).apply {
                     setShowBadge(false)
                 },

@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">დამეხმარე სესიის ეკრანის გაუმჯობესებაში. მაჩვენე, რას იპოვი და ამიხსენი ცვლილებები.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-ში განლაგების პრობლემა ვიპოვე. ტრანსკრიპტი და შეტყობინების რედაქტორი ხელმისაწვდომ სიმაღლეს ინაწილებენ, ამიტომ კლავიატურით კარგად მოწმდება, როგორ მუშაობს განლაგება შეზღუდულ სივრცეში.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">პასუხი</string>
 </resources>

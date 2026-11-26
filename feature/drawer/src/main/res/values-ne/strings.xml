@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">सत्रको स्क्रिन सुधार्न मद्दत गर्नुहोस्। के भेटियो देखाउनुहोस् र परिवर्तनहरू बुझाउनुहोस्।</string>
     <string name="drawer_appearance_preview_assistant_text">मैले `SessionView.swift` मा लेआउटको समस्या भेट्टाएँ। वार्तालापको पाठ र सन्देश लेखनले उपलब्ध उचाइ बाँड्छन्, त्यसैले किबोर्ड खोलेर सीमित ठाउँमा कस्तो देखिन्छ जाँच्न सकिन्छ।</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">उत्तर दिनुहोस्</string>
 </resources>

@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помогни ми да го подобрам екранот на сесијата. Покажи ми што ќе најдеш и објасни ги промените.</string>
     <string name="drawer_appearance_preview_assistant_text">Го најдов проблемот со распоредот во `SessionView.swift`. Транскриптот и полето за пораки ја делат достапната висина, па тастатурата е добар тест за распоредот.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Одговори</string>
 </resources>

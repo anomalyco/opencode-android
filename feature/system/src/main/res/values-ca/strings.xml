@@ -72,6 +72,7 @@
     <string name="system_session_input">Entrada</string>
     <string name="system_session_done">Fet</string>
     <string name="system_session_failed">Ha fallat</string>
+    <string name="system_session_answer_unsent">No s\'ha pogut enviar la teva resposta. Obre la sessió per tornar-ho a provar.</string>
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova activitat</string>
@@ -82,6 +83,10 @@
     <string name="system_channel_session_runs">Execucions de sessions</string>
     <string name="system_channel_session_updates">Actualitzacions de sessions</string>
     <string name="system_channel_shared_items">Elements compartits</string>
+    <string name="system_channel_background_connection">Connexió en segon pla</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Es manté la connexió mentre els teus agents treballen</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Toca per continuar a OpenCode</string>

@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálpaðu mér að bæta setuskjáinn. Sýndu mér hvað þú finnur og útskýrðu breytingarnar.</string>
     <string name="drawer_appearance_preview_assistant_text">Ég fann vandann í uppsetningunni í `SessionView.swift`. Samtalsskráin og innslátturinn deila lausu hæðinni, svo lyklaborðið reynir vel á uppsetninguna.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Svara</string>
 </resources>

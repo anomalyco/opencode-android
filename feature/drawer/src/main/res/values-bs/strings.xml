@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomozi mi poboljšati ekran sesije. Pokaži mi šta pronađeš i objasni promjene.</string>
     <string name="drawer_appearance_preview_assistant_text">Pronašao sam problem s rasporedom u `SessionView.swift`. Transkript i polje za poruku dijele dostupnu visinu, pa je tastatura dobar test za ograničen prostor.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Odgovori</string>
 </resources>

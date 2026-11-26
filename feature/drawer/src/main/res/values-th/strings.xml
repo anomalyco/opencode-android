@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ช่วยปรับปรุงหน้าจอเซสชันให้หน่อย บอกสิ่งที่พบและอธิบายการเปลี่ยนแปลงด้วย</string>
     <string name="drawer_appearance_preview_assistant_text">พบปัญหาการจัดวางใน `SessionView.swift` บันทึกการสนทนาและช่องเขียนข้อความแบ่งพื้นที่แนวตั้งที่มีอยู่ การเปิดแป้นพิมพ์จึงช่วยทดสอบเมื่อพื้นที่จำกัดได้ดี</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">ตอบ</string>
 </resources>

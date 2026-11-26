@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Показ экрана агентам</string>
     <string name="core_experiment_inbox_sidebar_title">Входящие в боковой панели</string>
     <string name="core_experiment_session_live_activity_title">Обновления сессии в реальном времени</string>
+    <string name="core_experiment_background_runs_title">Сохранять подключение во время выполнения</string>
     <string name="core_experiment_sound_effects_title">Звуковые эффекты</string>
     <string name="core_experiment_server_address_links_title">Открывать ссылки по адресу сервера</string>
     <string name="core_experiment_in_app_browser_title">Встроенный браузер</string>

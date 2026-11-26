@@ -161,4 +161,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">帮我改进会话界面。告诉我发现了什么，并解释这些改动。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 中找到了布局问题。对话记录和输入框共用可用高度，所以弹出键盘很适合用来测试布局。</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">回答</string>
 </resources>

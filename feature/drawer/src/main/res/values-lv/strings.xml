@@ -181,4 +181,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Palīdzi uzlabot sesijas ekrānu. Parādi, ko atradi, un paskaidro izmaiņas.</string>
     <string name="drawer_appearance_preview_assistant_text">Atradu izkārtojuma problēmu failā `SessionView.swift`. Sarunas pieraksts un ziņas ievade dala pieejamo augstumu, tāpēc tastatūra labi palīdz pārbaudīt izkārtojumu.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Atbildēt</string>
 </resources>

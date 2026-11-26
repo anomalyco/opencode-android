@@ -191,4 +191,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomôž mi vylepšiť obrazovku relácie. Ukáž mi, čo nájdeš, a vysvetli zmeny.</string>
     <string name="drawer_appearance_preview_assistant_text">Našiel som problém s rozložením v `SessionView.swift`. Prepis a editor správ si delia dostupnú výšku, takže klávesnica je dobrý záťažový test.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">Odpovedať</string>
 </resources>

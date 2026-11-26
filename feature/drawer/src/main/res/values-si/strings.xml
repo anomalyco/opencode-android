@@ -171,4 +171,6 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">සැසි තිරය වැඩිදියුණු කරන්න මට උදව් කරන්න. සොයාගත් දේ පෙන්වා වෙනස්කම් පැහැදිලි කරන්න.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` තුළ පිරිසැලසුමේ ගැටලුව හමු වුණා. සංවාද පිටපත සහ පණිවිඩ සකසනය තිබෙන උස බෙදාගන්නා නිසා, යතුරුපුවරුව පෙන්වීමෙන් පිරිසැලසුම හොඳින් පරීක්ෂා කළ හැකියි.</string>
+    <!-- Answering from a session's notification -->
+    <string name="drawer_notification_answer">පිළිතුරු දෙන්න</string>
 </resources>
