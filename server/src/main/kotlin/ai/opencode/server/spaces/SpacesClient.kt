@@ -19,6 +19,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.addJsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
 
 /**
  * Spaces (`/api/experimental/space`): string values a server keeps by key and sends to every client
@@ -35,11 +39,11 @@ data class SpacesClient(
     /** The event stream's [OpenCodeServerEvent.StreamOpened] and [OpenCodeServerEvent.SpaceEvent]s, in order. */
     val receive: suspend (server: OpenCodeServer, event: OpenCodeServerEvent) -> Unit,
     /**
-     * Shows at once. A write the server hasn't confirmed stays pending: it's sent again before the
-     * next sync, which doesn't undo it meanwhile. A later write to the key replaces it.
+     * Sets keys to values, or deletes them (null), in one request. Shows at once. A change the server
+     * hasn't confirmed stays pending: it's sent again before the next sync, which doesn't undo it
+     * meanwhile. A later change to the key replaces it.
      */
-    val set: suspend (server: OpenCodeServer, space: String, key: String, value: String) -> Unit,
-    val delete: suspend (server: OpenCodeServer, space: String, key: String) -> Unit,
+    val write: suspend (server: OpenCodeServer, space: String, changes: Map<String, String?>) -> Unit,
 ) {
     companion object Key : DependencyKey<SpacesClient> {
         private val shared by lazy { SpaceStore().client }
@@ -49,8 +53,7 @@ data class SpacesClient(
         override val testValue: SpacesClient = SpacesClient(
             entries = { _, _ -> emptyFlow() },
             receive = { _, _ -> },
-            set = { _, _, _, _ -> throw AssertionError("Unimplemented: SpacesClient.set") },
-            delete = { _, _, _ -> throw AssertionError("Unimplemented: SpacesClient.delete") },
+            write = { _, _, _ -> throw AssertionError("Unimplemented: SpacesClient.write") },
         )
     }
 }
@@ -69,7 +72,11 @@ internal data class SpacePage(
 
 @Serializable private data class SpaceSubscription(val space: String, val cursor: String)
 @Serializable private data class SubscribeBody(val stream: String, val spaces: List<SpaceSubscription>)
-@Serializable private data class ValueBody(val value: String)
+@Serializable private data class WriteResult(val revision: Long, val cursor: String)
+
+/** What one write request may carry (`Space.MaxChanges`, `Space.MaxValueBytes`). */
+internal const val MAX_WRITE_CHANGES = 1024
+internal const val MAX_WRITE_VALUE_BYTES = 1024 * 1024
 
 /** Each server's spaces as this process last synced them, with their cursors and pending writes. */
 internal class SpaceStore {
@@ -78,6 +85,8 @@ internal class SpaceStore {
         val writing = Mutex()
         /** Null until the first sync. */
         val entries = MutableStateFlow<Map<String, String>?>(null)
+        /** The space as the server has it at [revision]; [entries] shows it with the pending writes on top. */
+        var confirmed: Map<String, String>? = null
         var cursor: String? = null
         var revision = -1L
         /** The stream it's subscribed on. */
@@ -86,12 +95,9 @@ internal class SpaceStore {
         /** Writes the server hasn't confirmed, in order: key → value, null for a delete. */
         val pending = LinkedHashMap<String, String?>()
 
-        /** [entries] as the server has them, with the pending writes on top. */
-        fun showing(confirmed: Map<String, String>): Map<String, String> {
-            if (pending.isEmpty()) return confirmed
-            val shown = LinkedHashMap(confirmed)
-            for ((key, value) in pending) if (value == null) shown.remove(key) else shown[key] = value
-            return shown
+        fun show() {
+            val confirmed = confirmed ?: return
+            entries.value = if (pending.isEmpty()) confirmed else applying(confirmed, pending.entries.map { it.toPair() })
         }
     }
 
@@ -102,7 +108,7 @@ internal class SpaceStore {
     /** Servers that answered 404, with the stream they answered on: tried again on the next one. */
     private val unavailable = HashMap<String, String>()
 
-    val client = SpacesClient(entries = ::entries, receive = ::receive, set = ::set, delete = ::delete)
+    val client = SpacesClient(entries = ::entries, receive = ::receive, write = ::write)
 
     private fun space(server: OpenCodeServer, name: String): Space =
         synchronized(lock) { spaces.getOrPut(server.persistenceID to name) { Space(name) } }
@@ -135,20 +141,21 @@ internal class SpaceStore {
                 val (space, stream) = synchronized(lock) { spaces[serverID to event.space] to streams[serverID] }
                 if (space != null && stream != null && space.followers > 0) follow(server, space, stream, again = true)
             }
-            is OpenCodeServerEvent.SpaceUpdated -> apply(serverID, event.space, event.key, event.revision) { it + (event.key to event.value) }
-            is OpenCodeServerEvent.SpaceDeleted -> apply(serverID, event.space, event.key, event.revision) { it - event.key }
+            is OpenCodeServerEvent.SpaceUpdated -> apply(serverID, event.space, event.revision) { it + (event.key to event.value) }
+            is OpenCodeServerEvent.SpaceDeleted -> apply(serverID, event.space, event.revision) { it - event.key }
             else -> Unit
         }
     }
 
-    private fun apply(serverID: String, name: String, key: String, revision: Long, change: (Map<String, String>) -> Map<String, String>) {
+    private fun apply(serverID: String, name: String, revision: Long, change: (Map<String, String>) -> Map<String, String>) {
         synchronized(lock) {
             val space = spaces[serverID to name] ?: return
-            val current = space.entries.value ?: return
+            val current = space.confirmed ?: return
             // Already in the last sync.
             if (revision <= space.revision) return
             space.revision = revision
-            if (key !in space.pending) space.entries.value = change(current)
+            space.confirmed = change(current)
+            space.show()
         }
     }
 
@@ -158,13 +165,9 @@ internal class SpaceStore {
      */
     private suspend fun follow(server: OpenCodeServer, space: Space, stream: String, again: Boolean) = space.syncing.withLock {
         val serverID = server.persistenceID
-        val (skip, cursor, base) = synchronized(lock) {
-            Triple(unavailable[serverID] == stream || (!again && space.stream == stream), space.cursor, space.entries.value)
-        }
-        if (skip) return@withLock
-        space.writing.withLock {
-            for ((key, value) in synchronized(lock) { space.pending.toList() }) if (!send(server, space, key, value)) break
-        }
+        if (synchronized(lock) { unavailable[serverID] == stream || (!again && space.stream == stream) }) return@withLock
+        space.writing.withLock { send(server, space) }
+        val (cursor, base) = synchronized(lock) { space.cursor to space.confirmed }
         try {
             var page = sync(server, space.name, cursor)
             val working = LinkedHashMap(base ?: emptyMap())
@@ -178,7 +181,8 @@ internal class SpaceStore {
                 unavailable.remove(serverID)
                 space.cursor = page.cursor
                 space.revision = page.revision
-                space.entries.value = space.showing(working)
+                space.confirmed = working
+                space.show()
             }
             perform(
                 "/api/experimental/space/subscribe",
@@ -204,39 +208,98 @@ internal class SpaceStore {
         server = server,
     )
 
-    private suspend fun set(server: OpenCodeServer, name: String, key: String, value: String) = write(server, name, key, value)
-
-    private suspend fun delete(server: OpenCodeServer, name: String, key: String) = write(server, name, key, null)
-
-    /** Shows the write at once and keeps it pending until the server confirms it; writes go one at a time per space. */
-    private suspend fun write(server: OpenCodeServer, name: String, key: String, value: String?) {
-        if (synchronized(lock) { server.persistenceID in unavailable }) return
+    private suspend fun write(server: OpenCodeServer, name: String, changes: Map<String, String?>) {
+        if (changes.isEmpty() || synchronized(lock) { server.persistenceID in unavailable }) return
         val space = space(server, name)
         synchronized(lock) {
-            space.pending.remove(key)
-            space.pending[key] = value
-            space.entries.value?.let { space.entries.value = space.showing(it) }
+            for ((key, value) in changes) {
+                space.pending.remove(key)
+                space.pending[key] = value
+            }
+            space.show()
         }
-        space.writing.withLock { send(server, space, key, value) }
+        space.writing.withLock { send(server, space) }
     }
 
-    /** Sends one pending write; once the server has it, it's no longer pending unless a later write replaced it. */
-    private suspend fun send(server: OpenCodeServer, space: Space, key: String, value: String?): Boolean {
-        val path = path(space.name, key)
-        try {
-            if (value != null) {
-                perform(path, method = "PUT", body = encodedBody(ValueBody(value)), server = server)
-            } else {
-                // Deleting an unset key succeeds, so a second copy is harmless.
-                perform(path, method = "DELETE", idempotency = RequestIdempotency.Idempotent, server = server)
+    /** Sends the pending writes, as few requests as the server's limits allow; false when one failed (the rest stay pending). */
+    private suspend fun send(server: OpenCodeServer, space: Space): Boolean {
+        val pending = synchronized(lock) { space.pending.entries.map { it.toPair() } }
+        for (batch in batches(pending)) {
+            val result = try {
+                request<WriteResult>(
+                    "/api/experimental/space/${pathComponent(space.name)}/write",
+                    method = "POST",
+                    body = writeBody(batch),
+                    // Setting the same values again leaves the same result.
+                    idempotency = RequestIdempotency.Idempotent,
+                    server = server,
+                )
+            } catch (error: OpenCodeClientError) {
+                AppLog.network.notice { "Space ${space.name}: write kept for later: ${error.logSummary}" }
+                return false
             }
-        } catch (error: OpenCodeClientError) {
-            AppLog.network.notice { "Space ${space.name}: write kept for later: ${error.logSummary}" }
-            return false
+            synchronized(lock) { confirm(space, batch, result) }
         }
-        synchronized(lock) { if (space.pending.containsKey(key) && space.pending[key] == value) space.pending.remove(key) }
         return true
     }
 
-    private fun path(name: String, key: String) = "/api/experimental/space/${pathComponent(name)}/${pathComponent(key)}"
+    /**
+     * The server has [batch]: it's no longer pending (unless a later write replaced it). When the
+     * write followed straight on from what this space last saw, its cursor becomes the saved one.
+     */
+    private fun confirm(space: Space, batch: List<Pair<String, String?>>, result: WriteResult) {
+        for ((key, value) in batch) if (space.pending.containsKey(key) && space.pending[key] == value) space.pending.remove(key)
+        val confirmed = space.confirmed
+        if (confirmed != null && space.revision >= 0) {
+            // Only a change that changes a key takes a revision: deleting an unset key doesn't.
+            var known: Map<String, String> = confirmed
+            var changed = 0
+            for ((key, value) in batch) {
+                if (value != null || key in known) changed += 1
+                known = applying(known, listOf(key to value))
+            }
+            if (result.revision == space.revision + changed) {
+                space.confirmed = known
+                space.revision = result.revision
+                space.cursor = result.cursor
+            } else if (result.revision <= space.revision) {
+                space.cursor = result.cursor
+            }
+        }
+        space.show()
+    }
+
+    private fun writeBody(batch: List<Pair<String, String?>>): ByteArray = buildJsonObject {
+        putJsonArray("changes") {
+            for ((key, value) in batch) addJsonObject {
+                put("key", key)
+                put("value", value)
+            }
+        }
+    }.toString().toByteArray()
+}
+
+private fun applying(map: Map<String, String>, changes: List<Pair<String, String?>>): Map<String, String> {
+    val next = LinkedHashMap(map)
+    for ((key, value) in changes) if (value == null) next.remove(key) else next[key] = value
+    return next
+}
+
+/** [changes] in order, split only where one request would pass the server's limits. */
+internal fun batches(changes: List<Pair<String, String?>>): List<List<Pair<String, String?>>> {
+    val batches = mutableListOf<List<Pair<String, String?>>>()
+    var batch = mutableListOf<Pair<String, String?>>()
+    var bytes = 0
+    for (change in changes) {
+        val size = change.second?.toByteArray()?.size ?: 0
+        if (batch.isNotEmpty() && (batch.size == MAX_WRITE_CHANGES || bytes + size > MAX_WRITE_VALUE_BYTES)) {
+            batches += batch
+            batch = mutableListOf()
+            bytes = 0
+        }
+        batch += change
+        bytes += size
+    }
+    if (batch.isNotEmpty()) batches += batch
+    return batches
 }

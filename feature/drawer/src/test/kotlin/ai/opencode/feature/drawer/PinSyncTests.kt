@@ -40,8 +40,7 @@ class PinSyncTests {
         val client = SpacesClient(
             entries = { _, space -> if (space == "pins") pins.filterNotNull() else throw AssertionError(space) },
             receive = { _, event -> received.append(event) },
-            set = { _, space, key, value -> writes.append("set $space/$key=$value") },
-            delete = { _, space, key -> writes.append("delete $space/$key") },
+            write = { _, space, changes -> writes.append("$space $changes") },
         )
 
         fun remote(vararg ids: String) {
@@ -67,7 +66,7 @@ class PinSyncTests {
             it.copy(pinnedSessionKeys = listOf(key("a"), otherKey, key("b"), key("c")))
         }
         settle()
-        assertEquals("only the pin the space lacked is written", listOf("set pins/a=1"), spaces.writes.value)
+        assertEquals("only the pin the space lacked is written", listOf("pins {a=1}"), spaces.writes.value)
         assertEquals(setOf(server.persistenceID), h.shared(SharedKeys.pinSyncServerIDs))
 
         // Merged: from now on the space decides.
@@ -76,7 +75,7 @@ class PinSyncTests {
             it.copy(pinnedSessionKeys = listOf(key("a"), otherKey, key("c")))
         }
         settle()
-        assertEquals(listOf("set pins/a=1"), spaces.writes.value)
+        assertEquals(listOf("pins {a=1}"), spaces.writes.value)
 
         store.send(Action.ServerEvent(OpenCodeServerEvent.StreamOpened("s1")))
         store.send(Action.ServerEvent(OpenCodeServerEvent.SpaceResync("pins")))
@@ -119,7 +118,7 @@ class PinSyncTests {
         store.send(Action.PinSpaceChanged(listOf("c", "b"), previous = listOf("c")))
         store.send(Action.PinSpaceChanged(listOf("c", "b", "a"), previous = listOf("c", "b")))
         settle()
-        assertEquals(listOf("set pins/b=1", "set pins/a=1"), spaces.writes.value)
+        assertEquals("the merge goes out as one write", listOf("pins {b=1, a=1}"), spaces.writes.value)
         assertEquals("the order stays this phone's", listOf("b", "a", "c"), store.state.pinnedSessions.map { it.id })
     }
 
@@ -138,7 +137,7 @@ class PinSyncTests {
         settle()
         assertEquals(
             "membership goes to the space; order doesn't",
-            listOf("set pins/c=1", "delete pins/a", "delete pins/b"),
+            listOf("pins {c=1}", "pins {a=null}", "pins {b=null}"),
             spaces.writes.value,
         )
     }

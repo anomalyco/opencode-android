@@ -141,8 +141,8 @@ class SpacesClientTests {
             client.receive(fixture.server, OpenCodeServerEvent.SpaceResync("pins"))
             backgroundScope.launch { client.entries(fixture.server, "pins").collect { seen += it } }
             runCurrent()
-            client.set(fixture.server, "pins", "a", "1")
-            client.delete(fixture.server, "pins", "a")
+            client.write(fixture.server, "pins", mapOf("a" to "1"))
+            client.write(fixture.server, "pins", mapOf("a" to null))
 
             assertTrue(seen.isEmpty())
             assertEquals("one sync, no retries and no writes", listOf("GET /api/experimental/space/pins"), fixture.requests.map { it.route })
@@ -154,26 +154,43 @@ class SpacesClientTests {
         }
     }
 
-    @Test fun writesPutAndDeleteTheKeyAndShowAtOnce() = runTest {
+    private fun written(request: WireFixture.Request) = request.json()["changes"].toString()
+
+    private fun changes(vararg changes: Pair<String, String?>) = Json.parseToJsonElement(
+        changes.joinToString(",", "[", "]") { (key, value) -> """{"key":"$key","value":${value?.let { "\"$it\"" } ?: "null"}}""" },
+    ).toString()
+
+    @Test fun aWriteGoesAsOneRequestAndItsCursorIsSavedWhenNothingElseChanged() = runTest {
+        var head = 3
         val fixture = WireFixture { request ->
-            when (request.route) {
-                "GET /api/experimental/space/pins" -> page("snapshot", 1, mapOf("a" to "1"), cursor = "e.1")
-                "POST /api/experimental/space/subscribe", "PUT /api/experimental/space/pins/ses_b", "DELETE /api/experimental/space/pins/a" ->
-                    Reply.status(204)
+            when (request.route to request.queryValue("cursor")) {
+                "GET /api/experimental/space/pins" to null -> page("snapshot", 1, mapOf("a" to "1"), cursor = "e.1")
+                "GET /api/experimental/space/pins" to "e.3" -> page("delta", 3, emptyMap(), cursor = "e.3")
+                "POST /api/experimental/space/subscribe" to null -> Reply.status(204)
+                "POST /api/experimental/space/pins/write" to null -> Reply.Json(200, """{"revision":$head,"cursor":"e.$head"}""")
                 else -> Reply.status(500)
             }
         }
         try {
             val client = SpaceStore().client
+            backgroundScope.launch { client.entries(fixture.server, "pins").collect {} }
+            runCurrent()
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
-            assertEquals(mapOf("a" to "1"), client.entries(fixture.server, "pins").first())
-            client.set(fixture.server, "pins", "ses_b", "1")
-            client.delete(fixture.server, "pins", "a")
+            // Deleting `x`, which isn't set, takes no revision: 1 + 2 = 3 follows straight on.
+            client.write(fixture.server, "pins", mapOf("ses_b" to "1", "a" to null, "x" to null))
 
             assertEquals(mapOf("ses_b" to "1"), client.entries(fixture.server, "pins").first())
-            val writes = fixture.requests.drop(2)
-            assertEquals(listOf("PUT /api/experimental/space/pins/ses_b", "DELETE /api/experimental/space/pins/a"), writes.map { it.route })
-            assertEquals(Json.parseToJsonElement("""{"value":"1"}"""), writes[0].json())
+            val write = fixture.requests.single { it.route == "POST /api/experimental/space/pins/write" }
+            assertEquals(changes("ses_b" to "1", "a" to null, "x" to null), written(write))
+
+            client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
+            assertEquals("the next sync starts after the write", "e.3", fixture.requests.last { it.method == "GET" }.queryValue("cursor"))
+
+            // Another client wrote meanwhile: the write's cursor would skip its change.
+            head = 9
+            client.write(fixture.server, "pins", mapOf("c" to "1"))
+            client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s3"))
+            assertEquals("e.3", fixture.requests.last { it.method == "GET" }.queryValue("cursor"))
         } finally {
             fixture.close()
         }
@@ -188,7 +205,9 @@ class SpacesClientTests {
                 "GET /api/experimental/space/pins" to "e.1" -> page("snapshot", 2, mapOf("a" to "1", "b" to "1"), cursor = "e.2")
                 "GET /api/experimental/space/pins" to "e.2" -> page("delta", 5, mapOf("c" to "1"), cursor = "e.5", deleted = listOf("a"))
                 "POST /api/experimental/space/subscribe" to null -> Reply.status(204)
-                else -> if (request.method == "PUT" || request.method == "DELETE") Reply.status(if (writesFail) 503 else 204) else Reply.status(500)
+                "POST /api/experimental/space/pins/write" to null ->
+                    if (writesFail) Reply.status(503) else Reply.Json(200, """{"revision":7,"cursor":"e.7"}""")
+                else -> Reply.status(500)
             }
         }
         try {
@@ -199,10 +218,9 @@ class SpacesClientTests {
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
 
             writesFail = true
-            client.set(fixture.server, "pins", "c", "1")
-            client.delete(fixture.server, "pins", "a")
-            client.set(fixture.server, "pins", "d", "1")
-            client.delete(fixture.server, "pins", "d")
+            client.write(fixture.server, "pins", mapOf("c" to "1"))
+            client.write(fixture.server, "pins", mapOf("a" to null, "d" to "1"))
+            client.write(fixture.server, "pins", mapOf("d" to null))
             assertEquals("writes show before the server confirms them", mapOf("b" to "1", "c" to "1"), shown())
 
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
@@ -213,21 +231,28 @@ class SpacesClientTests {
             val before = fixture.requests.size
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s3"))
             assertEquals(mapOf("b" to "1", "c" to "1"), shown())
+            val sent = fixture.requests.drop(before)
             assertEquals(
-                "pending writes go first, in order, the later write to a key in place of the earlier",
-                listOf(
-                    "PUT /api/experimental/space/pins/c", "DELETE /api/experimental/space/pins/a", "DELETE /api/experimental/space/pins/d",
-                    "GET /api/experimental/space/pins", "POST /api/experimental/space/subscribe",
-                ),
-                fixture.requests.drop(before).map { it.route },
+                "pending writes go first, as one request",
+                listOf("POST /api/experimental/space/pins/write", "GET /api/experimental/space/pins", "POST /api/experimental/space/subscribe"),
+                sent.map { it.route },
             )
+            assertEquals("in order, a later write to a key in place of the earlier", changes("c" to "1", "a" to null, "d" to null), written(sent[0]))
 
             val confirmed = fixture.requests.size
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s4"))
-            assertTrue("confirmed writes aren't sent again", fixture.requests.drop(confirmed).none { it.method == "PUT" || it.method == "DELETE" })
+            assertTrue("confirmed writes aren't sent again", fixture.requests.drop(confirmed).none { it.route.endsWith("/write") })
         } finally {
             fixture.close()
         }
+    }
+
+    @Test fun writesSplitOnlyPastTheServersLimits() {
+        val many = (1..MAX_WRITE_CHANGES + 1).map { "k$it" to "1" }
+        assertEquals(listOf(MAX_WRITE_CHANGES, 1), batches(many).map { it.size })
+        val big = "é".repeat(MAX_WRITE_VALUE_BYTES / 4)
+        assertEquals("a value's UTF-8 counts", listOf(2, 1), batches(listOf("a" to big, "b" to big, "c" to big)).map { it.size })
+        assertEquals("deletes carry no value", listOf(3), batches(listOf("a" to big, "b" to null, "c" to big)).map { it.size })
     }
 
     @Test fun streamIDsAndSpaceFramesDecode() {

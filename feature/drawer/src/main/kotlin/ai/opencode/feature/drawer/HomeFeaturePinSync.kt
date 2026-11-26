@@ -103,8 +103,6 @@ internal fun syncingPins(old: State, reduced: HomeReduced, action: Action): Home
 private fun writePins(server: OpenCodeServer, added: Collection<String>, removed: Collection<String>): Effect<Action> {
     if (added.isEmpty() && removed.isEmpty()) return Effect.none()
     val spaces = dependency(SpacesClient)
-    return Effect.run<Action> {
-        for (id in added) spaces.set(server, PIN_SPACE, id, "1")
-        for (id in removed) spaces.delete(server, PIN_SPACE, id)
-    }
+    val changes = added.associateWith<String, String?> { "1" } + removed.associateWith { null }
+    return Effect.run<Action> { spaces.write(server, PIN_SPACE, changes) }
 }

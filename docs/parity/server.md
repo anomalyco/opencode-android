@@ -52,7 +52,7 @@ Status values: `todo`, `partial: <what is missing>`, `done`, `n/a: <reason and w
 
 | Kotlin file | Why |
 | --- | --- |
-| `spaces/SpacesClient.kt` | Spaces (`/api/experimental/space`, no iOS counterpart yet), generic and pin-agnostic, behind Sync Pinned Sessions: per server and space it syncs every page from the saved cursor (a snapshot replaces, a delta applies), then subscribes the stream Home already reads (`StreamOpened`) from the last page's cursor; applies `SpaceUpdated`/`SpaceDeleted` newer than the sync; syncs and subscribes again on a new stream or `SpaceResync`. A 404 leaves the server alone until its next stream. `set`/`delete` show at once and stay pending until the server confirms them: pending writes go first on the next follow, and a sync or event doesn't undo them; a later write to the key replaces the earlier. State lives in memory. |
+| `spaces/SpacesClient.kt` | Spaces (`/api/experimental/space`, no iOS counterpart yet), generic and pin-agnostic, behind Sync Pinned Sessions: per server and space it syncs every page from the saved cursor (a snapshot replaces, a delta applies), then subscribes the stream Home already reads (`StreamOpened`) from the last page's cursor; applies `SpaceUpdated`/`SpaceDeleted` newer than the sync; syncs and subscribes again on a new stream or `SpaceResync`. A 404 leaves the server alone until its next stream. `write` (sets, and deletes as null) shows at once and stays pending until the server confirms it: all of a space's pending writes go as one `POST …/{space}/write` (split only past 1024 changes or 1 MiB of values), first on the next follow, and a sync or event doesn't undo them; a later write to the key replaces the earlier. A write's returned cursor is saved when its revision follows straight on from what the space last saw. State lives in memory. |
 
 ## Server-facing Core files
 
@@ -139,7 +139,7 @@ fixtures: `server/src/testFixtures` (`WireFixture`, `ServerTestIsolation`, and `
 | `MediaFileOriginalTests.swift` | `model/MediaFileOriginalTests.kt` | 4 (model behavior) | HTTP request routing belongs to `:feature:media`. |
 | `MediaReferenceTests.swift` | `MediaReferenceTests.kt` | 5 of 9 (`capabilityHeaderIsAlwaysSent`, `decodesInlineAndMediaReferenceShapesInMessagesAndToolItems`, `decodesUnavailablePlaceholders`, `placeholderCheckSkipsInlineImagesAndLargePayloads`, `liveFetchUsesUncachedMediaSessionAndReloadIgnoringLocalCacheData`; the URL-cache checks are `media.cache == null`) | loader tests → `:feature:media`; mosaic/load key → `:feature:transcript`; revert hydration → `:feature:session` (see media.md) |
 | `MarkdownBlockTests.swift` | `MarkdownBlockTests.kt` | 1 (`markdownImage` cache; key is `OpenCodeClient.markdownImageKey`) | rest → `:feature:transcript`/`:feature:media`/`:feature:session` Sync 01eef583 (0f24fbf3): iOS dropped the `session.titleLoading.period` key from the deleted presets test; nothing to port (`TitleBreathTests` still checks the 1.7 s period). |
-| — (Android only) | `spaces/SpacesClientTests.kt` | 7 | Sync paging and subscribe, events, reconnect/resync re-sync, 404 = unavailable, writes, pending writes, frame decoding |
+| — (Android only) | `spaces/SpacesClientTests.kt` | 8 | Sync paging and subscribe, events, reconnect/resync re-sync, 404 = unavailable, batched writes and their cursor, pending writes, batch limits, frame decoding |
 
 Bugs the ports found (fixed): EACCES socket errors were retried; a refused cleartext redirect to
 another host read as interrupted; OkHttp's 5-per-host cap queued family fan-out; endpoint
