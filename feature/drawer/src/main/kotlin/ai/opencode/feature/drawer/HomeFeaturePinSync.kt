@@ -35,8 +35,14 @@ private val State.pinnedIDs: List<String>
 internal fun followPins(state: State): Effect<Action> {
     val spaces = dependency(SpacesClient)
     val server = state.server
-    return Effect.run<Action> { send -> spaces.entries(server, PIN_SPACE).collect { send(Action.PinSpaceChanged(it.keys.toList())) } }
-        .cancellable(CancelID.PinSync, cancelInFlight = true)
+    return Effect.run<Action> { send ->
+        var previous: List<String>? = null
+        spaces.entries(server, PIN_SPACE).collect {
+            val ids = it.keys.toList()
+            send(Action.PinSpaceChanged(ids, previous))
+            previous = ids
+        }
+    }.cancellable(CancelID.PinSync, cancelInFlight = true)
 }
 
 /** The switch, when [this] turns Sync Pinned Sessions on or off. */
@@ -55,8 +61,11 @@ internal fun pinSyncSwitched(state: State, on: Boolean): HomeReduced {
     return Reduced(state, Effect.cancel(CancelID.PinSync))
 }
 
-/** The space's pins: removals unpin here, additions pin at the end. */
-internal fun pinSpaceChanged(state: State, remote: List<String>): HomeReduced {
+/**
+ * The space's pins: removals unpin here, additions pin at the end. Once followed, only what changed
+ * since [previous] applies, so writes still landing one by one undo nothing.
+ */
+internal fun pinSpaceChanged(state: State, remote: List<String>, previous: List<String>?): HomeReduced {
     if (!isPinSyncOn) return Reduced(state)
     val serverID = state.server.persistenceID
     val local = state.pinnedIDs
@@ -69,8 +78,9 @@ internal fun pinSpaceChanged(state: State, remote: List<String>): HomeReduced {
         writes = writePins(state.server, added = missing, removed = emptyList())
         merged.update { it + serverID }
     }
-    val removed = local.filterNot { it in members }.map(state::sessionKey).toSet()
-    val added = remote.filterNot { it in local }.map(state::sessionKey)
+    val gone = if (previous == null) local.filterNot { it in members } else previous.filterNot { it in members }
+    val removed = gone.map(state::sessionKey).toSet()
+    val added = remote.filterNot { it in local || previous?.contains(it) == true }.map(state::sessionKey)
     if (removed.isEmpty() && added.isEmpty()) return Reduced(state, writes)
     val s = state.updatingPinnedSessionKeys { keys ->
         val kept = keys.filterNot { it in removed }

@@ -71,8 +71,10 @@ class PinSyncTests {
         assertEquals(setOf(server.persistenceID), h.shared(SharedKeys.pinSyncServerIDs))
 
         // Merged: from now on the space decides.
-        spaces.remote("c")
-        store.receive(Action.PinSpaceChanged(listOf("c"))) { it.copy(pinnedSessionKeys = listOf(otherKey, key("c"))) }
+        spaces.remote("a", "c")
+        store.receive(Action.PinSpaceChanged(listOf("a", "c"), previous = listOf("b", "c"))) {
+            it.copy(pinnedSessionKeys = listOf(key("a"), otherKey, key("c")))
+        }
         settle()
         assertEquals(listOf("set pins/a=1"), spaces.writes.value)
 
@@ -98,10 +100,27 @@ class PinSyncTests {
             it.copy(pinnedSessionKeys = listOf(key("b"), otherKey, key("a"), key("c")))
         }
         assertEquals("the order stays this phone's", listOf("b", "a", "c"), store.state.pinnedSessions.map { it.id })
-        store.send(Action.PinSpaceChanged(listOf("c", "b"))) { it.copy(pinnedSessionKeys = listOf(key("b"), otherKey, key("c"))) }
-        store.send(Action.PinSpaceChanged(listOf("b", "c")))
+        store.send(Action.PinSpaceChanged(listOf("c", "b"), previous = listOf("c", "a", "b"))) {
+            it.copy(pinnedSessionKeys = listOf(key("b"), otherKey, key("c")))
+        }
+        store.send(Action.PinSpaceChanged(listOf("b", "c"), previous = listOf("c", "b")))
         settle()
         assertTrue("the space's own changes aren't written back", spaces.writes.value.isEmpty())
+    }
+
+    @Test fun mergeWritesLandingOneByOneUnpinNothing() = homeTest { h ->
+        h.setShared(SharedKeys.pinnedSessionKeys, listOf(key("b"), key("a")))
+        val spaces = Spaces()
+        val store = h.store(h.state { HomeFeature.State(server, snapshot(sessions)) }) {
+            this[ExperimentalFeatures] = syncOn
+            this[SpacesClient] = spaces.client
+        }
+        store.send(Action.PinSpaceChanged(listOf("c"))) { it.copy(pinnedSessionKeys = listOf(key("b"), key("a"), key("c"))) }
+        store.send(Action.PinSpaceChanged(listOf("c", "b"), previous = listOf("c")))
+        store.send(Action.PinSpaceChanged(listOf("c", "b", "a"), previous = listOf("c", "b")))
+        settle()
+        assertEquals(listOf("set pins/b=1", "set pins/a=1"), spaces.writes.value)
+        assertEquals("the order stays this phone's", listOf("b", "a", "c"), store.state.pinnedSessions.map { it.id })
     }
 
     @Test fun pinningAndUnpinningHereWritesTheSpaceOnceMerged() = homeTest { h ->
