@@ -6,7 +6,6 @@ import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.live.encodedBody
-import ai.opencode.server.live.pathComponent
 import ai.opencode.server.live.perform
 import ai.opencode.server.live.request
 import ai.opencode.server.retry.RequestIdempotency
@@ -61,6 +60,7 @@ data class SpacesClient(
 @Serializable
 internal data class SpacePage(
     val type: String,
+    val space: String,
     val revision: Long,
     val entries: List<Entry>,
     val deleted: List<String> = emptyList(),
@@ -70,18 +70,23 @@ internal data class SpacePage(
     @Serializable data class Entry(val key: String, val value: String)
 }
 
+@Serializable private data class SyncItem(val space: String, val cursor: String? = null)
+@Serializable private data class SyncBody(val spaces: List<SyncItem>)
+@Serializable private data class SyncResult(val pages: List<SpacePage>)
 @Serializable private data class SpaceSubscription(val space: String, val cursor: String)
 @Serializable private data class SubscribeBody(val stream: String, val spaces: List<SpaceSubscription>)
-@Serializable private data class WriteResult(val revision: Long, val cursor: String)
+@Serializable private data class WriteResult(val spaces: List<Head>) {
+    @Serializable data class Head(val space: String, val revision: Long, val cursor: String)
+}
 
-/** What one write request may carry (`Space.MaxChanges`, `Space.MaxValueBytes`). */
+/** What one request may carry (`Space.MaxChanges`, `Space.MaxValueBytes`, `Space.MaxSpaces`). */
 internal const val MAX_WRITE_CHANGES = 1024
 internal const val MAX_WRITE_VALUE_BYTES = 1024 * 1024
+internal const val MAX_SPACES = 100
 
 /** Each server's spaces as this process last synced them, with their cursors and pending writes. */
 internal class SpaceStore {
     private class Space(val name: String) {
-        val syncing = Mutex()
         val writing = Mutex()
         /** Null until the first sync. */
         val entries = MutableStateFlow<Map<String, String>?>(null)
@@ -101,7 +106,14 @@ internal class SpaceStore {
         }
     }
 
+    /** One space's progress through a sync: the cursor to ask with, and the keys its snapshot has held so far. */
+    private class Syncing(val space: Space, var cursor: String?) {
+        var snapshot: MutableSet<String>? = null
+        var done = false
+    }
+
     private val lock = Any()
+    private val syncing = Mutex()
     private val spaces = HashMap<Pair<String, String>, Space>()
     /** Each server's newest event stream. */
     private val streams = HashMap<String, String>()
@@ -120,7 +132,7 @@ internal class SpaceStore {
             streams[server.persistenceID]
         }
         try {
-            if (stream != null) follow(server, space, stream, again = false)
+            if (stream != null) follow(server, listOf(space), stream, again = false)
             emitAll(space.entries.filterNotNull())
         } finally {
             synchronized(lock) { space.followers -= 1 }
@@ -135,11 +147,11 @@ internal class SpaceStore {
                     streams[serverID] = event.stream
                     spaces.filter { it.key.first == serverID && it.value.followers > 0 }.values.toList()
                 }
-                for (space in followed) follow(server, space, event.stream, again = false)
+                follow(server, followed, event.stream, again = false)
             }
             is OpenCodeServerEvent.SpaceResync -> {
                 val (space, stream) = synchronized(lock) { spaces[serverID to event.space] to streams[serverID] }
-                if (space != null && stream != null && space.followers > 0) follow(server, space, stream, again = true)
+                if (space != null && stream != null && space.followers > 0) follow(server, listOf(space), stream, again = true)
             }
             is OpenCodeServerEvent.SpaceUpdated -> apply(serverID, event.space, event.revision) { it + (event.key to event.value) }
             is OpenCodeServerEvent.SpaceDeleted -> apply(serverID, event.space, event.revision) { it - event.key }
@@ -160,53 +172,90 @@ internal class SpaceStore {
     }
 
     /**
-     * Sends the pending writes, syncs from the saved cursor until no page is left, then subscribes
-     * [stream] from where it ended.
+     * Sends the spaces' pending writes, syncs them from their saved cursors until no page is left,
+     * then subscribes [stream] from where they ended.
      */
-    private suspend fun follow(server: OpenCodeServer, space: Space, stream: String, again: Boolean) = space.syncing.withLock {
+    private suspend fun follow(server: OpenCodeServer, spaces: List<Space>, stream: String, again: Boolean) = syncing.withLock {
         val serverID = server.persistenceID
-        if (synchronized(lock) { unavailable[serverID] == stream || (!again && space.stream == stream) }) return@withLock
-        space.writing.withLock { send(server, space) }
-        val (cursor, base) = synchronized(lock) { space.cursor to space.confirmed }
+        val due = synchronized(lock) {
+            if (unavailable[serverID] == stream) emptyList() else spaces.filter { again || it.stream != stream }
+        }
+        if (due.isEmpty()) return@withLock
+        for (space in due) space.writing.withLock { send(server, space) }
         try {
-            var page = sync(server, space.name, cursor)
-            val working = LinkedHashMap(base ?: emptyMap())
-            while (true) {
-                if (page.type == "snapshot") working.clear()
-                for (key in page.deleted) working.remove(key)
-                for (entry in page.entries) working[entry.key] = entry.value
-                page = sync(server, space.name, page.next ?: break)
+            sync(server, due)
+            synchronized(lock) { unavailable.remove(serverID) }
+            for (batch in due.chunked(MAX_SPACES)) {
+                val cursors = synchronized(lock) { batch.mapNotNull { space -> space.cursor?.let { SpaceSubscription(space.name, it) } } }
+                if (cursors.isEmpty()) continue
+                perform(
+                    "/api/experimental/space/subscribe",
+                    method = "POST",
+                    body = encodedBody(SubscribeBody(stream, cursors)),
+                    idempotency = RequestIdempotency.Idempotent,
+                    server = server,
+                )
+                synchronized(lock) { for (space in batch) space.stream = stream }
             }
-            synchronized(lock) {
-                unavailable.remove(serverID)
-                space.cursor = page.cursor
-                space.revision = page.revision
-                space.confirmed = working
-                space.show()
-            }
-            perform(
-                "/api/experimental/space/subscribe",
-                method = "POST",
-                body = encodedBody(SubscribeBody(stream, listOf(SpaceSubscription(space.name, page.cursor)))),
-                idempotency = RequestIdempotency.Idempotent,
-                server = server,
-            )
-            synchronized(lock) { space.stream = stream }
         } catch (error: OpenCodeClientError) {
             if (error.statusCode == 404) {
                 synchronized(lock) { unavailable[serverID] = stream }
-                AppLog.network.notice { "Space ${space.name}: the server has no spaces" }
+                AppLog.network.notice { "Spaces: the server has none" }
             } else {
-                AppLog.network.notice { "Space ${space.name}: sync failed: ${error.logSummary}" }
+                AppLog.network.notice { "Spaces: sync failed: ${error.logSummary}" }
             }
         }
     }
 
-    private suspend fun sync(server: OpenCodeServer, name: String, cursor: String?): SpacePage = request(
-        "/api/experimental/space/${pathComponent(name)}",
-        query = cursor?.let { listOf("cursor" to it) } ?: emptyList(),
-        server = server,
-    )
+    /**
+     * Asks for a page of every space still syncing, applying each as it arrives: a delta at once, a
+     * snapshot's entries at once and the keys it didn't hold after its last page. A space the row
+     * budget didn't reach asks again with the same cursor.
+     */
+    private suspend fun sync(server: OpenCodeServer, spaces: List<Space>) {
+        val states = synchronized(lock) { spaces.map { Syncing(it, it.cursor) } }
+        while (true) {
+            val asking = states.filter { !it.done }.take(MAX_SPACES)
+            if (asking.isEmpty()) return
+            val pages = request<SyncResult>(
+                "/api/experimental/space/sync",
+                method = "POST",
+                body = encodedBody(SyncBody(asking.map { SyncItem(it.space.name, it.cursor) })),
+                idempotency = RequestIdempotency.Idempotent,
+                server = server,
+            ).pages
+            if (pages.isEmpty()) throw OpenCodeClientError("The space sync returned no page.")
+            for (page in pages) {
+                val state = asking.firstOrNull { it.space.name == page.space } ?: continue
+                synchronized(lock) { applyPage(state, page) }
+            }
+        }
+    }
+
+    private fun applyPage(state: Syncing, page: SpacePage) {
+        val space = state.space
+        val working = LinkedHashMap(space.confirmed ?: emptyMap())
+        val snapshot = state.snapshot
+        if (snapshot != null && page.type != "snapshot") {
+            working.keys.retainAll(snapshot)
+            state.snapshot = null
+        }
+        if (page.type == "snapshot") {
+            val held = state.snapshot ?: mutableSetOf<String>().also { state.snapshot = it }
+            for (entry in page.entries) held += entry.key
+        }
+        for (key in page.deleted) working.remove(key)
+        for (entry in page.entries) working[entry.key] = entry.value
+        if (page.next == null) state.snapshot?.let { held -> working.keys.retainAll(held) }
+        space.confirmed = working
+        space.revision = page.revision
+        // Mid-snapshot, a reconnect starts again from the last cursor a whole snapshot or delta reached.
+        if (page.type != "snapshot" || page.next == null) space.cursor = page.cursor
+        val next = page.next
+        if (next == null) state.done = true else state.cursor = next
+        // A space shown for the first time waits for its whole first snapshot.
+        if (space.entries.value != null || page.type != "snapshot" || next == null) space.show()
+    }
 
     private suspend fun write(server: OpenCodeServer, name: String, changes: Map<String, String?>) {
         if (changes.isEmpty() || synchronized(lock) { server.persistenceID in unavailable }) return
@@ -227,9 +276,9 @@ internal class SpaceStore {
         for (batch in batches(pending)) {
             val result = try {
                 request<WriteResult>(
-                    "/api/experimental/space/${pathComponent(space.name)}/write",
+                    "/api/experimental/space/write",
                     method = "POST",
-                    body = writeBody(batch),
+                    body = writeBody(space.name, batch),
                     // Setting the same values again leaves the same result.
                     idempotency = RequestIdempotency.Idempotent,
                     server = server,
@@ -238,7 +287,7 @@ internal class SpaceStore {
                 AppLog.network.notice { "Space ${space.name}: write kept for later: ${error.logSummary}" }
                 return false
             }
-            synchronized(lock) { confirm(space, batch, result) }
+            synchronized(lock) { confirm(space, batch, result.spaces.firstOrNull { it.space == space.name }) }
         }
         return true
     }
@@ -247,10 +296,10 @@ internal class SpaceStore {
      * The server has [batch]: it's no longer pending (unless a later write replaced it). When the
      * write followed straight on from what this space last saw, its cursor becomes the saved one.
      */
-    private fun confirm(space: Space, batch: List<Pair<String, String?>>, result: WriteResult) {
+    private fun confirm(space: Space, batch: List<Pair<String, String?>>, head: WriteResult.Head?) {
         for ((key, value) in batch) if (space.pending.containsKey(key) && space.pending[key] == value) space.pending.remove(key)
         val confirmed = space.confirmed
-        if (confirmed != null && space.revision >= 0) {
+        if (head != null && confirmed != null && space.revision >= 0) {
             // Only a change that changes a key takes a revision: deleting an unset key doesn't.
             var known: Map<String, String> = confirmed
             var changed = 0
@@ -258,20 +307,21 @@ internal class SpaceStore {
                 if (value != null || key in known) changed += 1
                 known = applying(known, listOf(key to value))
             }
-            if (result.revision == space.revision + changed) {
+            if (head.revision == space.revision + changed) {
                 space.confirmed = known
-                space.revision = result.revision
-                space.cursor = result.cursor
-            } else if (result.revision <= space.revision) {
-                space.cursor = result.cursor
+                space.revision = head.revision
+                space.cursor = head.cursor
+            } else if (head.revision <= space.revision) {
+                space.cursor = head.cursor
             }
         }
         space.show()
     }
 
-    private fun writeBody(batch: List<Pair<String, String?>>): ByteArray = buildJsonObject {
+    private fun writeBody(name: String, batch: List<Pair<String, String?>>): ByteArray = buildJsonObject {
         putJsonArray("changes") {
             for ((key, value) in batch) addJsonObject {
+                put("space", name)
                 put("key", key)
                 put("value", value)
             }
