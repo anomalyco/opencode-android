@@ -54,9 +54,8 @@ object BackgroundWorkMotion {
     const val panelMaxWidth: Float = 360f
     const val panelMaxHeight: Float = 320f
 
-    /** The panel arrives from this scale, about its corner on the capsule, and this far below its place (dp). */
-    const val presentScale: Float = 0.97f
-    const val presentRise: Float = 6f
+    /** The panel grows from this scale out of the capsule's top leading corner, and shrinks back into it. */
+    const val presentScale: Float = 0.85f
 
     /** Let go, the panel closes when pulled down past [dragCloses] (dp), or past [throwFrom] (dp) and thrown down faster than [throwCloses] (dp/s). */
     const val dragCloses: Float = 56f

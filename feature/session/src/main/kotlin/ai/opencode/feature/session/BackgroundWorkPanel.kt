@@ -781,8 +781,8 @@ fun BackgroundWorkPresentation(
                         val scale = lerp(BackgroundWorkMotion.presentScale, 1f, t)
                         scaleX = scale
                         scaleY = scale
-                        translationY += (1f - t) * BackgroundWorkMotion.presentRise * density.density
-                        transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, 1f)
+                        val capsuleTop = size.height + BackgroundWorkMotion.panelGap * density.density - dragOffset
+                        transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, capsuleTop / size.height)
                     }
                 }
                 .shadow(OpenCodeSurfaces.popoverShadow, shape, clip = false)
