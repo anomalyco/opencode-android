@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d小时%2$s分</string>
     <string name="session_background_work_stop_script_label">停止脚本</string>
     <string name="session_background_work_stop_subagent_label">停止子代理</string>
+    <string name="session_background_work_stop_shell_label">停止 Shell</string>
     <string name="session_background_work_stop_script_failed">无法停止脚本</string>
     <string name="session_background_work_stop_subagent_failed">无法停止子代理</string>
 

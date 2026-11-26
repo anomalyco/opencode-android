@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$dt %2$sm</string>
     <string name="session_background_work_stop_script_label">Steðga skripti</string>
     <string name="session_background_work_stop_subagent_label">Steðga undirumboði</string>
+    <string name="session_background_work_stop_shell_label">Steðga shelli</string>
     <string name="session_background_work_stop_script_failed">Kundi ikki steðga skripti</string>
     <string name="session_background_work_stop_subagent_failed">Kundi ikki steðga undirumboði</string>
 

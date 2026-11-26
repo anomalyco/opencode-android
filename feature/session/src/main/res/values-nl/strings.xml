@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$du %2$sm</string>
     <string name="session_background_work_stop_script_label">Script stoppen</string>
     <string name="session_background_work_stop_subagent_label">Subagent stoppen</string>
+    <string name="session_background_work_stop_shell_label">Shell stoppen</string>
     <string name="session_background_work_stop_script_failed">Script stoppen mislukt</string>
     <string name="session_background_work_stop_subagent_failed">Subagent stoppen mislukt</string>
 

@@ -218,6 +218,7 @@
     <string name="session_background_work_elapsed_hours">%1$dh %2$sm</string>
     <string name="session_background_work_stop_script_label">Oprește scriptul</string>
     <string name="session_background_work_stop_subagent_label">Oprește subagentul</string>
+    <string name="session_background_work_stop_shell_label">Oprește shell-ul</string>
     <string name="session_background_work_stop_script_failed">Nu s-a putut opri scriptul</string>
     <string name="session_background_work_stop_subagent_failed">Nu s-a putut opri subagentul</string>
 

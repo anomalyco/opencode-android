@@ -934,6 +934,34 @@ class BackgroundWorkTests {
         assertEquals(3, calls.value.size)
     }
 
+    @Test fun stoppingAShellFromItsRowEndsIt() = sessionTest { h ->
+        val calls = LockIsolated(listOf<String>())
+        val shell = OpenCodeShell(id = "sh_1", command = "bun dev", sessionID = session.id, isListed = true)
+        val store = h.store(h.state().copy(shells = listOf(shell))) {
+            this[OpenCodeClient] = this[OpenCodeClient].copy(stopShell = { _, directory, id -> calls.append("$directory:$id") })
+        }
+        store.send(Action.BackgroundShellStopTapped("sh_1")) { it.copy(stoppingIDs = setOf("sh_1")) }
+        store.receive(Action.BackgroundShellStopFinished("sh_1", failed = false)) {
+            it.copy(stoppingIDs = emptySet(), shells = emptyList(), endedShellIDs = setOf("sh_1"))
+        }
+        assertEquals(listOf("${session.directory}:sh_1"), calls.value)
+    }
+
+    @Test fun aFailedShellStopSaysSo() = sessionTest { h ->
+        val shell = OpenCodeShell(id = "sh_1", command = "bun dev", sessionID = session.id, isListed = true)
+        val store = h.store(h.state().copy(shells = listOf(shell))) {
+            this[UuidClient] = UuidClient.incrementing()
+            this[OpenCodeClient] = this[OpenCodeClient].copy(stopShell = { _, _, _ -> throw OpenCodeClientError("Down") })
+        }
+        store.send(Action.BackgroundShellStopTapped("sh_1")) { it.copy(stoppingIDs = setOf("sh_1")) }
+        store.receive(Action.BackgroundShellStopFinished("sh_1", failed = true)) {
+            it.copy(
+                stoppingIDs = emptySet(),
+                items = it.items + OpenCodeTranscriptItem.Info(id = "info-00000000-0000-0000-0000-000000000000", text = "Couldn’t stop shell"),
+            )
+        }
+    }
+
     @Test fun aFailedScriptStopSaysSo() = sessionTest { h ->
         val state = h.state().copy(jobs = mapOf("cm_1" to job("cm_1", OpenCodeJob.Kind.CodeMode)))
         val store = h.store(state) {

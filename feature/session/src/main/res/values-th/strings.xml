@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ชม. %2$s นาที</string>
     <string name="session_background_work_stop_script_label">หยุดสคริปต์</string>
     <string name="session_background_work_stop_subagent_label">หยุดตัวแทนย่อย</string>
+    <string name="session_background_work_stop_shell_label">หยุดเชลล์</string>
     <string name="session_background_work_stop_script_failed">หยุดสคริปต์ไม่ได้</string>
     <string name="session_background_work_stop_subagent_failed">หยุดตัวแทนย่อยไม่ได้</string>
 

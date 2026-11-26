@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Zatrzymaj skrypt</string>
     <string name="session_background_work_stop_subagent_label">Zatrzymaj podagenta</string>
+    <string name="session_background_work_stop_shell_label">Zatrzymaj terminal</string>
     <string name="session_background_work_stop_script_failed">Nie udało się zatrzymać skryptu</string>
     <string name="session_background_work_stop_subagent_failed">Nie udało się zatrzymać podagenta</string>
 

@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d시간 %2$s분</string>
     <string name="session_background_work_stop_script_label">스크립트 중지</string>
     <string name="session_background_work_stop_subagent_label">하위 에이전트 중지</string>
+    <string name="session_background_work_stop_shell_label">셸 중지</string>
     <string name="session_background_work_stop_script_failed">스크립트를 중지할 수 없어요</string>
     <string name="session_background_work_stop_subagent_failed">하위 에이전트를 중지할 수 없어요</string>
 

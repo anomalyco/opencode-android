@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ម៉ោង %2$s នាទី</string>
     <string name="session_background_work_stop_script_label">ឈប់ស្គ្រីប</string>
     <string name="session_background_work_stop_subagent_label">ឈប់ភ្នាក់ងាររង</string>
+    <string name="session_background_work_stop_shell_label">ឈប់សែល</string>
     <string name="session_background_work_stop_script_failed">មិនអាចឈប់ស្គ្រីបបាន</string>
     <string name="session_background_work_stop_subagent_failed">មិនអាចឈប់ភ្នាក់ងាររងបាន</string>
 

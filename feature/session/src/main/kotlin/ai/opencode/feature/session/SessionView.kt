@@ -283,6 +283,7 @@ fun SessionView(
             scripts = work.scripts,
             onStopScript = { store.send(Action.BackgroundScriptStopTapped(it)) },
             onStopSubagent = { store.send(Action.BackgroundSubagentStopTapped(it)) },
+            onStopShell = { store.send(Action.BackgroundShellStopTapped(it)) },
             stoppingIDs = work.stoppingIDs,
             waitingSessionIDs = work.waitingSessionIDs,
             probe = work.probe,

@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Zastaviť skript</string>
     <string name="session_background_work_stop_subagent_label">Zastaviť subagenta</string>
+    <string name="session_background_work_stop_shell_label">Zastaviť shell</string>
     <string name="session_background_work_stop_script_failed">Nepodarilo sa zastaviť skript</string>
     <string name="session_background_work_stop_subagent_failed">Nepodarilo sa zastaviť subagenta</string>
 

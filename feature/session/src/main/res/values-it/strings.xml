@@ -218,6 +218,7 @@
     <string name="session_background_work_elapsed_hours">%1$dh %2$sm</string>
     <string name="session_background_work_stop_script_label">Interrompi script</string>
     <string name="session_background_work_stop_subagent_label">Interrompi subagente</string>
+    <string name="session_background_work_stop_shell_label">Interrompi shell</string>
     <string name="session_background_work_stop_script_failed">Impossibile interrompere lo script</string>
     <string name="session_background_work_stop_subagent_failed">Impossibile interrompere il subagente</string>
 

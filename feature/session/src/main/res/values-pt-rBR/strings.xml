@@ -218,6 +218,7 @@
     <string name="session_background_work_elapsed_hours">%1$dh %2$sm</string>
     <string name="session_background_work_stop_script_label">Parar script</string>
     <string name="session_background_work_stop_subagent_label">Parar subagente</string>
+    <string name="session_background_work_stop_shell_label">Parar shell</string>
     <string name="session_background_work_stop_script_failed">Não foi possível parar o script</string>
     <string name="session_background_work_stop_subagent_failed">Não foi possível parar o subagente</string>
 

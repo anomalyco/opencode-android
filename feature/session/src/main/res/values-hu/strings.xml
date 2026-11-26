@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ó %2$s p</string>
     <string name="session_background_work_stop_script_label">Szkript leállítása</string>
     <string name="session_background_work_stop_subagent_label">Alügynök leállítása</string>
+    <string name="session_background_work_stop_shell_label">Shell leállítása</string>
     <string name="session_background_work_stop_script_failed">Nem sikerült leállítani a szkriptet</string>
     <string name="session_background_work_stop_subagent_failed">Nem sikerült leállítani az alügynököt</string>
 

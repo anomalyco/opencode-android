@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d val. %2$s min.</string>
     <string name="session_background_work_stop_script_label">Stabdyti scenarijų</string>
     <string name="session_background_work_stop_subagent_label">Stabdyti subagentą</string>
+    <string name="session_background_work_stop_shell_label">Stabdyti apvalkalą</string>
     <string name="session_background_work_stop_script_failed">Nepavyko sustabdyti scenarijaus</string>
     <string name="session_background_work_stop_subagent_failed">Nepavyko sustabdyti subagento</string>
 

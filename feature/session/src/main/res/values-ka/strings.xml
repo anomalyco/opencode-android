@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d სთ %2$s წთ</string>
     <string name="session_background_work_stop_script_label">სკრიპტის შეჩერება</string>
     <string name="session_background_work_stop_subagent_label">ქვეაგენტის შეჩერება</string>
+    <string name="session_background_work_stop_shell_label">გარსის შეჩერება</string>
     <string name="session_background_work_stop_script_failed">სკრიპტის შეჩერება ვერ მოხერხდა</string>
     <string name="session_background_work_stop_subagent_failed">ქვეაგენტის შეჩერება ვერ მოხერხდა</string>
 

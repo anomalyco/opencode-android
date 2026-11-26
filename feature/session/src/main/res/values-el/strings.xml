@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ώ. %2$s λ.</string>
     <string name="session_background_work_stop_script_label">Διακοπή σεναρίου</string>
     <string name="session_background_work_stop_subagent_label">Διακοπή υποπράκτορα</string>
+    <string name="session_background_work_stop_shell_label">Διακοπή κελύφους</string>
     <string name="session_background_work_stop_script_failed">Αδυναμία διακοπής σεναρίου</string>
     <string name="session_background_work_stop_subagent_failed">Αδυναμία διακοπής υποπράκτορα</string>
 

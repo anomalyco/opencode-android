@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d sa %2$s dk</string>
     <string name="session_background_work_stop_script_label">Betiği durdur</string>
     <string name="session_background_work_stop_subagent_label">Alt temsilciyi durdur</string>
+    <string name="session_background_work_stop_shell_label">Kabuğu durdur</string>
     <string name="session_background_work_stop_script_failed">Betik durdurulamadı</string>
     <string name="session_background_work_stop_subagent_failed">Alt temsilci durdurulamadı</string>
 

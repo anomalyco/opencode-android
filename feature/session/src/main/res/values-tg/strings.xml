@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d соат %2$s дақ</string>
     <string name="session_background_work_stop_script_label">Скриптро қатъ кунед</string>
     <string name="session_background_work_stop_subagent_label">Зер-агентро қатъ кунед</string>
+    <string name="session_background_work_stop_shell_label">Shell-ро қатъ кунед</string>
     <string name="session_background_work_stop_script_failed">Скрипт қатъ нашуд</string>
     <string name="session_background_work_stop_subagent_failed">Зер-агент қатъ нашуд</string>
 

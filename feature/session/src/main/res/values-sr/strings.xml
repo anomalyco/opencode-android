@@ -218,6 +218,7 @@
     <string name="session_background_work_elapsed_hours">%1$dч %2$sм</string>
     <string name="session_background_work_stop_script_label">Заустави скрипту</string>
     <string name="session_background_work_stop_subagent_label">Заустави субагента</string>
+    <string name="session_background_work_stop_shell_label">Заустави shell</string>
     <string name="session_background_work_stop_script_failed">Заустављање скрипте није успело</string>
     <string name="session_background_work_stop_subagent_failed">Заустављање субагента није успело</string>
 

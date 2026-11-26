@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$dч %2$sм</string>
     <string name="session_background_work_stop_script_label">Запри ја скриптата</string>
     <string name="session_background_work_stop_subagent_label">Запри го субагенсот</string>
+    <string name="session_background_work_stop_shell_label">Запри ја школката</string>
     <string name="session_background_work_stop_script_failed">Не успеа запирањето на скриптата</string>
     <string name="session_background_work_stop_subagent_failed">Не успеа запирањето на субагенсот</string>
 

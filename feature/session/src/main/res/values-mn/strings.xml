@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d цаг %2$s мин</string>
     <string name="session_background_work_stop_script_label">Скриптийг зогсоох</string>
     <string name="session_background_work_stop_subagent_label">Дэд агентыг зогсоох</string>
+    <string name="session_background_work_stop_shell_label">Shell-ийг зогсоох</string>
     <string name="session_background_work_stop_script_failed">Скриптийг зогсоож чадсангүй</string>
     <string name="session_background_work_stop_subagent_failed">Дэд агентыг зогсоож чадсангүй</string>
 

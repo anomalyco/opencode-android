@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ሰዓ %2$s ደቂ</string>
     <string name="session_background_work_stop_script_label">ስክሪፕቱን አቁም</string>
     <string name="session_background_work_stop_subagent_label">ንዑስ ወኪሉን አቁም</string>
+    <string name="session_background_work_stop_shell_label">ሼሉን አቁም</string>
     <string name="session_background_work_stop_script_failed">ስክሪፕቱን ማቆም አልተቻለም</string>
     <string name="session_background_work_stop_subagent_failed">ንዑስ ወኪሉን ማቆም አልተቻለም</string>
 

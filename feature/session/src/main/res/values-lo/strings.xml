@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ຊມ. %2$s ນທ.</string>
     <string name="session_background_work_stop_script_label">ຢຸດສະຄຣິບ</string>
     <string name="session_background_work_stop_subagent_label">ຢຸດຕົວແທນຍ່ອຍ</string>
+    <string name="session_background_work_stop_shell_label">ຢຸດ shell</string>
     <string name="session_background_work_stop_script_failed">ຢຸດສະຄຣິບບໍ່ໄດ້</string>
     <string name="session_background_work_stop_subagent_failed">ຢຸດຕົວແທນຍ່ອຍບໍ່ໄດ້</string>
 

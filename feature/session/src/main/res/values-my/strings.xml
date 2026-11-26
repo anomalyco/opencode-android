@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d နာရီ %2$s မိနစ်</string>
     <string name="session_background_work_stop_script_label">script ကို ရပ်ပါ</string>
     <string name="session_background_work_stop_subagent_label">အေးဂျင့်ခွဲကို ရပ်ပါ</string>
+    <string name="session_background_work_stop_shell_label">shell ကို ရပ်ပါ</string>
     <string name="session_background_work_stop_script_failed">script ကို မရပ်နိုင်ပါ</string>
     <string name="session_background_work_stop_subagent_failed">အေးဂျင့်ခွဲကို မရပ်နိုင်ပါ</string>
 

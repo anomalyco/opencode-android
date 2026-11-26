@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">පැය %1$d මිනි %2$s</string>
     <string name="session_background_work_stop_script_label">ස්ක්‍රිප්ටය නවත්වන්න</string>
     <string name="session_background_work_stop_subagent_label">උප නියෝජිතයා නවත්වන්න</string>
+    <string name="session_background_work_stop_shell_label">ෂෙල් නවත්වන්න</string>
     <string name="session_background_work_stop_script_failed">ස්ක්‍රිප්ටය නැවැත්වීමට නොහැකි විය</string>
     <string name="session_background_work_stop_subagent_failed">උප නියෝජිතයා නැවැත්වීමට නොහැකි විය</string>
 

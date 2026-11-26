@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Zastavit skript</string>
     <string name="session_background_work_stop_subagent_label">Zastavit subagenta</string>
+    <string name="session_background_work_stop_shell_label">Zastavit shell</string>
     <string name="session_background_work_stop_script_failed">Nepodařilo se zastavit skript</string>
     <string name="session_background_work_stop_subagent_failed">Nepodařilo se zastavit subagenta</string>
 

@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d t %2$s min</string>
     <string name="session_background_work_stop_script_label">Pysäytä skripti</string>
     <string name="session_background_work_stop_subagent_label">Pysäytä aliagentti</string>
+    <string name="session_background_work_stop_shell_label">Pysäytä komentotulkki</string>
     <string name="session_background_work_stop_script_failed">Skriptin pysäyttäminen epäonnistui</string>
     <string name="session_background_work_stop_subagent_failed">Aliagentin pysäyttäminen epäonnistui</string>
 

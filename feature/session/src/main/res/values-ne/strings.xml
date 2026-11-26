@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d घ. %2$s मि.</string>
     <string name="session_background_work_stop_script_label">स्क्रिप्ट रोक्नुहोस्</string>
     <string name="session_background_work_stop_subagent_label">उप-एजेन्ट रोक्नुहोस्</string>
+    <string name="session_background_work_stop_shell_label">शेल रोक्नुहोस्</string>
     <string name="session_background_work_stop_script_failed">स्क्रिप्ट रोक्न सकिएन</string>
     <string name="session_background_work_stop_subagent_failed">उप-एजेन्ट रोक्न सकिएन</string>
 

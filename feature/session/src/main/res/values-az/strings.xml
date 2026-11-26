@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d saat %2$s dəq</string>
     <string name="session_background_work_stop_script_label">Skripti dayandır</string>
     <string name="session_background_work_stop_subagent_label">Alt-agenti dayandır</string>
+    <string name="session_background_work_stop_shell_label">Shell-i dayandır</string>
     <string name="session_background_work_stop_script_failed">Skripti dayandırmaq mümkün olmadı</string>
     <string name="session_background_work_stop_subagent_failed">Alt-agenti dayandırmaq mümkün olmadı</string>
 

@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d t %2$s min</string>
     <string name="session_background_work_stop_script_label">Peata skript</string>
     <string name="session_background_work_stop_subagent_label">Peata alamagent</string>
+    <string name="session_background_work_stop_shell_label">Peata shell</string>
     <string name="session_background_work_stop_script_failed">Skripti peatamine ebaõnnestus</string>
     <string name="session_background_work_stop_subagent_failed">Alamagendi peatamine ebaõnnestus</string>
 

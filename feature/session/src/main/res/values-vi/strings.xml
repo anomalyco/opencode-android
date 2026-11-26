@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$dg %2$sp</string>
     <string name="session_background_work_stop_script_label">Dừng script</string>
     <string name="session_background_work_stop_subagent_label">Dừng chất phụ</string>
+    <string name="session_background_work_stop_shell_label">Dừng shell</string>
     <string name="session_background_work_stop_script_failed">Không thể dừng script</string>
     <string name="session_background_work_stop_subagent_failed">Không thể dừng chất phụ</string>
 

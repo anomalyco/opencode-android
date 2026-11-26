@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Ustavi skripto</string>
     <string name="session_background_work_stop_subagent_label">Ustavi subagenta</string>
+    <string name="session_background_work_stop_shell_label">Ustavi lupino</string>
     <string name="session_background_work_stop_script_failed">Skripte ni bilo mogoče ustaviti</string>
     <string name="session_background_work_stop_subagent_failed">Subagenta ni bilo mogoče ustaviti</string>
 

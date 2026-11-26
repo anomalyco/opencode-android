@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$dj %2$sm</string>
     <string name="session_background_work_stop_script_label">Henti skrip</string>
     <string name="session_background_work_stop_subagent_label">Henti subagen</string>
+    <string name="session_background_work_stop_shell_label">Henti shell</string>
     <string name="session_background_work_stop_script_failed">Tidak dapat menghentikan skrip</string>
     <string name="session_background_work_stop_subagent_failed">Tidak dapat menghentikan subagen</string>
 

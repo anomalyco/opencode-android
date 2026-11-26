@@ -704,6 +704,9 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         data class BackgroundScriptStopTapped(val jobID: String) : Action
         /** Interrupts the subagent if it runs and cancels every running job in its tree. */
         data class BackgroundSubagentStopTapped(val sessionID: String) : Action
+        /** Stops a background shell from its row. */
+        data class BackgroundShellStopTapped(val shellID: String) : Action
+        data class BackgroundShellStopFinished(val shellID: String, val failed: Boolean) : Action
         /** A row's Stop settled; [id] is the script's job or the subagent's session. */
         data class BackgroundStopFinished(val id: String, val isSubagent: Boolean, val failed: Boolean) : Action
         data class ShellOutput(val action: PresentationAction<ShellOutputFeature.Action>) : Action

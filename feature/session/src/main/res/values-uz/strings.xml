@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d soat %2$s daq</string>
     <string name="session_background_work_stop_script_label">Skriptni to‘xtatish</string>
     <string name="session_background_work_stop_subagent_label">Subagentni to‘xtatish</string>
+    <string name="session_background_work_stop_shell_label">Shellni to‘xtatish</string>
     <string name="session_background_work_stop_script_failed">Skriptni to‘xtatib bo‘lmadi</string>
     <string name="session_background_work_stop_subagent_failed">Subagentni to‘xtatib bo‘lmadi</string>
 

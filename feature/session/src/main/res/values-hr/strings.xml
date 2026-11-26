@@ -218,6 +218,7 @@
     <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Zaustavi skriptu</string>
     <string name="session_background_work_stop_subagent_label">Zaustavi subagenta</string>
+    <string name="session_background_work_stop_shell_label">Zaustavi ljusku</string>
     <string name="session_background_work_stop_script_failed">Nije moguće zaustaviti skriptu</string>
     <string name="session_background_work_stop_subagent_failed">Nije moguće zaustaviti subagenta</string>
 

@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$dh %2$sm</string>
     <string name="session_background_work_stop_script_label">Ndalo skriptin</string>
     <string name="session_background_work_stop_subagent_label">Ndalo nënagjentin</string>
+    <string name="session_background_work_stop_shell_label">Ndalo guaskën</string>
     <string name="session_background_work_stop_script_failed">Skripti nuk u ndal dot</string>
     <string name="session_background_work_stop_subagent_failed">Nënagjenti nuk u ndal dot</string>
 

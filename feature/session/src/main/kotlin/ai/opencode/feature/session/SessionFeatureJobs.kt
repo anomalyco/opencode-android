@@ -9,6 +9,7 @@ import ai.opencode.core.strings.localized
 import ai.opencode.feature.session.SessionFeature.Action
 import ai.opencode.feature.session.SessionFeature.CancelID
 import ai.opencode.feature.session.SessionFeature.State
+import ai.opencode.feature.session.sheet.clientError
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.model.OpenCodeJSONValue
 import ai.opencode.server.model.OpenCodeJob
@@ -105,6 +106,38 @@ internal fun SessionFeature.reduceJobs(state: State, action: Action): Reduced<St
                     send(Action.BackgroundStopFinished(sessionID, isSubagent = true, failed = stopFailed(calls)))
                 },
             )
+        }
+    }
+
+    is Action.BackgroundShellStopTapped -> {
+        val shellID = action.shellID
+        val directory = state.session?.directory
+        if (directory == null || shellID in state.stoppingIDs) {
+            Reduced(state)
+        } else {
+            haptics.play(Haptic.tap)
+            val server = state.server
+            val client = openCodeClient
+            Reduced(
+                state.copy(stoppingIDs = state.stoppingIDs + shellID),
+                Effect.run<Action> { send ->
+                    val error = clientError { client.stopShell(server, directory, shellID) }
+                    if (error != null) AppLog.network.notice { "Couldn’t stop background work: ${error.logSummary}" }
+                    // 404: the shell already ended.
+                    send(Action.BackgroundShellStopFinished(shellID, failed = error != null && error.statusCode != 404))
+                },
+            )
+        }
+    }
+
+    is Action.BackgroundShellStopFinished -> {
+        val shellID = action.shellID
+        val next = state.copy(stoppingIDs = state.stoppingIDs - shellID)
+        if (action.failed) {
+            haptics.play(Haptic.error)
+            Reduced(appendInfo(next, localized(R.string.session_shell_stop_failed)))
+        } else {
+            Reduced(next.copy(shells = next.shells.filter { it.id != shellID }, endedShellIDs = next.endedShellIDs + shellID))
         }
     }
 

@@ -448,6 +448,7 @@ fun BackgroundWorkPresentation(
     scripts: List<BackgroundScript> = emptyList(),
     onStopScript: (String) -> Unit = {},
     onStopSubagent: (String) -> Unit = {},
+    onStopShell: (String) -> Unit = {},
     stoppingIDs: Set<String> = emptySet(),
     isCovered: Boolean = false,
     isPaused: Boolean = false,
@@ -750,6 +751,7 @@ fun BackgroundWorkPresentation(
                 stoppingIDs = stoppingIDs,
                 onStopScript = { id -> if (canAct) onStopScript(id) },
                 onStopSubagent = { id -> if (canAct) onStopSubagent(id) },
+                onStopShell = { id -> if (canAct) onStopShell(id) },
                 scrollState = scrollState,
                 isLive = rowsOpen && !isPaused,
                 // Open, a row arriving or leaving moves the panel's top.
@@ -810,6 +812,7 @@ fun BackgroundWorkPanel(
     scripts: List<BackgroundScript> = emptyList(),
     onStopScript: (String) -> Unit = {},
     onStopSubagent: (String) -> Unit = {},
+    onStopShell: (String) -> Unit = {},
     stoppingIDs: Set<String> = emptySet(),
     waitingSessionIDs: Set<String> = emptySet(),
     scrollState: ScrollState = rememberScrollState(),
@@ -817,8 +820,6 @@ fun BackgroundWorkPanel(
     animatesSize: Boolean = false,
     focusRequest: AccessibilityFocusRequest? = null,
 ) {
-    // A shell has no Stop: beside a script it keeps a Stop's room, so the times stay in one column.
-    val reservesStop = scripts.isNotEmpty()
     val firstID = agents.firstOrNull()?.id ?: scripts.firstOrNull()?.id ?: shells.firstOrNull()?.id
     val resize = if (animatesSize) Modifier.animateContentSize(BackgroundWorkMotion.resize(), Alignment.BottomStart) else Modifier
     Column(modifier.then(resize).width(IntrinsicSize.Max).verticalScroll(scrollState).padding(BackgroundWorkRowMetrics.listPadding.dp)) {
@@ -872,9 +873,11 @@ fun BackgroundWorkPanel(
                     isCommand = true,
                     startedAt = shell.startedAt,
                     isLive = isLive,
-                    reservesStop = reservesStop,
                     accessibilityHint = stringResource(R.string.session_background_work_show_shell_label),
                     onTap = { onOpenShell(shell.id) },
+                    stopLabel = stringResource(R.string.session_background_work_stop_shell_label),
+                    onStop = { onStopShell(shell.id) },
+                    isStopping = shell.id in stoppingIDs,
                     modifier = Modifier
                         .testTag("background-shell-${shell.id}")
                         .then(if (shell.id == firstID) Modifier.accessibilityFocusRequest(focusRequest) else Modifier),
@@ -893,7 +896,6 @@ private object BackgroundWorkRowMetrics {
     val leading: Float get() = BackgroundWorkTunables.glyphLeading - listPadding
     const val trailing = 6f
     const val stopSlot = 44f
-    const val timeTrailing = 2f
 }
 
 @Composable
@@ -905,7 +907,6 @@ private fun BackgroundWorkRow(
     isCommand: Boolean = false,
     startedAt: Instant? = null,
     isLive: Boolean = true,
-    reservesStop: Boolean = false,
     stopLabel: String? = null,
     onStop: (() -> Unit)? = null,
     isStopping: Boolean = false,
@@ -958,10 +959,6 @@ private fun BackgroundWorkRow(
                 // The row's semantics carry Open's custom Stop action; a script row's own Stop stays its button.
                 modifier = if (onTap != null) Modifier.clearAndSetSemantics { } else Modifier,
             )
-        } else if (reservesStop) {
-            Spacer(Modifier.width(BackgroundWorkRowMetrics.stopSlot.dp))
-        } else {
-            Spacer(Modifier.width(BackgroundWorkRowMetrics.timeTrailing.dp))
         }
     }
 }

@@ -226,6 +226,7 @@
     <string name="session_background_work_elapsed_hours">%1$d год %2$s хв</string>
     <string name="session_background_work_stop_script_label">Зупинити скрипт</string>
     <string name="session_background_work_stop_subagent_label">Зупинити субагента</string>
+    <string name="session_background_work_stop_shell_label">Зупинити команду</string>
     <string name="session_background_work_stop_script_failed">Не вдалося зупинити скрипт</string>
     <string name="session_background_work_stop_subagent_failed">Не вдалося зупинити субагента</string>
 

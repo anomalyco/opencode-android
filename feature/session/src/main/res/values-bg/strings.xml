@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ч %2$s мин</string>
     <string name="session_background_work_stop_script_label">Спиране на скрипта</string>
     <string name="session_background_work_stop_subagent_label">Спиране на субагента</string>
+    <string name="session_background_work_stop_shell_label">Спиране на черупката</string>
     <string name="session_background_work_stop_script_failed">Неуспешно спиране на скрипта</string>
     <string name="session_background_work_stop_subagent_failed">Неуспешно спиране на субагента</string>
 

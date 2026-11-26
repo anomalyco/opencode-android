@@ -210,6 +210,7 @@
     <string name="session_background_work_elapsed_hours">%1$d ঘণ্টা %2$s মি.</string>
     <string name="session_background_work_stop_script_label">স্ক্রিপ্ট থামান</string>
     <string name="session_background_work_stop_subagent_label">সাবএজেন্ট থামান</string>
+    <string name="session_background_work_stop_shell_label">শেল বন্ধ করুন</string>
     <string name="session_background_work_stop_script_failed">স্ক্রিপ্ট থামানো যায়নি</string>
     <string name="session_background_work_stop_subagent_failed">সাবএজেন্ট থামানো যায়নি</string>
 

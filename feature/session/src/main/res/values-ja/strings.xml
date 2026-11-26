@@ -202,6 +202,7 @@
     <string name="session_background_work_elapsed_hours">%1$d時間%2$s分</string>
     <string name="session_background_work_stop_script_label">スクリプトを停止</string>
     <string name="session_background_work_stop_subagent_label">サブエージェントを停止</string>
+    <string name="session_background_work_stop_shell_label">シェルを停止</string>
     <string name="session_background_work_stop_script_failed">スクリプトを停止できませんでした</string>
     <string name="session_background_work_stop_subagent_failed">サブエージェントを停止できませんでした</string>
 
