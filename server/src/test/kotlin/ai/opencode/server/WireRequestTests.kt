@@ -6,6 +6,7 @@ import ai.opencode.core.dependencies.withDependenciesSuspending
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.server.live.LOCATION_BOOT_TIMEOUT
 import ai.opencode.server.live.WAIT_POLL_TIMEOUT
+import ai.opencode.server.live.awaitResponse
 import ai.opencode.server.model.FileReadTarget
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodeNotifyPluginStatus
@@ -35,6 +36,7 @@ import java.time.Instant
 import java.util.Base64
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.time.Duration.Companion.seconds
+import okhttp3.ResponseBody.Companion.asResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 
 /** Exact request bodies and failure handling for the live HTTP transport, captured below OkHttp. */
@@ -593,5 +595,23 @@ class WireRequestTests {
         for (address in allowed) assertTrue("should allow $address", !refused(address))
         for (address in blocked) assertTrue("should block $address", refused(address))
         assertTrue("HTTPS is never refused", !refused("https://8.8.8.8:9"))
+    }
+
+    @Test
+    fun aResponseTooLargeToHoldIsAnError() = runBlocking {
+        fun call(body: okhttp3.ResponseBody): okhttp3.Call {
+            val client = okhttp3.OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    okhttp3.Response.Builder().request(chain.request()).protocol(okhttp3.Protocol.HTTP_1_1)
+                        .code(200).message("").body(body).build()
+                }
+                .build()
+            return client.newCall(okhttp3.Request.Builder().url("http://127.0.0.1:9/api/session/ses_1/message").build())
+        }
+        val tooLarge = "The server’s response is too large for this device."
+        assertEquals(tooLarge, expectClientError { call(ByteArray(17).toResponseBody()).awaitResponse(maxBytes = 16) }.message)
+        val streamed = okio.Buffer().write(ByteArray(17)).asResponseBody(contentLength = -1)
+        assertEquals(tooLarge, expectClientError { call(streamed).awaitResponse(maxBytes = 16) }.message)
+        assertEquals(16, call(ByteArray(16).toResponseBody()).awaitResponse(maxBytes = 16).body.size)
     }
 }

@@ -115,6 +115,7 @@
     <string name="server_error_http_status">አገልጋዩ HTTP %1$d መልሷል።</string>
     <string name="server_error_event_stream_http">የክስተት ፍሰቱ HTTP %1$d መልሷል።</string>
     <string name="server_error_event_stream_oversized_frame">የክስተት ፍሰቱ ከመጠን በላይ ትልቅ የውሂብ ክፍል ልኳል።</string>
+    <string name="server_error_response_too_large">የአገልጋዩ ምላሽ ለዚህ መሣሪያ በጣም ትልቅ ነው።</string>
     <string name="server_error_event_stream_ended">የክስተት ፍሰቱ ተጠናቋል።</string>
     <string name="server_error_event_stream_server_failure">የክስተት ፍሰቱ የአገልጋይ ብልሽት እንዳለ አሳውቋል።</string>
     <string name="server_tool_failed">መሳሪያው አልተሳካም</string>

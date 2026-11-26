@@ -121,6 +121,7 @@
     <string name="server_error_http_status">Le serveur a renvoyé le code HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Le flux d’événements a renvoyé le code HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Le flux d’événements a envoyé une trame trop volumineuse.</string>
+    <string name="server_error_response_too_large">La réponse du serveur est trop volumineuse pour cet appareil.</string>
     <string name="server_error_event_stream_ended">Le flux d’événements s’est terminé.</string>
     <string name="server_error_event_stream_server_failure">Le flux d’événements a signalé une défaillance du serveur.</string>
     <string name="server_tool_failed">Échec de l’outil</string>

@@ -115,6 +115,7 @@
     <string name="server_error_http_status">A kiszolgáló HTTP %1$d kódot adott vissza.</string>
     <string name="server_error_event_stream_http">Az eseményfolyam HTTP %1$d kódot adott vissza.</string>
     <string name="server_error_event_stream_oversized_frame">Az eseményfolyam túl nagy keretet küldött.</string>
+    <string name="server_error_response_too_large">A kiszolgáló válasza túl nagy ehhez az eszközhöz.</string>
     <string name="server_error_event_stream_ended">Az eseményfolyam véget ért.</string>
     <string name="server_error_event_stream_server_failure">Az eseményfolyam kiszolgálóhibát jelzett.</string>
     <string name="server_tool_failed">Az eszköz futtatása sikertelen</string>

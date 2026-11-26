@@ -109,6 +109,7 @@
     <string name="server_error_http_status">Pelayan mengembalikan HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Strim peristiwa mengembalikan HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Strim peristiwa menghantar bingkai yang terlalu besar.</string>
+    <string name="server_error_response_too_large">Respons pelayan terlalu besar untuk peranti ini.</string>
     <string name="server_error_event_stream_ended">Strim peristiwa telah tamat.</string>
     <string name="server_error_event_stream_server_failure">Strim peristiwa melaporkan kegagalan pelayan.</string>
     <string name="server_tool_failed">Alat gagal</string>

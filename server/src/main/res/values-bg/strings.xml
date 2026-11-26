@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Сървърът върна HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Потокът от събития върна HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Потокът от събития изпрати твърде голям кадър.</string>
+    <string name="server_error_response_too_large">Отговорът от сървъра е твърде голям за това устройство.</string>
     <string name="server_error_event_stream_ended">Потокът от събития приключи.</string>
     <string name="server_error_event_stream_server_failure">Потокът от събития съобщи за грешка в сървъра.</string>
     <string name="server_tool_failed">Неуспешно изпълнение на инструмента</string>

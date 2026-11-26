@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Սերվերը վերադարձրեց HTTP %1$d։</string>
     <string name="server_error_event_stream_http">Իրադարձությունների հոսքը վերադարձրեց HTTP %1$d։</string>
     <string name="server_error_event_stream_oversized_frame">Իրադարձությունների հոսքն ուղարկեց չափազանց մեծ տվյալների բլոկ։</string>
+    <string name="server_error_response_too_large">Սերվերի պատասխանը չափազանց մեծ է այս սարքի համար։</string>
     <string name="server_error_event_stream_ended">Իրադարձությունների հոսքն ավարտվեց։</string>
     <string name="server_error_event_stream_server_failure">Իրադարձությունների հոսքը հաղորդեց սերվերի խափանման մասին։</string>
     <string name="server_tool_failed">Գործիքի աշխատանքը ձախողվեց</string>

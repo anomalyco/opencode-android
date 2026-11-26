@@ -109,6 +109,7 @@
     <string name="server_error_http_status">Máy chủ trả về HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Luồng sự kiện trả về HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Luồng sự kiện đã gửi một khung dữ liệu quá lớn.</string>
+    <string name="server_error_response_too_large">Phản hồi của máy chủ quá lớn đối với thiết bị này.</string>
     <string name="server_error_event_stream_ended">Luồng sự kiện đã kết thúc.</string>
     <string name="server_error_event_stream_server_failure">Luồng sự kiện đã báo lỗi máy chủ.</string>
     <string name="server_tool_failed">Công cụ thất bại</string>

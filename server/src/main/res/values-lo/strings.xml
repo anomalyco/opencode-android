@@ -109,6 +109,7 @@
     <string name="server_error_http_status">ເຊີບເວີສົ່ງຄືນ HTTP %1$d.</string>
     <string name="server_error_event_stream_http">ສາຍຂໍ້ມູນເຫດການສົ່ງຄືນ HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">ສາຍຂໍ້ມູນເຫດການສົ່ງເຟຣມທີ່ໃຫຍ່ເກີນໄປ.</string>
+    <string name="server_error_response_too_large">ການຕອບສະໜອງຂອງເຊີບເວີໃຫຍ່ເກີນໄປສຳລັບອຸປະກອນນີ້.</string>
     <string name="server_error_event_stream_ended">ສາຍຂໍ້ມູນເຫດການສິ້ນສຸດແລ້ວ.</string>
     <string name="server_error_event_stream_server_failure">ສາຍຂໍ້ມູນເຫດການລາຍງານວ່າເຊີບເວີລົ້ມເຫລວ.</string>
     <string name="server_tool_failed">ເຄື່ອງມືລົ້ມເຫລວ</string>

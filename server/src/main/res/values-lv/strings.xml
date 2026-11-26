@@ -121,6 +121,7 @@
     <string name="server_error_http_status">Serveris atgrieza HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Notikumu straume atgrieza HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Notikumu straume nosūtīja pārāk lielu kadru.</string>
+    <string name="server_error_response_too_large">Servera atbilde ir pārāk liela šai ierīcei.</string>
     <string name="server_error_event_stream_ended">Notikumu straume beidzās.</string>
     <string name="server_error_event_stream_server_failure">Notikumu straume ziņoja par servera kļūmi.</string>
     <string name="server_tool_failed">Instrumenta darbība neizdevās</string>

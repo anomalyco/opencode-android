@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Server tagastas HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Sündmuste voog tagastas HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Sündmuste voog saatis liiga suure kaadri.</string>
+    <string name="server_error_response_too_large">Serveri vastus on selle seadme jaoks liiga suur.</string>
     <string name="server_error_event_stream_ended">Sündmuste voog lõppes.</string>
     <string name="server_error_event_stream_server_failure">Sündmuste voog teatas serveri tõrkest.</string>
     <string name="server_tool_failed">Tööriist lõpetas veaga</string>

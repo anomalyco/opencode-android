@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Serveren returnerte HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Hendelsesstrømmen returnerte HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Hendelsesstrømmen sendte en for stor dataramme.</string>
+    <string name="server_error_response_too_large">Svaret fra serveren er for stort for denne enheten.</string>
     <string name="server_error_event_stream_ended">Hendelsesstrømmen ble avsluttet.</string>
     <string name="server_error_event_stream_server_failure">Hendelsesstrømmen rapporterte en serverfeil.</string>
     <string name="server_tool_failed">Verktøyet mislyktes</string>

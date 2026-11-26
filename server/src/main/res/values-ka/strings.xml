@@ -115,6 +115,7 @@
     <string name="server_error_http_status">სერვერმა დააბრუნა HTTP %1$d.</string>
     <string name="server_error_event_stream_http">მოვლენების ნაკადმა დააბრუნა HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">მოვლენების ნაკადმა ზედმეტად დიდი კადრი გამოგზავნა.</string>
+    <string name="server_error_response_too_large">სერვერის პასუხი ამ მოწყობილობისთვის ზედმეტად დიდია.</string>
     <string name="server_error_event_stream_ended">მოვლენების ნაკადი დასრულდა.</string>
     <string name="server_error_event_stream_server_failure">მოვლენების ნაკადმა სერვერის შეცდომა შეატყობინა.</string>
     <string name="server_tool_failed">ხელსაწყოს მუშაობა ვერ შედგა</string>

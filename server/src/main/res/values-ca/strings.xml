@@ -121,6 +121,7 @@
     <string name="server_error_http_status">El servidor ha retornat HTTP %1$d.</string>
     <string name="server_error_event_stream_http">El flux d\'esdeveniments ha retornat HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">El flux d\'esdeveniments ha enviat una trama massa gran.</string>
+    <string name="server_error_response_too_large">La resposta del servidor és massa gran per a aquest dispositiu.</string>
     <string name="server_error_event_stream_ended">El flux d\'esdeveniments ha finalitzat.</string>
     <string name="server_error_event_stream_server_failure">El flux d\'esdeveniments ha informat d\'un error del servidor.</string>
     <string name="server_tool_failed">L\'eina ha fallat</string>

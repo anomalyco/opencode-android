@@ -121,6 +121,7 @@
     <string name="server_error_http_status">Сервер је вратио HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Ток догађаја је вратио HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Ток догађаја је послао превелик оквир.</string>
+    <string name="server_error_response_too_large">Одговор сервера је превелик за овај уређај.</string>
     <string name="server_error_event_stream_ended">Ток догађаја је завршен.</string>
     <string name="server_error_event_stream_server_failure">Ток догађаја је пријавио грешку сервера.</string>
     <string name="server_tool_failed">Алат није успео</string>

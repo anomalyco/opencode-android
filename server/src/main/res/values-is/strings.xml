@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Netþjónninn skilaði HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Atburðastraumurinn skilaði HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Atburðastraumurinn sendi of stóran ramma.</string>
+    <string name="server_error_response_too_large">Svar netþjónsins er of stórt fyrir þetta tæki.</string>
     <string name="server_error_event_stream_ended">Atburðastraumnum lauk.</string>
     <string name="server_error_event_stream_server_failure">Atburðastraumurinn tilkynnti bilun í netþjóni.</string>
     <string name="server_tool_failed">Verkfæri mistókst</string>

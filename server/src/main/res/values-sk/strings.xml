@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Server vrátil HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Prúd udalostí vrátil HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Prúd udalostí odoslal príliš veľký rámec.</string>
+    <string name="server_error_response_too_large">Odpoveď servera je pre toto zariadenie príliš veľká.</string>
     <string name="server_error_event_stream_ended">Prúd udalostí sa skončil.</string>
     <string name="server_error_event_stream_server_failure">Prúd udalostí nahlásil zlyhanie servera.</string>
     <string name="server_tool_failed">Nástroj zlyhal</string>

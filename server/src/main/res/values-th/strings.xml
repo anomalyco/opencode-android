@@ -109,6 +109,7 @@
     <string name="server_error_http_status">เซิร์ฟเวอร์ส่งรหัส HTTP %1$d กลับมา</string>
     <string name="server_error_event_stream_http">สตรีมเหตุการณ์ส่งรหัส HTTP %1$d กลับมา</string>
     <string name="server_error_event_stream_oversized_frame">สตรีมเหตุการณ์ส่งเฟรมที่ใหญ่เกินไป</string>
+    <string name="server_error_response_too_large">การตอบกลับจากเซิร์ฟเวอร์ใหญ่เกินไปสำหรับอุปกรณ์นี้</string>
     <string name="server_error_event_stream_ended">สตรีมเหตุการณ์สิ้นสุดแล้ว</string>
     <string name="server_error_event_stream_server_failure">สตรีมเหตุการณ์รายงานว่าเซิร์ฟเวอร์ล้มเหลว</string>
     <string name="server_tool_failed">เครื่องมือทำงานล้มเหลว</string>

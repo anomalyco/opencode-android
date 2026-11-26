@@ -115,6 +115,7 @@
     <string name="server_error_http_status">The server returned HTTP %1$d.</string>
     <string name="server_error_event_stream_http">The event stream returned HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">The event stream sent an oversized frame.</string>
+    <string name="server_error_response_too_large">The server’s response is too large for this device.</string>
     <string name="server_error_event_stream_ended">The event stream ended.</string>
     <string name="server_error_event_stream_server_failure">The event stream reported a server failure.</string>
     <string name="server_tool_failed">Tool failed</string>

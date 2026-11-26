@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Servern returnerade HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Händelseströmmen returnerade HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Händelseströmmen skickade en för stor ram.</string>
+    <string name="server_error_response_too_large">Serverns svar är för stort för den här enheten.</string>
     <string name="server_error_event_stream_ended">Händelseströmmen avslutades.</string>
     <string name="server_error_event_stream_server_failure">Händelseströmmen rapporterade ett serverfel.</string>
     <string name="server_tool_failed">Verktyget misslyckades</string>

@@ -109,6 +109,7 @@
     <string name="server_error_http_status">ម៉ាស៊ីនមេបានឆ្លើយតប HTTP %1$d។</string>
     <string name="server_error_event_stream_http">ស្ទ្រីមព្រឹត្តិការណ៍បានឆ្លើយតប HTTP %1$d។</string>
     <string name="server_error_event_stream_oversized_frame">ស្ទ្រីមព្រឹត្តិការណ៍បានផ្ញើស៊ុមទិន្នន័យធំពេក។</string>
+    <string name="server_error_response_too_large">ការឆ្លើយតបរបស់ម៉ាស៊ីនមេធំពេកសម្រាប់ឧបករណ៍នេះ។</string>
     <string name="server_error_event_stream_ended">ស្ទ្រីមព្រឹត្តិការណ៍បានបញ្ចប់។</string>
     <string name="server_error_event_stream_server_failure">ស្ទ្រីមព្រឹត្តិការណ៍បានរាយការណ៍ពីការបរាជ័យម៉ាស៊ីនមេ។</string>
     <string name="server_tool_failed">ឧបករណ៍បានបរាជ័យ</string>

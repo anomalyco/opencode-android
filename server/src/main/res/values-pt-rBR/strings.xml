@@ -121,6 +121,7 @@
     <string name="server_error_http_status">O servidor retornou HTTP %1$d.</string>
     <string name="server_error_event_stream_http">O fluxo de eventos retornou HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">O fluxo de eventos enviou um quadro grande demais.</string>
+    <string name="server_error_response_too_large">A resposta do servidor é muito grande para este dispositivo.</string>
     <string name="server_error_event_stream_ended">O fluxo de eventos terminou.</string>
     <string name="server_error_event_stream_server_failure">O fluxo de eventos informou uma falha no servidor.</string>
     <string name="server_tool_failed">A ferramenta falhou</string>

@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Serveris grąžino HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Įvykių srautas grąžino HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Įvykių srautas atsiuntė per didelį kadrą.</string>
+    <string name="server_error_response_too_large">Serverio atsakymas per didelis šiam įrenginiui.</string>
     <string name="server_error_event_stream_ended">Įvykių srautas baigėsi.</string>
     <string name="server_error_event_stream_server_failure">Įvykių srautas pranešė apie serverio triktį.</string>
     <string name="server_tool_failed">Įrankio vykdymas nepavyko</string>

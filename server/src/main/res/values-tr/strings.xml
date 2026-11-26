@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Sunucu HTTP %1$d döndürdü.</string>
     <string name="server_error_event_stream_http">Olay akışı HTTP %1$d döndürdü.</string>
     <string name="server_error_event_stream_oversized_frame">Olay akışı çok büyük bir çerçeve gönderdi.</string>
+    <string name="server_error_response_too_large">Sunucu yanıtı bu cihaz için çok büyük.</string>
     <string name="server_error_event_stream_ended">Olay akışı sona erdi.</string>
     <string name="server_error_event_stream_server_failure">Olay akışı bir sunucu hatası bildirdi.</string>
     <string name="server_tool_failed">Araç başarısız oldu</string>

@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Serveri ktheu HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Rrjedha e ngjarjeve ktheu HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Rrjedha e ngjarjeve dërgoi një kornizë tepër të madhe.</string>
+    <string name="server_error_response_too_large">Përgjigjja e serverit është tepër e madhe për këtë pajisje.</string>
     <string name="server_error_event_stream_ended">Rrjedha e ngjarjeve përfundoi.</string>
     <string name="server_error_event_stream_server_failure">Rrjedha e ngjarjeve raportoi një dështim të serverit.</string>
     <string name="server_tool_failed">Mjeti dështoi</string>

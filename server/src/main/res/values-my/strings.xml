@@ -109,6 +109,7 @@
     <string name="server_error_http_status">ဆာဗာက HTTP %1$d ပြန်ပို့သည်။</string>
     <string name="server_error_event_stream_http">ဖြစ်ရပ်ဒေတာစီးကြောင်းက HTTP %1$d ပြန်ပို့သည်။</string>
     <string name="server_error_event_stream_oversized_frame">ဖြစ်ရပ်ဒေတာစီးကြောင်းက အရွယ်အစားကြီးလွန်းသော ဒေတာအပိုင်း ပို့လိုက်သည်။</string>
+    <string name="server_error_response_too_large">ဆာဗာ၏ တုံ့ပြန်မှုသည် ဤစက်အတွက် ကြီးလွန်းသည်။</string>
     <string name="server_error_event_stream_ended">ဖြစ်ရပ်ဒေတာစီးကြောင်း ပြီးဆုံးသွားသည်။</string>
     <string name="server_error_event_stream_server_failure">ဖြစ်ရပ်ဒေတာစီးကြောင်းက ဆာဗာချို့ယွင်းမှုကို သတင်းပို့သည်။</string>
     <string name="server_tool_failed">ကိရိယာ လုပ်ဆောင်မှု မအောင်မြင်ပါ</string>

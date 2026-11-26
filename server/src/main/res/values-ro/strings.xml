@@ -121,6 +121,7 @@
     <string name="server_error_http_status">Serverul a returnat HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Fluxul de evenimente a returnat HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Fluxul de evenimente a trimis un cadru prea mare.</string>
+    <string name="server_error_response_too_large">Răspunsul serverului este prea mare pentru acest dispozitiv.</string>
     <string name="server_error_event_stream_ended">Fluxul de evenimente s-a încheiat.</string>
     <string name="server_error_event_stream_server_failure">Fluxul de evenimente a raportat o eroare de server.</string>
     <string name="server_tool_failed">Instrumentul a eșuat</string>

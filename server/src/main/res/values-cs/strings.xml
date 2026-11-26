@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Server vrátil HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Proud událostí vrátil HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Proud událostí odeslal příliš velký rámec.</string>
+    <string name="server_error_response_too_large">Odpověď serveru je pro toto zařízení příliš velká.</string>
     <string name="server_error_event_stream_ended">Proud událostí byl ukončen.</string>
     <string name="server_error_event_stream_server_failure">Proud událostí nahlásil chybu serveru.</string>
     <string name="server_tool_failed">Nástroj selhal</string>

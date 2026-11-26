@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Ambætarin svaraði við HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Hendingastreymurin svaraði við HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Hendingastreymurin sendi ein ov stóran ramma.</string>
+    <string name="server_error_response_too_large">Svarið frá ambætaranum er ov stórt til hetta tólið.</string>
     <string name="server_error_event_stream_ended">Hendingastreymurin endaði.</string>
     <string name="server_error_event_stream_server_failure">Hendingastreymurin boðaði frá ambætarafeili.</string>
     <string name="server_tool_failed">Tólið mistókst</string>

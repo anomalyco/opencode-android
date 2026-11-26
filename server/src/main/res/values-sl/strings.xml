@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Strežnik je vrnil HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Tok dogodkov je vrnil HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Tok dogodkov je poslal prevelik okvir.</string>
+    <string name="server_error_response_too_large">Odziv strežnika je prevelik za to napravo.</string>
     <string name="server_error_event_stream_ended">Tok dogodkov se je končal.</string>
     <string name="server_error_event_stream_server_failure">Tok dogodkov je sporočil napako strežnika.</string>
     <string name="server_tool_failed">Izvajanje orodja ni uspelo</string>
