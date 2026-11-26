@@ -5,9 +5,8 @@
     <!-- Background work panel -->
     <string name="session_background_work_show_label">Zobrazit běžící subagenty, skripty a shelly</string>
     <string name="session_background_work_collapsed_description">Sbaleno</string>
-    <string name="session_background_work_subagents_title">Subagenty</string>
+    <string name="session_background_work_expanded_description">Rozbaleno</string>
     <string name="session_background_work_open_subagent_label">Otevřít relaci subagenta</string>
-    <string name="session_background_work_shells_title">Shelly</string>
     <string name="session_background_work_show_shell_label">Zobrazit výstup shellu</string>
     <!-- The session's images and videos, paged in the full-screen viewer -->
     <string name="session_visual_attached_image">Přiložený obrázek</string>
@@ -222,7 +221,9 @@
         <item quantity="other">%1$d skriptů</item>
     </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
-    <string name="session_background_work_scripts_title">Skripty</string>
+    <string name="session_background_work_elapsed_seconds">%1$d s</string>
+    <string name="session_background_work_elapsed_minutes">%1$d min %2$s s</string>
+    <string name="session_background_work_elapsed_hours">%1$d h %2$s min</string>
     <string name="session_background_work_stop_script_label">Zastavit skript</string>
     <string name="session_background_work_stop_subagent_label">Zastavit subagenta</string>
     <string name="session_background_work_stop_script_failed">Nepodařilo se zastavit skript</string>

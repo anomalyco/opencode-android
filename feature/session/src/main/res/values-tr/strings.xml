@@ -5,9 +5,8 @@
     <!-- Background work panel -->
     <string name="session_background_work_show_label">Çalışan alt temsilcileri, betikleri ve kabukları göster</string>
     <string name="session_background_work_collapsed_description">Daraltıldı</string>
-    <string name="session_background_work_subagents_title">Alt temsilciler</string>
+    <string name="session_background_work_expanded_description">Genişletildi</string>
     <string name="session_background_work_open_subagent_label">Alt temsilcinin oturumunu aç</string>
-    <string name="session_background_work_shells_title">Kabuklar</string>
     <string name="session_background_work_show_shell_label">Kabuğun çıktısını göster</string>
     <!-- The session's images and videos, paged in the full-screen viewer -->
     <string name="session_visual_attached_image">Ekli görsel</string>
@@ -206,7 +205,9 @@
         <item quantity="other">%1$d betik</item>
     </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
-    <string name="session_background_work_scripts_title">Betikler</string>
+    <string name="session_background_work_elapsed_seconds">%1$d sn</string>
+    <string name="session_background_work_elapsed_minutes">%1$d dk %2$s sn</string>
+    <string name="session_background_work_elapsed_hours">%1$d sa %2$s dk</string>
     <string name="session_background_work_stop_script_label">Betiği durdur</string>
     <string name="session_background_work_stop_subagent_label">Alt temsilciyi durdur</string>
     <string name="session_background_work_stop_script_failed">Betik durdurulamadı</string>

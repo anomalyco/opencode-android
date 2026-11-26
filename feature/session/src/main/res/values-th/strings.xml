@@ -5,9 +5,8 @@
     <!-- Background work panel -->
     <string name="session_background_work_show_label">แสดงตัวแทนย่อย สคริปต์ และเชลล์ที่กำลังทำงาน</string>
     <string name="session_background_work_collapsed_description">ย่อแล้ว</string>
-    <string name="session_background_work_subagents_title">ตัวแทนย่อย</string>
+    <string name="session_background_work_expanded_description">ขยายแล้ว</string>
     <string name="session_background_work_open_subagent_label">เปิดเซสชันของตัวแทนย่อย</string>
-    <string name="session_background_work_shells_title">เชลล์</string>
     <string name="session_background_work_show_shell_label">แสดงผลลัพธ์ของเชลล์</string>
     <!-- The session's images and videos, paged in the full-screen viewer -->
     <string name="session_visual_attached_image">รูปภาพที่แนบ</string>
@@ -198,7 +197,9 @@
         <item quantity="other">%1$d สคริปต์</item>
     </plurals>
     <string name="session_background_work_summary">%1$s · %2$s</string>
-    <string name="session_background_work_scripts_title">สคริปต์</string>
+    <string name="session_background_work_elapsed_seconds">%1$d วิ.</string>
+    <string name="session_background_work_elapsed_minutes">%1$d นาที %2$s วิ.</string>
+    <string name="session_background_work_elapsed_hours">%1$d ชม. %2$s นาที</string>
     <string name="session_background_work_stop_script_label">หยุดสคริปต์</string>
     <string name="session_background_work_stop_subagent_label">หยุดตัวแทนย่อย</string>
     <string name="session_background_work_stop_script_failed">หยุดสคริปต์ไม่ได้</string>

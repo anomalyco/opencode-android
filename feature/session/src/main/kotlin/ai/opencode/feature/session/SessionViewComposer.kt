@@ -1234,7 +1234,6 @@ private fun SessionComposerEnv.QueuedActivity(hasQueued: Boolean) {
             accessibilityLabel = pluralStringResource(R.plurals.session_queued_messages_description, count, count),
             modifier = Modifier
                 .passesDragsToTranscript(host.borrowedDrag)
-                .coveredByBackgroundWork()
                 .semantics { testTag = "queued-messages" },
         ) {
             OpenCodeIcon(SFSymbol.TextBubble, contentDescription = null, size = 17.dp, modifier = Modifier.offset(y = ComposerTunables.queuedGlyphDrop.dp))
