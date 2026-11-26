@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Udostępnij ekran agentom</string>
     <string name="core_experiment_inbox_sidebar_title">Skrzynka w panelu bocznym</string>
     <string name="core_experiment_session_live_activity_title">Aktualizacje sesji na żywo</string>
+    <string name="core_experiment_background_runs_title">Utrzymuj połączenie podczas pracy</string>
     <string name="core_experiment_sound_effects_title">Efekty dźwiękowe</string>
     <string name="core_experiment_server_address_links_title">Otwieraj linki według adresu serwera</string>
     <string name="core_experiment_in_app_browser_title">Przeglądarka w aplikacji</string>

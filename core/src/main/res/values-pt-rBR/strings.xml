@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Compartilhar tela com agentes</string>
     <string name="core_experiment_inbox_sidebar_title">Caixa de entrada na barra lateral</string>
     <string name="core_experiment_session_live_activity_title">Atualizações da sessão em tempo real</string>
+    <string name="core_experiment_background_runs_title">Continue conectado durante as execuções</string>
     <string name="core_experiment_sound_effects_title">Efeitos sonoros</string>
     <string name="core_experiment_server_address_links_title">Abrir links pelo endereço do servidor</string>
     <string name="core_experiment_in_app_browser_title">Navegador no app</string>

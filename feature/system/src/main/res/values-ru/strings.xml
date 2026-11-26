@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Запуски сессий</string>
     <string name="system_channel_session_updates">Обновления сессий</string>
     <string name="system_channel_shared_items">Отправленные материалы</string>
+    <string name="system_channel_background_connection">Фоновое подключение</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Поддерживаем подключение, пока ваши агенты работают</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Нажмите, чтобы продолжить в OpenCode</string>

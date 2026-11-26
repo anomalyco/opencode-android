@@ -60,6 +60,11 @@ enum class ExperimentalFeature(
     sessionLiveActivity(
         "session-live-activity", R.string.core_experiment_session_live_activity_title, ExperimentalGroup.drawer, "platter.filled.top.iphone",
     ),
+    backgroundRuns(
+        "background-runs", R.string.core_experiment_background_runs_title, ExperimentalGroup.drawer, "antenna.radiowaves.left.and.right",
+        // Keeps a foreground service running while agents work.
+        joinsAll = false,
+    ),
     soundEffects("sound-effects", R.string.core_experiment_sound_effects_title, ExperimentalGroup.drawer, "speaker.wave.2.fill"),
     serverAddressLinks("server-address-links", R.string.core_experiment_server_address_links_title, ExperimentalGroup.drawer, "link"),
 

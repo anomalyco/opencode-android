@@ -36,6 +36,7 @@ import ai.opencode.feature.system.NotificationDestination
 import ai.opencode.feature.system.SessionDirectory
 import ai.opencode.feature.system.SystemAction
 import ai.opencode.feature.system.SystemIntegrationClient
+import ai.opencode.feature.system.background.BackgroundRunServiceClient
 import ai.opencode.feature.system.clienttools.ClientToolsFeature
 import ai.opencode.feature.system.liveactivity.DictationLiveActivityClient
 import ai.opencode.feature.system.liveactivity.SessionLiveActivityClient
@@ -563,6 +564,12 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
             if (old == null || state.home?.id == old) return@onChange Reduced(state)
             val sessionLiveActivity = dependency(SessionLiveActivityClient)
             Reduced(state, Effect.run { sessionLiveActivity.update(null, null) })
+        }
+        // Stay Connected During Runs holds Home's stream, so it ends with that Home.
+        .onChange({ it.home?.id }) { old, _, state ->
+            if (old == null) return@onChange Reduced(state)
+            val backgroundRuns = dependency(BackgroundRunServiceClient)
+            Reduced(state, Effect.run { backgroundRuns.stop() })
         }
         // A call that goes with its Home never reaches a terminal phase, so its log is saved here.
         .onChange({ it.home?.sessionDetail?.voice?.callLogID }) { old, _, state ->

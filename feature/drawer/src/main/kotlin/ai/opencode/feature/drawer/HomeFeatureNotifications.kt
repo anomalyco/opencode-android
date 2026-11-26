@@ -190,6 +190,11 @@ data class InAppNoticeInput(
 internal fun HomeFeature.noticeInput(state: State): InAppNoticeInput {
     val mode = noticeMode(state)
     if (mode == InAppNoticeMode.off) return InAppNoticeInput.off
+    return liveNoticeInput(state, mode)
+}
+
+/** Home's live state for a notice reader in [mode], whatever In-App Notices' own setting. */
+internal fun liveNoticeInput(state: State, mode: InAppNoticeMode): InAppNoticeInput {
     val isLive = state.isConnected && state.hasConnected && state.snapshotLoaded &&
         state.noticeReadiness == State.NoticeReadiness.settled
     if (!isLive) {

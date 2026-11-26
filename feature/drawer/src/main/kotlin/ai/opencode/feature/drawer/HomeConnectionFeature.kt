@@ -11,6 +11,7 @@ import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
 import ai.opencode.core.store.cancellable
 import ai.opencode.feature.session.ServerFlowTunables
+import ai.opencode.feature.system.background.BackgroundRunServiceClient
 import ai.opencode.server.ConnectionRoute
 import ai.opencode.server.EventStreamOverflow
 import ai.opencode.server.LocalNetworkPermission
@@ -76,6 +77,10 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
         val offlineGraceElapsed: Boolean = false,
         /** Left for the background and not yet active again. */
         val isInBackground: Boolean = false,
+        /** Stay Connected During Runs holds the app, so the stream keeps running in the background. */
+        val isBackgroundHeld: Boolean = false,
+        /** Left with a held, live stream that hasn't dropped since: becoming active needs no resync. */
+        val stayedLiveInBackground: Boolean = false,
     ) {
         @Suppress("EnumEntryName")
         enum class ConnectionStatus { reconnecting, connected, disconnected }
@@ -97,7 +102,7 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
          */
         fun resyncsWhenActive(silence: Duration?): Boolean {
             if (credentialsRejected) return false
-            return isInBackground || !isEventStreamLive || (silence ?: Duration.ZERO) >= foregroundSilence
+            return (isInBackground && !stayedLiveInBackground) || !isEventStreamLive || (silence ?: Duration.ZERO) >= foregroundSilence
         }
 
         /** Heard from the server: the reconnect, and its timer, are over. */
@@ -124,12 +129,16 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
         /** [pathDown]: the phone has had no network path for `ServerFlowTunables.unsatisfiedOfflineGrace`. */
         data class OfflineGraceElapsed(val pathDown: Boolean) : Action
         data class ServerEvent(val event: OpenCodeServerEvent) : Action
+
+        /** Stay Connected During Runs' service started or ended. */
+        data class BackgroundHoldChanged(val held: Boolean) : Action
     }
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> = when (action) {
         Action.Task -> {
             var next = state.copy(isStreaming = true)
             val networkPath = dependency(NetworkPathClient)
+            val backgroundRuns = dependency(BackgroundRunServiceClient)
             var recovery: Effect<Action> = Effect.none()
             if (next.connectionStatus == State.ConnectionStatus.reconnecting) {
                 val begun = beginRecovery(next, visible = false)
@@ -143,6 +152,9 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
                     Effect.run<Action> { send ->
                         networkPath.reroutes().collect { send(Action.NetworkRerouted) }
                     }.cancellable(HomeFeature.CancelID.NetworkPath, cancelInFlight = true),
+                    Effect.run<Action> { send ->
+                        backgroundRuns.isRunning().collect { send(Action.BackgroundHoldChanged(it)) }
+                    }.cancellable(HomeFeature.CancelID.BackgroundHold, cancelInFlight = true),
                     if (next.isConnected) Effect.none() else lastKnownActivityExpiry(next),
                     recovery,
                 ),
@@ -151,28 +163,33 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
 
         Action.SceneEnteredBackground -> {
             // Nothing reads as Offline while nobody is looking; coming back starts the reconnect over.
-            val next = state.copy(isInBackground = true).settleRecovery()
+            val next = state.copy(
+                isInBackground = true,
+                stayedLiveInBackground = state.isBackgroundHeld && state.isEventStreamLive,
+            ).settleRecovery()
             val grace: Effect<Action> = Effect.cancel(HomeFeature.CancelID.ConnectionGrace)
-            if (!next.isEventStreamLive) {
-                Reduced(next, Effect.merge(grace, Effect.cancel(HomeFeature.CancelID.Events)))
+            if (next.isBackgroundHeld) {
+                Reduced(next, grace)
             } else {
-                // Hold the live stream briefly so a quick return has already caught up.
-                val backgroundTime = dependency(BackgroundTimeClient)
-                Reduced(
-                    next,
-                    Effect.merge(
-                        grace,
-                        Effect.run<Action> { backgroundTime.hold("Live updates", HomeFeature.liveUpdatesAfterLeaving) }
-                            .cancellable(HomeFeature.CancelID.LiveUpdatesAfterLeaving, cancelInFlight = true),
-                    ),
-                )
+                val left = leaveStream(next)
+                Reduced(left.state, Effect.merge(grace, left.effect))
+            }
+        }
+
+        is Action.BackgroundHoldChanged -> {
+            if (action.held == state.isBackgroundHeld) {
+                Reduced(state)
+            } else if (action.held || !state.isInBackground) {
+                Reduced(state.copy(isBackgroundHeld = action.held))
+            } else {
+                leaveStream(state.copy(isBackgroundHeld = false, stayedLiveInBackground = false))
             }
         }
 
         Action.SceneBecameActive -> {
             val silence = dependency(ServerLinkClient).streamSilence(state.server.persistenceID)
             val resyncs = state.resyncsWhenActive(silence)
-            val next = state.copy(isInBackground = false)
+            val next = state.copy(isInBackground = false, stayedLiveInBackground = false)
             if (!resyncs) Reduced(next) else resync(next, visible = false, reason = ServerLinkReset.Foreground)
         }
 
@@ -209,7 +226,7 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
         Action.ConnectionLost -> {
             val wasConnected = state.isConnected
             if (state.isEventStreamLive) PerfTimeline.streamLost()
-            var next = state.copy(isEventStreamLive = false)
+            var next = state.copy(isEventStreamLive = false, stayedLiveInBackground = false)
             if (wasConnected) {
                 val now = dependency(HomeSnapshotDate).now()
                 next = next.copy(
@@ -218,7 +235,9 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
                 )
             }
             val expiry = if (wasConnected) lastKnownActivityExpiry(next) else Effect.none()
-            if (next.isInBackground) {
+            if (next.isInBackground && next.isBackgroundHeld) {
+                Reduced(next, expiry)
+            } else if (next.isInBackground) {
                 // No reconnect loop in the background: becoming active starts one.
                 Reduced(
                     next,
@@ -258,7 +277,7 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
             AppLog.stream.info("Network route changed")
             if (!state.isStreaming || state.credentialsRejected) {
                 Reduced(state)
-            } else if (state.isInBackground) {
+            } else if (state.isInBackground && !state.isBackgroundHeld) {
                 // A stream on the old route is stranded; reconnecting waits for the app to be
                 // active again. What runs meanwhile (a call's requests) still gets fresh pools and
                 // races the addresses again.
@@ -271,7 +290,7 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
                     ),
                 )
             } else {
-                val next = state.copy(isEventStreamLive = false)
+                val next = state.copy(isEventStreamLive = false, stayedLiveInBackground = false)
                 startConnectionsOver(next.server, ServerLinkReset.Reroute)
                 Reduced(next, eventStream(next.server))
             }
@@ -308,6 +327,17 @@ class HomeConnectionFeature : Reducer<HomeConnectionFeature.State, HomeConnectio
 
         // Transport output consumed by Home's snapshot/session coordination.
         Action.SnapshotRetryRequested, is Action.ServerEvent -> Reduced(state)
+    }
+
+    private fun leaveStream(state: State): Reduced<State, Action> {
+        if (!state.isEventStreamLive) return Reduced(state, Effect.cancel(HomeFeature.CancelID.Events))
+        // Hold the live stream briefly so a quick return has already caught up.
+        val backgroundTime = dependency(BackgroundTimeClient)
+        return Reduced(
+            state,
+            Effect.run<Action> { backgroundTime.hold("Live updates", HomeFeature.liveUpdatesAfterLeaving) }
+                .cancellable(HomeFeature.CancelID.LiveUpdatesAfterLeaving, cancelInFlight = true),
+        )
     }
 
     /**

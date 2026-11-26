@@ -17,6 +17,7 @@
     <string name="core_experiment_share_screen_with_agents_title">Споделяне на екрана с агенти</string>
     <string name="core_experiment_inbox_sidebar_title">Странична лента за входящи</string>
     <string name="core_experiment_session_live_activity_title">Актуализации на сесията на живо</string>
+    <string name="core_experiment_background_runs_title">Останете свързани при изпълнение</string>
     <string name="core_experiment_sound_effects_title">Звукови ефекти</string>
     <string name="core_experiment_server_address_links_title">Отваряне на връзки по адрес на сървъра</string>
     <string name="core_experiment_in_app_browser_title">Вграден браузър</string>

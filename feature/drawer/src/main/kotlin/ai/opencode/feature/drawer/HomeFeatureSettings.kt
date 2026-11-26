@@ -154,6 +154,7 @@ internal fun HomeFeature.reduceSettingsScreen(state: State, action: Presentation
                 presented.action == HomeSettingsFeature.Action.WelcomeOpened ->
                     Reduced(state.copy(welcome = WelcomeFeature.State(isPreview = true)))
                 presented.action.switchesOffSessionLiveActivity -> stopSessionActivity(state)
+                presented.action.switchesBackgroundRuns -> syncBackgroundRuns(state)
                 else -> Reduced(state)
             }
         is SettingsFeature.Action.Delegate -> when (val delegate = presented.action) {

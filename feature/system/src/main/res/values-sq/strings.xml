@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Ekzekutimet e sesioneve</string>
     <string name="system_channel_session_updates">Përditësimet e sesioneve</string>
     <string name="system_channel_shared_items">Artikujt e ndarë</string>
+    <string name="system_channel_background_connection">Lidhja në sfond</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Lidhja mbahet aktive ndërsa agjentët e tu punojnë</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Prek për të vazhduar në OpenCode</string>

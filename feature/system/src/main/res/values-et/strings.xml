@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Seansside käivitused</string>
     <string name="system_channel_session_updates">Seansside uuendused</string>
     <string name="system_channel_shared_items">Jagatud üksused</string>
+    <string name="system_channel_background_connection">Taustaühendus</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Ühendus püsib, kuni sinu agendid töötavad</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Puuduta, et jätkata OpenCode\'is</string>

@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Session Runs</string>
     <string name="system_channel_session_updates">Session Updates</string>
     <string name="system_channel_shared_items">Shared Items</string>
+    <string name="system_channel_background_connection">Background Connection</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Staying connected while your agents work</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tap to continue in OpenCode</string>

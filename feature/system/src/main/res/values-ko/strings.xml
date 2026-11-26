@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">세션 실행</string>
     <string name="system_channel_session_updates">세션 업데이트</string>
     <string name="system_channel_shared_items">공유 항목</string>
+    <string name="system_channel_background_connection">백그라운드 연결</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">에이전트가 작업하는 동안 연결 유지 중</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">탭하여 OpenCode에서 계속하기</string>

@@ -82,6 +82,10 @@
     <string name="system_channel_session_runs">Setukoyrslur</string>
     <string name="system_channel_session_updates">Setudagføringar</string>
     <string name="system_channel_shared_items">Deildir lutir</string>
+    <string name="system_channel_background_connection">Bakgrundarsamband</string>
+
+    <!-- Stay Connected During Runs -->
+    <string name="system_background_runs_notification_text">Varðveitir sambandið, meðan tínir agentar arbeiða</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Trýst fyri at halda fram í OpenCode</string>
