@@ -179,8 +179,14 @@ or Developer Mode). Cleartext `http:` still needs the debug network security con
 ## Open
 
 
-- psychoscript-mobile `900dc23` gives no line or column for a thrown error (`Runtime`, `ExecutionFailure`), so
-  reports of `throw` in update/main carry none; syntax errors do.
+- Positions in reports (`AgentWidgetReportTests`, the same on psychoscript-mobile `ffb5098` and widget-mobile `d63f5c5`):
+  syntax errors and runtime errors the VM locates (a `ReferenceError`) report the template's line and column. None
+  for: a thrown value or `Error` (`throw` in a step or `main`); a denied fetch the program lets throw (phase `main`,
+  `Uncaught: {"kind":"CapabilityDenied",…}`; the runtime's rejection has no position; caught, nothing is reported);
+  a GPU batch the device rejects (phase `gpu`, wgpu's message: `onGpuCanvas(Stopped)` has no position, batches are
+  replayed after the program recorded them); the recording API's `TypeError`s and encoder errors at a host call (the
+  runtime locates them in the preludes, `widget.gpu` or `__host.post`, which aren't the template's lines). Giving
+  these the program's line needs the runtime to report the template frame's position.
 - Translations were made with `--model opencode/deepseek-v4-pro --review-model opencode/deepseek-v4-pro` (the
   default `opencode/gpt-6.1-sol` was unavailable); a maintainer may want a pass with the default models.
 - No `@Preview`s for widgets yet; `AgentWidgetTests` covers the readers, machine and tool call.

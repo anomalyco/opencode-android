@@ -1,5 +1,6 @@
 package ai.opencode.feature.transcript.widgets
 
+import ai.opencode.server.model.OpenCodeWidgetProgram
 import ai.opencode.widgets.widgetEncoder
 import com.anomalyco.psychoscript.LiveExit
 import com.anomalyco.psychoscript.LiveHandler
@@ -67,6 +68,13 @@ internal object AgentWidgetWorkloads {
         val o = json.parseToJsonElement(File(wire, "$name.json").readText()).jsonObject
         return Triple(o.getValue("source").jsonPrimitive.content, o.getValue("input").toString(), o["error"] as? JsonObject)
     }
+
+    /**
+     * A live widget template's program as the server gives it: the preludes, then [source], with the lines before it
+     * ([OpenCodeWidgetProgram.sourceLineOffset]) and the hosts it may fetch from.
+     */
+    fun liveProgram(source: String, httpsHosts: List<String>? = null) =
+        OpenCodeWidgetProgram(livePrelude + source, isLive = true, httpsHosts = httpsHosts, sourceLineOffset = livePrelude.count { it == '\n' })
 
     /** A step of [source] on the native host: its output's bytes. */
     fun nativeStep(source: String, input: String): ByteArray =
