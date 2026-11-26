@@ -23,6 +23,6 @@ secrets.properties
 .externalNativeBuild/
 .cxx/
 __pycache__/
-# The widget runner: psychoscript's checkout and its build (scripts/psychoscript.sh)
-/.psychoscript/
+# The widget runtime: opencode's widgets-rs checkout and its build (scripts/psychoscript.sh)
+/.widgets-rs/
 /vendor/psychoscript/

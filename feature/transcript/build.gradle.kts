@@ -9,7 +9,7 @@ android {
     }
 }
 
-// The widget runner's libraries, built by scripts/psychoscript.sh (gitignored).
+// The widget runtime's libraries, built by scripts/psychoscript.sh (gitignored).
 androidComponents {
     onVariants { variant ->
         variant.sources.jniLibs?.addStaticSourceDirectory(rootProject.file("vendor/psychoscript/jniLibs").path)
@@ -36,7 +36,8 @@ dependencies {
 tasks.withType<Test>().configureEach {
     val host = rootProject.file("vendor/psychoscript/host")
     systemProperty("jna.library.path", host.path)
-    systemProperty("opencode.widgetWorkloads", rootProject.file(".psychoscript/rust/crates/psychoscript-mobile/tests/fixtures/workloads").path)
-    systemProperty("opencode.widgetWireFixtures", rootProject.file(".psychoscript/rust/crates/widget-wire/tests/fixtures/wire").path)
+    systemProperty("opencode.widgetWorkloads", rootProject.file(".widgets-rs/packages/widgets-rs/crates/widget-mobile/tests/fixtures/workloads").path)
+    // The widget package: its preludes (src) and the conformance fixtures (test/fixtures).
+    systemProperty("opencode.widgetPackage", rootProject.file(".widgets-rs/packages/widget").path)
     inputs.property("widgetRuntime", providers.provider { host.resolve("REVISION").takeIf { it.isFile }?.readText() ?: "" })
 }

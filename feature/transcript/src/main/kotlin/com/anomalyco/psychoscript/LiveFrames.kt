@@ -2,7 +2,7 @@
 package com.anomalyco.psychoscript
 
 /**
- * A live widget run's frames without JSON (README: Live runs): [deliver] queues the message `run.deliver(json)` would
+ * A live run's frames without JSON (README: Live runs): [deliver] queues the message `run.deliver(json)` would
  * for `{"type":"frame","frame":{"t","dt","width","height","scale","pointer","dark","fullscreen","close"}}`, in the
  * same order with the run's other messages, through one JNI call with no string, no allocation and no UniFFI call.
  * It holds a reference to the run of its own, taken once: [close] it when the run ends.
@@ -39,7 +39,7 @@ class LiveFrames(run: LiveRun) : AutoCloseable {
 
     private companion object {
         init {
-            System.loadLibrary("psychoscript_mobile")
+            System.loadLibrary("widget_mobile")
         }
 
         @JvmStatic private external fun adopt(handle: Long): Long

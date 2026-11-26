@@ -6,7 +6,7 @@ import android.view.Surface
 /** GPU surfaces from Android views (README: GPU canvases). */
 object PsychoScriptGpu {
     init {
-        System.loadLibrary("psychoscript_mobile")
+        System.loadLibrary("widget_mobile")
     }
 
     /**

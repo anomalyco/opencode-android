@@ -12,7 +12,8 @@ are in the spec, [`specs/v2/widgets-store-policy.md`](https://github.com/sst/ope
 > restriction does not apply to code that runs in a virtual machine or an interpreter where either provides indirect
 > access to Android APIs (such as JavaScript in a webview or browser)." (checked 2026-11-23)
 
-Here the interpreter is `psychoscript-mobile`. Widget programs run as bytecode in its VM (`NativeAgentWidgetEngine`),
+Here the interpreter is PsychoScript's `psychoscript-mobile`, in opencode's `widget-mobile` library. Widget programs
+run as bytecode in its VM (`NativeAgentWidgetEngine`),
 and reach the app only through the spec's fixed host functions. They render as Compose views, checked 2D draw commands
 and GPU batches the runtime checks and replays. Its native library ships inside the APK (`scripts/psychoscript.sh`
 pins and vendors it); nothing is downloaded at run time.

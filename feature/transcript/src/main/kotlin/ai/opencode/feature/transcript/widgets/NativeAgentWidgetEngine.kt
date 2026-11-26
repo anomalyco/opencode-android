@@ -1,6 +1,8 @@
 package ai.opencode.feature.transcript.widgets
 
 import ai.opencode.core.log.AppLog
+import ai.opencode.widgets.ShaderCanvas
+import ai.opencode.widgets.widgetEncoder
 import com.anomalyco.psychoscript.LiveExit
 import com.anomalyco.psychoscript.LiveFrames
 import com.anomalyco.psychoscript.LiveHandler
@@ -14,12 +16,11 @@ import com.anomalyco.psychoscript.GpuErrorKind
 import com.anomalyco.psychoscript.GpuFailure
 import com.anomalyco.psychoscript.GpuSurface
 import com.anomalyco.psychoscript.PsychoScriptGpu
-import com.anomalyco.psychoscript.ShaderCanvas
 import com.anomalyco.psychoscript.ValueEncoder
 import android.view.Surface
 
 /**
- * The step ABI and GPU canvases on the Rust PsychoScript (`psychoscript-mobile`), when this
+ * The step ABI and GPU canvases on the Rust PsychoScript (opencode's `widget-mobile`), when this
  * build bundles it: a widget template's program compiles once with the step entry appended, steps run
  * under the contract's 250 ms (draws 8 ms; a timeout there is an overrun), every run (steps, draws, live)
  * within a 32 MB heap; GPU canvases (live `gpu: true` and `wgsl`) are replayed and presented by the
@@ -231,7 +232,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
     private const val HEAP_BYTES: ULong = 33_554_432uL
     private const val SLOW_FRAMES = "the shader took over 50 ms a frame, three frames in a row"
     /** Writes the binary format: steps hand their output to its global, live posts go through it. */
-    private val encoder: ValueEncoder by lazy { ValueEncoder.widget() }
+    private val encoder: ValueEncoder by lazy { widgetEncoder() }
     // Widget protocol 2 (widgets.md, Native hosts): the encoder builds the view tree from what the prelude emits.
     private const val ENTRY = "\nreturn __widget_native_step(__input())"
     private const val LIVE_ENTRY = "\nreturn await __widget_live(__input(), true)"

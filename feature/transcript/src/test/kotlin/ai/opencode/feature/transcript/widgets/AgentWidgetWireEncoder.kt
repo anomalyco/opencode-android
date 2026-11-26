@@ -11,7 +11,7 @@ import kotlinx.serialization.json.doubleOrNull
 import java.io.ByteArrayOutputStream
 
 /**
- * The runtime's widget encoder (psychoscript `widget-wire`, `encode.rs`) ported to JSON values, so tests can state a
+ * The runtime's widget encoder (opencode `widget-wire`, `encode.rs`) ported to JSON values, so tests can state a
  * step output or post as JSON and read it back through [AgentWidgetWire]. `binaryWorkloadsMatchTheRuntimesEncoder`
  * checks it against the runtime's own bytes. An output the encoder can't write throws [Invalid] (a program error).
  */

@@ -202,8 +202,9 @@ Add a new library only with a one-line justification here.
   AVFoundation QR metadata output does; pure Java, no Play services (ML Kit would need them).
 - `androidx.media3:media3-exoplayer` (voice): plays an agent's audio on a call (iOS `CallAudioPlayer` uses AVAudioPlayerNode on the call's engine); ExoPlayer streams and decodes what MediaPlayer can't, on the call's voice-communication attributes.
 - `androidx.profileinstaller:profileinstaller` (app): installs the packaged app and library Baseline Profiles for ART compilation, including sideloaded builds.
-- `net.java.dev.jna:jna` (transcript, aar): the agent widget runner's UniFFI Kotlin bindings
-  (`psychoscript-mobile`: the Rust PsychoScript and naga) call their native library through JNA;
+- `net.java.dev.jna:jna` (transcript, aar): the agent widget runtime's UniFFI Kotlin bindings
+  (opencode's `widget-mobile`: the Rust PsychoScript's `psychoscript-mobile`, naga and the widget parts) call their
+  native library through JNA;
   `scripts/psychoscript.sh` installs the library.
 - `androidx.fragment:fragment` (app, constraint only): raises the fragment 1.1.0 that Firebase Messaging's Play services libraries pull in, which Google Play's SDK index flags as outdated; the app has no Fragments of its own.
 

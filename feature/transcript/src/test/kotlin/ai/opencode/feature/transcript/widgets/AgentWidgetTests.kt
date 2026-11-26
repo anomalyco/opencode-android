@@ -237,7 +237,7 @@ class AgentWidgetTests {
 
     /**
      * Views go 100 levels deep (widgets.md, Keys and depth): a 100-level view crosses, is written and decodes; the
-     * 101-level fixtures (widget-wire `tests/fixtures/wire`) fail in phase view. Skipped without the desktop runtime.
+     * 101-level fixtures (`packages/widget/test/fixtures/wire`) fail in phase view. Skipped without the desktop runtime.
      */
     @Test
     fun viewsGoOneHundredLevelsDeep() {
@@ -270,7 +270,7 @@ class AgentWidgetTests {
     private fun drawOutput(text: String, list: AgentWidgetDrawList) = AgentWidgetWire.drawOutput(AgentWidgetWireEncoder.output(text), palette, list)
 
     /**
-     * psychoscript-mobile's committed workloads, run on its desktop build: the runtime's bytes (the native tree) decode
+     * widget-mobile's committed workloads, run on its desktop build: the runtime's bytes (the native tree) decode
      * to the values the tests' encoder writes from the same program's JSON output (every node and prop, step field, draw
      * stream, and the live posts of workloads that run the same twice). Skipped without the desktop build or the
      * workloads (scripts/psychoscript.sh --host).

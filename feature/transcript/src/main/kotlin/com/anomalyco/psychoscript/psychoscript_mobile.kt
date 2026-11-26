@@ -392,7 +392,7 @@ private fun findLibraryName(componentName: String): String {
     if (libOverride != null) {
         return libOverride
     }
-    return "psychoscript_mobile"
+    return "widget_mobile"
 }
 
 // Define FFI callback types
@@ -761,10 +761,6 @@ internal object IntegrityCheckingUniffiLib {
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel(
     ): Int
-    external fun uniffi_psychoscript_mobile_checksum_method_shadercanvas_render(
-    ): Int
-    external fun uniffi_psychoscript_mobile_checksum_method_shadercanvas_resize(
-    ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_liverun_deliver(
@@ -792,10 +788,6 @@ internal object IntegrityCheckingUniffiLib {
     external fun uniffi_psychoscript_mobile_checksum_method_runsession_run(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_method_runsession_run_bytes(
-    ): Int
-    external fun uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget(
-    ): Int
-    external fun uniffi_psychoscript_mobile_checksum_constructor_shadercanvas_new(
     ): Int
     external fun uniffi_psychoscript_mobile_checksum_constructor_gpusurface_android_window(
     ): Int
@@ -841,8 +833,6 @@ internal object UniffiLib {
     ): Long
     external fun uniffi_psychoscript_mobile_fn_free_valueencoder(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
-    external fun uniffi_psychoscript_mobile_fn_constructor_valueencoder_widget(uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
     external fun uniffi_psychoscript_mobile_fn_method_valueencoder_emit_name(`ptr`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): RustBuffer.ByValue
     external fun uniffi_psychoscript_mobile_fn_clone_fetchcompletion(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
@@ -862,16 +852,6 @@ internal object UniffiLib {
     external fun uniffi_psychoscript_mobile_fn_method_fetchtransport_start(`ptr`: Long,`request`: RustBuffer.ByValue,`completion`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_method_fetchtransport_cancel(`ptr`: Long,`id`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    external fun uniffi_psychoscript_mobile_fn_clone_shadercanvas(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    external fun uniffi_psychoscript_mobile_fn_free_shadercanvas(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    external fun uniffi_psychoscript_mobile_fn_constructor_shadercanvas_new(`wgsl`: RustBuffer.ByValue,`surface`: Long,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
-    ): Long
-    external fun uniffi_psychoscript_mobile_fn_method_shadercanvas_render(`ptr`: Long,`time`: Float,`scale`: Float,`pointer`: RustBuffer.ByValue,`values`: RustBuffer.ByValue,uniffi_out_err: UniffiRustCallStatus, 
-    ): Unit
-    external fun uniffi_psychoscript_mobile_fn_method_shadercanvas_resize(`ptr`: Long,`width`: Int,`height`: Int,uniffi_out_err: UniffiRustCallStatus, 
     ): Unit
     external fun uniffi_psychoscript_mobile_fn_clone_gpusurface(`handle`: Long,uniffi_out_err: UniffiRustCallStatus, 
     ): Long
@@ -1066,12 +1046,6 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel() and 0xFFFF) != 11653) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_render() and 0xFFFF) != 28612) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_shadercanvas_resize() and 0xFFFF) != 23969) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface() and 0xFFFF) != 44206) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1112,12 +1086,6 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_runsession_run_bytes() and 0xFFFF) != 44317) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_valueencoder_widget() and 0xFFFF) != 51763) {
-        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    }
-    if ((lib.uniffi_psychoscript_mobile_checksum_constructor_shadercanvas_new() and 0xFFFF) != 47676) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_constructor_gpusurface_android_window() and 0xFFFF) != 30339) {
@@ -1405,29 +1373,6 @@ public object FfiConverterULong: FfiConverter<ULong, Long> {
 
     override fun write(value: ULong, buf: ByteBuffer) {
         buf.putLong(value.toLong())
-    }
-}
-
-/**
- * @suppress
- */
-public object FfiConverterFloat: FfiConverter<Float, Float> {
-    override fun lift(value: Float): Float {
-        return value
-    }
-
-    override fun read(buf: ByteBuffer): Float {
-        return buf.getFloat()
-    }
-
-    override fun lower(value: Float): Float {
-        return value
-    }
-
-    override fun allocationSize(value: Float) = 4UL
-
-    override fun write(value: Float, buf: ByteBuffer) {
-        buf.putFloat(value)
     }
 }
 
@@ -3704,337 +3649,6 @@ public object FfiConverterTypeRunSession: FfiConverter<RunSession, Long> {
 
 
 /**
- * A `canvas({ wgsl, values })`: make one per canvas (it returns at once) and call [`ShaderCanvas::render`] on the
- * app's display link at the canvas's `fps`, pausing as the widget does when it isn't visible. Both are cheap on the
- * calling thread: a thread of the canvas's own compiles the shader once the device is ready (nothing is drawn
- * before), then draws and presents the newest frame. Drop it before its surface goes (Android `surfaceDestroyed`):
- * once dropped it never touches the surface again (a present in progress finishes first).
- */
-public interface ShaderCanvasInterface {
-    
-    /**
-     * A frame to draw: `time` in seconds since the canvas appeared, `scale` the display scale, `pointer`
-     * `[x, y, down, 0]` in physical pixels, `values` the node's (up to 16). It is drawn and presented off the calling
-     * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
-     * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
-     * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
-     * A shader over 50 ms a frame three frames in a row returns `Client` (reason `the shader took over 50 ms a frame,
-     * three frames in a row`): log it and
-     * keep the surface, which keeps its last frame.
-     */
-    fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
-    
-    /**
-     * The canvas's new size in physical pixels, from its next frame.
-     */
-    fun `resize`(`width`: kotlin.UInt, `height`: kotlin.UInt)
-    
-    companion object
-}
-
-/**
- * A `canvas({ wgsl, values })`: make one per canvas (it returns at once) and call [`ShaderCanvas::render`] on the
- * app's display link at the canvas's `fps`, pausing as the widget does when it isn't visible. Both are cheap on the
- * calling thread: a thread of the canvas's own compiles the shader once the device is ready (nothing is drawn
- * before), then draws and presents the newest frame. Drop it before its surface goes (Android `surfaceDestroyed`):
- * once dropped it never touches the surface again (a present in progress finishes first).
- */
-open class ShaderCanvas: Disposable, AutoCloseable, ShaderCanvasInterface
-{
-
-    @Suppress("UNUSED_PARAMETER")
-    /**
-     * @suppress
-     */
-    constructor(withHandle: UniffiWithHandle, handle: Long) {
-        this.handle = handle
-        this.cleanable = UniffiLib.CLEANER.register(this, UniffiCleanAction(handle))
-    }
-
-    /**
-     * @suppress
-     *
-     * This constructor can be used to instantiate a fake object. Only used for tests. Any
-     * attempt to actually use an object constructed this way will fail as there is no
-     * connected Rust object.
-     */
-    @Suppress("UNUSED_PARAMETER")
-    constructor(noHandle: NoHandle) {
-        this.handle = 0
-        this.cleanable = null
-    }
-    /**
-     * The widget template's `wgsl` for `surface`, `width` × `height` physical pixels. Doesn't wait: a WGSL error or
-     * the lack of a GPU comes from `render` once it is known.
-     */
-    constructor(`wgsl`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt) :
-        this(UniffiWithHandle, 
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_psychoscript_mobile_fn_constructor_shadercanvas_new(
-    
-        
-        FfiConverterString.lower(`wgsl`),
-        FfiConverterTypeGpuSurface.lower(`surface`),
-        FfiConverterUInt.lower(`width`),
-        FfiConverterUInt.lower(`height`),_status)
-}
-    )
-
-    protected val handle: Long
-    protected val cleanable: UniffiCleaner.Cleanable?
-
-    private val wasDestroyed = AtomicBoolean(false)
-    private val callCounter = AtomicLong(1)
-
-    /**
-     * Whether the current object has been destroyed and its reference is gone in the Rust side.
-     */
-    val uniffiIsDestroyed: Boolean get() = wasDestroyed.get()
-
-    override fun destroy() {
-        // Only allow a single call to this method.
-        // TODO: maybe we should log a warning if called more than once?
-        if (this.wasDestroyed.compareAndSet(false, true)) {
-            // This decrement always matches the initial count of 1 given at creation time.
-            if (this.callCounter.decrementAndGet() == 0L) {
-                cleanable?.clean()
-            }
-        }
-    }
-
-    @Synchronized
-    override fun close() {
-        this.destroy()
-    }
-
-    internal inline fun <R> callWithHandle(block: (handle: Long) -> R): R {
-        // Check and increment the call counter, to keep the object alive.
-        // This needs a compare-and-set retry loop in case of concurrent updates.
-        do {
-            val c = this.callCounter.get()
-            if (c == 0L) {
-                throw IllegalStateException("${this.javaClass.simpleName} object has already been destroyed")
-            }
-            if (c == Long.MAX_VALUE) {
-                throw IllegalStateException("${this.javaClass.simpleName} call counter would overflow")
-            }
-        } while (! this.callCounter.compareAndSet(c, c + 1L))
-        // Now we can safely do the method call without the handle being freed concurrently.
-        try {
-            return block(this.uniffiCloneHandle())
-        } finally {
-            // This decrement always matches the increment we performed above.
-            if (this.callCounter.decrementAndGet() == 0L) {
-                cleanable?.clean()
-            }
-        }
-    }
-
-    // Use a static inner class instead of a closure so as not to accidentally
-    // capture `this` as part of the cleanable's action.
-    private class UniffiCleanAction(private val handle: Long) : Runnable {
-        override fun run() {
-            if (handle == 0.toLong()) {
-                // Fake object created with `NoHandle`, don't try to free.
-                return;
-            }
-            uniffiRustCall { status ->
-                UniffiLib.uniffi_psychoscript_mobile_fn_free_shadercanvas(handle, status)
-            }
-        }
-    }
-
-    /**
-     * @suppress
-     */
-    fun uniffiCloneHandle(): Long {
-        if (handle == 0.toLong()) {
-            throw InternalException("uniffiCloneHandle() called on NoHandle object");
-        }
-        return uniffiRustCall() { status ->
-            UniffiLib.uniffi_psychoscript_mobile_fn_clone_shadercanvas(handle, status)
-        }
-    }
-
-    
-    /**
-     * A frame to draw: `time` in seconds since the canvas appeared, `scale` the display scale, `pointer`
-     * `[x, y, down, 0]` in physical pixels, `values` the node's (up to 16). It is drawn and presented off the calling
-     * thread; frames that come faster than the surface takes them are skipped for the newest. Returns, once, what
-     * stopped the canvas for good: `Program` for a WGSL error (its line and column the template's: report it, phase
-     * `gpu`), `Client` without a GPU (log it); either way show the placeholder (`poster`, else `alt`, else the error).
-     * A shader over 50 ms a frame three frames in a row returns `Client` (reason `the shader took over 50 ms a frame,
-     * three frames in a row`): log it and
-     * keep the surface, which keeps its last frame.
-     */
-    @Throws(GpuFailure::class)override fun `render`(`time`: kotlin.Float, `scale`: kotlin.Float, `pointer`: List<kotlin.Float>, `values`: List<kotlin.Float>)
-        = 
-    callWithHandle {
-    uniffiRustCallWithError(GpuFailure) { _status ->
-    UniffiLib.uniffi_psychoscript_mobile_fn_method_shadercanvas_render(
-        it,
-        
-        FfiConverterFloat.lower(`time`),
-        FfiConverterFloat.lower(`scale`),
-        FfiConverterSequenceFloat.lower(`pointer`),
-        FfiConverterSequenceFloat.lower(`values`),_status)
-}
-    }
-    
-    
-
-    
-    /**
-     * The canvas's new size in physical pixels, from its next frame.
-     */override fun `resize`(`width`: kotlin.UInt, `height`: kotlin.UInt)
-        = 
-    callWithHandle {
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_psychoscript_mobile_fn_method_shadercanvas_resize(
-        it,
-        
-        FfiConverterUInt.lower(`width`),
-        FfiConverterUInt.lower(`height`),_status)
-}
-    }
-    
-    
-
-    
-
-    
-
-
-    
-    
-    /**
-     * @suppress
-     */
-    companion object
-    
-}
-
-
-/**
- * @suppress
- */
-public object FfiConverterTypeShaderCanvas: FfiConverter<ShaderCanvas, Long> {
-    override fun lower(value: ShaderCanvas): Long {
-        return value.uniffiCloneHandle()
-    }
-
-    override fun lift(value: Long): ShaderCanvas {
-        return ShaderCanvas(UniffiWithHandle, value)
-    }
-
-    override fun read(buf: ByteBuffer): ShaderCanvas {
-        return lift(buf.getLong())
-    }
-
-    override fun allocationSize(value: ShaderCanvas) = 8UL
-
-    override fun write(value: ShaderCanvas, buf: ByteBuffer) {
-        buf.putLong(lower(value))
-    }
-}
-
-
-// This template implements a class for working with a Rust struct via a handle
-// to the live Rust struct on the other side of the FFI.
-//
-// There's some subtlety here, because we have to be careful not to operate on a Rust
-// struct after it has been dropped, and because we must expose a public API for freeing
-// theq Kotlin wrapper object in lieu of reliable finalizers. The core requirements are:
-//
-//   * Each instance holds an opaque handle to the underlying Rust struct.
-//     Method calls need to read this handle from the object's state and pass it in to
-//     the Rust FFI.
-//
-//   * When an instance is no longer needed, its handle should be passed to a
-//     special destructor function provided by the Rust FFI, which will drop the
-//     underlying Rust struct.
-//
-//   * Given an instance, calling code is expected to call the special
-//     `destroy` method in order to free it after use, either by calling it explicitly
-//     or by using a higher-level helper like the `use` method. Failing to do so risks
-//     leaking the underlying Rust struct.
-//
-//   * We can't assume that calling code will do the right thing, and must be prepared
-//     to handle Kotlin method calls executing concurrently with or even after a call to
-//     `destroy`, and to handle multiple (possibly concurrent!) calls to `destroy`.
-//
-//   * We must never allow Rust code to operate on the underlying Rust struct after
-//     the destructor has been called, and must never call the destructor more than once.
-//     Doing so may trigger memory unsafety.
-//
-//   * To mitigate many of the risks of leaking memory and use-after-free unsafety, a `Cleaner`
-//     is implemented to call the destructor when the Kotlin object becomes unreachable.
-//     This is done in a background thread. This is not a panacea, and client code should be aware that
-//      1. the thread may starve if some there are objects that have poorly performing
-//     `drop` methods or do significant work in their `drop` methods.
-//      2. the thread is shared across the whole library. This can be tuned by using `android_cleaner = true`,
-//         or `android = true` in the [`kotlin` section of the `uniffi.toml` file](https://mozilla.github.io/uniffi-rs/kotlin/configuration.html).
-//
-// If we try to implement this with mutual exclusion on access to the handle, there is the
-// possibility of a race between a method call and a concurrent call to `destroy`:
-//
-//    * Thread A starts a method call, reads the value of the handle, but is interrupted
-//      before it can pass the handle over the FFI to Rust.
-//    * Thread B calls `destroy` and frees the underlying Rust struct.
-//    * Thread A resumes, passing the already-read handle value to Rust and triggering
-//      a use-after-free.
-//
-// One possible solution would be to use a `ReadWriteLock`, with each method call taking
-// a read lock (and thus allowed to run concurrently) and the special `destroy` method
-// taking a write lock (and thus blocking on live method calls). However, we aim not to
-// generate methods with any hidden blocking semantics, and a `destroy` method that might
-// block if called incorrectly seems to meet that bar.
-//
-// So, we achieve our goals by giving each instance an associated `AtomicLong` counter to track
-// the number of in-flight method calls, and an `AtomicBoolean` flag to indicate whether `destroy`
-// has been called. These are updated according to the following rules:
-//
-//    * The initial value of the counter is 1, indicating a live object with no in-flight calls.
-//      The initial value for the flag is false.
-//
-//    * At the start of each method call, we atomically check the counter.
-//      If it is 0 then the underlying Rust struct has already been destroyed and the call is aborted.
-//      If it is nonzero them we atomically increment it by 1 and proceed with the method call.
-//
-//    * At the end of each method call, we atomically decrement and check the counter.
-//      If it has reached zero then we destroy the underlying Rust struct.
-//
-//    * When `destroy` is called, we atomically flip the flag from false to true.
-//      If the flag was already true we silently fail.
-//      Otherwise we atomically decrement and check the counter.
-//      If it has reached zero then we destroy the underlying Rust struct.
-//
-// Astute readers may observe that this all sounds very similar to the way that Rust's `Arc<T>` works,
-// and indeed it is, with the addition of a flag to guard against multiple calls to `destroy`.
-//
-// The overall effect is that the underlying Rust struct is destroyed only when `destroy` has been
-// called *and* all in-flight method calls have completed, avoiding violating any of the expectations
-// of the underlying Rust code.
-//
-// This makes a cleaner a better alternative to _not_ calling `destroy()` as
-// and when the object is finished with, but the abstraction is not perfect: if the Rust object's `drop`
-// method is slow, and/or there are many objects to cleanup, and it's on a low end Android device, then the cleaner
-// thread may be starved, and the app will leak memory.
-//
-// In this case, `destroy`ing manually may be a better solution.
-//
-// The cleaner can live side by side with the manual calling of `destroy`. In the order of responsiveness, uniffi objects
-// with Rust peers are reclaimed:
-//
-// 1. By calling the `destroy` method of the object, which calls `rustObject.free()`. If that doesn't happen:
-// 2. When the object becomes unreachable, AND the Cleaner thread gets to call `rustObject.free()`. If the thread is starved then:
-// 3. The memory is reclaimed when the process terminates.
-//
-// [1] https://stackoverflow.com/questions/24376768/can-java-finalize-an-object-when-it-is-still-in-scope/24380219
-//
-
-
-/**
  * An encoder for [`crate::Program::run_bytes`] and live runs (see [`EncodeValues`]).
  */
 public interface ValueEncoderInterface {
@@ -4173,29 +3787,11 @@ open class ValueEncoder: Disposable, AutoCloseable, ValueEncoderInterface
 
 
     
-    companion object {
-        
+    
     /**
-     * OpenCode widgets' binary format (`widget-wire`, opencode `specs/v2/widgets-binary.md`) for a native host
-     * of widget protocol 2 (`widgets.md`, Native hosts): steps run `<program>\nreturn
-     * __widget_native_step(__input())` with `run_bytes`, live runs `<program>\nreturn await
-     * __widget_live(__input(), true)`. A program of another protocol isn't run: `Runtime` of kind
-     * `OlderProtocol` (a program error) or `NewerProtocol` (a client error). A value it can't write fails with
-     * `Runtime` of kind `InvalidView`, `InvalidDraw` or `InvalidGpu` (the spec's phase `view`, `draw` or `gpu`),
-     * else `InvalidDataValue`.
-     */ fun `widget`(): ValueEncoder {
-            return FfiConverterTypeValueEncoder.lift(
-    uniffiRustCall() { _status ->
-    UniffiLib.uniffi_psychoscript_mobile_fn_constructor_valueencoder_widget(
-    
-        _status)
-}
-    )
-    }
-    
-
-        
-    }
+     * @suppress
+     */
+    companion object
     
 }
 
@@ -4548,8 +4144,8 @@ sealed class GpuCanvasState {
     }
     
     /**
-     * There is no GPU here: every GPU canvas of the run shows its placeholder (`poster`, else `alt`, else "GPU
-     * canvas not supported"). A client error; the widget keeps working. `reason` says why (the Android version, no
+     * There is no GPU here: every GPU canvas of the run shows its placeholder. A client error; the program keeps
+     * running. `reason` says why (the Android version, no
      * Vulkan adapter, the GPU's Vulkan version or limits under the spec's, each with its value, or wgpu's error
      * making the device), for the app to show or ignore.
      */
@@ -4564,7 +4160,7 @@ sealed class GpuCanvasState {
     
     /**
      * An error stopped it for the rest of the run: its placeholder with `message`. With `report`, report it once
-     * (a program error, phase `gpu`); a client error is logged.
+     * (a program error); a client error is logged.
      */
     data class Stopped(
         val `kind`: com.anomalyco.psychoscript.GpuErrorKind, 
@@ -4696,7 +4292,7 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
 enum class GpuErrorKind {
     
     /**
-     * The program's (`report` it, phase `gpu`).
+     * The program's: report it (as an error of its GPU work).
      */
     PROGRAM,
     /**
@@ -4735,13 +4331,13 @@ public object FfiConverterTypeGpuErrorKind: FfiConverterRustBuffer<GpuErrorKind>
 
 
 /**
- * A GPU failure of [`GpuSurface`] or [`ShaderCanvas`].
+ * A GPU failure of a [`GpuSurface`], or of GPU work a host draws into one.
  */
 sealed class GpuFailure: kotlin.Exception() {
     
     /**
-     * The widget template's (a WGSL error, phase `gpu`): report it. (`reason`, not `message`: a Kotlin exception has
-     * a `message` of its own.)
+     * The program's (a WGSL error): report it. (`reason`, not `message`: a Kotlin exception has a `message` of its
+     * own.)
      */
     class Program(
         
@@ -5600,34 +5196,6 @@ public object FfiConverterOptionalSequenceString: FfiConverterRustBuffer<List<ko
         } else {
             buf.put(1)
             FfiConverterSequenceString.write(value, buf)
-        }
-    }
-}
-
-
-
-
-/**
- * @suppress
- */
-public object FfiConverterSequenceFloat: FfiConverterRustBuffer<List<kotlin.Float>> {
-    override fun read(buf: ByteBuffer): List<kotlin.Float> {
-        val len = buf.getInt()
-        return List<kotlin.Float>(len) {
-            FfiConverterFloat.read(buf)
-        }
-    }
-
-    override fun allocationSize(value: List<kotlin.Float>): ULong {
-        val sizeForLength = 4UL
-        val sizeForItems = value.map { FfiConverterFloat.allocationSize(it) }.sum()
-        return sizeForLength + sizeForItems
-    }
-
-    override fun write(value: List<kotlin.Float>, buf: ByteBuffer) {
-        buf.putInt(value.size)
-        value.iterator().forEach {
-            FfiConverterFloat.write(it, buf)
         }
     }
 }

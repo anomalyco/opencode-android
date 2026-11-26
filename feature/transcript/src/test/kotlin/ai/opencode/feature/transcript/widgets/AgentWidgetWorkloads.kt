@@ -1,11 +1,11 @@
 package ai.opencode.feature.transcript.widgets
 
+import ai.opencode.widgets.widgetEncoder
 import com.anomalyco.psychoscript.LiveExit
 import com.anomalyco.psychoscript.LiveHandler
 import com.anomalyco.psychoscript.LiveOptions
 import com.anomalyco.psychoscript.Program
 import com.anomalyco.psychoscript.RunOptions
-import com.anomalyco.psychoscript.ValueEncoder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -17,10 +17,11 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
 /**
- * psychoscript-mobile's committed workloads (`tests/fixtures/workloads` in the `.psychoscript` checkout), run on the
- * runtime's desktop build (`scripts/psychoscript.sh --host`): each step's output as JSON (the scripted prelude, which
- * still builds the tree in the program) and as the binary format (widget protocol 2, the native host), and a live
- * workload's first posts both ways. [missing] says why they can't run.
+ * widget-mobile's committed workloads (`packages/widgets-rs/crates/widget-mobile/tests/fixtures/workloads` in the
+ * `.widgets-rs` checkout), run on the runtime's desktop build (`scripts/psychoscript.sh --host`) with the widget
+ * package's preludes (`packages/widget`): each step's output as JSON (the scripted prelude, which still builds the tree
+ * in the program) and as the binary format (widget protocol 2, the native host), and a live workload's first posts both
+ * ways. [missing] says why they can't run.
  */
 internal object AgentWidgetWorkloads {
     class Step(val name: String, val draw: Boolean, val json: String, val bytes: ByteArray)
@@ -28,15 +29,18 @@ internal object AgentWidgetWorkloads {
     class Live(val name: String, val posts: List<String>, val bytes: List<ByteArray>, val deterministic: Boolean)
 
     private val dir = System.getProperty("opencode.widgetWorkloads")?.let(::File)
+    private val widget = System.getProperty("opencode.widgetPackage")?.let(::File)
 
     /** Why the workloads can't run here (a skip message), or null. */
     val missing: String? = run {
         val host = System.getProperty("jna.library.path")?.let(::File)
         when {
-            host?.listFiles()?.any { it.name.startsWith("libpsychoscript_mobile.") } != true ->
-                "no desktop build of psychoscript-mobile in vendor/psychoscript/host: run scripts/psychoscript.sh --host"
+            host?.listFiles()?.any { it.name.startsWith("libwidget_mobile.") } != true ->
+                "no desktop build of widget-mobile in vendor/psychoscript/host: run scripts/psychoscript.sh --host"
             dir == null || !File(dir, "workloads.json").isFile ->
-                "no psychoscript-mobile workloads at $dir: run scripts/psychoscript.sh --host"
+                "no widget-mobile workloads at $dir: run scripts/psychoscript.sh --host"
+            widget == null || !File(widget, "src/prelude.js").isFile ->
+                "no widget preludes at $widget: run scripts/psychoscript.sh --host"
             else -> null
         }
     }
@@ -44,18 +48,21 @@ internal object AgentWidgetWorkloads {
     private val json = Json { ignoreUnknownKeys = true }
     private val STEP = RunOptions(250uL, 4uL * 1024uL * 1024uL, 33_554_432uL)
     private val OPTIONS = LiveOptions(50uL, null, false, 33_554_432uL)
-    private val encoder by lazy { ValueEncoder.widget() }
+    private val encoder by lazy { widgetEncoder() }
     private val workloads by lazy { json.parseToJsonElement(File(dir, "workloads.json").readText()).jsonObject }
-    private val prelude by lazy { File(dir, "prelude.js").readText() }
-    private val scripted by lazy { File(dir, "prelude-scripted.js").readText() }
-    private val wire = System.getProperty("opencode.widgetWireFixtures")?.let(::File)
+    /** A program is the prelude, a newline, (live: the live prelude and a newline,) the source (widgets.md, Prelude). */
+    private val prelude by lazy { File(widget, "src/prelude.js").readText() + "\n" }
+    private val livePrelude by lazy { prelude + File(widget, "src/prelude-live.js").readText() + "\n" }
+    /** The prelude that still built the tree in the script: the JSON path the binary one is held to. */
+    private val scripted by lazy { File(widget, "test/fixtures/scripted-prelude.js").readText() + "\n" }
+    private val wire by lazy { File(widget, "test/fixtures/wire") }
 
     /** The protocol 2 step entry (widgets.md, Native hosts). */
     const val STEP_ENTRY = "\nreturn __widget_native_step(__input())"
 
     private fun source(name: String) = File(dir, "templates/$name.js").readText()
 
-    /** A wire fixture's `source` and `input` (widget-wire `tests/fixtures/wire`), and its expected `error`, if any. */
+    /** A wire fixture's `source` and `input` (`packages/widget/test/fixtures/wire`), and its expected `error`, if any. */
     fun fixture(name: String): Triple<String, String, JsonObject?> {
         val o = json.parseToJsonElement(File(wire, "$name.json").readText()).jsonObject
         return Triple(o.getValue("source").jsonPrimitive.content, o.getValue("input").toString(), o["error"] as? JsonObject)
@@ -63,7 +70,7 @@ internal object AgentWidgetWorkloads {
 
     /** A step of [source] on the native host: its output's bytes. */
     fun nativeStep(source: String, input: String): ByteArray =
-        Program(prelude + "\n" + source + STEP_ENTRY, "__input").runBytes(input, encoder, STEP)
+        Program(prelude + source + STEP_ENTRY, "__input").runBytes(input, encoder, STEP)
 
     val steps: List<Step> by lazy {
         workloads.getValue("step").jsonArray.map { it.jsonObject }.map { w ->
@@ -93,7 +100,7 @@ internal object AgentWidgetWorkloads {
             val input = File(dir, "inputs/$name.json").readText()
             fun run(native: Boolean): Posts {
                 val posts = Posts()
-                val program = Program((if (native) prelude else scripted) + source + "\nreturn await __widget_live(__input()${if (native) ", true" else ""})", "__input")
+                val program = Program((if (native) livePrelude else scripted) + source + "\nreturn await __widget_live(__input()${if (native) ", true" else ""})", "__input")
                 val run = program.startLive(input, posts, OPTIONS, null, if (native) encoder else null)
                 posts.await()
                 repeat(2) {

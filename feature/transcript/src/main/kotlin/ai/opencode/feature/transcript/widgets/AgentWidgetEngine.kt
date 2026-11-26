@@ -4,7 +4,7 @@ import ai.opencode.core.dependencies.DependencyKey
 import android.view.Surface
 
 /**
- * Runs widget programs on the Rust PsychoScript (`psychoscript-mobile`). A program compiles once
+ * Runs widget programs on the Rust PsychoScript (opencode's `widget-mobile`). A program compiles once
  * per widget template version; each step takes the step input's JSON and returns the step output (or
  * a draw step's `{ commands }`) in the binary format ([AgentWidgetWire]). Every call throws
  * [AgentWidgetEngineException] when it fails.

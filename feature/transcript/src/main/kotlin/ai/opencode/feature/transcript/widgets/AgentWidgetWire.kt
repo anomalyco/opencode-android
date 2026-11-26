@@ -9,7 +9,7 @@ import java.nio.charset.CharsetDecoder
 import java.nio.charset.CodingErrorAction
 
 /**
- * The widget binary format, version 1 (specs/v2/widgets-binary.md), as psychoscript-mobile writes step outputs and
+ * The widget binary format, version 1 (specs/v2/widgets-binary.md), as widget-mobile's encoder writes step outputs and
  * live posts: read into the same values the JSON form gives ([AgentWidgetNode.build] makes the nodes for both,
  * [AgentWidgetDrawList] gets the same streams). Every read is bounds-checked. Bytes that don't follow the format are
  * [Malformed], a client error; a well-formed view that breaks a node's rules is [AgentWidgetNode.InvalidView], a program

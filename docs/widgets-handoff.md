@@ -12,13 +12,15 @@ note), `form` (input, slider, checkbox, select), `confirm` (live: Deploy → Sen
 Submitted, `◈ Responded to "…"`), `chart` (bar and line; animated intro, press/drag tooltip,
 tap to submit) and `backdrop` (GLES 3 shader, speed slider).
 
-- Runner: `psychoscript-mobile`, the PsychoScript language alone (anomalyco/psychoscript, branch `mobile`,
-  crate `rust/crates/psychoscript-mobile`, package `com.anomalyco.psychoscript`). `NativeAgentWidgetEngine`
+- Runtime: `widget-mobile` (anomalyco/opencode, Rust workspace `packages/widgets-rs`, library `libwidget_mobile.so`):
+  PsychoScript's generic `psychoscript-mobile` (package `com.anomalyco.psychoscript`: programs, live runs, fetch, GPU
+  surfaces, `LiveFrames`), linked by git rev, plus the widget parts (package `ai.opencode.widgets`: `widgetEncoder()`,
+  the binary format's encoder, and `ShaderCanvas` for the `wgsl` shorthand). `NativeAgentWidgetEngine`
   compiles `program + "\nreturn __widget_step(__input())"` once and `run`s steps at 250 ms and draws at 8 ms
   (a draw timeout counts as an overrun). Everything else widget-shaped is the app's: step inputs, output
   parsing and validation, the 2,000-command cap, rendering.
 - Canvas GPU mode (a `canvas` with `wgsl`): `AgentWidgetEngine.shaderCanvas(wgsl, surface, w, h)` wraps the
-  runner's `ShaderCanvas`, which compiles and presents on its own thread (Vulkan) into a `TextureView`'s
+  runtime's `ShaderCanvas`, which compiles and presents on its own thread (Vulkan) into a `TextureView`'s
   surface. `AgentWidgetGPUCanvas` records frames with `render(time, scale, pointer, values)` from
   `withFrameNanos` at `fps` (once, and on `values` changes, at `fps: 0`), paused off screen / list not resumed;
   a WGSL error is reported once in phase `gpu` with the template's line, no GPU or a GPU hang is a client error
@@ -106,24 +108,30 @@ A widget is the `widget` tool call (`{ widgetTemplate, data, title?, wait? }`), 
   minimum), else the view scrolls.
 - Live mode will send the same event through `widget.event()` and `Frame.fullscreen` once it exists.
 
-## The runner build
+## The runtime build
 
-`scripts/psychoscript.sh` pins psychoscript's rev (`REV=`), fetches it into `.psychoscript/` and builds it
-into `vendor/psychoscript/` (both gitignored); `:feature:transcript` adds `vendor/psychoscript/jniLibs` to
-every variant's jniLibs (`androidComponents`), so no `.so` is committed. The generated Kotlin bindings are
-committed (`feature/transcript/src/main/kotlin/com/anomalyco/psychoscript/`) so builds without Rust (CI)
-compile; the script refreshes them and says so when they change. A build without the libraries runs, and
-widgets show "The widget runtime isn't available".
+`scripts/psychoscript.sh` pins an anomalyco/opencode commit (`REV=`), fetches it into `.widgets-rs/` (a partial
+clone of that one commit, `--filter=blob:none`, checking out only `packages/widgets-rs` and `packages/widget`; about
+10 MB), runs widget-mobile's `scripts/build-android.sh` and puts the result into `vendor/psychoscript/` (both
+gitignored); `:feature:transcript` adds `vendor/psychoscript/jniLibs` to every variant's jniLibs
+(`androidComponents`), so no `.so` is committed. The generated Kotlin bindings are committed
+(`feature/transcript/src/main/kotlin/com/anomalyco/psychoscript/` and `…/kotlin/ai/opencode/widgets/`) so builds
+without Rust (CI) compile; the script refreshes them and says so when they change. A build without the libraries runs,
+and widgets show "The widget runtime isn't available".
 
 - Needs: NDK r28+ (`ANDROID_NDK_HOME`, else the newest under the SDK's `ndk/`), `cargo install cargo-ndk`,
-  `rustup target add --toolchain 1.100.0 aarch64-linux-android x86_64-linux-android`. About 2 minutes cold.
+  `rustup target add --toolchain 1.99.1 aarch64-linux-android x86_64-linux-android` (widgets-rs's toolchain).
+  `CARGO_TARGET_DIR` is honoured. About 2 minutes cold.
+- `scripts/psychoscript.sh --host` builds the desktop library (`vendor/psychoscript/host/libwidget_mobile.*`) for the
+  JVM tests, which also read widget-mobile's workloads and `packages/widget`'s preludes and fixtures from `.widgets-rs/`.
 - `scripts/psychoscript.sh --prebuilt <dir>` takes a build of the same rev made elsewhere (checked against
   its `REVISION`).
 - To move the pin: change `REV`, run the script, commit the script and any binding changes together.
 
-## Runner pin
+## Runtime pin
 
-`scripts/psychoscript.sh` pins psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
+`scripts/psychoscript.sh` pins opencode `d63f5c5` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile links
+psychoscript-mobile `2e2c019`. Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
 compute (the `next({ timeout })` → `sleep` SliceBudget stop is gone; `wait-probe` finishes), and dev-mode local
 network. `fetch` connects only to `FetchRequest.addresses` (resolved and checked once by the runner; OkHttp `Dns`
 returns them), and `LiveOptions.allowLocalNetwork` is `AgentWidgetCapabilities.allowsLocalNetwork` (a debug build
