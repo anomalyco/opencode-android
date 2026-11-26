@@ -480,7 +480,7 @@ class AgentWidgetController internal constructor(
                 gpuStates[key] = state
             }
             if (state is AgentWidgetGpuState.Stopped) {
-                if (state.program && state.report) reportError("gpu", state.message)
+                if (state.program && state.report) reportError("gpu", AgentWidgetEngineException(state.message, line = state.line, column = state.column))
             }
         }
 

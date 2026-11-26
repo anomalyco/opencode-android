@@ -9,6 +9,7 @@ import com.anomalyco.psychoscript.LiveHandler
 import com.anomalyco.psychoscript.LiveOptions
 import com.anomalyco.psychoscript.LiveRun
 import com.anomalyco.psychoscript.Program
+import com.anomalyco.psychoscript.ProgramLines
 import com.anomalyco.psychoscript.PsychoScriptException
 import com.anomalyco.psychoscript.RunOptions
 import com.anomalyco.psychoscript.GpuCanvasState
@@ -40,24 +41,26 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
         null
     }
 
-    override fun compile(program: String): AgentWidgetProgram {
+    override fun compile(program: String, lines: IntRange?): AgentWidgetProgram {
         val compiled = mapping { Program(program + ENTRY) }
+        val step = STEP.copy(programLines = programLines(lines))
+        val draw = DRAW.copy(programLines = programLines(lines))
         return object : AgentWidgetProgram {
-            override fun step(input: String): ByteArray = mapping { compiled.runBytes(input, encoder, STEP) }
-            override fun draw(input: String): ByteArray = mapping(draw = true) { compiled.runBytes(input, encoder, DRAW) }
+            override fun step(input: String): ByteArray = mapping { compiled.runBytes(input, encoder, step) }
+            override fun draw(input: String): ByteArray = mapping(draw = true) { compiled.runBytes(input, encoder, draw) }
             override fun close() = compiled.close()
             override fun session(fieldsJson: String): AgentWidgetProgram {
                 val session = mapping { compiled.session(fieldsJson) }
                 return object : AgentWidgetProgram {
-                    override fun step(input: String): ByteArray = mapping { session.runBytes(input, encoder, STEP) }
-                    override fun draw(input: String): ByteArray = mapping(draw = true) { session.runBytes(input, encoder, DRAW) }
+                    override fun step(input: String): ByteArray = mapping { session.runBytes(input, encoder, step) }
+                    override fun draw(input: String): ByteArray = mapping(draw = true) { session.runBytes(input, encoder, draw) }
                     override fun close() = session.close()
                 }
             }
         }
     }
 
-    override fun compileLive(program: String): AgentWidgetLiveProgram {
+    override fun compileLive(program: String, lines: IntRange?): AgentWidgetLiveProgram {
         val compiled = mapping { Program(program + LIVE_ENTRY) }
         return object : AgentWidgetLiveProgram {
             override fun start(inputJson: String, listener: AgentWidgetLiveListener, httpsHosts: List<String>?): AgentWidgetLiveRun {
@@ -81,7 +84,9 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                             is GpuCanvasState.Live -> AgentWidgetGpuState.Live(state.opaque)
                             is GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable(state.reason)
                             is GpuCanvasState.Lost -> AgentWidgetGpuState.Lost(state.reason)
-                            is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(state.kind == GpuErrorKind.PROGRAM, state.message, state.report)
+                            is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(
+                                state.kind == GpuErrorKind.PROGRAM, state.message, state.report, state.line?.toInt(), state.column?.toInt(),
+                            )
                         },
                     )
                 }
@@ -90,6 +95,7 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
                     httpsHosts = httpsHosts,
                     allowLocalNetwork = AgentWidgetCapabilities.allowsLocalNetwork,
                     maxHeapBytes = HEAP_BYTES,
+                    programLines = programLines(lines),
                 )
                 val transport = if (httpsHosts.isNullOrEmpty()) null else AgentWidgetFetchTransport(listener::fetchFailed)
                 val live = mapping { compiled.startLive(inputJson, handler, options, transport, encoder) }
@@ -203,6 +209,8 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
             "InvalidDraw" -> "draw"
             "InvalidGpu" -> "gpu"
             "InvalidDataValue" -> "main"
+            // An uncaught fetch rejection keeps its kind (README: Fetch).
+            "CapabilityDenied", "Network", "Timeout", "TooLarge", "RateLimited" -> "fetch"
             else -> null
         }
         return AgentWidgetEngineException(
@@ -228,6 +236,8 @@ internal object NativeAgentWidgetEngine : AgentWidgetEngine {
         is PsychoScriptException.InvalidState -> error.reason
         is PsychoScriptException.MemoryLimitExceeded -> "It used more than ${error.maxHeapBytes shr 20} MB of memory"
     }
+
+    private fun programLines(lines: IntRange?) = lines?.let { ProgramLines(it.first.toUInt(), it.last.toUInt()) }
 
     private const val HEAP_BYTES: ULong = 33_554_432uL
     private const val SLOW_FRAMES = "the shader took over 50 ms a frame, three frames in a row"

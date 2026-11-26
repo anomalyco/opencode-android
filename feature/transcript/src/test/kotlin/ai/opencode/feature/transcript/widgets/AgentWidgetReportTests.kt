@@ -12,6 +12,7 @@ import com.anomalyco.psychoscript.LiveHandler
 import com.anomalyco.psychoscript.LiveOptions
 import com.anomalyco.psychoscript.LiveRun
 import com.anomalyco.psychoscript.Program
+import com.anomalyco.psychoscript.ProgramLines
 import com.anomalyco.psychoscript.PsychoScriptException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -20,6 +21,8 @@ import kotlinx.coroutines.cancel
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
@@ -31,9 +34,9 @@ import org.junit.Test
  * path (the template's own lines: [OpenCodeWidgetProgram.sourceLineOffset]). Skipped without the desktop build
  * (scripts/psychoscript.sh --host).
  *
- * A position the runtime gives inside the preludes (a recording API's `TypeError`, an encoder error at the prelude's
- * `__host.post`) isn't the template's, so the report has none; the runtime gives none at all for an uncaught rejection
- * (a denied fetch), a thrown value, or a GPU batch that fails (`onGpuCanvas(Stopped)`).
+ * The runtime is told the template's lines (`programLines`), so errors raised in the preludes or by host calls from
+ * them (a fetch rejection, a recording API's `TypeError`, an encoder error, a GPU batch's error) are located at the
+ * template's nearest frame.
  */
 class AgentWidgetReportTests {
     @get:Rule val isolation = TestIsolationRule()
@@ -55,9 +58,24 @@ class AgentWidgetReportTests {
         assertEquals(listOf(OpenCodeWidgetError("main", "ReferenceError: Unknown identifier 'nope'.", 3, 3)), run.reports)
     }
 
+    /** An uncaught `__host.fetch` rejection fails the run with its kind: a fetch error. */
+    @Test
+    fun anUncaughtHostFetchKeepsItsKind() {
+        val run = live(
+            """
+            |async function main() {
+            |  widget.render(ui.text("x"))
+            |  await __host.fetch({ url: "https://example.org/a", method: "GET", headers: {} })
+            |}
+            """.trimMargin(),
+        ) { it.reports.isNotEmpty() }
+        assertEquals(listOf("fetch"), run.reports.map { it.phase })
+        assertTrue(run.events.toString(), run.events.any { it.startsWith("exit") && "kind=CapabilityDenied" in it })
+    }
+
     /**
-     * A fetch the runtime denies rejects with `{ kind: "CapabilityDenied", message }`: a program that catches it reports
-     * nothing (the app logs the denial in dev mode); uncaught, the run fails in `main`, with no position from the runtime.
+     * A fetch the runtime denies: a program that catches it reports nothing (the app logs the denial in dev mode);
+     * uncaught, phase `fetch` at the template's `widget.fetch` line.
      */
     @Test
     fun aDeniedFetchIsReportedOnlyWhenTheProgramLetsItThrow() {
@@ -86,61 +104,72 @@ class AgentWidgetReportTests {
             """.trimMargin(),
             hosts = listOf("allowed.example"),
         ) { it.reports.isNotEmpty() }
-        val denied = """{"kind":"CapabilityDenied","message":"denied.example isn't among the hosts this widget may reach"}"""
-        assertEquals(listOf(OpenCodeWidgetError("main", "Uncaught: $denied")), thrown.reports)
+        val report = thrown.reports.single()
+        assertEquals("fetch", report.phase)
+        assertEquals(3, report.line)
+        assertNotNull(report.column)
     }
 
     /**
-     * A GPU batch the device rejects stops the canvases and is reported in phase `gpu` with wgpu's message and no
-     * position (the runtime replays batches after the program recorded them); a recording API misuse throws the
-     * prelude's `TypeError`, reported in `main` without the prelude's position. Skipped without a GPU.
+     * A GPU op the device rejects stops the canvases: phase `gpu`, at the frame request that posted the batch (the
+     * template's `widget.frame()` line). Skipped without a GPU.
      */
     @Test
-    fun gpuErrorsAreReportedWithoutAPosition() {
-        val failed = live(
-            """
-            |async function main() {
-            |  widget.render(ui.canvas({ key: "c", gpu: true, height: 10 }))
-            |  const device = await widget.gpu.requestDevice()
-            |  const buffer = device.createBuffer({ size: 4, usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST })
-            |  device.queue.writeBuffer(buffer, 0, new Float32Array(16))
-            |  for (;;) await widget.frame()
-            |}
-            """.trimMargin(),
-            frames = true,
-        ) { run -> run.reports.isNotEmpty() || run.events.any { "Unavailable" in it } }
-        assumeTrue("no GPU here: ${failed.events}", failed.events.none { "Unavailable" in it })
-        val message = "In Queue::write_buffer: Copy at offset 0 for 64 bytes would end up overrunning the bounds of the Destination buffer of size 4"
-        assertEquals(listOf(OpenCodeWidgetError("gpu", message)), failed.reports)
-
-        val misused = live(
-            """
-            |async function main() {
-            |  widget.render(ui.canvas({ key: "c", gpu: true, height: 10 }))
-            |  const device = await widget.gpu.requestDevice()
-            |  device.queue.writeBuffer(null, 0, new Float32Array(4))
-            |}
-            """.trimMargin(),
-        ) { it.reports.isNotEmpty() }
-        assertEquals(listOf(OpenCodeWidgetError("main", "TypeError: writeBuffer's buffer must be a GPU buffer")), misused.reports)
-    }
-
-    /** An encoder error at a host call is located at the call, the prelude's `__host.post`: not the template's line. */
-    @Test
-    fun anEncoderErrorInThePreludeIsReportedWithoutAPosition() {
+    fun aGpuOpErrorIsReportedAtTheFrameThatPostedIt() {
         val run = live(
             """
             |async function main() {
-            |  widget.render(ui.text("x"))
-            |  widget.send(() => 1)
+            |  widget.render(ui.canvas({ key: "scene", gpu: true, height: 100 }))
+            |  const device = await widget.gpu.requestDevice()
+            |  widget.gpu.getContext("scene").configure({ device, format: widget.gpu.getPreferredCanvasFormat() })
+            |  device.createBuffer({ size: 64 * 1024 * 1024 + 4, usage: GPUBufferUsage.VERTEX })
+            |  for (let i = 0; i < 20; i++) await widget.frame()
+            |}
+            """.trimMargin(),
+            canvas = "scene",
+        ) { run -> run.reports.isNotEmpty() || run.events.any { "Unavailable" in it } }
+        assumeTrue("no GPU here: ${run.events}", run.events.none { "Unavailable" in it })
+        val report = run.reports.single()
+        assertEquals("gpu", report.phase)
+        assertEquals("gpu op 1: \"buffer\" argument 2 is over the limit of 67108864", report.message)
+        assertEquals(6, report.line)
+        assertNotNull(report.column)
+    }
+
+    /** The recording API's `TypeError` (thrown in the live prelude) is at the template's call. */
+    @Test
+    fun aRecordingApiErrorIsReportedAtTheTemplatesCall() {
+        val run = live(
+            """
+            |async function main() {
+            |  widget.render(ui.canvas({ key: "scene", gpu: true, height: 100 }))
+            |  const device = await widget.gpu.requestDevice()
+            |  device.createBuffer()
+            |  await widget.frame()
             |}
             """.trimMargin(),
         ) { it.reports.isNotEmpty() }
-        assertEquals(
-            listOf(OpenCodeWidgetError("main", "TypeError: Argument 1 to __host.post contains a function, which cannot be passed to the host.")),
-            run.reports,
-        )
-        assertEquals(true, run.events.single { it.startsWith("exit") }.contains(Regex("""line=\d+, column=\d+""")))
+        val report = run.reports.single()
+        assertEquals("main", report.phase)
+        assertEquals("TypeError: createBuffer's descriptor must be an object", report.message)
+        assertEquals(4, report.line)
+    }
+
+    /** What the encoder can't write fails at the template's `widget.draw`, in phase `draw`. */
+    @Test
+    fun anEncoderErrorIsReportedAtTheTemplatesCall() {
+        val run = live(
+            """
+            |async function main() {
+            |  widget.render(ui.canvas({ key: "c", height: 10 }))
+            |  widget.draw("c", [["bogus"]])
+            |  await widget.frame()
+            |}
+            """.trimMargin(),
+        ) { it.reports.isNotEmpty() }
+        val report = run.reports.single()
+        assertEquals("draw", report.phase)
+        assertEquals(3, report.line)
     }
 
     private class Run(val reports: List<OpenCodeWidgetError>, val events: List<String>) {
@@ -148,10 +177,10 @@ class AgentWidgetReportTests {
     }
 
     /**
-     * Runs [source] as a live widget on an [AgentWidgetController] until [done] (at most 10 s), with frames for its canvas
-     * `c` (8 × 8) if [frames]; what it reported and what its run told the app.
+     * Runs [source] as a live widget on an [AgentWidgetController] until [done] (at most 10 s), with frames for its GPU
+     * [canvas] (8 × 8) if given; what it reported and what its run told the app.
      */
-    private fun live(source: String, hosts: List<String>? = null, frames: Boolean = false, done: (Run) -> Boolean): Run {
+    private fun live(source: String, hosts: List<String>? = null, canvas: String? = null, done: (Run) -> Boolean): Run {
         val program = AgentWidgetWorkloads.liveProgram(source, hosts)
         val engine = Engine()
         val reports = CopyOnWriteArrayList<OpenCodeWidgetError>()
@@ -176,9 +205,9 @@ class AgentWidgetReportTests {
             fun now() = Run(reports.toList(), engine.events.toList())
             while (!done(now()) && System.nanoTime() < until) {
                 val run = engine.run
-                if (frames && run != null) {
+                if (canvas != null && run != null) {
                     runCatching {
-                        if (sent == 0) run.deliver("""{"type":"canvas","key":"c","width":8,"height":8}""")
+                        if (sent == 0) run.deliver("""{"type":"canvas","key":"$canvas","width":8,"height":8}""")
                         run.deliver("""{"type":"frame","frame":{"t":${sent / 60.0},"dt":0.016,"width":8,"height":8,"scale":1,"pointer":null,"dark":false,"fullscreen":false,"close":null}}""")
                     }
                     sent++
@@ -197,13 +226,13 @@ class AgentWidgetReportTests {
 
     /**
      * [NativeAgentWidgetEngine] for live programs, its runs' events handed on as it does (its [NativeAgentWidgetEngine.mapped]
-     * failures and GPU states), except that frames go through `deliver`: LiveFrames' JNI is only in the Android library.
+     * failures and GPU states, the template's lines), except that frames go through `deliver`: LiveFrames' JNI is only in the Android library.
      */
     private class Engine : AgentWidgetEngine by NativeAgentWidgetEngine {
         @Volatile var run: LiveRun? = null
         val events = CopyOnWriteArrayList<String>()
 
-        override fun compileLive(program: String): AgentWidgetLiveProgram {
+        override fun compileLive(program: String, lines: IntRange?): AgentWidgetLiveProgram {
             val compiled = try {
                 Program(program + "\nreturn await __widget_live(__input(), true)", "__input")
             } catch (error: PsychoScriptException) {
@@ -230,12 +259,15 @@ class AgentWidgetReportTests {
                                     is GpuCanvasState.Live -> AgentWidgetGpuState.Live(state.opaque)
                                     is GpuCanvasState.Unavailable -> AgentWidgetGpuState.Unavailable(state.reason)
                                     is GpuCanvasState.Lost -> AgentWidgetGpuState.Lost(state.reason)
-                                    is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(state.kind == GpuErrorKind.PROGRAM, state.message, state.report)
+                                    is GpuCanvasState.Stopped -> AgentWidgetGpuState.Stopped(
+                                        state.kind == GpuErrorKind.PROGRAM, state.message, state.report, state.line?.toInt(), state.column?.toInt(),
+                                    )
                                 },
                             )
                         }
                     }
-                    val options = LiveOptions(sliceBudgetMs = 50uL, httpsHosts = httpsHosts, allowLocalNetwork = false, maxHeapBytes = 33_554_432uL)
+                    val programLines = lines?.let { ProgramLines(it.first.toUInt(), it.last.toUInt()) }
+                    val options = LiveOptions(sliceBudgetMs = 50uL, httpsHosts = httpsHosts, allowLocalNetwork = false, maxHeapBytes = 33_554_432uL, programLines = programLines)
                     val transport = if (httpsHosts.isNullOrEmpty()) null else AgentWidgetFetchTransport(listener::fetchFailed)
                     val live = compiled.startLive(inputJson, handler, options, transport, widgetEncoder())
                     run = live

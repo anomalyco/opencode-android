@@ -4028,6 +4028,12 @@ data class LiveOptions (
      * with `Failed(MemoryLimitExceeded)`. Off by default: set it.
      */
     var `maxHeapBytes`: kotlin.ULong? = null 
+    , 
+    /**
+     * The source's lines that are the program's own ([`crate::RunOptions::program_lines`]): an error raised in the
+     * host's code around them, a GPU batch's error included, is at the nearest line of the program.
+     */
+    var `programLines`: ProgramLines? = null 
     
 ){
     
@@ -4048,6 +4054,7 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
             FfiConverterOptionalSequenceString.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalTypeProgramLines.read(buf),
         )
     }
 
@@ -4055,7 +4062,8 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
             FfiConverterULong.allocationSize(value.`sliceBudgetMs`) +
             FfiConverterOptionalSequenceString.allocationSize(value.`httpsHosts`) +
             FfiConverterBoolean.allocationSize(value.`allowLocalNetwork`) +
-            FfiConverterOptionalULong.allocationSize(value.`maxHeapBytes`)
+            FfiConverterOptionalULong.allocationSize(value.`maxHeapBytes`) +
+            FfiConverterOptionalTypeProgramLines.allocationSize(value.`programLines`)
     )
 
     override fun write(value: LiveOptions, buf: ByteBuffer) {
@@ -4063,6 +4071,48 @@ public object FfiConverterTypeLiveOptions: FfiConverterRustBuffer<LiveOptions> {
             FfiConverterOptionalSequenceString.write(value.`httpsHosts`, buf)
             FfiConverterBoolean.write(value.`allowLocalNetwork`, buf)
             FfiConverterOptionalULong.write(value.`maxHeapBytes`, buf)
+            FfiConverterOptionalTypeProgramLines.write(value.`programLines`, buf)
+    }
+}
+
+
+
+/**
+ * Lines `first` to `last` of a source (1-based, inclusive).
+ */
+data class ProgramLines (
+    var `first`: kotlin.UInt
+    , 
+    var `last`: kotlin.UInt
+    
+){
+    
+
+    
+
+    
+    companion object
+}
+
+/**
+ * @suppress
+ */
+public object FfiConverterTypeProgramLines: FfiConverterRustBuffer<ProgramLines> {
+    override fun read(buf: ByteBuffer): ProgramLines {
+        return ProgramLines(
+            FfiConverterUInt.read(buf),
+            FfiConverterUInt.read(buf),
+        )
+    }
+
+    override fun allocationSize(value: ProgramLines) = (
+            FfiConverterUInt.allocationSize(value.`first`) +
+            FfiConverterUInt.allocationSize(value.`last`)
+    )
+
+    override fun write(value: ProgramLines, buf: ByteBuffer) {
+            FfiConverterUInt.write(value.`first`, buf)
+            FfiConverterUInt.write(value.`last`, buf)
     }
 }
 
@@ -4087,6 +4137,12 @@ data class RunOptions (
      * fails with `MemoryLimitExceeded`.
      */
     var `maxHeapBytes`: kotlin.ULong? = null 
+    , 
+    /**
+     * The source's lines that are the program's own; the rest is the host's code around it (a prelude, an entry
+     * call). An error raised there, or by a host function called from there, is at the nearest line of the program.
+     */
+    var `programLines`: ProgramLines? = null 
     
 ){
     
@@ -4106,19 +4162,22 @@ public object FfiConverterTypeRunOptions: FfiConverterRustBuffer<RunOptions> {
             FfiConverterOptionalULong.read(buf),
             FfiConverterOptionalULong.read(buf),
             FfiConverterOptionalULong.read(buf),
+            FfiConverterOptionalTypeProgramLines.read(buf),
         )
     }
 
     override fun allocationSize(value: RunOptions) = (
             FfiConverterOptionalULong.allocationSize(value.`timeoutMs`) +
             FfiConverterOptionalULong.allocationSize(value.`maxOutputBytes`) +
-            FfiConverterOptionalULong.allocationSize(value.`maxHeapBytes`)
+            FfiConverterOptionalULong.allocationSize(value.`maxHeapBytes`) +
+            FfiConverterOptionalTypeProgramLines.allocationSize(value.`programLines`)
     )
 
     override fun write(value: RunOptions, buf: ByteBuffer) {
             FfiConverterOptionalULong.write(value.`timeoutMs`, buf)
             FfiConverterOptionalULong.write(value.`maxOutputBytes`, buf)
             FfiConverterOptionalULong.write(value.`maxHeapBytes`, buf)
+            FfiConverterOptionalTypeProgramLines.write(value.`programLines`, buf)
     }
 }
 
@@ -4160,12 +4219,15 @@ sealed class GpuCanvasState {
     
     /**
      * An error stopped it for the rest of the run: its placeholder with `message`. With `report`, report it once
-     * (a program error); a client error is logged.
+     * (a program error); a client error is logged. `line` and `column`: a batch's error is at the post that carried
+     * it (`LiveOptions::program_lines`: the nearest line of the program).
      */
     data class Stopped(
         val `kind`: com.anomalyco.psychoscript.GpuErrorKind, 
         val `message`: kotlin.String, 
-        val `report`: kotlin.Boolean) : GpuCanvasState()
+        val `report`: kotlin.Boolean, 
+        val `line`: kotlin.UInt?, 
+        val `column`: kotlin.UInt?) : GpuCanvasState()
         
     {
         
@@ -4212,6 +4274,8 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
                 FfiConverterTypeGpuErrorKind.read(buf),
                 FfiConverterString.read(buf),
                 FfiConverterBoolean.read(buf),
+                FfiConverterOptionalUInt.read(buf),
+                FfiConverterOptionalUInt.read(buf),
                 )
             4 -> GpuCanvasState.Lost(
                 FfiConverterString.read(buf),
@@ -4242,6 +4306,8 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
                 + FfiConverterTypeGpuErrorKind.allocationSize(value.`kind`)
                 + FfiConverterString.allocationSize(value.`message`)
                 + FfiConverterBoolean.allocationSize(value.`report`)
+                + FfiConverterOptionalUInt.allocationSize(value.`line`)
+                + FfiConverterOptionalUInt.allocationSize(value.`column`)
             )
         }
         is GpuCanvasState.Lost -> {
@@ -4270,6 +4336,8 @@ public object FfiConverterTypeGpuCanvasState : FfiConverterRustBuffer<GpuCanvasS
                 FfiConverterTypeGpuErrorKind.write(value.`kind`, buf)
                 FfiConverterString.write(value.`message`, buf)
                 FfiConverterBoolean.write(value.`report`, buf)
+                FfiConverterOptionalUInt.write(value.`line`, buf)
+                FfiConverterOptionalUInt.write(value.`column`, buf)
                 Unit
             }
             is GpuCanvasState.Lost -> {
@@ -5164,6 +5232,38 @@ public object FfiConverterOptionalTypeValueEncoder: FfiConverterRustBuffer<Value
         } else {
             buf.put(1)
             FfiConverterTypeValueEncoder.write(value, buf)
+        }
+    }
+}
+
+
+
+
+/**
+ * @suppress
+ */
+public object FfiConverterOptionalTypeProgramLines: FfiConverterRustBuffer<ProgramLines?> {
+    override fun read(buf: ByteBuffer): ProgramLines? {
+        if (buf.get().toInt() == 0) {
+            return null
+        }
+        return FfiConverterTypeProgramLines.read(buf)
+    }
+
+    override fun allocationSize(value: ProgramLines?): ULong {
+        if (value == null) {
+            return 1UL
+        } else {
+            return 1UL + FfiConverterTypeProgramLines.allocationSize(value)
+        }
+    }
+
+    override fun write(value: ProgramLines?, buf: ByteBuffer) {
+        if (value == null) {
+            buf.put(0)
+        } else {
+            buf.put(1)
+            FfiConverterTypeProgramLines.write(value, buf)
         }
     }
 }

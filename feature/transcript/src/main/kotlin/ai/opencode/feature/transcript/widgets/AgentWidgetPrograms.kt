@@ -42,11 +42,13 @@ class AgentWidgetPrograms(
                 scope.async {
                     val info = transport.program(server, directory, ref)
                     val started = System.nanoTime()
+                    // The widget template's own lines, after the prelude's.
+                    val lines = if (info.sourceLineOffset > 0) info.sourceLineOffset + 1..info.program.count { it == '\n' } + 1 else null
                     val compiled = try {
                         if (info.isLive) {
-                            Compiled(info, null, engine.compileLive(info.program))
+                            Compiled(info, null, engine.compileLive(info.program, lines))
                         } else {
-                            Compiled(info, engine.compile(info.program), null)
+                            Compiled(info, engine.compile(info.program, lines), null)
                         }
                     } catch (error: AgentWidgetEngineException) {
                         throw CompileFailed(error, info)

@@ -130,8 +130,8 @@ and widgets show "The widget runtime isn't available".
 
 ## Runtime pin
 
-`scripts/psychoscript.sh` pins opencode `761635c` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile takes
-PsychoScript's crates from crates.io (psychoscript 0.1.1, psychoscript-gpu 0.1.0, psychoscript-mobile 0.1.0; wgpu-hal
+`scripts/psychoscript.sh` pins opencode `d8b0f68` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile takes
+PsychoScript's crates from crates.io (psychoscript 0.1.2, psychoscript-gpu 0.1.0, psychoscript-mobile 0.2.0; wgpu-hal
 patched to PsychoScript `dev` 2ef493f's Metal fix). Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
 compute (the `next({ timeout })` → `sleep` SliceBudget stop is gone; `wait-probe` finishes), and dev-mode local
 network. `fetch` connects only to `FetchRequest.addresses` (resolved and checked once by the runner; OkHttp `Dns`
@@ -184,14 +184,11 @@ or Developer Mode). Cleartext `http:` still needs the debug network security con
 ## Open
 
 
-- Positions in reports (`AgentWidgetReportTests`, the same on psychoscript-mobile `ffb5098` and widget-mobile `d63f5c5` and `761635c`):
-  syntax errors and runtime errors the VM locates (a `ReferenceError`) report the template's line and column. None
-  for: a thrown value or `Error` (`throw` in a step or `main`); a denied fetch the program lets throw (phase `main`,
-  `Uncaught: {"kind":"CapabilityDenied",…}`; the runtime's rejection has no position; caught, nothing is reported);
-  a GPU batch the device rejects (phase `gpu`, wgpu's message: `onGpuCanvas(Stopped)` has no position, batches are
-  replayed after the program recorded them); the recording API's `TypeError`s and encoder errors at a host call (the
-  runtime locates them in the preludes, `widget.gpu` or `__host.post`, which aren't the template's lines). Giving
-  these the program's line needs the runtime to report the template frame's position.
+- Positions in reports (`AgentWidgetReportTests`, widget-mobile `d8b0f68`): the engine passes the template's lines
+  (`programLines`, from `sourceLineOffset`) to every run, so the runtime locates errors raised in the preludes or by
+  host calls from them at the template's nearest frame: an uncaught fetch rejection (phase `fetch` from its kind), a
+  recording API `TypeError`, an encoder error, and a GPU batch's error (`Stopped`'s line: the frame request that
+  posted it). Before `d8b0f68` (and on `ffb5098`) these had none.
 - Translations were made with `--model opencode/deepseek-v4-pro --review-model opencode/deepseek-v4-pro` (the
   default `opencode/gpt-6.1-sol` was unavailable); a maintainer may want a pass with the default models.
 - No `@Preview`s for widgets yet; `AgentWidgetTests` covers the readers, machine and tool call.

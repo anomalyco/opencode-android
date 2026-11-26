@@ -12,10 +12,11 @@ import android.view.Surface
 interface AgentWidgetEngine {
     val isAvailable: Boolean
 
-    fun compile(program: String): AgentWidgetProgram
+    /** [lines]: the program's lines that are the widget template's own (errors in the prelude are located there). */
+    fun compile(program: String, lines: IntRange? = null): AgentWidgetProgram
 
     /** A live widget template's program, run with `return await __widget_live(__input())` (specs/v2/widgets-live.md). */
-    fun compileLive(program: String): AgentWidgetLiveProgram
+    fun compileLive(program: String, lines: IntRange? = null): AgentWidgetLiveProgram
 
     /** The runtime's handle on [surface] (an `ANativeWindow`) for a GPU canvas; close it once nothing presents into it. */
     fun gpuSurface(surface: Surface): AgentWidgetGpuSurface
@@ -31,8 +32,8 @@ interface AgentWidgetEngine {
     /** Without the native runtime every widget shows its error card. */
     object Unavailable : AgentWidgetEngine {
         override val isAvailable: Boolean = false
-        override fun compile(program: String): AgentWidgetProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
-        override fun compileLive(program: String): AgentWidgetLiveProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
+        override fun compile(program: String, lines: IntRange?): AgentWidgetProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
+        override fun compileLive(program: String, lines: IntRange?): AgentWidgetLiveProgram = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
         override fun gpuSurface(surface: Surface): AgentWidgetGpuSurface = throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
         override fun shaderCanvas(wgsl: String, surface: AgentWidgetGpuSurface, width: Int, height: Int): AgentWidgetShaderCanvas =
             throw AgentWidgetEngineException(UNAVAILABLE, isProgramError = false)
@@ -127,8 +128,8 @@ sealed interface AgentWidgetGpuState {
     data class Unavailable(val reason: String) : AgentWidgetGpuState
     /** The device was lost until the program draws again; [reason] is wgpu's, for developers. */
     data class Lost(val reason: String) : AgentWidgetGpuState
-    /** An error stopped it for the rest of the run; [report] a [program] one once, in phase `gpu`. */
-    data class Stopped(val program: Boolean, val message: String, val report: Boolean) : AgentWidgetGpuState
+    /** An error stopped it for the rest of the run; [report] a [program] one once, in phase `gpu`, at [line] and [column]. */
+    data class Stopped(val program: Boolean, val message: String, val report: Boolean, val line: Int? = null, val column: Int? = null) : AgentWidgetGpuState
 }
 
 /** A live program, compiled once: each open widget starts its own run of it. */
