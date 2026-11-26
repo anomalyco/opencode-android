@@ -115,6 +115,7 @@
     <string name="server_error_http_status">De server gaf HTTP %1$d terug.</string>
     <string name="server_error_event_stream_http">De gebeurtenisstroom gaf HTTP %1$d terug.</string>
     <string name="server_error_event_stream_oversized_frame">De gebeurtenisstroom heeft een te groot frame verstuurd.</string>
+    <string name="server_error_response_too_large">Het antwoord van de server is te groot voor dit apparaat.</string>
     <string name="server_error_event_stream_ended">De gebeurtenisstroom is beëindigd.</string>
     <string name="server_error_event_stream_server_failure">De gebeurtenisstroom heeft een serverfout gemeld.</string>
     <string name="server_tool_failed">Hulpmiddel mislukt</string>

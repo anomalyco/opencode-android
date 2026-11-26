@@ -109,6 +109,7 @@
     <string name="server_error_http_status">Server mengembalikan HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Aliran event mengembalikan HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Aliran event mengirim bingkai yang terlalu besar.</string>
+    <string name="server_error_response_too_large">Respons server terlalu besar untuk perangkat ini.</string>
     <string name="server_error_event_stream_ended">Aliran event berakhir.</string>
     <string name="server_error_event_stream_server_failure">Aliran event melaporkan kegagalan server.</string>
     <string name="server_tool_failed">Alat gagal</string>

@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Сервер HTTP %1$d баргардонд.</string>
     <string name="server_error_event_stream_http">Ҷараёни рӯйдодҳо HTTP %1$d баргардонд.</string>
     <string name="server_error_event_stream_oversized_frame">Ҷараёни рӯйдодҳо чорчӯбаи аз ҳад калон фиристод.</string>
+    <string name="server_error_response_too_large">Ҷавоби сервер барои ин дастгоҳ хеле калон аст.</string>
     <string name="server_error_event_stream_ended">Ҷараёни рӯйдодҳо анҷом ёфт.</string>
     <string name="server_error_event_stream_server_failure">Ҷараёни рӯйдодҳо аз хатои сервер хабар дод.</string>
     <string name="server_tool_failed">Абзор ноком шуд</string>

@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Сервер HTTP %1$d буцаалаа.</string>
     <string name="server_error_event_stream_http">Үйл явдлын урсгал HTTP %1$d буцаалаа.</string>
     <string name="server_error_event_stream_oversized_frame">Үйл явдлын урсгал хэт том өгөгдлийн багц илгээлээ.</string>
+    <string name="server_error_response_too_large">Серверийн хариулт энэ төхөөрөмжид хэт том байна.</string>
     <string name="server_error_event_stream_ended">Үйл явдлын урсгал дууслаа.</string>
     <string name="server_error_event_stream_server_failure">Үйл явдлын урсгал серверийн алдаа мэдээллээ.</string>
     <string name="server_tool_failed">Хэрэгсэл амжилтгүй боллоо</string>

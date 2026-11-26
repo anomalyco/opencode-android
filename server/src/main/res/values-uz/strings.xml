@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Server HTTP %1$d javobini qaytardi.</string>
     <string name="server_error_event_stream_http">Hodisalar oqimi HTTP %1$d javobini qaytardi.</string>
     <string name="server_error_event_stream_oversized_frame">Hodisalar oqimi juda katta kadr yubordi.</string>
+    <string name="server_error_response_too_large">Server javobi bu qurilma uchun juda katta.</string>
     <string name="server_error_event_stream_ended">Hodisalar oqimi tugadi.</string>
     <string name="server_error_event_stream_server_failure">Hodisalar oqimi serverdagi xato haqida xabar berdi.</string>
     <string name="server_tool_failed">Vosita ishi muvaffaqiyatsiz tugadi</string>

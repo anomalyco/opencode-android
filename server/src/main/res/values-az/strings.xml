@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Server HTTP %1$d qaytardı.</string>
     <string name="server_error_event_stream_http">Hadisə axını HTTP %1$d qaytardı.</string>
     <string name="server_error_event_stream_oversized_frame">Hadisə axını həddindən artıq böyük kadr göndərdi.</string>
+    <string name="server_error_response_too_large">Serverin cavabı bu cihaz üçün çox böyükdür.</string>
     <string name="server_error_event_stream_ended">Hadisə axını bitdi.</string>
     <string name="server_error_event_stream_server_failure">Hadisə axını server xətası bildirdi.</string>
     <string name="server_tool_failed">Alət uğursuz oldu</string>

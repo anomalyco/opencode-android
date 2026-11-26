@@ -115,6 +115,7 @@
     <string name="server_error_http_status">सर्भरले HTTP %1$d फर्कायो।</string>
     <string name="server_error_event_stream_http">घटना स्ट्रिमले HTTP %1$d फर्कायो।</string>
     <string name="server_error_event_stream_oversized_frame">घटना स्ट्रिमले अत्यधिक ठूलो फ्रेम पठायो।</string>
+    <string name="server_error_response_too_large">सर्भरको प्रतिक्रिया यो उपकरणका लागि धेरै ठूलो छ।</string>
     <string name="server_error_event_stream_ended">घटना स्ट्रिम समाप्त भयो।</string>
     <string name="server_error_event_stream_server_failure">घटना स्ट्रिमले सर्भर असफल भएको जानकारी दियो।</string>
     <string name="server_tool_failed">उपकरण असफल भयो</string>

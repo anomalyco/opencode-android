@@ -115,6 +115,7 @@
     <string name="server_error_http_status">सर्वर ने HTTP %1$d लौटाया।</string>
     <string name="server_error_event_stream_http">इवेंट स्ट्रीम ने HTTP %1$d लौटाया।</string>
     <string name="server_error_event_stream_oversized_frame">इवेंट स्ट्रीम ने बहुत बड़ा फ़्रेम भेजा।</string>
+    <string name="server_error_response_too_large">सर्वर की प्रतिक्रिया इस डिवाइस के लिए बहुत बड़ी है।</string>
     <string name="server_error_event_stream_ended">इवेंट स्ट्रीम समाप्त हो गई।</string>
     <string name="server_error_event_stream_server_failure">इवेंट स्ट्रीम ने सर्वर की विफलता की सूचना दी।</string>
     <string name="server_tool_failed">टूल असफल</string>

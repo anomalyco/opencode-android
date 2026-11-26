@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Der Server hat HTTP %1$d zurückgegeben.</string>
     <string name="server_error_event_stream_http">Der Ereignisstream hat HTTP %1$d zurückgegeben.</string>
     <string name="server_error_event_stream_oversized_frame">Der Ereignisstream hat einen zu großen Datenblock gesendet.</string>
+    <string name="server_error_response_too_large">Die Antwort des Servers ist zu groß für dieses Gerät.</string>
     <string name="server_error_event_stream_ended">Der Ereignisstream wurde beendet.</string>
     <string name="server_error_event_stream_server_failure">Der Ereignisstream hat einen Serverfehler gemeldet.</string>
     <string name="server_tool_failed">Tool fehlgeschlagen</string>

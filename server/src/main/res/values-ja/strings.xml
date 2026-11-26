@@ -109,6 +109,7 @@
     <string name="server_error_http_status">サーバーがHTTP %1$dを返しました。</string>
     <string name="server_error_event_stream_http">イベントストリームがHTTP %1$dを返しました。</string>
     <string name="server_error_event_stream_oversized_frame">イベントストリームが大きすぎるフレームを送信しました。</string>
+    <string name="server_error_response_too_large">サーバーからの応答がこのデバイスには大きすぎます。</string>
     <string name="server_error_event_stream_ended">イベントストリームが終了しました。</string>
     <string name="server_error_event_stream_server_failure">イベントストリームがサーバーの障害を報告しました。</string>
     <string name="server_tool_failed">ツールが失敗しました</string>

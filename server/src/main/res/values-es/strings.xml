@@ -121,6 +121,7 @@
     <string name="server_error_http_status">El servidor devolvió HTTP %1$d.</string>
     <string name="server_error_event_stream_http">El flujo de eventos devolvió HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">El flujo de eventos envió una trama demasiado grande.</string>
+    <string name="server_error_response_too_large">La respuesta del servidor es demasiado grande para este dispositivo.</string>
     <string name="server_error_event_stream_ended">El flujo de eventos finalizó.</string>
     <string name="server_error_event_stream_server_failure">El flujo de eventos notificó un fallo del servidor.</string>
     <string name="server_tool_failed">La herramienta falló</string>

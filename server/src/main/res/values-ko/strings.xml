@@ -109,6 +109,7 @@
     <string name="server_error_http_status">서버가 HTTP %1$d을 반환했어요.</string>
     <string name="server_error_event_stream_http">이벤트 스트림이 HTTP %1$d을 반환했어요.</string>
     <string name="server_error_event_stream_oversized_frame">이벤트 스트림이 너무 큰 프레임을 보냈어요.</string>
+    <string name="server_error_response_too_large">서버 응답이 이 기기에는 너무 커요.</string>
     <string name="server_error_event_stream_ended">이벤트 스트림이 종료됐어요.</string>
     <string name="server_error_event_stream_server_failure">이벤트 스트림에서 서버 오류를 보고했어요.</string>
     <string name="server_tool_failed">도구 실행 실패</string>

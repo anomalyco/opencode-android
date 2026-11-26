@@ -109,6 +109,7 @@
     <string name="server_error_http_status">伺服器傳回 HTTP %1$d。</string>
     <string name="server_error_event_stream_http">事件串流傳回 HTTP %1$d。</string>
     <string name="server_error_event_stream_oversized_frame">事件串流傳送的訊框過大。</string>
+    <string name="server_error_response_too_large">伺服器的回應太大，這台裝置無法處理。</string>
     <string name="server_error_event_stream_ended">事件串流已結束。</string>
     <string name="server_error_event_stream_server_failure">事件串流回報伺服器故障。</string>
     <string name="server_tool_failed">工具執行失敗</string>

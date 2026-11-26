@@ -121,6 +121,7 @@
     <string name="server_error_http_status">Poslužitelj je vratio HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Tok događaja vratio je HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Tok događaja poslao je prevelik okvir.</string>
+    <string name="server_error_response_too_large">Odgovor poslužitelja je prevelik za ovaj uređaj.</string>
     <string name="server_error_event_stream_ended">Tok događaja je završen.</string>
     <string name="server_error_event_stream_server_failure">Tok događaja prijavio je pogrešku poslužitelja.</string>
     <string name="server_tool_failed">Alat nije uspio</string>

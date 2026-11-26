@@ -115,6 +115,7 @@
     <string name="server_error_http_status">সার্ভার HTTP %1$d ফেরত দিয়েছে।</string>
     <string name="server_error_event_stream_http">ইভেন্ট স্ট্রিম HTTP %1$d ফেরত দিয়েছে।</string>
     <string name="server_error_event_stream_oversized_frame">ইভেন্ট স্ট্রিম অতিরিক্ত বড় একটি ফ্রেম পাঠিয়েছে।</string>
+    <string name="server_error_response_too_large">সার্ভারের প্রতিক্রিয়া এই ডিভাইসের জন্য খুব বড়।</string>
     <string name="server_error_event_stream_ended">ইভেন্ট স্ট্রিম শেষ হয়েছে।</string>
     <string name="server_error_event_stream_server_failure">ইভেন্ট স্ট্রিম সার্ভারের ব্যর্থতার কথা জানিয়েছে।</string>
     <string name="server_tool_failed">টুল ব্যর্থ হয়েছে</string>

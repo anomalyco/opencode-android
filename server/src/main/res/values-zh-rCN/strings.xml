@@ -109,6 +109,7 @@
     <string name="server_error_http_status">服务器返回了 HTTP %1$d。</string>
     <string name="server_error_event_stream_http">事件流返回了 HTTP %1$d。</string>
     <string name="server_error_event_stream_oversized_frame">事件流发送的帧过大。</string>
+    <string name="server_error_response_too_large">服务器响应过大，此设备无法处理。</string>
     <string name="server_error_event_stream_ended">事件流已结束。</string>
     <string name="server_error_event_stream_server_failure">事件流报告了服务器故障。</string>
     <string name="server_tool_failed">工具执行失败</string>

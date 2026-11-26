@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Palvelin palautti HTTP-tilakoodin %1$d.</string>
     <string name="server_error_event_stream_http">Tapahtumavirta palautti HTTP-tilakoodin %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Tapahtumavirta lähetti liian suuren kehyksen.</string>
+    <string name="server_error_response_too_large">Palvelimen vastaus on liian suuri tälle laitteelle.</string>
     <string name="server_error_event_stream_ended">Tapahtumavirta päättyi.</string>
     <string name="server_error_event_stream_server_failure">Tapahtumavirta ilmoitti palvelinvirheestä.</string>
     <string name="server_tool_failed">Työkalu epäonnistui</string>

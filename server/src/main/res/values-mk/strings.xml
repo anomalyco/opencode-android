@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Серверот врати HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Текот на настани врати HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Текот на настани испрати преголема рамка.</string>
+    <string name="server_error_response_too_large">Одговорот од серверот е преголем за овој уред.</string>
     <string name="server_error_event_stream_ended">Текот на настани заврши.</string>
     <string name="server_error_event_stream_server_failure">Текот на настани пријави грешка на серверот.</string>
     <string name="server_tool_failed">Алатката не успеа</string>

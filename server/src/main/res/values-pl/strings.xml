@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Serwer zwrócił kod HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Strumień zdarzeń zwrócił kod HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Strumień zdarzeń wysłał zbyt dużą ramkę.</string>
+    <string name="server_error_response_too_large">Odpowiedź serwera jest za duża dla tego urządzenia.</string>
     <string name="server_error_event_stream_ended">Strumień zdarzeń został zakończony.</string>
     <string name="server_error_event_stream_server_failure">Strumień zdarzeń zgłosił błąd serwera.</string>
     <string name="server_tool_failed">Błąd narzędzia</string>

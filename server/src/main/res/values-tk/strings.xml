@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Serwer HTTP %1$d gaýtardy.</string>
     <string name="server_error_event_stream_http">Wakalar akymy HTTP %1$d gaýtardy.</string>
     <string name="server_error_event_stream_oversized_frame">Wakalar akymy aşa uly maglumat bölegini iberdi.</string>
+    <string name="server_error_response_too_large">Serweriň jogaby bu enjam üçin gaty uly.</string>
     <string name="server_error_event_stream_ended">Wakalar akymy tamamlandy.</string>
     <string name="server_error_event_stream_server_failure">Wakalar akymy serwer näsazlygyny habar berdi.</string>
     <string name="server_tool_failed">Gural şowsuz boldy</string>

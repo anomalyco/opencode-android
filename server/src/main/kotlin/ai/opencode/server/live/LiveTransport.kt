@@ -104,8 +104,11 @@ internal fun <T> decoded(data: ByteArray, serializer: KSerializer<T>, name: Stri
 internal inline fun <reified T> decodedAs(data: ByteArray, name: String = "server response"): T =
     decoded(data, serializer<T>(), name)
 
+/** A quarter of the heap: reading and decoding a body takes several times its size. */
+internal val MAX_RESPONSE_BYTES = Runtime.getRuntime().maxMemory() / 4
+
 /** Runs [call], reading the whole body on OkHttp's thread; cancelling the coroutine cancels the call. */
-internal suspend fun Call.awaitResponse(): RawResponse = suspendCancellableCoroutine { continuation ->
+internal suspend fun Call.awaitResponse(maxBytes: Long = MAX_RESPONSE_BYTES): RawResponse = suspendCancellableCoroutine { continuation ->
     continuation.invokeOnCancellation { cancel() }
     enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
@@ -114,9 +117,22 @@ internal suspend fun Call.awaitResponse(): RawResponse = suspendCancellableCorou
 
         override fun onResponse(call: Call, response: Response) {
             val result = try {
-                response.use { RawResponse(it.code, it.headers, it.body.bytes(), it.request.url) }
+                response.use {
+                    val source = it.body.source()
+                    if (it.body.contentLength() > maxBytes || source.request(maxBytes + 1)) {
+                        null
+                    } else {
+                        RawResponse(it.code, it.headers, source.readByteArray(), it.request.url)
+                    }
+                }
             } catch (e: IOException) {
                 if (continuation.isActive) continuation.resumeWithException(e)
+                return
+            } catch (_: OutOfMemoryError) {
+                null
+            }
+            if (result == null) {
+                if (continuation.isActive) continuation.resumeWithException(OpenCodeClientError(localized(R.string.server_error_response_too_large)))
                 return
             }
             continuation.resume(result)

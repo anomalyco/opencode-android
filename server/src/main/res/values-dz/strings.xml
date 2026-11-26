@@ -109,6 +109,7 @@
     <string name="server_error_http_status">སར་བར་གྱིས་ HTTP %1$d ལོག་བཏང་ནུག།</string>
     <string name="server_error_event_stream_http">བྱུང་ལས་རྒྱུན་གྱིས་ HTTP %1$d ལོག་བཏང་ནུག།</string>
     <string name="server_error_event_stream_oversized_frame">བྱུང་ལས་རྒྱུན་གྱིས་གནས་སྡུད་ཆ་ཚན་སྦོམ་དྲགས་ཅིག་བཏང་ནུག།</string>
+    <string name="server_error_response_too_large">སར་བར་གྱི་ལན་གསལ་འདི་ཐབས་འཕྲུལ་འདིའི་དོན་ལུ་སྦོམ་དྲགས་པས།</string>
     <string name="server_error_event_stream_ended">བྱུང་ལས་རྒྱུན་མཇུག་བསྡུ་ནུག།</string>
     <string name="server_error_event_stream_server_failure">བྱུང་ལས་རྒྱུན་གྱིས་སར་བར་མཐར་མ་འཁྱོལ་བའི་སྙན་ཞུ་འབད་ནུག།</string>
     <string name="server_tool_failed">ལག་ཆ་མཐར་མ་འཁྱོལ་བ།</string>

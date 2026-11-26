@@ -127,6 +127,7 @@
     <string name="server_error_http_status">Сервер вернул HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Поток событий вернул HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Поток событий отправил слишком большой кадр.</string>
+    <string name="server_error_response_too_large">Ответ сервера слишком большой для этого устройства.</string>
     <string name="server_error_event_stream_ended">Поток событий завершён.</string>
     <string name="server_error_event_stream_server_failure">Поток событий сообщил об ошибке сервера.</string>
     <string name="server_tool_failed">Ошибка инструмента</string>

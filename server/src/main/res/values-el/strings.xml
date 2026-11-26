@@ -115,6 +115,7 @@
     <string name="server_error_http_status">Ο διακομιστής επέστρεψε HTTP %1$d.</string>
     <string name="server_error_event_stream_http">Η ροή συμβάντων επέστρεψε HTTP %1$d.</string>
     <string name="server_error_event_stream_oversized_frame">Η ροή συμβάντων έστειλε ένα υπερβολικά μεγάλο πλαίσιο.</string>
+    <string name="server_error_response_too_large">Η απάντηση του διακομιστή είναι πολύ μεγάλη για αυτή τη συσκευή.</string>
     <string name="server_error_event_stream_ended">Η ροή συμβάντων τερματίστηκε.</string>
     <string name="server_error_event_stream_server_failure">Η ροή συμβάντων ανέφερε αποτυχία διακομιστή.</string>
     <string name="server_tool_failed">Το εργαλείο απέτυχε</string>

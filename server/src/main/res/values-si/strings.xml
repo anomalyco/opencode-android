@@ -115,6 +115,7 @@
     <string name="server_error_http_status">සේවාදායකයෙන් HTTP %1$d ලැබුණා.</string>
     <string name="server_error_event_stream_http">සිදුවීම් ප්‍රවාහයෙන් HTTP %1$d ලැබුණා.</string>
     <string name="server_error_event_stream_oversized_frame">සිදුවීම් ප්‍රවාහය විශාල වැඩි දත්ත රාමුවක් එවා ඇත.</string>
+    <string name="server_error_response_too_large">සේවාදායකයේ ප්‍රතිචාරය මෙම උපාංගයට විශාල වැඩියි.</string>
     <string name="server_error_event_stream_ended">සිදුවීම් ප්‍රවාහය අවසන් වුණා.</string>
     <string name="server_error_event_stream_server_failure">සිදුවීම් ප්‍රවාහය සේවාදායක දෝෂයක් වාර්තා කළා.</string>
     <string name="server_tool_failed">මෙවලම අසාර්ථකයි</string>
