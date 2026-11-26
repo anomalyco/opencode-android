@@ -130,8 +130,9 @@ and widgets show "The widget runtime isn't available".
 
 ## Runtime pin
 
-`scripts/psychoscript.sh` pins opencode `d63f5c5` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile links
-psychoscript-mobile `2e2c019`. Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
+`scripts/psychoscript.sh` pins opencode `761635c` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile takes
+PsychoScript's crates from crates.io (psychoscript 0.1.1, psychoscript-gpu 0.1.0, psychoscript-mobile 0.1.0; wgpu-hal
+patched to PsychoScript `dev` 2ef493f's Metal fix). Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
 compute (the `next({ timeout })` → `sleep` SliceBudget stop is gone; `wait-probe` finishes), and dev-mode local
 network. `fetch` connects only to `FetchRequest.addresses` (resolved and checked once by the runner; OkHttp `Dns`
 returns them), and `LiveOptions.allowLocalNetwork` is `AgentWidgetCapabilities.allowsLocalNetwork` (a debug build
@@ -183,7 +184,7 @@ or Developer Mode). Cleartext `http:` still needs the debug network security con
 ## Open
 
 
-- Positions in reports (`AgentWidgetReportTests`, the same on psychoscript-mobile `ffb5098` and widget-mobile `d63f5c5`):
+- Positions in reports (`AgentWidgetReportTests`, the same on psychoscript-mobile `ffb5098` and widget-mobile `d63f5c5` and `761635c`):
   syntax errors and runtime errors the VM locates (a `ReferenceError`) report the template's line and column. None
   for: a thrown value or `Error` (`throw` in a step or `main`); a denied fetch the program lets throw (phase `main`,
   `Uncaught: {"kind":"CapabilityDenied",…}`; the runtime's rejection has no position; caught, nothing is reported);

@@ -1046,7 +1046,7 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_fetchtransport_cancel() and 0xFFFF) != 11653) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface() and 0xFFFF) != 44206) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_attach_surface() and 0xFFFF) != 52255) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
     if ((lib.uniffi_psychoscript_mobile_checksum_method_liverun_deliver() and 0xFFFF) != 52499) {
@@ -1112,7 +1112,7 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if ((lib.uniffi_psychoscript_mobile_checksum_method_livehandler_on_exit() and 0xFFFF) != 38396) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
-    if ((lib.uniffi_psychoscript_mobile_checksum_method_livehandler_on_gpu_canvas() and 0xFFFF) != 51723) {
+    if ((lib.uniffi_psychoscript_mobile_checksum_method_livehandler_on_gpu_canvas() and 0xFFFF) != 18213) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
 }
@@ -2217,7 +2217,7 @@ public object FfiConverterTypeFetchTransport: FfiConverter<FetchTransport, Long>
 /**
  * Where a GPU canvas is presented: from `GpuSurface.metalLayer(pointer:)` (Swift: `GpuSurface.metal(layer)`) or,
  * on Android, `PsychoScriptGpu.surface(surface)`. It holds the layer or window until it is dropped; attach it to a
- * run's canvas with [`crate::LiveRun::attach_surface`] or give it to a [`super::ShaderCanvas`].
+ * run's canvas with [`crate::LiveRun::attach_surface`], or present into it with a [`super::present::Attached`].
  */
 public interface GpuSurfaceInterface {
     
@@ -2227,7 +2227,7 @@ public interface GpuSurfaceInterface {
 /**
  * Where a GPU canvas is presented: from `GpuSurface.metalLayer(pointer:)` (Swift: `GpuSurface.metal(layer)`) or,
  * on Android, `PsychoScriptGpu.surface(surface)`. It holds the layer or window until it is dropped; attach it to a
- * run's canvas with [`crate::LiveRun::attach_surface`] or give it to a [`super::ShaderCanvas`].
+ * run's canvas with [`crate::LiveRun::attach_surface`], or present into it with a [`super::present::Attached`].
  */
 open class GpuSurface: Disposable, AutoCloseable, GpuSurfaceInterface
 {
@@ -2502,11 +2502,11 @@ public object FfiConverterTypeGpuSurface: FfiConverter<GpuSurface, Long> {
 public interface LiveRunInterface {
     
     /**
-     * Presents the GPU canvas `key` (a `gpu: true` canvas of the view, `widgets-gpu.md`) into `surface`, which is
+     * Presents the GPU canvas `key` (one the program may draw, [`crate::gpu::LiveGpu::canvases`]) into `surface`, which is
      * `width` × `height` physical pixels: the program gets that size (clamped to 4096 a side) before its next frame,
      * and the canvas is scaled to the surface when clamped. Call it again with the new size when the canvas's size
-     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without the
-     * widget encoder's GPU.
+     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without a GPU
+     * (an encoder's [`crate::EncodePosts::surfaces`]).
      */
     fun `attachSurface`(`key`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt)
     
@@ -2663,11 +2663,11 @@ open class LiveRun: Disposable, AutoCloseable, LiveRunInterface
 
     
     /**
-     * Presents the GPU canvas `key` (a `gpu: true` canvas of the view, `widgets-gpu.md`) into `surface`, which is
+     * Presents the GPU canvas `key` (one the program may draw, [`crate::gpu::LiveGpu::canvases`]) into `surface`, which is
      * `width` × `height` physical pixels: the program gets that size (clamped to 4096 a side) before its next frame,
      * and the canvas is scaled to the surface when clamped. Call it again with the new size when the canvas's size
-     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without the
-     * widget encoder's GPU.
+     * changes, or with another surface. Presenting happens on a thread of the run's own. No-op for runs without a GPU
+     * (an encoder's [`crate::EncodePosts::surfaces`]).
      */override fun `attachSurface`(`key`: kotlin.String, `surface`: GpuSurface, `width`: kotlin.UInt, `height`: kotlin.UInt)
         = 
     callWithHandle {
@@ -4025,7 +4025,7 @@ data class LiveOptions (
     , 
     /**
      * Bytes the run's heap may hold (the language's size model, not the process's memory); over it the run ends
-     * with `Failed(MemoryLimitExceeded)`. The spec's default for live widgets is 32 MB: set it.
+     * with `Failed(MemoryLimitExceeded)`. Off by default: set it.
      */
     var `maxHeapBytes`: kotlin.ULong? = null 
     
@@ -4866,8 +4866,8 @@ public interface LiveHandler {
     fun `onExit`(`exit`: LiveExit)
     
     /**
-     * A GPU canvas's state (widget runs, `widgets-gpu.md`): the canvas `key`, or `None` for every GPU canvas of the
-     * run (now and later).
+     * A GPU canvas's state (runs with a GPU, [`crate::gpu::LiveGpu`]): the canvas `key`, or `None` for every GPU canvas
+     * of the run (now and later).
      */
     fun `onGpuCanvas`(`key`: kotlin.String?, `state`: GpuCanvasState)
     
