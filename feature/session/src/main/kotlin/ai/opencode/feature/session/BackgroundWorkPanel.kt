@@ -41,6 +41,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.EnterExitState
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandHorizontally
@@ -74,6 +75,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
@@ -96,6 +98,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
@@ -122,6 +127,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import java.time.Duration
@@ -130,6 +136,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -423,7 +430,7 @@ private class Retained {
  * @param waitingSessionIDs subagents waiting on the user (`waitingSessionIDs`).
  * @param probe where shells' output is read (`shellGlyphProbe`).
  * @param isPresented the panel is open; [onPresentedChange] asks to change it (the capsule, a
- *   tap outside, Back, or the work ending).
+ *   tap outside, a pull down, Back, or the work ending).
  * @param isCovered a panel grown out of the composer (the model list, the level picker) stands
  *   over the capsule's place, so it hides like the pills.
  * @param isPaused the session is covered (a pushed page, Settings): the glyphs hold still and stop probing.
@@ -483,11 +490,14 @@ fun BackgroundWorkPresentation(
     val capsuleAlpha = remember { Animatable(if (hasWork) 1f else 0f) }
     var origin by remember { mutableStateOf(Offset.Zero) }
     var overlayWidth by remember { mutableFloatStateOf(0f) }
+    // How far a finger has pulled the panel down (px).
+    var dragOffset by remember { mutableFloatStateOf(0f) }
 
     val latestPresented by rememberUpdatedState(isPresented)
     val latestHasWork by rememberUpdatedState(hasWork)
     val latestSession by rememberUpdatedState(sessionID)
     val latestCovered by rememberUpdatedState(isCovered)
+    val latestOnPresentedChange by rememberUpdatedState(onPresentedChange)
 
     fun setCapsuleShown(shown: Boolean, animated: Boolean, completion: (() -> Unit)? = null) {
         capsuleShown = shown
@@ -528,6 +538,7 @@ fun BackgroundWorkPresentation(
         val current = motion
         settled = false
         scope.launch { scrollState.scrollTo(0) }
+        dragOffset = 0f
         stage = BackgroundWorkStage.panel
         scope.launch {
             try {
@@ -605,6 +616,44 @@ fun BackgroundWorkPresentation(
     BackHandler(enabled = stage == BackgroundWorkStage.panel && isPresented) { onPresentedChange(false) }
 
     val isPanel = stage == BackgroundWorkStage.panel
+
+    val dragCloses = BackgroundWorkMotion.dragCloses * density.density
+    val pastDragCloses by remember(dragCloses) { derivedStateOf { dragOffset > dragCloses } }
+    HapticEffect(Haptic.threshold, pastDragCloses) { _, past -> past }
+    val panelDrag = remember(density, reduceMotion) {
+        object : NestedScrollConnection {
+            var settle: Job? = null
+
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (source != NestedScrollSource.UserInput || dragOffset <= 0f || available.y >= 0f) return Offset.Zero
+                settle?.cancel()
+                val moved = max(available.y, -dragOffset)
+                dragOffset += moved
+                return Offset(0f, moved)
+            }
+
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                if (source != NestedScrollSource.UserInput || available.y <= 0f) return Offset.Zero
+                settle?.cancel()
+                dragOffset += available.y
+                return Offset(0f, available.y)
+            }
+
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                if (dragOffset <= 0f) return Velocity.Zero
+                val thrown = dragOffset > BackgroundWorkMotion.throwFrom * density.density &&
+                    available.y / density.density > BackgroundWorkMotion.throwCloses
+                if (dragOffset > dragCloses || thrown) {
+                    latestOnPresentedChange(false)
+                } else {
+                    settle = scope.launch {
+                        animate(dragOffset, 0f, animationSpec = Motion.release.animation(reduceMotion = reduceMotion)) { value, _ -> dragOffset = value }
+                    }
+                }
+                return available
+            }
+        }
+    }
 
     Box(modifier.onGloballyPositioned { origin = it.positionInRoot(); overlayWidth = it.size.width.toFloat() }) {
         content()
@@ -727,11 +776,12 @@ fun BackgroundWorkPresentation(
                 .graphicsLayer {
                     val t = progress.value
                     alpha = hiddenAlpha * t
+                    translationY = dragOffset
                     if (!reduceMotion) {
                         val scale = lerp(BackgroundWorkMotion.presentScale, 1f, t)
                         scaleX = scale
                         scaleY = scale
-                        translationY = (1f - t) * BackgroundWorkMotion.presentRise * density.density
+                        translationY += (1f - t) * BackgroundWorkMotion.presentRise * density.density
                         transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, 1f)
                     }
                 }
@@ -739,6 +789,7 @@ fun BackgroundWorkPresentation(
                 .clip(shape)
                 .background(surfaceColor)
                 .openCodeHairline(shape)
+                .nestedScroll(panelDrag)
                 .pointerInput(Unit) { detectTapGestures { } }
                 .then(if (settled && !hidden) Modifier.testTag("background-work-panel") else Modifier.clearAndSetSemantics { }),
             propagateMinConstraints = true,
