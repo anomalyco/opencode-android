@@ -31,9 +31,6 @@ internal object PushNotifications {
     private const val FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY = 0x00010000
     private const val EXTRA_LEAVING = "opencode.push.leaving"
     private const val LEAVING_MILLISECONDS = 300L
-    private const val TINT_ATTENTION = 0xFFF5A524.toInt()
-    private const val TINT_FINISHED = 0xFF30A46C.toInt()
-    private const val TINT_FAILED = 0xFFE5484D.toInt()
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
 
@@ -113,7 +110,6 @@ internal object PushNotifications {
         SystemNotificationChannels.ensure(context)
         val builder = NotificationCompat.Builder(context, SystemNotificationChannels.PUSH_ATTENTION)
             .setSmallIcon(R.drawable.ic_opencode_mark)
-            .setColor(TINT_FAILED)
             .setContentTitle(target.title)
             .setContentText(localized(R.string.system_push_send_failed))
             .setAutoCancel(true)
@@ -145,12 +141,10 @@ internal object PushNotifications {
         val group = "$ref:${message.directory.orEmpty()}"
         val hidden = NotificationCompat.Builder(context, channel)
             .setSmallIcon(R.drawable.ic_opencode_mark)
-            .setColor(tint(shown.kind))
             .setContentTitle(NotificationContent.PLACEHOLDER_TITLE)
             .setContentText(hiddenText(shown.kind))
         val builder = NotificationCompat.Builder(context, channel)
             .setSmallIcon(R.drawable.ic_opencode_mark)
-            .setColor(tint(shown.kind))
             .setContentTitle(shown.title)
             .setContentText(shown.text)
             .setSubText(folder)
@@ -337,12 +331,6 @@ internal object PushNotifications {
         PushShown.Kind.Finished -> SystemNotificationChannels.PUSH_FINISHED
         PushShown.Kind.Failed -> SystemNotificationChannels.PUSH_FAILED
         PushShown.Kind.Other -> SystemNotificationChannels.SESSIONS
-    }
-
-    private fun tint(kind: PushShown.Kind): Int = when (kind) {
-        PushShown.Kind.Permission, PushShown.Kind.Question -> TINT_ATTENTION
-        PushShown.Kind.Finished, PushShown.Kind.Other -> TINT_FINISHED
-        PushShown.Kind.Failed -> TINT_FAILED
     }
 
     private fun category(kind: PushShown.Kind): String = when (kind) {
