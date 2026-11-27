@@ -100,6 +100,8 @@ Notes: the handoff JSON test decodes this port's own format (Android writes and 
 compares with the JSON `:server`'s internal `promptBody` writes; the app's `controlIntentsPostTheirChoice` reads `ControlIntents.perform`
 (what `SystemActionActivity` posts); the publisher runs on virtual time. `AppIconBadgeTests.swift`'s `:feature:system` suites were ported by the lead.
 
+`notifications/PushNotificationTests.kt` (14) has no iOS file: it covers the server's push messages as Android shows them (`PushMessage.parse`, `PushShown.from`, `PushLedger`).
+
 Production bugs the ported tests found: none.
 
 Total: 119 `:feature:system` tests, all passing (`./gradlew :feature:system:testDebugUnitTest`).
