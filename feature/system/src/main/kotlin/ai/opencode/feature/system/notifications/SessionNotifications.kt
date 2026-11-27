@@ -188,7 +188,7 @@ enum class NotificationPresentation { None, Banner, ListOnly }
  * public keys with the saved server ([OpenCodeClient.registerPushDevice], the ref being its device ID); the
  * server seals each push's text with the derived key, so the relay and FCM only carry a
  * `v2` envelope. Only `/v2/notify/` callbacks on the relay are minted or reused
- * ([isEncryptedCallback]); a missing plugin, unavailable key store or failed exchange can
+ * ([isEncryptedCallback]); an unavailable key store or failed exchange can
  * yield a generic "New activity" notification, never a clear-text one.
  *
  * Android pushes ride FCM: the build's push environment is [FCM_ENVIRONMENT], and the token is the
@@ -369,7 +369,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
             if (url == callback.url && retryAt.isAfter(Instant.now())) return callback.url
         }
 
-        // Only public keys cross the direct server connection. A missing plugin, locked key
+        // Only public keys cross the direct server connection. A locked key
         // store or failed handshake can yield a generic v2 notification, never a v1 callback.
         var paired = false
         if (publicKey != null) {

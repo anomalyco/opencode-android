@@ -28,9 +28,9 @@ data class PushShown(
     data class Row(val label: String, val description: String?, val value: String)
 
     companion object {
-        const val MAXIMUM_ROWS = 3
+        private const val MAXIMUM_ROWS = 3
         /** A longer question, or one with line breaks, leaves no room for option rows. */
-        const val MAXIMUM_QUESTION_WITH_ROWS = 120
+        private const val MAXIMUM_QUESTION_WITH_ROWS = 120
         private const val MAXIMUM_CODE_LINES = 4
         /** What an expanded notification shows of an answer at a large font size. */
         private const val MAXIMUM_ANSWER_LINES = 7
@@ -55,14 +55,15 @@ data class PushShown(
         private fun permission(title: String, permission: PushMessage.Permission): PushShown {
             val anything = permission.resources == listOf("*")
             val count = if (anything) 1 else permission.resourceCount ?: permission.resources.size.coerceAtLeast(1)
-            val summary = when (permission.action) {
+            val summary = when (val action = permission.action) {
+                null -> localized(R.string.system_push_public_permission)
                 "shell" -> localizedPlural(R.plurals.system_push_permission_shell, count, count)
                 "edit" -> localizedPlural(R.plurals.system_push_permission_edit, count, count)
                 "read" -> localizedPlural(R.plurals.system_push_permission_read, count, count)
                 "webfetch" -> localized(R.string.system_push_permission_webfetch)
                 "websearch" -> localized(R.string.system_push_permission_websearch)
                 "external_directory" -> localized(R.string.system_push_permission_external_directory)
-                else -> localized(R.string.system_push_permission_other, permission.action)
+                else -> localized(R.string.system_push_permission_other, action)
             }
             val code = if (anything) emptyList() else permission.resources
             val text = if (code.isEmpty()) summary else localized(R.string.system_push_permission_collapsed, summary, code.first())

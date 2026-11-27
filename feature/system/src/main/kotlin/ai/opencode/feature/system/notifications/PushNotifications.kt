@@ -41,18 +41,15 @@ internal object PushNotifications {
     data class Target(val ref: String, val key: String, val sessionID: String?, val title: String)
 
     /** The envelope's box as a push message; null when it can't be opened or isn't one. */
-    fun open(
-        envelope: NotificationContent.Envelope,
-        sharedKey: (String) -> ByteArray = { NotificationKeyStore.live.sharedKey(it) },
-    ): PushMessage? {
-        val text = runCatching { NotificationCrypto.openText(envelope.box, envelope.ref, sharedKey(envelope.ref)) }.getOrNull()
-            ?: return null
+    fun open(envelope: NotificationContent.Envelope): PushMessage? {
+        val key = runCatching { NotificationKeyStore.live.sharedKey(envelope.ref) }.getOrNull() ?: return null
+        val text = runCatching { NotificationCrypto.openText(envelope.box, envelope.ref, key) }.getOrNull() ?: return null
         return PushMessage.parse(text)
     }
 
     fun handle(context: Context, ref: String, message: PushMessage) {
         val now = System.currentTimeMillis()
-        if (message.type == "clear") {
+        if (message.type == "clear" && message.version == 1) {
             var removed = 0
             for (id in message.ids) {
                 val key = "$ref:$id"
@@ -305,6 +302,7 @@ internal object PushNotifications {
         return NotificationCompat.Action.Builder(0, localized(R.string.system_push_action_reply), intent)
             .addRemoteInput(input)
             .setAllowGeneratedReplies(false)
+            .setAuthenticationRequired(true)
             .build()
     }
 

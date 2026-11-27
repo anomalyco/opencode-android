@@ -51,6 +51,13 @@ class PushNotificationTests {
         assertEquals("Wants to run 12 commands", shown.text)
         assertTrue(shown.code.isEmpty())
         assertEquals(listOf(PushShown.Action.Open), shown.actions)
+
+        val idsOnly = shown(
+            """{"v":1,"type":"permission","id":"per_1","title":"Deploy","data":{"requestID":"per_1","replySessionID":"ses_a","truncated":true}}""",
+        )!!
+        assertEquals(PushShown.Kind.Permission, idsOnly.kind)
+        assertEquals("Needs permission", idsOnly.text)
+        assertEquals(listOf(PushShown.Action.Open), idsOnly.actions)
     }
 
     @Test fun shortQuestionOffersItsFirstOptionsAsRowsAndATypedAnswer() {

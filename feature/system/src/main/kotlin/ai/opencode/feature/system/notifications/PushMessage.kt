@@ -31,7 +31,8 @@ data class PushMessage(
     data class Permission(
         val requestID: String,
         val replySessionID: String,
-        val action: String,
+        /** Missing when the server had to cut the request down to its ids. */
+        val action: String? = null,
         val resources: List<String> = emptyList(),
         /** How many resources the request has, when [resources] were left out. */
         val resourceCount: Int? = null,
@@ -97,7 +98,7 @@ data class PushMessage(
             return Permission(
                 requestID = data.string("requestID") ?: return null,
                 replySessionID = replySessionID ?: return null,
-                action = data.string("action") ?: return null,
+                action = data.string("action"),
                 resources = data.strings("resources"),
                 resourceCount = data.int("resourceCount"),
                 save = data.strings("save"),
