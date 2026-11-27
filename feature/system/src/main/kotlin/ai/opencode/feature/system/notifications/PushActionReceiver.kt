@@ -38,7 +38,11 @@ class PushActionReceiver : BroadcastReceiver() {
                 val outcome = withTimeoutOrNull(9.seconds) { send(intent, target) } ?: Outcome.Failed
                 AppLog.app.info { "Push action ${intent.action?.substringAfterLast('.')} outcome=$outcome" }
                 // The server also answers a reply with a clear; removing here just doesn't wait for it.
-                if (outcome == Outcome.Failed) PushNotifications.showSendFailure(application, target) else PushNotifications.cancel(application, key)
+                if (outcome == Outcome.Failed) {
+                    PushNotifications.showSendFailure(application, target)
+                } else {
+                    PushNotifications.cancel(application, key, replied = RemoteInput.getResultsFromIntent(intent) != null)
+                }
             } finally {
                 pending.finish()
             }

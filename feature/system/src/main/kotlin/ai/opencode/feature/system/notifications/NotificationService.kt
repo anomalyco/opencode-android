@@ -164,6 +164,7 @@ object SessionPushNotifications {
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
         for (shown in manager.activeNotifications) {
             if (shown.id != NOTIFICATION_ID || shown.notification.number == count) continue
+            if (shown.notification.extras.getBoolean(EXTRA_COUNTS_AS_ONE)) continue
             runCatching {
                 val updated = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
                     .setNumber(count)
@@ -174,5 +175,7 @@ object SessionPushNotifications {
         }
     }
 
+    /** On a notification the launcher counts as one, whatever the ledger's count is. */
+    internal const val EXTRA_COUNTS_AS_ONE = "opencode.push.countsAsOne"
     internal const val NOTIFICATION_ID = 4201
 }

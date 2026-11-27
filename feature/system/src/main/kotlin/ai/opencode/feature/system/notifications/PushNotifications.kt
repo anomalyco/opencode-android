@@ -27,6 +27,10 @@ internal object PushNotifications {
     const val SUMMARY_ID = 4202
     private const val PREFERENCES = "push-notifications"
     private const val LEDGER = "ledger"
+    /** `Notification.FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY`, which is only named from API 35. */
+    private const val FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY = 0x00010000
+    private const val EXTRA_LEAVING = "opencode.push.leaving"
+    private const val LEAVING_MILLISECONDS = 300L
     private const val TINT_ATTENTION = 0xFFF5A524.toInt()
     private const val TINT_FINISHED = 0xFF30A46C.toInt()
     private const val TINT_FAILED = 0xFFE5484D.toInt()
@@ -69,9 +73,24 @@ internal object PushNotifications {
         post(context, ref, key, message, shown)
     }
 
-    fun cancel(context: Context, key: String) {
+    /** [replied] when a reply typed into the notification is what it is being removed for. */
+    fun cancel(context: Context, key: String, replied: Boolean = false) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        manager.cancel(key, SessionPushNotifications.NOTIFICATION_ID)
+        val shown = manager.activeNotifications.firstOrNull { it.id == SessionPushNotifications.NOTIFICATION_ID && it.tag == key }
+        if (shown != null && shown.notification.extras.getBoolean(EXTRA_LEAVING)) return
+        val kept = shown != null && (shown.notification.flags and FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY) != 0
+        if (shown != null && (replied || kept)) {
+            // Android refuses an app's cancel of a notification that was replied to inline, so it is posted again to time out.
+            runCatching {
+                val again = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
+                    .setOnlyAlertOnce(true)
+                    .setTimeoutAfter(LEAVING_MILLISECONDS)
+                again.extras.putBoolean(EXTRA_LEAVING, true)
+                manager.notify(key, SessionPushNotifications.NOTIFICATION_ID, again.build())
+            }
+        } else {
+            manager.cancel(key, SessionPushNotifications.NOTIFICATION_ID)
+        }
         removeEmptySummaries(context, leaving = key)
     }
 
@@ -83,7 +102,8 @@ internal object PushNotifications {
             if (summary.id != SUMMARY_ID) continue
             val group = summary.notification.group
             val children = active.count {
-                it.id == SessionPushNotifications.NOTIFICATION_ID && it.notification.group == group && it.tag != leaving
+                it.id == SessionPushNotifications.NOTIFICATION_ID && it.notification.group == group && it.tag != leaving &&
+                    !it.notification.extras.getBoolean(EXTRA_LEAVING)
             }
             if (children == 0) manager.cancel(summary.tag, SUMMARY_ID)
         }
@@ -158,11 +178,13 @@ internal object PushNotifications {
         }
         builder.extras.putString(SessionPushNotifications.EXTRA_SESSION, message.sessionID)
         builder.extras.putString(SessionPushNotifications.EXTRA_STATUS, message.type)
+        builder.extras.putBoolean(SessionPushNotifications.EXTRA_COUNTS_AS_ONE, true)
+        builder.setNumber(1)
         if (message.sessionID != null) {
             val defaults = AppBadgeLedger.groupDefaults(context)
             AppBadgeLedger.load(defaults)?.badgeAfterPush(sessionID = message.sessionID, ref = ref)?.let { (ledger, badge) ->
                 ledger.save(defaults)
-                builder.setNumber(badge)
+                AppLog.app.info { "App badge count=$badge" }
             }
         }
         runCatching { NotificationManagerCompat.from(context).notify(key, SessionPushNotifications.NOTIFICATION_ID, builder.build()) }
@@ -177,7 +199,9 @@ internal object PushNotifications {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         val children = mutableSetOf(key)
         for (active in manager.activeNotifications) {
-            if (active.id == SessionPushNotifications.NOTIFICATION_ID && active.notification.group == group) children += active.tag
+            if (active.id != SessionPushNotifications.NOTIFICATION_ID || active.notification.group != group) continue
+            if (active.notification.extras.getBoolean(EXTRA_LEAVING)) continue
+            children += active.tag
         }
         if (children.size < 2) return
         val summary = NotificationCompat.Builder(context, channel)

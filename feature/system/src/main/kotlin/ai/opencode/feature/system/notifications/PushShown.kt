@@ -32,6 +32,12 @@ data class PushShown(
         /** A longer question, or one with line breaks, leaves no room for option rows. */
         const val MAXIMUM_QUESTION_WITH_ROWS = 120
         private const val MAXIMUM_CODE_LINES = 4
+        /** What an expanded notification shows of an answer at a large font size. */
+        private const val MAXIMUM_ANSWER_LINES = 7
+        private const val CHARACTERS_PER_LINE = 38
+        private val heading = Regex("^#{1,6}\\s+")
+        private val bullet = Regex("^[-*+]\\s+")
+        private val link = Regex("\\[([^\\]]+)]\\([^)]*\\)")
 
         /** Null for a message that shows nothing: a clear, or one without text. */
         fun from(message: PushMessage): PushShown? {
@@ -90,7 +96,8 @@ data class PushShown(
             val field = form.fields.firstOrNull()
             val question = field?.description?.takeIf { it.isNotBlank() } ?: field?.title?.takeIf { it.isNotBlank() }
                 ?: body?.takeIf { it.isNotBlank() } ?: localized(R.string.system_push_public_question)
-            val text = question.lineSequence().firstOrNull { it.isNotBlank() } ?: question
+            // A question that opens with a plan asks in its last line.
+            val text = question.lines().lastOrNull { it.isNotBlank() }?.trim() ?: question
             val answerable = form.inlineReply && form.fieldCount == 1 && form.fields.size == 1 && field?.type == "string"
             val isShort = question.length <= MAXIMUM_QUESTION_WITH_ROWS && '\n' !in question
             if (field == null || !answerable || !isShort) {
@@ -124,11 +131,54 @@ data class PushShown(
             val jobs = turn.background.values.sum()
             val note = if (jobs > 0) localizedPlural(R.plurals.system_push_background, jobs, jobs) else null
             if (turn.outcome == "succeeded") {
-                val text = turn.text?.trim()?.takeIf { it.isNotEmpty() } ?: localized(R.string.system_push_finished)
-                return PushShown(Kind.Finished, title, text, note = note, actions = listOf(Action.ReplyToSession))
+                val lines = plainLines(turn.text.orEmpty())
+                if (lines.isEmpty()) {
+                    return PushShown(Kind.Finished, title, localized(R.string.system_push_finished), note = note, actions = listOf(Action.ReplyToSession))
+                }
+                val room = if (note == null) MAXIMUM_ANSWER_LINES else MAXIMUM_ANSWER_LINES - 2
+                return PushShown(
+                    kind = Kind.Finished,
+                    title = title,
+                    text = lines.last(),
+                    expandedText = ending(lines, room),
+                    note = note,
+                    actions = listOf(Action.ReplyToSession),
+                )
             }
             if (turn.outcome != "failed") return null
             return PushShown(Kind.Failed, title, failure(turn), note = note, actions = listOf(Action.ReplyToSession))
+        }
+
+        /** Markdown as the plain lines a notification can show. */
+        private fun plainLines(markdown: String): List<String> {
+            val lines = mutableListOf<String>()
+            for (raw in markdown.lines()) {
+                var line = raw.trim()
+                if (line.startsWith("```")) continue
+                line = heading.replace(line, "")
+                line = bullet.replace(line, "• ")
+                line = link.replace(line, "$1")
+                line = line.replace("**", "").replace("__", "").replace("`", "")
+                if (line.isNotBlank()) lines += line
+            }
+            return lines
+        }
+
+        /** The last of [lines] that fit in [room] wrapped lines: an answer's conclusion comes last. */
+        private fun ending(lines: List<String>, room: Int): String {
+            val kept = ArrayDeque<String>()
+            var left = room
+            for (line in lines.asReversed()) {
+                val height = (line.length + CHARACTERS_PER_LINE - 1) / CHARACTERS_PER_LINE
+                if (height > left) {
+                    // A paragraph longer than the room left is only worth cutting when it is all there is.
+                    if (kept.isEmpty()) kept.addFirst("…" + line.takeLast(left * CHARACTERS_PER_LINE).substringAfter(' '))
+                    break
+                }
+                kept.addFirst(line)
+                left -= height
+            }
+            return kept.joinToString("\n")
         }
 
         private fun failure(turn: PushMessage.Turn): String {

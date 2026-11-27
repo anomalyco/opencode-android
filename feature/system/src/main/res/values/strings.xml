@@ -88,15 +88,15 @@
 
     <!-- Push notifications -->
     <plurals name="system_push_permission_shell">
-        <item quantity="one">Wants to run %1$d command</item>
+        <item quantity="one">Wants to run a command</item>
         <item quantity="other">Wants to run %1$d commands</item>
     </plurals>
     <plurals name="system_push_permission_edit">
-        <item quantity="one">Wants to edit %1$d file</item>
+        <item quantity="one">Wants to edit a file</item>
         <item quantity="other">Wants to edit %1$d files</item>
     </plurals>
     <plurals name="system_push_permission_read">
-        <item quantity="one">Wants to read %1$d file</item>
+        <item quantity="one">Wants to read a file</item>
         <item quantity="other">Wants to read %1$d files</item>
     </plurals>
     <string name="system_push_permission_webfetch">Wants to fetch a page</string>
