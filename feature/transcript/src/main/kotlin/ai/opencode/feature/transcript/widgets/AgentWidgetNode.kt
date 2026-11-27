@@ -30,6 +30,23 @@ sealed interface AgentWidgetNode {
     }
     data class Input(val id: String, val label: String?, val value: String, val placeholder: String?, val multiline: Boolean) : AgentWidgetNode
     data object Divider : AgentWidgetNode
+
+    /**
+     * Rows of text under a header row, each row as wide as [columns]. Only when [selectable] do rows take presses, and
+     * only when [sortable] do headers; [sort] marks a header, the program sorts the rows itself.
+     */
+    data class Table(
+        val id: String?,
+        val columns: List<Column>,
+        val rows: List<List<String>>,
+        val sort: Sort?,
+        val selected: Int?,
+        val selectable: Boolean,
+        val sortable: Boolean,
+    ) : AgentWidgetNode {
+        data class Column(val label: String, val end: Boolean)
+        data class Sort(val column: Int, val descending: Boolean)
+    }
     /**
      * A drawing surface, drawn one way: by the widget template's `draw` commands (2D), with [wgsl] by that fragment
      * shader on the GPU, fed [values] (16 floats, zero padded; null for 2D), or with [gpu] by a live program's WebGPU
@@ -79,6 +96,8 @@ sealed interface AgentWidgetNode {
     companion object {
         const val MAX_FPS = 60
         const val MAX_WGSL_BYTES = 16 * 1024
+        const val MAX_TABLE_COLUMNS = 16
+        const val MAX_TABLE_ROWS = 500
 
         /** Whether [node] or one under it is a `canvas`: such a view offers full screen unless it says not to. */
         fun drawsPixels(node: AgentWidgetNode): Boolean =
@@ -97,6 +116,7 @@ sealed interface AgentWidgetNode {
         /** Whether [node] takes pointer input in a stack: an interactive node, or a container through one under it. */
         fun takesPointer(node: AgentWidgetNode): Boolean = when (node) {
             is Button, is Checkbox, is Slider, is Select, is Input -> true
+            is Table -> node.selectable || node.sortable
             is Card -> node.id != null || node.children.any(::takesPointer)
             is Carousel -> node.id != null || node.children.any(::takesPointer)
             is Canvas -> node.pointer
@@ -146,6 +166,7 @@ sealed interface AgentWidgetNode {
             }
             "input" -> Input(f.required(type, "id"), f.string("label"), f.required(type, "value"), f.string("placeholder"), f.bool("multiline"))
             "divider" -> Divider
+            "table" -> table(f)
             "stack" -> Stack(children, layers)
             "canvas" -> {
                 val wgsl = f.string("wgsl")
@@ -167,6 +188,37 @@ sealed interface AgentWidgetNode {
                 )
             }
             else -> throw IllegalArgumentException(type)
+        }
+
+        private fun table(f: Fields): Table {
+            val labels = f.list("columns") ?: throw InvalidView("invalid view: table needs columns")
+            val cells = f.list("rows") ?: throw InvalidView("invalid view: table needs rows")
+            if (labels.isEmpty() || labels.size > MAX_TABLE_COLUMNS) throw InvalidView("invalid view: a table has 1 to $MAX_TABLE_COLUMNS columns")
+            if (cells.size % labels.size != 0) throw InvalidView("invalid view: a table's cells don't fill its rows")
+            val rows = cells.chunked(labels.size)
+            if (rows.size > MAX_TABLE_ROWS) throw InvalidView("invalid view: a table has at most $MAX_TABLE_ROWS rows")
+            val aligns = f.numbers("aligns")
+            val sort = f.numbers("sort")?.let { s ->
+                val column = s.getOrNull(0)
+                if (s.size != 2 || column == null || column < 0 || column != Math.floor(column)) {
+                    throw InvalidView("invalid view: a table's sort is a column and a direction")
+                }
+                if (column >= labels.size) throw InvalidView("invalid view: `sort.column` must be one of the columns")
+                Table.Sort(column.toInt(), s[1] == 1.0)
+            }
+            val selected = f.int("row")?.let { row ->
+                if (row >= rows.size) throw InvalidView("invalid view: `selected` must be one of the rows")
+                row.toInt()
+            }
+            return Table(
+                f.string("id"),
+                labels.mapIndexed { i, label -> Table.Column(label, end = aligns?.getOrNull(i) == 1.0) },
+                rows,
+                sort,
+                selected,
+                f.bool("selectable"),
+                f.bool("sortable"),
+            )
         }
 
         /** A stack child's `place` and `inset`, from the child's own props. */
@@ -215,5 +267,11 @@ sealed interface AgentWidgetNode {
         fun options(): List<Select.Option>?
         /** `inset` as top, right, bottom, left (unclamped), or null when absent. */
         fun inset(): FloatArray?
+        /** A string list prop (a table's `columns` labels and `rows` cells), or null when absent. */
+        fun list(key: String): List<String>?
+        /** A number list prop (a table's column `aligns` and `sort`), or null when absent. */
+        fun numbers(key: String): DoubleArray?
+        /** An int prop (a table's selected `row`), or null when absent. */
+        fun int(key: String): Long?
     }
 }

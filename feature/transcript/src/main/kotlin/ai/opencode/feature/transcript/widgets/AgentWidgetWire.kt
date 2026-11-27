@@ -268,11 +268,11 @@ internal object AgentWidgetWire {
     private const val K_STRS = 4
     private const val K_OPTS = 5
     private const val T_UNKNOWN = 63L
-    private const val PROPS = 39
+    private const val PROPS = 46
 
     private val TYPE_NAMES = arrayOf(
         null, "column", "row", "text", "markdown", "image", "carousel", "card", "button", "checkbox", "slider", "select",
-        "input", "divider", "canvas", null, "stack",
+        "input", "divider", "canvas", null, "stack", "table",
     )
     private val ALIGN = arrayOf("start", "center", "end", "stretch")
     private val STYLE = arrayOf("title", "body", "caption", "code")
@@ -290,7 +290,8 @@ internal object AgentWidgetWire {
         else -> null
     }
 
-    private fun isBool(id: Int) = id == 3 || id == 12 || id == 15 || id == 16 || id == 22 || id == 24 || id == 32 || id == 33 || id == 35 || id == 38
+    private fun isBool(id: Int) = id == 3 || id == 12 || id == 15 || id == 16 || id == 22 || id == 24 || id == 32 || id == 33 || id == 35 || id == 38 ||
+        id == 44 || id == 45
 
     private fun propId(key: String): Int = when (key) {
         "gap" -> 1
@@ -331,6 +332,13 @@ internal object AgentWidgetWire {
         "place" -> 36
         "inset" -> 37
         "gpu" -> 38
+        "columns" -> 39
+        "aligns" -> 40
+        "rows" -> 41
+        "sort" -> 42
+        "row" -> 43
+        "selectable" -> 44
+        "sortable" -> 45
         else -> 0
     }
 
@@ -393,6 +401,13 @@ internal object AgentWidgetWire {
         @Suppress("UNCHECKED_CAST")
         override fun options(): List<AgentWidgetNode.Select.Option>? =
             if (kinds[21] == K_OPTS) objs[21] as List<AgentWidgetNode.Select.Option> else null
+
+        @Suppress("UNCHECKED_CAST")
+        override fun list(key: String): List<String>? = slot(key).let { if (it != 0 && kinds[it] == K_STRS) objs[it] as List<String> else null }
+
+        override fun numbers(key: String): DoubleArray? = slot(key).let { if (it != 0 && kinds[it] == K_F64S) objs[it] as DoubleArray else null }
+
+        override fun int(key: String): Long? = slot(key).let { if (it == 43 && kinds[it] == K_INT) ints[it] else null }
 
         override fun inset(): FloatArray? = when (kinds[37]) {
             K_F64 -> nums[37].toFloat().let { floatArrayOf(it, it, it, it) }
@@ -499,14 +514,14 @@ internal object AgentWidgetWire {
             when (kind) {
                 K_INT -> {
                     val v = ints.uint()
-                    if (!known || (table(id) == null && !isBool(id))) return
+                    if (!known || (table(id) == null && !isBool(id) && id != 43)) return
                     if (isBool(id)) flag(v)
                     f.kinds[id] = K_INT
                     f.ints[id] = v
                 }
                 K_F64 -> {
                     val v = floats.f64()
-                    if (!known || table(id) != null || isBool(id) || id in STRING_PROPS || id == 21 || id == 30) return
+                    if (!known || table(id) != null || isBool(id) || id in STRING_PROPS || id == 21 || id == 30 || id >= 39) return
                     f.kinds[id] = K_F64
                     f.nums[id] = v
                 }
@@ -521,7 +536,7 @@ internal object AgentWidgetWire {
                     if (n * 8 > floats.remaining) throw Malformed("an f64 list past the end")
                     val list = DoubleArray(n.toInt()) { floats.f64() }
                     if (id == 37 && list.size != 4) throw Malformed("an inset list has 4 numbers")
-                    if (id != 30 && id != 37) return
+                    if (id != 30 && id != 37 && id != 40 && id != 42) return
                     f.kinds[id] = K_F64S
                     f.objs[id] = list
                 }
@@ -529,7 +544,7 @@ internal object AgentWidgetWire {
                     val n = ints.uint()
                     if (n > strs.remaining) throw Malformed("a string list past the end")
                     val list = List(n.toInt()) { strs.str() }
-                    if (id != 17) return
+                    if (id != 17 && id != 39 && id != 41) return
                     f.kinds[id] = K_STRS
                     f.objs[id] = list
                 }

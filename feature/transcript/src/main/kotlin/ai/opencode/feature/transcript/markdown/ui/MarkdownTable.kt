@@ -38,7 +38,6 @@ fun MarkdownTable(
     val density = LocalDensity.current
     val targets = LocalSessionLinks.current.targets
     val listener = rememberLinkListener()
-    val rules = remember { TableRules() }
     // No `tnum`: Inter's tabular set also widens the hyphen, which opened a gap in words like
     // "mid-sentence", and left-aligned cells don't line digits up anyway.
     val cellStyle = OpenCodeTextStyles.subheadline
@@ -56,34 +55,64 @@ fun MarkdownTable(
     val presentedRows = remember(rows, targets, colors, density) { rows.map { row -> row.map { present(it, false) } } }
     ReportsSessionLinks((presentedHeader + presentedRows.flatten()).flatMap { it.sessionIDs }.distinct())
     val columns = maxOf(header.size, rows.maxOfOrNull { it.size } ?: 0)
+    val presented = listOf(presentedHeader) + presentedRows
+    MarkdownTableGrid(columns, presented.size, modifier) { rowIndex, column ->
+        val cell = presented[rowIndex].getOrNull(column)
+        val isHeader = rowIndex == 0
+        if (cell == null) {
+            Box(Modifier)
+        } else {
+            val key = selection?.copy(part = TranscriptSelectionLeafKey.tablePart(rowIndex, column))
+            ArrivingText(
+                cell, emptyList(), if (isHeader) headerStyle else cellStyle, if (isHeader) colors.secondaryText else colors.text,
+                selectionKey = key,
+            )
+        }
+    }
+}
+
+/**
+ * [MarkdownTable]'s grid and band for any cells: [rows] rows (the header first) of [columns] cells, each drawn by
+ * [cell]. A column for which [end] is true lines its cells up on the trailing edge. With [rowBackground], each row also gets
+ * that content behind it, sized from rule to rule and across the band's full width (a highlight, a press target); with
+ * [headerBackground], each header cell gets it behind its share of the header row.
+ */
+@Composable
+internal fun MarkdownTableGrid(
+    columns: Int,
+    rows: Int,
+    modifier: Modifier = Modifier,
+    end: (column: Int) -> Boolean = { false },
+    rowBackground: (@Composable (row: Int) -> Unit)? = null,
+    headerBackground: (@Composable (column: Int) -> Unit)? = null,
+    cell: @Composable (row: Int, column: Int) -> Unit,
+) {
+    val rules = remember { TableRules() }
+    // Backgrounds reach the band's border, so the grid holds the band's vertical padding itself.
+    val behind = rowBackground != null || headerBackground != null
     BoxWithConstraints(modifier) {
         val viewport = maxWidth - TranscriptBandStyle.horizontalPadding * 2
-        MarkdownBand(rules = rules) {
+        MarkdownBand(rules = rules, verticalPadding = if (behind) 0.dp else TranscriptBandStyle.verticalPadding) {
             Layout(
                 content = {
-                    for ((rowIndex, row) in (listOf(presentedHeader) + presentedRows).withIndex()) {
-                        for (column in 0 until columns) {
-                            val cell = row.getOrNull(column)
-                            val isHeader = row === presentedHeader
-                            if (cell == null) {
-                                Box(Modifier)
-                            } else {
-                                val key = selection?.copy(part = TranscriptSelectionLeafKey.tablePart(rowIndex, column))
-                                ArrivingText(
-                                    cell, emptyList(), if (isHeader) headerStyle else cellStyle, if (isHeader) colors.secondaryText else colors.text,
-                                    selectionKey = key,
-                                )
-                            }
-                        }
+                    if (rowBackground != null) for (index in 0 until rows) rowBackground(index)
+                    if (headerBackground != null) for (column in 0 until columns) headerBackground(column)
+                    for (rowIndex in 0 until rows) {
+                        for (column in 0 until columns) cell(rowIndex, column)
                     }
                 },
-            ) { measurables, _ ->
+            ) { all, _ ->
+                val behindRows = if (rowBackground != null) rows else 0
+                val behindHeaders = if (headerBackground != null) columns else 0
+                val backgrounds = all.subList(0, behindRows)
+                val headerBackgrounds = all.subList(behindRows, behindRows + behindHeaders)
+                val measurables = all.subList(behindRows + behindHeaders, all.size)
                 val cap = 220.dp.roundToPx()
                 val floor = 112.dp.roundToPx()
                 val hSpacing = TranscriptMetrics.turn.roundToPx()
                 val vSpacing = TranscriptMetrics.bubbleVertical.roundToPx()
                 val rule = (0.5.dp).roundToPx().coerceAtLeast(1)
-                val rowCount = measurables.size / maxOf(columns, 1)
+                val rowCount = rows
                 // Each column's natural width (its widest cell, capped) and its narrowest: its longest
                 // word, and at least the readable floor, so a squeezed column never wraps word by word.
                 val widest = IntArray(columns)
@@ -130,12 +159,32 @@ fun MarkdownTable(
                     y += heights[row]
                 }
                 val totalWidth = widths.sum() + hSpacing * (columns - 1).coerceAtLeast(0)
-                rules.offsets = ruleTops
-                layout(totalWidth, y) {
+                val bandTop = TranscriptBandStyle.verticalPadding.roundToPx()
+                val shift = if (behind) bandTop else 0
+                rules.offsets = ruleTops.map { it + shift }
+                val bandWidth = maxOf(totalWidth, viewport.roundToPx())
+                val inset = TranscriptBandStyle.horizontalPadding.roundToPx()
+                val rowPlaceables = backgrounds.mapIndexed { index, measurable ->
+                    val top = if (index == 0) -bandTop else tops[index] - vSpacing
+                    val bottom = if (index == rowCount - 1) y + bandTop else tops[index] + heights[index] + vSpacing
+                    measurable.measure(Constraints.fixed(bandWidth + inset * 2, (bottom - top).coerceAtLeast(0))) to top
+                }
+                val headerBottom = if (rowCount > 1) heights[0] + vSpacing else y + bandTop
+                var headerX = 0
+                val headerPlaceables = headerBackgrounds.mapIndexed { column, measurable ->
+                    val left = if (column == 0) -inset else headerX - hSpacing / 2
+                    val right = if (column == columns - 1) bandWidth + inset else headerX + widths[column] + hSpacing - hSpacing / 2
+                    headerX += widths[column] + hSpacing
+                    measurable.measure(Constraints.fixed((right - left).coerceAtLeast(0), headerBottom + bandTop)) to left
+                }
+                layout(if (behind) bandWidth else totalWidth, y + shift * 2) {
+                    for ((placeable, top) in rowPlaceables) placeable.place(-inset, top + shift)
+                    for ((placeable, left) in headerPlaceables) placeable.place(left, -bandTop + shift)
                     for (row in 0 until rowCount) {
                         var x = 0
                         for (column in 0 until columns) {
-                            placeables[row * columns + column].place(x, tops[row])
+                            val placeable = placeables[row * columns + column]
+                            placeable.place(if (end(column)) x + widths[column] - placeable.width else x, tops[row] + shift)
                             x += widths[column] + hSpacing
                         }
                     }
@@ -144,4 +193,3 @@ fun MarkdownTable(
         }
     }
 }
-

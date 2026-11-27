@@ -126,6 +126,7 @@ class TableRules {
  * still scrolls and cancels its tap.
  *
  * @param bandModifier applied to the whole block: a drag source there lifts the whole band.
+ * @param verticalPadding from the border to the content; content that pads itself passes 0.
  */
 @Composable
 fun MarkdownBand(
@@ -133,6 +134,7 @@ fun MarkdownBand(
     rules: TableRules? = null,
     bandModifier: Modifier = Modifier,
     action: (@Composable () -> Unit)? = null,
+    verticalPadding: Dp = TranscriptBandStyle.verticalPadding,
     content: @Composable () -> Unit,
 ) {
     val colors = OpenCodeTheme.colors
@@ -160,7 +162,7 @@ fun MarkdownBand(
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .padding(vertical = TranscriptBandStyle.verticalPadding)
+                    .padding(vertical = verticalPadding)
                     .drawWithContent {
                         drawContent()
                         val offsets = rules?.offsets ?: return@drawWithContent

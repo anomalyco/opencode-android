@@ -42,6 +42,8 @@ data class AgentWidgetEvent(val id: String, val type: Type, val value: String? =
 
     companion object {
         fun press(id: String) = AgentWidgetEvent(id, Type.Press)
+        /** A press on one of a node's items (a table's row): `{ id, type: "press", value: index }`. */
+        fun press(id: String, index: Int) = AgentWidgetEvent(id, Type.Press, index.toString())
         /** Entering ([on]) or leaving full screen: `{ id: "", type: "fullscreen", value, close }`, [close] in root coordinates. */
         fun fullscreen(on: Boolean, close: AgentWidgetRect?) =
             AgentWidgetEvent("", Type.Fullscreen, on.toString(), "\"close\":" + (close?.json ?: "null"))

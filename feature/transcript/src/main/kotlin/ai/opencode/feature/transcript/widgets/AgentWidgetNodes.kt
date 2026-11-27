@@ -14,6 +14,8 @@ import ai.opencode.core.ui.excludedFromDrawerPan
 import ai.opencode.feature.transcript.R
 import ai.opencode.feature.transcript.markdown.rememberMarkdownBlocks
 import ai.opencode.feature.transcript.markdown.ui.MarkdownBlocksView
+import ai.opencode.feature.transcript.markdown.ui.MarkdownTableGrid
+import ai.opencode.feature.transcript.markdown.ui.currentMarkdownStyle
 import ai.opencode.feature.transcript.widgets.AgentWidgetNode.Align
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.background
@@ -67,10 +69,12 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -113,6 +117,7 @@ fun AgentWidgetNodeView(node: AgentWidgetNode, scope: AgentWidgetScope, modifier
         is AgentWidgetNode.Select -> SelectNode(node, scope, modifier)
         is AgentWidgetNode.Input -> InputNode(node, scope, modifier)
         AgentWidgetNode.Divider -> HorizontalDivider(modifier, thickness = 1.dp, color = OpenCodeTheme.colors.border)
+        is AgentWidgetNode.Table -> TableNode(node, scope, modifier)
         is AgentWidgetNode.Stack -> AgentWidgetStack(node, scope, modifier, path)
         is AgentWidgetNode.Canvas -> when {
             node.shader -> AgentWidgetGPUCanvas(node, scope, modifier)
@@ -178,7 +183,8 @@ private fun RowNode(node: AgentWidgetNode.Row, scope: AgentWidgetScope, modifier
         Row(modifier, horizontalArrangement = Arrangement.spacedBy(spacing), verticalAlignment = vertical) {
             node.children.forEachIndexed { index, it ->
                 val grows = it is AgentWidgetNode.Input || it is AgentWidgetNode.Slider || it is AgentWidgetNode.Select ||
-                    it is AgentWidgetNode.Column || it is AgentWidgetNode.Canvas || it is AgentWidgetNode.Stack
+                    it is AgentWidgetNode.Column || it is AgentWidgetNode.Canvas || it is AgentWidgetNode.Stack ||
+                    it is AgentWidgetNode.Table
                 AgentWidgetNodeView(it, scope, if (grows) Modifier.weight(1f) else Modifier, "$path.$index")
             }
         }
@@ -407,6 +413,56 @@ private fun SelectNode(node: AgentWidgetNode.Select, scope: AgentWidgetScope, mo
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * A table drawn as the transcript's markdown tables are ([MarkdownTableGrid]): the same band, rules, cell style and
+ * column sizing, with end-aligned columns on the trailing edge, the sort indicator on the sorted header, and the selected
+ * row tinted. Rows take presses only when selectable, headers only when sortable.
+ */
+@Composable
+private fun TableNode(node: AgentWidgetNode.Table, scope: AgentWidgetScope, modifier: Modifier) {
+    val colors = currentMarkdownStyle().colors
+    val cellStyle = OpenCodeTextStyles.subheadline
+    val headerStyle = cellStyle.copy(fontWeight = FontWeight.SemiBold)
+    val id = node.id
+    val rowsPress = id != null && node.selectable
+    val headersPress = id != null && node.sortable
+    val tint = colors.accent.copy(alpha = 0.14f)
+    MarkdownTableGrid(
+        node.columns.size,
+        node.rows.size + 1,
+        modifier.fillMaxWidth(),
+        end = { node.columns[it].end },
+        rowBackground = { row ->
+            val body = row - 1
+            val selected = body >= 0 && node.selected == body
+            Box(
+                Modifier
+                    .then(if (selected) Modifier.background(tint) else Modifier)
+                    .then(
+                        if (rowsPress && body >= 0) {
+                            Modifier.selectable(selected, enabled = scope.live, role = Role.Button) { scope.send(AgentWidgetEvent.press(id!!, body)) }
+                        } else Modifier,
+                    ),
+            )
+        },
+        headerBackground = if (headersPress) {
+            { column -> Box(Modifier.clickable(enabled = scope.live, role = Role.Button) { scope.send(AgentWidgetEvent.change(id!!, column)) }) }
+        } else null,
+    ) { row, column ->
+        if (row == 0) {
+            val sort = node.sort?.takeIf { it.column == column }
+            Row {
+                Text(node.columns[column].label, Modifier.weight(1f, fill = false), style = headerStyle, color = colors.secondaryText)
+                if (sort != null) {
+                    Text(if (sort.descending) " ▼" else " ▲", Modifier.clearAndSetSemantics {}, style = headerStyle, color = colors.secondaryText)
+                }
+            }
+        } else {
+            Text(node.rows[row - 1][column], style = cellStyle, color = colors.text)
         }
     }
 }

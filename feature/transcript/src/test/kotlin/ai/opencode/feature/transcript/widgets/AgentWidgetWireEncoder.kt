@@ -91,6 +91,7 @@ internal object AgentWidgetWireEncoder {
         "gap", "align", "wrap", "text", "style", "tone", "src", "alt", "aspect", "id", "index", "selected", "label", "variant",
         "disabled", "checked", "value", "min", "max", "step", "options", "multiple", "placeholder", "multiline", "height",
         "width", "fps", "duration", "wgsl", "values", "poster", "fill", "fullscreen", "capture", "pointer", "place", "inset", "gpu",
+        "columns", "aligns", "rows", "sort", "row", "selectable", "sortable",
     )
     private val ENUMS = mapOf(
         2 to listOf("start", "center", "end", "stretch"),
@@ -99,10 +100,14 @@ internal object AgentWidgetWireEncoder {
         14 to listOf("primary", "secondary", "danger"),
         36 to listOf("top-left", "top", "top-right", "left", "center", "right", "bottom-left", "bottom", "bottom-right", "fill"),
     )
-    private val BOOLS = setOf(3, 12, 15, 16, 22, 24, 32, 33, 35, 38)
+    private val BOOLS = setOf(3, 12, 15, 16, 22, 24, 32, 33, 35, 38, 44, 45)
     private val STRS = setOf(4, 7, 8, 10, 13, 23, 29, 31, 34)
 
-    private fun typeId(name: String) = if (name == "stack") 16 else TYPES.indexOf(name).let { if (it < 0) 63 else it + 1 }
+    private fun typeId(name: String) = when (name) {
+        "stack" -> 16
+        "table" -> 17
+        else -> TYPES.indexOf(name).let { if (it < 0) 63 else it + 1 }
+    }
 
     private fun JsonObject.str(key: String) = (this[key] as? JsonPrimitive)?.takeIf { it.isString }?.content
     private fun JsonObject.bool(key: String) = (this[key] as? JsonPrimitive)?.takeIf { !it.isString }?.booleanOrNull
@@ -135,6 +140,7 @@ internal object AgentWidgetWireEncoder {
                 return
             }
             var kids: JsonArray? = null
+            if (t == 17) table(v)
             for ((k, value) in v) when (k) {
                 "type" -> Unit
                 "children" -> if (value is JsonArray) kids = value
@@ -147,6 +153,35 @@ internal object AgentWidgetWireEncoder {
                 int(list.size)
                 for (c in list) node(c, depth + 1)
             }
+        }
+
+        /** A table's columns (39, 40), rows (41, each as wide as the columns), sort (42) and a number `selected` (43). */
+        fun table(v: JsonObject) {
+            val columns = v["columns"] as? JsonArray ?: return
+            val labels = columns.map { ((it as? JsonObject)?.get("label") as? JsonPrimitive)?.takeIf { p -> p.isString }?.content ?: return }
+            tag(39, 4); int(labels.size); labels.forEach { strs.str(it) }
+            tag(40, 3); int(columns.size)
+            columns.forEach { floats.f64(if ((it as JsonObject).str("align") == "end") 1.0 else 0.0) }
+            fun cell(c: JsonElement?): String? {
+                val p = c as? JsonPrimitive ?: return if (c == null) "" else null
+                return when {
+                    p.isString -> p.content
+                    number(p) != null -> AgentWidgetEvent.number(number(p)!!)
+                    else -> null
+                }
+            }
+            val rows = (v["rows"] as? JsonArray)?.map { row ->
+                if (row !is JsonArray || row.size > labels.size) null else labels.indices.map { cell(row.getOrNull(it)) }
+            }
+            if (rows != null && rows.all { row -> row != null && row.all { it != null } }) {
+                tag(41, 4); int(rows.size * labels.size); rows.forEach { row -> row!!.forEach { strs.str(it!!) } }
+            }
+            val sort = v["sort"] as? JsonObject
+            val column = number(sort?.get("column"))
+            if (sort != null && column != null) {
+                tag(42, 3); int(2); floats.f64(column); floats.f64(if (sort.bool("descending") == true) 1.0 else 0.0)
+            }
+            number(v["selected"])?.takeIf { it >= 0 && it == Math.floor(it) }?.let { tag(43, 0); int(it.toInt()) }
         }
 
         fun flatten(items: JsonArray, out: MutableList<JsonElement>, depth: Int) {

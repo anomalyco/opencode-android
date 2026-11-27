@@ -171,6 +171,69 @@ class AgentWidgetTests {
      * the emulator's built-in keyboard and the virtual one don't count; a USB or Bluetooth keyboard and a Chromebook do.
      */
     @Test
+    fun readsATableAndItsEvents() {
+        val table = stepOutput(
+            """{"state":{},"view":{"type":"table","id":"0/0","columns":[{"label":"Day"},{"label":"kg","align":"end"}],""" +
+                """"rows":[["Nov 27",79.6],["Nov 26"]],"sort":{"column":1,"descending":true},"selected":1,"selectable":true,"sortable":true}}""",
+        ).view
+        assertEquals(
+            AgentWidgetNode.Table(
+                "0/0",
+                listOf(AgentWidgetNode.Table.Column("Day", end = false), AgentWidgetNode.Table.Column("kg", end = true)),
+                listOf(listOf("Nov 27", "79.6"), listOf("Nov 26", "")),
+                AgentWidgetNode.Table.Sort(1, descending = true),
+                selected = 1,
+                selectable = true,
+                sortable = true,
+            ),
+            table,
+        )
+        assertTrue(AgentWidgetNode.takesPointer(table))
+        val plain = stepOutput("""{"state":{},"view":{"type":"table","columns":[{"label":"a"}],"rows":[]}}""").view as AgentWidgetNode.Table
+        assertEquals(AgentWidgetNode.Table(null, listOf(AgentWidgetNode.Table.Column("a", false)), emptyList(), null, null, false, false), plain)
+        assertFalse(AgentWidgetNode.takesPointer(plain))
+        fun invalid(props: String) = runCatching { stepOutput("""{"state":{},"view":{"type":"table",$props}}""") }.exceptionOrNull()
+        val one = """"columns":[{"label":"a"}]"""
+        for (props in listOf(
+            """"rows":[]""",
+            """"columns":[],"rows":[]""",
+            """"columns":[${(1..17).joinToString(",") { """{"label":"c$it"}""" }}],"rows":[]""",
+            """$one,"rows":[${(1..501).joinToString(",") { "[$it]" }}]""",
+            """$one,"rows":[["x","y"]]""",
+            """$one,"rows":[[true]]""",
+            """$one,"rows":[["x"]],"sort":{"column":1}""",
+            """$one,"rows":[["x"]],"selected":1""",
+        )) assertTrue(props, invalid(props) is AgentWidgetNode.InvalidView)
+        assertEquals("""{"id":"0/0","type":"press","value":2}""", AgentWidgetEvent.press("0/0", 2).json)
+        assertEquals("""{"id":"0/0","type":"change","value":1}""", AgentWidgetEvent.change("0/0", 1).json)
+    }
+
+    /** The runtime's `tables` wire fixture (`packages/widget/test/fixtures/wire`) decodes into table nodes. */
+    @Test
+    fun readsTheRuntimesTables() {
+        org.junit.Assume.assumeTrue(AgentWidgetWorkloads.missing ?: "", AgentWidgetWorkloads.missing == null)
+        val (source, input, _) = AgentWidgetWorkloads.fixture("tables")
+        val view = AgentWidgetWire.output(AgentWidgetWorkloads.nativeStep(source, input)).view as AgentWidgetNode.Column
+        fun column(label: String, end: Boolean = false) = AgentWidgetNode.Table.Column(label, end)
+        assertEquals(
+            listOf(
+                AgentWidgetNode.Table(
+                    "0/0",
+                    listOf(column("Day"), column("kg", end = true), column("kcal", end = true)),
+                    listOf(listOf("Nov 27", "79.6", "1150"), listOf("Nov 26", "80.1", "")),
+                    AgentWidgetNode.Table.Sort(0, descending = true),
+                    selected = 0,
+                    selectable = true,
+                    sortable = true,
+                ),
+                AgentWidgetNode.Table("0/:sorted", listOf(column("a")), listOf(listOf("x")), null, null, selectable = false, sortable = true),
+                AgentWidgetNode.Table(null, listOf(column("n", end = true)), listOf(listOf("1e+21"), listOf("0.1")), null, null, false, false),
+            ),
+            view.children,
+        )
+    }
+
+    @Test
     fun keyboardFocusNeedsAReportedHardwareKeyboard() {
         val virtual = AgentWidgetHardwareKeyboard.Device(alphabetic = true, external = false, virtual = true)
         val builtIn = AgentWidgetHardwareKeyboard.Device(alphabetic = true, external = false, virtual = false)
