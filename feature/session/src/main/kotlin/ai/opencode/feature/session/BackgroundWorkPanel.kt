@@ -717,7 +717,7 @@ fun BackgroundWorkPresentation(
             )
         }
 
-        val pill = Rect(capsule.left, capsule.top + BackgroundWorkMotion.capsuleInset, capsule.right, capsule.bottom - BackgroundWorkMotion.capsuleInset)
+        val pill = Rect(capsule.left, capsule.top + BackgroundWorkMotion.capsuleInset, capsule.right, max(capsule.top + BackgroundWorkMotion.capsuleInset, capsule.bottom - BackgroundWorkMotion.capsuleInset))
         // Like the pills beside it, the capsule hides under a panel grown out of the composer.
         val hidden = isCovered
         val hiddenAlpha by animateFloatAsState(if (hidden) 0f else 1f, Motion.reducedFadeSpec(), label = "hidden")
