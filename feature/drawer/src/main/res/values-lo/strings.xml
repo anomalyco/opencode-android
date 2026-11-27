@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ຊ່ວຍຂ້ອຍປັບປຸງໜ້າຈໍເຊດຊັນ. ສະແດງສິ່ງທີ່ພົບ ແລະອະທິບາຍການປ່ຽນແປງ.</string>
     <string name="drawer_appearance_preview_assistant_text">ຂ້ອຍພົບບັນຫາການຈັດວາງໃນ `SessionView.swift`. ບົດຖອດສຽງ ແລະຊ່ອງຂຽນຂໍ້ຄວາມແບ່ງຄວາມສູງທີ່ມີຢູ່ຮ່ວມກັນ, ດັ່ງນັ້ນການເປີດແປ້ນພິມຈຶ່ງຊ່ວຍທົດສອບເມື່ອພື້ນທີ່ຈຳກັດໄດ້ດີ.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">ມິນິແອັບ</string>
+    <string name="drawer_mini_apps_dashboard">ແດຊບອດ</string>
+    <string name="drawer_mini_apps_all_widgets">ວິດເຈັດທັງໝົດ</string>
+    <string name="drawer_mini_apps_add">ເພີ່ມໃສ່ແດຊບອດ</string>
+    <string name="drawer_mini_apps_on_dashboard">ຢູ່ໃນແດຊບອດ</string>
+    <string name="drawer_mini_apps_empty_title">ຍັງບໍ່ມີມິນິແອັບ</string>
+    <string name="drawer_mini_apps_empty_message">ເພີ່ມວິດເຈັດຈາກເຊດຊັນຂອງເຈົ້າໃນ ວິດເຈັດທັງໝົດ ແລ້ວຈັດລຽງຢູ່ບ່ອນນີ້.</string>
+    <string name="drawer_mini_apps_no_widgets_title">ບໍ່ມີວິດເຈັດ</string>
+    <string name="drawer_mini_apps_no_widgets_message">ວິດເຈັດທີ່ຕົວແທນສະແດງໃນເຊດຊັນຂອງເຊີບເວີນີ້ຈະປາກົດຢູ່ບ່ອນນີ້.</string>
+    <string name="drawer_mini_apps_load_failed">ໂຫຼດວິດເຈັດບໍ່ໄດ້</string>
+    <string name="drawer_mini_apps_missing">ວິດເຈັດນີ້ບໍ່ມີຢູ່ໃນເຊີບເວີອີກແລ້ວ.</string>
+    <string name="drawer_mini_apps_remove">ເອົາ %1$s ອອກ</string>
+    <string name="drawer_mini_apps_resize">ປັບຂະໜາດ %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">ເປີດຢູ່</string>
+    <string name="drawer_mini_apps_status_submitted">ສົ່ງແລ້ວ</string>
+    <string name="drawer_mini_apps_status_dismissed">ປິດແລ້ວ</string>
+    <string name="drawer_mini_apps_status_failed">ລົ້ມເຫລວ</string>
 </resources>

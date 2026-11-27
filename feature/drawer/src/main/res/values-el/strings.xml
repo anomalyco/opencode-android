@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Βοήθησέ με να βελτιώσω την οθόνη της συνεδρίας. Δείξε μου τι βρίσκεις και εξήγησε τις αλλαγές.</string>
     <string name="drawer_appearance_preview_assistant_text">Βρήκα το πρόβλημα διάταξης στο `SessionView.swift`. Η καταγραφή συνομιλίας και η σύνταξη μοιράζονται το διαθέσιμο ύψος, οπότε το πληκτρολόγιο είναι μια καλή δοκιμή αντοχής.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Μίνι εφαρμογές</string>
+    <string name="drawer_mini_apps_dashboard">Πίνακας ελέγχου</string>
+    <string name="drawer_mini_apps_all_widgets">Όλα τα γραφικά στοιχεία</string>
+    <string name="drawer_mini_apps_add">Προσθήκη στον πίνακα ελέγχου</string>
+    <string name="drawer_mini_apps_on_dashboard">Στον πίνακα ελέγχου</string>
+    <string name="drawer_mini_apps_empty_title">Δεν υπάρχουν μίνι εφαρμογές ακόμα</string>
+    <string name="drawer_mini_apps_empty_message">Προσθέστε γραφικά στοιχεία από τις συνεδρίες σας στο «Όλα τα γραφικά στοιχεία» και μετά τακτοποιήστε τα εδώ.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Δεν υπάρχουν γραφικά στοιχεία</string>
+    <string name="drawer_mini_apps_no_widgets_message">Τα γραφικά στοιχεία που δείχνουν οι πράκτορες στις συνεδρίες αυτού του διακομιστή εμφανίζονται εδώ.</string>
+    <string name="drawer_mini_apps_load_failed">Αδυναμία φόρτωσης γραφικών στοιχείων</string>
+    <string name="drawer_mini_apps_missing">Αυτό το γραφικό στοιχείο δεν υπάρχει πλέον στον διακομιστή.</string>
+    <string name="drawer_mini_apps_remove">Αφαίρεση %1$s</string>
+    <string name="drawer_mini_apps_resize">Αλλαγή μεγέθους %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Ανοιχτό</string>
+    <string name="drawer_mini_apps_status_submitted">Υποβλήθηκε</string>
+    <string name="drawer_mini_apps_status_dismissed">Απορρίφθηκε</string>
+    <string name="drawer_mini_apps_status_failed">Απέτυχε</string>
 </resources>

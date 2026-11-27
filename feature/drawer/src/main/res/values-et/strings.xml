@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aita mul seansikuva paremaks teha. Näita, mida leiad, ja selgita muudatusi.</string>
     <string name="drawer_appearance_preview_assistant_text">Leidsin paigutusvea failist `SessionView.swift`. Vestluse tekst ja sõnumiredaktor jagavad saadaolevat kõrgust, nii et klaviatuur aitab paigutust proovile panna.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Minirakendused</string>
+    <string name="drawer_mini_apps_dashboard">Töölaud</string>
+    <string name="drawer_mini_apps_all_widgets">Kõik vidinad</string>
+    <string name="drawer_mini_apps_add">Lisa töölauale</string>
+    <string name="drawer_mini_apps_on_dashboard">Töölaual</string>
+    <string name="drawer_mini_apps_empty_title">Minirakendusi veel pole</string>
+    <string name="drawer_mini_apps_empty_message">Lisa oma seanssidest vidinaid vaates „Kõik vidinad“ ja paiguta need siin.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Vidinaid pole</string>
+    <string name="drawer_mini_apps_no_widgets_message">Siia ilmuvad vidinad, mida agendid selle serveri seanssides näitavad.</string>
+    <string name="drawer_mini_apps_load_failed">Vidinate laadimine ebaõnnestus</string>
+    <string name="drawer_mini_apps_missing">Seda vidinat pole enam serveris.</string>
+    <string name="drawer_mini_apps_remove">Eemalda %1$s</string>
+    <string name="drawer_mini_apps_resize">Muuda suurust: %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Avatud</string>
+    <string name="drawer_mini_apps_status_submitted">Esitatud</string>
+    <string name="drawer_mini_apps_status_dismissed">Tagasi lükatud</string>
+    <string name="drawer_mini_apps_status_failed">Ebaõnnestunud</string>
 </resources>

@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ជួយខ្ញុំកែលម្អអេក្រង់សម័យ។ បង្ហាញអ្វីដែលអ្នករកឃើញ និងពន្យល់ពីការផ្លាស់ប្តូរ។</string>
     <string name="drawer_appearance_preview_assistant_text">ខ្ញុំរកឃើញបញ្ហាប្លង់ក្នុង `SessionView.swift`។ កំណត់ត្រាសន្ទនា និងប្រអប់សរសេរចែកគ្នាប្រើកម្ពស់ដែលមាន ដូច្នេះការបើកក្តារចុចជួយសាកល្បងប្លង់ពេលទំហំមានកំណត់។</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">កម្មវិធីខ្នាតតូច</string>
+    <string name="drawer_mini_apps_dashboard">ផ្ទាំងគ្រប់គ្រង</string>
+    <string name="drawer_mini_apps_all_widgets">ធាតុក្រាហ្វិកទាំងអស់</string>
+    <string name="drawer_mini_apps_add">បន្ថែមទៅផ្ទាំងគ្រប់គ្រង</string>
+    <string name="drawer_mini_apps_on_dashboard">លើផ្ទាំងគ្រប់គ្រង</string>
+    <string name="drawer_mini_apps_empty_title">មិនទាន់មានកម្មវិធីខ្នាតតូច</string>
+    <string name="drawer_mini_apps_empty_message">បន្ថែមធាតុក្រាហ្វិកពីសម័យរបស់អ្នកក្នុង «ធាតុក្រាហ្វិកទាំងអស់» រួចរៀបចំពួកវានៅទីនេះ។</string>
+    <string name="drawer_mini_apps_no_widgets_title">គ្មានធាតុក្រាហ្វិក</string>
+    <string name="drawer_mini_apps_no_widgets_message">ធាតុក្រាហ្វិកដែលភ្នាក់ងារបង្ហាញក្នុងសម័យរបស់ម៉ាស៊ីនមេនេះនឹងលេចឡើងនៅទីនេះ។</string>
+    <string name="drawer_mini_apps_load_failed">មិនអាចផ្ទុកធាតុក្រាហ្វិកបាន</string>
+    <string name="drawer_mini_apps_missing">ធាតុក្រាហ្វិកនេះមិនមាននៅលើម៉ាស៊ីនមេទៀតទេ។</string>
+    <string name="drawer_mini_apps_remove">ដក %1$s ចេញ</string>
+    <string name="drawer_mini_apps_resize">ប្តូរទំហំ %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">បើក</string>
+    <string name="drawer_mini_apps_status_submitted">បានដាក់ស្នើ</string>
+    <string name="drawer_mini_apps_status_dismissed">បានច្រានចោល</string>
+    <string name="drawer_mini_apps_status_failed">បរាជ័យ</string>
 </resources>

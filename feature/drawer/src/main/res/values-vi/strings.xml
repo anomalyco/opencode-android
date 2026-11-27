@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Giúp tôi cải thiện màn hình phiên. Cho tôi xem những gì bạn tìm thấy và giải thích các thay đổi.</string>
     <string name="drawer_appearance_preview_assistant_text">Tôi tìm thấy lỗi bố cục trong `SessionView.swift`. Bản chép lời và ô soạn thảo chia sẻ chiều cao khả dụng, nên có thể dùng bàn phím để kiểm tra khi không gian bị thu hẹp.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Ứng dụng nhỏ</string>
+    <string name="drawer_mini_apps_dashboard">Bảng điều khiển</string>
+    <string name="drawer_mini_apps_all_widgets">Tất cả widget</string>
+    <string name="drawer_mini_apps_add">Thêm vào bảng điều khiển</string>
+    <string name="drawer_mini_apps_on_dashboard">Trên bảng điều khiển</string>
+    <string name="drawer_mini_apps_empty_title">Chưa có ứng dụng nhỏ nào</string>
+    <string name="drawer_mini_apps_empty_message">Thêm widget từ các phiên của bạn trong Tất cả widget, rồi sắp xếp ở đây.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Chưa có widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">Các widget mà tác nhân hiển thị trong các phiên của máy chủ này sẽ xuất hiện ở đây.</string>
+    <string name="drawer_mini_apps_load_failed">Không thể tải widget</string>
+    <string name="drawer_mini_apps_missing">Widget này không còn trên máy chủ nữa.</string>
+    <string name="drawer_mini_apps_remove">Xóa %1$s</string>
+    <string name="drawer_mini_apps_resize">Đổi kích thước %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Đang mở</string>
+    <string name="drawer_mini_apps_status_submitted">Đã gửi</string>
+    <string name="drawer_mini_apps_status_dismissed">Đã bỏ qua</string>
+    <string name="drawer_mini_apps_status_failed">Thất bại</string>
 </resources>

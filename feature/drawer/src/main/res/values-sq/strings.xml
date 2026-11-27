@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Më ndihmo të përmirësoj ekranin e sesionit. Më trego çfarë gjen dhe shpjego ndryshimet.</string>
     <string name="drawer_appearance_preview_assistant_text">E gjeta problemin e paraqitjes në `SessionView.swift`. Transkripti dhe zona e shkrimit të mesazheve ndajnë lartësinë e disponueshme, ndaj tastiera është një provë e mirë për këtë.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniaplikacionet</string>
+    <string name="drawer_mini_apps_dashboard">Paneli</string>
+    <string name="drawer_mini_apps_all_widgets">Të gjitha widget-et</string>
+    <string name="drawer_mini_apps_add">Shto në panel</string>
+    <string name="drawer_mini_apps_on_dashboard">Në panel</string>
+    <string name="drawer_mini_apps_empty_title">Ende pa miniaplikacione</string>
+    <string name="drawer_mini_apps_empty_message">Shto widget-e nga sesionet e tua te «Të gjitha widget-et», pastaj renditi këtu.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nuk ka widget-e</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widget-et që agjentët tregojnë në sesionet e këtij serveri shfaqen këtu.</string>
+    <string name="drawer_mini_apps_load_failed">Nuk u ngarkuan dot widget-et</string>
+    <string name="drawer_mini_apps_missing">Ky widget nuk është më në server.</string>
+    <string name="drawer_mini_apps_remove">Hiq %1$s</string>
+    <string name="drawer_mini_apps_resize">Ripërmaso %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Hapur</string>
+    <string name="drawer_mini_apps_status_submitted">U dërgua</string>
+    <string name="drawer_mini_apps_status_dismissed">U hodh poshtë</string>
+    <string name="drawer_mini_apps_status_failed">Dështoi</string>
 </resources>

@@ -191,4 +191,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помоги улучшить экран сессии. Покажи, что найдёшь, и объясни изменения.</string>
     <string name="drawer_appearance_preview_assistant_text">Я нашёл проблему с компоновкой в `SessionView.swift`. Переписка и поле ввода делят доступную высоту, поэтому открытие клавиатуры — хорошая проверка.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Мини-приложения</string>
+    <string name="drawer_mini_apps_dashboard">Панель</string>
+    <string name="drawer_mini_apps_all_widgets">Все виджеты</string>
+    <string name="drawer_mini_apps_add">Добавить на панель</string>
+    <string name="drawer_mini_apps_on_dashboard">На панели</string>
+    <string name="drawer_mini_apps_empty_title">Мини-приложений пока нет</string>
+    <string name="drawer_mini_apps_empty_message">Добавьте виджеты из сессий в разделе «Все виджеты», а затем расставьте их здесь.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Нет виджетов</string>
+    <string name="drawer_mini_apps_no_widgets_message">Здесь появятся виджеты, которые агенты показывают в сессиях этого сервера.</string>
+    <string name="drawer_mini_apps_load_failed">Не удалось загрузить виджеты</string>
+    <string name="drawer_mini_apps_missing">Этого виджета больше нет на сервере.</string>
+    <string name="drawer_mini_apps_remove">Удалить %1$s</string>
+    <string name="drawer_mini_apps_resize">Изменить размер %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Открыт</string>
+    <string name="drawer_mini_apps_status_submitted">Отправлено</string>
+    <string name="drawer_mini_apps_status_dismissed">Отклонён</string>
+    <string name="drawer_mini_apps_status_failed">Ошибка</string>
 </resources>

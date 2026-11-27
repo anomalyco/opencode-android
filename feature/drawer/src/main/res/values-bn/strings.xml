@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">সেশন স্ক্রিন আরও ভালো করতে সাহায্য করুন। কী পেলেন দেখান আর পরিবর্তনগুলো বুঝিয়ে দিন।</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-এ লেআউটের সমস্যাটি পেয়েছি। ট্রান্সক্রিপ্ট আর কম্পোজার উপলব্ধ উচ্চতা ভাগ করে নেয়, তাই কীবোর্ড দিয়ে লেআউটটি ভালোভাবে পরীক্ষা করা যায়।</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">মিনি অ্যাপ</string>
+    <string name="drawer_mini_apps_dashboard">ড্যাশবোর্ড</string>
+    <string name="drawer_mini_apps_all_widgets">সব উইজেট</string>
+    <string name="drawer_mini_apps_add">ড্যাশবোর্ডে যোগ করুন</string>
+    <string name="drawer_mini_apps_on_dashboard">ড্যাশবোর্ডে আছে</string>
+    <string name="drawer_mini_apps_empty_title">এখনও কোনো মিনি অ্যাপ নেই</string>
+    <string name="drawer_mini_apps_empty_message">সব উইজেট থেকে আপনার সেশনের উইজেট যোগ করুন, তারপর এখানে সাজিয়ে নিন।</string>
+    <string name="drawer_mini_apps_no_widgets_title">কোনো উইজেট নেই</string>
+    <string name="drawer_mini_apps_no_widgets_message">এই সার্ভারের সেশনে এজেন্ট যে উইজেট দেখায়, তা এখানে দেখা যাবে।</string>
+    <string name="drawer_mini_apps_load_failed">উইজেট লোড করা যায়নি</string>
+    <string name="drawer_mini_apps_missing">এই উইজেটটি আর সার্ভারে নেই।</string>
+    <string name="drawer_mini_apps_remove">%1$s সরান</string>
+    <string name="drawer_mini_apps_resize">%1$s-এর আকার বদলান</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">খোলা</string>
+    <string name="drawer_mini_apps_status_submitted">জমা দেওয়া হয়েছে</string>
+    <string name="drawer_mini_apps_status_dismissed">খারিজ করা হয়েছে</string>
+    <string name="drawer_mini_apps_status_failed">ব্যর্থ হয়েছে</string>
 </resources>

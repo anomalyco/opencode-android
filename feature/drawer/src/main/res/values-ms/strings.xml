@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya menambah baik skrin sesi. Tunjukkan apa yang anda temui dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemui masalah susun atur dalam `SessionView.swift`. Transkrip dan ruang karang berkongsi ketinggian yang tersedia, jadi papan kekunci berguna untuk menguji had susun atur ini.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Aplikasi mini</string>
+    <string name="drawer_mini_apps_dashboard">Papan pemuka</string>
+    <string name="drawer_mini_apps_all_widgets">Semua widget</string>
+    <string name="drawer_mini_apps_add">Tambah ke papan pemuka</string>
+    <string name="drawer_mini_apps_on_dashboard">Pada papan pemuka</string>
+    <string name="drawer_mini_apps_empty_title">Belum ada aplikasi mini</string>
+    <string name="drawer_mini_apps_empty_message">Tambah widget daripada sesi anda dalam Semua widget, kemudian susun di sini.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Tiada widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widget yang ditunjukkan oleh ejen dalam sesi pelayan ini muncul di sini.</string>
+    <string name="drawer_mini_apps_load_failed">Tidak dapat memuatkan widget</string>
+    <string name="drawer_mini_apps_missing">Widget ini tiada lagi pada pelayan.</string>
+    <string name="drawer_mini_apps_remove">Alih keluar %1$s</string>
+    <string name="drawer_mini_apps_resize">Ubah saiz %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Terbuka</string>
+    <string name="drawer_mini_apps_status_submitted">Dihantar</string>
+    <string name="drawer_mini_apps_status_dismissed">Diketepikan</string>
+    <string name="drawer_mini_apps_status_failed">Gagal</string>
 </resources>

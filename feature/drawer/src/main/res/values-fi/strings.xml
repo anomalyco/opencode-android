@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Auta minua parantamaan istuntonäkymää. Näytä, mitä löydät, ja selitä muutokset.</string>
     <string name="drawer_appearance_preview_assistant_text">Löysin asetteluongelman tiedostosta `SessionView.swift`. Keskusteluloki ja viestikenttä jakavat käytettävissä olevan korkeuden, joten näppäimistö on hyvä rasitustesti.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Minisovellukset</string>
+    <string name="drawer_mini_apps_dashboard">Koontinäyttö</string>
+    <string name="drawer_mini_apps_all_widgets">Kaikki widgetit</string>
+    <string name="drawer_mini_apps_add">Lisää koontinäyttöön</string>
+    <string name="drawer_mini_apps_on_dashboard">Koontinäytössä</string>
+    <string name="drawer_mini_apps_empty_title">Ei vielä minisovelluksia</string>
+    <string name="drawer_mini_apps_empty_message">Lisää widgetejä istunnoistasi kohdasta Kaikki widgetit ja järjestele ne täällä.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Ei widgetejä</string>
+    <string name="drawer_mini_apps_no_widgets_message">Täällä näkyvät widgetit, joita agentit näyttävät tämän palvelimen istunnoissa.</string>
+    <string name="drawer_mini_apps_load_failed">Widgetejä ei voitu ladata</string>
+    <string name="drawer_mini_apps_missing">Tätä widgetiä ei ole enää palvelimella.</string>
+    <string name="drawer_mini_apps_remove">Poista %1$s</string>
+    <string name="drawer_mini_apps_resize">Muuta kohteen %1$s kokoa</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Avoin</string>
+    <string name="drawer_mini_apps_status_submitted">Lähetetty</string>
+    <string name="drawer_mini_apps_status_dismissed">Hylätty</string>
+    <string name="drawer_mini_apps_status_failed">Epäonnistui</string>
 </resources>

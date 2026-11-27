@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помогни ми да подобря екрана на сесията. Покажи ми какво откриеш и обясни промените.</string>
     <string name="drawer_appearance_preview_assistant_text">Открих проблема с оформлението в `SessionView.swift`. Преписът и редакторът на съобщения си поделят наличната височина, затова клавиатурата е добър тест за ограничено пространство.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Мини приложения</string>
+    <string name="drawer_mini_apps_dashboard">Табло</string>
+    <string name="drawer_mini_apps_all_widgets">Всички уиджети</string>
+    <string name="drawer_mini_apps_add">Добавяне към таблото</string>
+    <string name="drawer_mini_apps_on_dashboard">На таблото</string>
+    <string name="drawer_mini_apps_empty_title">Все още няма мини приложения</string>
+    <string name="drawer_mini_apps_empty_message">Добавете уиджети от сесиите си във „Всички уиджети“, след което ги подредете тук.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Няма уиджети</string>
+    <string name="drawer_mini_apps_no_widgets_message">Тук се появяват уиджетите, които агентите показват в сесиите на този сървър.</string>
+    <string name="drawer_mini_apps_load_failed">Неуспешно зареждане на уиджетите</string>
+    <string name="drawer_mini_apps_missing">Този уиджет вече не е на сървъра.</string>
+    <string name="drawer_mini_apps_remove">Премахване на %1$s</string>
+    <string name="drawer_mini_apps_resize">Преоразмеряване на %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Отворено</string>
+    <string name="drawer_mini_apps_status_submitted">Изпратено</string>
+    <string name="drawer_mini_apps_status_dismissed">Отхвърлен</string>
+    <string name="drawer_mini_apps_status_failed">Неуспешно</string>
 </resources>

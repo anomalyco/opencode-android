@@ -191,4 +191,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomagaj mi izboljšati zaslon seje. Pokaži mi, kaj najdeš, in pojasni spremembe.</string>
     <string name="drawer_appearance_preview_assistant_text">V datoteki `SessionView.swift` sem našel težavo s postavitvijo. Prepis in urejevalnik sporočil si delita razpoložljivo višino, zato je tipkovnica dober preizkus postavitve.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini aplikacije</string>
+    <string name="drawer_mini_apps_dashboard">Nadzorna plošča</string>
+    <string name="drawer_mini_apps_all_widgets">Vsi pripomočki</string>
+    <string name="drawer_mini_apps_add">Dodaj na nadzorno ploščo</string>
+    <string name="drawer_mini_apps_on_dashboard">Na nadzorni plošči</string>
+    <string name="drawer_mini_apps_empty_title">Še ni mini aplikacij</string>
+    <string name="drawer_mini_apps_empty_message">Dodajte pripomočke iz svojih sej v razdelku Vsi pripomočki, nato jih razporedite tukaj.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Ni pripomočkov</string>
+    <string name="drawer_mini_apps_no_widgets_message">Pripomočki, ki jih agenti prikažejo v sejah tega strežnika, se pojavijo tukaj.</string>
+    <string name="drawer_mini_apps_load_failed">Nalaganje pripomočkov ni uspelo</string>
+    <string name="drawer_mini_apps_missing">Tega pripomočka ni več na strežniku.</string>
+    <string name="drawer_mini_apps_remove">Odstrani %1$s</string>
+    <string name="drawer_mini_apps_resize">Spremeni velikost: %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Odprto</string>
+    <string name="drawer_mini_apps_status_submitted">Oddano</string>
+    <string name="drawer_mini_apps_status_dismissed">Zavrnjeno</string>
+    <string name="drawer_mini_apps_status_failed">Ni uspelo</string>
 </resources>

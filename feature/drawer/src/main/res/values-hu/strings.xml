@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Segítsen javítani a munkamenet képernyőjén. Mutassa meg, mit talál, és magyarázza el a változtatásokat.</string>
     <string name="drawer_appearance_preview_assistant_text">Megtaláltam az elrendezési hibát a `SessionView.swift` fájlban. Az átirat és az üzenetszerkesztő osztozik a rendelkezésre álló magasságon, így a billentyűzettel jól tesztelhető az elrendezés.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Minialkalmazások</string>
+    <string name="drawer_mini_apps_dashboard">Irányítópult</string>
+    <string name="drawer_mini_apps_all_widgets">Összes widget</string>
+    <string name="drawer_mini_apps_add">Hozzáadás az irányítópulthoz</string>
+    <string name="drawer_mini_apps_on_dashboard">Az irányítópulton</string>
+    <string name="drawer_mini_apps_empty_title">Még nincsenek minialkalmazások</string>
+    <string name="drawer_mini_apps_empty_message">Adjon hozzá widgeteket a munkameneteiből az Összes widget nézetben, majd rendezze el őket itt.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nincsenek widgetek</string>
+    <string name="drawer_mini_apps_no_widgets_message">Itt láthatók azok a widgetek, amelyeket az ügynökök ennek a kiszolgálónak a munkameneteiben megjelenítenek.</string>
+    <string name="drawer_mini_apps_load_failed">Nem sikerült betölteni a widgeteket</string>
+    <string name="drawer_mini_apps_missing">Ez a widget már nincs a kiszolgálón.</string>
+    <string name="drawer_mini_apps_remove">%1$s eltávolítása</string>
+    <string name="drawer_mini_apps_resize">%1$s átméretezése</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Nyitott</string>
+    <string name="drawer_mini_apps_status_submitted">Elküldve</string>
+    <string name="drawer_mini_apps_status_dismissed">Elutasítva</string>
+    <string name="drawer_mini_apps_status_failed">Sikertelen</string>
 </resources>

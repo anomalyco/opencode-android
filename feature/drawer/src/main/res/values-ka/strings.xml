@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">დამეხმარე სესიის ეკრანის გაუმჯობესებაში. მაჩვენე, რას იპოვი და ამიხსენი ცვლილებები.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-ში განლაგების პრობლემა ვიპოვე. ტრანსკრიპტი და შეტყობინების რედაქტორი ხელმისაწვდომ სიმაღლეს ინაწილებენ, ამიტომ კლავიატურით კარგად მოწმდება, როგორ მუშაობს განლაგება შეზღუდულ სივრცეში.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">მინი-აპები</string>
+    <string name="drawer_mini_apps_dashboard">დაფა</string>
+    <string name="drawer_mini_apps_all_widgets">ყველა ვიჯეტი</string>
+    <string name="drawer_mini_apps_add">დაფაზე დამატება</string>
+    <string name="drawer_mini_apps_on_dashboard">დაფაზეა</string>
+    <string name="drawer_mini_apps_empty_title">მინი-აპები ჯერ არ არის</string>
+    <string name="drawer_mini_apps_empty_message">დაამატეთ ვიჯეტები თქვენი სესიებიდან „ყველა ვიჯეტში“, შემდეგ კი აქ განალაგეთ.</string>
+    <string name="drawer_mini_apps_no_widgets_title">ვიჯეტები არ არის</string>
+    <string name="drawer_mini_apps_no_widgets_message">აქ გამოჩნდება ვიჯეტები, რომლებსაც აგენტები ამ სერვერის სესიებში აჩვენებენ.</string>
+    <string name="drawer_mini_apps_load_failed">ვიჯეტების ჩატვირთვა ვერ მოხერხდა</string>
+    <string name="drawer_mini_apps_missing">ეს ვიჯეტი სერვერზე აღარ არის.</string>
+    <string name="drawer_mini_apps_remove">%1$s-ის წაშლა</string>
+    <string name="drawer_mini_apps_resize">%1$s-ის ზომის შეცვლა</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">ღიაა</string>
+    <string name="drawer_mini_apps_status_submitted">გაგზავნილია</string>
+    <string name="drawer_mini_apps_status_dismissed">უარყოფილია</string>
+    <string name="drawer_mini_apps_status_failed">ვერ შედგა</string>
 </resources>

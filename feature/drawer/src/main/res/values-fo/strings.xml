@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálp mær at bøta um setuvísingina. Vís mær, hvat tú finnur, og greið frá broytingunum.</string>
     <string name="drawer_appearance_preview_assistant_text">Eg fann uppsetingarfeilin í `SessionView.swift`. Samrøðuteksturin og skriviteigurin deilast um tøku hæddina, so knappaborðið er ein góð roynd undir trýsti.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Smáforrit</string>
+    <string name="drawer_mini_apps_dashboard">Yvirlit</string>
+    <string name="drawer_mini_apps_all_widgets">Allar smáeindir</string>
+    <string name="drawer_mini_apps_add">Legg á yvirlitið</string>
+    <string name="drawer_mini_apps_on_dashboard">Á yvirlitinum</string>
+    <string name="drawer_mini_apps_empty_title">Eingi smáforrit enn</string>
+    <string name="drawer_mini_apps_empty_message">Legg smáeindir úr tínum setum afturat í Allar smáeindir, og skipa tær síðani her.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Eingar smáeindir</string>
+    <string name="drawer_mini_apps_no_widgets_message">Smáeindir, sum agentar vísa í setunum á hesum ambætaranum, síggjast her.</string>
+    <string name="drawer_mini_apps_load_failed">Kundi ikki heinta smáeindir</string>
+    <string name="drawer_mini_apps_missing">Henda smáeindin er ikki á ambætaranum longur.</string>
+    <string name="drawer_mini_apps_remove">Tak %1$s burtur</string>
+    <string name="drawer_mini_apps_resize">Broyt stødd á %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Opið</string>
+    <string name="drawer_mini_apps_status_submitted">Sent inn</string>
+    <string name="drawer_mini_apps_status_dismissed">Vístur burtur</string>
+    <string name="drawer_mini_apps_status_failed">Mistókst</string>
 </resources>

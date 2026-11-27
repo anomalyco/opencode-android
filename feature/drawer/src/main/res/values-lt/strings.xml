@@ -191,4 +191,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Padėk patobulinti seanso ekraną. Parodyk, ką rasi, ir paaiškink pakeitimus.</string>
     <string name="drawer_appearance_preview_assistant_text">Faile `SessionView.swift` radau išdėstymo problemą. Pokalbio išrašas ir rašymo laukas dalijasi turima vieta pagal aukštį, tad klaviatūra padeda patikrinti, kaip jie telpa, kai vietos mažai.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini programėlės</string>
+    <string name="drawer_mini_apps_dashboard">Skydelis</string>
+    <string name="drawer_mini_apps_all_widgets">Visi valdikliai</string>
+    <string name="drawer_mini_apps_add">Pridėti į skydelį</string>
+    <string name="drawer_mini_apps_on_dashboard">Skydelyje</string>
+    <string name="drawer_mini_apps_empty_title">Mini programėlių dar nėra</string>
+    <string name="drawer_mini_apps_empty_message">Pridėkite valdiklių iš savo seansų skiltyje „Visi valdikliai“, tada išdėstykite juos čia.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nėra valdiklių</string>
+    <string name="drawer_mini_apps_no_widgets_message">Čia pasirodo valdikliai, kuriuos agentai rodo šio serverio seansuose.</string>
+    <string name="drawer_mini_apps_load_failed">Nepavyko įkelti valdiklių</string>
+    <string name="drawer_mini_apps_missing">Šio valdiklio serveryje nebėra.</string>
+    <string name="drawer_mini_apps_remove">Pašalinti %1$s</string>
+    <string name="drawer_mini_apps_resize">Keisti %1$s dydį</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Atvira</string>
+    <string name="drawer_mini_apps_status_submitted">Pateikta</string>
+    <string name="drawer_mini_apps_status_dismissed">Atmesta</string>
+    <string name="drawer_mini_apps_status_failed">Nepavyko</string>
 </resources>

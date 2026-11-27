@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajută-mă să îmbunătățesc ecranul sesiunii. Arată-mi ce găsești și explică modificările.</string>
     <string name="drawer_appearance_preview_assistant_text">Am găsit problema de aranjare în `SessionView.swift`. Transcrierea și editorul de mesaje împart înălțimea disponibilă, așa că tastatura e utilă pentru a testa limitele.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniaplicații</string>
+    <string name="drawer_mini_apps_dashboard">Tablou de bord</string>
+    <string name="drawer_mini_apps_all_widgets">Toate widgeturile</string>
+    <string name="drawer_mini_apps_add">Adaugă pe tabloul de bord</string>
+    <string name="drawer_mini_apps_on_dashboard">Pe tabloul de bord</string>
+    <string name="drawer_mini_apps_empty_title">Încă nicio miniaplicație</string>
+    <string name="drawer_mini_apps_empty_message">Adaugă widgeturi din sesiunile tale în Toate widgeturile, apoi aranjează-le aici.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Niciun widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgeturile afișate de agenți în sesiunile acestui server apar aici.</string>
+    <string name="drawer_mini_apps_load_failed">Nu s-au putut încărca widgeturile</string>
+    <string name="drawer_mini_apps_missing">Acest widget nu mai este pe server.</string>
+    <string name="drawer_mini_apps_remove">Elimină %1$s</string>
+    <string name="drawer_mini_apps_resize">Redimensionează %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Deschis</string>
+    <string name="drawer_mini_apps_status_submitted">Trimis</string>
+    <string name="drawer_mini_apps_status_dismissed">Respins</string>
+    <string name="drawer_mini_apps_status_failed">Eroare</string>
 </resources>

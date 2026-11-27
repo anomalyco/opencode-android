@@ -191,4 +191,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomoz mi vylepšit obrazovku relace. Ukaž mi, co najdeš, a vysvětli změny.</string>
     <string name="drawer_appearance_preview_assistant_text">Našel jsem problém s rozložením v `SessionView.swift`. Přepis a editor zpráv sdílejí dostupnou výšku, takže klávesnice dobře prověří, jak rozložení funguje.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniaplikace</string>
+    <string name="drawer_mini_apps_dashboard">Nástěnka</string>
+    <string name="drawer_mini_apps_all_widgets">Všechny widgety</string>
+    <string name="drawer_mini_apps_add">Přidat na nástěnku</string>
+    <string name="drawer_mini_apps_on_dashboard">Na nástěnce</string>
+    <string name="drawer_mini_apps_empty_title">Zatím žádné miniaplikace</string>
+    <string name="drawer_mini_apps_empty_message">Přidejte widgety ze svých relací v sekci Všechny widgety a pak je tady uspořádejte.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Žádné widgety</string>
+    <string name="drawer_mini_apps_no_widgets_message">Tady se objeví widgety, které agenti zobrazí v relacích tohoto serveru.</string>
+    <string name="drawer_mini_apps_load_failed">Nepodařilo se načíst widgety</string>
+    <string name="drawer_mini_apps_missing">Tento widget už na serveru není.</string>
+    <string name="drawer_mini_apps_remove">Odebrat %1$s</string>
+    <string name="drawer_mini_apps_resize">Změnit velikost %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Otevřeno</string>
+    <string name="drawer_mini_apps_status_submitted">Odesláno</string>
+    <string name="drawer_mini_apps_status_dismissed">Zamítnuto</string>
+    <string name="drawer_mini_apps_status_failed">Nepodařilo se</string>
 </resources>

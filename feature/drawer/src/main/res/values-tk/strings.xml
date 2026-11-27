@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiýa ekranyny gowulandyrmaga kömek et. Tapan zatlaryňy görkez we üýtgeşmeleri düşündir.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faýlynda ýerleşiş meselesini tapdym. Ýazgy we habar ýazmak meýdany elýeterli beýikligi paýlaşýar, şonuň üçin klawiatura munuň oňat synagydyr.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini programmalar</string>
+    <string name="drawer_mini_apps_dashboard">Dolandyryş paneli</string>
+    <string name="drawer_mini_apps_all_widgets">Ähli widjetler</string>
+    <string name="drawer_mini_apps_add">Dolandyryş paneline goş</string>
+    <string name="drawer_mini_apps_on_dashboard">Dolandyryş panelinde</string>
+    <string name="drawer_mini_apps_empty_title">Entek mini programma ýok</string>
+    <string name="drawer_mini_apps_empty_message">Sessiýalaryňyzdaky widjetleri «Ähli widjetler» bölüminden goşuň, soňra olary bu ýerde tertipläň.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Widjet ýok</string>
+    <string name="drawer_mini_apps_no_widgets_message">Agentleriň bu serweriň sessiýalarynda görkezýän widjetleri bu ýerde peýda bolýar.</string>
+    <string name="drawer_mini_apps_load_failed">Widjetleri ýükläp bolmady</string>
+    <string name="drawer_mini_apps_missing">Bu widjet indi serwerde ýok.</string>
+    <string name="drawer_mini_apps_remove">%1$s aýyr</string>
+    <string name="drawer_mini_apps_resize">%1$s ölçegini üýtget</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Açyk</string>
+    <string name="drawer_mini_apps_status_submitted">Iberildi</string>
+    <string name="drawer_mini_apps_status_dismissed">Ýatyryldy</string>
+    <string name="drawer_mini_apps_status_failed">Şowsuz</string>
 </resources>

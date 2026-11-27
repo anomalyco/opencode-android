@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajuda\'m a millorar la pantalla de la sessió. Mostra\'m què hi trobes i explica els canvis.</string>
     <string name="drawer_appearance_preview_assistant_text">He trobat el problema de disposició a `SessionView.swift`. La transcripció i el redactor comparteixen l\'alçada disponible, així que el teclat és una bona prova d\'estrès.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniaplicacions</string>
+    <string name="drawer_mini_apps_dashboard">Tauler</string>
+    <string name="drawer_mini_apps_all_widgets">Tots els ginys</string>
+    <string name="drawer_mini_apps_add">Afegeix al tauler</string>
+    <string name="drawer_mini_apps_on_dashboard">Al tauler</string>
+    <string name="drawer_mini_apps_empty_title">Encara no hi ha miniaplicacions</string>
+    <string name="drawer_mini_apps_empty_message">Afegeix ginys de les teves sessions a Tots els ginys i organitza\'ls aquí.</string>
+    <string name="drawer_mini_apps_no_widgets_title">No hi ha ginys</string>
+    <string name="drawer_mini_apps_no_widgets_message">Els ginys que mostren els agents a les sessions d\'aquest servidor apareixen aquí.</string>
+    <string name="drawer_mini_apps_load_failed">No s\'han pogut carregar els ginys</string>
+    <string name="drawer_mini_apps_missing">Aquest giny ja no és al servidor.</string>
+    <string name="drawer_mini_apps_remove">Elimina %1$s</string>
+    <string name="drawer_mini_apps_resize">Redimensiona %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Obert</string>
+    <string name="drawer_mini_apps_status_submitted">Enviat</string>
+    <string name="drawer_mini_apps_status_dismissed">Desestimat</string>
+    <string name="drawer_mini_apps_status_failed">Ha fallat</string>
 </resources>

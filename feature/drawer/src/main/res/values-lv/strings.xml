@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Palīdzi uzlabot sesijas ekrānu. Parādi, ko atradi, un paskaidro izmaiņas.</string>
     <string name="drawer_appearance_preview_assistant_text">Atradu izkārtojuma problēmu failā `SessionView.swift`. Sarunas pieraksts un ziņas ievade dala pieejamo augstumu, tāpēc tastatūra labi palīdz pārbaudīt izkārtojumu.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini lietotnes</string>
+    <string name="drawer_mini_apps_dashboard">Panelis</string>
+    <string name="drawer_mini_apps_all_widgets">Visi logrīki</string>
+    <string name="drawer_mini_apps_add">Pievienot panelim</string>
+    <string name="drawer_mini_apps_on_dashboard">Panelī</string>
+    <string name="drawer_mini_apps_empty_title">Vēl nav mini lietotņu</string>
+    <string name="drawer_mini_apps_empty_message">Pievieno logrīkus no savām sesijām sadaļā „Visi logrīki”, pēc tam sakārto tos šeit.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nav logrīku</string>
+    <string name="drawer_mini_apps_no_widgets_message">Šeit parādās logrīki, ko aģenti rāda šī servera sesijās.</string>
+    <string name="drawer_mini_apps_load_failed">Neizdevās ielādēt logrīkus</string>
+    <string name="drawer_mini_apps_missing">Šī logrīka vairs nav serverī.</string>
+    <string name="drawer_mini_apps_remove">Noņemt %1$s</string>
+    <string name="drawer_mini_apps_resize">Mainīt %1$s izmēru</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Atvērts</string>
+    <string name="drawer_mini_apps_status_submitted">Iesniegts</string>
+    <string name="drawer_mini_apps_status_dismissed">Noraidīts</string>
+    <string name="drawer_mini_apps_status_failed">Neizdevās</string>
 </resources>

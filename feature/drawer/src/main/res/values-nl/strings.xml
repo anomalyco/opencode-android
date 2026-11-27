@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Help me het sessiescherm te verbeteren. Laat zien wat je vindt en leg de wijzigingen uit.</string>
     <string name="drawer_appearance_preview_assistant_text">Ik heb het indelingsprobleem gevonden in `SessionView.swift`. De transcriptie en berichtinvoer delen de beschikbare hoogte, dus het toetsenbord is een goede stresstest.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini-apps</string>
+    <string name="drawer_mini_apps_dashboard">Dashboard</string>
+    <string name="drawer_mini_apps_all_widgets">Alle widgets</string>
+    <string name="drawer_mini_apps_add">Aan dashboard toevoegen</string>
+    <string name="drawer_mini_apps_on_dashboard">Op dashboard</string>
+    <string name="drawer_mini_apps_empty_title">Nog geen mini-apps</string>
+    <string name="drawer_mini_apps_empty_message">Voeg widgets uit je sessies toe via Alle widgets en orden ze hier.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Geen widgets</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgets die agenten in sessies op deze server tonen, verschijnen hier.</string>
+    <string name="drawer_mini_apps_load_failed">Kan widgets niet laden</string>
+    <string name="drawer_mini_apps_missing">Deze widget staat niet meer op de server.</string>
+    <string name="drawer_mini_apps_remove">%1$s verwijderen</string>
+    <string name="drawer_mini_apps_resize">Formaat van %1$s wijzigen</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Open</string>
+    <string name="drawer_mini_apps_status_submitted">Verzonden</string>
+    <string name="drawer_mini_apps_status_dismissed">Genegeerd</string>
+    <string name="drawer_mini_apps_status_failed">Mislukt</string>
 </resources>

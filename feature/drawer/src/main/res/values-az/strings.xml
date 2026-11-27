@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiya ekranını yaxşılaşdırmağa kömək et. Tapdıqlarını göstər və dəyişiklikləri izah et.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faylında düzülüş problemini tapdım. Transkript və mesaj yazma sahəsi mövcud hündürlüyü bölüşür, buna görə klaviatura ilə bunu yaxşı sınaqdan keçirmək olar.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini tətbiqlər</string>
+    <string name="drawer_mini_apps_dashboard">İdarə paneli</string>
+    <string name="drawer_mini_apps_all_widgets">Bütün vidcetlər</string>
+    <string name="drawer_mini_apps_add">İdarə panelinə əlavə et</string>
+    <string name="drawer_mini_apps_on_dashboard">İdarə panelində</string>
+    <string name="drawer_mini_apps_empty_title">Hələ mini tətbiq yoxdur</string>
+    <string name="drawer_mini_apps_empty_message">Sessiyalarınızdakı vidcetləri “Bütün vidcetlər” bölməsindən əlavə edib burada nizamlayın.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Vidcet yoxdur</string>
+    <string name="drawer_mini_apps_no_widgets_message">Agentlərin bu serverin sessiyalarında göstərdiyi vidcetlər burada görünür.</string>
+    <string name="drawer_mini_apps_load_failed">Vidcetləri yükləmək mümkün olmadı</string>
+    <string name="drawer_mini_apps_missing">Bu vidcet artıq serverdə yoxdur.</string>
+    <string name="drawer_mini_apps_remove">%1$s sil</string>
+    <string name="drawer_mini_apps_resize">%1$s ölçüsünü dəyiş</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Açıq</string>
+    <string name="drawer_mini_apps_status_submitted">Göndərildi</string>
+    <string name="drawer_mini_apps_status_dismissed">Rədd edildi</string>
+    <string name="drawer_mini_apps_status_failed">Uğursuz</string>
 </resources>

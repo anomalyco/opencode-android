@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">세션 화면을 개선해 주세요. 발견한 문제를 보여 주고 변경 사항을 설명해 주세요.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`에서 레이아웃 문제를 찾았어요. 대화 기록과 입력창이 사용 가능한 높이를 나눠 쓰기 때문에 키보드를 띄워 보면 레이아웃을 점검하기 좋아요.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">미니 앱</string>
+    <string name="drawer_mini_apps_dashboard">대시보드</string>
+    <string name="drawer_mini_apps_all_widgets">모든 위젯</string>
+    <string name="drawer_mini_apps_add">대시보드에 추가</string>
+    <string name="drawer_mini_apps_on_dashboard">대시보드에 있음</string>
+    <string name="drawer_mini_apps_empty_title">아직 미니 앱 없음</string>
+    <string name="drawer_mini_apps_empty_message">\'모든 위젯\'에서 세션의 위젯을 추가한 뒤 여기에 배치하세요.</string>
+    <string name="drawer_mini_apps_no_widgets_title">위젯 없음</string>
+    <string name="drawer_mini_apps_no_widgets_message">에이전트가 이 서버의 세션에 표시하는 위젯이 여기에 나타나요.</string>
+    <string name="drawer_mini_apps_load_failed">위젯을 불러올 수 없어요</string>
+    <string name="drawer_mini_apps_missing">이 위젯은 더 이상 서버에 없어요.</string>
+    <string name="drawer_mini_apps_remove">%1$s 제거</string>
+    <string name="drawer_mini_apps_resize">%1$s 크기 조절</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">열림</string>
+    <string name="drawer_mini_apps_status_submitted">제출됨</string>
+    <string name="drawer_mini_apps_status_dismissed">무시됨</string>
+    <string name="drawer_mini_apps_status_failed">실패</string>
 </resources>

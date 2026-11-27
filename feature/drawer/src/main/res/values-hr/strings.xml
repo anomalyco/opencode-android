@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomozi mi poboljšati zaslon sesije. Pokaži mi što pronađeš i objasni promjene.</string>
     <string name="drawer_appearance_preview_assistant_text">Pronašao sam problem s rasporedom u datoteci `SessionView.swift`. Transkript i unos poruke dijele dostupnu visinu, pa je tipkovnica dobar test za provjeru rasporeda.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini aplikacije</string>
+    <string name="drawer_mini_apps_dashboard">Nadzorna ploča</string>
+    <string name="drawer_mini_apps_all_widgets">Svi widgeti</string>
+    <string name="drawer_mini_apps_add">Dodaj na nadzornu ploču</string>
+    <string name="drawer_mini_apps_on_dashboard">Na nadzornoj ploči</string>
+    <string name="drawer_mini_apps_empty_title">Još nema mini aplikacija</string>
+    <string name="drawer_mini_apps_empty_message">Dodajte widgete iz svojih sesija u odjeljku Svi widgeti, a zatim ih rasporedite ovdje.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nema widgeta</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgeti koje agenti prikazuju u sesijama ovog poslužitelja pojavljuju se ovdje.</string>
+    <string name="drawer_mini_apps_load_failed">Učitavanje widgeta nije uspjelo</string>
+    <string name="drawer_mini_apps_missing">Ovaj widget više nije na poslužitelju.</string>
+    <string name="drawer_mini_apps_remove">Ukloni %1$s</string>
+    <string name="drawer_mini_apps_resize">Promijeni veličinu za %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Otvoreno</string>
+    <string name="drawer_mini_apps_status_submitted">Poslano</string>
+    <string name="drawer_mini_apps_status_dismissed">Odbačeno</string>
+    <string name="drawer_mini_apps_status_failed">Neuspješno</string>
 </resources>

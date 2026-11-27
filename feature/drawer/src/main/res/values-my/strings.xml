@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">စက်ရှင်မျက်နှာပြင်ကို ပိုကောင်းအောင် ကူညီပေးပါ။ တွေ့ရှိချက်တွေကို ပြပြီး အပြောင်းအလဲတွေကို ရှင်းပြပါ။</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` မှာ အပြင်အဆင်ပြဿနာကို တွေ့ထားပါတယ်။ စကားပြောမှတ်တမ်းနဲ့ စာရေးကွက်က ရနိုင်တဲ့ အမြင့်ကို မျှဝေသုံးထားလို့ ကီးဘုတ်ဖွင့်ပြီး နေရာကျဉ်းချိန်မှာ အဆင်ပြေမပြေ စမ်းကြည့်နိုင်ပါတယ်။</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">မီနီအက်ပ်များ</string>
+    <string name="drawer_mini_apps_dashboard">ဒက်ရှ်ဘုတ်</string>
+    <string name="drawer_mini_apps_all_widgets">ဝစ်ဂျက်အားလုံး</string>
+    <string name="drawer_mini_apps_add">ဒက်ရှ်ဘုတ်သို့ ထည့်ပါ</string>
+    <string name="drawer_mini_apps_on_dashboard">ဒက်ရှ်ဘုတ်တွင် ရှိသည်</string>
+    <string name="drawer_mini_apps_empty_title">မီနီအက်ပ် မရှိသေးပါ</string>
+    <string name="drawer_mini_apps_empty_message">ဝစ်ဂျက်အားလုံး တွင် သင့်စက်ရှင်များမှ ဝစ်ဂျက်များကို ထည့်ပြီး ဤနေရာတွင် စီစဉ်ပါ။</string>
+    <string name="drawer_mini_apps_no_widgets_title">ဝစ်ဂျက် မရှိပါ</string>
+    <string name="drawer_mini_apps_no_widgets_message">ဤဆာဗာ၏ စက်ရှင်များတွင် အေးဂျင့်များ ပြသသည့် ဝစ်ဂျက်များ ဤနေရာတွင် ပေါ်လာပါမည်။</string>
+    <string name="drawer_mini_apps_load_failed">ဝစ်ဂျက်များကို ဖွင့်၍ မရပါ</string>
+    <string name="drawer_mini_apps_missing">ဤဝစ်ဂျက်သည် ဆာဗာတွင် မရှိတော့ပါ။</string>
+    <string name="drawer_mini_apps_remove">%1$s ကို ဖယ်ရှားပါ</string>
+    <string name="drawer_mini_apps_resize">%1$s ၏ အရွယ်အစား ပြောင်းပါ</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">ဖွင့်ထားသည်</string>
+    <string name="drawer_mini_apps_status_submitted">တင်သွင်းပြီး</string>
+    <string name="drawer_mini_apps_status_dismissed">ပယ်ထားသည်</string>
+    <string name="drawer_mini_apps_status_failed">မအောင်မြင်ပါ</string>
 </resources>

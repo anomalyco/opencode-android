@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">帮我改进会话界面。告诉我发现了什么，并解释这些改动。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 中找到了布局问题。对话记录和输入框共用可用高度，所以弹出键盘很适合用来测试布局。</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">小应用</string>
+    <string name="drawer_mini_apps_dashboard">仪表盘</string>
+    <string name="drawer_mini_apps_all_widgets">所有小组件</string>
+    <string name="drawer_mini_apps_add">添加到仪表盘</string>
+    <string name="drawer_mini_apps_on_dashboard">已在仪表盘</string>
+    <string name="drawer_mini_apps_empty_title">暂无小应用</string>
+    <string name="drawer_mini_apps_empty_message">在“所有小组件”中添加来自会话的小组件，然后在这里排列。</string>
+    <string name="drawer_mini_apps_no_widgets_title">暂无小组件</string>
+    <string name="drawer_mini_apps_no_widgets_message">智能体在此服务器会话中显示的小组件会出现在这里。</string>
+    <string name="drawer_mini_apps_load_failed">无法加载小组件</string>
+    <string name="drawer_mini_apps_missing">此小组件已不在服务器上。</string>
+    <string name="drawer_mini_apps_remove">移除 %1$s</string>
+    <string name="drawer_mini_apps_resize">调整 %1$s 大小</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">进行中</string>
+    <string name="drawer_mini_apps_status_submitted">已提交</string>
+    <string name="drawer_mini_apps_status_dismissed">已忽略</string>
+    <string name="drawer_mini_apps_status_failed">失败</string>
 </resources>

@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">セッション画面の改善を手伝って。気づいた点を教えて、変更内容を説明して。</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`にレイアウトの問題が見つかりました。会話履歴と入力欄が画面の高さを分け合うため、キーボードを表示するとレイアウトの崩れを確認しやすくなります。</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">ミニアプリ</string>
+    <string name="drawer_mini_apps_dashboard">ダッシュボード</string>
+    <string name="drawer_mini_apps_all_widgets">すべてのウィジェット</string>
+    <string name="drawer_mini_apps_add">ダッシュボードに追加</string>
+    <string name="drawer_mini_apps_on_dashboard">ダッシュボードに追加済み</string>
+    <string name="drawer_mini_apps_empty_title">まだミニアプリはありません</string>
+    <string name="drawer_mini_apps_empty_message">「すべてのウィジェット」からセッションのウィジェットを追加して、ここで配置できます。</string>
+    <string name="drawer_mini_apps_no_widgets_title">ウィジェットがありません</string>
+    <string name="drawer_mini_apps_no_widgets_message">このサーバーのセッションでエージェントが表示したウィジェットがここに並びます。</string>
+    <string name="drawer_mini_apps_load_failed">ウィジェットを読み込めませんでした</string>
+    <string name="drawer_mini_apps_missing">このウィジェットはもうサーバーにありません。</string>
+    <string name="drawer_mini_apps_remove">%1$sを削除</string>
+    <string name="drawer_mini_apps_resize">%1$sのサイズを変更</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">オープン</string>
+    <string name="drawer_mini_apps_status_submitted">送信済み</string>
+    <string name="drawer_mini_apps_status_dismissed">スキップ済み</string>
+    <string name="drawer_mini_apps_status_failed">失敗</string>
 </resources>

@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálpaðu mér að bæta setuskjáinn. Sýndu mér hvað þú finnur og útskýrðu breytingarnar.</string>
     <string name="drawer_appearance_preview_assistant_text">Ég fann vandann í uppsetningunni í `SessionView.swift`. Samtalsskráin og innslátturinn deila lausu hæðinni, svo lyklaborðið reynir vel á uppsetninguna.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Smáforrit</string>
+    <string name="drawer_mini_apps_dashboard">Stjórnborð</string>
+    <string name="drawer_mini_apps_all_widgets">Allar græjur</string>
+    <string name="drawer_mini_apps_add">Bæta á stjórnborð</string>
+    <string name="drawer_mini_apps_on_dashboard">Á stjórnborði</string>
+    <string name="drawer_mini_apps_empty_title">Engin smáforrit enn</string>
+    <string name="drawer_mini_apps_empty_message">Bættu við græjum úr setunum þínum undir Allar græjur og raðaðu þeim síðan hér.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Engar græjur</string>
+    <string name="drawer_mini_apps_no_widgets_message">Græjur sem fulltrúar sýna í setum þessa netþjóns birtast hér.</string>
+    <string name="drawer_mini_apps_load_failed">Ekki tókst að hlaða græjum</string>
+    <string name="drawer_mini_apps_missing">Þessi græja er ekki lengur á netþjóninum.</string>
+    <string name="drawer_mini_apps_remove">Fjarlægja %1$s</string>
+    <string name="drawer_mini_apps_resize">Breyta stærð á %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Opið</string>
+    <string name="drawer_mini_apps_status_submitted">Sent inn</string>
+    <string name="drawer_mini_apps_status_dismissed">Vísað frá</string>
+    <string name="drawer_mini_apps_status_failed">Mistókst</string>
 </resources>

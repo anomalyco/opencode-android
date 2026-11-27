@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Oturum ekranını iyileştirmeme yardım et. Bulduklarını göster ve değişiklikleri açıkla.</string>
     <string name="drawer_appearance_preview_assistant_text">Yerleşim sorununu `SessionView.swift` dosyasında buldum. Konuşma dökümü ve mesaj yazma alanı mevcut yüksekliği paylaşıyor, bu yüzden klavye iyi bir zorlayıcı test oluyor.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini uygulamalar</string>
+    <string name="drawer_mini_apps_dashboard">Kontrol paneli</string>
+    <string name="drawer_mini_apps_all_widgets">Tüm widget\'lar</string>
+    <string name="drawer_mini_apps_add">Kontrol paneline ekle</string>
+    <string name="drawer_mini_apps_on_dashboard">Kontrol panelinde</string>
+    <string name="drawer_mini_apps_empty_title">Henüz mini uygulama yok</string>
+    <string name="drawer_mini_apps_empty_message">Tüm widget\'lar bölümünden oturumlarınızdaki widget\'ları ekleyin, sonra burada düzenleyin.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Widget yok</string>
+    <string name="drawer_mini_apps_no_widgets_message">Ajanların bu sunucudaki oturumlarda gösterdiği widget\'lar burada görünür.</string>
+    <string name="drawer_mini_apps_load_failed">Widget\'lar yüklenemedi</string>
+    <string name="drawer_mini_apps_missing">Bu widget artık sunucuda değil.</string>
+    <string name="drawer_mini_apps_remove">%1$s öğesini kaldır</string>
+    <string name="drawer_mini_apps_resize">%1$s öğesini yeniden boyutlandır</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Açık</string>
+    <string name="drawer_mini_apps_status_submitted">Gönderildi</string>
+    <string name="drawer_mini_apps_status_dismissed">Kapatıldı</string>
+    <string name="drawer_mini_apps_status_failed">Başarısız</string>
 </resources>

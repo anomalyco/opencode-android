@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Me ajude a melhorar a tela da sessão. Mostre o que encontrar e explique as alterações.</string>
     <string name="drawer_appearance_preview_assistant_text">Encontrei o problema de layout em `SessionView.swift`. A transcrição e o editor de mensagens dividem a altura disponível, então o teclado é um bom teste para esse limite.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini apps</string>
+    <string name="drawer_mini_apps_dashboard">Painel</string>
+    <string name="drawer_mini_apps_all_widgets">Todos os widgets</string>
+    <string name="drawer_mini_apps_add">Adicionar ao painel</string>
+    <string name="drawer_mini_apps_on_dashboard">No painel</string>
+    <string name="drawer_mini_apps_empty_title">Nenhum mini app ainda</string>
+    <string name="drawer_mini_apps_empty_message">Adicione widgets das suas sessões em Todos os widgets e organize-os aqui.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nenhum widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">Os widgets que os agentes mostram nas sessões deste servidor aparecem aqui.</string>
+    <string name="drawer_mini_apps_load_failed">Não foi possível carregar os widgets</string>
+    <string name="drawer_mini_apps_missing">Este widget não está mais no servidor.</string>
+    <string name="drawer_mini_apps_remove">Remover %1$s</string>
+    <string name="drawer_mini_apps_resize">Redimensionar %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Aberto</string>
+    <string name="drawer_mini_apps_status_submitted">Enviado</string>
+    <string name="drawer_mini_apps_status_dismissed">Descartado</string>
+    <string name="drawer_mini_apps_status_failed">Falhou</string>
 </resources>

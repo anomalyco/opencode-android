@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aiutami a migliorare la schermata della sessione. Mostrami cosa trovi e spiega le modifiche.</string>
     <string name="drawer_appearance_preview_assistant_text">Ho trovato il problema di impaginazione in `SessionView.swift`. La trascrizione e il campo di composizione condividono l\'altezza disponibile, quindi la tastiera è un buon banco di prova.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini app</string>
+    <string name="drawer_mini_apps_dashboard">Dashboard</string>
+    <string name="drawer_mini_apps_all_widgets">Tutti i widget</string>
+    <string name="drawer_mini_apps_add">Aggiungi alla dashboard</string>
+    <string name="drawer_mini_apps_on_dashboard">Nella dashboard</string>
+    <string name="drawer_mini_apps_empty_title">Ancora nessuna mini app</string>
+    <string name="drawer_mini_apps_empty_message">Aggiungi widget dalle tue sessioni in Tutti i widget, poi disponili qui.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Nessun widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">I widget mostrati dagli agenti nelle sessioni di questo server compaiono qui.</string>
+    <string name="drawer_mini_apps_load_failed">Impossibile caricare i widget</string>
+    <string name="drawer_mini_apps_missing">Questo widget non è più sul server.</string>
+    <string name="drawer_mini_apps_remove">Rimuovi %1$s</string>
+    <string name="drawer_mini_apps_resize">Ridimensiona %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Aperto</string>
+    <string name="drawer_mini_apps_status_submitted">Inviato</string>
+    <string name="drawer_mini_apps_status_dismissed">Ignorato</string>
+    <string name="drawer_mini_apps_status_failed">Non riuscito</string>
 </resources>

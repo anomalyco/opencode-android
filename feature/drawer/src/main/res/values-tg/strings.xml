@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Барои беҳтар кардани экрани сессия кӯмак кун. Он чизеро, ки ёфтӣ, нишон деҳ ва тағйиротро шарҳ деҳ.</string>
     <string name="drawer_appearance_preview_assistant_text">Мушкили тарҳбандиро дар `SessionView.swift` ёфтам. Матни суҳбат ва майдони паём баландии дастрасро тақсим мекунанд, бинобар ин клавиатура барои санҷиши тарҳ дар фазои маҳдуд муфид аст.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Мини-барномаҳо</string>
+    <string name="drawer_mini_apps_dashboard">Панел</string>
+    <string name="drawer_mini_apps_all_widgets">Ҳамаи виджетҳо</string>
+    <string name="drawer_mini_apps_add">Ба панел илова кунед</string>
+    <string name="drawer_mini_apps_on_dashboard">Дар панел</string>
+    <string name="drawer_mini_apps_empty_title">Ҳанӯз мини-барнома нест</string>
+    <string name="drawer_mini_apps_empty_message">Аз «Ҳамаи виджетҳо» виджетҳои сессияҳои худро илова кунед, сипас онҳоро дар ин ҷо ҷобаҷо кунед.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Виджетҳо нестанд</string>
+    <string name="drawer_mini_apps_no_widgets_message">Виджетҳое, ки агентҳо дар сессияҳои ин сервер нишон медиҳанд, дар ин ҷо пайдо мешаванд.</string>
+    <string name="drawer_mini_apps_load_failed">Виджетҳоро бор карда нашуд</string>
+    <string name="drawer_mini_apps_missing">Ин виджет дигар дар сервер нест.</string>
+    <string name="drawer_mini_apps_remove">%1$s-ро хориҷ кунед</string>
+    <string name="drawer_mini_apps_resize">Андозаи %1$s-ро тағйир диҳед</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Кушода</string>
+    <string name="drawer_mini_apps_status_submitted">Фиристода шуд</string>
+    <string name="drawer_mini_apps_status_dismissed">Рад шуд</string>
+    <string name="drawer_mini_apps_status_failed">Ноком шуд</string>
 </resources>

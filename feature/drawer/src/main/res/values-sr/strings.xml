@@ -181,4 +181,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помози ми да побољшам екран сесије. Покажи шта пронађеш и објасни измене.</string>
     <string name="drawer_appearance_preview_assistant_text">Пронашао сам проблем са распоредом у `SessionView.swift`. Транскрипт и унос поруке деле расположиву висину, па тастатура добро служи за проверу у скученом простору.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Мини-апликације</string>
+    <string name="drawer_mini_apps_dashboard">Контролна табла</string>
+    <string name="drawer_mini_apps_all_widgets">Сви виџети</string>
+    <string name="drawer_mini_apps_add">Додај на контролну таблу</string>
+    <string name="drawer_mini_apps_on_dashboard">На контролној табли</string>
+    <string name="drawer_mini_apps_empty_title">Још нема мини-апликација</string>
+    <string name="drawer_mini_apps_empty_message">Додајте виџете из својих сесија у одељку „Сви виџети“, па их распоредите овде.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Нема виџета</string>
+    <string name="drawer_mini_apps_no_widgets_message">Виџети које агенти приказују у сесијама овог сервера појављују се овде.</string>
+    <string name="drawer_mini_apps_load_failed">Учитавање виџета није успело</string>
+    <string name="drawer_mini_apps_missing">Овај виџет више није на серверу.</string>
+    <string name="drawer_mini_apps_remove">Уклони %1$s</string>
+    <string name="drawer_mini_apps_resize">Промени величину за %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Отворено</string>
+    <string name="drawer_mini_apps_status_submitted">Послато</string>
+    <string name="drawer_mini_apps_status_dismissed">Одбачено</string>
+    <string name="drawer_mini_apps_status_failed">Неуспешно</string>
 </resources>

@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya memperbaiki layar sesi. Tunjukkan temuan Anda dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemukan masalah tata letak di `SessionView.swift`. Transkrip dan kolom pesan berbagi ruang vertikal yang tersedia, jadi keyboard berguna untuk menguji batas tata letaknya.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Aplikasi mini</string>
+    <string name="drawer_mini_apps_dashboard">Dasbor</string>
+    <string name="drawer_mini_apps_all_widgets">Semua widget</string>
+    <string name="drawer_mini_apps_add">Tambah ke dasbor</string>
+    <string name="drawer_mini_apps_on_dashboard">Di dasbor</string>
+    <string name="drawer_mini_apps_empty_title">Belum ada aplikasi mini</string>
+    <string name="drawer_mini_apps_empty_message">Tambahkan widget dari sesi Anda di Semua widget, lalu atur di sini.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Tidak ada widget</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widget yang ditampilkan agen di sesi server ini akan muncul di sini.</string>
+    <string name="drawer_mini_apps_load_failed">Gagal memuat widget</string>
+    <string name="drawer_mini_apps_missing">Widget ini sudah tidak ada di server.</string>
+    <string name="drawer_mini_apps_remove">Hapus %1$s</string>
+    <string name="drawer_mini_apps_resize">Ubah ukuran %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Terbuka</string>
+    <string name="drawer_mini_apps_status_submitted">Terkirim</string>
+    <string name="drawer_mini_apps_status_dismissed">Ditutup</string>
+    <string name="drawer_mini_apps_status_failed">Gagal</string>
 </resources>

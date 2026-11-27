@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjelp meg å forbedre sesjonsvisningen. Vis meg hva du finner, og forklar endringene.</string>
     <string name="drawer_appearance_preview_assistant_text">Jeg fant layoutproblemet i `SessionView.swift`. Samtaleloggen og skrivefeltet deler den tilgjengelige høyden, så tastaturet er en nyttig stresstest.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniapper</string>
+    <string name="drawer_mini_apps_dashboard">Dashbord</string>
+    <string name="drawer_mini_apps_all_widgets">Alle widgeter</string>
+    <string name="drawer_mini_apps_add">Legg til på dashbordet</string>
+    <string name="drawer_mini_apps_on_dashboard">På dashbordet</string>
+    <string name="drawer_mini_apps_empty_title">Ingen miniapper ennå</string>
+    <string name="drawer_mini_apps_empty_message">Legg til widgeter fra sesjonene dine i Alle widgeter, og ordne dem her.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Ingen widgeter</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgeter som agenter viser i sesjonene på denne serveren, dukker opp her.</string>
+    <string name="drawer_mini_apps_load_failed">Kunne ikke laste inn widgeter</string>
+    <string name="drawer_mini_apps_missing">Denne widgeten finnes ikke på serveren lenger.</string>
+    <string name="drawer_mini_apps_remove">Fjern %1$s</string>
+    <string name="drawer_mini_apps_resize">Endre størrelse på %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Åpen</string>
+    <string name="drawer_mini_apps_status_submitted">Sendt</string>
+    <string name="drawer_mini_apps_status_dismissed">Avvist</string>
+    <string name="drawer_mini_apps_status_failed">Mislyktes</string>
 </resources>

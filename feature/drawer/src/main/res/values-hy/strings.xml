@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Օգնիր բարելավել նիստի էկրանը։ Ցույց տուր՝ ինչ ես գտել, և բացատրիր փոփոխությունները։</string>
     <string name="drawer_appearance_preview_assistant_text">Դասավորության խնդիրը գտա `SessionView.swift`-ում։ Սղագրությունն ու հաղորդագրության խմբագրիչը կիսում են հասանելի բարձրությունը, ուստի ստեղնաշարը լավ միջոց է դասավորությունը փորձարկելու համար։</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Մինի հավելվածներ</string>
+    <string name="drawer_mini_apps_dashboard">Վահանակ</string>
+    <string name="drawer_mini_apps_all_widgets">Բոլոր վիջեթները</string>
+    <string name="drawer_mini_apps_add">Ավելացնել վահանակին</string>
+    <string name="drawer_mini_apps_on_dashboard">Վահանակում</string>
+    <string name="drawer_mini_apps_empty_title">Մինի հավելվածներ դեռ չկան</string>
+    <string name="drawer_mini_apps_empty_message">Ավելացրեք ձեր նիստերի վիջեթները «Բոլոր վիջեթները» բաժնում, ապա դասավորեք դրանք այստեղ։</string>
+    <string name="drawer_mini_apps_no_widgets_title">Վիջեթներ չկան</string>
+    <string name="drawer_mini_apps_no_widgets_message">Այս սերվերի նիստերում գործակալների ցուցադրած վիջեթները հայտնվում են այստեղ։</string>
+    <string name="drawer_mini_apps_load_failed">Չհաջողվեց բեռնել վիջեթները</string>
+    <string name="drawer_mini_apps_missing">Այս վիջեթն այլևս սերվերում չէ։</string>
+    <string name="drawer_mini_apps_remove">Հեռացնել %1$s</string>
+    <string name="drawer_mini_apps_resize">Փոխել %1$s-ի չափը</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Բաց է</string>
+    <string name="drawer_mini_apps_status_submitted">Ուղարկված է</string>
+    <string name="drawer_mini_apps_status_dismissed">Մերժված է</string>
+    <string name="drawer_mini_apps_status_failed">Չհաջողվեց</string>
 </resources>

@@ -191,4 +191,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomóż mi ulepszyć ekran sesji. Pokaż, co znajdziesz, i wyjaśnij zmiany.</string>
     <string name="drawer_appearance_preview_assistant_text">Problem z układem jest w `SessionView.swift`. Transkrypcja i pole wiadomości dzielą dostępną wysokość, więc klawiatura dobrze sprawdza, jak układ radzi sobie z brakiem miejsca.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniaplikacje</string>
+    <string name="drawer_mini_apps_dashboard">Pulpit</string>
+    <string name="drawer_mini_apps_all_widgets">Wszystkie widżety</string>
+    <string name="drawer_mini_apps_add">Dodaj do pulpitu</string>
+    <string name="drawer_mini_apps_on_dashboard">Na pulpicie</string>
+    <string name="drawer_mini_apps_empty_title">Jeszcze brak miniaplikacji</string>
+    <string name="drawer_mini_apps_empty_message">Dodaj widżety ze swoich sesji w sekcji Wszystkie widżety, a potem ułóż je tutaj.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Brak widżetów</string>
+    <string name="drawer_mini_apps_no_widgets_message">Tutaj pojawią się widżety wyświetlane przez agentów w sesjach tego serwera.</string>
+    <string name="drawer_mini_apps_load_failed">Nie udało się wczytać widżetów</string>
+    <string name="drawer_mini_apps_missing">Tego widżetu nie ma już na serwerze.</string>
+    <string name="drawer_mini_apps_remove">Usuń %1$s</string>
+    <string name="drawer_mini_apps_resize">Zmień rozmiar: %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Otwarte</string>
+    <string name="drawer_mini_apps_status_submitted">Przesłano</string>
+    <string name="drawer_mini_apps_status_dismissed">Odrzucono</string>
+    <string name="drawer_mini_apps_status_failed">Błąd</string>
 </resources>

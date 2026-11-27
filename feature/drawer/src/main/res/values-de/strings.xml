@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hilf mir, die Sitzungsansicht zu verbessern. Zeig mir, was du findest, und erkläre die Änderungen.</string>
     <string name="drawer_appearance_preview_assistant_text">Ich habe das Layoutproblem in `SessionView.swift` gefunden. Transkript und Nachrichteneingabe teilen sich die verfügbare Höhe. Die Tastatur ist daher ein guter Belastungstest.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini-Apps</string>
+    <string name="drawer_mini_apps_dashboard">Dashboard</string>
+    <string name="drawer_mini_apps_all_widgets">Alle Widgets</string>
+    <string name="drawer_mini_apps_add">Zum Dashboard hinzufügen</string>
+    <string name="drawer_mini_apps_on_dashboard">Auf dem Dashboard</string>
+    <string name="drawer_mini_apps_empty_title">Noch keine Mini-Apps</string>
+    <string name="drawer_mini_apps_empty_message">Füge Widgets aus deinen Sitzungen unter „Alle Widgets“ hinzu und ordne sie hier an.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Keine Widgets</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgets, die Agenten in den Sitzungen dieses Servers anzeigen, erscheinen hier.</string>
+    <string name="drawer_mini_apps_load_failed">Widgets konnten nicht geladen werden</string>
+    <string name="drawer_mini_apps_missing">Dieses Widget ist nicht mehr auf dem Server.</string>
+    <string name="drawer_mini_apps_remove">%1$s entfernen</string>
+    <string name="drawer_mini_apps_resize">Größe von %1$s ändern</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Offen</string>
+    <string name="drawer_mini_apps_status_submitted">Gesendet</string>
+    <string name="drawer_mini_apps_status_dismissed">Verworfen</string>
+    <string name="drawer_mini_apps_status_failed">Fehlgeschlagen</string>
 </resources>

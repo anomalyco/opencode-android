@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjälp mig förbättra sessionsvyn. Visa vad du hittar och förklara ändringarna.</string>
     <string name="drawer_appearance_preview_assistant_text">Jag hittade layoutproblemet i `SessionView.swift`. Transkriptionen och meddelandefältet delar på den tillgängliga höjden, så tangentbordet är ett bra stresstest.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Miniappar</string>
+    <string name="drawer_mini_apps_dashboard">Översikt</string>
+    <string name="drawer_mini_apps_all_widgets">Alla widgetar</string>
+    <string name="drawer_mini_apps_add">Lägg till i översikten</string>
+    <string name="drawer_mini_apps_on_dashboard">I översikten</string>
+    <string name="drawer_mini_apps_empty_title">Inga miniappar än</string>
+    <string name="drawer_mini_apps_empty_message">Lägg till widgetar från dina sessioner under Alla widgetar och ordna dem sedan här.</string>
+    <string name="drawer_mini_apps_no_widgets_title">Inga widgetar</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgetar som agenter visar i den här serverns sessioner dyker upp här.</string>
+    <string name="drawer_mini_apps_load_failed">Kunde inte ladda widgetar</string>
+    <string name="drawer_mini_apps_missing">Den här widgeten finns inte längre på servern.</string>
+    <string name="drawer_mini_apps_remove">Ta bort %1$s</string>
+    <string name="drawer_mini_apps_resize">Ändra storlek på %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Öppen</string>
+    <string name="drawer_mini_apps_status_submitted">Inskickad</string>
+    <string name="drawer_mini_apps_status_dismissed">Avfärdad</string>
+    <string name="drawer_mini_apps_status_failed">Misslyckades</string>
 </resources>

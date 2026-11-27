@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">सत्रको स्क्रिन सुधार्न मद्दत गर्नुहोस्। के भेटियो देखाउनुहोस् र परिवर्तनहरू बुझाउनुहोस्।</string>
     <string name="drawer_appearance_preview_assistant_text">मैले `SessionView.swift` मा लेआउटको समस्या भेट्टाएँ। वार्तालापको पाठ र सन्देश लेखनले उपलब्ध उचाइ बाँड्छन्, त्यसैले किबोर्ड खोलेर सीमित ठाउँमा कस्तो देखिन्छ जाँच्न सकिन्छ।</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">मिनी एपहरू</string>
+    <string name="drawer_mini_apps_dashboard">ड्यासबोर्ड</string>
+    <string name="drawer_mini_apps_all_widgets">सबै विजेटहरू</string>
+    <string name="drawer_mini_apps_add">ड्यासबोर्डमा थप्नुहोस्</string>
+    <string name="drawer_mini_apps_on_dashboard">ड्यासबोर्डमा</string>
+    <string name="drawer_mini_apps_empty_title">अझै कुनै मिनी एप छैन</string>
+    <string name="drawer_mini_apps_empty_message">सबै विजेटहरूमा आफ्ना सत्रका विजेटहरू थप्नुहोस्, अनि यहाँ मिलाउनुहोस्।</string>
+    <string name="drawer_mini_apps_no_widgets_title">कुनै विजेट छैन</string>
+    <string name="drawer_mini_apps_no_widgets_message">एजेन्टहरूले यो सर्भरका सत्रहरूमा देखाउने विजेटहरू यहाँ देखिन्छन्।</string>
+    <string name="drawer_mini_apps_load_failed">विजेटहरू लोड गर्न सकिएन</string>
+    <string name="drawer_mini_apps_missing">यो विजेट अब सर्भरमा छैन।</string>
+    <string name="drawer_mini_apps_remove">%1$s हटाउनुहोस्</string>
+    <string name="drawer_mini_apps_resize">%1$s को आकार बदल्नुहोस्</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">खुला</string>
+    <string name="drawer_mini_apps_status_submitted">पेस गरियो</string>
+    <string name="drawer_mini_apps_status_dismissed">खारेज गरियो</string>
+    <string name="drawer_mini_apps_status_failed">असफल</string>
 </resources>

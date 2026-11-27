@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">सेशन स्क्रीन बेहतर बनाने में मेरी मदद करें। जो मिले, वह दिखाएँ और बदलाव समझाएँ।</string>
     <string name="drawer_appearance_preview_assistant_text">मुझे `SessionView.swift` में लेआउट की समस्या मिली। बातचीत का टेक्स्ट और संदेश लेखन क्षेत्र उपलब्ध ऊँचाई बाँटते हैं, इसलिए कीबोर्ड से लेआउट की सीमाएँ अच्छी तरह जाँची जा सकती हैं।</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">मिनी ऐप्स</string>
+    <string name="drawer_mini_apps_dashboard">डैशबोर्ड</string>
+    <string name="drawer_mini_apps_all_widgets">सभी विजेट</string>
+    <string name="drawer_mini_apps_add">डैशबोर्ड में जोड़ें</string>
+    <string name="drawer_mini_apps_on_dashboard">डैशबोर्ड पर</string>
+    <string name="drawer_mini_apps_empty_title">अभी कोई मिनी ऐप नहीं</string>
+    <string name="drawer_mini_apps_empty_message">सभी विजेट से अपने सेशन के विजेट जोड़ें, फिर उन्हें यहाँ व्यवस्थित करें।</string>
+    <string name="drawer_mini_apps_no_widgets_title">कोई विजेट नहीं</string>
+    <string name="drawer_mini_apps_no_widgets_message">एजेंट इस सर्वर के सेशन में जो विजेट दिखाते हैं, वे यहाँ दिखाई देते हैं।</string>
+    <string name="drawer_mini_apps_load_failed">विजेट लोड नहीं हो सके</string>
+    <string name="drawer_mini_apps_missing">यह विजेट अब सर्वर पर नहीं है।</string>
+    <string name="drawer_mini_apps_remove">%1$s हटाएँ</string>
+    <string name="drawer_mini_apps_resize">%1$s का आकार बदलें</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">खुला</string>
+    <string name="drawer_mini_apps_status_submitted">सबमिट किया गया</string>
+    <string name="drawer_mini_apps_status_dismissed">ख़ारिज किया गया</string>
+    <string name="drawer_mini_apps_status_failed">असफल</string>
 </resources>

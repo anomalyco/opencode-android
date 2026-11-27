@@ -16,6 +16,7 @@ import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.core.ui.OpenCodeTopBar
 import ai.opencode.core.ui.OpenCodeTopBarBackButton
 import ai.opencode.core.ui.SFSymbol
+import ai.opencode.core.ui.openCodeHairline
 import ai.opencode.feature.drawer.R
 import ai.opencode.feature.drawer.miniapps.MiniAppsFeature.Action
 import ai.opencode.feature.drawer.miniapps.MiniAppsFeature.Page
@@ -48,6 +49,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -215,7 +217,7 @@ private fun InstanceHeader(instance: OpenCodeWidgetInstance, added: Boolean, onT
                 stringResource(R.string.drawer_mini_apps_details, "${state.widgetTemplate.name}@${state.widgetTemplate.version.take(7)}", updated, status),
                 style = OpenCodeTextStyles.footnote,
                 color = if (state.failure != null) colors.danger else colors.secondaryText,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             instance.sessionTitle?.let {
@@ -399,11 +401,13 @@ private fun DashboardTile(
             .size(with(density) { size.width.toDp() }, with(density) { size.height.toDp() })
             .zIndex(if (dragged) 1f else 0f)
             .clip(OpenCodeShape.panel)
-            .background(colors.canvas),
+            .background(colors.canvas)
+            .openCodeHairline(OpenCodeShape.panel),
     ) {
         Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             if (instance != null) {
-                MiniAppWidget(server, instance)
+                // The widget's frame fills the tile; a taller widget scrolls inside it.
+                MiniAppWidget(server, instance, Modifier.heightIn(min = with(density) { size.height.toDp() }))
             } else {
                 Text(
                     stringResource(R.string.drawer_mini_apps_missing),

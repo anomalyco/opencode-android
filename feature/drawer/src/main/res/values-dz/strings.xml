@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ལཱ་ཡུན་གྱི་གསལ་གཞི་ལེགས་བཅོས་འབད་ནི་ལུ་ཆ་རོགས་འབད། འཚོལ་ཐོབ་མི་ཚུ་སྟོན་ཏེ་ བསྒྱུར་བཅོས་ཚུ་འགྲེལ་བཤད་འབད།</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` ནང་བཀོད་རིས་ཀྱི་དཀའ་ངལ་འཚོལ་ཐོབ་ཅི། ཁ་སླབ་ཡིག་འབེབས་དང་འཕྲིན་དོན་འབྲི་ས་གཉིས་ཀྱིས་ ཡོད་པའི་མཐོ་ཚད་བགོ་སྟེ་ལག་ལེན་འཐབ་དོ། དེ་འབདཝ་ལས་ ལྡེ་སྒྲོམ་ཁ་ཕྱེ་སྟེ་ས་སྟོང་ཉུངམ་ད་ཚོད་ལྟ་འབད་བཏུབ།</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">གློག་རིམ་ཆུང་ཀུ་ཚུ།</string>
+    <string name="drawer_mini_apps_dashboard">ཌེཤ་བོརཌ།</string>
+    <string name="drawer_mini_apps_all_widgets">ཝི་ཇེཊ་ཆ་མཉམ།</string>
+    <string name="drawer_mini_apps_add">ཌེཤ་བོརཌ་ནང་ཁ་སྐོང་འབད།</string>
+    <string name="drawer_mini_apps_on_dashboard">ཌེཤ་བོརཌ་གུ།</string>
+    <string name="drawer_mini_apps_empty_title">ད་ལྟོ་གློག་རིམ་ཆུང་ཀུ་མེད།</string>
+    <string name="drawer_mini_apps_empty_message">ཝི་ཇེཊ་ཆ་མཉམ་ནང་ ཁྱོད་ཀྱི་ལཱ་ཡུན་ཚུ་ལས་ ཝི་ཇེཊ་ཚུ་ཁ་སྐོང་འབད་དེ་ ནཱ་ལུ་བཀོད་སྒྲིག་འབད།</string>
+    <string name="drawer_mini_apps_no_widgets_title">ཝི་ཇེཊ་མེད།</string>
+    <string name="drawer_mini_apps_no_widgets_message">སར་བར་འདི་གི་ལཱ་ཡུན་ཚུ་ནང་ ལས་ཚབ་ཚུ་གིས་སྟོན་མི་ ཝི་ཇེཊ་ཚུ་ ནཱ་ལུ་མཐོང་འོང་།</string>
+    <string name="drawer_mini_apps_load_failed">ཝི་ཇེཊ་ཚུ་མངོན་གསལ་འབད་མ་ཚུགས།</string>
+    <string name="drawer_mini_apps_missing">ཝི་ཇེཊ་འདི་ ད་སར་བར་གུ་མིན་འདུག</string>
+    <string name="drawer_mini_apps_remove">%1$s རྩ་བསྐྲད་གཏང་།</string>
+    <string name="drawer_mini_apps_resize">%1$s ཚད་བསྒྱུར་འབད།</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">ཕྱེ་ཕྱེཝ</string>
+    <string name="drawer_mini_apps_status_submitted">ཕུལ་ཡོདཔ།</string>
+    <string name="drawer_mini_apps_status_dismissed">ཕྱིར་འབུད་འབད་ཡོདཔ།</string>
+    <string name="drawer_mini_apps_status_failed">མཐར་མ་འཁྱོལ་བ</string>
 </resources>

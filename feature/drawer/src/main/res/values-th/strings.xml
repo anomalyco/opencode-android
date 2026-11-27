@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ช่วยปรับปรุงหน้าจอเซสชันให้หน่อย บอกสิ่งที่พบและอธิบายการเปลี่ยนแปลงด้วย</string>
     <string name="drawer_appearance_preview_assistant_text">พบปัญหาการจัดวางใน `SessionView.swift` บันทึกการสนทนาและช่องเขียนข้อความแบ่งพื้นที่แนวตั้งที่มีอยู่ การเปิดแป้นพิมพ์จึงช่วยทดสอบเมื่อพื้นที่จำกัดได้ดี</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">มินิแอป</string>
+    <string name="drawer_mini_apps_dashboard">แดชบอร์ด</string>
+    <string name="drawer_mini_apps_all_widgets">วิดเจ็ตทั้งหมด</string>
+    <string name="drawer_mini_apps_add">เพิ่มในแดชบอร์ด</string>
+    <string name="drawer_mini_apps_on_dashboard">บนแดชบอร์ด</string>
+    <string name="drawer_mini_apps_empty_title">ยังไม่มีมินิแอป</string>
+    <string name="drawer_mini_apps_empty_message">เพิ่มวิดเจ็ตจากเซสชันของคุณใน วิดเจ็ตทั้งหมด แล้วจัดเรียงที่นี่</string>
+    <string name="drawer_mini_apps_no_widgets_title">ไม่มีวิดเจ็ต</string>
+    <string name="drawer_mini_apps_no_widgets_message">วิดเจ็ตที่เอเจนต์แสดงในเซสชันของเซิร์ฟเวอร์นี้จะปรากฏที่นี่</string>
+    <string name="drawer_mini_apps_load_failed">โหลดวิดเจ็ตไม่ได้</string>
+    <string name="drawer_mini_apps_missing">วิดเจ็ตนี้ไม่ได้อยู่บนเซิร์ฟเวอร์แล้ว</string>
+    <string name="drawer_mini_apps_remove">เอา %1$s ออก</string>
+    <string name="drawer_mini_apps_resize">ปรับขนาด %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">เปิดอยู่</string>
+    <string name="drawer_mini_apps_status_submitted">ส่งแล้ว</string>
+    <string name="drawer_mini_apps_status_dismissed">ละทิ้งแล้ว</string>
+    <string name="drawer_mini_apps_status_failed">ล้มเหลว</string>
 </resources>

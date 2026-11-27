@@ -161,4 +161,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">幫我改善工作階段畫面。讓我看看你發現了什麼，並說明修改內容。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 找到了版面配置問題。對話紀錄和輸入區共用可用高度，所以可以用鍵盤來測試版面能否正常運作。</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">迷你應用程式</string>
+    <string name="drawer_mini_apps_dashboard">儀表板</string>
+    <string name="drawer_mini_apps_all_widgets">所有小工具</string>
+    <string name="drawer_mini_apps_add">加入儀表板</string>
+    <string name="drawer_mini_apps_on_dashboard">已在儀表板上</string>
+    <string name="drawer_mini_apps_empty_title">尚無迷你應用程式</string>
+    <string name="drawer_mini_apps_empty_message">在「所有小工具」中從你的工作階段新增小工具，然後在這裡排列。</string>
+    <string name="drawer_mini_apps_no_widgets_title">沒有小工具</string>
+    <string name="drawer_mini_apps_no_widgets_message">代理程式在這台伺服器的工作階段中顯示的小工具會出現在這裡。</string>
+    <string name="drawer_mini_apps_load_failed">無法載入小工具</string>
+    <string name="drawer_mini_apps_missing">這個小工具已不在伺服器上。</string>
+    <string name="drawer_mini_apps_remove">移除 %1$s</string>
+    <string name="drawer_mini_apps_resize">調整 %1$s 大小</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">開啟中</string>
+    <string name="drawer_mini_apps_status_submitted">已提交</string>
+    <string name="drawer_mini_apps_status_dismissed">已略過</string>
+    <string name="drawer_mini_apps_status_failed">失敗</string>
 </resources>

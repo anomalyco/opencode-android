@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">සැසි තිරය වැඩිදියුණු කරන්න මට උදව් කරන්න. සොයාගත් දේ පෙන්වා වෙනස්කම් පැහැදිලි කරන්න.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` තුළ පිරිසැලසුමේ ගැටලුව හමු වුණා. සංවාද පිටපත සහ පණිවිඩ සකසනය තිබෙන උස බෙදාගන්නා නිසා, යතුරුපුවරුව පෙන්වීමෙන් පිරිසැලසුම හොඳින් පරීක්ෂා කළ හැකියි.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">කුඩා යෙදුම්</string>
+    <string name="drawer_mini_apps_dashboard">ඩෑෂ්බෝඩය</string>
+    <string name="drawer_mini_apps_all_widgets">සියලු විජට්</string>
+    <string name="drawer_mini_apps_add">ඩෑෂ්බෝඩයට එකතු කරන්න</string>
+    <string name="drawer_mini_apps_on_dashboard">ඩෑෂ්බෝඩයේ</string>
+    <string name="drawer_mini_apps_empty_title">තවම කුඩා යෙදුම් නැත</string>
+    <string name="drawer_mini_apps_empty_message">සියලු විජට් වෙතින් ඔබේ සැසිවල විජට් එකතු කර, ඒවා මෙහි පෙළගස්වන්න.</string>
+    <string name="drawer_mini_apps_no_widgets_title">විජට් නැත</string>
+    <string name="drawer_mini_apps_no_widgets_message">මෙම සේවාදායකයේ සැසිවල නියෝජිතයන් පෙන්වන විජට් මෙහි දිස්වේ.</string>
+    <string name="drawer_mini_apps_load_failed">විජට් පූරණය කළ නොහැකි විය</string>
+    <string name="drawer_mini_apps_missing">මෙම විජට් එක තවදුරටත් සේවාදායකයේ නැත.</string>
+    <string name="drawer_mini_apps_remove">%1$s ඉවත් කරන්න</string>
+    <string name="drawer_mini_apps_resize">%1$s හි ප්‍රමාණය වෙනස් කරන්න</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">විවෘතයි</string>
+    <string name="drawer_mini_apps_status_submitted">ඉදිරිපත් කරන ලදී</string>
+    <string name="drawer_mini_apps_status_dismissed">ඉවත දමන ලදී</string>
+    <string name="drawer_mini_apps_status_failed">අසාර්ථකයි</string>
 </resources>
