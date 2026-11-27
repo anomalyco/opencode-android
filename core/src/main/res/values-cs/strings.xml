@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Průběžné aktualizace relace</string>
     <string name="core_experiment_sound_effects_title">Zvukové efekty</string>
     <string name="core_experiment_server_address_links_title">Otevírat odkazy podle adresy serveru</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Synchronizovat připnuté relace</string>
     <string name="core_experiment_in_app_browser_title">Prohlížeč v aplikaci</string>
     <string name="core_experiment_welcome_preview_title">Náhled uvítání</string>
     <string name="core_experiment_since_you_left_title">Za vaší nepřítomnosti</string>

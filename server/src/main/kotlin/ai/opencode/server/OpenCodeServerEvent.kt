@@ -67,6 +67,20 @@ sealed interface OpenCodeServerEvent {
     /** `agent.updated`: the server's agents changed. */
     data object AgentsChanged : OpenCodeServerEvent
 
+    /** Follows [Connected] when the server names the stream: requests that address it (space subscriptions) use [stream]. */
+    data class StreamOpened(val stream: String) : OpenCodeServerEvent
+
+    /** A change to a space this stream subscribed to (`experimental.space.*`). */
+    sealed interface SpaceEvent : OpenCodeServerEvent {
+        val space: String
+    }
+
+    data class SpaceUpdated(override val space: String, val key: String, val value: String, val revision: Long) : SpaceEvent
+    data class SpaceDeleted(override val space: String, val key: String, val revision: Long) : SpaceEvent
+
+    /** The changes didn't fit or the cursor is unusable: sync the space and subscribe again. */
+    data class SpaceResync(override val space: String) : SpaceEvent
+
     /** The single session this event is scoped to, when its ordering depends only on that session's pending deltas. */
     val targetSessionID: String?
         get() = when (this) {
@@ -84,7 +98,9 @@ sealed interface OpenCodeServerEvent {
             is MessageInvalidated -> sessionID
             is RevertChanged -> sessionID
             is ShellStarted -> shell.sessionID
-            Connected, is SessionCreated, is AttentionChanged, is ShellEnded, is JobUpdated, is ProjectUpdated, ModelsChanged, AgentsChanged -> null
+            Connected, is SessionCreated, is AttentionChanged, is ShellEnded, is JobUpdated, is ProjectUpdated, ModelsChanged, AgentsChanged,
+            is StreamOpened, is SpaceEvent,
+            -> null
         }
 }
 

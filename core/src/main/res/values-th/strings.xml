@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">อัปเดตเซสชันแบบสด</string>
     <string name="core_experiment_sound_effects_title">เสียงเอฟเฟกต์</string>
     <string name="core_experiment_server_address_links_title">เปิดลิงก์ตาม URL เซิร์ฟเวอร์</string>
+    <string name="core_experiment_sync_pinned_sessions_title">ซิงค์เซสชันที่ปักหมุด</string>
     <string name="core_experiment_in_app_browser_title">เบราว์เซอร์ในแอป</string>
     <string name="core_experiment_welcome_preview_title">ตัวอย่างหน้าต้อนรับ</string>
     <string name="core_experiment_since_you_left_title">ตั้งแต่คุณออกไป</string>

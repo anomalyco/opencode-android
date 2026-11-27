@@ -58,6 +58,7 @@ internal class SharedEventStreams(private val source: (OpenCodeServer) -> Flow<O
         val subscribers = LinkedHashMap<UUID, ProducerScope<OpenCodeServerEvent>>()
         var upstream: Job? = null
         var isConnected = false
+        var opened: OpenCodeServerEvent.StreamOpened? = null
     }
 
     private val lock = Any()
@@ -74,6 +75,7 @@ internal class SharedEventStreams(private val source: (OpenCodeServer) -> Flow<O
             val channel = channels.firstOrNull { it.server == server } ?: Channel(server).also(channels::add)
             channel.subscribers[id] = this
             if (channel.isConnected) yieldRecoverably(OpenCodeServerEvent.Connected)
+            channel.opened?.let { yieldRecoverably(it) }
             if (channel.upstream == null) {
                 channel.upstream = CoroutineScope(inherited + SupervisorJob()).launch { pump(channel, source(server)) }
             }
@@ -87,6 +89,7 @@ internal class SharedEventStreams(private val source: (OpenCodeServer) -> Flow<O
             upstream.collect { event ->
                 val subscribers = synchronized(lock) {
                     if (event == OpenCodeServerEvent.Connected) channel.isConnected = true
+                    if (event is OpenCodeServerEvent.StreamOpened) channel.opened = event
                     channel.subscribers.values.toList()
                 }
                 for (subscriber in subscribers) subscriber.yieldRecoverably(event)

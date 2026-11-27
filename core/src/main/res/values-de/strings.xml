@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Live-Updates zur Sitzung</string>
     <string name="core_experiment_sound_effects_title">Soundeffekte</string>
     <string name="core_experiment_server_address_links_title">Links per Serveradresse öffnen</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Angeheftete Sitzungen synchronisieren</string>
     <string name="core_experiment_in_app_browser_title">In-App-Browser</string>
     <string name="core_experiment_welcome_preview_title">Willkommensvorschau</string>
     <string name="core_experiment_since_you_left_title">Seit deinem letzten Besuch</string>

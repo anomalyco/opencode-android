@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Përditësime të sesionit në kohë reale</string>
     <string name="core_experiment_sound_effects_title">Efektet zanore</string>
     <string name="core_experiment_server_address_links_title">Hap lidhjet sipas adresës së serverit</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sinkronizo sesionet e fiksuara</string>
     <string name="core_experiment_in_app_browser_title">Shfletuesi brenda aplikacionit</string>
     <string name="core_experiment_welcome_preview_title">Pamja paraprake e mirëseardhjes</string>
     <string name="core_experiment_since_you_left_title">Që kur u largove</string>
