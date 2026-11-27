@@ -20,6 +20,15 @@ data class AgentWidgetInstances(
 ) {
     private val byKey: Map<String, OpenCodeWidgetInstance> by lazy { all.associateBy { it.key } }
 
+    /**
+     * The widgets worth offering, last updated first: open, without a recorded failure. Only the newest widget of a
+     * replace chain is listed, so a chain whose newest widget isn't usable isn't offered at all.
+     */
+    val usable: List<OpenCodeWidgetInstance> by lazy { all.filter(::isUsable) }
+
+    fun isUsable(instance: OpenCodeWidgetInstance): Boolean =
+        instance.state.status == OpenCodeWidgetStatus.Open && instance.state.failure == null
+
     /** What changed in the server's widgets means for the holder. */
     enum class Change { None, Updated, NeedsRefetch }
 

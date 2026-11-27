@@ -78,7 +78,11 @@ class MiniAppsFeature : Reducer<MiniAppsFeature.State, MiniAppsFeature.Action> {
             }
             saving(state.copy(tiles = tiles))
         }
-        is Action.RemoveTapped -> saving(state.copy(tiles = MiniAppsGrid.removing(state.tiles, action.key)))
+        is Action.RemoveTapped -> {
+            val tiles = MiniAppsGrid.removing(state.tiles, action.key)
+            // Edit mode has nothing left to arrange, and without tiles there is no Done to leave it.
+            saving(state.copy(tiles = tiles, isEditing = state.isEditing && tiles.isNotEmpty()))
+        }
         Action.EditTapped -> Reduced(state.copy(isEditing = true, page = Page.Dashboard))
         Action.DoneTapped -> saving(state.copy(isEditing = false))
         is Action.LayoutDropped -> {

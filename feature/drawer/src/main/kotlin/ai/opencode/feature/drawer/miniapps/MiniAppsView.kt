@@ -10,6 +10,11 @@ import ai.opencode.core.store.observe
 import ai.opencode.core.ui.OpenCodeContentUnavailable
 import ai.opencode.core.ui.OpenCodeIcon
 import ai.opencode.core.ui.OpenCodeIconButton
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.runtime.rememberUpdatedState
+import ai.opencode.feature.transcript.R as TranscriptR
+import ai.opencode.feature.transcript.widgets.AgentWidgetState
+import ai.opencode.core.ui.OpenCodeIconButtonStyle
 import ai.opencode.core.ui.OpenCodeShape
 import ai.opencode.core.ui.OpenCodeTextStyles
 import ai.opencode.core.ui.OpenCodeTheme
@@ -39,6 +44,10 @@ import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.animation.core.animateIntSizeAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.foundation.background
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -169,7 +178,7 @@ fun MiniAppsView(store: StoreOf<MiniAppsFeature.State, Action>, onClose: () -> U
 /** Every widget of the server, last updated first, each live with its add/remove toggle. */
 @Composable
 private fun AllWidgets(state: MiniAppsFeature.State, send: (Action) -> Unit) {
-    val all = state.instances.all
+    val all = state.instances.usable
     if (all.isEmpty()) {
         OpenCodeContentUnavailable(
             SFSymbol.SquareGrid2x2,
@@ -183,7 +192,7 @@ private fun AllWidgets(state: MiniAppsFeature.State, send: (Action) -> Unit) {
     LazyColumn(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(20.dp)) {
         items(all, key = { it.key }) { instance ->
             Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                InstanceHeader(instance, instance.key in onDashboard, onToggle = { send(Action.DashboardToggled(instance.key)) })
+                InstanceHeader(state.server, instance, instance.key in onDashboard, onToggle = { send(Action.DashboardToggled(instance.key)) })
                 MiniAppWidget(state.server, instance)
             }
         }
@@ -192,7 +201,7 @@ private fun AllWidgets(state: MiniAppsFeature.State, send: (Action) -> Unit) {
 }
 
 @Composable
-private fun InstanceHeader(instance: OpenCodeWidgetInstance, added: Boolean, onToggle: () -> Unit) {
+private fun InstanceHeader(server: OpenCodeServer, instance: OpenCodeWidgetInstance, added: Boolean, onToggle: () -> Unit) {
     val colors = OpenCodeTheme.colors
     val state = instance.state
     val status = stringResource(
@@ -224,6 +233,7 @@ private fun InstanceHeader(instance: OpenCodeWidgetInstance, added: Boolean, onT
                 Text(it, style = OpenCodeTextStyles.footnote, color = colors.tertiaryText, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
+        MiniAppExpandButton(server, instance)
         TextButton(onClick = onToggle, shape = OpenCodeShape.control) {
             if (added) OpenCodeIcon(SFSymbol.Checkmark, contentDescription = null, size = 14.dp)
             Text(
@@ -243,7 +253,59 @@ private fun MiniAppWidget(server: OpenCodeServer, instance: OpenCodeWidgetInstan
     }
     val widget = remember(instance.state, instance.data) { AgentWidgetAdapter.state(instance.state, instance.data) }
     CompositionLocalProvider(LocalTranscriptRowContext provides context) {
-        AgentWidgetRow(widget, modifier)
+        AgentWidgetRow(widget, modifier, expandButton = false)
+    }
+}
+
+/** Full screen for [instance]'s widget, while it offers it: the same controller its row runs. */
+@Composable
+private fun MiniAppExpandButton(server: OpenCodeServer, instance: OpenCodeWidgetInstance) {
+    val store = LocalAgentWidgetStore.current ?: return
+    val widget = remember(instance.state, instance.data) { AgentWidgetAdapter.state(instance.state, instance.data) }
+    if (widget.status == AgentWidgetState.Status.Superseded) return
+    val controller = remember(store, server, instance.state.sessionID, widget.key) {
+        store.controller(widget, server, instance.state.sessionID, instance.directory)
+    }
+    if (!controller.offersFullscreen) return
+    OpenCodeIconButton(
+        SFSymbol.ArrowUpLeftAndArrowDownRight,
+        stringResource(TranscriptR.string.transcript_widget_fullscreen),
+        onClick = { store.enterFullscreen(controller, widget.label) },
+        style = OpenCodeIconButtonStyle.Standard,
+        iconSize = 18.dp,
+    )
+}
+
+/** A dashboard tile's strip above its widget: the widget's and its session's titles, full screen, and × in edit mode. */
+@Composable
+private fun TileHeader(
+    server: OpenCodeServer,
+    instance: OpenCodeWidgetInstance?,
+    title: String,
+    onRemove: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    val colors = OpenCodeTheme.colors
+    Row(
+        modifier.fillMaxWidth().height(TileHeaderHeight).padding(start = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(title, style = OpenCodeTextStyles.footnote.copy(fontWeight = FontWeight.Medium), color = colors.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            instance?.sessionTitle?.let {
+                Text(it, style = OpenCodeTextStyles.caption1, color = colors.tertiaryText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+        }
+        if (instance != null) MiniAppExpandButton(server, instance)
+        if (onRemove != null) {
+            OpenCodeIconButton(
+                SFSymbol.Xmark,
+                stringResource(R.string.drawer_mini_apps_remove, title),
+                onClick = onRemove,
+                style = OpenCodeIconButtonStyle.Standard,
+                iconSize = 16.dp,
+            )
+        }
     }
 }
 
@@ -395,6 +457,19 @@ private fun DashboardTile(
         label = "tile-size",
     )
     val title = instance?.state?.let { it.title?.trim()?.ifEmpty { null } ?: it.widgetTemplate.name } ?: ""
+    val currentLayout by rememberUpdatedState(layout)
+    val currentMetrics by rememberUpdatedState(metrics)
+    fun gestures(mode: TileDrag.Mode) = Modifier.pointerInput(tile.key, mode) {
+        detectDragGestures(
+            onDragStart = { drag.begin(tile.key, mode, currentLayout) },
+            onDrag = { change, amount ->
+                change.consume()
+                drag.drag(amount, currentMetrics)
+            },
+            onDragEnd = { drag.end()?.let { send(Action.LayoutDropped(it)) } },
+            onDragCancel = { drag.end() },
+        )
+    }
     Box(
         Modifier
             .offset { offset }
@@ -404,65 +479,64 @@ private fun DashboardTile(
             .background(colors.canvas)
             .openCodeHairline(OpenCodeShape.panel),
     ) {
-        Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-            if (instance != null) {
-                // The widget's frame fills the tile; a taller widget scrolls inside it.
-                MiniAppWidget(server, instance, Modifier.heightIn(min = with(density) { size.height.toDp() }))
-            } else {
-                Text(
-                    stringResource(R.string.drawer_mini_apps_missing),
-                    Modifier.padding(16.dp),
-                    style = OpenCodeTextStyles.footnote,
-                    color = colors.secondaryText,
-                )
+        Column(Modifier.fillMaxSize()) {
+            // In edit mode the whole tile is the handle, the strip included; the widget takes no input.
+            TileHeader(
+                server,
+                instance,
+                title,
+                onRemove = if (editing) ({ send(Action.RemoveTapped(tile.key)) }) else null,
+                modifier = if (editing) gestures(TileDrag.Mode.Move) else Modifier,
+            )
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                    if (instance != null) {
+                        // The widget's frame fills the body; a taller widget scrolls inside it.
+                        val body = with(density) { size.height.toDp() } - TileHeaderHeight
+                        MiniAppWidget(server, instance, Modifier.heightIn(min = body))
+                    } else {
+                        Text(
+                            stringResource(R.string.drawer_mini_apps_missing),
+                            Modifier.padding(16.dp),
+                            style = OpenCodeTextStyles.footnote,
+                            color = colors.secondaryText,
+                        )
+                    }
+                }
+                if (editing) {
+                    Box(
+                        Modifier
+                            .matchParentSize()
+                            .background(colors.text.copy(alpha = if (dragged) 0.06f else 0.03f))
+                            .then(gestures(TileDrag.Mode.Move)),
+                    )
+                    val resize = stringResource(R.string.drawer_mini_apps_resize, title)
+                    Box(
+                        Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(ResizeHandle)
+                            .semantics { contentDescription = resize }
+                            .then(gestures(TileDrag.Mode.Resize)),
+                        contentAlignment = Alignment.BottomEnd,
+                    ) {
+                        // The grip stays inside the frame's side padding, clear of the widget's content.
+                        val grip = colors.focusRing
+                        Canvas(Modifier.padding(4.dp).size(10.dp)) {
+                            val stroke = 2.dp.toPx()
+                            for (step in 1..2) {
+                                val inset = this.size.width * step / 2f
+                                drawLine(grip, Offset(this.size.width, this.size.height - inset), Offset(this.size.width - inset, this.size.height), stroke, StrokeCap.Round)
+                            }
+                        }
+                    }
+                }
             }
         }
         if (editing) {
-            val currentLayout by androidx.compose.runtime.rememberUpdatedState(layout)
-            val currentMetrics by androidx.compose.runtime.rememberUpdatedState(metrics)
-            fun gestures(mode: TileDrag.Mode) = Modifier.pointerInput(tile.key, mode) {
-                detectDragGestures(
-                    onDragStart = { drag.begin(tile.key, mode, currentLayout) },
-                    onDrag = { change, amount ->
-                        change.consume()
-                        drag.drag(amount, currentMetrics)
-                    },
-                    onDragEnd = { drag.end()?.let { send(Action.LayoutDropped(it)) } },
-                    onDragCancel = { drag.end() },
-                )
-            }
-            // In edit mode the whole tile is the handle; the widget takes no input.
-            Box(
-                Modifier
-                    .matchParentSize()
-                    .background(colors.text.copy(alpha = if (dragged) 0.06f else 0.03f))
-                    .border(1.dp, colors.focusRing.copy(alpha = if (dragged) 1f else 0.6f), OpenCodeShape.panel)
-                    .then(gestures(TileDrag.Mode.Move)),
-            )
-            OpenCodeIconButton(
-                SFSymbol.Xmark,
-                stringResource(R.string.drawer_mini_apps_remove, title),
-                onClick = { send(Action.RemoveTapped(tile.key)) },
-                modifier = Modifier.align(Alignment.TopStart).padding(2.dp),
-                size = 32.dp,
-                iconSize = 14.dp,
-            )
-            Box(
-                Modifier
-                    .align(Alignment.BottomEnd)
-                    .size(ResizeHandle)
-                    .then(gestures(TileDrag.Mode.Resize)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Box(
-                    Modifier.size(28.dp).background(colors.focusRing, OpenCodeShape.control),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    OpenCodeIcon(SFSymbol.ArrowUpLeftAndArrowDownRight, stringResource(R.string.drawer_mini_apps_resize, title), size = 16.dp, tint = colors.canvas)
-                }
-            }
+            Box(Modifier.matchParentSize().border(1.dp, colors.focusRing.copy(alpha = if (dragged) 1f else 0.6f), OpenCodeShape.panel))
         }
     }
 }
 
+private val TileHeaderHeight: Dp = 48.dp
 private val ResizeHandle: Dp = 48.dp

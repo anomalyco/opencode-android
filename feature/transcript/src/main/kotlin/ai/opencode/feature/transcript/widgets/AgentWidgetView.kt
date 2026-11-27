@@ -75,9 +75,9 @@ fun AgentWidgetToolRow(item: OpenCodeTranscriptItem.Tool, modifier: Modifier = M
     }
 }
 
-/** A widget's frame, driven by its controller. */
+/** A widget's frame, driven by its controller; [expandButton] false leaves full screen to a control of the host's. */
 @Composable
-fun AgentWidgetRow(widget: AgentWidgetState, modifier: Modifier = Modifier) {
+fun AgentWidgetRow(widget: AgentWidgetState, modifier: Modifier = Modifier, expandButton: Boolean = true) {
     if (widget.status == AgentWidgetState.Status.Superseded) {
         SupersededLine(modifier)
         return
@@ -108,7 +108,7 @@ fun AgentWidgetRow(widget: AgentWidgetState, modifier: Modifier = Modifier) {
         modifier = modifier
             .onSizeChanged { controller.inlineHeight = it.height }
             .onVisibilityChanged(minFractionVisible = VISIBLE_FRACTION) { controller.shownChanged(inline = it) },
-        onExpand = if (controller.offersFullscreen) ({ store.enterFullscreen(controller, title) }) else null,
+        onExpand = if (expandButton && controller.offersFullscreen) ({ store.enterFullscreen(controller, title) }) else null,
     )
 }
 

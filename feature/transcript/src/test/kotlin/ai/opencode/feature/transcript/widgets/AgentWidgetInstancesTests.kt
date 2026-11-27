@@ -3,6 +3,8 @@ package ai.opencode.feature.transcript.widgets
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.transcript.widgets.AgentWidgetInstances.Change
 import ai.opencode.server.model.OpenCodeWidgetCall
+import ai.opencode.server.model.OpenCodeWidgetError
+import ai.opencode.server.model.OpenCodeWidgetFailure
 import ai.opencode.server.model.OpenCodeWidgetInstance
 import ai.opencode.server.model.OpenCodeWidgetRef
 import ai.opencode.server.model.OpenCodeWidgetState
@@ -73,6 +75,23 @@ class AgentWidgetInstancesTests {
         assertEquals(OpenCodeWidgetStatus.Submitted, after["s:m1:c"]?.state?.status)
         assertEquals("{}", after["s:m1:c"]?.data)
         assertEquals(Change.None, after.changed("s", state("m1", OpenCodeWidgetStatus.Submitted)).second)
+    }
+
+    @Test
+    fun onlyUsableWidgetsAreOffered() {
+        val failure = OpenCodeWidgetFailure(OpenCodeWidgetError("main", "boom"), client = "ios", sent = false)
+        val open = instance("open")
+        val submitted = instance("submitted").let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Submitted)) }
+        val dismissed = instance("dismissed").let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Dismissed)) }
+        val failed = instance("failed").let { it.copy(state = it.state.copy(failure = failure)) }
+        // A chain whose newest widget was dismissed: neither it nor what it replaced is offered.
+        val chainHead = instance("m3", replaced = listOf("m1", "m2")).let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Dismissed)) }
+        val instances = AgentWidgetInstances().loaded(listOf(open, dismissed, submitted, failed, chainHead))
+        assertEquals(listOf("s:open:c"), instances.usable.map { it.key })
+        // Still resolvable, for a tile already on the dashboard.
+        assertEquals("s:m3:c", instances["s:m1:c"]?.key)
+        assertEquals("s:failed:c", instances["s:failed:c"]?.key)
+        assertEquals("s:submitted:c", instances["s:submitted:c"]?.key)
     }
 
     @Test
