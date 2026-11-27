@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">Toàn màn hình</string>
     <string name="transcript_widget_fullscreen_placeholder">Mở toàn màn hình</string>
     <string name="transcript_widget_network">Mạng: %1$s</string>
+    <string name="transcript_widget_storage">Bộ nhớ</string>
     <string name="transcript_widget_restart">Khởi động lại</string>
     <string name="transcript_widget_older_runtime">Widget này được tạo bằng runtime widget cũ hơn; hãy yêu cầu tác nhân đăng lại</string>
     <string name="transcript_widget_newer_app">Widget này cần phiên bản ứng dụng mới hơn</string>

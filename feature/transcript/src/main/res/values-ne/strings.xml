@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">पूर्ण स्क्रिन</string>
     <string name="transcript_widget_fullscreen_placeholder">पूर्ण स्क्रिनमा खोल्नुहोस्</string>
     <string name="transcript_widget_network">नेटवर्क: %1$s</string>
+    <string name="transcript_widget_storage">भण्डारण</string>
     <string name="transcript_widget_restart">पुनः सुरु</string>
     <string name="transcript_widget_older_runtime">यो विजेट पुरानो विजेट रनटाइमले बनाइएको हो; एजेन्टलाई फेरि पोस्ट गर्न भन्नुहोस्</string>
     <string name="transcript_widget_newer_app">यो विजेटलाई यो एपको नयाँ संस्करण चाहिन्छ</string>

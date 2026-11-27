@@ -32,6 +32,8 @@ internal object AgentWidgetWire {
         data object Dismiss : Post
         class Send(val value: String, val wake: Boolean) : Post
         class Capture(val on: Boolean) : Post
+        /** A write to the widget template's storage: [value] is JSON text, null deletes [key]. */
+        class Storage(val key: String, val value: String?) : Post
     }
 
     private const val VERSION = 1
@@ -45,6 +47,7 @@ internal object AgentWidgetWire {
     private const val CAPTURE = 7
     private const val FRAME_GPU = 9
     private const val GPU = 10
+    private const val STORAGE = 11
 
     const val MAX_DEPTH = 100
     private const val MAX_ARG_DEPTH = 64
@@ -111,6 +114,10 @@ internal object AgentWidgetWire {
                 Post.Send(c.json(), wake)
             }
             CAPTURE -> Post.Capture(flag(c.u8()))
+            STORAGE -> {
+                val key = c.str()
+                Post.Storage(key, if (flag(c.u8())) c.str() else null)
+            }
             else -> throw Malformed("unknown post kind $kind")
         }
         c.end("the message")

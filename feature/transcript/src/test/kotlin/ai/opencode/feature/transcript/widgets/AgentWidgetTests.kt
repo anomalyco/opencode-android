@@ -18,6 +18,9 @@ import ai.opencode.server.model.OpenCodeWidgetProgram
 import ai.opencode.server.model.OpenCodeWidgetRef
 import ai.opencode.server.model.OpenCodeWidgetResponse
 import ai.opencode.core.testing.eventually
+import ai.opencode.server.spaces.SpaceEntries
+import ai.opencode.server.spaces.SpacesClient
+import kotlinx.coroutines.flow.emitAll
 import com.anomalyco.psychoscript.PsychoScriptException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -692,6 +695,96 @@ class AgentWidgetTests {
             ),
             log.toList(),
         )
+        scope.cancel()
+        main.close()
+    }
+
+    /**
+     * widgets-live.md, Storage: two live widgets of one storage template on a server start with the space's entries,
+     * their storage posts (`01 0B`) go to the spaces client's writes, and every change (their own, another client's, a
+     * re-sync's) reaches both in order; the space is followed while one of them runs.
+     */
+    @Test
+    fun storagePostsWriteTheTemplatesSpaceAndEveryChangeReachesEachRunningWidget() = runBlocking {
+        val main = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+        val scope = CoroutineScope(SupervisorJob() + main)
+        val space = kotlinx.coroutines.flow.MutableStateFlow(SpaceEntries(mapOf("seed" to "1"), isSyncComplete = true))
+        val followed = java.util.concurrent.atomic.AtomicInteger()
+        val writes = CopyOnWriteArrayList<String>()
+        val spaces = SpacesClient(
+            entries = { _, name ->
+                kotlinx.coroutines.flow.flow {
+                    writes += "follow $name"
+                    followed.incrementAndGet()
+                    try { emitAll(space) } finally { followed.decrementAndGet() }
+                }
+            },
+            receive = { _, _ -> },
+            write = { _, name, changes ->
+                writes += "write $name $changes"
+                space.value = SpaceEntries(space.value.entries.toMutableMap().apply { changes.forEach { (k, v) -> if (v == null) remove(k) else put(k, v) } }, true)
+            },
+        )
+        val inputs = CopyOnWriteArrayList<String>()
+        val delivered = List(2) { CopyOnWriteArrayList<String>() }
+        val tracker = object : AgentWidgetLiveProgram {
+            override fun start(inputJson: String, listener: AgentWidgetLiveListener, httpsHosts: List<String>?): AgentWidgetLiveRun {
+                val n = inputs.size
+                inputs += inputJson
+                if (n == 0) thread { listener.posted(listOf(Wire().u8(1, 11).str("entry:a").u8(1).str("""{"kg":80}""").build())) }
+                return object : AgentWidgetLiveRun {
+                    override fun deliver(messageJson: String) { delivered[n] += messageJson }
+                    override fun pause() = Unit
+                    override fun resume() = Unit
+                    override fun snapshot() = true
+                    override fun stop() = Unit
+                }
+            }
+        }
+        val engine = object : AgentWidgetEngine by AgentWidgetEngine.Unavailable {
+            override val isAvailable = true
+            override fun compileLive(program: String, lines: IntRange?): AgentWidgetLiveProgram = tracker
+        }
+        val transport = AgentWidgetTransport(
+            program = { _, _, _ -> OpenCodeWidgetProgram("main()", isLive = true, storage = true) },
+            respond = { _, _, _, _, _ -> },
+            send = { _, _, _, _, _ -> },
+            report = { _, _, _, _, _, _ -> },
+        )
+        val storage = AgentWidgetStorage(spaces, scope)
+        val programs = AgentWidgetPrograms({ engine }, { transport })
+        val server = ai.opencode.server.OpenCodeServer("http://127.0.0.1:1", "u", "p")
+        fun controller(call: String) = AgentWidgetController(
+            AgentWidgetState("m", call, null, OpenCodeWidgetRef("tracker", "1"), "{}", AgentWidgetState.Status.Open),
+            server, "s", null, scope, programs, transport, engine, storage,
+        )
+        val first = controller("c1")
+        withContext(main) { first.start(); first.shownChanged(inline = true) }
+        assertTrue(eventually(wallClock = true) { delivered[0].isNotEmpty() })
+        val second = controller("c2")
+        withContext(main) { second.start(); second.shownChanged(inline = true) }
+        assertTrue(eventually(wallClock = true) { inputs.size == 2 })
+        withContext(main) { assertTrue(first.hasStorage && second.hasStorage) }
+
+        val set = """{"type":"storage","key":"entry:a","value":"{\"kg\":80}"}"""
+        assertEquals("""{"data":{},"storage":{"entries":[{"key":"seed","value":"1"}]}}""", inputs[0])
+        assertEquals("""{"data":{},"storage":{"entries":[{"key":"seed","value":"1"},{"key":"entry:a","value":"{\"kg\":80}"}]}}""", inputs[1])
+        assertEquals(listOf("follow widget.tracker", """write widget.tracker {entry:a={"kg":80}}"""), writes.toList())
+        assertEquals(listOf(set), delivered[0].toList())
+
+        // Another client's change, then a re-sync without a key.
+        space.value = SpaceEntries(space.value.entries + ("entry:b" to "2"), true)
+        assertTrue(eventually(wallClock = true) { delivered[1].size == 1 })
+        space.value = SpaceEntries(space.value.entries - "seed", true)
+        val changes = listOf("""{"type":"storage","key":"entry:b","value":"2"}""", """{"type":"storage","key":"seed"}""")
+        assertTrue(eventually(wallClock = true) { delivered[0].size == 3 && delivered[1].size == 2 })
+        assertEquals(listOf(set) + changes, delivered[0].toList())
+        assertEquals(changes, delivered[1].toList())
+
+        withContext(main) { first.stopLive() }
+        assertEquals(1, followed.get())
+        withContext(main) { second.stopLive() }
+        assertTrue(eventually(wallClock = true) { followed.get() == 0 })
         scope.cancel()
         main.close()
     }

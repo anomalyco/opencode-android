@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">फ़ुल स्क्रीन</string>
     <string name="transcript_widget_fullscreen_placeholder">फ़ुल स्क्रीन में खोलें</string>
     <string name="transcript_widget_network">नेटवर्क: %1$s</string>
+    <string name="transcript_widget_storage">स्टोरेज</string>
     <string name="transcript_widget_restart">पुनः आरंभ करें</string>
     <string name="transcript_widget_older_runtime">यह विजेट पुराने विजेट रनटाइम से बनाया गया था; एजेंट से इसे फिर से पोस्ट करने को कहें</string>
     <string name="transcript_widget_newer_app">इस विजेट के लिए ऐप का नया संस्करण चाहिए</string>

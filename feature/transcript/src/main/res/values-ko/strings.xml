@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">전체 화면</string>
     <string name="transcript_widget_fullscreen_placeholder">전체 화면으로 열기</string>
     <string name="transcript_widget_network">네트워크: %1$s</string>
+    <string name="transcript_widget_storage">저장공간</string>
     <string name="transcript_widget_restart">다시 시작</string>
     <string name="transcript_widget_older_runtime">이 위젯은 이전 위젯 런타임으로 만들어졌어요. 에이전트에게 다시 게시해 달라고 해보세요.</string>
     <string name="transcript_widget_newer_app">이 위젯을 보려면 이 앱의 최신 버전이 필요해요.</string>

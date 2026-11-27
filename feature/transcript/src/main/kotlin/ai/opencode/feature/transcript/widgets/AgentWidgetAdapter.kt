@@ -36,6 +36,8 @@ data class AgentWidgetState(
     val response: String? = null,
     /** Hosts a live widget template may fetch from; shown on the widget. */
     val httpsHosts: List<String>? = null,
+    /** The widget template declares storage; shown on the widget. */
+    val storage: Boolean = false,
     /** The program error the server recorded (from any client); shown while the widget is open. */
     val failure: OpenCodeWidgetFailure? = null,
 ) {
@@ -113,6 +115,7 @@ object AgentWidgetAdapter {
                 status = status(record.status),
                 response = record.response,
                 httpsHosts = record.httpsHosts,
+                storage = record.storage,
                 failure = record.failure,
             )
             (states ?: HashMap<String, AgentWidgetState>().also { states = it })[state.key] = state

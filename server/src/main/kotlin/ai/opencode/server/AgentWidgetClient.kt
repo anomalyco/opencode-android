@@ -123,8 +123,11 @@ class AgentWidgetProgramCache(private val directory: File) {
                     put("program", program.program)
                     put("mode", if (program.isLive) "live" else "step")
                     put("sourceLineOffset", program.sourceLineOffset)
-                    program.httpsHosts?.let { hosts ->
-                        put("capabilities", buildJsonObject { put("https", buildJsonObject { put("hosts", JsonArray(hosts.map(::JsonPrimitive))) }) })
+                    if (program.httpsHosts != null || program.storage) {
+                        put("capabilities", buildJsonObject {
+                            program.httpsHosts?.let { hosts -> put("https", buildJsonObject { put("hosts", JsonArray(hosts.map(::JsonPrimitive))) }) }
+                            if (program.storage) put("storage", buildJsonObject {})
+                        })
                     }
                 }.toString()
                 val temporary = File(directory, "${ref.key}.tmp")

@@ -198,6 +198,7 @@
     <string name="transcript_widget_fullscreen">Celá obrazovka</string>
     <string name="transcript_widget_fullscreen_placeholder">Otevřít na celou obrazovku</string>
     <string name="transcript_widget_network">Síť: %1$s</string>
+    <string name="transcript_widget_storage">Úložiště</string>
     <string name="transcript_widget_restart">Restartovat</string>
     <string name="transcript_widget_older_runtime">Tento widget byl vytvořen ve starším běhovém prostředí; požádejte agenta, aby ho zveřejnil znovu</string>
     <string name="transcript_widget_newer_app">Tento widget vyžaduje novější verzi této aplikace</string>

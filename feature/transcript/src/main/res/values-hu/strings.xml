@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">Teljes képernyő</string>
     <string name="transcript_widget_fullscreen_placeholder">Megnyitás teljes képernyőn</string>
     <string name="transcript_widget_network">Hálózat: %1$s</string>
+    <string name="transcript_widget_storage">Tárhely</string>
     <string name="transcript_widget_restart">Újraindítás</string>
     <string name="transcript_widget_older_runtime">Ez a widget régebbi futtatókörnyezettel készült; kérje meg az ügynököt, hogy tegye közzé újra.</string>
     <string name="transcript_widget_newer_app">Ez a widget az alkalmazás újabb verzióját igényli.</string>

@@ -192,6 +192,7 @@
     <string name="transcript_widget_fullscreen">Tela cheia</string>
     <string name="transcript_widget_fullscreen_placeholder">Abrir em tela cheia</string>
     <string name="transcript_widget_network">Rede: %1$s</string>
+    <string name="transcript_widget_storage">Armazenamento</string>
     <string name="transcript_widget_restart">Reiniciar</string>
     <string name="transcript_widget_older_runtime">Este widget foi criado com um runtime de widget mais antigo; peça ao agente para publicá-lo novamente</string>
     <string name="transcript_widget_newer_app">Este widget precisa de uma versão mais recente deste app</string>

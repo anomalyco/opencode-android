@@ -66,6 +66,8 @@ data class OpenCodeWidgetState(
     val wait: Boolean = false,
     /** Hosts a live widget template may fetch from (`capabilities.https.hosts`). */
     val httpsHosts: List<String>? = null,
+    /** The widget template declares `capabilities.storage`. */
+    val storage: Boolean = false,
     /** The program error the last report recorded; the widget keeps its status. */
     val failure: OpenCodeWidgetFailure? = null,
 ) {
@@ -82,6 +84,8 @@ data class OpenCodeWidgetProgram(
     val program: String,
     val isLive: Boolean = false,
     val httpsHosts: List<String>? = null,
+    /** Declares `capabilities.storage`: the widget template's space on its server (live only). */
+    val storage: Boolean = false,
     /** Lines of prelude before the widget template's source in [program], to report errors at its own lines. */
     val sourceLineOffset: Int = 0,
 )

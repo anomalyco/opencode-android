@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">全画面</string>
     <string name="transcript_widget_fullscreen_placeholder">全画面で開く</string>
     <string name="transcript_widget_network">ネットワーク: %1$s</string>
+    <string name="transcript_widget_storage">ストレージ</string>
     <string name="transcript_widget_restart">再起動</string>
     <string name="transcript_widget_older_runtime">古いウィジェットランタイムで作成されています。エージェントに再投稿を依頼してください</string>
     <string name="transcript_widget_newer_app">このウィジェットにはアプリの新しいバージョンが必要です</string>

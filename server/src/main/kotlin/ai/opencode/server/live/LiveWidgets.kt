@@ -32,7 +32,8 @@ internal fun decodeWidgetProgram(element: JsonElement?): OpenCodeWidgetProgram {
     val hosts = ((o["capabilities"] as? JsonObject)?.get("https") as? JsonObject)?.get("hosts") as? JsonArray
     val source = (o["source"] as? JsonPrimitive)?.takeIf { it.isString }?.content
     val offset = if (source != null && program.endsWith(source)) program.substring(0, program.length - source.length).count { it == '\n' } else 0
-    return OpenCodeWidgetProgram(program, mode == "live", hosts?.mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content }, offset)
+    val storage = (o["capabilities"] as? JsonObject)?.get("storage") is JsonObject
+    return OpenCodeWidgetProgram(program, mode == "live", hosts?.mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content }, storage, offset)
 }
 
 /** `POST /api/rpc/opencode.widget/<method>` in [directory]'s location: `{ input }` in, `output` back. */
@@ -152,6 +153,7 @@ internal fun decodeWidgetState(element: JsonElement?): OpenCodeWidgetState? {
         response = if (status == OpenCodeWidgetStatus.Submitted) (o["response"] ?: JsonNull).toString() else null,
         wait = (o["wait"] as? JsonPrimitive)?.booleanOrNull ?: false,
         httpsHosts = hosts?.mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content },
+        storage = (o["capabilities"] as? JsonObject)?.get("storage") is JsonObject,
         failure = decodeWidgetFailure(o["failure"] as? JsonObject),
     )
 }

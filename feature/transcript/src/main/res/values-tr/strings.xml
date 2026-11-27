@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">Tam Ekran</string>
     <string name="transcript_widget_fullscreen_placeholder">Tam ekranda aç</string>
     <string name="transcript_widget_network">Ağ: %1$s</string>
+    <string name="transcript_widget_storage">Depolama</string>
     <string name="transcript_widget_restart">Yeniden Başlat</string>
     <string name="transcript_widget_older_runtime">Bu pencere öğesi daha eski bir çalışma zamanıyla oluşturulmuş; ajandan tekrar göndermesini isteyin</string>
     <string name="transcript_widget_newer_app">Bu pencere öğesi bu uygulamanın daha yeni bir sürümünü gerektiriyor</string>

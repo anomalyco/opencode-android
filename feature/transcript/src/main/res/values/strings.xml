@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">Full Screen</string>
     <string name="transcript_widget_fullscreen_placeholder">Open in full screen</string>
     <string name="transcript_widget_network">Network: %1$s</string>
+    <string name="transcript_widget_storage">Storage</string>
     <string name="transcript_widget_restart">Restart</string>
     <string name="transcript_widget_older_runtime">This widget was built with an older widget runtime; ask the agent to post it again</string>
     <string name="transcript_widget_newer_app">This widget needs a newer version of this app</string>

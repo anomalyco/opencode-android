@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">ពេញអេក្រង់</string>
     <string name="transcript_widget_fullscreen_placeholder">បើកពេញអេក្រង់</string>
     <string name="transcript_widget_network">បណ្តាញ៖ %1$s</string>
+    <string name="transcript_widget_storage">កន្លែងផ្ទុក</string>
     <string name="transcript_widget_restart">ចាប់ផ្ដើមឡើងវិញ</string>
     <string name="transcript_widget_older_runtime">វីជេតនេះប្រើ runtime ជំនាន់ចាស់ សូមឲ្យភ្នាក់ងារបង្ហោះវាម្តងទៀត</string>
     <string name="transcript_widget_newer_app">វីជេតនេះត្រូវការកម្មវិធីកំណែថ្មីជាង</string>

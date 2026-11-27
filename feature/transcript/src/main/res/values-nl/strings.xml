@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">Volledig scherm</string>
     <string name="transcript_widget_fullscreen_placeholder">Openen in volledig scherm</string>
     <string name="transcript_widget_network">Netwerk: %1$s</string>
+    <string name="transcript_widget_storage">Opslag</string>
     <string name="transcript_widget_restart">Opnieuw opstarten</string>
     <string name="transcript_widget_older_runtime">Deze widget is gebouwd met een oudere widget-runtime; vraag de agent om hem opnieuw te plaatsen</string>
     <string name="transcript_widget_newer_app">Deze widget heeft een nieuwere versie van deze app nodig</string>

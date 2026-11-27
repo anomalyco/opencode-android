@@ -23,6 +23,8 @@ internal class AgentWidgetLiveDriver(
     private val httpsHosts: List<String>?,
     private val scope: CoroutineScope,
     private val events: Events,
+    /** The live input's `storage` as JSON text, read at each start: the template's entries, or `null` without it. */
+    private val storage: () -> String = { "null" },
 ) {
     interface Events {
         fun rendered(view: AgentWidgetNode, fullscreen: Boolean?)
@@ -40,6 +42,8 @@ internal class AgentWidgetLiveDriver(
         fun ended()
         /** A GPU canvas's state ([key] null: every GPU canvas of the run). */
         fun gpuCanvas(key: String?, state: AgentWidgetGpuState) = Unit
+        /** A storage post ([value] null deletes): null when taken, else the error that fails the run. */
+        fun stored(key: String, value: String?): String? = null
     }
 
     @Volatile private var run: AgentWidgetLiveRun? = null
@@ -154,7 +158,7 @@ internal class AgentWidgetLiveDriver(
             }
         }
         run = try {
-            program.start("{\"data\":$data}", listener, httpsHosts)
+            program.start("{\"data\":$data,\"storage\":${storage()}}", listener, httpsHosts)
         } catch (error: AgentWidgetEngineException) {
             finished = true
             events.failed(error)
@@ -277,7 +281,7 @@ internal class AgentWidgetLiveDriver(
                     var end = start
                     while (end < waiting.size && (waiting[end] as? Batch)?.generation == item.generation) end++
                     val actions = read(waiting.subList(start, end).flatMap { (it as Batch).messages })
-                    if (actions.isNotEmpty()) scope.launch { if (item.generation == generation) actions.forEach { it() } }
+                    if (actions.isNotEmpty()) scope.launch { actions.forEach { if (item.generation == generation) it() } }
                     start = end
                 }
                 waiting.clear()
@@ -342,6 +346,12 @@ internal class AgentWidgetLiveDriver(
             AgentWidgetWire.Post.Dismiss -> ({ answered(OpenCodeWidgetResponse.Dismiss) })
             is AgentWidgetWire.Post.Send -> ({ events.sent(OpenCodeWidgetMessageValue(post.value, post.wake)) })
             is AgentWidgetWire.Post.Capture, AgentWidgetWire.Post.Gpu -> null
+            is AgentWidgetWire.Post.Storage -> ({
+                events.stored(post.key, post.value)?.let { error ->
+                    stop()
+                    events.failed(AgentWidgetEngineException(error))
+                }
+            })
         }
     }
 

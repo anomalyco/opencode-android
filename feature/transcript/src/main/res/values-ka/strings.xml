@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">სრულ ეკრანზე</string>
     <string name="transcript_widget_fullscreen_placeholder">სრულ ეკრანზე გახსნა</string>
     <string name="transcript_widget_network">ქსელი: %1$s</string>
+    <string name="transcript_widget_storage">საცავი</string>
     <string name="transcript_widget_restart">გადატვირთვა</string>
     <string name="transcript_widget_older_runtime">ეს ვიჯეტი ვიჯეტის ძველი გამშვები გარემოთია შექმნილი; სთხოვეთ აგენტს ხელახლა დაპოსტოს</string>
     <string name="transcript_widget_newer_app">ამ ვიჯეტს ამ აპის უფრო ახალი ვერსია სჭირდება</string>

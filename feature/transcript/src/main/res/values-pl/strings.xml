@@ -198,6 +198,7 @@
     <string name="transcript_widget_fullscreen">Pełny ekran</string>
     <string name="transcript_widget_fullscreen_placeholder">Otwórz na pełnym ekranie</string>
     <string name="transcript_widget_network">Sieć: %1$s</string>
+    <string name="transcript_widget_storage">Pamięć</string>
     <string name="transcript_widget_restart">Uruchom ponownie</string>
     <string name="transcript_widget_older_runtime">Ten widżet używa starszego środowiska wykonawczego; poproś agenta o ponowne opublikowanie go</string>
     <string name="transcript_widget_newer_app">Ten widżet wymaga nowszej wersji tej aplikacji</string>

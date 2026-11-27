@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">Skrin penuh</string>
     <string name="transcript_widget_fullscreen_placeholder">Buka dalam skrin penuh</string>
     <string name="transcript_widget_network">Rangkaian: %1$s</string>
+    <string name="transcript_widget_storage">Storan</string>
     <string name="transcript_widget_restart">Mulakan semula</string>
     <string name="transcript_widget_older_runtime">Widget ini dibina dengan runtime widget yang lebih lama; minta ejen menyiarkannya semula</string>
     <string name="transcript_widget_newer_app">Widget ini memerlukan versi aplikasi yang lebih baharu</string>

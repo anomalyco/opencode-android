@@ -180,6 +180,7 @@
     <string name="transcript_widget_fullscreen">ເຕັມຈໍ</string>
     <string name="transcript_widget_fullscreen_placeholder">ເປີດແບບເຕັມຈໍ</string>
     <string name="transcript_widget_network">ເຄືອຂ່າຍ: %1$s</string>
+    <string name="transcript_widget_storage">ບ່ອນຈັດເກັບຂໍ້ມູນ</string>
     <string name="transcript_widget_restart">ຣີສະຕາດ</string>
     <string name="transcript_widget_older_runtime">widget ນີ້ສ້າງດ້ວຍ runtime ຮຸ່ນເກົ່າ; ຂໍໃຫ້ຕົວແທນໂພສມັນອີກຄັ້ງ</string>
     <string name="transcript_widget_newer_app">widget ນີ້ຕ້ອງການແອັບເວີຊັນໃໝ່ກວ່າ</string>

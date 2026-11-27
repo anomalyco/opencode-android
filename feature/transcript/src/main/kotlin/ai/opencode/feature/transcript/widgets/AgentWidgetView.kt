@@ -197,14 +197,29 @@ fun AgentWidgetFrame(
                     } else body,
                 )
                 if (controller != null && controller.isLiveMode) LiveFrames(controller, density, fullscreen)
-                controller?.httpsHosts?.let { hosts ->
-                    Text(
-                        stringResource(R.string.transcript_widget_network, hosts.joinToString(", ")),
-                        style = OpenCodeTextStyles.caption1,
-                        color = colors.tertiaryText,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                val hosts = controller?.httpsHosts
+                val storage = controller?.hasStorage == true
+                if (hosts != null || storage) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        if (hosts != null) {
+                            Text(
+                                stringResource(R.string.transcript_widget_network, hosts.joinToString(", ")),
+                                style = OpenCodeTextStyles.caption1,
+                                color = colors.tertiaryText,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f, fill = false),
+                            )
+                        }
+                        if (storage) {
+                            Text(
+                                stringResource(R.string.transcript_widget_storage),
+                                style = OpenCodeTextStyles.caption1,
+                                color = colors.tertiaryText,
+                                maxLines = 1,
+                            )
+                        }
+                    }
                 }
                     val error = (phase as? Phase.Ready)?.error
                     if (error != null) StatusLine(SFSymbol.XmarkCircleFill, colors.danger, error, live = true)

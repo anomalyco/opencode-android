@@ -18,6 +18,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.flowOf
+import ai.opencode.server.spaces.SpaceEntries
+import ai.opencode.server.spaces.SpacesClient
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import org.junit.Assert.assertEquals
@@ -172,7 +175,27 @@ class AgentWidgetReportTests {
         assertEquals(3, report.line)
     }
 
-    private class Run(val reports: List<OpenCodeWidgetError>, val events: List<String>) {
+    /**
+     * widget.storage through the live prelude and widget-wire's `01 0B` post: a set goes to the space's writes; a post
+     * around the prelude past the space's 1,000 keys fails the run as the program's error.
+     */
+    @Test
+    fun aStoragePostPastTheSpacesLimitFailsTheRun() {
+        val run = live(
+            """
+            |async function main() {
+            |  await widget.storage.set("a", { kg: 80 })
+            |  __host.post({ type: "storage", key: "one-more", value: "1" })
+            |  await widget.frame()
+            |}
+            """.trimMargin(),
+            storage = (1 until 1000).associate { "k$it" to "1" },
+        ) { it.reports.isNotEmpty() }
+        assertEquals(listOf("widget.probe {a={\"kg\":80}}"), run.writes)
+        assertEquals(listOf(OpenCodeWidgetError("main", "TooLarge: widget.storage: storage holds 1000 keys already")), run.reports)
+    }
+
+    private class Run(val reports: List<OpenCodeWidgetError>, val events: List<String>, val writes: List<String> = emptyList()) {
         val exited: Boolean get() = events.any { it.startsWith("exit") }
     }
 
@@ -180,8 +203,20 @@ class AgentWidgetReportTests {
      * Runs [source] as a live widget on an [AgentWidgetController] until [done] (at most 10 s), with frames for its GPU
      * [canvas] (8 × 8) if given; what it reported and what its run told the app.
      */
-    private fun live(source: String, hosts: List<String>? = null, canvas: String? = null, done: (Run) -> Boolean): Run {
-        val program = AgentWidgetWorkloads.liveProgram(source, hosts)
+    private fun live(
+        source: String,
+        hosts: List<String>? = null,
+        canvas: String? = null,
+        storage: Map<String, String>? = null,
+        done: (Run) -> Boolean,
+    ): Run {
+        val program = AgentWidgetWorkloads.liveProgram(source, hosts).copy(storage = storage != null)
+        val writes = CopyOnWriteArrayList<String>()
+        val spaces = SpacesClient(
+            entries = { _, _ -> flowOf(SpaceEntries(storage.orEmpty(), isSyncComplete = true)) },
+            receive = { _, _ -> },
+            write = { _, name, changes -> writes += "$name $changes" },
+        )
         val engine = Engine()
         val reports = CopyOnWriteArrayList<OpenCodeWidgetError>()
         val transport = AgentWidgetTransport(
@@ -195,14 +230,14 @@ class AgentWidgetReportTests {
         val widget = AgentWidgetState("m", "c", null, OpenCodeWidgetRef("probe", "1"), "{}", AgentWidgetState.Status.Open, httpsHosts = hosts)
         val controller = AgentWidgetController(
             widget, OpenCodeServer("http://127.0.0.1:1", "u", "p"), "s", null, scope,
-            AgentWidgetPrograms({ engine }, { transport }), transport, engine,
+            AgentWidgetPrograms({ engine }, { transport }), transport, engine, AgentWidgetStorage(spaces, scope),
         )
         try {
             controller.start()
             controller.shownChanged(inline = true)
             val until = System.nanoTime() + 10_000_000_000L
             var sent = 0
-            fun now() = Run(reports.toList(), engine.events.toList())
+            fun now() = Run(reports.toList(), engine.events.toList(), writes.toList())
             while (!done(now()) && System.nanoTime() < until) {
                 val run = engine.run
                 if (canvas != null && run != null) {

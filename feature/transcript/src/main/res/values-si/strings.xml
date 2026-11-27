@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">පූර්ණ තිරය</string>
     <string name="transcript_widget_fullscreen_placeholder">පූර්ණ තිරයේ විවෘත කරන්න</string>
     <string name="transcript_widget_network">ජාලය: %1$s</string>
+    <string name="transcript_widget_storage">ආචයනය</string>
     <string name="transcript_widget_restart">යළි අරඹන්න</string>
     <string name="transcript_widget_older_runtime">මෙම විජට් එක පැරණි විජට් ධාවන කාලයකින් තැනී ඇත; එය නැවත පළ කරන ලෙස නියෝජිතයාට කියන්න</string>
     <string name="transcript_widget_newer_app">මෙම විජට් එකට මෙම යෙදුමේ අලුත් අනුවාදයක් අවශ්යයි</string>

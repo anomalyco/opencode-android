@@ -32,6 +32,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /**
  * The transcript list's widgets: one [AgentWidgetController] per widget message, kept while the
@@ -41,13 +43,14 @@ class AgentWidgetStore(
     private val programs: AgentWidgetPrograms = dependency(AgentWidgetPrograms),
     private val transport: AgentWidgetTransport = dependency(AgentWidgetTransport),
     private val engine: AgentWidgetEngine = dependency(AgentWidgetEngine),
+    private val storage: AgentWidgetStorage = dependency(AgentWidgetStorage),
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val controllers = HashMap<String, AgentWidgetController>()
 
     fun controller(widget: AgentWidgetState, server: OpenCodeServer, sessionID: String, directory: String?): AgentWidgetController {
         val key = "${server.persistenceID}/$sessionID/${widget.key}"
-        return controllers.getOrPut(key) { AgentWidgetController(widget, server, sessionID, directory, scope, programs, transport, engine).also { it.store = this } }
+        return controllers.getOrPut(key) { AgentWidgetController(widget, server, sessionID, directory, scope, programs, transport, engine, storage).also { it.store = this } }
     }
 
     /** The one widget shown full screen, if any; its inline row shows a placeholder meanwhile. */
@@ -106,6 +109,7 @@ class AgentWidgetController internal constructor(
     private val programs: AgentWidgetPrograms,
     private val transport: AgentWidgetTransport,
     val engine: AgentWidgetEngine,
+    private val storage: AgentWidgetStorage = dependency(AgentWidgetStorage),
 ) {
     val key: String = widget.key
     val data: String = widget.data
@@ -331,6 +335,12 @@ class AgentWidgetController internal constructor(
     var httpsHosts: List<String>? by mutableStateOf(null)
         private set
 
+    /** The live widget template declares storage: its space follows while the widget is live (shown on the widget). */
+    var hasStorage: Boolean by mutableStateOf(false)
+        private set
+
+    private var storageSpace: AgentWidgetStorage.Handle? = null
+
     /** Each canvas's last posted commands (JSON array text), by canvas id. */
     internal val liveDraws = mutableStateMapOf<String, AgentWidgetWire.Post.Draw>()
 
@@ -395,7 +405,7 @@ class AgentWidgetController internal constructor(
     @Volatile private var shownFullscreen = false
     @Volatile private var listPaused = false
 
-    private fun startLiveMode(program: AgentWidgetLiveProgram, declaredHosts: List<String>?) {
+    private fun startLiveMode(program: AgentWidgetLiveProgram, declaredHosts: List<String>?, declaresStorage: Boolean) {
         isLiveMode = true
         val status = status(widget)
         if (status is Status.Answered) {
@@ -405,7 +415,32 @@ class AgentWidgetController internal constructor(
         val hosts = AgentWidgetCapabilities.grantedHosts(widget.httpsHosts ?: declaredHosts)
         httpsHosts = hosts
         phase = Phase.Starting(Status.Open)
-        live = AgentWidgetLiveDriver(program, data, hosts, scope, liveEvents).also { it.setVisible(isShown) }
+        if (!widget.storage && !declaresStorage) {
+            live = AgentWidgetLiveDriver(program, data, hosts, scope, liveEvents).also { it.setVisible(isShown) }
+            return
+        }
+        hasStorage = true
+        val space = storage.follow(server, ref.name) { key, value -> storageChanged(key, value) }
+        storageSpace = space
+        scope.launch {
+            space.synced()
+            if (storageSpace !== space || phase !is Phase.Starting) return@launch
+            live = AgentWidgetLiveDriver(program, data, hosts, scope, liveEvents, space::input).also { it.setVisible(isShown) }
+        }
+    }
+
+    private fun storageChanged(key: String, value: String?) {
+        val message = buildJsonObject {
+            put("type", "storage")
+            put("key", key)
+            if (value != null) put("value", value)
+        }
+        live?.deliver(message.toString())
+    }
+
+    private fun unfollowStorage() {
+        storageSpace?.close()
+        storageSpace = null
     }
 
     private val liveEvents = object : AgentWidgetLiveDriver.Events {
@@ -485,12 +520,19 @@ class AgentWidgetController internal constructor(
         }
 
         override fun ended() = Unit
+
+        override fun stored(key: String, value: String?): String? {
+            val space = storageSpace
+                ?: return "CapabilityDenied: widget.storage: storage is not declared: save the widget template with capabilities: { storage: {} }"
+            return space.write(key, value)
+        }
     }
 
     private var liveAttempts = 0
 
     private fun closeLive(how: AgentWidgetMachine.Closed) {
         live?.stop()
+        unfollowStorage()
         liveWantsFrame.set(false)
         phase = Phase.Closed(phase.view, how, phase.state)
     }
@@ -569,6 +611,7 @@ class AgentWidgetController internal constructor(
 
     internal fun stopLive() {
         live?.stop()
+        unfollowStorage()
     }
 
     private val isShown: Boolean get() = (shownInline && !listPaused) || shownFullscreen
@@ -650,7 +693,7 @@ class AgentWidgetController internal constructor(
                         sourceLines(compiled.info)
                         val live = compiled.live
                         if (live != null) {
-                            startLiveMode(live, compiled.info.httpsHosts)
+                            startLiveMode(live, compiled.info.httpsHosts, compiled.info.storage)
                             return@launch
                         }
                         program = compiled.step?.session(AgentWidgetStep.shared(data))

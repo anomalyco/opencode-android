@@ -130,7 +130,8 @@ and widgets show "The widget runtime isn't available".
 
 ## Runtime pin
 
-`scripts/psychoscript.sh` pins opencode `d8b0f68` (branch `widgets`, `packages/widgets-rs`), whose widget-mobile takes
+`scripts/psychoscript.sh` pins opencode `e7248ca` (branch `widgets`, `packages/widgets-rs`; `widget.storage` in the live
+prelude and the `01 0B` storage post in widget-wire's encoder), whose widget-mobile takes
 PsychoScript's crates from crates.io (psychoscript 0.1.2, psychoscript-gpu 0.1.0, psychoscript-mobile 0.2.0; wgpu-hal
 patched to PsychoScript `dev` 2ef493f's Metal fix). Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
 compute (the `next({ timeout })` → `sleep` SliceBudget stop is gone; `wait-probe` finishes), and dev-mode local
@@ -180,6 +181,16 @@ or Developer Mode). Cleartext `http:` still needs the debug network security con
   decision (everything declared is granted for now); granted hosts show as "Network: …" under the widget.
   Hosts come from the widget state's `capabilities`, else the program's.
 - Live widgets offer full screen unless their root says `fullscreen: false`.
+- Storage (`capabilities.storage`, widgets-live.md, Storage; granted automatically, "Storage" beside "Network"):
+  `AgentWidgetStorage` (process-wide, behind its key) follows the template's space `widget.<name>` through the
+  server's `SpacesClient` while a storage widget of it is live (from its start until it's answered or its list
+  closes), waiting at most 2 s for the space's first complete sync before the run starts. The live input carries
+  `storage: { entries }` (the local copy, pending writes applied), or `storage: null` without the capability. A
+  `01 0B` post is checked against the copy (1,000 keys, 1 MiB; else it fails the run, phase `main`, with the
+  prelude's `TooLarge` message), shown at once and handed to `SpacesClient.write`. Every change of the copy (a post,
+  another client's event, a re-sync's diff) goes as `{ type: "storage", key, value? }` to every live widget of the
+  template on that server, the writer's included. SpacesClient keeps the space (and its subscription) after the last
+  widget stops; only the follow ends.
 
 ## Open
 

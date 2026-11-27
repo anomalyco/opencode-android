@@ -186,6 +186,7 @@
     <string name="transcript_widget_fullscreen">Fuld skærm</string>
     <string name="transcript_widget_fullscreen_placeholder">Åbn i fuld skærm</string>
     <string name="transcript_widget_network">Netværk: %1$s</string>
+    <string name="transcript_widget_storage">Lagring</string>
     <string name="transcript_widget_restart">Genstart</string>
     <string name="transcript_widget_older_runtime">Denne widget er bygget med en ældre widget-runtime; bed agenten om at opslå den igen</string>
     <string name="transcript_widget_newer_app">Denne widget kræver en nyere version af denne app</string>
