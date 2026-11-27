@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Session Live Updates</string>
     <string name="core_experiment_sound_effects_title">Sound Effects</string>
     <string name="core_experiment_server_address_links_title">Open Links by Server Address</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sync Pinned Sessions</string>
     <string name="core_experiment_in_app_browser_title">In-App Browser</string>
     <string name="core_experiment_welcome_preview_title">Welcome Preview</string>
     <string name="core_experiment_since_you_left_title">Since You Left</string>

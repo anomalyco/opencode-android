@@ -19,6 +19,7 @@ import ai.opencode.feature.voice.ServerVoiceSupport
 import ai.opencode.server.OpenCodeLiveContentEvent
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.model.OpenCodeProject
+import ai.opencode.server.spaces.SpacesClient
 
 /*
  * The event stream projected onto Home's list and forwarded to the screens that care. REST
@@ -43,6 +44,12 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
             if (key in s.manuallyUnreadSessionKeys) s = s.updatingManuallyUnreadSessionKeys { it - key }
             if (becameRead) s = s.clearingUnseenBaseline(event.sessionID)
             return Reduced(s)
+        }
+
+        is OpenCodeServerEvent.StreamOpened, is OpenCodeServerEvent.SpaceEvent -> {
+            val spaces = dependency(SpacesClient)
+            val server = state.server
+            return Reduced(state, Effect.run { spaces.receive(server, event) })
         }
 
         OpenCodeServerEvent.Connected -> {
@@ -120,8 +127,10 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
             return Reduced(started.state, Effect.merge(started.effect, notify))
         }
 
-        is OpenCodeServerEvent.MessageInvalidated ->
-            return Reduced(state, forwardToSession(state, event.sessionID, SessionFeature.Action.MessageInvalidated(event.sessionID)))
+        is OpenCodeServerEvent.MessageInvalidated -> {
+            val s = state.notingDirtyCachedTranscript(event.sessionID)
+            return Reduced(s, forwardToSession(s, event.sessionID, SessionFeature.Action.MessageInvalidated(event.sessionID)))
+        }
 
         is OpenCodeServerEvent.PluginsUpdated ->
             return Reduced(state, forwardToScreens(state, SessionFeature.Action.PluginsUpdated(event.directory)))
@@ -132,6 +141,7 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
         is OpenCodeServerEvent.RevertChanged -> {
             val s = state.updatingSession(event.sessionID) { it.copy(revertMessageID = event.messageID) }
                 .updatingSnapshot(event.sessionID) { it.copy(session = it.session.copy(revertMessageID = event.messageID)) }
+                .notingDirtyCachedTranscript(event.sessionID)
             if (s.sessionDetail?.session?.id != event.sessionID) return Reduced(s)
             return Reduced(s, sendToDetail(s, SessionFeature.Action.RevertChanged(event.sessionID, event.messageID, event.committed)))
         }
@@ -183,6 +193,13 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
                 },
             )
             return Reduced(s, forwardToScreens(s, SessionFeature.Action.ShellEnded(event.shellID)))
+        }
+
+        is OpenCodeServerEvent.JobUpdated -> {
+            val snapshots = state.sessionSnapshots.mapValues { (_, snapshot) -> snapshot.applying(event.job) }
+            val s = if (snapshots == state.sessionSnapshots) state else state.copy(sessionSnapshots = snapshots)
+            // Each screen keeps the jobs of its own tree.
+            return Reduced(s, forwardToScreens(s, SessionFeature.Action.JobUpdated(event.job)) { it.session != null })
         }
 
         is OpenCodeServerEvent.ExecutionStarted -> {

@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Aktualizacje sesji na żywo</string>
     <string name="core_experiment_sound_effects_title">Efekty dźwiękowe</string>
     <string name="core_experiment_server_address_links_title">Otwieraj linki według adresu serwera</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Synchronizuj przypięte sesje</string>
     <string name="core_experiment_in_app_browser_title">Przeglądarka w aplikacji</string>
     <string name="core_experiment_welcome_preview_title">Podgląd powitania</string>
     <string name="core_experiment_since_you_left_title">Pod twoją nieobecność</string>

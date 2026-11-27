@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">ལཱ་ཡུན་གྱི་འཕྲལ་མགྱོགས་དུས་མཐུན་ཚུ།</string>
     <string name="core_experiment_sound_effects_title">སྒྲའི་ནུས་པ།</string>
     <string name="core_experiment_server_address_links_title">སར་བར་ཁ་བྱང་ལྟར་འབྲེལ་མཐུད་ཁ་ཕྱེ།</string>
+    <string name="core_experiment_sync_pinned_sessions_title">གཏན་བཟུང་འབད་ཡོད་པའི་ལཱ་ཡུན་ཚུ་མཉམ་སྡེབ་འབད།</string>
     <string name="core_experiment_in_app_browser_title">གློག་རིམ་ནང་གི་བརའུ་ཟར།</string>
     <string name="core_experiment_welcome_preview_title">བྱོན་པ་ལེགས་སོའི་སྔོན་ལྟ།</string>
     <string name="core_experiment_since_you_left_title">ཁྱོད་འཐོན་སོང་ཞིནམ་ལས།</string>

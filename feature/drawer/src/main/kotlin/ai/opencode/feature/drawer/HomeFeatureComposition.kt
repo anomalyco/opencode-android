@@ -62,6 +62,7 @@ internal fun HomeFeature.builtBody(): Reducer<State, Action> {
             val synced = syncSessionActivity(reduced.state)
             reduced = Reduced(synced.state, Effect.merge(reduced.effect, synced.effect))
         }
+        reduced = syncingPins(state, reduced, action)
         var s = reduced.state
         // The Catch Up preview's revision bumps when its inputs change for the same session.
         val oldSlice = state.catchUpPreviewSlice
@@ -119,6 +120,11 @@ private fun HomeFeature.fullBody(): Reducer<State, Action> =
         // Home, so Catch Up reconciling to another card counts too (cd04514c).
         .onChange({ it.streamFocusSessionIDs }) { _, new, state ->
             dependency(EventStreamFocusClient).publish(streamFocusOwner, new)
+            Reduced(state)
+        }
+        // The call's delegator reads what the drawer shows from here, watched over all of Home too.
+        .onChange({ it.voiceSessionBoardInput }) { _, _, state ->
+            dependency(VoiceSessionBoardClient).publish(state.voiceSessionBoard)
             Reduced(state)
         }
         .onChange({ it.settingsHomeInput }) { old, new, state ->
@@ -464,11 +470,6 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
         // Shortcuts, launcher actions and search offer what the drawer does.
         .onChange({ it.systemPublication }) { _, _, state ->
             feature.publishToSystem(state)
-            Reduced(state)
-        }
-        // The call's delegator reads what the drawer shows from here.
-        .onChange({ it.voiceSessionBoard }) { _, new, state ->
-            dependency(VoiceSessionBoardClient).publish(new)
             Reduced(state)
         }
         // Whoever moves a live call (the drawer, New Session, a draft's project) only edits its

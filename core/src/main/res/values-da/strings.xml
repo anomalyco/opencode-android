@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Liveopdateringer fra sessioner</string>
     <string name="core_experiment_sound_effects_title">Lydeffekter</string>
     <string name="core_experiment_server_address_links_title">Åbn links ud fra serveradresse</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Synkroniser fastgjorte sessioner</string>
     <string name="core_experiment_in_app_browser_title">Browser i appen</string>
     <string name="core_experiment_welcome_preview_title">Forhåndsvisning af velkomst</string>
     <string name="core_experiment_since_you_left_title">Siden sidst</string>

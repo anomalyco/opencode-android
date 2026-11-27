@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Ažuriranja sesije uživo</string>
     <string name="core_experiment_sound_effects_title">Zvučni efekti</string>
     <string name="core_experiment_server_address_links_title">Otvaraj linkove prema URL-u servera</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sinhroniziraj prikačene sesije</string>
     <string name="core_experiment_in_app_browser_title">Preglednik u aplikaciji</string>
     <string name="core_experiment_welcome_preview_title">Pregled dobrodošlice</string>
     <string name="core_experiment_since_you_left_title">Od tvog odlaska</string>

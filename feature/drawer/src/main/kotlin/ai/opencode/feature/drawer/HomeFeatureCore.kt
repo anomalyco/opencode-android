@@ -90,6 +90,7 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     -> reduceConnection(state, action)
 
     is Action.ServerEvent -> reduceServerEvent(state, action.event)
+    is Action.PinSpaceChanged -> pinSpaceChanged(state, action.sessionIDs, action.previous, action.isSyncComplete)
 
     is Action.SessionPages -> reduceSessionPages(state, action.action)
 
@@ -161,6 +162,7 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     is Action.DrawerRowPressed,
     is Action.TogglePin,
     is Action.ToggleMute,
+    is Action.ToggleHidden,
     is Action.MovePinUp,
     is Action.MovePinDown,
     is Action.DrawerPinZoneCrossed,
@@ -238,6 +240,9 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
         if (action.action == HomeSettingsFeature.Action.WelcomeOpened) {
             // Show Welcome, over Settings and Home.
             Reduced(state.copy(welcome = WelcomeFeature.State(isPreview = true)))
+        } else if (action.action.pinSyncSwitch != null) {
+            val switched = pinSyncSwitched(reduced.state, action.action.pinSyncSwitch == true)
+            Reduced(switched.state, Effect.merge(reduced.effect, switched.effect))
         } else if (!action.action.switchesOffSessionLiveActivity) {
             reduced
         } else {

@@ -119,6 +119,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
         previousCallTail = next.tail.lines,
         visitedSessionIDs = emptyList(),
         lastMove = null,
+        userLooking = false,
         startedTarget = target,
         startedViewing = next.viewing,
     )
@@ -209,7 +210,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                 val useBuiltIn = usesBuiltInDelegatorForRoute(resolvedRoute)
                 val useSession = usesSessionDelegatorForRoute(resolvedRoute)
                 send(VoiceFeature.Action.CallRouteResolved(resolvedRoute, usesDelegator = useBuiltIn, usesSessionDelegator = useSession))
-                context = context.copy(managesSessions = useBuiltIn || useSession)
+                context = context.copy(managesSessions = useBuiltIn || useSession, recordsLooking = useBuiltIn)
             }
 
             if (shouldProbe) {
@@ -277,7 +278,7 @@ internal fun VoiceFeature.startCall(state: VoiceFeature.State): Reduced<VoiceFea
                             note = VoiceFeature.builtInFallbackNote,
                         ),
                     )
-                    context = context.copy(managesSessions = true)
+                    context = context.copy(managesSessions = true, recordsLooking = true)
                     val fallbackConfig = route.sessionConfig(
                         voice = voice, context = context, isAtEar = atEarBox.current,
                         server = server, delegation = fallbackDelegation,

@@ -106,6 +106,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val transcriptCache: Map<String, List<OpenCodeTranscriptItem>> = emptyMap(),
         /** Cached transcripts being read again (`refreshCachedTranscript`). */
         val refreshingTranscripts: Set<String> = emptySet(),
+        /** Those of [refreshingTranscripts] sent at once rather than after a delay, so a read wanted now joins them. */
+        val fetchingTranscripts: Set<String> = emptySet(),
         /**
          * Cached sessions whose background refresh was cancelled or skipped while a foreground
          * transcript read had the connection, oldest first, bounded to [dirtyCachedTranscriptLimit].
@@ -143,6 +145,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val pendingOpenReadState: Map<String, PendingOpenReadState> = emptyMap(),
         /** Mirror of `SharedKeys.mutedSessionKeys`. */
         val mutedSessionKeys: Set<String> = emptySet(),
+        /** Mirror of `SharedKeys.hiddenSessionKeys`. */
+        val hiddenSessionKeys: Set<String> = emptySet(),
         /** Mirror of `SharedKeys.sidebarShown`: beside a wide window's sidebar, whether it shows. */
         val isSidebarShown: Boolean = true,
         /**
@@ -231,6 +235,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val noticeReadiness: NoticeReadiness = NoticeReadiness.unsettled,
         /** Counts opened details so each presented screen has its own identity. */
         val detailGeneration: Int = 0,
+        /** [detailGeneration] when the app left: anything opened since (a notification, a link) wins over the new session a long absence opens. */
+        val detailGenerationWhenLeft: Int? = null,
         /** Pushed subagents' identities, counted apart (and negative). */
         val pushedDetailCount: Int = 0,
         /** Why the next screen change happens, when the action that asks for it isn't the one that makes it. */
@@ -573,6 +579,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
                     sessionSeenWatermarks = shared(SharedKeys.sessionSeenWatermarks).value,
                     manuallyUnreadSessionKeys = shared(SharedKeys.manuallyUnreadSessionKeys).value,
                     mutedSessionKeys = shared(SharedKeys.mutedSessionKeys).value,
+                    hiddenSessionKeys = shared(SharedKeys.hiddenSessionKeys).value,
                     isSidebarShown = shared(SharedKeys.sidebarShown).value,
                     showsWhatsNewButton = WhatsNewFeature.State().showsButton,
                     initializedInboxServerIDs = shared(SharedKeys.initializedInboxServerIDs).value,
@@ -671,6 +678,11 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** The network path came back or moved to another interface. */
         data object NetworkRerouted : Action
         data class ServerEvent(val event: OpenCodeServerEvent) : Action
+        /**
+         * Sync Pinned Sessions: the server's pinned session IDs, the ones its last complete sync sent,
+         * and whether this sync reached its last page (`HomeFeaturePinSync.kt`).
+         */
+        data class PinSpaceChanged(val sessionIDs: List<String>, val previous: List<String>? = null, val isSyncComplete: Boolean = true) : Action
         /** Handled by `AppFeature`. */
         data class Delegate(val action: DelegateAction) : Action
         data object NotificationSettingsRequested : Action
@@ -704,6 +716,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object UnsentDraftsChanged : Action
         data class TogglePin(val sessionID: String) : Action
         data class ToggleMute(val sessionID: String) : Action
+        data class ToggleHidden(val sessionID: String) : Action
         data class MovePinUp(val sessionID: String) : Action
         data class MovePinDown(val sessionID: String) : Action
         data class DrawerPinZoneCrossed(val entered: Boolean) : Action
@@ -808,6 +821,7 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data class ViewReceipt(val sessionID: String) : CancelID
         data object SessionSearch : CancelID
         data object OlderSessions : CancelID
+        data object PinSync : CancelID
     }
 
     /** The assembled body (`HomeFeatureComposition.kt`). */
@@ -835,6 +849,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** How long last-known running state is shown without a live connection. */
         val lastKnownActivityLifetime: Duration = 120.seconds
 
+        /** How stale an unchanged idle snapshot's stamp may get before it's written again. */
+        val snapshotStampInterval: Duration = 30.seconds
+
         /** A cached snapshot's running state may show until this deadline, if it hasn't passed. */
         fun lastKnownActivityDeadline(capturedAt: Instant?, now: Instant): Instant? {
             if (capturedAt == null || capturedAt > now) return null
@@ -860,6 +877,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         /** Bounds the in-memory transcripts. */
         const val transcriptMemoryLimit = 8
 
+        /** How long the app stays in the background before coming back opens a new session instead of the last one viewed. */
+        val newSessionAfterAway: java.time.Duration = java.time.Duration.ofMinutes(30)
+
         /** Bound of [State.dirtyCachedTranscriptIDs]. */
         const val dirtyCachedTranscriptLimit = 16
 
@@ -873,6 +893,12 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
  * reconnecting. Tests read a fixed instant unless they set one.
  */
 object HomeSnapshotDate : DependencyKey<DateClient> {
+    override val liveValue: DateClient = DateClient { Instant.now() }
+    override val testValue: DateClient = DateClient.constant(Instant.EPOCH)
+}
+
+/** Times leaving the app and coming back. Fixed in tests, so a return there never reads as a long absence unless a test sets it. */
+object AppAwayDate : DependencyKey<DateClient> {
     override val liveValue: DateClient = DateClient { Instant.now() }
     override val testValue: DateClient = DateClient.constant(Instant.EPOCH)
 }
@@ -944,6 +970,7 @@ internal fun HomeFeature.State.syncAbsorbedDraft(detail: SessionFeature.State) {
 
 /** Opens the remembered session for this server, else a draft. */
 fun HomeFeature.State.restoringInitialSession(): HomeFeature.State {
+    if (!isWindowLocal && wasAwayLongEnoughForNewSession(dependency(AppAwayDate).now())) return openingDraft(reason = "you came back after a while")
     val rememberedID = lastViewedSessionIDs[server.persistenceID]
     val session = rememberedID?.let { id -> sessions.firstOrNull { it.id == id } }
     if (session != null) {
@@ -1312,6 +1339,11 @@ fun HomeFeature.State.pushingSubagent(session: OpenCodeSession, reason: String? 
             SessionActivity.descendants(session.id, parent.familySessions).filter { it.id !in known },
     )
     if (detail.familyReadAt == null) detail = detail.copy(familyReadAt = parent.familyReadAt)
+    // Its tree's running jobs, until its own list answers.
+    if (detail.jobs.isEmpty()) {
+        val tree = detail.familySessions.mapTo(HashSet()) { it.id } + session.id
+        detail = detail.copy(jobs = parent.jobs.filterValues { it.ownerSessionID in tree })
+    }
     if (!detail.hasLoadedPendingRequests) {
         val members = detail.familySessions.mapTo(HashSet()) { it.id }
         val forms = parent.formRequests.filter { it.sessionID in members }

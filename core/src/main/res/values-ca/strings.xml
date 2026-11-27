@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Actualitzacions de sessió en directe</string>
     <string name="core_experiment_sound_effects_title">Efectes de so</string>
     <string name="core_experiment_server_address_links_title">Obre enllaços per adreça del servidor</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Sincronitza les sessions fixades</string>
     <string name="core_experiment_in_app_browser_title">Navegador integrat</string>
     <string name="core_experiment_welcome_preview_title">Vista prèvia de la benvinguda</string>
     <string name="core_experiment_since_you_left_title">Des que has marxat</string>

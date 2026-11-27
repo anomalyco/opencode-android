@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">Оновлення сесії наживо</string>
     <string name="core_experiment_sound_effects_title">Звукові ефекти</string>
     <string name="core_experiment_server_address_links_title">Відкриття посилань за адресою сервера</string>
+    <string name="core_experiment_sync_pinned_sessions_title">Синхронізувати закріплені сесії</string>
     <string name="core_experiment_in_app_browser_title">Вбудований веббраузер</string>
     <string name="core_experiment_welcome_preview_title">Перегляд екрана привітання</string>
     <string name="core_experiment_since_you_left_title">Поки вас не було</string>

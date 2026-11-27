@@ -4,6 +4,7 @@ import ai.opencode.server.model.OpenCodeWidgetState
 import ai.opencode.server.model.OpenCodeJSONValue
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodeProject
+import ai.opencode.server.model.OpenCodeJob
 import ai.opencode.server.model.OpenCodeShell
 
 /** The event subscriber fell behind: the rest of this connection is incomplete. Reconnect and hydrate from REST. */
@@ -61,6 +62,9 @@ sealed interface OpenCodeServerEvent {
     data class ShellStarted(val shell: OpenCodeShell) : OpenCodeServerEvent
     data class ShellEnded(val shellID: String) : OpenCodeServerEvent
 
+    /** `experimental.job.updated`: a job started, moved to the background, or ended. Ephemeral; reconnects re-list running jobs. */
+    data class JobUpdated(val job: OpenCodeJob) : OpenCodeServerEvent
+
     /** A project's name, repository, or icon metadata changed on the server. */
     data class ProjectUpdated(val project: OpenCodeProject) : OpenCodeServerEvent
 
@@ -69,6 +73,20 @@ sealed interface OpenCodeServerEvent {
 
     /** `agent.updated`: the server's agents changed. */
     data object AgentsChanged : OpenCodeServerEvent
+
+    /** Follows [Connected] when the server names the stream: requests that address it (space subscriptions) use [stream]. */
+    data class StreamOpened(val stream: String) : OpenCodeServerEvent
+
+    /** A change to a space this stream subscribed to (`experimental.space.*`). */
+    sealed interface SpaceEvent : OpenCodeServerEvent {
+        val space: String
+    }
+
+    data class SpaceUpdated(override val space: String, val key: String, val value: String, val revision: Long) : SpaceEvent
+    data class SpaceDeleted(override val space: String, val key: String, val revision: Long) : SpaceEvent
+
+    /** The changes didn't fit or the cursor is unusable: sync the space and subscribe again. */
+    data class SpaceResync(override val space: String) : SpaceEvent
 
     /** The single session this event is scoped to, when its ordering depends only on that session's pending deltas. */
     val targetSessionID: String?
@@ -88,7 +106,9 @@ sealed interface OpenCodeServerEvent {
             is WidgetChanged -> sessionID
             is RevertChanged -> sessionID
             is ShellStarted -> shell.sessionID
-            Connected, is SessionCreated, is AttentionChanged, is PluginsUpdated, is ShellEnded, is ProjectUpdated, ModelsChanged, AgentsChanged -> null
+            Connected, is SessionCreated, is AttentionChanged, is PluginsUpdated, is ShellEnded, is JobUpdated, is ProjectUpdated, ModelsChanged, AgentsChanged,
+            is StreamOpened, is SpaceEvent,
+            -> null
         }
 }
 

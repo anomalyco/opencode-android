@@ -57,6 +57,7 @@ import kotlinx.coroutines.plus
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
 import okhttp3.Call
 import okhttp3.Request
 
@@ -157,6 +158,9 @@ private fun eventSource(server: OpenCodeServer, waiting: AtomicInteger): Flow<Op
                     }
                     if (event == OpenCodeServerEvent.ModelsChanged) OpenCodeReadCache.shared.forgetModelCatalogs(server.persistenceID)
                     batches.receive(event)
+                    if (event == OpenCodeServerEvent.Connected) {
+                        decodeStreamID(line.substring(5))?.let { batches.receive(OpenCodeServerEvent.StreamOpened(it)) }
+                    }
                 }
             }
             batches.flush()
@@ -457,9 +461,10 @@ private val HANDLED_TYPES = setOf(
     "session.compaction.ended", "session.compaction.failed", "session.shell.started", "session.shell.ended",
     "session.widget.posted", "session.widget.responded",
     "permission.asked", "form.created", "permission.replied", "form.replied", "form.cancelled",
-    "shell.created", "shell.exited", "shell.deleted",
+    "shell.created", "shell.exited", "shell.deleted", "experimental.job.updated",
     "project.updated",
     "model.updated", "provider.updated", "agent.updated",
+    "experimental.space.updated", "experimental.space.deleted", "experimental.space.resync",
 )
 
 /**
@@ -484,8 +489,44 @@ internal fun decodeStreamFrame(text: String): OpenCodeServerEvent? {
             ?.let { (it as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { p -> p.isString }?.content }
         return OpenCodeServerEvent.PluginsUpdated(directory)
     }
+    // A job's `info` isn't a shell's: it decodes on its own.
+    if (type == "experimental.job.updated") return decodeJobUpdated(envelope["data"])
+    if (type.startsWith("experimental.space.")) return decodeSpaceEvent(type, envelope["data"])
     val data: EventPayload? = envelope["data"]?.takeUnless { it is JsonNull }?.let(::decodePayload)
     return serverEvent(type, data)
+}
+
+/** `server.connected`'s stream ID, when the server sends one. */
+internal fun decodeStreamID(text: String): String? = try {
+    val data = WireJson.parseToJsonElement(text).obj()["data"] as? JsonObject
+    data?.opt("stream") { it.str() }
+} catch (_: Exception) {
+    null
+}
+
+@Serializable
+private data class SpacePayload(val space: String, val key: String? = null, val value: String? = null, val revision: Long? = null)
+
+private fun decodeSpaceEvent(type: String, element: JsonElement?): OpenCodeServerEvent? {
+    val data = try { WireJson.decodeFromJsonElement(SpacePayload.serializer(), element ?: return null) } catch (_: Exception) { return null }
+    return when (type) {
+        "experimental.space.updated" -> {
+            val key = data.key ?: return null
+            OpenCodeServerEvent.SpaceUpdated(data.space, key, data.value ?: return null, data.revision ?: return null)
+        }
+        "experimental.space.deleted" -> OpenCodeServerEvent.SpaceDeleted(data.space, data.key ?: return null, data.revision ?: return null)
+        "experimental.space.resync" -> OpenCodeServerEvent.SpaceResync(data.space)
+        else -> null
+    }
+}
+
+private fun decodeJobUpdated(element: JsonElement?): OpenCodeServerEvent? {
+    val info = (element as? JsonObject)?.get("info") ?: return null
+    return try {
+        OpenCodeServerEvent.JobUpdated(WireJson.decodeFromJsonElement(JobInfo.serializer(), info).job())
+    } catch (_: Exception) {
+        null
+    }
 }
 
 private fun decodePayload(element: JsonElement): EventPayload? =

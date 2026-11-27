@@ -19,6 +19,7 @@
     <string name="core_experiment_session_live_activity_title">सत्रका प्रत्यक्ष अपडेटहरू</string>
     <string name="core_experiment_sound_effects_title">ध्वनि प्रभावहरू</string>
     <string name="core_experiment_server_address_links_title">सर्भर ठेगानाअनुसार लिङ्क खोल्नुहोस्</string>
+    <string name="core_experiment_sync_pinned_sessions_title">पिन गरिएका सत्रहरू सिङ्क गर्नुहोस्</string>
     <string name="core_experiment_in_app_browser_title">एपभित्रको ब्राउजर</string>
     <string name="core_experiment_welcome_preview_title">स्वागत पूर्वावलोकन</string>
     <string name="core_experiment_since_you_left_title">तपाईं गएपछि</string>
