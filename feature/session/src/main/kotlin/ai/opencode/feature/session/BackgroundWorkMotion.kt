@@ -70,4 +70,9 @@ object BackgroundWorkMotion {
 
     /** Rows soften over this much (dp) above the capsule's edge. */
     const val mergeFade: Float = 12f
+
+    /** As the last of the panel lands, the capsule is pushed down at this speed (dp/s) and returns on [land]: a dip of about 2.5 dp. */
+    const val landKick: Float = 150f
+
+    fun <T> land(): FiniteAnimationSpec<T> = Motion.microIn.animation()
 }

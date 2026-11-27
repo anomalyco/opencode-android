@@ -507,6 +507,8 @@ fun BackgroundWorkPresentation(
     var dragOffset by remember { mutableFloatStateOf(0f) }
     var releaseVelocity by remember { mutableFloatStateOf(0f) }
     var panelSize by remember { mutableStateOf(Size.Zero) }
+    // How far the capsule gives (px) as the panel lands in it.
+    val landing = remember { Animatable(0f) }
     val panelGap = BackgroundWorkMotion.panelGap * density.density
 
     val latestPresented by rememberUpdatedState(isPresented)
@@ -591,9 +593,17 @@ fun BackgroundWorkPresentation(
         val velocity =
             if (releaseVelocity != 0f && left > 0f) Motion.panelClose.initialVelocity(-releaseVelocity / left, reduceMotion) else progress.velocity
         releaseVelocity = 0f
+        val landsAt = BackgroundWorkMotion.mergeTail * density.density
+        // Closed again before it had risen, nothing lands.
+        var landed = reduceMotion || progress.value * (panelSize.height + panelGap) <= landsAt
         scope.launch {
             try {
-                progress.animateTo(0f, BackgroundWorkMotion.present(opening = false, reduceMotion = reduceMotion), velocity)
+                progress.animateTo(0f, BackgroundWorkMotion.present(opening = false, reduceMotion = reduceMotion), velocity) {
+                    if (!landed && value * left <= landsAt) {
+                        landed = true
+                        scope.launch { landing.animateTo(0f, BackgroundWorkMotion.land(), BackgroundWorkMotion.landKick * density.density) }
+                    }
+                }
                 if (current == motion && !latestPresented && stage == BackgroundWorkStage.capsule) {
                     stage = BackgroundWorkStage.closed
                     if (!latestHasWork) capsuleMounted = false else if (!latestCovered) capsuleFocus = current
@@ -779,6 +789,7 @@ fun BackgroundWorkPresentation(
                     .matchParentSize()
                     .graphicsLayer {
                         alpha = hiddenAlpha * capsuleAlpha.value
+                        translationY = landing.value
                         shadowElevation = lerp(OpenCodeSurfaces.raisedShadow.toPx(), OpenCodeSurfaces.popoverShadow.toPx(), progress.value)
                         shape = MergedShape(outline(panelSize, merge(panelSize)))
                         clip = false
@@ -793,7 +804,10 @@ fun BackgroundWorkPresentation(
         // The capsule keeps its place whether the panel is open or not.
         Box(
             Modifier
-                .graphicsLayer { alpha = hiddenAlpha * capsuleAlpha.value }
+                .graphicsLayer {
+                    alpha = hiddenAlpha * capsuleAlpha.value
+                    translationY = landing.value
+                }
                 .layout { measurable, _ ->
                     val placeable = measurable.measure(Constraints.fixed((pill.width * density.density).roundToInt(), (pill.height * density.density).roundToInt()))
                     layout(0, 0) { placeable.place((pill.left * density.density).roundToInt(), (pill.top * density.density).roundToInt()) }
@@ -857,7 +871,7 @@ fun BackgroundWorkPresentation(
                         val merge = merge(size)
                         // The last of the rows fade as they reach the capsule.
                         alpha = hiddenAlpha * capsuleAlpha.value * min(1f, merge.left / BackgroundWorkMotion.mergeTail.dp.toPx())
-                        translationY = merge.slide
+                        translationY = merge.slide + landing.value
                         scaleX = merge.scale
                         scaleY = merge.scale
                         transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, 0f)
@@ -935,7 +949,10 @@ fun BackgroundWorkPresentation(
             Box(
                 Modifier
                     .matchParentSize()
-                    .graphicsLayer { alpha = hiddenAlpha * capsuleAlpha.value }
+                    .graphicsLayer {
+                        alpha = hiddenAlpha * capsuleAlpha.value
+                        translationY = landing.value
+                    }
                     .drawBehind {
                         val merged = outline(panelSize, merge(panelSize))
                         merged.addTo(outlinePath)
