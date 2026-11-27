@@ -31,6 +31,10 @@ internal object PushNotifications {
     private const val FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY = 0x00010000
     private const val EXTRA_LEAVING = "opencode.push.leaving"
     private const val LEAVING_MILLISECONDS = 300L
+    private const val CODE_WIDEST_SCREEN_DP = 411
+    private const val CODE_MARGIN_DP = 124
+    private const val CODE_CHARACTER_DP = 7.8f
+    private const val CODE_FEWEST_COLUMNS = 16
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
 
@@ -58,13 +62,20 @@ internal object PushNotifications {
             AppLog.app.info { "Push clear ids=${message.ids.size} removed=$removed" }
             return
         }
-        val shown = PushShown.from(message) ?: return
+        val shown = PushShown.from(message, codeColumns(context)) ?: return
         val key = "$ref:${message.id ?: message.sessionID ?: message.type}"
         if (!updateLedger(context) { it.message(key, message.time, now) }) {
             AppLog.app.info { "Push type=${message.type} dropped as stale" }
             return
         }
         post(context, ref, key, message, shown)
+    }
+
+    /** How many monospaced characters fit across the code block at this screen width and font size. */
+    private fun codeColumns(context: Context): Int {
+        val configuration = context.resources.configuration
+        val width = minOf(configuration.smallestScreenWidthDp, CODE_WIDEST_SCREEN_DP) - CODE_MARGIN_DP
+        return (width / (CODE_CHARACTER_DP * configuration.fontScale)).toInt().coerceAtLeast(CODE_FEWEST_COLUMNS)
     }
 
     /** [replied] when a reply typed into the notification is what it is being removed for. */

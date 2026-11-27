@@ -29,7 +29,7 @@
         android:background="@drawable/push_code_background"
         android:ellipsize="end"
         android:fontFamily="monospace"
-        android:maxLines="4"
+        android:maxLines="8"
         android:paddingStart="8dp"
         android:paddingTop="6dp"
         android:paddingEnd="8dp"

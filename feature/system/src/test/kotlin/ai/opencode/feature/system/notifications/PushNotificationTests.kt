@@ -28,7 +28,7 @@ class PushNotificationTests {
         assertEquals("Fix the login redirect", shown.title)
         assertEquals("Wants to run 2 commands: git add .", shown.text)
         assertEquals("Wants to run 2 commands", shown.expandedText)
-        assertEquals(listOf("git add .", "git commit -m \"x\""), shown.code)
+        assertEquals(listOf("$ git add .", "$ git commit -m \"x\""), shown.code)
         assertEquals("Always Allow covers git add *, git commit *", shown.note)
         assertEquals(listOf(PushShown.Action.Deny, PushShown.Action.AlwaysAllow, PushShown.Action.Allow), shown.actions)
     }
@@ -41,6 +41,25 @@ class PushNotificationTests {
         assertEquals("Wants to edit a file", shown.expandedText)
         assertNull(shown.note)
         assertEquals(listOf(PushShown.Action.Deny, PushShown.Action.Allow), shown.actions)
+    }
+
+    @Test fun permissionTooLongToShowInFullCanOnlyBeOpened() {
+        val commands = (1..10).joinToString(",") { "\"git push origin branch-$it\"" }
+        val many = shown(
+            """{"v":1,"type":"permission","id":"per_1","title":"Ship","data":{"requestID":"per_1","replySessionID":"ses_a",
+            "action":"shell","resources":[$commands],"save":["git push *"],"decisions":["once","always","reject"]}}""",
+        )!!
+        assertEquals(8, many.code.size)
+        assertEquals("2 more", many.note)
+        assertEquals(listOf(PushShown.Action.Open), many.actions)
+
+        val long = shown(
+            """{"v":1,"type":"permission","id":"per_1","title":"Ship","data":{"requestID":"per_1","replySessionID":"ses_a",
+            "action":"shell","resources":["xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"],"decisions":["once","reject"]}}""",
+        )!!
+        assertEquals(1, long.code.size)
+        assertNull(long.note)
+        assertEquals(listOf(PushShown.Action.Open), long.actions)
     }
 
     @Test fun truncatedPermissionCanOnlyBeOpened() {

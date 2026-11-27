@@ -31,7 +31,8 @@ data class PushShown(
         private const val MAXIMUM_ROWS = 3
         /** A longer question, or one with line breaks, leaves no room for option rows. */
         private const val MAXIMUM_QUESTION_WITH_ROWS = 120
-        private const val MAXIMUM_CODE_LINES = 4
+        private const val MAXIMUM_CODE_LINES = 8
+        const val DEFAULT_CODE_COLUMNS = 36
         /** What an expanded notification shows of an answer at a large font size. */
         private const val MAXIMUM_ANSWER_LINES = 7
         private const val CHARACTERS_PER_LINE = 38
@@ -40,11 +41,11 @@ data class PushShown(
         private val link = Regex("\\[([^\\]]+)]\\([^)]*\\)")
 
         /** Null for a message that shows nothing: a clear, or one without text. */
-        fun from(message: PushMessage): PushShown? {
+        fun from(message: PushMessage, codeColumns: Int = DEFAULT_CODE_COLUMNS): PushShown? {
             if (message.type == "clear") return null
             val title = message.title?.takeIf { it.isNotBlank() } ?: NotificationContent.PLACEHOLDER_TITLE
             if (message.version == 1) {
-                message.permission?.let { return permission(title, it) }
+                message.permission?.let { return permission(title, it, codeColumns) }
                 message.form?.let { return question(title, it, message.body) }
                 message.turn?.let { turn -> turn(title, turn)?.let { return it } }
             }
@@ -52,7 +53,7 @@ data class PushShown(
             return PushShown(Kind.Other, title, body)
         }
 
-        private fun permission(title: String, permission: PushMessage.Permission): PushShown {
+        private fun permission(title: String, permission: PushMessage.Permission, columns: Int): PushShown {
             val anything = permission.resources == listOf("*")
             val count = if (anything) 1 else permission.resourceCount ?: permission.resources.size.coerceAtLeast(1)
             val summary = when (val action = permission.action) {
@@ -65,11 +66,20 @@ data class PushShown(
                 "external_directory" -> localized(R.string.system_push_permission_external_directory)
                 else -> localized(R.string.system_push_permission_other, action)
             }
-            val code = if (anything) emptyList() else permission.resources
-            val text = if (code.isEmpty()) summary else localized(R.string.system_push_permission_collapsed, summary, code.first())
+            val resources = if (anything) emptyList() else permission.resources
+            val text = if (resources.isEmpty()) summary else localized(R.string.system_push_permission_collapsed, summary, resources.first())
+            val prompt = if (permission.action == "shell") "$ " else ""
+            val code = resources.map { prompt + it }
+            var lines = 0
+            var visible = 0
+            for (item in code) {
+                if (lines < MAXIMUM_CODE_LINES) visible += 1
+                lines += wrappedLines(item, columns)
+            }
+            val complete = permission.resourceCount == null || code.size >= permission.resourceCount
             val actions = mutableListOf<Action>()
-            // A cut request can't be judged from the notification.
-            if (permission.truncated) {
+            // A request that isn't shown in full can't be judged from the notification.
+            if (permission.truncated || !complete || lines > MAXIMUM_CODE_LINES) {
                 actions += Action.Open
             } else {
                 if ("reject" in permission.decisions) actions += Action.Deny
@@ -77,13 +87,13 @@ data class PushShown(
                 if ("once" in permission.decisions) actions += Action.Allow
             }
             val covers = permission.save.takeIf { Action.AlwaysAllow in actions && it.isNotEmpty() }
-            val hidden = count - code.size.coerceAtMost(MAXIMUM_CODE_LINES)
+            val hidden = count - visible
             return PushShown(
                 kind = Kind.Permission,
                 title = title,
                 text = text,
                 expandedText = summary,
-                code = code.take(MAXIMUM_CODE_LINES),
+                code = code.take(visible),
                 note = when {
                     covers != null -> localized(R.string.system_push_permission_always_covers, covers.joinToString(", "))
                     hidden > 0 && code.isNotEmpty() -> localizedPlural(R.plurals.system_push_more, hidden, hidden)
@@ -148,6 +158,27 @@ data class PushShown(
             }
             if (turn.outcome != "failed") return null
             return PushShown(Kind.Failed, title, failure(turn), note = note, actions = listOf(Action.ReplyToSession))
+        }
+
+        /** How many lines [text] takes when wrapped at spaces to [columns] monospaced characters. */
+        private fun wrappedLines(text: String, columns: Int): Int {
+            var lines = 0
+            for (line in text.split('\n')) {
+                lines += 1
+                var used = 0
+                for (word in line.split(' ')) {
+                    val needed = if (used == 0) word.length else used + 1 + word.length
+                    if (needed <= columns) {
+                        used = needed
+                        continue
+                    }
+                    if (used > 0) lines += 1
+                    val extra = (word.length - 1).coerceAtLeast(0) / columns
+                    lines += extra
+                    used = word.length - extra * columns
+                }
+            }
+            return lines
         }
 
         /** Markdown as the plain lines a notification can show. */
