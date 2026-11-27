@@ -130,9 +130,9 @@ and widgets show "The widget runtime isn't available".
 
 ## Runtime pin
 
-`scripts/psychoscript.sh` pins opencode `e7248ca` (branch `widgets`, `packages/widgets-rs`; `widget.storage` in the live
+`scripts/psychoscript.sh` pins opencode `4415af3` (branch `widgets`, `packages/widgets-rs`; since `e7248ca`, `widget.storage` in the live
 prelude and the `01 0B` storage post in widget-wire's encoder), whose widget-mobile takes
-PsychoScript's crates from crates.io (psychoscript 0.1.2, psychoscript-gpu 0.1.0, psychoscript-mobile 0.2.0; wgpu-hal
+PsychoScript's crates from crates.io (psychoscript 0.1.3, psychoscript-gpu 0.1.1, psychoscript-mobile 0.2.0; wgpu-hal
 patched to PsychoScript `dev` 2ef493f's Metal fix). Earlier, from psychoscript-mobile `900dc23` (branch `mobile`): live slice budgets count only VM
 compute (the `next({ timeout })` → `sleep` SliceBudget stop is gone; `wait-probe` finishes), and dev-mode local
 network. `fetch` connects only to `FetchRequest.addresses` (resolved and checked once by the runner; OkHttp `Dns`

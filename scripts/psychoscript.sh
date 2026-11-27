@@ -18,7 +18,7 @@
 # src/main/kotlin/ai/opencode/widgets), so builds without Rust compile; this script refreshes them. Without the
 # libraries, widgets show "The widget runtime isn't available".
 set -euo pipefail
-REV=256ba026e43da97807953e528c2d3eb47dfba028
+REV=4415af3688a6fd11bc07aab4b091b1f488977f40
 cd "$(dirname "$0")/.."
 out=vendor/psychoscript
 kotlin=feature/transcript/src/main/kotlin
