@@ -55,8 +55,6 @@
     <string name="session_pin">Fest</string>
     <string name="session_pinned">Festet</string>
     <string name="session_unread">Ulest</string>
-    <string name="session_mute">Demp</string>
-    <string name="session_muted">Dempet</string>
     <string name="session_compact">Komprimer</string>
     <string name="session_fork">Forgren</string>
     <string name="session_toggle_on_description">På</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Kostnad</string>
     <string name="session_sheet_media">Medier</string>
     <string name="session_sheet_media_value">Filer og lenker</string>
-    <string name="session_always_notify">Varsle alltid</string>
-    <string name="session_always_notify_message_phone">Varsle denne telefonen når et svar er klart, også når meldingen ikke ble sendt herfra.</string>
-    <string name="session_always_notify_message_tablet">Varsle dette nettbrettet når et svar er klart, også når meldingen ikke ble sendt herfra.</string>
     <string name="session_delete_session">Slett sesjon</string>
     <string name="session_rename_placeholder">Tittel</string>
     <string name="session_auto_rename">Gi navn automatisk</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Kopier sesjons-ID</string>
     <string name="session_mark_as_read">Merk som lest</string>
     <string name="session_mark_as_unread">Merk som ulest</string>
-    <string name="session_unmute">Opphev demping</string>
     <string name="session_menu_export_expanded_description">Utvidet</string>
     <string name="session_menu_export_collapsed_description">Sammenfoldet</string>
     <string name="session_info">Sesjonsinfo</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Kunne ikke forgrene sesjonen</string>
     <string name="session_sheet_save_export_failed">Kunne ikke lagre eksporten</string>
     <string name="session_sheet_export_failed_title">Kunne ikke eksportere sesjonen</string>
-    <string name="session_sheet_notifications_off_message">Slå på varsler i innstillingene først.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Kunne ikke slå på «Varsle alltid»</string>
-    <string name="session_sheet_always_notify_off_failed_title">Kunne ikke slå av «Varsle alltid»</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serveren støtter ikke filer</string>

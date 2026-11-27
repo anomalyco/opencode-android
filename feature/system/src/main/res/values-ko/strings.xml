@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">새 활동</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">명령어 %1$d개를 실행할까요?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">파일 %1$d개를 편집할까요?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">파일 %1$d개를 읽을까요?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">웹사이트를 열까요?</string>
+    <string name="system_push_permission_websearch">웹을 검색할까요?</string>
+    <string name="system_push_permission_external_directory">폴더에 접근할까요?</string>
+    <string name="system_push_permission_other">%1$s 사용할까요?</string>
+    <string name="system_push_allow">허용</string>
+    <string name="system_push_deny">거부</string>
+    <string name="system_push_reply">답장</string>
+    <string name="system_push_message_hint">메시지</string>
+    <string name="system_push_sending">보내는 중…</string>
+    <string name="system_push_send_failed">보낼 수 없어요. 열어서 다시 시도해 주세요.</string>
+    <string name="system_push_detail_more">열어서 모두 보기</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">음성 통화</string>
     <string name="system_channel_recording">녹음 중</string>
     <string name="system_channel_session_runs">세션 실행</string>
-    <string name="system_channel_session_updates">세션 업데이트</string>
+    <string name="system_channel_session_finished">완료된 세션</string>
+    <string name="system_channel_session_failed">실패한 세션</string>
+    <string name="system_channel_session_questions">질문</string>
+    <string name="system_channel_session_permissions">권한 요청</string>
+    <string name="system_channel_session_other">기타 세션 업데이트</string>
+    <string name="system_channel_session_runs_description">이 휴대폰에서 보낸 세션의 진행 상황</string>
+    <string name="system_channel_session_finished_description">세션이 턴을 마쳤을 때</string>
+    <string name="system_channel_session_failed_description">세션이 오류로 중지됐을 때</string>
+    <string name="system_channel_session_questions_description">세션이 질문할 때</string>
+    <string name="system_channel_session_permissions_description">세션을 계속하려면 권한이 필요할 때</string>
+    <string name="system_channel_session_other_description">내 세션의 기타 업데이트</string>
     <string name="system_channel_shared_items">공유 항목</string>
 
     <!-- Share sheet: notifications -->

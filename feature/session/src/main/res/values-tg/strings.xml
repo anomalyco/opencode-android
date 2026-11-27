@@ -55,8 +55,6 @@
     <string name="session_pin">Собит кунед</string>
     <string name="session_pinned">Собитшуда</string>
     <string name="session_unread">Нохонда</string>
-    <string name="session_mute">Огоҳиҳоро хомӯш кунед</string>
-    <string name="session_muted">Бе огоҳӣ</string>
     <string name="session_compact">Фишурда</string>
     <string name="session_fork">Шоха созед</string>
     <string name="session_toggle_on_description">Фаъол</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Арзиш</string>
     <string name="session_sheet_media">Медиа</string>
     <string name="session_sheet_media_value">Файлҳо ва истинодҳо</string>
-    <string name="session_always_notify">Ҳамеша огоҳ кунед</string>
-    <string name="session_always_notify_message_phone">Ҳар боре ки ҷавоб омода шуд, ин телефонро огоҳ кунед, ҳатто агар паёмро аз ин ҷо нафиристода бошед.</string>
-    <string name="session_always_notify_message_tablet">Ҳар боре ки ҷавоб омода шуд, ин планшетро огоҳ кунед, ҳатто агар паёмро аз ин ҷо нафиристода бошед.</string>
     <string name="session_delete_session">Сеансро нест кунед</string>
     <string name="session_rename_placeholder">Сарлавҳа</string>
     <string name="session_auto_rename">Номгузории худкор</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Нусхабардории ID-и сессия</string>
     <string name="session_mark_as_read">Хондашуда қайд кунед</string>
     <string name="session_mark_as_unread">Нохонда қайд кунед</string>
-    <string name="session_unmute">Огоҳиҳоро фаъол кунед</string>
     <string name="session_menu_export_expanded_description">Васеъшуда</string>
     <string name="session_menu_export_collapsed_description">Ҷамъшуда</string>
     <string name="session_info">Маълумоти сессия</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Аз сессия шоха сохта нашуд</string>
     <string name="session_sheet_save_export_failed">Содирот захира нашуд</string>
     <string name="session_sheet_export_failed_title">Сессия содир нашуд</string>
-    <string name="session_sheet_notifications_off_message">Аввал огоҳиҳоро дар танзимот фаъол кунед.</string>
-    <string name="session_sheet_always_notify_on_failed_title">«Ҳамеша огоҳ кунед» фаъол нашуд</string>
-    <string name="session_sheet_always_notify_off_failed_title">«Ҳамеша огоҳ кунед» хомӯш нашуд</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Сервер файлҳоро дастгирӣ намекунад</string>

@@ -29,6 +29,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Duration.Companion.seconds
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 
 /**
  * Inbox Sidebar (experimental): the drawer as an inbox, one item per session, sorted Needs your
@@ -306,7 +307,8 @@ internal fun HomeFeature.archiveConfirmed(state: HomeFeature.State, sessionID: S
     val archived = listOf(session) + status.archived.filter { it.id != sessionID }
     val next = state.copy(sessions = sessions, inboxSidebarStatus = status.copy(archived = archived))
         .markingReadLocally(session).clearingUnseenBaseline(sessionID)
-    return Reduced(next, acknowledgeView(session, next.server))
+    val delivered = dependency(DeliveredNotificationsClient)
+    return Reduced(next, Effect.merge(acknowledgeView(session, next.server), Effect.run { delivered.removeAll(setOf(sessionID)) }))
 }
 
 val HomeFeature.State.inboxSidebar: InboxSidebarFeature.State
@@ -331,7 +333,7 @@ fun HomeFeature.State.inboxSidebarRows(): List<InboxSidebarRow> {
             title = session.title,
             project = project.ifEmpty { null },
             line = line,
-            unread = status.isUnread(session) && !status.isMuted(session.id),
+            unread = status.isUnread(session),
             updatedAt = session.updatedAt,
         )
     }

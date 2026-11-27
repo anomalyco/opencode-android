@@ -284,20 +284,6 @@ private fun SessionFeature.sessionSheetDelegate(delegate: SessionSheetFeature.De
 
         SessionSheetFeature.Delegate.TogglePin -> Reduced(state, Effect.send(Action.Delegate(SessionFeature.Delegate.TogglePin(sessionID))))
         SessionSheetFeature.Delegate.ToggleRead -> Reduced(state, Effect.send(Action.Delegate(SessionFeature.Delegate.ToggleRead(sessionID))))
-        SessionSheetFeature.Delegate.ToggleMute -> Reduced(state, Effect.send(Action.Delegate(SessionFeature.Delegate.ToggleMute(sessionID))))
-
-        is SessionSheetFeature.Delegate.AlwaysNotifyChanged -> {
-            var next = state
-            val index = next.familySessions.indexOfFirst { it.id == sessionID }
-            if (index >= 0) {
-                next = next.copy(
-                    familySessions = next.familySessions.toMutableList().also { it[index] = it[index].copy(alwaysNotify = delegate.isOn) },
-                )
-            }
-            val session = next.session
-            if (session?.id == sessionID) next = next.copy(session = session.copy(alwaysNotify = delegate.isOn))
-            Reduced(next)
-        }
 
         SessionSheetFeature.Delegate.DeleteSession -> {
             val next = if (state.activePicker == State.ActivePicker.session) state.copy(activePicker = null) else state

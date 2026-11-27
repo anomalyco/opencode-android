@@ -55,8 +55,6 @@
     <string name="session_pin">ខ្ទាស់</string>
     <string name="session_pinned">បានខ្ទាស់</string>
     <string name="session_unread">មិនទាន់អាន</string>
-    <string name="session_mute">បិទការជូនដំណឹង</string>
-    <string name="session_muted">បានបិទការជូនដំណឹង</string>
     <string name="session_compact">បង្រួម</string>
     <string name="session_fork">បំបែកទៅសម័យថ្មី</string>
     <string name="session_toggle_on_description">បើក</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">តម្លៃ</string>
     <string name="session_sheet_media">មេឌៀ</string>
     <string name="session_sheet_media_value">ឯកសារ និងតំណ</string>
-    <string name="session_always_notify">ជូនដំណឹងជានិច្ច</string>
-    <string name="session_always_notify_message_phone">ជូនដំណឹងលើទូរសព្ទនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>
-    <string name="session_always_notify_message_tablet">ជូនដំណឹងលើថេប្លេតនេះរាល់ពេលការឆ្លើយតបបញ្ចប់ ទោះបីអ្នកមិនបានផ្ញើសារពីទីនេះក៏ដោយ។</string>
     <string name="session_delete_session">លុបសម័យ</string>
     <string name="session_rename_placeholder">ចំណងជើង</string>
     <string name="session_auto_rename">ប្តូរឈ្មោះដោយស្វ័យប្រវត្តិ</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">ចម្លង ID សម័យ</string>
     <string name="session_mark_as_read">សម្គាល់ថាបានអាន</string>
     <string name="session_mark_as_unread">សម្គាល់ថាមិនទាន់អាន</string>
-    <string name="session_unmute">បើកការជូនដំណឹង</string>
     <string name="session_menu_export_expanded_description">បានពង្រីក</string>
     <string name="session_menu_export_collapsed_description">បានបង្រួម</string>
     <string name="session_info">ព័ត៌មានសម័យ</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">មិនអាចបំបែកទៅសម័យថ្មីបាន</string>
     <string name="session_sheet_save_export_failed">មិនអាចរក្សាទុកឯកសារនាំចេញបាន</string>
     <string name="session_sheet_export_failed_title">មិនអាចនាំចេញសម័យបាន</string>
-    <string name="session_sheet_notifications_off_message">បើកការជូនដំណឹងក្នុងការកំណត់ជាមុនសិន។</string>
-    <string name="session_sheet_always_notify_on_failed_title">មិនអាចបើក «ជូនដំណឹងជានិច្ច» បាន</string>
-    <string name="session_sheet_always_notify_off_failed_title">មិនអាចបិទ «ជូនដំណឹងជានិច្ច» បាន</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">ម៉ាស៊ីនមេមិនគាំទ្រឯកសារ</string>

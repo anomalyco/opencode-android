@@ -75,12 +75,48 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Activitate nouă</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Să ruleze %1$d comandă?</item>
+        <item quantity="few">Să ruleze %1$d comenzi?</item>
+        <item quantity="other">Să ruleze %1$d de comenzi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Să editeze %1$d fișier?</item>
+        <item quantity="few">Să editeze %1$d fișiere?</item>
+        <item quantity="other">Să editeze %1$d de fișiere?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Să citească %1$d fișier?</item>
+        <item quantity="few">Să citească %1$d fișiere?</item>
+        <item quantity="other">Să citească %1$d de fișiere?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Să deschidă un site web?</string>
+    <string name="system_push_permission_websearch">Să caute pe web?</string>
+    <string name="system_push_permission_external_directory">Să acceseze un folder?</string>
+    <string name="system_push_permission_other">Să folosească %1$s?</string>
+    <string name="system_push_allow">Permite</string>
+    <string name="system_push_deny">Refuză</string>
+    <string name="system_push_reply">Răspunde</string>
+    <string name="system_push_message_hint">Mesaj</string>
+    <string name="system_push_sending">Se trimite…</string>
+    <string name="system_push_send_failed">Trimiterea nu a reușit. Deschide pentru a reîncerca.</string>
+    <string name="system_push_detail_more">Deschide ca să vezi tot</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Apeluri vocale</string>
     <string name="system_channel_recording">Înregistrare</string>
     <string name="system_channel_session_runs">Rulări de sesiuni</string>
-    <string name="system_channel_session_updates">Actualizări ale sesiunilor</string>
+    <string name="system_channel_session_finished">Sesiuni încheiate</string>
+    <string name="system_channel_session_failed">Sesiuni eșuate</string>
+    <string name="system_channel_session_questions">Întrebări</string>
+    <string name="system_channel_session_permissions">Cereri de permisiune</string>
+    <string name="system_channel_session_other">Alte actualizări de sesiune</string>
+    <string name="system_channel_session_runs_description">Progresul unei sesiuni trimise de pe acest telefon</string>
+    <string name="system_channel_session_finished_description">O sesiune și-a încheiat runda</string>
+    <string name="system_channel_session_failed_description">O sesiune s-a oprit cu o eroare</string>
+    <string name="system_channel_session_questions_description">O sesiune îți pune o întrebare</string>
+    <string name="system_channel_session_permissions_description">O sesiune are nevoie de permisiunea ta pentru a continua</string>
+    <string name="system_channel_session_other_description">Alte actualizări din sesiunile tale</string>
     <string name="system_channel_shared_items">Elemente distribuite</string>
 
     <!-- Share sheet: notifications -->

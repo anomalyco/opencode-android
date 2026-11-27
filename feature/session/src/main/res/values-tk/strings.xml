@@ -55,8 +55,6 @@
     <string name="session_pin">Berkit</string>
     <string name="session_pinned">Berkidilen</string>
     <string name="session_unread">Okalmadyk</string>
-    <string name="session_mute">Duýduryşlary öçür</string>
-    <string name="session_muted">Bildirişleri öçürilen</string>
     <string name="session_compact">Ykjam</string>
     <string name="session_fork">Şahalandyr</string>
     <string name="session_toggle_on_description">Işledilen</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Çykdajy</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Faýllar we baglanyşyklar</string>
-    <string name="session_always_notify">Elmydama habar ber</string>
-    <string name="session_always_notify_message_phone">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu telefona bildiriş iber.</string>
-    <string name="session_always_notify_message_tablet">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu planşete bildiriş iber.</string>
     <string name="session_delete_session">Sessiýany poz</string>
     <string name="session_rename_placeholder">At</string>
     <string name="session_auto_rename">Adyny awtomatik üýtgetmek</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Sessiýa ID-sini nusgala</string>
     <string name="session_mark_as_read">Okalan diýip belle</string>
     <string name="session_mark_as_unread">Okalmadyk diýip belle</string>
-    <string name="session_unmute">Duýduryşlary aç</string>
     <string name="session_menu_export_expanded_description">Giňeldilen</string>
     <string name="session_menu_export_collapsed_description">Ýygnalan</string>
     <string name="session_info">Sessiýa maglumatlary</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Sessiýany şahalandyryp bolmady</string>
     <string name="session_sheet_save_export_failed">Eksporty saklap bolmady</string>
     <string name="session_sheet_export_failed_title">Sessiýany eksport edip bolmady</string>
-    <string name="session_sheet_notifications_off_message">Ilki Sazlamalarda bildirişleri açyň.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Elmydama habar bermegi açyp bolmady</string>
-    <string name="session_sheet_always_notify_off_failed_title">Elmydama habar bermegi öçürip bolmady</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serwer faýllary goldamaýar</string>

@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Нестабилна веза сада изазива тек кратку сметњу у позиву уместо неколико секунди тишине.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Утишај сесије</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Утишане сесије остају на листи, али се не појављују у прегледу новости и немају тачку за непрочитано.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Задржи „Преглед новости“ да све означиш као прочитано. Сесије које чекају на тебе остају.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Задржи сесију у бочном панелу и додирни „Утишај“</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Упаривање са било ког места</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Математички изрази прате величину текста.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Затражи дијаграм тока слања поруке</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Нацртај дијаграм тока слања поруке</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Обавести кад заврши</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Добиј обавештење кад сесија коју овде покренеш заврши, уз кратак сажетак урађеног.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Укључи „Увек обавести“ у панелу сесије да добијаш обавештења о сваком одговору, чак и на поруке послате са рачунара.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Додирни обавештење да отвориш његову сесију.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Пошаљи поруку, па закључај телефон</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Промени сервер</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Значка на икони апликације</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Икона апликације показује број непрочитаних сесија и оних које чекају на тебе, као у прегледу новости.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Утишане сесије се не броје.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Обавештења морају бити укључена.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Остави питање у сесији без одговора, па пређи на почетни екран</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сесије остају и без фасцикле</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Када фасцикла сесије више не постоји, рецимо после уклањања радног простора, неуспело слање нуди премештање сесије у фасциклу пројекта и поново шаље поруку.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Подеси обавештења уз OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">У Подешавања → Обавештења додирни Подеси уз OpenCode да прегледаш промпт који инсталира додатак за обавештења који недостаје.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Картица позива заузима дно екрана</string>

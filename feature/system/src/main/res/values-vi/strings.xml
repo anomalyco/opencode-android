@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Hoạt động mới</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">Chạy %1$d lệnh?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">Chỉnh sửa %1$d tệp?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">Đọc %1$d tệp?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Mở trang web?</string>
+    <string name="system_push_permission_websearch">Tìm kiếm trên web?</string>
+    <string name="system_push_permission_external_directory">Truy cập thư mục?</string>
+    <string name="system_push_permission_other">Dùng %1$s?</string>
+    <string name="system_push_allow">Cho phép</string>
+    <string name="system_push_deny">Từ chối</string>
+    <string name="system_push_reply">Trả lời</string>
+    <string name="system_push_message_hint">Tin nhắn</string>
+    <string name="system_push_sending">Đang gửi…</string>
+    <string name="system_push_send_failed">Không thể gửi. Mở để thử lại.</string>
+    <string name="system_push_detail_more">Mở để xem tất cả</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Cuộc gọi thoại</string>
     <string name="system_channel_recording">Đang ghi âm</string>
     <string name="system_channel_session_runs">Chạy phiên</string>
-    <string name="system_channel_session_updates">Cập nhật phiên</string>
+    <string name="system_channel_session_finished">Phiên đã hoàn tất</string>
+    <string name="system_channel_session_failed">Phiên thất bại</string>
+    <string name="system_channel_session_questions">Câu hỏi</string>
+    <string name="system_channel_session_permissions">Yêu cầu cấp quyền</string>
+    <string name="system_channel_session_other">Cập nhật phiên khác</string>
+    <string name="system_channel_session_runs_description">Tiến trình của phiên bạn gửi từ điện thoại này</string>
+    <string name="system_channel_session_finished_description">Một phiên đã hoàn tất lượt chạy</string>
+    <string name="system_channel_session_failed_description">Một phiên đã dừng do lỗi</string>
+    <string name="system_channel_session_questions_description">Một phiên đang đặt câu hỏi cho bạn</string>
+    <string name="system_channel_session_permissions_description">Một phiên cần bạn cấp quyền để tiếp tục</string>
+    <string name="system_channel_session_other_description">Các cập nhật khác từ phiên của bạn</string>
     <string name="system_channel_shared_items">Mục được chia sẻ</string>
 
     <!-- Share sheet: notifications -->

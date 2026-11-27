@@ -55,8 +55,6 @@
     <string name="session_pin">Ghim</string>
     <string name="session_pinned">Đã ghim</string>
     <string name="session_unread">Chưa đọc</string>
-    <string name="session_mute">Tắt thông báo</string>
-    <string name="session_muted">Đã tắt thông báo</string>
     <string name="session_compact">Nhỏ gọn</string>
     <string name="session_fork">Tách nhánh</string>
     <string name="session_toggle_on_description">Bật</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Chi phí</string>
     <string name="session_sheet_media">Đa phương tiện</string>
     <string name="session_sheet_media_value">Tệp và liên kết</string>
-    <string name="session_always_notify">Luôn thông báo</string>
-    <string name="session_always_notify_message_phone">Thông báo trên điện thoại này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>
-    <string name="session_always_notify_message_tablet">Thông báo trên máy tính bảng này mỗi khi có phản hồi xong, kể cả khi bạn gửi tin nhắn từ nơi khác.</string>
     <string name="session_delete_session">Xóa phiên</string>
     <string name="session_rename_placeholder">Tiêu đề</string>
     <string name="session_auto_rename">Tự động đổi tên</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">Sao chép ID phiên</string>
     <string name="session_mark_as_read">Đánh dấu đã đọc</string>
     <string name="session_mark_as_unread">Đánh dấu chưa đọc</string>
-    <string name="session_unmute">Bật thông báo</string>
     <string name="session_menu_export_expanded_description">Đã mở rộng</string>
     <string name="session_menu_export_collapsed_description">Đã thu gọn</string>
     <string name="session_info">Thông tin phiên</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">Không thể tách nhánh phiên</string>
     <string name="session_sheet_save_export_failed">Không thể lưu bản xuất</string>
     <string name="session_sheet_export_failed_title">Không thể xuất phiên</string>
-    <string name="session_sheet_notifications_off_message">Hãy bật thông báo trong Cài đặt trước.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Không thể bật Luôn thông báo</string>
-    <string name="session_sheet_always_notify_off_failed_title">Không thể tắt Luôn thông báo</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Máy chủ không hỗ trợ tệp</string>

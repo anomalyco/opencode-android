@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Бо пайвастшавии ноустувор акнун ба ҷойи чанд сония хомӯшӣ танҳо халали кӯтоҳе дар занг мешавад.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Огоҳиҳои сессияҳоро хомӯш кунед</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Сессияҳои бе огоҳӣ дар рӯйхат мемонанд, вале ба «Бохабар шудан» намедароянд ва нуқтаи нохонда надоранд.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">«Бохабар шудан»-ро нигоҳ доред, то ҳамаро хондашуда қайд кунед. Сессияҳое, ки интизори шумо ҳастанд, мемонанд.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Сессияро дар менюи паҳлуӣ нигоҳ доред ва «Огоҳиҳоро хомӯш кунед»-ро ламс кунед</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Аз ҳар ҷо ҷуфт кунед</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Андозаи формулаҳо ба андозаи матни шумо мувофиқ мешавад.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Нақшаи ҷараёни фиристодани паёмро дархост кунед</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Нақшаи ҷараёни фиристодани паёмро кашед</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Огоҳӣ пас аз анҷом</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Вақте сессияи дар ин ҷо оғозкардаатон корро анҷом медиҳад, огоҳӣ бо хулосаи кӯтоҳи натиҷа мегиред.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Дар панели сессия «Ҳамеша огоҳ кунед»-ро фаъол кунед, то аз ҳар ҷавоб, ҳатто ба дархостҳои аз компютер оғозшуда, огоҳ шавед.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Барои кушодани сессия огоҳии онро ламс кунед.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Паём фиристед, сипас телефонро қулф кунед</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Иваз кардани сервер</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Ҳисобкунак дар нишонаи барнома</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Нишонаи барнома шумораи сессияҳои нохонда ё мунтазири шуморо нишон медиҳад — ҳамон ададе, ки дар «Бохабар шудан» аст.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сессияҳои бе огоҳӣ ҳисоб намешаванд.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Огоҳиҳо бояд фаъол бошанд.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Сессияро мунтазири ҷавоби савол гузоред ва ба экрани асосӣ равед</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сессияҳо бе папка ҳам мемонанд</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Агар папкаи сессия дигар набошад, масалан фазои корӣ нест шуда бошад, пас аз фиристодани ноком барнома кӯчонидани сессияро ба папкаи лоиҳааш пешниҳод карда, паёмро дубора мефиристад.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Танзими огоҳиҳо бо OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Дар Танзимотҳо → Огоҳиҳо «Бо OpenCode танзим кунед»-ро ламс кунед, то промпти насби плагини мавҷуднабудаи огоҳиҳоро баррасӣ кунед.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Корти занг қисми поёнро мегирад</string>

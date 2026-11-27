@@ -14,8 +14,7 @@ import kotlinx.serialization.json.jsonObject
  *
  * FCM data values are strings, so a push carries the envelope as a JSON object string under
  * `opencode` (`{"v":2,"ref":…,"box":…}`), as APNs carries it as a dictionary. [Shown] stands in
- * for `UNMutableNotificationContent`: the text, the thread (the notification group) and the
- * envelope the tap carries, so the app authenticates the box again when it's opened.
+ * for `UNMutableNotificationContent`: the text and the envelope the tap carries, so the app authenticates the box again when it's opened.
  */
 object NotificationContent {
     const val ENVELOPE_KEY = "opencode"
@@ -44,10 +43,10 @@ object NotificationContent {
         }
     }
 
-    /** What a session notification shows. */
-    data class Shown(val title: String, val body: String, val thread: String?, val envelope: JsonObject?)
+    /** What a session notification shows; [type] is null for the generic notification. */
+    data class Shown(val title: String, val body: String, val envelope: JsonObject?, val type: String? = null)
 
-    fun placeholder(): Shown = Shown(PLACEHOLDER_TITLE, PLACEHOLDER_BODY, thread = null, envelope = null)
+    fun placeholder(): Shown = Shown(PLACEHOLDER_TITLE, PLACEHOLDER_BODY, envelope = null)
 
     /** Used again by the app when a notification is tapped. */
     fun verifiedPayload(
@@ -64,29 +63,19 @@ object NotificationContent {
         return Verified(envelope.ref, envelope.box, payload)
     }
 
-    /**
-     * The session [content] wrote into the thread after verifying, read without the key store.
-     * Only for clearing delivered notifications: presentation and taps still authenticate the box.
-     */
-    fun threadSessionID(thread: String?, envelope: Envelope?): String? {
-        envelope ?: return null
-        val prefix = "${envelope.ref}:"
-        if (thread == null || !thread.startsWith(prefix)) return null
-        val sessionID = thread.removePrefix(prefix)
-        return if (NotificationCrypto.isValid(sessionID = sessionID)) sessionID else null
-    }
-
-    fun content(data: Map<String, String>, verified: Verified?): Shown {
+    /** Null when nothing should show: a message of a type this version doesn't know, without a title. */
+    fun content(data: Map<String, String>, verified: Verified?): Shown? {
         // Keep the encrypted envelope so the app authenticates independently on tap.
         // No clear siblings (including the separate local-share router) survive.
         val kept = objectOf(data[ENVELOPE_KEY])?.let { original -> JsonObject(original.filterKeys { it in setOf("v", "ref", "box") }) }
-        val content = placeholder().copy(envelope = kept)
-        verified ?: return content
+        if (verified == null) return placeholder().copy(envelope = kept)
+        val payload = verified.payload
+        if (payload.title.isEmpty()) return null
         return Shown(
-            title = verified.payload.title,
-            body = verified.payload.body,
-            thread = "${verified.ref}:${verified.payload.sessionID}",
+            title = payload.title,
+            body = payload.body,
             envelope = encoded(Envelope(verified.ref, verified.box)),
+            type = payload.type,
         )
     }
 

@@ -51,22 +51,10 @@
     <!-- Notifications -->
     <string name="settings_notifications_title">Meddelelser</string>
     <string name="settings_notifications_device_header">Denne %1$s</string>
-    <string name="settings_notifications_device_footer">Meddelelser sendes via en relæserver, der ikke gemmer noget. Kun sessioner startet på denne %1$s giver besked her.</string>
     <string name="settings_notifications_allow">Tillad meddelelser</string>
     <string name="settings_notifications_open_android_settings">Åbn Android-indstillinger</string>
     <string name="settings_notifications_turn_on">Slå meddelelser til</string>
     <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Åbner en session, der beder OpenCode om at installere pluginet. Send beskeden, og tjek igen.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serveren skal bruge OpenCodes notify-plugin.</string>
-    <string name="settings_notifications_notify_plugin">Notify-plugin</string>
-    <string name="settings_notifications_plugin_installed">Installeret</string>
-    <string name="settings_notifications_plugin_not_running">Kører ikke</string>
-    <string name="settings_notifications_plugin_not_installed">Ikke installeret</string>
-    <string name="settings_notifications_plugin_check_failed">Kunne ikke tjekke status</string>
-    <string name="settings_notifications_set_up">Konfigurer med OpenCode</string>
-    <string name="settings_notifications_check_again">Tjek igen</string>
-    <string name="settings_notifications_in_app_footer">Vises på knappen til sidepanelet.</string>
-    <string name="settings_notifications_in_app_notices">Meddelelser i appen</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessioner</string>
@@ -223,4 +211,17 @@
     <string name="settings_pairing_point_camera">Ret kameraet mod QR-koden</string>
     <string name="settings_pairing_paste_link">Indsæt parringslink</string>
     <string name="settings_pairing_computer_hint">Åbn Indstillinger → Parring i OpenCode på din computer, eller kør %1$s i en terminal.</string>
+    <string name="settings_notifications_server_toggle">Giv besked på denne enhed</string>
+    <string name="settings_notifications_mode">Giv besked om</string>
+    <string name="settings_notifications_mode_all">Alt</string>
+    <string name="settings_notifications_mode_attention">Kun når der er brug for mig</string>
+    <string name="settings_notifications_mode_from_this_phone">Kun sessioner, jeg bruger her</string>
+    <string name="settings_notifications_mode_none">Intet</string>
+    <string name="settings_notifications_status_checking">Tjekker serveren…</string>
+    <string name="settings_notifications_status_no_permission">Tillad meddelelser ovenfor først.</string>
+    <string name="settings_notifications_status_outdated">Denne server understøtter ikke meddelelser. Den har muligvis brug for en OpenCode-opdatering.</string>
+    <string name="settings_notifications_status_failed">Kunne ikke opsætte meddelelser på denne server. OpenCode prøver igen, når forbindelsen genoprettes.</string>
+    <string name="settings_notifications_status_disabled">Meddelelser er deaktiveret på denne server.</string>
+    <string name="settings_notifications_change_failed_title">Kunne ikke ændre meddelelser</string>
+    <string name="settings_notifications_change_failed_message">Serveren tog ikke imod ændringen.</string>
 </resources>

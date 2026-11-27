@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Нестабільний зв’язок тепер спричиняє лише короткий збій замість кількох секунд тиші.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Сесії без сповіщень</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Сесії з вимкненими сповіщеннями лишаються в списку, але не потрапляють у «Перегляд нового» й не мають позначки непрочитаного.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Утримуйте «Перегляд нового», щоб позначити все прочитаним. Сесії, що чекають на вас, залишаться.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Утримуйте сесію в бічній панелі й натисніть «Вимкнути сповіщення»</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Сполучення звідусіль</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Розмір формул відповідає розміру тексту.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Попросіть блок-схему надсилання повідомлення</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Намалюй блок-схему надсилання повідомлення</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Сповіщення про завершення</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Отримуйте сповіщення з коротким підсумком, коли завершиться робота в сесії, яку ви запустили тут.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Увімкніть «Завжди сповіщати» на панелі сесії, щоб отримувати сповіщення про кожну відповідь, навіть на запити з комп’ютера.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Торкніться сповіщення, щоб відкрити відповідну сесію.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Надішліть повідомлення й заблокуйте телефон</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Перемикання серверів</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Лічильник на іконці застосунку</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Іконка застосунку показує кількість непрочитаних сесій або тих, що чекають на вас, як і «Перегляд нового».</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сесії з вимкненими сповіщеннями не враховуються.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Для цього потрібно ввімкнути сповіщення.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Залиште запитання в сесії без відповіді й перейдіть на головний екран</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сесії живуть і без своєї папки</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Якщо папка сесії зникла, наприклад після видалення робочої області, невдале надсилання пропонує перенести сесію до папки проєкту й надіслати повідомлення знову.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Налаштування сповіщень з OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">У Налаштування → Сповіщення натисніть «Налаштувати з OpenCode», щоб переглянути запит на встановлення відсутнього плагіна сповіщень.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Картка дзвінка займає нижню частину</string>

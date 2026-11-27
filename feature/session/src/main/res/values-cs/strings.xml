@@ -55,8 +55,6 @@
     <string name="session_pin">Připnout</string>
     <string name="session_pinned">Připnuté</string>
     <string name="session_unread">Nepřečtené</string>
-    <string name="session_mute">Ztlumit</string>
-    <string name="session_muted">Ztlumené</string>
     <string name="session_compact">Kompaktní</string>
     <string name="session_fork">Vytvořit větev</string>
     <string name="session_toggle_on_description">Zapnuto</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Cena</string>
     <string name="session_sheet_media">Média</string>
     <string name="session_sheet_media_value">Soubory a odkazy</string>
-    <string name="session_always_notify">Vždy upozornit</string>
-    <string name="session_always_notify_message_phone">Upozornit na tomto telefonu po dokončení každé odpovědi, i na zprávy odeslané odjinud.</string>
-    <string name="session_always_notify_message_tablet">Upozornit na tomto tabletu po dokončení každé odpovědi, i na zprávy odeslané odjinud.</string>
     <string name="session_delete_session">Odstranit relaci</string>
     <string name="session_rename_placeholder">Název</string>
     <string name="session_auto_rename">Automaticky přejmenovat</string>
@@ -135,7 +130,6 @@
     <string name="session_copy_session_id">Kopírovat ID relace</string>
     <string name="session_mark_as_read">Označit jako přečtené</string>
     <string name="session_mark_as_unread">Označit jako nepřečtené</string>
-    <string name="session_unmute">Zrušit ztlumení</string>
     <string name="session_menu_export_expanded_description">Rozbaleno</string>
     <string name="session_menu_export_collapsed_description">Sbaleno</string>
     <string name="session_info">Informace o relaci</string>
@@ -289,9 +283,6 @@
     <string name="session_sheet_fork_failed_title">Nepodařilo se vytvořit větev relace</string>
     <string name="session_sheet_save_export_failed">Nepodařilo se uložit export</string>
     <string name="session_sheet_export_failed_title">Nepodařilo se exportovat relaci</string>
-    <string name="session_sheet_notifications_off_message">Nejprve zapněte oznámení v nastavení.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nepodařilo se zapnout „Vždy upozornit“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nepodařilo se vypnout „Vždy upozornit“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server nepodporuje soubory</string>

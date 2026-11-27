@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Een haperende verbinding geeft nu een korte storing in je oproep in plaats van secondenlange stilte.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Sessies dempen</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Gedempte sessies blijven in je lijst, maar verschijnen nooit bij Bijlezen en krijgen geen ongelezenstip.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Houd Bijlezen ingedrukt om alles als gelezen te markeren. Sessies die op je wachten, blijven staan.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Houd een sessie in het zijmenu ingedrukt en tik op Dempen</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Overal koppelen</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Formules volgen je tekstgrootte.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Vraag om een stroomdiagram van hoe een bericht wordt verzonden</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Teken een stroomdiagram van hoe een bericht wordt verzonden</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Melding als het klaar is</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Krijg een melding zodra een hier gestarte sessie klaar is, met een korte samenvatting van wat er is gedaan.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Zet Altijd melden aan in het sessiepaneel voor een melding bij elk antwoord, ook als je het op je computer hebt gestart.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Tik op een melding om de bijbehorende sessie te openen.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Verstuur een bericht en vergrendel je telefoon</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Van server wisselen</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Badge op het app-pictogram</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Het app-pictogram toont hoeveel sessies ongelezen zijn of op je wachten, hetzelfde aantal als bij Bijlezen.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Gedempte sessies tellen niet mee.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Hiervoor moeten meldingen aanstaan.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Laat een vraag in een sessie onbeantwoord en ga naar het startscherm</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sessies blijven zonder hun map</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Als de map van een sessie weg is, bijvoorbeeld na het verwijderen van een werkruimte, krijg je bij een mislukte verzending de optie om de sessie naar de projectmap te verplaatsen en opnieuw te verzenden.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Meldingen instellen met OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Tik in Instellingen → Meldingen op Instellen met OpenCode om een prompt te bekijken die de ontbrekende meldingsplug-in installeert.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Oproepkaart vult de onderkant</string>

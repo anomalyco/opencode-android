@@ -14,22 +14,19 @@ import ai.opencode.core.store.cancellable
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
 import ai.opencode.feature.drawer.notices.AccessibilityAnnouncer
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 import ai.opencode.feature.session.InAppNotice
-import ai.opencode.feature.settings.whatsnew.WhatsNewEntry
 import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.feature.drawer.notices.InAppNoticeSettings
 import ai.opencode.feature.drawer.notices.InAppNoticeSignal
 import ai.opencode.feature.drawer.notices.shows
-import ai.opencode.feature.system.notifications.AppBadgeLedger
-import ai.opencode.feature.system.notifications.AppIconBadgeClient
-import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.model.OpenCodeSession
 import java.time.Instant
 
 /*
  * What Home does as notifications change (before `HomeNotificationsFeature` settles the same
- * action), the notify plugin's set-up draft, the app icon's badge, and In-App Notices' rules:
+ * action) and In-App Notices' rules:
  * Home's live state in, the drawer button's label out.
  *
  * Home's composition watches [noticeInput] and calls [inAppNoticeSignalChanged] with the old and
@@ -39,100 +36,12 @@ import java.time.Instant
 internal fun HomeFeature.reduceNotifications(state: State, action: Action): HomeReduced = when (action) {
     is Action.NotificationPermissionLoaded -> {
         val changed = state.notificationPermission != action.permission
-        // Share credentials and the app badge belong to Home's cross-feature publication.
+        // Share credentials belong to Home's cross-feature publication.
         val credentials = if (changed && state.hasConnected) publishShareCredentials(state.server) else Effect.none()
-        Reduced(state, Effect.merge(credentials, if (changed && action.permission == NotificationPermission.Enabled) publishAppBadge(state) else Effect.none()))
+        Reduced(state, credentials)
     }
-
-    // Try It's path: onto the new-session draft, keeping anything already typed there.
-    Action.NotifyPluginSetUpTapped ->
-        tryWhatsNew(WhatsNewEntry.Destination.Prompt(HomeFeature.notifyPluginSetUpPrompt), "notification-plugin-setup", state)
 
     else -> Reduced(state)
-}
-
-/** Shows Catch Up's count on the icon, once it can be trusted. */
-@Suppress("UnusedReceiverParameter")
-internal fun HomeFeature.publishAppBadge(state: State, ledger: AppBadgeLedger? = null): Effect<Action> {
-    val counted = ledger ?: state.appBadgeLedger ?: return Effect.none()
-    val appIconBadge = dependency(AppIconBadgeClient)
-    val persistenceID = state.server.persistenceID
-    return Effect.run { appIconBadge.publish(counted, persistenceID) }
-}
-
-/**
- * What the icon's badge counts: the sessions Catch Up holds (unread or needing input, never muted),
- * matching its row in the drawer. Null until the list and its attention read have landed on a live
- * connection, so a reconnect, an outage, or the app leaving keeps the last count rather than
- * clearing it.
- */
-internal val State.appBadgeLedger: AppBadgeLedger? get() = appBadgePublication.ledger
-
-/** Change-detection key for [appBadgeLedger]. */
-internal val State.appBadgePublication: AppBadgePublication
-    get() {
-        val isReady = isConnected && snapshotLoaded && noticeReadiness == State.NoticeReadiness.settled
-        if (!isReady) return AppBadgePublication.notReady
-        return AppBadgePublication(
-            isReady = true,
-            server = server,
-            sessions = sessions,
-            activeSessionIDs = activeSessionIDs,
-            parents = parentSources,
-            attentionSessionIDs = attentionSessionIDs,
-            sessionReadDates = sessionReadDates,
-            manuallyUnreadSessionKeys = manuallyUnreadSessionKeys,
-            mutedSessionKeys = mutedSessionKeys,
-            viewing = viewing,
-        )
-    }
-
-/** Home's half of the badge, which `:feature:system` can't see. */
-internal data class AppBadgePublication(
-    val isReady: Boolean,
-    val server: OpenCodeServer?,
-    val sessions: List<OpenCodeSession>,
-    val activeSessionIDs: Set<String>,
-    val parents: State.ParentSources,
-    val attentionSessionIDs: Set<String>,
-    val sessionReadDates: Map<String, Instant>,
-    val manuallyUnreadSessionKeys: Set<String>,
-    val mutedSessionKeys: Set<String>,
-    val viewing: State.Viewing,
-) {
-    val ledger: AppBadgeLedger?
-        get() {
-            if (!isReady || server == null) return null
-            val serverID = server.persistenceID
-            val status = State.StatusSnapshot(
-                serverID = serverID,
-                showsActivity = true,
-                busy = parents.busy(activeSessionIDs),
-                attention = attentionSessionIDs,
-                mutedKeys = mutedSessionKeys,
-                manuallyUnreadKeys = manuallyUnreadSessionKeys,
-                readDates = sessionReadDates,
-            )
-            val counted = sessions.filter { status.needsCatchUp(it) }
-            val prefix = "$serverID|"
-            val muted = mutedSessionKeys.mapNotNull { key -> if (key.startsWith(prefix)) key.removePrefix(prefix) else null }
-            return AppBadgeLedger(
-                serverKey = AppBadgeLedger.serverKey(serverID),
-                ref = null,
-                sessionIDs = counted.map { it.id }.sorted(),
-                mutedSessionIDs = muted.sorted(),
-                viewingSessionIDs = viewing.threads.sorted(),
-            )
-        }
-
-    companion object {
-        val notReady = AppBadgePublication(
-            isReady = false, server = null, sessions = emptyList(), activeSessionIDs = emptySet(),
-            parents = State.ParentSources.empty, attentionSessionIDs = emptySet(),
-            sessionReadDates = emptyMap(), manuallyUnreadSessionKeys = emptySet(), mutedSessionKeys = emptySet(),
-            viewing = State.Viewing(),
-        )
-    }
 }
 
 /**
@@ -149,7 +58,6 @@ data class InAppNoticeInput(
     val attentionSessionIDs: Set<String>,
     val sessionReadDates: Map<String, Instant>,
     val manuallyUnreadSessionKeys: Set<String>,
-    val mutedSessionKeys: Set<String>,
 ) {
     val signal: InAppNoticeSignal
         get() {
@@ -159,13 +67,12 @@ data class InAppNoticeInput(
                 showsActivity = true,
                 busy = parents.busy(activeSessionIDs),
                 attention = attentionSessionIDs,
-                mutedKeys = mutedSessionKeys,
                 manuallyUnreadKeys = manuallyUnreadSessionKeys,
                 readDates = sessionReadDates,
             )
             val signals = HashMap<String, InAppNoticeSignal.Session>(sessions.size)
             for (session in sessions) {
-                if (session.parentID != null || status.isMuted(session.id)) continue
+                if (session.parentID != null) continue
                 val indicator = status.indicator(session)
                 signals[session.id] = InAppNoticeSignal.Session(
                     title = session.title,
@@ -181,7 +88,7 @@ data class InAppNoticeInput(
         val off = InAppNoticeInput(
             mode = InAppNoticeMode.off, isLive = false, server = null, sessions = emptyList(), activeSessionIDs = emptySet(),
             parents = State.ParentSources.empty, attentionSessionIDs = emptySet(),
-            sessionReadDates = emptyMap(), manuallyUnreadSessionKeys = emptySet(), mutedSessionKeys = emptySet(),
+            sessionReadDates = emptyMap(), manuallyUnreadSessionKeys = emptySet(),
         )
     }
 }
@@ -205,7 +112,6 @@ internal fun HomeFeature.noticeInput(state: State): InAppNoticeInput {
         attentionSessionIDs = state.attentionSessionIDs,
         sessionReadDates = state.sessionReadDates,
         manuallyUnreadSessionKeys = state.manuallyUnreadSessionKeys,
-        mutedSessionKeys = state.mutedSessionKeys,
     )
 }
 
@@ -285,4 +191,23 @@ internal fun HomeFeature.inAppNoticeSignalChanged(oldInput: InAppNoticeInput, ne
             send(Action.InAppNoticeExpired(id))
         }.cancellable(HomeFeature.CancelID.InAppNotice, cancelInFlight = true),
     )
+}
+
+/** The session list and its pending requests are fresh from the server. */
+internal val State.notificationsReconcilable: Boolean
+    get() = isConnected && snapshotLoaded && noticeReadiness == State.NoticeReadiness.settled
+
+/** Removes this server's notifications a lost clear left behind: a read session's, or an answered request's. */
+internal fun removeStaleNotifications(state: State): Effect<Action> {
+    if (!state.notificationsReconcilable) return Effect.none()
+    val status = state.statusSnapshot()
+    val read = HashSet<String>()
+    for (session in state.sessions) {
+        if (session.parentID != null) continue
+        if (session.isArchived || !status.isUnread(session)) read.add(session.id)
+    }
+    val waiting = state.attentionSessionIDs
+    val serverKey = state.server.persistenceID
+    val delivered = dependency(DeliveredNotificationsClient)
+    return Effect.run { delivered.removeStale(serverKey, read, waiting) }
 }

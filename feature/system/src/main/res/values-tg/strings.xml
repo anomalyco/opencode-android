@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Фаъолияти нав</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d фармон иҷро шавад?</item>
+        <item quantity="other">%1$d фармон иҷро шавад?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d файл таҳрир шавад?</item>
+        <item quantity="other">%1$d файл таҳрир шавад?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d файл хонда шавад?</item>
+        <item quantity="other">%1$d файл хонда шавад?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Вебсайт кушода шавад?</string>
+    <string name="system_push_permission_websearch">Дар веб ҷустуҷӯ шавад?</string>
+    <string name="system_push_permission_external_directory">Ба папка дастрасӣ дода шавад?</string>
+    <string name="system_push_permission_other">%1$s истифода шавад?</string>
+    <string name="system_push_allow">Иҷозат додан</string>
+    <string name="system_push_deny">Инкор кардан</string>
+    <string name="system_push_reply">Ҷавоб додан</string>
+    <string name="system_push_message_hint">Паём</string>
+    <string name="system_push_sending">Фиристода мешавад…</string>
+    <string name="system_push_send_failed">Фиристода нашуд. Барои кӯшиши дубора кушоед.</string>
+    <string name="system_push_detail_more">Барои дидани ҳама кушоед</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Зангҳои овозӣ</string>
     <string name="system_channel_recording">Сабт</string>
     <string name="system_channel_session_runs">Иҷрои сессияҳо</string>
-    <string name="system_channel_session_updates">Навсозиҳои сессия</string>
+    <string name="system_channel_session_finished">Сессияҳои анҷомёфта</string>
+    <string name="system_channel_session_failed">Сессияҳои нокомшуда</string>
+    <string name="system_channel_session_questions">Саволҳо</string>
+    <string name="system_channel_session_permissions">Дархостҳои иҷозат</string>
+    <string name="system_channel_session_other">Навсозиҳои дигари сессия</string>
+    <string name="system_channel_session_runs_description">Раванди сессияе, ки аз ин телефон фиристодед</string>
+    <string name="system_channel_session_finished_description">Сессия навбати худро анҷом дод</string>
+    <string name="system_channel_session_failed_description">Сессия бо хатогӣ қатъ шуд</string>
+    <string name="system_channel_session_questions_description">Сессия ба шумо савол медиҳад</string>
+    <string name="system_channel_session_permissions_description">Сессия барои идома додан ба иҷозати шумо ниёз дорад</string>
+    <string name="system_channel_session_other_description">Навсозиҳои дигар аз сессияҳои шумо</string>
     <string name="system_channel_shared_items">Маводҳои мубодилашуда</string>
 
     <!-- Share sheet: notifications -->

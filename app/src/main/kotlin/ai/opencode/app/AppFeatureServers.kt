@@ -9,7 +9,6 @@ import ai.opencode.core.store.Reduced
 import ai.opencode.feature.system.SessionDirectory
 import ai.opencode.feature.composer.ComposerPersistence
 import ai.opencode.feature.system.SystemIntegrationClient
-import ai.opencode.feature.system.notifications.AppIconBadgeClient
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.system.share.ShareInboxClient
 import ai.opencode.server.OpenCodeServer
@@ -119,7 +118,7 @@ internal fun serverDeleted(state: AppFeature.State, server: OpenCodeServer): Red
     discardStagedFiles(next.pendingShares.filter { it.handoff.serverID == server.persistenceID })
     next = next.copy(pendingShares = next.pendingShares.filterNot { it.handoff.serverID == server.persistenceID })
     dependency(ShareInboxClient).removeTargets(server.persistenceID)
-    val forgotten = forgetIdentity(server.persistenceID, next)
+    val forgotten = forgetIdentity(server.persistenceID, next, removedServer = server)
     next = forgotten.state
     if (wasEditingServer || next.connectingServerID == server.id) {
         val cancelled = cancelConnection(next)
@@ -129,21 +128,23 @@ internal fun serverDeleted(state: AppFeature.State, server: OpenCodeServer): Red
 }
 
 /**
- * Forgets what the system, notifications, the icon's badge and the composer keep for a server
- * identity that is no longer saved.
+ * Forgets what the system, notifications and the composer keep for a server
+ * identity that is no longer saved. A [removedServer] is also asked to stop sending this phone notifications.
  */
-internal fun forgetIdentity(persistenceID: String, state: AppFeature.State): Reduced<AppFeature.State, AppFeature.Action> {
+internal fun forgetIdentity(
+    persistenceID: String,
+    state: AppFeature.State,
+    removedServer: OpenCodeServer? = null,
+): Reduced<AppFeature.State, AppFeature.Action> {
     dependency(ComposerPersistence).removeServer(persistenceID)
     val transcripts = ServerSharedKeys.cachedTranscriptSnapshots()
     if (transcripts.value.entries.any { it.serverID == persistenceID }) transcripts.update { it.removeEntries(persistenceID) }
     dependency(SystemIntegrationClient).removeServer(SessionDirectory.serverKey(persistenceID))
     val sessionNotifications = dependency(SessionNotificationsClient)
-    val appIconBadge = dependency(AppIconBadgeClient)
     return Reduced(
         state,
         Effect.run {
-            sessionNotifications.forget(persistenceID)
-            appIconBadge.forget(persistenceID)
+            sessionNotifications.forget(persistenceID, removedServer)
         },
     )
 }

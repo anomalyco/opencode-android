@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">新動態</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">要執行 %1$d 個命令嗎？</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">要編輯 %1$d 個檔案嗎？</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">要讀取 %1$d 個檔案嗎？</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">要開啟網站嗎？</string>
+    <string name="system_push_permission_websearch">要搜尋網頁嗎？</string>
+    <string name="system_push_permission_external_directory">要存取資料夾嗎？</string>
+    <string name="system_push_permission_other">要使用 %1$s 嗎？</string>
+    <string name="system_push_allow">允許</string>
+    <string name="system_push_deny">拒絕</string>
+    <string name="system_push_reply">回覆</string>
+    <string name="system_push_message_hint">訊息</string>
+    <string name="system_push_sending">傳送中…</string>
+    <string name="system_push_send_failed">無法傳送。開啟以重試。</string>
+    <string name="system_push_detail_more">開啟以查看全部</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">語音通話</string>
     <string name="system_channel_recording">錄音中</string>
     <string name="system_channel_session_runs">工作階段執行</string>
-    <string name="system_channel_session_updates">工作階段更新</string>
+    <string name="system_channel_session_finished">已完成的工作階段</string>
+    <string name="system_channel_session_failed">失敗的工作階段</string>
+    <string name="system_channel_session_questions">問題</string>
+    <string name="system_channel_session_permissions">權限要求</string>
+    <string name="system_channel_session_other">其他工作階段更新</string>
+    <string name="system_channel_session_runs_description">你從這台手機傳送的工作階段進度</string>
+    <string name="system_channel_session_finished_description">工作階段已完成這一輪</string>
+    <string name="system_channel_session_failed_description">工作階段因錯誤而停止</string>
+    <string name="system_channel_session_questions_description">工作階段有問題要問你</string>
+    <string name="system_channel_session_permissions_description">工作階段需要你授予權限才能繼續</string>
+    <string name="system_channel_session_other_description">工作階段的其他更新</string>
     <string name="system_channel_shared_items">分享的項目</string>
 
     <!-- Share sheet: notifications -->

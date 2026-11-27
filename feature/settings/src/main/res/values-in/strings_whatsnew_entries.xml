@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Koneksi tersendat kini hanya mengganggu panggilan sesaat, bukan membuatnya hening beberapa detik.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Bisukan sesi</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Sesi yang dibisukan tetap ada di daftar, tetapi tidak masuk Tinjau pembaruan atau menampilkan titik belum dibaca.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Tekan tahan Tinjau pembaruan untuk menandai semuanya sudah dibaca. Sesi yang menunggu Anda tetap ada.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Tekan tahan sesi di panel samping, lalu ketuk Bisukan</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Pasangkan dari mana saja</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Rumus mengikuti ukuran teks Anda.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Minta diagram alir tentang cara pesan dikirim</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Buat diagram alir tentang cara pesan dikirim</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Beri tahu saat selesai</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Dapatkan notifikasi saat sesi yang Anda mulai di sini selesai, beserta ringkasan singkat hasilnya.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Aktifkan Selalu beri notifikasi di panel sesi untuk mendapat notifikasi setiap balasan, termasuk yang dimulai di komputer.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Ketuk notifikasi untuk membuka sesinya.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Kirim pesan, lalu kunci ponsel</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Ganti server</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Lencana di ikon aplikasi</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikon aplikasi menampilkan jumlah sesi yang belum dibaca atau menunggu Anda, sama seperti di Tinjau pembaruan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesi yang dibisukan tidak dihitung.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Notifikasi harus diaktifkan.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Biarkan sesi menunggu jawaban Anda, lalu buka layar utama</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sesi tetap ada meski folder hilang</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Jika folder sesi sudah tidak ada, misalnya ruang kerja yang dihapus, pengiriman yang gagal akan menawarkan pemindahan sesi ke folder proyeknya, lalu mengirim ulang.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Siapkan notifikasi dengan OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Di Pengaturan → Notifikasi, ketuk Siapkan dengan OpenCode untuk meninjau prompt yang memasang plugin notifikasi yang belum ada.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Kartu panggilan mengisi bagian bawah</string>

@@ -55,8 +55,6 @@
     <string name="session_pin">ඉහළ රඳවන්න</string>
     <string name="session_pinned">ඉහළ රඳවා ඇති</string>
     <string name="session_unread">නොකියවූ</string>
-    <string name="session_mute">නිහඬ කරන්න</string>
-    <string name="session_muted">නිහඬ කළ</string>
     <string name="session_compact">සංක්ෂිප්ත</string>
     <string name="session_fork">ෆෝක් කරන්න</string>
     <string name="session_toggle_on_description">සක්‍රියයි</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">වියදම</string>
     <string name="session_sheet_media">මාධ්‍ය</string>
     <string name="session_sheet_media_value">ගොනු සහ සබැඳි</string>
-    <string name="session_always_notify">සැමවිටම දැනුම් දෙන්න</string>
-    <string name="session_always_notify_message_phone">මෙතැනින් නොයැවූ පණිවිඩවලට ලැබෙන ප්‍රතිචාර ඇතුළුව, ප්‍රතිචාරයක් අවසන් වන සෑම විටම මේ දුරකථනයට දැනුම් දෙන්න.</string>
-    <string name="session_always_notify_message_tablet">මෙතැනින් නොයැවූ පණිවිඩවලට ලැබෙන ප්‍රතිචාර ඇතුළුව, ප්‍රතිචාරයක් අවසන් වන සෑම විටම මේ ටැබ්ලටයට දැනුම් දෙන්න.</string>
     <string name="session_delete_session">සැසිය මකන්න</string>
     <string name="session_rename_placeholder">මාතෘකාව</string>
     <string name="session_auto_rename">ස්වයංක්‍රීයව නැවත නම් කරන්න</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">සැසි ID පිටපත් කරන්න</string>
     <string name="session_mark_as_read">කියවූ ලෙස සලකුණු කරන්න</string>
     <string name="session_mark_as_unread">නොකියවූ ලෙස සලකුණු කරන්න</string>
-    <string name="session_unmute">නිහඬ බව ඉවත් කරන්න</string>
     <string name="session_menu_export_expanded_description">දිග හැර ඇත</string>
     <string name="session_menu_export_collapsed_description">හකුළා ඇත</string>
     <string name="session_info">සැසි තොරතුරු</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">සැසිය ෆෝක් කිරීමට නොහැකි විය</string>
     <string name="session_sheet_save_export_failed">අපනයනය සුරැකීමට නොහැකි විය</string>
     <string name="session_sheet_export_failed_title">සැසිය අපනයනය කිරීමට නොහැකි විය</string>
-    <string name="session_sheet_notifications_off_message">පළමුව සැකසීම් තුළ දැනුම්දීම් සක්‍රිය කරන්න.</string>
-    <string name="session_sheet_always_notify_on_failed_title">සැමවිටම දැනුම් දීම සක්‍රිය කිරීමට නොහැකි විය</string>
-    <string name="session_sheet_always_notify_off_failed_title">සැමවිටම දැනුම් දීම අක්‍රිය කිරීමට නොහැකි විය</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">සේවාදායකය ගොනුවලට සහය නොදක්වයි</string>

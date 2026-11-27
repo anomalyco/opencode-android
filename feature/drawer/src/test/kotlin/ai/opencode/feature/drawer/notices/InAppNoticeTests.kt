@@ -11,7 +11,6 @@ import ai.opencode.feature.drawer.HomeConnectionFeature
 import ai.opencode.feature.drawer.HomeFeature
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.openingDraft
-import ai.opencode.feature.drawer.sessionKey
 import ai.opencode.feature.session.*
 import ai.opencode.feature.settings.SettingsFeature
 import ai.opencode.server.OpenCodeClient
@@ -68,6 +67,7 @@ class InAppNoticeTests {
         val announcements: MutableList<String> = Collections.synchronizedList(mutableListOf())
         val cleared: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
         val clearedNeedsInput: MutableList<Set<String>> = Collections.synchronizedList(mutableListOf())
+        val clearedStale: MutableList<Triple<String, Set<String>, Set<String>>> = Collections.synchronizedList(mutableListOf())
     }
 
     private fun CoroutineScope.store(
@@ -89,6 +89,7 @@ class InAppNoticeTests {
             this[DeliveredNotificationsClient] = DeliveredNotificationsClient(
                 removeAll = { ids -> recorded.cleared += ids },
                 removeNeedsInput = { ids -> recorded.clearedNeedsInput += ids },
+                removeStale = { serverKey, read, waiting -> recorded.clearedStale += Triple(serverKey, read, waiting) },
             )
             this[OpenCodeClient] = this[OpenCodeClient].copy(
                 viewSession = { _, _, _ -> },
@@ -96,10 +97,6 @@ class InAppNoticeTests {
                 homeAttention = { _, _, _ -> attention },
                 homeSnapshot = { snapshot() ?: throw OpenCodeClientError("offline") },
             )
-        }
-        // The mirror the fixture seeded, in the store's own shared storage too.
-        store.withDependencies {
-            ai.opencode.core.sharing.shared(ai.opencode.core.sharing.SharedKeys.mutedSessionKeys).update { state.mutedSessionKeys }
         }
         store.exhaustive = false
         return store
@@ -176,11 +173,9 @@ class InAppNoticeTests {
         store.skipInFlightEffects()
     }
 
-    @Test fun nothingForSubagentsOrMutedSessions() = runTest {
-        var state = home()
-        state = state.copy(mutedSessionKeys = setOf(state.sessionKey("upload")))
-        val store = store(state, InAppNoticeMode.all)
-        store.send(Action.AttentionRefreshed(setOf("upload", "sub")))
+    @Test fun nothingForSubagents() = runTest {
+        val store = store(home(), InAppNoticeMode.all)
+        store.send(Action.AttentionRefreshed(setOf("sub")))
         finish("sub", store)
         assertNull(store.state.inAppNotice)
         store.skipInFlightEffects()
@@ -409,5 +404,28 @@ class InAppNoticeTests {
         store.send(Action.AttentionRefreshed(setOf("login")))
         store.finish()
         assertEquals(listOf(setOf("upload")), recorded.clearedNeedsInput.toList())
+    }
+
+    @Test fun freshStateClearsThisServersStaleNotifications() = runTest {
+        val sessions = listOf(
+            session("upload", "Upload tests", idle = 2_000),
+            session("login", "Fix login flow"),
+            session("sub", "UI checks", parent = "login"),
+        )
+        val state = home().copy(sessions = sessions, noticeReadiness = HomeFeature.State.NoticeReadiness.listed)
+        val recorded = Recorded()
+        val store = store(state, InAppNoticeMode.off, recorded = recorded)
+        store.send(Action.AttentionRefreshed(setOf("upload")))
+        store.finish()
+        assertEquals(listOf(Triple(server.persistenceID, setOf("login"), setOf("upload"))), recorded.clearedStale.toList())
+    }
+
+    @Test fun markingReadClearsItsDeliveredNotifications() = runTest {
+        val state = home().copy(sessions = listOf(session("upload", "Upload tests", idle = 2_000)))
+        val recorded = Recorded()
+        val store = store(state, InAppNoticeMode.off, recorded = recorded)
+        store.send(Action.MarkRead("upload"))
+        store.finish()
+        assertEquals(listOf(setOf("upload")), recorded.cleared.toList())
     }
 }

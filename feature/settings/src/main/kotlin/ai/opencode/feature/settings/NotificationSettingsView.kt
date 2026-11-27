@@ -1,15 +1,20 @@
 package ai.opencode.feature.settings
 
-import ai.opencode.core.experiments.InAppNoticeMode
+import ai.opencode.core.R as CoreR
 import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.observe
+import ai.opencode.core.ui.OpenCodeAlertDialog
 import ai.opencode.core.ui.OpenCodeErrorText
 import ai.opencode.core.ui.OpenCodeTheme
 import ai.opencode.feature.system.notifications.NotificationPermission
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
+import ai.opencode.feature.system.notifications.PushChoice
+import ai.opencode.feature.system.notifications.PushMode
+import ai.opencode.feature.system.notifications.PushServer
+import ai.opencode.feature.system.notifications.PushSharedKeys
+import ai.opencode.feature.system.notifications.PushStatus
+import ai.opencode.feature.system.notifications.rememberPushNow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,51 +23,43 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.dp
 
 /**
- * As Settings shows it: Home reads the server's notify plugin and passes the result in
- * [SettingsFeature.Action.NotificationsChanged].
- */
-sealed interface NotifyPluginCheck {
-    data object Checking : NotifyPluginCheck
-    data class Checked(val status: OpenCodeNotifyPluginStatus) : NotifyPluginCheck
-    data object Failed : NotifyPluginCheck
-}
-
-/**
- * Settings → Notifications, this phone's permission, whether the server runs the notify plugin
- * (with Set Up with OpenCode to have OpenCode install it), and the In-App Notices picker.
+ * Settings → Notifications: this phone's permission and this server's notifications (on or off and
+ * what to hear).
  */
 @Composable
 fun NotificationSettingsView(store: SettingsStore) {
     val permission by store.observe { it.notificationPermission }
     val isRequesting by store.observe { it.isRequestingNotifications }
     val setupError by store.observe { it.notificationSetupError }
-    val notifyPlugin by store.observe { it.notifyPlugin }
-    val disconnected by store.observe { it.connectionStatus == ConnectionStatus.disconnected }
-    val noticeMode by remember { shared(InAppNoticeMode.key).flow }.collectAsState()
+    val server by store.observe { it.server }
+    val failure by store.observe { it.pushFailure }
+    val pendingChoice by store.observe { it.pushPendingChoice }
+    val choices by remember { shared(PushSharedKeys.choices).flow }.collectAsState(initial = shared(PushSharedKeys.choices).value)
+    val servers by remember { shared(PushSharedKeys.servers).flow }.collectAsState(initial = shared(PushSharedKeys.servers).value)
     LaunchedEffect(store) {
         store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.NotificationSettingsRequested))
-        store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.NotifyPluginCheckRequested))
     }
     val enabled = permission == NotificationPermission.Enabled
+    val serverID = server?.persistenceID
+    val choice = pendingChoice ?: serverID?.let { choices[it] } ?: PushChoice()
+    val push = serverID?.let { servers[it] } ?: PushServer()
+    val pushState = push.state
+    val isReady = choice.enabled && push.status == PushStatus.Ready && pushState != null
     val permissionHeader = stringResource(R.string.settings_notifications_device_header, ThisDeviceName)
-    val permissionFooter = stringResource(R.string.settings_notifications_device_footer, ThisDeviceName)
     val serverHeader = stringResource(R.string.settings_notifications_server_header)
-    val setUpFooter = stringResource(R.string.settings_notifications_set_up_footer)
-    val pluginNeededFooter = stringResource(R.string.settings_notifications_plugin_needed_footer)
-    val inAppFooter = stringResource(R.string.settings_notifications_in_app_footer)
+    val pausedUntil = pushState?.pausedUntil
+    val now = rememberPushNow(listOf(pausedUntil))
+    val isServerPaused = pushState != null && pushState.paused && (pausedUntil == null || pausedUntil > now)
+    val isDisabled = isReady && (isServerPaused || push.device?.paused == true)
+    val serverFooter = if (isDisabled) stringResource(R.string.settings_notifications_status_disabled) else pushStatusFooter(push.status)
+    val send = { action: PushSettingsFeature.Action -> store.send(SettingsFeature.Action.Push(action)) }
 
     SettingsPageScaffold(title = stringResource(R.string.settings_notifications_title), store = store) {
         settingsSection(
             key = "permission",
             header = permissionHeader,
-            footer = if (permission == NotificationPermission.Disabled) {
-                null
-            } else {
-                footerText(permissionFooter)
-            },
         ) {
             SettingsRowFrame(Modifier.semantics(mergeDescendants = true) {}) {
                 Text(stringResource(R.string.settings_notifications_allow), style = SettingsText.title, color = OpenCodeTheme.colors.text, modifier = Modifier.weight(1f))
@@ -85,66 +82,61 @@ fun NotificationSettingsView(store: SettingsStore) {
                 }
             }
         }
-        val canSetUp = notifyPlugin == NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Missing) ||
-            notifyPlugin == NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Inactive)
-        settingsSection(
-            key = "server",
-            header = serverHeader,
-            footer = when {
-                canSetUp -> footerText(setUpFooter)
-                notifyPlugin == NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Active) -> null
-                else -> footerText(pluginNeededFooter)
-            },
-        ) {
-            SettingsRowFrame(Modifier.semantics(mergeDescendants = true) {}) {
-                Text(stringResource(R.string.settings_notifications_notify_plugin), style = SettingsText.title, color = OpenCodeTheme.colors.text, modifier = Modifier.weight(1f))
-                when (val check = notifyPlugin) {
-                    NotifyPluginCheck.Checking, null -> CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
-                    is NotifyPluginCheck.Checked -> Text(
-                        when (check.status) {
-                            OpenCodeNotifyPluginStatus.Active -> stringResource(R.string.settings_notifications_plugin_installed)
-                            OpenCodeNotifyPluginStatus.Inactive -> stringResource(R.string.settings_notifications_plugin_not_running)
-                            OpenCodeNotifyPluginStatus.Missing -> stringResource(R.string.settings_notifications_plugin_not_installed)
-                        },
-                        style = SettingsText.title,
-                        color = OpenCodeTheme.colors.secondaryText,
+        if (server != null && push.status != PushStatus.Unavailable) {
+            settingsSection(
+                key = "server",
+                header = serverHeader,
+                footer = serverFooter?.let { footerText(it) },
+            ) {
+                val canTurnOn = push.status != PushStatus.Outdated
+                SettingsToggleRow(
+                    title = stringResource(R.string.settings_notifications_server_toggle),
+                    checked = choice.enabled && canTurnOn,
+                    onCheckedChange = { send(PushSettingsFeature.Action.EnabledChanged(it)) },
+                    enabled = canTurnOn,
+                )
+                if (isReady) {
+                    val modes = listOf(PushMode.all, PushMode.attention, PushMode.fromThisPhone, PushMode.none)
+                    SettingsDivider()
+                    SettingsMenuRow(
+                        title = stringResource(R.string.settings_notifications_mode),
+                        value = pushModeTitle(choice.mode),
+                        selection = choice.mode,
+                        options = modes.map { SettingsMenuOption(it, pushModeTitle(it)) },
+                        onSelect = { send(PushSettingsFeature.Action.ModeChanged(it)) },
                     )
-                    NotifyPluginCheck.Failed ->
-                        Text(stringResource(R.string.settings_notifications_plugin_check_failed), style = SettingsText.title, color = OpenCodeTheme.colors.secondaryText)
                 }
             }
-            if (canSetUp) {
-                SettingsDivider()
-                SettingsButtonRow(
-                    stringResource(R.string.settings_notifications_set_up),
-                    onClick = {
-                        store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.NotifyPluginSetUpTapped))
-                    },
-                    enabled = !disconnected,
-                )
-            }
-            SettingsDivider()
-            SettingsButtonRow(
-                stringResource(R.string.settings_notifications_check_again),
-                onClick = {
-                    store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.NotifyPluginCheckRequested))
-                },
-                enabled = notifyPlugin != NotifyPluginCheck.Checking,
-            )
-        }
-        settingsSection(
-            key = "in-app",
-            footer = footerText(inAppFooter),
-        ) {
-            SettingsMenuRow(
-                title = stringResource(R.string.settings_notifications_in_app_notices),
-                value = noticeMode.title,
-                selection = noticeMode,
-                options = InAppNoticeMode.entries.map { SettingsMenuOption(it, it.title) },
-                onSelect = { store.send(SettingsFeature.Action.Settings(HomeSettingsFeature.Action.InAppNoticeModeChanged(it))) },
-            )
         }
     }
+
+    failure?.let {
+        OpenCodeAlertDialog(
+            onDismissRequest = { send(PushSettingsFeature.Action.FailureDismissed) },
+            title = { Text(it.title) },
+            text = { Text(it.message) },
+            confirmButton = {
+                TextButton(onClick = { send(PushSettingsFeature.Action.FailureDismissed) }) { Text(stringResource(CoreR.string.common_ok)) }
+            },
+        )
+    }
+}
+
+@Composable
+private fun pushModeTitle(mode: PushMode): String = when (mode) {
+    PushMode.all -> stringResource(R.string.settings_notifications_mode_all)
+    PushMode.attention -> stringResource(R.string.settings_notifications_mode_attention)
+    PushMode.fromThisPhone -> stringResource(R.string.settings_notifications_mode_from_this_phone)
+    PushMode.none -> stringResource(R.string.settings_notifications_mode_none)
+}
+
+@Composable
+private fun pushStatusFooter(status: PushStatus): String? = when (status) {
+    PushStatus.Unknown -> stringResource(R.string.settings_notifications_status_checking)
+    PushStatus.NoPermission -> stringResource(R.string.settings_notifications_status_no_permission)
+    PushStatus.Outdated -> stringResource(R.string.settings_notifications_status_outdated)
+    PushStatus.Failed -> stringResource(R.string.settings_notifications_status_failed)
+    PushStatus.Unavailable, PushStatus.Off, PushStatus.Ready -> null
 }
 
 /** “phone” or “tablet”. */

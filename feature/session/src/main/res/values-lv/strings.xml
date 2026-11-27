@@ -55,8 +55,6 @@
     <string name="session_pin">Piespraust</string>
     <string name="session_pinned">Piesprausta</string>
     <string name="session_unread">Nelasīta</string>
-    <string name="session_mute">Apklusināt</string>
-    <string name="session_muted">Apklusināta</string>
     <string name="session_compact">Saspiest</string>
     <string name="session_fork">Atzarot</string>
     <string name="session_toggle_on_description">Ieslēgts</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Izmaksas</string>
     <string name="session_sheet_media">Multivide</string>
     <string name="session_sheet_media_value">Faili un saites</string>
-    <string name="session_always_notify">Vienmēr paziņot</string>
-    <string name="session_always_notify_message_phone">Paziņot šajā tālrunī par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>
-    <string name="session_always_notify_message_tablet">Paziņot šajā planšetdatorā par katru gatavo atbildi, pat ja ziņa sūtīta no citas ierīces.</string>
     <string name="session_delete_session">Dzēst sesiju</string>
     <string name="session_rename_placeholder">Nosaukums</string>
     <string name="session_auto_rename">Automātiski pārdēvēt</string>
@@ -133,7 +128,6 @@
     <string name="session_copy_session_id">Kopēt sesijas ID</string>
     <string name="session_mark_as_read">Atzīmēt kā lasītu</string>
     <string name="session_mark_as_unread">Atzīmēt kā nelasītu</string>
-    <string name="session_unmute">Ieslēgt paziņojumus</string>
     <string name="session_menu_export_expanded_description">Izvērsts</string>
     <string name="session_menu_export_collapsed_description">Sakļauts</string>
     <string name="session_info">Sesijas informācija</string>
@@ -279,9 +273,6 @@
     <string name="session_sheet_fork_failed_title">Neizdevās atzarot sesiju</string>
     <string name="session_sheet_save_export_failed">Neizdevās saglabāt eksportu</string>
     <string name="session_sheet_export_failed_title">Neizdevās eksportēt sesiju</string>
-    <string name="session_sheet_notifications_off_message">Vispirms ieslēdz paziņojumus iestatījumos.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Neizdevās ieslēgt “Vienmēr paziņot”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Neizdevās izslēgt “Vienmēr paziņot”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serveris neatbalsta failus</string>

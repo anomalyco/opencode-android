@@ -75,12 +75,51 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nová aktivita</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Spustit %1$d příkaz?</item>
+        <item quantity="few">Spustit %1$d příkazy?</item>
+        <item quantity="many">Spustit %1$d příkazu?</item>
+        <item quantity="other">Spustit %1$d příkazů?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Upravit %1$d soubor?</item>
+        <item quantity="few">Upravit %1$d soubory?</item>
+        <item quantity="many">Upravit %1$d souboru?</item>
+        <item quantity="other">Upravit %1$d souborů?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Přečíst %1$d soubor?</item>
+        <item quantity="few">Přečíst %1$d soubory?</item>
+        <item quantity="many">Přečíst %1$d souboru?</item>
+        <item quantity="other">Přečíst %1$d souborů?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Otevřít webovou stránku?</string>
+    <string name="system_push_permission_websearch">Hledat na webu?</string>
+    <string name="system_push_permission_external_directory">Přístup ke složce?</string>
+    <string name="system_push_permission_other">Použít %1$s?</string>
+    <string name="system_push_allow">Povolit</string>
+    <string name="system_push_deny">Odmítnout</string>
+    <string name="system_push_reply">Odpovědět</string>
+    <string name="system_push_message_hint">Zpráva</string>
+    <string name="system_push_sending">Odesílání…</string>
+    <string name="system_push_send_failed">Nepodařilo se odeslat. Otevřete a zkuste to znovu.</string>
+    <string name="system_push_detail_more">Otevřením zobrazíte vše</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Hlasové hovory</string>
     <string name="system_channel_recording">Nahrávání</string>
     <string name="system_channel_session_runs">Běh relací</string>
-    <string name="system_channel_session_updates">Aktualizace relací</string>
+    <string name="system_channel_session_finished">Dokončené relace</string>
+    <string name="system_channel_session_failed">Neúspěšné relace</string>
+    <string name="system_channel_session_questions">Otázky</string>
+    <string name="system_channel_session_permissions">Žádosti o oprávnění</string>
+    <string name="system_channel_session_other">Ostatní aktualizace relací</string>
+    <string name="system_channel_session_runs_description">Průběh relace odeslané z tohoto telefonu</string>
+    <string name="system_channel_session_finished_description">Relace dokončila svůj krok</string>
+    <string name="system_channel_session_failed_description">Relace se zastavila s chybou</string>
+    <string name="system_channel_session_questions_description">Relace má pro vás otázku</string>
+    <string name="system_channel_session_permissions_description">Relace potřebuje vaše povolení k pokračování</string>
+    <string name="system_channel_session_other_description">Ostatní aktualizace z vašich relací</string>
     <string name="system_channel_shared_items">Sdílené položky</string>
 
     <!-- Share sheet: notifications -->

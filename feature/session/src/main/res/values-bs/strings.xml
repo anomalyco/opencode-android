@@ -55,8 +55,6 @@
     <string name="session_pin">Prikači</string>
     <string name="session_pinned">Prikačeno</string>
     <string name="session_unread">Nepročitano</string>
-    <string name="session_mute">Utišaj</string>
-    <string name="session_muted">Utišano</string>
     <string name="session_compact">Sažeto</string>
     <string name="session_fork">Forkaj</string>
     <string name="session_toggle_on_description">Uključeno</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Trošak</string>
     <string name="session_sheet_media">Mediji</string>
     <string name="session_sheet_media_value">Datoteke i linkovi</string>
-    <string name="session_always_notify">Uvijek obavijesti</string>
-    <string name="session_always_notify_message_phone">Obavijesti ovaj telefon kad god je odgovor spreman, čak i na poruke poslane s drugog uređaja.</string>
-    <string name="session_always_notify_message_tablet">Obavijesti ovaj tablet kad god je odgovor spreman, čak i na poruke poslane s drugog uređaja.</string>
     <string name="session_delete_session">Izbriši sesiju</string>
     <string name="session_rename_placeholder">Naslov</string>
     <string name="session_auto_rename">Automatski preimenuj</string>
@@ -133,7 +128,6 @@
     <string name="session_copy_session_id">Kopiraj ID sesije</string>
     <string name="session_mark_as_read">Označi kao pročitano</string>
     <string name="session_mark_as_unread">Označi kao nepročitano</string>
-    <string name="session_unmute">Uključi zvuk</string>
     <string name="session_menu_export_expanded_description">Prošireno</string>
     <string name="session_menu_export_collapsed_description">Sažeto</string>
     <string name="session_info">Informacije o sesiji</string>
@@ -279,9 +273,6 @@
     <string name="session_sheet_fork_failed_title">Forkanje sesije nije uspjelo</string>
     <string name="session_sheet_save_export_failed">Čuvanje izvoza nije uspjelo</string>
     <string name="session_sheet_export_failed_title">Izvoz sesije nije uspio</string>
-    <string name="session_sheet_notifications_off_message">Prvo uključi obavještenja u postavkama.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nije moguće uključiti „Uvijek obavijesti“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nije moguće isključiti „Uvijek obavijesti“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server ne podržava datoteke</string>

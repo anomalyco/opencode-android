@@ -55,8 +55,6 @@
     <string name="session_pin">Pripnúť</string>
     <string name="session_pinned">Pripnuté</string>
     <string name="session_unread">Neprečítané</string>
-    <string name="session_mute">Stlmiť</string>
-    <string name="session_muted">Stlmené</string>
     <string name="session_compact">Zhutniť</string>
     <string name="session_fork">Vytvoriť vetvu</string>
     <string name="session_toggle_on_description">Zapnuté</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Náklady</string>
     <string name="session_sheet_media">Médiá</string>
     <string name="session_sheet_media_value">Súbory a odkazy</string>
-    <string name="session_always_notify">Vždy upozorniť</string>
-    <string name="session_always_notify_message_phone">Upozorniť tento telefón po dokončení každej odpovede, aj na správy odoslané odinakiaľ.</string>
-    <string name="session_always_notify_message_tablet">Upozorniť tento tablet po dokončení každej odpovede, aj na správy odoslané odinakiaľ.</string>
     <string name="session_delete_session">Odstrániť reláciu</string>
     <string name="session_rename_placeholder">Názov</string>
     <string name="session_auto_rename">Automaticky premenovať</string>
@@ -135,7 +130,6 @@
     <string name="session_copy_session_id">Kopírovať ID relácie</string>
     <string name="session_mark_as_read">Označiť ako prečítané</string>
     <string name="session_mark_as_unread">Označiť ako neprečítané</string>
-    <string name="session_unmute">Zrušiť stlmenie</string>
     <string name="session_menu_export_expanded_description">Rozbalené</string>
     <string name="session_menu_export_collapsed_description">Zbalené</string>
     <string name="session_info">Informácie o relácii</string>
@@ -289,9 +283,6 @@
     <string name="session_sheet_fork_failed_title">Nepodarilo sa vytvoriť vetvu relácie</string>
     <string name="session_sheet_save_export_failed">Nepodarilo sa uložiť export</string>
     <string name="session_sheet_export_failed_title">Nepodarilo sa exportovať reláciu</string>
-    <string name="session_sheet_notifications_off_message">Najprv zapnite upozornenia v nastaveniach.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nepodarilo sa zapnúť „Vždy upozorniť“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nepodarilo sa vypnúť „Vždy upozorniť“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server nepodporuje súbory</string>

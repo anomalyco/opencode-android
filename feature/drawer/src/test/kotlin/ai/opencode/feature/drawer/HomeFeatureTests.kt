@@ -4,7 +4,6 @@ import ai.opencode.core.dependencies.Clock
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.TestClock
-import ai.opencode.core.experiments.InAppNoticeMode
 import ai.opencode.core.haptics.Haptic
 import ai.opencode.core.haptics.HapticsClient
 import ai.opencode.core.sharing.SharedKeys
@@ -29,6 +28,8 @@ import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.settings.SettingsFeature
 import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.notifications.NotificationPermissionClient
+import ai.opencode.feature.system.notifications.PushServer
+import ai.opencode.feature.system.notifications.PushStatus
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.voice.CallVoice
 import ai.opencode.feature.voice.VoiceEngine
@@ -39,7 +40,6 @@ import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.ServerSharedKeys
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
@@ -61,7 +61,7 @@ import java.util.UUID
 
 /**
  * Notifications and Settings, busy state and priority, the transcript caches, snapshots, prefetch
- * and attention. The drawer's pins, mutes, deletion and read state are in
+ * and attention. The drawer's pins, deletion and read state are in
  * `HomeFeatureTestsDrawer.kt`; navigation and the connection in `HomeFeatureTestsNavigation.kt`.
  */
 class HomeFeatureTests {
@@ -99,33 +99,6 @@ class HomeFeatureTests {
         store.send(detail(SessionFeature.Action.PromptAdmitted(sessionID = session.id, messageID = "msg_test", requestEpoch = 1)))
         assertEquals(NotificationPermission.NotDetermined, store.state.notificationPermission)
         h.skipInFlightEffects()
-    }
-
-    @Test
-    fun notifyPluginCheckReportsTheServersPlugin() {
-        val cases = listOf(
-            OpenCodeNotifyPluginStatus.Active to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Active),
-            OpenCodeNotifyPluginStatus.Missing to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Missing),
-            OpenCodeNotifyPluginStatus.Inactive to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Inactive),
-            null to HomeNotificationsFeature.NotifyPluginCheck.Failed,
-        )
-        for ((status, expected) in cases) homeTest { h ->
-            val state = h.state { HomeFeature.State(savedServer, snapshot(emptyList())) }
-            val store = h.store(state) {
-                this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                    notifyPluginStatus = { requested ->
-                        assertEquals(savedServer, requested)
-                        status ?: throw OpenCodeClientError("offline")
-                    },
-                )
-            }
-            store.send(Action.NotifyPluginCheckRequested) {
-                it.copy(notificationState = it.notificationState.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checking))
-            }
-            store.receive(Action.NotifyPluginChecked(status)) {
-                it.copy(notificationState = it.notificationState.copy(notifyPlugin = expected))
-            }
-        }
     }
 
     /** The drawer's Settings pushes Settings over the drawer rather than presenting a sheet, and Back returns to it. */
@@ -275,22 +248,6 @@ class HomeFeatureTests {
     }
 
     @Test
-    fun notifyPluginSetUpOpensADraftAskingOpenCodeToInstallIt() = homeTest { h ->
-        val state = h.state {
-            val base = HomeFeature.State(savedServer, snapshot(emptyList())).presentingSettings(SettingsFeature.State(server = savedServer))
-            base.copy(notificationState = base.notificationState.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Missing)))
-        }
-        val store = h.store(state)
-        store.exhaustive = false
-        store.send(Action.NotifyPluginSetUpTapped)
-        assertFalse(store.state.isSettingsShown)
-        val draft = requireNotNull(store.state.sessionDetail)
-        assertNull(draft.session)
-        assertTrue(draft.draft.contains(OpenCodeNotifyPluginStatus.PACKAGE_ENTRY))
-        assertTrue(draft.draft.contains(OpenCodeNotifyPluginStatus.PLUGIN_ID))
-    }
-
-    @Test
     fun buildsWithoutARelayNeverOfferNotifications() = homeTest { h ->
         val session = OpenCodeSession(id = "ses_first", serverTitle = "First", projectID = "p", directory = "/work", updatedAt = Instant.now())
         val state = h.state {
@@ -298,7 +255,7 @@ class HomeFeatureTests {
                 .copy(sessionDetail = SessionFeature.State.session(savedServer, session, cachedItems = emptyList()))
         }
         val store = h.store(state) {
-            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = false, callbackURL = { null }, prepare = {}, forget = {})
+            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = false)
             this[NotificationPermissionClient] = NotificationPermissionClient(
                 status = { throw AssertionError("Without a relay the app must not read or ask for permission") },
                 request = { NotificationPermission.Enabled },
@@ -323,15 +280,11 @@ class HomeFeatureTests {
                 val base = HomeFeature.State(savedServer, snapshot(emptyList()))
                 base.copy(notificationState = base.notificationState.copy(notificationPermission = NotificationPermission.NotDetermined))
             }
-            val prepared = LockIsolated<List<OpenCodeServer>>(emptyList())
+            val asked = LockIsolated<List<OpenCodeServer>>(emptyList())
             val store = h.store(state) {
                 this[NotificationPermissionClient] = NotificationPermissionClient(status = { permission }, request = { permission }, openSettings = { true })
-                this[SessionNotificationsClient] = SessionNotificationsClient(
-                    isAvailable = true,
-                    callbackURL = { null },
-                    prepare = { server -> prepared.append(server) },
-                    forget = {},
-                )
+                this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true)
+                this[OpenCodeClient] = OpenCodeClient.testValue.copy(pushState = { server -> asked.append(server); throw OpenCodeClientError(message = "Not found", statusCode = 404) })
             }
             store.send(Action.EnableNotificationsTapped) {
                 it.copy(notificationState = it.notificationState.copy(isRequestingNotifications = true))
@@ -347,9 +300,13 @@ class HomeFeatureTests {
             store.receive(Action.NotificationPermissionLoaded(permission)) {
                 it.copy(notificationState = it.notificationState.copy(notificationPermission = permission))
             }
+            if (permission == NotificationPermission.Enabled) {
+                store.receive(Action.PushSyncRequested)
+                store.receive(Action.PushSynced(savedServer.persistenceID, PushServer(PushStatus.Outdated)))
+            }
             store.finish()
-            // Granting permission mints the callback ahead of the next send.
-            assertEquals(if (permission == NotificationPermission.Enabled) listOf(savedServer) else emptyList<OpenCodeServer>(), prepared.value)
+            // Granting permission registers this phone with the server.
+            assertEquals(if (permission == NotificationPermission.Enabled) listOf(savedServer) else emptyList<OpenCodeServer>(), asked.value)
         }
     }
 
@@ -378,6 +335,8 @@ class HomeFeatureTests {
         store.receive(Action.NotificationPermissionLoaded(NotificationPermission.Enabled)) {
             it.copy(notificationState = it.notificationState.copy(notificationPermission = NotificationPermission.Enabled))
         }
+        store.receive(Action.PushSyncRequested)
+        store.receive(Action.PushSynced(savedServer.persistenceID, PushServer(PushStatus.Outdated)))
         store.finish()
     }
 
@@ -641,8 +600,6 @@ class HomeFeatureTests {
 
         store.send(Action.Settings(HomeSettingsFeature.Action.SidebarToggled)) { it.copy(isSidebarShown = false) }
         assertFalse(h.shared(SharedKeys.sidebarShown))
-        store.send(Action.Settings(HomeSettingsFeature.Action.InAppNoticeModeChanged(InAppNoticeMode.all)))
-        assertEquals(InAppNoticeMode.all, h.shared(InAppNoticeMode.key))
         store.send(Action.Settings(HomeSettingsFeature.Action.VoiceModeEnabledChanged(true)))
         assertTrue(h.shared(SharedKeys.voiceModeEnabled))
         store.send(Action.Settings(HomeSettingsFeature.Action.RaiseToTalkChanged(true)))

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Over the notification's own surface, which follows the wallpaper. -->
+    <color name="push_hairline">#1F000000</color>
+    <color name="push_code_fill">#0A000000</color>
+</resources>

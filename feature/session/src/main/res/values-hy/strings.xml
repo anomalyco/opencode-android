@@ -55,8 +55,6 @@
     <string name="session_pin">Ամրացնել</string>
     <string name="session_pinned">Ամրացված</string>
     <string name="session_unread">Չընթերցված</string>
-    <string name="session_mute">Լռեցնել</string>
-    <string name="session_muted">Լռեցված</string>
     <string name="session_compact">Կոմպակտ</string>
     <string name="session_fork">Ստեղծել ճյուղ</string>
     <string name="session_toggle_on_description">Միացված</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Արժեք</string>
     <string name="session_sheet_media">Մեդիա</string>
     <string name="session_sheet_media_value">Ֆայլեր և հղումներ</string>
-    <string name="session_always_notify">Միշտ ծանուցել</string>
-    <string name="session_always_notify_message_phone">Ծանուցել այս հեռախոսին, երբ պատասխանը պատրաստ է, նույնիսկ եթե հարցումն այստեղից չի ուղարկվել։</string>
-    <string name="session_always_notify_message_tablet">Ծանուցել այս պլանշետին, երբ պատասխանը պատրաստ է, նույնիսկ եթե հարցումն այստեղից չի ուղարկվել։</string>
     <string name="session_delete_session">Ջնջել նիստը</string>
     <string name="session_rename_placeholder">Վերնագիր</string>
     <string name="session_auto_rename">Ավտոմատ վերանվանել</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Պատճենել նիստի ID-ն</string>
     <string name="session_mark_as_read">Նշել որպես ընթերցված</string>
     <string name="session_mark_as_unread">Նշել որպես չընթերցված</string>
-    <string name="session_unmute">Միացնել ծանուցումները</string>
     <string name="session_menu_export_expanded_description">Ընդարձակված</string>
     <string name="session_menu_export_collapsed_description">Ծալված</string>
     <string name="session_info">Նիստի տվյալները</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Չհաջողվեց ստեղծել նիստի ճյուղ</string>
     <string name="session_sheet_save_export_failed">Չհաջողվեց պահել արտահանված ֆայլը</string>
     <string name="session_sheet_export_failed_title">Չհաջողվեց արտահանել նիստը</string>
-    <string name="session_sheet_notifications_off_message">Նախ միացրեք ծանուցումները կարգավորումներում։</string>
-    <string name="session_sheet_always_notify_on_failed_title">Չհաջողվեց միացնել «Միշտ ծանուցել» գործառույթը</string>
-    <string name="session_sheet_always_notify_off_failed_title">Չհաջողվեց անջատել «Միշտ ծանուցել» գործառույթը</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Սերվերը չի աջակցում ֆայլերին</string>

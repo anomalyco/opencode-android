@@ -55,8 +55,6 @@
     <string name="session_pin">Закачане</string>
     <string name="session_pinned">Закачена</string>
     <string name="session_unread">Непрочетена</string>
-    <string name="session_mute">Заглушаване</string>
-    <string name="session_muted">Заглушена</string>
     <string name="session_compact">Компактен</string>
     <string name="session_fork">Разклоняване</string>
     <string name="session_toggle_on_description">Включено</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Цена</string>
     <string name="session_sheet_media">Медия</string>
     <string name="session_sheet_media_value">Файлове и връзки</string>
-    <string name="session_always_notify">Винаги известявай</string>
-    <string name="session_always_notify_message_phone">Известяване на този телефон при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>
-    <string name="session_always_notify_message_tablet">Известяване на този таблет при всеки готов отговор, дори за съобщения, изпратени от друго устройство.</string>
     <string name="session_delete_session">Изтриване на сесия</string>
     <string name="session_rename_placeholder">Заглавие</string>
     <string name="session_auto_rename">Автоматично преименуване</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Копиране на идентификатора на сесията</string>
     <string name="session_mark_as_read">Маркиране като прочетено</string>
     <string name="session_mark_as_unread">Маркиране като непрочетено</string>
-    <string name="session_unmute">Отмяна на заглушаването</string>
     <string name="session_menu_export_expanded_description">Разгънато</string>
     <string name="session_menu_export_collapsed_description">Свито</string>
     <string name="session_info">Информация за сесията</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Неуспешно разклоняване на сесията</string>
     <string name="session_sheet_save_export_failed">Неуспешно запазване на експортирания файл</string>
     <string name="session_sheet_export_failed_title">Неуспешно експортиране на сесията</string>
-    <string name="session_sheet_notifications_off_message">Първо включете известията в Настройки.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Неуспешно включване на „Винаги известявай“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Неуспешно изключване на „Винаги известявай“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Сървърът не поддържа файлове</string>

@@ -75,12 +75,51 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nauja veikla</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vykdyti %1$d komandą?</item>
+        <item quantity="few">Vykdyti %1$d komandas?</item>
+        <item quantity="many">Vykdyti %1$d komandos?</item>
+        <item quantity="other">Vykdyti %1$d komandų?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Redaguoti %1$d failą?</item>
+        <item quantity="few">Redaguoti %1$d failus?</item>
+        <item quantity="many">Redaguoti %1$d failo?</item>
+        <item quantity="other">Redaguoti %1$d failų?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Skaityti %1$d failą?</item>
+        <item quantity="few">Skaityti %1$d failus?</item>
+        <item quantity="many">Skaityti %1$d failo?</item>
+        <item quantity="other">Skaityti %1$d failų?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Atidaryti svetainę?</string>
+    <string name="system_push_permission_websearch">Ieškoti internete?</string>
+    <string name="system_push_permission_external_directory">Pasiekti aplanką?</string>
+    <string name="system_push_permission_other">Naudoti %1$s?</string>
+    <string name="system_push_allow">Leisti</string>
+    <string name="system_push_deny">Atmesti</string>
+    <string name="system_push_reply">Atsakyti</string>
+    <string name="system_push_message_hint">Žinutė</string>
+    <string name="system_push_sending">Siunčiama…</string>
+    <string name="system_push_send_failed">Nepavyko išsiųsti. Atidarykite ir bandykite dar kartą.</string>
+    <string name="system_push_detail_more">Atidarykite, kad matytumėte viską</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Balso skambučiai</string>
     <string name="system_channel_recording">Įrašoma</string>
     <string name="system_channel_session_runs">Seansų vykdymas</string>
-    <string name="system_channel_session_updates">Seansų atnaujinimai</string>
+    <string name="system_channel_session_finished">Baigti seansai</string>
+    <string name="system_channel_session_failed">Nepavykę seansai</string>
+    <string name="system_channel_session_questions">Klausimai</string>
+    <string name="system_channel_session_permissions">Leidimų užklausos</string>
+    <string name="system_channel_session_other">Kiti seansų atnaujinimai</string>
+    <string name="system_channel_session_runs_description">Iš šio telefono išsiųsto seanso eiga</string>
+    <string name="system_channel_session_finished_description">Seansas baigė savo žingsnį</string>
+    <string name="system_channel_session_failed_description">Seansas sustojo dėl klaidos</string>
+    <string name="system_channel_session_questions_description">Seansas užduoda jums klausimą</string>
+    <string name="system_channel_session_permissions_description">Seansui reikia jūsų leidimo tęsti</string>
+    <string name="system_channel_session_other_description">Kiti jūsų seansų atnaujinimai</string>
     <string name="system_channel_shared_items">Bendrinami elementai</string>
 
     <!-- Share sheet: notifications -->

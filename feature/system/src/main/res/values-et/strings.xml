@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Uus tegevus</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Kas käivitada %1$d käsk?</item>
+        <item quantity="other">Kas käivitada %1$d käsku?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Kas muuta %1$d faili?</item>
+        <item quantity="other">Kas muuta %1$d faili?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Kas lugeda %1$d faili?</item>
+        <item quantity="other">Kas lugeda %1$d faili?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Kas avada veebileht?</string>
+    <string name="system_push_permission_websearch">Kas otsida veebist?</string>
+    <string name="system_push_permission_external_directory">Kas pääseda kaustale ligi?</string>
+    <string name="system_push_permission_other">Kas kasutada %1$s?</string>
+    <string name="system_push_allow">Luba</string>
+    <string name="system_push_deny">Keela</string>
+    <string name="system_push_reply">Vasta</string>
+    <string name="system_push_message_hint">Sõnum</string>
+    <string name="system_push_sending">Saatmine…</string>
+    <string name="system_push_send_failed">Saatmine ebaõnnestus. Ava, et uuesti proovida.</string>
+    <string name="system_push_detail_more">Ava, et näha kõike</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Häälkõned</string>
     <string name="system_channel_recording">Salvestamine</string>
     <string name="system_channel_session_runs">Seansside käivitused</string>
-    <string name="system_channel_session_updates">Seansside uuendused</string>
+    <string name="system_channel_session_finished">Lõpetatud seansid</string>
+    <string name="system_channel_session_failed">Ebaõnnestunud seansid</string>
+    <string name="system_channel_session_questions">Küsimused</string>
+    <string name="system_channel_session_permissions">Loataotlused</string>
+    <string name="system_channel_session_other">Muud seansi uuendused</string>
+    <string name="system_channel_session_runs_description">Sellest telefonist saadetud seansi edenemine</string>
+    <string name="system_channel_session_finished_description">Seanss lõpetas oma vooru</string>
+    <string name="system_channel_session_failed_description">Seanss peatus veaga</string>
+    <string name="system_channel_session_questions_description">Seanss esitab sulle küsimuse</string>
+    <string name="system_channel_session_permissions_description">Seanss vajab jätkamiseks sinu luba</string>
+    <string name="system_channel_session_other_description">Muud uuendused sinu seanssidest</string>
     <string name="system_channel_shared_items">Jagatud üksused</string>
 
     <!-- Share sheet: notifications -->

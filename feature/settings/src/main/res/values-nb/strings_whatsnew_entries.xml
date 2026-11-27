@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">En ustabil tilkobling gir nå bare et kort hakk i samtalen i stedet for flere sekunder med stillhet.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Demp sesjoner</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Dempede sesjoner blir i listen, men tas aldri med i Bli oppdatert og får ingen ulestprikk.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Hold inne Bli oppdatert for å merke alt som lest. Sesjoner som venter på deg, blir værende.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Hold inne en sesjon i sidepanelet og trykk på Demp</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Koble sammen fra hvor som helst</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Matematiske uttrykk følger tekststørrelsen din.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Be om et flytskjema som viser hvordan en melding sendes</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Tegn et flytskjema som viser hvordan en melding sendes</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Varsle når ferdig</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Få et varsel når en sesjon du startet her, er ferdig, med en kort oppsummering av det som skjedde.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Slå på Varsle alltid i sesjonspanelet for å få varsel om hvert svar, også når arbeidet ble startet på datamaskinen.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Trykk på et varsel for å åpne sesjonen.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Send en melding, og lås deretter telefonen</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Bytt server</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Merke på appikonet</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Appikonet viser hvor mange sesjoner som er uleste eller venter på deg, samme antall som i Bli oppdatert.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Dempede sesjoner telles ikke med.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Varsler må være slått på.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">La en sesjon vente på svar på et spørsmål, og gå til startskjermen</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sesjoner lever videre uten mappen</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Hvis sesjonens mappe er borte, for eksempel et fjernet arbeidsområde, får du ved mislykket sending tilbud om å flytte sesjonen til prosjektmappen og sende på nytt.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Sett opp varsler med OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Under Innstillinger → Varsler trykker du på Sett opp med OpenCode for å se gjennom en instruks som installerer det manglende varslingsprogramtillegget.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Samtalekortet fyller bunnen</string>

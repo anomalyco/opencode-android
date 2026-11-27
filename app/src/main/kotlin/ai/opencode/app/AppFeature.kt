@@ -786,7 +786,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         val homeServer = next.homeServer
         if (home != null && homeServer?.persistenceID == destination.serverKey) {
             if (home.sessions.any { it.id == destination.sessionID }) {
-                val opened = next.copy(pendingNotification = null)
+                val opened = next.copy(pendingNotification = null).closingHomeCovers()
                 return Reduced(opened, openSession(opened, destination.sessionID))
             }
             return Reduced(next, loadNotificationSession(destination, homeServer))
@@ -802,7 +802,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         if (session == null || session.id != destination.sessionID) {
             return Reduced(next.copy(notificationError = sessionNoLongerAvailableMessage))
         }
-        val inserted = next.insertingSession(session)
+        val inserted = next.insertingSession(session).closingHomeCovers()
         return Reduced(inserted, openSession(inserted, session.id))
     }
 
@@ -896,6 +896,11 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         return copy(home = home.copy(sessions = listOf(session) + home.sessions))
     }
 
+    private fun State.closingHomeCovers(): State {
+        val home = home ?: return this
+        return copy(home = home.copy(settings = null, drawerCloseRequests = home.drawerCloseRequests + 1))
+    }
+
     private fun openSession(state: State, sessionID: String): Effect<Action> {
         return Effect.send(Action.Home(HomeFeature.Action.SessionTapped(sessionID)))
     }
@@ -981,9 +986,9 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
             // remembering this one drops it whatever the sessions' read does.
             val superseded = next.knownServers
                 .filter { server.supersedes(it) && it.persistenceID != server.persistenceID }
-                .map { it.persistenceID }.toSet().sorted()
-            superseded.forEach { id ->
-                val reduced = forgetIdentity(id, next)
+                .distinctBy { it.persistenceID }.sortedBy { it.persistenceID }
+            superseded.forEach { old ->
+                val reduced = forgetIdentity(old.persistenceID, next, removedServer = old)
                 next = reduced.state
                 forgotten += reduced.effect
             }
@@ -1041,7 +1046,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         var forgotten: Effect<Action> = Effect.cancel(CancelID.SwitchTimeout)
         next.editingSavedServer?.let { original ->
             if (original.persistenceID != server.persistenceID) {
-                val reduced = forgetIdentity(original.persistenceID, next)
+                val reduced = forgetIdentity(original.persistenceID, next, removedServer = original)
                 next = reduced.state
                 forgotten = Effect.merge(forgotten, reduced.effect)
             }

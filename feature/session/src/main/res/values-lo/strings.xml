@@ -55,8 +55,6 @@
     <string name="session_pin">ປັກໝຸດ</string>
     <string name="session_pinned">ປັກໝຸດໄວ້</string>
     <string name="session_unread">ຍັງບໍ່ອ່ານ</string>
-    <string name="session_mute">ປິດສຽງ</string>
-    <string name="session_muted">ປິດສຽງໄວ້</string>
     <string name="session_compact">ກະທັດຮັດ</string>
     <string name="session_fork">ແຍກເຊດຊັນ</string>
     <string name="session_toggle_on_description">ເປີດ</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">ຄ່າໃຊ້ຈ່າຍ</string>
     <string name="session_sheet_media">ສື່</string>
     <string name="session_sheet_media_value">ໄຟລ໌ ແລະລິ້ງ</string>
-    <string name="session_always_notify">ແຈ້ງເຕືອນສະເໝີ</string>
-    <string name="session_always_notify_message_phone">ແຈ້ງເຕືອນໂທລະສັບນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>
-    <string name="session_always_notify_message_tablet">ແຈ້ງເຕືອນແທັບເລັດນີ້ທຸກຄັ້ງທີ່ຕອບແລ້ວ ເຖິງແມ່ນເຈົ້າບໍ່ໄດ້ສົ່ງຈາກທີ່ນີ້.</string>
     <string name="session_delete_session">ລຶບເຊດຊັນ</string>
     <string name="session_rename_placeholder">ຊື່</string>
     <string name="session_auto_rename">ປ່ຽນຊື່ອັດຕະໂນມັດ</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">ສຳເນົາ ID ເຊດຊັນ</string>
     <string name="session_mark_as_read">ໝາຍວ່າອ່ານແລ້ວ</string>
     <string name="session_mark_as_unread">ໝາຍວ່າຍັງບໍ່ອ່ານ</string>
-    <string name="session_unmute">ເປີດສຽງ</string>
     <string name="session_menu_export_expanded_description">ຂະຫຍາຍແລ້ວ</string>
     <string name="session_menu_export_collapsed_description">ຫຍໍ້ແລ້ວ</string>
     <string name="session_info">ຂໍ້ມູນເຊດຊັນ</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">ແຍກເຊດຊັນບໍ່ໄດ້</string>
     <string name="session_sheet_save_export_failed">ບັນທຶກໄຟລ໌ສົ່ງອອກບໍ່ໄດ້</string>
     <string name="session_sheet_export_failed_title">ສົ່ງອອກເຊດຊັນບໍ່ໄດ້</string>
-    <string name="session_sheet_notifications_off_message">ເປີດການແຈ້ງເຕືອນໃນການຕັ້ງຄ່າກ່ອນ.</string>
-    <string name="session_sheet_always_notify_on_failed_title">ເປີດແຈ້ງເຕືອນສະເໝີບໍ່ໄດ້</string>
-    <string name="session_sheet_always_notify_off_failed_title">ປິດແຈ້ງເຕືອນສະເໝີບໍ່ໄດ້</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">ເຊີບເວີບໍ່ຮອງຮັບໄຟລ໌</string>

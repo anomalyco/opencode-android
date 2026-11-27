@@ -1,6 +1,9 @@
 package ai.opencode.feature.system.notifications
 
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.Json
 import java.math.BigInteger
 import java.nio.ByteBuffer
@@ -47,14 +50,61 @@ object NotificationCrypto {
         data object InvalidPayload : Failure("invalid payload") { private fun readResolve(): Any = InvalidPayload }
     }
 
-    @Serializable
-    data class Payload(val title: String, val body: String, val sessionID: String, val status: String) {
-        val isValid: Boolean
-            get() = title.isNotEmpty() && body.isNotEmpty() && isValid(sessionID = sessionID) &&
-                status in setOf("succeeded", "failed", "interrupted")
-    }
+    /**
+     * A decrypted message, `{v:1, id, type, sessionID, title, body, data}`. A known type needs a session
+     * and a title; an unknown one may have neither, and without a title it isn't shown. A `clear`
+     * names the earlier message's [id]. [data] keeps the message's string values and [resources] its
+     * `data.resources` list.
+     */
+    data class Payload(
+        val type: String,
+        val sessionID: String?,
+        val title: String,
+        val body: String,
+        val id: String,
+        val data: Map<String, String> = emptyMap(),
+        val resources: List<String> = emptyList(),
+    ) {
+        val isKnownType: Boolean get() = type in KNOWN_TYPES
+        val outcome: String? get() = data["outcome"]
 
-    private val json = Json { ignoreUnknownKeys = true }
+        companion object {
+            val KNOWN_TYPES = setOf("session.idle", "question", "permission")
+
+            fun parse(text: String): Payload? {
+                val root = runCatching { Json.parseToJsonElement(text) as? JsonObject }.getOrNull() ?: return null
+                val version = (root["v"] as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull
+                if (version != 1) return null
+                val type = stringOf(root, "type") ?: return null
+                val id = stringOf(root, "id") ?: return null
+                val title = stringOf(root, "title") ?: ""
+                val body = stringOf(root, "body") ?: ""
+                var sessionID = stringOf(root, "sessionID")
+                if (sessionID != null && !isValid(sessionID = sessionID)) sessionID = null
+                if (type in KNOWN_TYPES && (sessionID == null || title.isEmpty())) return null
+                val data = mutableMapOf<String, String>()
+                val resources = mutableListOf<String>()
+                val values = root["data"] as? JsonObject
+                if (values != null) {
+                    for (key in values.keys) {
+                        val value = stringOf(values, key) ?: continue
+                        data[key] = value
+                    }
+                    val list = values["resources"] as? JsonArray
+                    if (list != null) {
+                        for (item in list) {
+                            val resource = (item as? JsonPrimitive)?.takeIf { it.isString }?.content ?: continue
+                            resources.add(resource)
+                        }
+                    }
+                }
+                return Payload(type, sessionID, title, body, id, data, resources)
+            }
+
+            private fun stringOf(root: JsonObject, key: String): String? =
+                (root[key] as? JsonPrimitive)?.takeIf { it.isString }?.content
+        }
+    }
 
     fun isValid(sessionID: String): Boolean {
         val bytes = sessionID.toByteArray(Charsets.UTF_8)
@@ -98,9 +148,7 @@ object NotificationCrypto {
                 .decode(ByteBuffer.wrap(plaintext))
                 .toString()
         }.getOrElse { throw Failure.InvalidPayload }
-        val payload = runCatching { json.decodeFromString(Payload.serializer(), text) }.getOrElse { throw Failure.InvalidPayload }
-        if (!payload.isValid) throw Failure.InvalidPayload
-        return payload
+        return Payload.parse(text) ?: throw Failure.InvalidPayload
     }
 
     // Key shapes.

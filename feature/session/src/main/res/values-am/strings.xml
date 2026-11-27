@@ -55,8 +55,6 @@
     <string name="session_pin">ሰካ</string>
     <string name="session_pinned">የተሰኩ</string>
     <string name="session_unread">ያልተነበቡ</string>
-    <string name="session_mute">ድምፅ አጥፋ</string>
-    <string name="session_muted">ድምፀ ከል የተደረገ</string>
     <string name="session_compact">የታመቀ</string>
     <string name="session_fork">ቅርንጫፍ ፍጠር</string>
     <string name="session_toggle_on_description">በርቷል</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">ወጪ</string>
     <string name="session_sheet_media">ሚዲያ</string>
     <string name="session_sheet_media_value">ፋይሎች እና አገናኞች</string>
-    <string name="session_always_notify">ሁልጊዜ አሳውቅ</string>
-    <string name="session_always_notify_message_phone">ከዚህ ያልተላኩ መልእክቶችንም ጨምሮ፣ ምላሽ ባለቀ ቁጥር በዚህ ስልክ አሳውቅ።</string>
-    <string name="session_always_notify_message_tablet">ከዚህ ያልተላኩ መልእክቶችንም ጨምሮ፣ ምላሽ ባለቀ ቁጥር በዚህ ታብሌት አሳውቅ።</string>
     <string name="session_delete_session">ክፍለ ጊዜን ሰርዝ</string>
     <string name="session_rename_placeholder">ርዕስ</string>
     <string name="session_auto_rename">ራስ-ሰር ስም ቀይር</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">የክፍለ ጊዜ IDን ቅዳ</string>
     <string name="session_mark_as_read">እንደተነበበ ምልክት አድርግ</string>
     <string name="session_mark_as_unread">እንዳልተነበበ ምልክት አድርግ</string>
-    <string name="session_unmute">ድምፅ ክፈት</string>
     <string name="session_menu_export_expanded_description">ተዘርግቷል</string>
     <string name="session_menu_export_collapsed_description">ተሰብስቧል</string>
     <string name="session_info">የክፍለ ጊዜ መረጃ</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">ከክፍለ ጊዜው ቅርንጫፍ መፍጠር አልተቻለም</string>
     <string name="session_sheet_save_export_failed">ወደ ውጭ የተላከውን ማስቀመጥ አልተቻለም</string>
     <string name="session_sheet_export_failed_title">ክፍለ ጊዜውን ወደ ውጭ መላክ አልተቻለም</string>
-    <string name="session_sheet_notifications_off_message">መጀመሪያ በቅንብሮች ውስጥ ማሳወቂያዎችን ያብሩ።</string>
-    <string name="session_sheet_always_notify_on_failed_title">«ሁልጊዜ አሳውቅ»ን ማብራት አልተቻለም</string>
-    <string name="session_sheet_always_notify_off_failed_title">«ሁልጊዜ አሳውቅ»ን ማጥፋት አልተቻለም</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">አገልጋዩ ፋይሎችን አይደግፍም</string>

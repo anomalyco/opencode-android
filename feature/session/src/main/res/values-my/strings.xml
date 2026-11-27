@@ -55,8 +55,6 @@
     <string name="session_pin">ထိပ်တွင် ချိတ်ထားပါ</string>
     <string name="session_pinned">ထိပ်တွင် ချိတ်ထားသည်များ</string>
     <string name="session_unread">မဖတ်ရသေး</string>
-    <string name="session_mute">အသိပေးချက် ပိတ်ပါ</string>
-    <string name="session_muted">အကြောင်းကြားချက် ပိတ်ထားသည်</string>
     <string name="session_compact">ကျစ်လျစ်သော</string>
     <string name="session_fork">စက်ရှင်ခွဲပါ</string>
     <string name="session_toggle_on_description">ဖွင့်</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">ကုန်ကျစရိတ်</string>
     <string name="session_sheet_media">မီဒီယာ</string>
     <string name="session_sheet_media_value">ဖိုင်များနှင့် လင့်ခ်များ</string>
-    <string name="session_always_notify">အမြဲအသိပေးပါ</string>
-    <string name="session_always_notify_message_phone">ဤဖုန်းမှ မပို့ထားသည့် မက်ဆေ့ဂျ်များအတွက်ပါ ပြန်စာပြီးတိုင်း ဤဖုန်းကို အသိပေးပါ။</string>
-    <string name="session_always_notify_message_tablet">ဤတက်ဘလက်မှ မပို့ထားသည့် မက်ဆေ့ဂျ်များအတွက်ပါ ပြန်စာပြီးတိုင်း ဤတက်ဘလက်ကို အသိပေးပါ။</string>
     <string name="session_delete_session">စက်ရှင်ကို ဖျက်ပါ။</string>
     <string name="session_rename_placeholder">ခေါင်းစဉ်</string>
     <string name="session_auto_rename">အလိုအလျောက် အမည်ပြောင်း</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">ဆက်ရှင် ID ကို ကူးယူပါ</string>
     <string name="session_mark_as_read">ဖတ်ပြီးဟု မှတ်ပါ</string>
     <string name="session_mark_as_unread">မဖတ်ရသေးဟု မှတ်ပါ</string>
-    <string name="session_unmute">အသိပေးချက် ပြန်ဖွင့်ပါ</string>
     <string name="session_menu_export_expanded_description">ချဲ့ထားသည်</string>
     <string name="session_menu_export_collapsed_description">ခေါက်သိမ်းထားသည်</string>
     <string name="session_info">စက်ရှင် အချက်အလက်</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">စက်ရှင် မခွဲနိုင်ပါ</string>
     <string name="session_sheet_save_export_failed">ထုတ်ယူထားသည်ကို မသိမ်းဆည်းနိုင်ပါ</string>
     <string name="session_sheet_export_failed_title">စက်ရှင်ကို မထုတ်ယူနိုင်ပါ</string>
-    <string name="session_sheet_notifications_off_message">ဆက်တင်များတွင် အကြောင်းကြားချက်များကို အရင်ဖွင့်ပါ။</string>
-    <string name="session_sheet_always_notify_on_failed_title">အမြဲအသိပေးခြင်းကို မဖွင့်နိုင်ပါ</string>
-    <string name="session_sheet_always_notify_off_failed_title">အမြဲအသိပေးခြင်းကို မပိတ်နိုင်ပါ</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">ဆာဗာက ဖိုင်များကို လက်မခံပါ</string>

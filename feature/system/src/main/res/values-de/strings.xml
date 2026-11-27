@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Neue Aktivität</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d Befehl ausführen?</item>
+        <item quantity="other">%1$d Befehle ausführen?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d Datei bearbeiten?</item>
+        <item quantity="other">%1$d Dateien bearbeiten?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d Datei lesen?</item>
+        <item quantity="other">%1$d Dateien lesen?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Eine Website öffnen?</string>
+    <string name="system_push_permission_websearch">Das Web durchsuchen?</string>
+    <string name="system_push_permission_external_directory">Auf einen Ordner zugreifen?</string>
+    <string name="system_push_permission_other">%1$s verwenden?</string>
+    <string name="system_push_allow">Erlauben</string>
+    <string name="system_push_deny">Verweigern</string>
+    <string name="system_push_reply">Antworten</string>
+    <string name="system_push_message_hint">Nachricht</string>
+    <string name="system_push_sending">Wird gesendet…</string>
+    <string name="system_push_send_failed">Senden fehlgeschlagen. Öffnen und erneut versuchen.</string>
+    <string name="system_push_detail_more">Öffnen, um alles zu sehen</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Sprachanrufe</string>
     <string name="system_channel_recording">Aufnahme</string>
     <string name="system_channel_session_runs">Sitzungsausführungen</string>
-    <string name="system_channel_session_updates">Sitzungsaktualisierungen</string>
+    <string name="system_channel_session_finished">Abgeschlossene Sitzungen</string>
+    <string name="system_channel_session_failed">Fehlgeschlagene Sitzungen</string>
+    <string name="system_channel_session_questions">Fragen</string>
+    <string name="system_channel_session_permissions">Berechtigungsanfragen</string>
+    <string name="system_channel_session_other">Sonstige Sitzungsaktualisierungen</string>
+    <string name="system_channel_session_runs_description">Fortschritt einer Sitzung, die du von diesem Handy gesendet hast</string>
+    <string name="system_channel_session_finished_description">Eine Sitzung hat ihre Runde abgeschlossen</string>
+    <string name="system_channel_session_failed_description">Eine Sitzung wurde mit einem Fehler gestoppt</string>
+    <string name="system_channel_session_questions_description">Eine Sitzung stellt dir eine Frage</string>
+    <string name="system_channel_session_permissions_description">Eine Sitzung braucht deine Berechtigung, um fortzufahren</string>
+    <string name="system_channel_session_other_description">Sonstige Aktualisierungen aus deinen Sitzungen</string>
     <string name="system_channel_shared_items">Geteilte Inhalte</string>
 
     <!-- Share sheet: notifications -->

@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">නව ක්‍රියාකාරකමක්</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">විධාන %1$dක් ධාවනය කරන්නද?</item>
+        <item quantity="other">විධාන %1$dක් ධාවනය කරන්නද?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">ගොනු %1$dක් සංස්කරණය කරන්නද?</item>
+        <item quantity="other">ගොනු %1$dක් සංස්කරණය කරන්නද?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">ගොනු %1$dක් කියවන්නද?</item>
+        <item quantity="other">ගොනු %1$dක් කියවන්නද?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">වෙබ් අඩවියක් විවෘත කරන්නද?</string>
+    <string name="system_push_permission_websearch">වෙබයේ සොයන්නද?</string>
+    <string name="system_push_permission_external_directory">ෆෝල්ඩරයකට ප්‍රවේශ වන්නද?</string>
+    <string name="system_push_permission_other">%1$s භාවිත කරන්නද?</string>
+    <string name="system_push_allow">ඉඩ දෙන්න</string>
+    <string name="system_push_deny">ප්‍රතික්ෂේප කරන්න</string>
+    <string name="system_push_reply">පිළිතුරු දෙන්න</string>
+    <string name="system_push_message_hint">පණිවිඩය</string>
+    <string name="system_push_sending">යවමින්…</string>
+    <string name="system_push_send_failed">යැවීමට නොහැකි විය. නැවත උත්සාහ කිරීමට විවෘත කරන්න.</string>
+    <string name="system_push_detail_more">සියල්ල බැලීමට විවෘත කරන්න</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">හඬ ඇමතුම්</string>
     <string name="system_channel_recording">හඬ පටිගත කරමින්</string>
     <string name="system_channel_session_runs">සැසි ධාවන</string>
-    <string name="system_channel_session_updates">සැසි යාවත්කාලීන</string>
+    <string name="system_channel_session_finished">අවසන් වූ සැසි</string>
+    <string name="system_channel_session_failed">අසාර්ථක වූ සැසි</string>
+    <string name="system_channel_session_questions">ප්‍රශ්න</string>
+    <string name="system_channel_session_permissions">අවසර ඉල්ලීම්</string>
+    <string name="system_channel_session_other">වෙනත් සැසි යාවත්කාලීන</string>
+    <string name="system_channel_session_runs_description">මෙම දුරකථනයෙන් ඔබ යැවූ සැසියක ප්‍රගතිය</string>
+    <string name="system_channel_session_finished_description">සැසියක වාරය අවසන් විය</string>
+    <string name="system_channel_session_failed_description">සැසියක් දෝෂයක් නිසා නතර විය</string>
+    <string name="system_channel_session_questions_description">සැසියක් ඔබෙන් ප්‍රශ්නයක් අසයි</string>
+    <string name="system_channel_session_permissions_description">දිගටම කරගෙන යාමට සැසියකට ඔබේ අවසරය අවශ්‍යයි</string>
+    <string name="system_channel_session_other_description">ඔබේ සැසිවලින් ලැබෙන වෙනත් යාවත්කාලීන</string>
     <string name="system_channel_shared_items">බෙදාගත් අයිතම</string>
 
     <!-- Share sheet: notifications -->

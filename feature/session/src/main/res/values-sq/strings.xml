@@ -55,8 +55,6 @@
     <string name="session_pin">Fikso</string>
     <string name="session_pinned">I fiksuar</string>
     <string name="session_unread">I palexuar</string>
-    <string name="session_mute">Hesht</string>
-    <string name="session_muted">Pa zë</string>
     <string name="session_compact">Kompakt</string>
     <string name="session_fork">Degëzo</string>
     <string name="session_toggle_on_description">Aktivizuar</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Kostoja</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Skedarët dhe lidhjet</string>
-    <string name="session_always_notify">Njofto gjithmonë</string>
-    <string name="session_always_notify_message_phone">Njofto këtë telefon sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>
-    <string name="session_always_notify_message_tablet">Njofto këtë tablet sa herë përfundon një përgjigje, edhe për mesazhet që nuk i dërgove nga këtu.</string>
     <string name="session_delete_session">Fshi sesionin</string>
     <string name="session_rename_placeholder">Titulli</string>
     <string name="session_auto_rename">Riemërto automatikisht</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Kopjo ID-në e sesionit</string>
     <string name="session_mark_as_read">Shëno si të lexuar</string>
     <string name="session_mark_as_unread">Shëno si të palexuar</string>
-    <string name="session_unmute">Hiq heshtjen</string>
     <string name="session_menu_export_expanded_description">E zgjeruar</string>
     <string name="session_menu_export_collapsed_description">E palosur</string>
     <string name="session_info">Informacion për sesionin</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Sesioni nuk u degëzua dot</string>
     <string name="session_sheet_save_export_failed">Eksporti nuk u ruajt dot</string>
     <string name="session_sheet_export_failed_title">Sesioni nuk u eksportua dot</string>
-    <string name="session_sheet_notifications_off_message">Aktivizo fillimisht njoftimet te cilësimet.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nuk u aktivizua dot “Njofto gjithmonë”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nuk u çaktivizua dot “Njofto gjithmonë”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serveri nuk mbështet skedarë</string>

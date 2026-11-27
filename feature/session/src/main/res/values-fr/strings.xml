@@ -55,8 +55,6 @@
     <string name="session_pin">Épingler</string>
     <string name="session_pinned">Épinglée</string>
     <string name="session_unread">Non lue</string>
-    <string name="session_mute">Mettre en sourdine</string>
-    <string name="session_muted">En sourdine</string>
     <string name="session_compact">Compacter</string>
     <string name="session_fork">Bifurquer</string>
     <string name="session_toggle_on_description">Activé</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Coût</string>
     <string name="session_sheet_media">Médias</string>
     <string name="session_sheet_media_value">Fichiers et liens</string>
-    <string name="session_always_notify">Toujours notifier</string>
-    <string name="session_always_notify_message_phone">Notifier ce téléphone à chaque réponse terminée, même si le message n’a pas été envoyé d’ici.</string>
-    <string name="session_always_notify_message_tablet">Notifier cette tablette à chaque réponse terminée, même si le message n’a pas été envoyé d’ici.</string>
     <string name="session_delete_session">Supprimer la session</string>
     <string name="session_rename_placeholder">Titre</string>
     <string name="session_auto_rename">Renommer automatiquement</string>
@@ -133,7 +128,6 @@
     <string name="session_copy_session_id">Copier l’ID de la session</string>
     <string name="session_mark_as_read">Marquer comme lue</string>
     <string name="session_mark_as_unread">Marquer comme non lue</string>
-    <string name="session_unmute">Réactiver les notifications</string>
     <string name="session_menu_export_expanded_description">Développé</string>
     <string name="session_menu_export_collapsed_description">Réduit</string>
     <string name="session_info">Infos de la session</string>
@@ -279,9 +273,6 @@
     <string name="session_sheet_fork_failed_title">Impossible de bifurquer la session</string>
     <string name="session_sheet_save_export_failed">Impossible d’enregistrer l’export</string>
     <string name="session_sheet_export_failed_title">Impossible d’exporter la session</string>
-    <string name="session_sheet_notifications_off_message">Activez d’abord les notifications dans les paramètres.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Impossible d’activer « Toujours notifier »</string>
-    <string name="session_sheet_always_notify_off_failed_title">Impossible de désactiver « Toujours notifier »</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Le serveur ne prend pas en charge les fichiers</string>

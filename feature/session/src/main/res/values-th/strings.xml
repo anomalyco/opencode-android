@@ -55,8 +55,6 @@
     <string name="session_pin">ปักหมุด</string>
     <string name="session_pinned">ปักหมุดแล้ว</string>
     <string name="session_unread">ยังไม่อ่าน</string>
-    <string name="session_mute">ปิดการแจ้งเตือน</string>
-    <string name="session_muted">ปิดการแจ้งเตือนแล้ว</string>
     <string name="session_compact">บีบอัด</string>
     <string name="session_fork">แตกแขนง</string>
     <string name="session_toggle_on_description">เปิด</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">ค่าใช้จ่าย</string>
     <string name="session_sheet_media">สื่อ</string>
     <string name="session_sheet_media_value">ไฟล์และลิงก์</string>
-    <string name="session_always_notify">แจ้งเตือนเสมอ</string>
-    <string name="session_always_notify_message_phone">แจ้งเตือนบนมือถือนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>
-    <string name="session_always_notify_message_tablet">แจ้งเตือนบนแท็บเล็ตนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>
     <string name="session_delete_session">ลบเซสชัน</string>
     <string name="session_rename_placeholder">ชื่อ</string>
     <string name="session_auto_rename">เปลี่ยนชื่ออัตโนมัติ</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">คัดลอก ID เซสชัน</string>
     <string name="session_mark_as_read">ทำเครื่องหมายว่าอ่านแล้ว</string>
     <string name="session_mark_as_unread">ทำเครื่องหมายว่ายังไม่อ่าน</string>
-    <string name="session_unmute">เปิดการแจ้งเตือน</string>
     <string name="session_menu_export_expanded_description">ขยายแล้ว</string>
     <string name="session_menu_export_collapsed_description">ย่อแล้ว</string>
     <string name="session_info">ข้อมูลเซสชัน</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">แตกแขนงเซสชันไม่ได้</string>
     <string name="session_sheet_save_export_failed">บันทึกไฟล์ส่งออกไม่ได้</string>
     <string name="session_sheet_export_failed_title">ส่งออกเซสชันไม่ได้</string>
-    <string name="session_sheet_notifications_off_message">เปิดการแจ้งเตือนในการตั้งค่าก่อน</string>
-    <string name="session_sheet_always_notify_on_failed_title">เปิดการแจ้งเตือนเสมอไม่ได้</string>
-    <string name="session_sheet_always_notify_off_failed_title">ปิดการแจ้งเตือนเสมอไม่ได้</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">เซิร์ฟเวอร์ไม่รองรับไฟล์</string>

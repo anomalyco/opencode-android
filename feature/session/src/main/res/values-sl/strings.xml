@@ -55,8 +55,6 @@
     <string name="session_pin">Pripni</string>
     <string name="session_pinned">Pripeto</string>
     <string name="session_unread">Neprebrano</string>
-    <string name="session_mute">Utišaj</string>
-    <string name="session_muted">Utišano</string>
     <string name="session_compact">Kompakten</string>
     <string name="session_fork">Odcepi</string>
     <string name="session_toggle_on_description">Vklopljeno</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Strošek</string>
     <string name="session_sheet_media">Predstavnost</string>
     <string name="session_sheet_media_value">Datoteke in povezave</string>
-    <string name="session_always_notify">Vedno obvesti</string>
-    <string name="session_always_notify_message_phone">Obvesti ta telefon ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
-    <string name="session_always_notify_message_tablet">Obvesti to tablico ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
     <string name="session_delete_session">Izbriši sejo</string>
     <string name="session_rename_placeholder">Naslov</string>
     <string name="session_auto_rename">Samodejno preimenuj</string>
@@ -135,7 +130,6 @@
     <string name="session_copy_session_id">Kopiraj ID seje</string>
     <string name="session_mark_as_read">Označi kot prebrano</string>
     <string name="session_mark_as_unread">Označi kot neprebrano</string>
-    <string name="session_unmute">Vklopi obvestila</string>
     <string name="session_menu_export_expanded_description">Razširjeno</string>
     <string name="session_menu_export_collapsed_description">Strnjeno</string>
     <string name="session_info">Podatki o seji</string>
@@ -289,9 +283,6 @@
     <string name="session_sheet_fork_failed_title">Odcepitev seje ni uspela</string>
     <string name="session_sheet_save_export_failed">Izvoza ni bilo mogoče shraniti</string>
     <string name="session_sheet_export_failed_title">Izvoz seje ni uspel</string>
-    <string name="session_sheet_notifications_off_message">Najprej vklopite obvestila v nastavitvah.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Vklop možnosti »Vedno obvesti« ni uspel</string>
-    <string name="session_sheet_always_notify_off_failed_title">Izklop možnosti »Vedno obvesti« ni uspel</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Strežnik ne podpira datotek</string>

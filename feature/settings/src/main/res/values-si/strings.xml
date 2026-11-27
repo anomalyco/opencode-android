@@ -51,22 +51,10 @@
     <!-- Notifications -->
     <string name="settings_notifications_title">දැනුම්දීම්</string>
     <string name="settings_notifications_device_header">මෙම %1$s</string>
-    <string name="settings_notifications_device_footer">දැනුම්දීම් කිසිවක් ගබඩා නොකරන අතරමැදියෙකු හරහා යැවේ. මෙම %1$s මත ඇරඹූ සැසිවල දැනුම්දීම් පමණක් එයට ලැබේ.</string>
     <string name="settings_notifications_allow">දැනුම්දීම්වලට ඉඩ දෙන්න</string>
     <string name="settings_notifications_open_android_settings">Android සැකසුම් විවෘත කරන්න</string>
     <string name="settings_notifications_turn_on">දැනුම්දීම් සක්‍රිය කරන්න</string>
     <string name="settings_notifications_server_header">සේවාදායකය</string>
-    <string name="settings_notifications_set_up_footer">ප්ලගීනය ස්ථාපනය කරන ලෙස OpenCode වෙතින් ඉල්ලන සැසියක් විවෘත කරයි. ඉල්ලීම යවා නැවත පරීක්ෂා කරන්න.</string>
-    <string name="settings_notifications_plugin_needed_footer">සේවාදායකයට OpenCode notify ප්ලගීනය අවශ්‍යයි.</string>
-    <string name="settings_notifications_notify_plugin">දැනුම්දීමේ ප්ලගීනය</string>
-    <string name="settings_notifications_plugin_installed">ස්ථාපනය කර ඇත</string>
-    <string name="settings_notifications_plugin_not_running">ක්‍රියාත්මක නැත</string>
-    <string name="settings_notifications_plugin_not_installed">ස්ථාපනය කර නැත</string>
-    <string name="settings_notifications_plugin_check_failed">තත්ත්වය පරීක්ෂා කිරීමට නොහැකි විය</string>
-    <string name="settings_notifications_set_up">OpenCode සමඟ සකසන්න</string>
-    <string name="settings_notifications_check_again">නැවත පරීක්ෂා කරන්න</string>
-    <string name="settings_notifications_in_app_footer">පැති පැනල බොත්තමේ පෙන්වයි.</string>
-    <string name="settings_notifications_in_app_notices">යෙදුම තුළ දැනුම්දීම්</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">සැසි</string>
@@ -223,4 +211,17 @@
     <string name="settings_pairing_point_camera">කැමරාව QR කේතය වෙත යොමු කරන්න</string>
     <string name="settings_pairing_paste_link">යුගල කිරීමේ සබැඳිය අලවන්න</string>
     <string name="settings_pairing_computer_hint">ඔබේ පරිගණකයේ OpenCode හි සැකසීම් → යුගල කිරීම විවෘත කරන්න, නැතහොත් පර්යන්තයක %1$s ධාවනය කරන්න.</string>
+    <string name="settings_notifications_server_toggle">මෙම උපාංගයට දැනුම් දෙන්න</string>
+    <string name="settings_notifications_mode">දැනුම් දිය යුතු දේ</string>
+    <string name="settings_notifications_mode_all">සියල්ල</string>
+    <string name="settings_notifications_mode_attention">මගේ අවධානය අවශ්‍ය විට පමණි</string>
+    <string name="settings_notifications_mode_from_this_phone">මම මෙහි භාවිත කරන සැසි පමණි</string>
+    <string name="settings_notifications_mode_none">කිසිවක් නැත</string>
+    <string name="settings_notifications_status_checking">සේවාදායකය පරීක්ෂා කරමින්…</string>
+    <string name="settings_notifications_status_no_permission">පළමුව ඉහතින් දැනුම්දීම්වලට ඉඩ දෙන්න.</string>
+    <string name="settings_notifications_status_outdated">මෙම සේවාදායකය දැනුම්දීම් ලබා නොදෙයි. එයට OpenCode යාවත්කාලීනයක් අවශ්‍ය විය හැක.</string>
+    <string name="settings_notifications_status_failed">මෙම සේවාදායකයේ දැනුම්දීම් සැකසීමට නොහැකි විය. OpenCode නැවත සම්බන්ධ වූ විට යළි උත්සාහ කරයි.</string>
+    <string name="settings_notifications_status_disabled">මෙම සේවාදායකයේ දැනුම්දීම් අක්‍රිය කර ඇත.</string>
+    <string name="settings_notifications_change_failed_title">දැනුම්දීම් වෙනස් කිරීමට නොහැකි විය</string>
+    <string name="settings_notifications_change_failed_message">සේවාදායකය එම වෙනස පිළිගත්තේ නැත.</string>
 </resources>

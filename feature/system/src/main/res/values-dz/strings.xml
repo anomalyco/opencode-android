@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">ལས་རིམ་གསརཔ།</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">བརྡ་བཀོད་ %1$d གཡོག་བཀོལ་ནི་ཨིན་ན?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ཡིག་སྣོད་ %1$d ཞུན་དག་འབད་ནི་ཨིན་ན?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ཡིག་སྣོད་ %1$d ལྷག་ནི་ཨིན་ན?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ཝེབ་སའིཊ་ཁ་ཕྱེ་ནི་ཨིན་ན?</string>
+    <string name="system_push_permission_websearch">ཝེབ་འཚོལ་ཞིབ་འབད་ནི་ཨིན་ན?</string>
+    <string name="system_push_permission_external_directory">སྣོད་འཛིན་འཛུལ་སྤྱོད་འབད་ནི་ཨིན་ན?</string>
+    <string name="system_push_permission_other">%1$s ལག་ལེན་འཐབ་ནི་ཨིན་ན?</string>
+    <string name="system_push_allow">འབད་བཅུག།</string>
+    <string name="system_push_deny">ཁས་མི་ལེན།</string>
+    <string name="system_push_reply">ལན་འདེབས།</string>
+    <string name="system_push_message_hint">འཕྲིན་དོན།</string>
+    <string name="system_push_sending">གཏང་དོ…</string>
+    <string name="system_push_send_failed">གཏང་མ་ཚུགས། ཁ་ཕྱེ་སྟེ་ལོག་འབད་རྩོལ་བསྐྱེད།</string>
+    <string name="system_push_detail_more">ཆ་མཉམ་བལྟ་ནི་ལུ་ཁ་ཕྱེ།</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">སྐད་ཀྱི་བོད་བརྡ་ཚུ།</string>
     <string name="system_channel_recording">སྐད་བཟུང་དོ།</string>
     <string name="system_channel_session_runs">ལཱ་ཡུན་གཡོག་བཀོལ།</string>
-    <string name="system_channel_session_updates">ལཱ་ཡུན་གྱི་དུས་མཐུན་ཚུ།</string>
+    <string name="system_channel_session_finished">མཇུག་བསྡུ་ཡོད་པའི་ལཱ་ཡུན་ཚུ།</string>
+    <string name="system_channel_session_failed">མཐར་མ་འཁྱོལ་བའི་ལཱ་ཡུན་ཚུ།</string>
+    <string name="system_channel_session_questions">དྲི་བ་ཚུ།</string>
+    <string name="system_channel_session_permissions">གནང་བའི་ཞུ་བ་ཚུ།</string>
+    <string name="system_channel_session_other">ལཱ་ཡུན་གྱི་དུས་མཐུན་གཞན་ཚུ།</string>
+    <string name="system_channel_session_runs_description">ཁྱོད་ཀྱིས་འགྲུལ་འཕྲིན་འདི་ལས་བཏང་བའི་ལཱ་ཡུན་གྱི་འགྲོ་རིམ།</string>
+    <string name="system_channel_session_finished_description">ལཱ་ཡུན་ཅིག་གིས་རང་གི་རེས་མོས་མཇུག་བསྡུ་ཡོདཔ།</string>
+    <string name="system_channel_session_failed_description">ལཱ་ཡུན་ཅིག་འཛོལ་བ་དང་བཅས་བཀག་ཡོདཔ།</string>
+    <string name="system_channel_session_questions_description">ལཱ་ཡུན་ཅིག་གིས་ཁྱོད་ལུ་དྲི་བ་འདྲི་དོ།</string>
+    <string name="system_channel_session_permissions_description">ལཱ་ཡུན་ཅིག་འཕྲོ་མཐུད་ནི་ལུ་ཁྱོད་ཀྱི་གནང་བ་དགོ</string>
+    <string name="system_channel_session_other_description">ཁྱོད་ཀྱི་ལཱ་ཡུན་ཚུ་ལས་དུས་མཐུན་གཞན་ཚུ།</string>
     <string name="system_channel_shared_items">བགོ་བཤའ་རྐྱབ་མི་ཅ་ལ་ཚུ།</string>
 
     <!-- Share sheet: notifications -->

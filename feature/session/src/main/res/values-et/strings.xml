@@ -55,8 +55,6 @@
     <string name="session_pin">Kinnita</string>
     <string name="session_pinned">Kinnitatud</string>
     <string name="session_unread">Lugemata</string>
-    <string name="session_mute">Vaigista</string>
-    <string name="session_muted">Vaigistatud</string>
     <string name="session_compact">Kompaktne</string>
     <string name="session_fork">Hargne</string>
     <string name="session_toggle_on_description">Sees</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Kulu</string>
     <string name="session_sheet_media">Meedia</string>
     <string name="session_sheet_media_value">Failid ja lingid</string>
-    <string name="session_always_notify">Teavita alati</string>
-    <string name="session_always_notify_message_phone">Teavita selles telefonis iga vastuse valmimisest, ka siis, kui päring saadeti mujalt.</string>
-    <string name="session_always_notify_message_tablet">Teavita selles tahvelarvutis iga vastuse valmimisest, ka siis, kui päring saadeti mujalt.</string>
     <string name="session_delete_session">Kustuta seanss</string>
     <string name="session_rename_placeholder">Pealkiri</string>
     <string name="session_auto_rename">Nimeta automaatselt ümber</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Kopeeri seansi ID</string>
     <string name="session_mark_as_read">Märgi loetuks</string>
     <string name="session_mark_as_unread">Märgi lugematuks</string>
-    <string name="session_unmute">Luba märguanded</string>
     <string name="session_menu_export_expanded_description">Laiendatud</string>
     <string name="session_menu_export_collapsed_description">Ahendatud</string>
     <string name="session_info">Seansi teave</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Seansi hargnemine ebaõnnestus</string>
     <string name="session_sheet_save_export_failed">Ekspordi salvestamine ebaõnnestus</string>
     <string name="session_sheet_export_failed_title">Seansi eksportimine ebaõnnestus</string>
-    <string name="session_sheet_notifications_off_message">Lülita esmalt seadetes teavitused sisse.</string>
-    <string name="session_sheet_always_notify_on_failed_title">„Teavita alati“ sisselülitamine ebaõnnestus</string>
-    <string name="session_sheet_always_notify_off_failed_title">„Teavita alati“ väljalülitamine ebaõnnestus</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server ei toeta faile</string>

@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">አዲስ እንቅስቃሴ</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ትዕዛዝ ያስኬድ?</item>
+        <item quantity="other">%1$d ትዕዛዞችን ያስኬድ?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ፋይል ያርትዕ?</item>
+        <item quantity="other">%1$d ፋይሎችን ያርትዕ?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ፋይል ያንብብ?</item>
+        <item quantity="other">%1$d ፋይሎችን ያንብብ?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ድር ጣቢያ ይክፈት?</string>
+    <string name="system_push_permission_websearch">ድሩን ይፈልግ?</string>
+    <string name="system_push_permission_external_directory">ወደ አቃፊ ይግባ?</string>
+    <string name="system_push_permission_other">%1$s ይጠቀም?</string>
+    <string name="system_push_allow">ፍቀድ</string>
+    <string name="system_push_deny">ክድ</string>
+    <string name="system_push_reply">መልስ</string>
+    <string name="system_push_message_hint">መልእክት</string>
+    <string name="system_push_sending">በመላክ ላይ…</string>
+    <string name="system_push_send_failed">መላክ አልተቻለም። እንደገና ለመሞከር ክፈት።</string>
+    <string name="system_push_detail_more">ሁሉንም ለማየት ክፈት</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">የድምፅ ጥሪዎች</string>
     <string name="system_channel_recording">በመቅዳት ላይ</string>
     <string name="system_channel_session_runs">የክፍለ ጊዜ ሂደቶች</string>
-    <string name="system_channel_session_updates">የክፍለ ጊዜ ዝማኔዎች</string>
+    <string name="system_channel_session_finished">የተጠናቀቁ ክፍለ ጊዜዎች</string>
+    <string name="system_channel_session_failed">ያልተሳኩ ክፍለ ጊዜዎች</string>
+    <string name="system_channel_session_questions">ጥያቄዎች</string>
+    <string name="system_channel_session_permissions">የፈቃድ ጥያቄዎች</string>
+    <string name="system_channel_session_other">ሌሎች የክፍለ ጊዜ ዝማኔዎች</string>
+    <string name="system_channel_session_runs_description">ከዚህ ስልክ የላኩት የክፍለ ጊዜ ሂደት</string>
+    <string name="system_channel_session_finished_description">አንድ ክፍለ ጊዜ ዙሩን አጠናቋል</string>
+    <string name="system_channel_session_failed_description">አንድ ክፍለ ጊዜ በስህተት ምክንያት ቆሟል</string>
+    <string name="system_channel_session_questions_description">አንድ ክፍለ ጊዜ ጥያቄ እየጠየቀዎት ነው</string>
+    <string name="system_channel_session_permissions_description">አንድ ክፍለ ጊዜ ለመቀጠል ፈቃድዎ ያስፈልገዋል</string>
+    <string name="system_channel_session_other_description">ከክፍለ ጊዜዎችዎ የሚመጡ ሌሎች ዝማኔዎች</string>
     <string name="system_channel_shared_items">የተጋሩ ንጥሎች</string>
 
     <!-- Share sheet: notifications -->

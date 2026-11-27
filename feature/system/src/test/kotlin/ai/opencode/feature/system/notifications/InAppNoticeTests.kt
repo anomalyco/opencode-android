@@ -26,7 +26,7 @@ class InAppNoticeTests {
     }
 
     @Test fun needsInputStatusesAreTheOnlyOnesClearedOnAnswer() {
-        fun content(status: String) = SessionPushNotifications.Delivered(tag = "ses_a", sessionID = "ses_a", status = status)
+        fun content(status: String) = SessionPushNotifications.Delivered(sessionID = "ses_a", status = status)
         assertTrue(SessionPushNotifications.isNeedsInput(content("permission")))
         assertFalse(SessionPushNotifications.isNeedsInput(content("succeeded")))
         assertEquals("ses_a", SessionPushNotifications.sessionID(content("succeeded")))

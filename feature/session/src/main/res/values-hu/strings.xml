@@ -55,8 +55,6 @@
     <string name="session_pin">Rögzítés</string>
     <string name="session_pinned">Rögzített</string>
     <string name="session_unread">Olvasatlan</string>
-    <string name="session_mute">Némítás</string>
-    <string name="session_muted">Némított</string>
     <string name="session_compact">Kompakt</string>
     <string name="session_fork">Elágazás</string>
     <string name="session_toggle_on_description">Bekapcsolva</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Költség</string>
     <string name="session_sheet_media">Média</string>
     <string name="session_sheet_media_value">Fájlok és linkek</string>
-    <string name="session_always_notify">Mindig értesítsen</string>
-    <string name="session_always_notify_message_phone">Értesítés ezen a telefonon minden elkészült válaszról, akkor is, ha az üzenetet nem innen küldte.</string>
-    <string name="session_always_notify_message_tablet">Értesítés ezen a táblagépen minden elkészült válaszról, akkor is, ha az üzenetet nem innen küldte.</string>
     <string name="session_delete_session">Delete munkamenet</string>
     <string name="session_rename_placeholder">Cím</string>
     <string name="session_auto_rename">Automatikus átnevezés</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Munkamenet-azonosító másolása</string>
     <string name="session_mark_as_read">Megjelölés olvasottként</string>
     <string name="session_mark_as_unread">Megjelölés olvasatlanként</string>
-    <string name="session_unmute">Némítás feloldása</string>
     <string name="session_menu_export_expanded_description">Kibontva</string>
     <string name="session_menu_export_collapsed_description">Összecsukva</string>
     <string name="session_info">Munkamenet adatai</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Nem sikerült elágaztatni a munkamenetet</string>
     <string name="session_sheet_save_export_failed">Nem sikerült az export megtakarítása</string>
     <string name="session_sheet_export_failed_title">Nem sikerült exportálni a munkamenetet</string>
-    <string name="session_sheet_notifications_off_message">Előbb kapcsolja be az értesítéseket a beállításokban.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nem sikerült bekapcsolni a „Mindig értesítsen” beállítást</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nem sikerült kikapcsolni a „Mindig értesítsen” beállítást</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">A kiszolgáló nem támogatja a fájlokat</string>

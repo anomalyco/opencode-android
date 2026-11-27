@@ -42,7 +42,6 @@ import ai.opencode.feature.media.OpenURLClient
 import ai.opencode.feature.media.PageReaderClient
 import ai.opencode.feature.system.SceneWindowClient
 import ai.opencode.feature.transcript.SessionLinkTarget
-import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.composer.SharedComposerDraft
 import ai.opencode.feature.composer.SharedDraftTarget
 import ai.opencode.feature.composer.SharedLocation
@@ -881,7 +880,6 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
         /** From the voice agent: a new session's draft, in a project when given. */
         data class OpenDraft(val directory: String?) : Delegate
         data class ToggleRead(val sessionID: String) : Delegate
-        data class ToggleMute(val sessionID: String) : Delegate
         data class DeleteSession(val sessionID: String) : Delegate
         /** A recording's words for another session's composer, unsent. */
         data class KeepDraft(val target: SharedDraftTarget, val draft: SharedComposerDraft) : Delegate
@@ -1039,7 +1037,6 @@ class SessionFeature : Reducer<SessionFeature.State, SessionFeature.Action> {
     internal val composerPersistence by Dependency(ComposerPersistence)
     internal val undeliveredPrompts by Dependency(UndeliveredPrompts)
     internal val promptOutbox by Dependency(PromptOutbox)
-    internal val sessionNotifications by Dependency(SessionNotificationsClient)
     internal val haptics by Dependency(HapticsClient)
     internal val soundEffects by Dependency(SoundEffectsClient)
     internal val mediaReferences by Dependency(MediaReferenceClient)

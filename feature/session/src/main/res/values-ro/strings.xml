@@ -55,8 +55,6 @@
     <string name="session_pin">Fixează</string>
     <string name="session_pinned">Fixată</string>
     <string name="session_unread">Necitită</string>
-    <string name="session_mute">Dezactivează notificările</string>
-    <string name="session_muted">Cu notificările oprite</string>
     <string name="session_compact">Compactează</string>
     <string name="session_fork">Derivează</string>
     <string name="session_toggle_on_description">Activat</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Cost</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Fișiere și linkuri</string>
-    <string name="session_always_notify">Notifică mereu</string>
-    <string name="session_always_notify_message_phone">Primește notificări pe acest telefon când un răspuns e gata, chiar și pentru mesajele trimise de pe alt dispozitiv.</string>
-    <string name="session_always_notify_message_tablet">Primește notificări pe această tabletă când un răspuns e gata, chiar și pentru mesajele trimise de pe alt dispozitiv.</string>
     <string name="session_delete_session">Șterge sesiunea</string>
     <string name="session_rename_placeholder">Titlu</string>
     <string name="session_auto_rename">Redenumește automat</string>
@@ -133,7 +128,6 @@
     <string name="session_copy_session_id">Copiază ID-ul sesiunii</string>
     <string name="session_mark_as_read">Marchează ca citită</string>
     <string name="session_mark_as_unread">Marchează ca necitită</string>
-    <string name="session_unmute">Activează notificările</string>
     <string name="session_menu_export_expanded_description">Extins</string>
     <string name="session_menu_export_collapsed_description">Restrâns</string>
     <string name="session_info">Informații despre sesiune</string>
@@ -279,9 +273,6 @@
     <string name="session_sheet_fork_failed_title">Nu s-a putut deriva sesiunea</string>
     <string name="session_sheet_save_export_failed">Nu s-a putut salva exportul</string>
     <string name="session_sheet_export_failed_title">Nu s-a putut exporta sesiunea</string>
-    <string name="session_sheet_notifications_off_message">Activează mai întâi notificările în Setări.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nu s-a putut activa „Notifică mereu”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nu s-a putut dezactiva „Notifică mereu”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serverul nu acceptă fișiere</string>

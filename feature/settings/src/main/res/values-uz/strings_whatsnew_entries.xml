@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">Aloqa zaiflashsa, qo‘ng‘iroqda soniyalab jimlik o‘rniga qisqa uzilish bo‘ladi.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Sessiya bildirishnomalarini o‘chirish</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Bildirishnomalari o‘chirilgan sessiyalar ro‘yxatda qoladi, lekin Yangiliklarni ko‘rishda chiqmaydi va o‘qilmaganlik nuqtasi ko‘rinmaydi.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Hammasini o‘qilgan deb belgilash uchun Yangiliklarni ko‘rishni bosib turing. Javobingizni kutayotgan sessiyalar qoladi.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Yon panelda sessiyani bosib turing va Bildirishnomalarni o‘chirishni bosing</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Istalgan joydan juftlash</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Formulalar matn o‘lchamiga moslashadi.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Xabar qanday yuborilishining blok-sxemasini so‘rang</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Xabar qanday yuborilishining blok-sxemasini chiz</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Tugagach xabar berish</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Bu yerda boshlagan sessiyangiz tugagach, bajarilgan ishning qisqa mazmuni bilan bildirishnoma oling.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Har bir javob, hatto kompyuterda boshlanganlari haqida ham xabar olish uchun sessiya panelida Har doim xabar berishni yoqing.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Sessiyani ochish uchun bildirishnomani bosing.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Xabar yuboring, so‘ng telefonni qulflang</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Serverni almashtirish</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Ilova belgisidagi hisoblagich</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Ilova belgisi o‘qilmagan yoki sizni kutayotgan seanslar sonini ko‘rsatadi — bu «Yangiliklarni ko‘rish»dagi son bilan bir xil.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Bildirishnomalari o‘chirilgan seanslar hisobga olinmaydi.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Buning uchun bildirishnomalar yoqilgan bo‘lishi kerak.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Sessiyada savolni javobsiz qoldiring, so‘ng bosh ekranga o‘ting</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Jild o‘chsa ham sessiyalar qoladi</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Sessiya jildi yo‘q bo‘lsa, masalan, ish maydoni o‘chirilgan bo‘lsa, xabar yuborilmaganda sessiyani loyiha jildiga ko‘chirish taklif qilinadi va xabar qayta yuboriladi.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Bildirishnomalarni OpenCode bilan sozlash</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Sozlamalar → Bildirishnomalar ichida OpenCode bilan sozlashni bosing. Yetishmayotgan bildirishnoma plaginini o‘rnatadigan tezkor matnni ko‘rib chiqasiz.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Qo‘ng‘iroq kartasi pastki qismni egallaydi</string>

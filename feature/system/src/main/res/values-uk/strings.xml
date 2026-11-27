@@ -75,12 +75,51 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Нова активність</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Виконати %1$d команду?</item>
+        <item quantity="few">Виконати %1$d команди?</item>
+        <item quantity="many">Виконати %1$d команд?</item>
+        <item quantity="other">Виконати %1$d команд?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Редагувати %1$d файл?</item>
+        <item quantity="few">Редагувати %1$d файли?</item>
+        <item quantity="many">Редагувати %1$d файлів?</item>
+        <item quantity="other">Редагувати %1$d файлів?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Прочитати %1$d файл?</item>
+        <item quantity="few">Прочитати %1$d файли?</item>
+        <item quantity="many">Прочитати %1$d файлів?</item>
+        <item quantity="other">Прочитати %1$d файлів?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Відкрити вебсайт?</string>
+    <string name="system_push_permission_websearch">Шукати в інтернеті?</string>
+    <string name="system_push_permission_external_directory">Доступ до папки?</string>
+    <string name="system_push_permission_other">Використати %1$s?</string>
+    <string name="system_push_allow">Дозволити</string>
+    <string name="system_push_deny">Заборонити</string>
+    <string name="system_push_reply">Відповісти</string>
+    <string name="system_push_message_hint">Повідомлення</string>
+    <string name="system_push_sending">Надсилання…</string>
+    <string name="system_push_send_failed">Не вдалося надіслати. Відкрийте, щоб повторити.</string>
+    <string name="system_push_detail_more">Відкрийте, щоб побачити все</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Голосові дзвінки</string>
     <string name="system_channel_recording">Запис</string>
     <string name="system_channel_session_runs">Запуски сесій</string>
-    <string name="system_channel_session_updates">Оновлення сесій</string>
+    <string name="system_channel_session_finished">Завершені сесії</string>
+    <string name="system_channel_session_failed">Сесії з помилкою</string>
+    <string name="system_channel_session_questions">Запитання</string>
+    <string name="system_channel_session_permissions">Запити на дозвіл</string>
+    <string name="system_channel_session_other">Інші оновлення сесій</string>
+    <string name="system_channel_session_runs_description">Перебіг сесії, яку ви надіслали з цього телефону</string>
+    <string name="system_channel_session_finished_description">Сесія завершила крок</string>
+    <string name="system_channel_session_failed_description">Сесія зупинилася через помилку</string>
+    <string name="system_channel_session_questions_description">Сесія ставить вам запитання</string>
+    <string name="system_channel_session_permissions_description">Сесії потрібен ваш дозвіл, щоб продовжити</string>
+    <string name="system_channel_session_other_description">Інші оновлення ваших сесій</string>
     <string name="system_channel_shared_items">Надіслані елементи</string>
 
     <!-- Share sheet: notifications -->

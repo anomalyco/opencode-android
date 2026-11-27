@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Aktivitet i ri</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Të ekzekutoj %1$d komandë?</item>
+        <item quantity="other">Të ekzekutoj %1$d komanda?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Të redaktoj %1$d skedar?</item>
+        <item quantity="other">Të redaktoj %1$d skedarë?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Të lexoj %1$d skedar?</item>
+        <item quantity="other">Të lexoj %1$d skedarë?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Të hap një faqe uebi?</string>
+    <string name="system_push_permission_websearch">Të kërkoj në ueb?</string>
+    <string name="system_push_permission_external_directory">Të kem qasje në një dosje?</string>
+    <string name="system_push_permission_other">Të përdor %1$s?</string>
+    <string name="system_push_allow">Lejo</string>
+    <string name="system_push_deny">Moho</string>
+    <string name="system_push_reply">Përgjigju</string>
+    <string name="system_push_message_hint">Mesazh</string>
+    <string name="system_push_sending">Po dërgohet…</string>
+    <string name="system_push_send_failed">Nuk u dërgua dot. Hape për të provuar sërish.</string>
+    <string name="system_push_detail_more">Hap për t’i parë të gjitha</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Thirrje zanore</string>
     <string name="system_channel_recording">Po regjistrohet</string>
     <string name="system_channel_session_runs">Ekzekutimet e sesioneve</string>
-    <string name="system_channel_session_updates">Përditësimet e sesioneve</string>
+    <string name="system_channel_session_finished">Sesione të përfunduara</string>
+    <string name="system_channel_session_failed">Sesione të dështuara</string>
+    <string name="system_channel_session_questions">Pyetje</string>
+    <string name="system_channel_session_permissions">Kërkesa për leje</string>
+    <string name="system_channel_session_other">Përditësime të tjera të sesionit</string>
+    <string name="system_channel_session_runs_description">Ecuria e një sesioni që dërgove nga ky telefon</string>
+    <string name="system_channel_session_finished_description">Një sesion përfundoi hapin e tij</string>
+    <string name="system_channel_session_failed_description">Një sesion u ndal me gabim</string>
+    <string name="system_channel_session_questions_description">Një sesion po të bën një pyetje</string>
+    <string name="system_channel_session_permissions_description">Një sesion kërkon lejen tënde për të vazhduar</string>
+    <string name="system_channel_session_other_description">Përditësime të tjera nga sesionet e tua</string>
     <string name="system_channel_shared_items">Artikujt e ndarë</string>
 
     <!-- Share sheet: notifications -->

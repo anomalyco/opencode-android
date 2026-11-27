@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">नयाँ गतिविधि</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d आदेश चलाउने?</item>
+        <item quantity="other">%1$d आदेशहरू चलाउने?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d फाइल सम्पादन गर्ने?</item>
+        <item quantity="other">%1$d फाइलहरू सम्पादन गर्ने?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d फाइल पढ्ने?</item>
+        <item quantity="other">%1$d फाइलहरू पढ्ने?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">वेबसाइट खोल्ने?</string>
+    <string name="system_push_permission_websearch">वेब खोज्ने?</string>
+    <string name="system_push_permission_external_directory">फोल्डरमा पहुँच दिने?</string>
+    <string name="system_push_permission_other">%1$s प्रयोग गर्ने?</string>
+    <string name="system_push_allow">अनुमति दिनुहोस्</string>
+    <string name="system_push_deny">अस्वीकार गर्नुहोस्</string>
+    <string name="system_push_reply">जवाफ दिनुहोस्</string>
+    <string name="system_push_message_hint">सन्देश</string>
+    <string name="system_push_sending">पठाउँदै…</string>
+    <string name="system_push_send_failed">पठाउन सकिएन। फेरि प्रयास गर्न खोल्नुहोस्।</string>
+    <string name="system_push_detail_more">सबै हेर्न खोल्नुहोस्</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">आवाज कलहरू</string>
     <string name="system_channel_recording">रेकर्ड गर्दै</string>
     <string name="system_channel_session_runs">सत्र सञ्चालनहरू</string>
-    <string name="system_channel_session_updates">सत्र अपडेटहरू</string>
+    <string name="system_channel_session_finished">सकिएका सत्रहरू</string>
+    <string name="system_channel_session_failed">असफल सत्रहरू</string>
+    <string name="system_channel_session_questions">प्रश्नहरू</string>
+    <string name="system_channel_session_permissions">अनुमति अनुरोधहरू</string>
+    <string name="system_channel_session_other">सत्रका अन्य अपडेटहरू</string>
+    <string name="system_channel_session_runs_description">तपाईंले यो फोनबाट पठाउनुभएको सत्रको प्रगति</string>
+    <string name="system_channel_session_finished_description">कुनै सत्रको पालो सकियो</string>
+    <string name="system_channel_session_failed_description">कुनै सत्र त्रुटिसहित रोकियो</string>
+    <string name="system_channel_session_questions_description">कुनै सत्रले तपाईंलाई प्रश्न सोधिरहेको छ</string>
+    <string name="system_channel_session_permissions_description">कुनै सत्रलाई जारी राख्न तपाईंको अनुमति चाहिन्छ</string>
+    <string name="system_channel_session_other_description">तपाईंका सत्रहरूका अन्य अपडेटहरू</string>
     <string name="system_channel_shared_items">साझा गरिएका सामग्री</string>
 
     <!-- Share sheet: notifications -->

@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">လိုင်းမကောင်းလျှင် စက္ကန့်အတော်ကြာ အသံပျောက်မည့်အစား ခဏသာ အသံထစ်တော့သည်။</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">စက်ရှင် အသိပေးချက် ပိတ်ပါ</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">အသိပေးချက် ပိတ်ထားသော ဆက်ရှင်များသည် စာရင်းထဲတွင် ရှိနေသော်လည်း အမီလိုက်ကြည့်ရန်တွင် မပါဝင်ဘဲ မဖတ်ရသေးသည့် အစက်လည်း မပြပါ။</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">အားလုံးကို ဖတ်ပြီးဟု မှတ်ရန် အမီလိုက်ကြည့်ရန်ကို ဖိထားပါ။ သင့်ကို စောင့်နေသော ဆက်ရှင်များတော့ ကျန်နေမည်။</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">ဘေးအကန့်ရှိ စက်ရှင်တစ်ခုကို ဖိထားပြီး အသိပေးချက် ပိတ်ပါကို နှိပ်ပါ</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">ဘယ်နေရာမှမဆို တွဲချိတ်ပါ</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">သင်္ချာပုံသေနည်းများကို သင်ရွေးထားသော စာသားအရွယ်အတိုင်း ပြသည်။</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">မက်ဆေ့ဂျ်ပို့ပုံကို လုပ်ငန်းစဉ်ပြ ပုံကြမ်းဖြင့် ပြခိုင်းပါ</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">မက်ဆေ့ဂျ်ပို့ပုံကို လုပ်ငန်းစဉ်ပြ ပုံကြမ်း ရေးဆွဲပေးပါ</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">ပြီးလျှင် အသိပေးပါ</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">ဤနေရာမှ စတင်ထားသော စက်ရှင် အလုပ်ပြီးလျှင် လုပ်ဆောင်ခဲ့သည့် အကျဉ်းချုပ်နှင့်အတူ အကြောင်းကြားချက် ရမည်။</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">ကွန်ပျူတာမှ စတင်ထားသည့် အလုပ်များအပါအဝင် ပြန်စာတိုင်းအတွက် အသိပေးချက်ရရန် စက်ရှင်အကန့်တွင် အမြဲအသိပေးရန်ကို ဖွင့်ပါ။</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">သက်ဆိုင်ရာ စက်ရှင်ကို ဖွင့်ရန် အကြောင်းကြားချက်ကို နှိပ်ပါ။</string>
-    <string name="settings_whatsnew_entry_always_notify_example">မက်ဆေ့ဂျ်တစ်စောင် ပို့ပြီး ဖုန်းကို လော့ခ်ချပါ</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">ဆာဗာပြောင်းပါ</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">အက်ပ်သင်္ကေတပေါ်က အရေအတွက်</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">အက်ပ်သင်္ကေတတွင် မဖတ်ရသေးသော သို့မဟုတ် သင့်ကို စောင့်နေသော စက်ရှင်အရေအတွက်ကို “အမီလိုက်ကြည့်ရန်” နှင့် တူညီစွာ ပြထားသည်။</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">အကြောင်းကြားချက် ပိတ်ထားသော စက်ရှင်များကို မထည့်တွက်ပါ။</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">အကြောင်းကြားချက်များ ဖွင့်ထားရန် လိုသည်။</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">မေးခွန်းအဖြေကို စောင့်နေသည့် စက်ရှင်တစ်ခုကို ထားခဲ့ပြီး ပင်မဖန်သားပြင်သို့ သွားပါ</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">ဖိုင်တွဲမရှိလည်း စက်ရှင် ဆက်သုံးနိုင်</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">အလုပ်နေရာ ဖယ်ရှားထားခြင်းကဲ့သို့ စက်ရှင်၏ ဖိုင်တွဲမရှိတော့လျှင် ပို့မအောင်မြင်သည့်အခါ ပရောဂျက်၏ ဖိုင်တွဲသို့ စက်ရှင်ကို ရွှေ့ပြီး ပြန်ပို့ရန် ကမ်းလှမ်းပါမည်။</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">OpenCode ဖြင့် အကြောင်းကြားချက်များ စနစ်ထည့်သွင်းပါ</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">ဆက်တင်များ → အကြောင်းကြားချက်များ တွင် OpenCode ဖြင့် စနစ်ထည့်သွင်းပါကို နှိပ်ပြီး လိုအပ်နေသော အကြောင်းကြားချက်ပလပ်အင် ထည့်သွင်းပေးမည့် အချက်ပြစာကို ပြန်လည်သုံးသပ်ပါ။</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">ခေါ်ဆိုမှုကတ်က အောက်ခြေကို နေရာယူ</string>

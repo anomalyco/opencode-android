@@ -55,8 +55,6 @@
     <string name="session_pin">གཏན་བཟུང་འབད།</string>
     <string name="session_pinned">གཏན་བཟུང་འབད་ཡོདཔ།</string>
     <string name="session_unread">མ་ལྷགཔ།</string>
-    <string name="session_mute">བརྡ་བསྐུལ་བཀག</string>
-    <string name="session_muted">བརྡ་བསྐུལ་བཀག་ཡོདཔ།</string>
     <string name="session_compact">བསྡུ་སྒྲིག།</string>
     <string name="session_fork">ཕོརཀ།</string>
     <string name="session_toggle_on_description">ཨཱོན།</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">ཟད་འགྲོ།</string>
     <string name="session_sheet_media">བརྡ་བརྒྱུད།</string>
     <string name="session_sheet_media_value">ཡིག་སྣོད་དང་འབྲེལ་མཐུད་ཚུ།</string>
-    <string name="session_always_notify">ཨ་རྟག་ར་བརྡ་བསྐུལ་འབད།</string>
-    <string name="session_always_notify_message_phone">ནཱ་ལས་མ་བཏང་མི་ཚུ་ཨིན་རུང་ ལན་འདེབས་རེ་མཇུག་བསྡུཝ་ད་ འགྲུལ་འཕྲིན་འདི་ལུ་བརྡ་བསྐུལ་འབད།</string>
-    <string name="session_always_notify_message_tablet">ནཱ་ལས་མ་བཏང་མི་ཚུ་ཨིན་རུང་ ལན་འདེབས་རེ་མཇུག་བསྡུཝ་ད་ ཊེབ་ལེཊ་འདི་ལུ་བརྡ་བསྐུལ་འབད།</string>
     <string name="session_delete_session">ལཱ་ཡུན་བཏོན་གཏང་།</string>
     <string name="session_rename_placeholder">མགོ་མིང་།</string>
     <string name="session_auto_rename">རང་བཞིན་གྱིས་མིང་བསྒྱུར།</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">ལཱ་ཡུན་གྱི་ཨའི་ཌི་འདྲ་བཤུས་འབད།</string>
     <string name="session_mark_as_read">ལྷག་ཡོདཔ་སྦེ་རྟགས་བཀལ།</string>
     <string name="session_mark_as_unread">མ་ལྷགཔ་སྦེ་རྟགས་བཀལ།</string>
-    <string name="session_unmute">བརྡ་བསྐུལ་ལོག་སྤྲོད།</string>
     <string name="session_menu_export_expanded_description">རྒྱ་བསྐྱེད་ཡོདཔ།</string>
     <string name="session_menu_export_collapsed_description">བརྡིབས་ཡོདཔ།</string>
     <string name="session_info">ལཱ་ཡུན་གྱི་བརྡ་དོན།</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">ལཱ་ཡུན་ཕོརཀ་འབད་མ་ཚུགས།</string>
     <string name="session_sheet_save_export_failed">ཕྱིར་འདྲེན་འབད་མི་སྲུང་སྐྱོབས་འབད་མ་ཚུགས།</string>
     <string name="session_sheet_export_failed_title">ལཱ་ཡུན་ཕྱིར་འདྲེན་འབད་མ་ཚུགས།</string>
-    <string name="session_sheet_notifications_off_message">ཧེ་མ་སྒྲིག་སྟངས་ཚུ་ནང་བརྡ་བསྐུལ་ཚུ་ཨཱོན་འབད།</string>
-    <string name="session_sheet_always_notify_on_failed_title">ཨ་རྟག་ར་བརྡ་བསྐུལ་འབད་ནི་ཨཱོན་འབད་མ་ཚུགས།</string>
-    <string name="session_sheet_always_notify_off_failed_title">ཨ་རྟག་ར་བརྡ་བསྐུལ་འབད་ནི་ཨོཕ་འབད་མ་ཚུགས།</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">སར་བར་གྱིས་ཡིག་སྣོད་ཚུ་ལུ་རྒྱབ་སྐྱོར་མི་འབད།</string>

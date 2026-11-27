@@ -55,8 +55,6 @@
     <string name="session_pin">Καρφίτσωμα</string>
     <string name="session_pinned">Καρφιτσωμένη</string>
     <string name="session_unread">Αδιάβαστη</string>
-    <string name="session_mute">Σίγαση</string>
-    <string name="session_muted">Σε σίγαση</string>
     <string name="session_compact">Συμπαγές</string>
     <string name="session_fork">Διακλάδωση</string>
     <string name="session_toggle_on_description">Ενεργό</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Κόστος</string>
     <string name="session_sheet_media">Πολυμέσα</string>
     <string name="session_sheet_media_value">Αρχεία και σύνδεσμοι</string>
-    <string name="session_always_notify">Ειδοποίηση πάντα</string>
-    <string name="session_always_notify_message_phone">Ειδοποίηση σε αυτό το κινητό όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>
-    <string name="session_always_notify_message_tablet">Ειδοποίηση σε αυτό το τάμπλετ όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>
     <string name="session_delete_session">Διαγραφή συνεδρίας</string>
     <string name="session_rename_placeholder">Τίτλος</string>
     <string name="session_auto_rename">Αυτόματη μετονομασία</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Αντιγραφή ID συνεδρίας</string>
     <string name="session_mark_as_read">Σήμανση ως αναγνωσμένης</string>
     <string name="session_mark_as_unread">Σήμανση ως αδιάβαστης</string>
-    <string name="session_unmute">Άρση σίγασης</string>
     <string name="session_menu_export_expanded_description">Αναπτυγμένο</string>
     <string name="session_menu_export_collapsed_description">Συμπτυγμένο</string>
     <string name="session_info">Πληροφορίες συνεδρίας</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Αδυναμία διακλάδωσης συνεδρίας</string>
     <string name="session_sheet_save_export_failed">Αδυναμία αποθήκευσης εξαγωγής</string>
     <string name="session_sheet_export_failed_title">Αδυναμία εξαγωγής συνεδρίας</string>
-    <string name="session_sheet_notifications_off_message">Ενεργοποιήστε πρώτα τις ειδοποιήσεις στις Ρυθμίσεις.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Αδυναμία ενεργοποίησης της επιλογής «Ειδοποίηση πάντα»</string>
-    <string name="session_sheet_always_notify_off_failed_title">Αδυναμία απενεργοποίησης της επιλογής «Ειδοποίηση πάντα»</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Ο διακομιστής δεν υποστηρίζει αρχεία</string>

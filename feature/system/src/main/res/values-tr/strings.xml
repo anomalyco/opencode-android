@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Yeni etkinlik</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d komut çalıştırılsın mı?</item>
+        <item quantity="other">%1$d komut çalıştırılsın mı?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d dosya düzenlensin mi?</item>
+        <item quantity="other">%1$d dosya düzenlensin mi?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d dosya okunsun mu?</item>
+        <item quantity="other">%1$d dosya okunsun mu?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Bir web sitesi açılsın mı?</string>
+    <string name="system_push_permission_websearch">Web\'de arama yapılsın mı?</string>
+    <string name="system_push_permission_external_directory">Bir klasöre erişilsin mi?</string>
+    <string name="system_push_permission_other">%1$s kullanılsın mı?</string>
+    <string name="system_push_allow">İzin ver</string>
+    <string name="system_push_deny">Reddet</string>
+    <string name="system_push_reply">Yanıtla</string>
+    <string name="system_push_message_hint">Mesaj</string>
+    <string name="system_push_sending">Gönderiliyor…</string>
+    <string name="system_push_send_failed">Gönderilemedi. Yeniden denemek için açın.</string>
+    <string name="system_push_detail_more">Tümünü görmek için açın</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Sesli aramalar</string>
     <string name="system_channel_recording">Kaydediliyor</string>
     <string name="system_channel_session_runs">Oturum çalıştırmaları</string>
-    <string name="system_channel_session_updates">Oturum güncellemeleri</string>
+    <string name="system_channel_session_finished">Tamamlanan oturumlar</string>
+    <string name="system_channel_session_failed">Başarısız oturumlar</string>
+    <string name="system_channel_session_questions">Sorular</string>
+    <string name="system_channel_session_permissions">İzin istekleri</string>
+    <string name="system_channel_session_other">Diğer oturum güncellemeleri</string>
+    <string name="system_channel_session_runs_description">Bu telefondan gönderdiğiniz bir oturumun ilerleyişi</string>
+    <string name="system_channel_session_finished_description">Bir oturum turunu tamamladı</string>
+    <string name="system_channel_session_failed_description">Bir oturum hata nedeniyle durdu</string>
+    <string name="system_channel_session_questions_description">Bir oturum size soru soruyor</string>
+    <string name="system_channel_session_permissions_description">Bir oturumun devam etmesi için izniniz gerekiyor</string>
+    <string name="system_channel_session_other_description">Oturumlarınızdan diğer güncellemeler</string>
     <string name="system_channel_shared_items">Paylaşılan öğeler</string>
 
     <!-- Share sheet: notifications -->

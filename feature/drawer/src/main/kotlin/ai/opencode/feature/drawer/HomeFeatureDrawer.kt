@@ -35,9 +35,10 @@ import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 
 /*
- * The drawer's own actions — opening sessions and drafts, pins, mutes, read state, deletion, and
+ * The drawer's own actions — opening sessions and drafts, pins, read state, deletion, and
  * the transcript reads around a tap.
  */
 
@@ -190,16 +191,6 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
             )
         }
 
-        is Action.ToggleMute -> {
-            if (state.sessions.none { it.id == action.sessionID }) return Reduced(state)
-            haptics.play(Haptic.selection)
-            val key = state.sessionKey(action.sessionID)
-            val s = if (state.isMuted(action.sessionID)) state.updatingMutedSessionKeys { it - key }
-            else state.updatingMutedSessionKeys { it + key }
-            // A muted card leaves the stack unless it is the one on screen.
-            return Reduced(s.reconcilingCatchUp())
-        }
-
         is Action.ToggleHidden -> {
             if (state.sessions.none { it.id == action.sessionID }) return Reduced(state)
             haptics.play(Haptic.selection)
@@ -324,7 +315,11 @@ internal fun HomeFeature.reduceDrawer(state: State, action: Action): HomeReduced
         is Action.MarkRead -> {
             val session = state.sessions.firstOrNull { it.id == action.sessionID } ?: return Reduced(state)
             haptics.play(Haptic.selection)
-            return Reduced(state.markingReadLocally(session).clearingUnseenBaseline(session.id), acknowledgeView(session, state.server))
+            val delivered = dependency(DeliveredNotificationsClient)
+            return Reduced(
+                state.markingReadLocally(session).clearingUnseenBaseline(session.id),
+                Effect.merge(acknowledgeView(session, state.server), Effect.run { delivered.removeAll(setOf(session.id)) }),
+            )
         }
 
         is Action.MarkUnread -> {

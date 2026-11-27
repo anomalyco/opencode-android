@@ -75,12 +75,51 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nova dejavnost</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Zaženem %1$d ukaz?</item>
+        <item quantity="two">Zaženem %1$d ukaza?</item>
+        <item quantity="few">Zaženem %1$d ukaze?</item>
+        <item quantity="other">Zaženem %1$d ukazov?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Uredim %1$d datoteko?</item>
+        <item quantity="two">Uredim %1$d datoteki?</item>
+        <item quantity="few">Uredim %1$d datoteke?</item>
+        <item quantity="other">Uredim %1$d datotek?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Preberem %1$d datoteko?</item>
+        <item quantity="two">Preberem %1$d datoteki?</item>
+        <item quantity="few">Preberem %1$d datoteke?</item>
+        <item quantity="other">Preberem %1$d datotek?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Odprem spletno stran?</string>
+    <string name="system_push_permission_websearch">Preiščem splet?</string>
+    <string name="system_push_permission_external_directory">Dostopam do mape?</string>
+    <string name="system_push_permission_other">Uporabim %1$s?</string>
+    <string name="system_push_allow">Dovoli</string>
+    <string name="system_push_deny">Zavrni</string>
+    <string name="system_push_reply">Odgovori</string>
+    <string name="system_push_message_hint">Sporočilo</string>
+    <string name="system_push_sending">Pošiljanje…</string>
+    <string name="system_push_send_failed">Pošiljanje ni uspelo. Odpri in poskusi znova.</string>
+    <string name="system_push_detail_more">Odpri za ogled vsega</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Glasovni klici</string>
     <string name="system_channel_recording">Snemanje</string>
     <string name="system_channel_session_runs">Izvajanja sej</string>
-    <string name="system_channel_session_updates">Posodobitve sej</string>
+    <string name="system_channel_session_finished">Končane seje</string>
+    <string name="system_channel_session_failed">Neuspele seje</string>
+    <string name="system_channel_session_questions">Vprašanja</string>
+    <string name="system_channel_session_permissions">Zahteve za dovoljenje</string>
+    <string name="system_channel_session_other">Druge posodobitve sej</string>
+    <string name="system_channel_session_runs_description">Napredek seje, ki ste jo poslali s tega telefona</string>
+    <string name="system_channel_session_finished_description">Seja je končala svoj korak</string>
+    <string name="system_channel_session_failed_description">Seja se je ustavila zaradi napake</string>
+    <string name="system_channel_session_questions_description">Seja vam zastavlja vprašanje</string>
+    <string name="system_channel_session_permissions_description">Seja potrebuje vaše dovoljenje za nadaljevanje</string>
+    <string name="system_channel_session_other_description">Druge posodobitve vaših sej</string>
     <string name="system_channel_shared_items">Deljeni elementi</string>
 
     <!-- Share sheet: notifications -->

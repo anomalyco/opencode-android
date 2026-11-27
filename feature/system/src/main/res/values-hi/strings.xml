@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">नई गतिविधि</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d कमांड चलाएँ?</item>
+        <item quantity="other">%1$d कमांड चलाएँ?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d फ़ाइल संपादित करें?</item>
+        <item quantity="other">%1$d फ़ाइलें संपादित करें?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d फ़ाइल पढ़ें?</item>
+        <item quantity="other">%1$d फ़ाइलें पढ़ें?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">वेबसाइट खोलें?</string>
+    <string name="system_push_permission_websearch">वेब पर खोजें?</string>
+    <string name="system_push_permission_external_directory">फ़ोल्डर एक्सेस करें?</string>
+    <string name="system_push_permission_other">%1$s का उपयोग करें?</string>
+    <string name="system_push_allow">अनुमति दें</string>
+    <string name="system_push_deny">अस्वीकार करें</string>
+    <string name="system_push_reply">जवाब दें</string>
+    <string name="system_push_message_hint">संदेश</string>
+    <string name="system_push_sending">भेजा जा रहा है…</string>
+    <string name="system_push_send_failed">भेज नहीं सके। पुनः प्रयास करने के लिए खोलें।</string>
+    <string name="system_push_detail_more">सभी देखने के लिए खोलें</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">वॉइस कॉल</string>
     <string name="system_channel_recording">रिकॉर्डिंग</string>
     <string name="system_channel_session_runs">सेशन का संचालन</string>
-    <string name="system_channel_session_updates">सेशन अपडेट</string>
+    <string name="system_channel_session_finished">पूरे हुए सेशन</string>
+    <string name="system_channel_session_failed">असफल सेशन</string>
+    <string name="system_channel_session_questions">प्रश्न</string>
+    <string name="system_channel_session_permissions">अनुमति के अनुरोध</string>
+    <string name="system_channel_session_other">अन्य सेशन अपडेट</string>
+    <string name="system_channel_session_runs_description">इस फ़ोन से भेजे गए आपके सेशन की प्रगति</string>
+    <string name="system_channel_session_finished_description">किसी सेशन ने अपना टर्न पूरा कर लिया</string>
+    <string name="system_channel_session_failed_description">कोई सेशन त्रुटि के कारण रुक गया</string>
+    <string name="system_channel_session_questions_description">कोई सेशन आपसे प्रश्न पूछ रहा है</string>
+    <string name="system_channel_session_permissions_description">किसी सेशन को जारी रखने के लिए आपकी अनुमति चाहिए</string>
+    <string name="system_channel_session_other_description">आपके सेशन के अन्य अपडेट</string>
     <string name="system_channel_shared_items">शेयर किए गए आइटम</string>
 
     <!-- Share sheet: notifications -->

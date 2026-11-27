@@ -55,8 +55,6 @@
     <string name="session_pin">Przypnij</string>
     <string name="session_pinned">Przypięte</string>
     <string name="session_unread">Nieprzeczytane</string>
-    <string name="session_mute">Wycisz</string>
-    <string name="session_muted">Wyciszone</string>
     <string name="session_compact">Kompaktuj</string>
     <string name="session_fork">Rozwidlij</string>
     <string name="session_toggle_on_description">Włączone</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Koszt</string>
     <string name="session_sheet_media">Multimedia</string>
     <string name="session_sheet_media_value">Pliki i linki</string>
-    <string name="session_always_notify">Zawsze powiadamiaj</string>
-    <string name="session_always_notify_message_phone">Powiadamiaj ten telefon o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
-    <string name="session_always_notify_message_tablet">Powiadamiaj ten tablet o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
     <string name="session_delete_session">Usuń sesję</string>
     <string name="session_rename_placeholder">Tytuł</string>
     <string name="session_auto_rename">Nazwij automatycznie</string>
@@ -135,7 +130,6 @@
     <string name="session_copy_session_id">Kopiuj identyfikator sesji</string>
     <string name="session_mark_as_read">Oznacz jako przeczytane</string>
     <string name="session_mark_as_unread">Oznacz jako nieprzeczytane</string>
-    <string name="session_unmute">Wyłącz wyciszenie</string>
     <string name="session_menu_export_expanded_description">Rozwinięte</string>
     <string name="session_menu_export_collapsed_description">Zwinięte</string>
     <string name="session_info">Informacje o sesji</string>
@@ -289,9 +283,6 @@
     <string name="session_sheet_fork_failed_title">Nie udało się rozwidlić sesji</string>
     <string name="session_sheet_save_export_failed">Nie udało się zapisać eksportu</string>
     <string name="session_sheet_export_failed_title">Nie udało się wyeksportować sesji</string>
-    <string name="session_sheet_notifications_off_message">Najpierw włącz powiadomienia w ustawieniach.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nie udało się włączyć opcji „Zawsze powiadamiaj”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nie udało się wyłączyć opcji „Zawsze powiadamiaj”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serwer nie obsługuje plików</string>

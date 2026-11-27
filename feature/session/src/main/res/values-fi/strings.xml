@@ -55,8 +55,6 @@
     <string name="session_pin">Kiinnitä</string>
     <string name="session_pinned">Kiinnitetty</string>
     <string name="session_unread">Lukematon</string>
-    <string name="session_mute">Mykistä</string>
-    <string name="session_muted">Mykistetty</string>
     <string name="session_compact">Tiivistä</string>
     <string name="session_fork">Haarauta</string>
     <string name="session_toggle_on_description">Käytössä</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Kustannus</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Tiedostot ja linkit</string>
-    <string name="session_always_notify">Ilmoita aina</string>
-    <string name="session_always_notify_message_phone">Ilmoita tähän puhelimeen aina, kun vastaus valmistuu, myös muualla lähetettyihin viesteihin.</string>
-    <string name="session_always_notify_message_tablet">Ilmoita tähän tablettiin aina, kun vastaus valmistuu, myös muualla lähetettyihin viesteihin.</string>
     <string name="session_delete_session">Poista istunto</string>
     <string name="session_rename_placeholder">Otsikko</string>
     <string name="session_auto_rename">Nimeä automaattisesti</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Kopioi istunnon tunnus</string>
     <string name="session_mark_as_read">Merkitse luetuksi</string>
     <string name="session_mark_as_unread">Merkitse lukemattomaksi</string>
-    <string name="session_unmute">Poista mykistys</string>
     <string name="session_menu_export_expanded_description">Laajennettu</string>
     <string name="session_menu_export_collapsed_description">Kutistettu</string>
     <string name="session_info">Istunnon tiedot</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Istunnon haarautus epäonnistui</string>
     <string name="session_sheet_save_export_failed">Viennin tallentaminen epäonnistui</string>
     <string name="session_sheet_export_failed_title">Istunnon vienti epäonnistui</string>
-    <string name="session_sheet_notifications_off_message">Ota ilmoitukset ensin käyttöön asetuksista.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Ilmoita aina -asetuksen käyttöönotto epäonnistui</string>
-    <string name="session_sheet_always_notify_off_failed_title">Ilmoita aina -asetuksen poisto käytöstä epäonnistui</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Palvelin ei tue tiedostoja</string>

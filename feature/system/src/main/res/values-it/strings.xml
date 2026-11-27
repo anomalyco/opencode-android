@@ -75,12 +75,48 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nuova attività</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Eseguire %1$d comando?</item>
+        <item quantity="many">Eseguire %1$d comandi?</item>
+        <item quantity="other">Eseguire %1$d comandi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Modificare %1$d file?</item>
+        <item quantity="many">Modificare %1$d file?</item>
+        <item quantity="other">Modificare %1$d file?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Leggere %1$d file?</item>
+        <item quantity="many">Leggere %1$d file?</item>
+        <item quantity="other">Leggere %1$d file?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Aprire un sito web?</string>
+    <string name="system_push_permission_websearch">Cercare sul web?</string>
+    <string name="system_push_permission_external_directory">Accedere a una cartella?</string>
+    <string name="system_push_permission_other">Usare %1$s?</string>
+    <string name="system_push_allow">Consenti</string>
+    <string name="system_push_deny">Nega</string>
+    <string name="system_push_reply">Rispondi</string>
+    <string name="system_push_message_hint">Messaggio</string>
+    <string name="system_push_sending">Invio in corso…</string>
+    <string name="system_push_send_failed">Invio non riuscito. Apri per riprovare.</string>
+    <string name="system_push_detail_more">Apri per vedere tutto</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Chiamate vocali</string>
     <string name="system_channel_recording">Registrazione</string>
     <string name="system_channel_session_runs">Esecuzioni delle sessioni</string>
-    <string name="system_channel_session_updates">Aggiornamenti delle sessioni</string>
+    <string name="system_channel_session_finished">Sessioni terminate</string>
+    <string name="system_channel_session_failed">Sessioni non riuscite</string>
+    <string name="system_channel_session_questions">Domande</string>
+    <string name="system_channel_session_permissions">Richieste di autorizzazione</string>
+    <string name="system_channel_session_other">Altri aggiornamenti delle sessioni</string>
+    <string name="system_channel_session_runs_description">Avanzamento di una sessione inviata da questo telefono</string>
+    <string name="system_channel_session_finished_description">Una sessione ha terminato il suo turno</string>
+    <string name="system_channel_session_failed_description">Una sessione si è interrotta con un errore</string>
+    <string name="system_channel_session_questions_description">Una sessione ti sta facendo una domanda</string>
+    <string name="system_channel_session_permissions_description">Una sessione richiede la tua autorizzazione per continuare</string>
+    <string name="system_channel_session_other_description">Altri aggiornamenti dalle tue sessioni</string>
     <string name="system_channel_shared_items">Elementi condivisi</string>
 
     <!-- Share sheet: notifications -->

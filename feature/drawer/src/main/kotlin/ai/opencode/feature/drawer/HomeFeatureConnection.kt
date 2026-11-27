@@ -83,7 +83,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         // sends with this server's credentials.
         val shareInbox = dependency(ShareInboxClient)
         shareInbox.publishTargets(state.shareTargets)
-        shareInbox.publishCredentials(ShareCredentials(state.server), true)
+        shareInbox.publishCredentials(ShareCredentials(state.server))
         val persistence = dependency(TranscriptCachePersistence)
         val sharedStore = dependency(SharedStore)
         val flush = Effect.run<Action> {
@@ -100,7 +100,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         val sessionID = state.sessionDetail?.session?.id
         val synced = if (sessionID != null) state.syncingSeenItemsFromOpenDetail(sessionID) else state
         val s = synced.appLeft(dependency(AppAwayDate).now())
-        Reduced(s, Effect.merge(publishAppBadge(s), waitToSettleSessionActivity(s)))
+        Reduced(s, waitToSettleSessionActivity(s))
     }
 
     is Action.ServerConnected -> {
@@ -168,7 +168,7 @@ internal fun HomeFeature.reduceConnection(state: State, action: Action): HomeRed
         val s = state.returnedToApp(dependency(AppAwayDate).now())
         // Decided on the connection's state before it settles this action.
         val silence = dependency(ServerLinkClient).streamSilence(s.server.persistenceID)
-        if (!s.connection.resyncsWhenActive(silence)) Reduced(s) else refreshSnapshot(s.unsettlingNotices())
+        if (!s.connection.resyncsWhenActive(silence)) Reduced(s, removeStaleNotifications(s)) else refreshSnapshot(s.unsettlingNotices())
     }
 
     Action.ReconnectingGraceElapsed, is Action.OfflineGraceElapsed -> Reduced(state)
@@ -553,7 +553,7 @@ internal val State.voiceSessionBoard: VoiceSessionBoard?
             sessions = sessions,
             busyIDs = status.busy,
             attentionIDs = status.attention,
-            unreadIDs = sessions.filter { status.isUnread(it) && !status.isMuted(it.id) }.mapTo(HashSet()) { it.id },
+            unreadIDs = sessions.filter { status.isUnread(it) }.mapTo(HashSet()) { it.id },
             pinnedSessionKeys = pinnedSessionKeys,
             attentionDirectories = HomeFeature.attentionDirectories(this).toSet(),
             isLive = status.showsActivity,

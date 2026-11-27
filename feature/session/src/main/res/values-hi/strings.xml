@@ -55,8 +55,6 @@
     <string name="session_pin">पिन करें</string>
     <string name="session_pinned">पिन किए गए</string>
     <string name="session_unread">न पढ़े गए</string>
-    <string name="session_mute">म्यूट करें</string>
-    <string name="session_muted">म्यूट</string>
     <string name="session_compact">संक्षिप्त</string>
     <string name="session_fork">फ़ोर्क करें</string>
     <string name="session_toggle_on_description">चालू</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">लागत</string>
     <string name="session_sheet_media">मीडिया</string>
     <string name="session_sheet_media_value">फ़ाइलें और लिंक</string>
-    <string name="session_always_notify">हमेशा सूचना दें</string>
-    <string name="session_always_notify_message_phone">हर जवाब पूरा होने पर इस फ़ोन पर सूचना दें, भले ही संदेश यहाँ से न भेजा गया हो।</string>
-    <string name="session_always_notify_message_tablet">हर जवाब पूरा होने पर इस टैबलेट पर सूचना दें, भले ही संदेश यहाँ से न भेजा गया हो।</string>
     <string name="session_delete_session">सेशन हटाएं</string>
     <string name="session_rename_placeholder">शीर्षक</string>
     <string name="session_auto_rename">अपने आप नाम बदलें</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">सेशन ID कॉपी करें</string>
     <string name="session_mark_as_read">पढ़ा हुआ मानें</string>
     <string name="session_mark_as_unread">न पढ़ा हुआ मानें</string>
-    <string name="session_unmute">म्यूट हटाएँ</string>
     <string name="session_menu_export_expanded_description">विस्तृत</string>
     <string name="session_menu_export_collapsed_description">संक्षिप्त</string>
     <string name="session_info">सेशन की जानकारी</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">सेशन फ़ोर्क नहीं किया जा सका</string>
     <string name="session_sheet_save_export_failed">निर्यात सहेजा नहीं जा सका</string>
     <string name="session_sheet_export_failed_title">सेशन निर्यात नहीं किया जा सका</string>
-    <string name="session_sheet_notifications_off_message">पहले सेटिंग्स में सूचनाएँ चालू करें।</string>
-    <string name="session_sheet_always_notify_on_failed_title">‘हमेशा सूचना दें’ चालू नहीं किया जा सका</string>
-    <string name="session_sheet_always_notify_off_failed_title">‘हमेशा सूचना दें’ बंद नहीं किया जा सका</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">सर्वर फ़ाइलों का समर्थन नहीं करता</string>

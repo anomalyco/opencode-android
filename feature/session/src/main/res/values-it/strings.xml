@@ -55,8 +55,6 @@
     <string name="session_pin">Fissa in alto</string>
     <string name="session_pinned">Fissata</string>
     <string name="session_unread">Da leggere</string>
-    <string name="session_mute">Silenzia</string>
-    <string name="session_muted">Silenziata</string>
     <string name="session_compact">Compatta</string>
     <string name="session_fork">Crea una nuova sessione</string>
     <string name="session_toggle_on_description">Attivato</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Costo</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">File e link</string>
-    <string name="session_always_notify">Notifica sempre</string>
-    <string name="session_always_notify_message_phone">Ricevi una notifica su questo telefono al termine di ogni risposta, anche ai messaggi inviati da altri dispositivi.</string>
-    <string name="session_always_notify_message_tablet">Ricevi una notifica su questo tablet al termine di ogni risposta, anche ai messaggi inviati da altri dispositivi.</string>
     <string name="session_delete_session">Elimina sessione</string>
     <string name="session_rename_placeholder">Titolo</string>
     <string name="session_auto_rename">Rinomina automaticamente</string>
@@ -133,7 +128,6 @@
     <string name="session_copy_session_id">Copia ID sessione</string>
     <string name="session_mark_as_read">Segna come letta</string>
     <string name="session_mark_as_unread">Segna come da leggere</string>
-    <string name="session_unmute">Riattiva notifiche</string>
     <string name="session_menu_export_expanded_description">Espanso</string>
     <string name="session_menu_export_collapsed_description">Compresso</string>
     <string name="session_info">Info sessione</string>
@@ -279,9 +273,6 @@
     <string name="session_sheet_fork_failed_title">Impossibile creare una nuova sessione</string>
     <string name="session_sheet_save_export_failed">Impossibile salvare l\'esportazione</string>
     <string name="session_sheet_export_failed_title">Impossibile esportare la sessione</string>
-    <string name="session_sheet_notifications_off_message">Prima attiva le notifiche nelle impostazioni.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Impossibile attivare “Notifica sempre”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Impossibile disattivare “Notifica sempre”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Il server non supporta i file</string>

@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Uutta toimintaa</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Suoritetaanko %1$d komento?</item>
+        <item quantity="other">Suoritetaanko %1$d komentoa?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Muokataanko %1$d tiedostoa?</item>
+        <item quantity="other">Muokataanko %1$d tiedostoa?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Luetaanko %1$d tiedosto?</item>
+        <item quantity="other">Luetaanko %1$d tiedostoa?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Avataanko verkkosivu?</string>
+    <string name="system_push_permission_websearch">Haetaanko verkosta?</string>
+    <string name="system_push_permission_external_directory">Sallitaanko pääsy kansioon?</string>
+    <string name="system_push_permission_other">Käytetäänkö kohdetta %1$s?</string>
+    <string name="system_push_allow">Salli</string>
+    <string name="system_push_deny">Kiellä</string>
+    <string name="system_push_reply">Vastaa</string>
+    <string name="system_push_message_hint">Viesti</string>
+    <string name="system_push_sending">Lähetetään…</string>
+    <string name="system_push_send_failed">Lähetys epäonnistui. Avaa ja yritä uudelleen.</string>
+    <string name="system_push_detail_more">Avaa nähdäksesi kaikki</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Äänipuhelut</string>
     <string name="system_channel_recording">Äänitys</string>
     <string name="system_channel_session_runs">Istuntojen suoritukset</string>
-    <string name="system_channel_session_updates">Istuntojen päivitykset</string>
+    <string name="system_channel_session_finished">Valmistuneet istunnot</string>
+    <string name="system_channel_session_failed">Epäonnistuneet istunnot</string>
+    <string name="system_channel_session_questions">Kysymykset</string>
+    <string name="system_channel_session_permissions">Lupapyynnöt</string>
+    <string name="system_channel_session_other">Muut istuntopäivitykset</string>
+    <string name="system_channel_session_runs_description">Tästä puhelimesta lähettämäsi istunnon eteneminen</string>
+    <string name="system_channel_session_finished_description">Istunto sai vuoronsa valmiiksi</string>
+    <string name="system_channel_session_failed_description">Istunto pysähtyi virheeseen</string>
+    <string name="system_channel_session_questions_description">Istunto esittää sinulle kysymyksen</string>
+    <string name="system_channel_session_permissions_description">Istunto tarvitsee lupasi jatkaakseen</string>
+    <string name="system_channel_session_other_description">Muut päivitykset istunnoistasi</string>
     <string name="system_channel_shared_items">Jaetut kohteet</string>
 
     <!-- Share sheet: notifications -->

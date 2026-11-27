@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Нова активност</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Да се изпълни ли %1$d команда?</item>
+        <item quantity="other">Да се изпълнят ли %1$d команди?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Да се редактира ли %1$d файл?</item>
+        <item quantity="other">Да се редактират ли %1$d файла?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Да се прочете ли %1$d файл?</item>
+        <item quantity="other">Да се прочетат ли %1$d файла?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Да се отвори ли уебсайт?</string>
+    <string name="system_push_permission_websearch">Да се търси ли в мрежата?</string>
+    <string name="system_push_permission_external_directory">Да се разреши ли достъп до папка?</string>
+    <string name="system_push_permission_other">Да се използва ли %1$s?</string>
+    <string name="system_push_allow">Разреши</string>
+    <string name="system_push_deny">Откажи</string>
+    <string name="system_push_reply">Отговори</string>
+    <string name="system_push_message_hint">Съобщение</string>
+    <string name="system_push_sending">Изпращане…</string>
+    <string name="system_push_send_failed">Неуспешно изпращане. Отворете за повторен опит.</string>
+    <string name="system_push_detail_more">Отворете, за да видите всичко</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Гласови обаждания</string>
     <string name="system_channel_recording">Запис</string>
     <string name="system_channel_session_runs">Изпълнения на сесии</string>
-    <string name="system_channel_session_updates">Актуализации на сесии</string>
+    <string name="system_channel_session_finished">Завършени сесии</string>
+    <string name="system_channel_session_failed">Неуспешни сесии</string>
+    <string name="system_channel_session_questions">Въпроси</string>
+    <string name="system_channel_session_permissions">Заявки за разрешение</string>
+    <string name="system_channel_session_other">Други актуализации на сесии</string>
+    <string name="system_channel_session_runs_description">Напредък на сесия, изпратена от този телефон</string>
+    <string name="system_channel_session_finished_description">Сесия завърши стъпката си</string>
+    <string name="system_channel_session_failed_description">Сесия спря с грешка</string>
+    <string name="system_channel_session_questions_description">Сесия ви задава въпрос</string>
+    <string name="system_channel_session_permissions_description">Сесия се нуждае от разрешението ви, за да продължи</string>
+    <string name="system_channel_session_other_description">Други актуализации от вашите сесии</string>
     <string name="system_channel_shared_items">Споделени елементи</string>
 
     <!-- Share sheet: notifications -->

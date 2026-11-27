@@ -70,7 +70,7 @@ class SystemActionActivity : Activity() {
                         .putExtra(NotificationDestination.EXTRA_SERVER, destination.serverKey)
                         .putExtra(NotificationDestination.EXTRA_SESSION, destination.sessionID)
                 }
-            }
+            } ?: openApp(this)
             return false
         }
         // The share sheet's "sent" notification opens the session it sent to.

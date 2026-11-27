@@ -50,22 +50,10 @@
     <!-- Notifications -->
     <string name="settings_notifications_title">通知</string>
     <string name="settings_notifications_device_header">此 %1$s</string>
-    <string name="settings_notifications_device_footer">通知通过不存储任何内容的中继服务发送。只有在此 %1$s 上启动的会话才会向它发送通知。</string>
     <string name="settings_notifications_allow">允许通知</string>
     <string name="settings_notifications_open_android_settings">打开 Android 设置</string>
     <string name="settings_notifications_turn_on">开启通知</string>
     <string name="settings_notifications_server_header">服务器</string>
-    <string name="settings_notifications_set_up_footer">打开一个会话，请 OpenCode 安装插件。发送后，再检查一次。</string>
-    <string name="settings_notifications_plugin_needed_footer">服务器需要安装 OpenCode notify 插件。</string>
-    <string name="settings_notifications_notify_plugin">通知插件</string>
-    <string name="settings_notifications_plugin_installed">已安装</string>
-    <string name="settings_notifications_plugin_not_running">未运行</string>
-    <string name="settings_notifications_plugin_not_installed">未安装</string>
-    <string name="settings_notifications_plugin_check_failed">无法检查状态</string>
-    <string name="settings_notifications_set_up">通过 OpenCode 设置</string>
-    <string name="settings_notifications_check_again">再次检查</string>
-    <string name="settings_notifications_in_app_footer">显示在侧边栏按钮上。</string>
-    <string name="settings_notifications_in_app_notices">应用内注意事项</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">会话</string>
@@ -220,4 +208,17 @@
     <string name="settings_pairing_point_camera">将相机对准二维码</string>
     <string name="settings_pairing_paste_link">粘贴配对链接</string>
     <string name="settings_pairing_computer_hint">在电脑上打开 OpenCode 的设置 → 配对，或在终端中运行 %1$s。</string>
+    <string name="settings_notifications_server_toggle">通知此设备</string>
+    <string name="settings_notifications_mode">通知内容</string>
+    <string name="settings_notifications_mode_all">全部通知</string>
+    <string name="settings_notifications_mode_attention">仅在需要我时</string>
+    <string name="settings_notifications_mode_from_this_phone">仅在此使用的会话</string>
+    <string name="settings_notifications_mode_none">不通知</string>
+    <string name="settings_notifications_status_checking">正在检查服务器…</string>
+    <string name="settings_notifications_status_no_permission">请先在上方允许通知。</string>
+    <string name="settings_notifications_status_outdated">此服务器不支持通知。可能需要更新 OpenCode。</string>
+    <string name="settings_notifications_status_failed">无法在此服务器上设置通知。OpenCode 会在重新连接时重试。</string>
+    <string name="settings_notifications_status_disabled">此服务器已禁用通知。</string>
+    <string name="settings_notifications_change_failed_title">无法更改通知设置</string>
+    <string name="settings_notifications_change_failed_message">服务器未接受此更改。</string>
 </resources>

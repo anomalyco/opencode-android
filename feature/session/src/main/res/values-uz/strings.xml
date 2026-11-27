@@ -55,8 +55,6 @@
     <string name="session_pin">Mahkamlash</string>
     <string name="session_pinned">Mahkamlangan</string>
     <string name="session_unread">O‘qilmagan</string>
-    <string name="session_mute">Bildirishnomalarni o‘chirish</string>
-    <string name="session_muted">Bildirishnomalar o‘chirilgan</string>
     <string name="session_compact">Ixcham</string>
     <string name="session_fork">Tarmoqlash</string>
     <string name="session_toggle_on_description">Yoqilgan</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Xarajat</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Fayllar va havolalar</string>
-    <string name="session_always_notify">Doim bildirish</string>
-    <string name="session_always_notify_message_phone">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu telefonga bildirishnoma yuborilsin.</string>
-    <string name="session_always_notify_message_tablet">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu planshetga bildirishnoma yuborilsin.</string>
     <string name="session_delete_session">Seansni o\'chirish</string>
     <string name="session_rename_placeholder">Sarlavha</string>
     <string name="session_auto_rename">Avtomatik nomlash</string>
@@ -131,7 +126,6 @@
     <string name="session_copy_session_id">Sessiya ID-sini nusxalash</string>
     <string name="session_mark_as_read">O‘qilgan deb belgilash</string>
     <string name="session_mark_as_unread">O‘qilmagan deb belgilash</string>
-    <string name="session_unmute">Bildirishnomalarni yoqish</string>
     <string name="session_menu_export_expanded_description">Kengaytirilgan</string>
     <string name="session_menu_export_collapsed_description">Yig\'ilgan</string>
     <string name="session_info">Sessiya haqida</string>
@@ -269,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Sessiyani tarmoqlab bo‘lmadi</string>
     <string name="session_sheet_save_export_failed">Eksportni saqlab bo‘lmadi</string>
     <string name="session_sheet_export_failed_title">Sessiyani eksport qilib bo‘lmadi</string>
-    <string name="session_sheet_notifications_off_message">Avval sozlamalarda bildirishnomalarni yoqing.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Doim bildirishni yoqib bo‘lmadi</string>
-    <string name="session_sheet_always_notify_off_failed_title">Doim bildirishni o‘chirib bo‘lmadi</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server fayllarni qo‘llab-quvvatlamaydi</string>

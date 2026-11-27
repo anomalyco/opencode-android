@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Ný virkni</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Keyra %1$d skipun?</item>
+        <item quantity="other">Keyra %1$d skipanir?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Breyta %1$d skrá?</item>
+        <item quantity="other">Breyta %1$d skrám?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Lesa %1$d skrá?</item>
+        <item quantity="other">Lesa %1$d skrár?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Opna vefsíðu?</string>
+    <string name="system_push_permission_websearch">Leita á vefnum?</string>
+    <string name="system_push_permission_external_directory">Fá aðgang að möppu?</string>
+    <string name="system_push_permission_other">Nota %1$s?</string>
+    <string name="system_push_allow">Leyfa</string>
+    <string name="system_push_deny">Neita</string>
+    <string name="system_push_reply">Svara</string>
+    <string name="system_push_message_hint">Skilaboð</string>
+    <string name="system_push_sending">Sendir…</string>
+    <string name="system_push_send_failed">Ekki tókst að senda. Opnaðu til að reyna aftur.</string>
+    <string name="system_push_detail_more">Opnaðu til að sjá allt</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Raddsímtöl</string>
     <string name="system_channel_recording">Upptaka</string>
     <string name="system_channel_session_runs">Keyrslur setna</string>
-    <string name="system_channel_session_updates">Uppfærslur setna</string>
+    <string name="system_channel_session_finished">Loknar setur</string>
+    <string name="system_channel_session_failed">Setur sem mistókust</string>
+    <string name="system_channel_session_questions">Spurningar</string>
+    <string name="system_channel_session_permissions">Leyfisbeiðnir</string>
+    <string name="system_channel_session_other">Aðrar uppfærslur um setur</string>
+    <string name="system_channel_session_runs_description">Framvinda setu sem þú sendir frá þessum síma</string>
+    <string name="system_channel_session_finished_description">Seta lauk umferð sinni</string>
+    <string name="system_channel_session_failed_description">Seta stöðvaðist vegna villu</string>
+    <string name="system_channel_session_questions_description">Seta spyr þig spurningar</string>
+    <string name="system_channel_session_permissions_description">Seta þarf leyfi þitt til að halda áfram</string>
+    <string name="system_channel_session_other_description">Aðrar uppfærslur frá setunum þínum</string>
     <string name="system_channel_shared_items">Deilt efni</string>
 
     <!-- Share sheet: notifications -->

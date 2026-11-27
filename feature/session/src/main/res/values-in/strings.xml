@@ -55,8 +55,6 @@
     <string name="session_pin">Sematkan</string>
     <string name="session_pinned">Disematkan</string>
     <string name="session_unread">Belum dibaca</string>
-    <string name="session_mute">Bisukan</string>
-    <string name="session_muted">Dibisukan</string>
     <string name="session_compact">Kompak</string>
     <string name="session_fork">Cabangkan</string>
     <string name="session_toggle_on_description">Aktif</string>
@@ -71,9 +69,6 @@
     <string name="session_sheet_cost">Biaya</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Berkas dan tautan</string>
-    <string name="session_always_notify">Selalu beri notifikasi</string>
-    <string name="session_always_notify_message_phone">Beri notifikasi di ponsel ini setiap balasan selesai, meski pesannya tidak dikirim dari sini.</string>
-    <string name="session_always_notify_message_tablet">Beri notifikasi di tablet ini setiap balasan selesai, meski pesannya tidak dikirim dari sini.</string>
     <string name="session_delete_session">Hapus sesi</string>
     <string name="session_rename_placeholder">Judul</string>
     <string name="session_auto_rename">Ganti nama otomatis</string>
@@ -129,7 +124,6 @@
     <string name="session_copy_session_id">Salin ID sesi</string>
     <string name="session_mark_as_read">Tandai sudah dibaca</string>
     <string name="session_mark_as_unread">Tandai belum dibaca</string>
-    <string name="session_unmute">Bunyikan</string>
     <string name="session_menu_export_expanded_description">Dibentangkan</string>
     <string name="session_menu_export_collapsed_description">Diciutkan</string>
     <string name="session_info">Info sesi</string>
@@ -259,9 +253,6 @@
     <string name="session_sheet_fork_failed_title">Gagal mencabangkan sesi</string>
     <string name="session_sheet_save_export_failed">Gagal menyimpan hasil ekspor</string>
     <string name="session_sheet_export_failed_title">Gagal mengekspor sesi</string>
-    <string name="session_sheet_notifications_off_message">Aktifkan notifikasi di Pengaturan terlebih dahulu.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Gagal mengaktifkan Selalu beri notifikasi</string>
-    <string name="session_sheet_always_notify_off_failed_title">Gagal menonaktifkan Selalu beri notifikasi</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server tidak mendukung berkas</string>

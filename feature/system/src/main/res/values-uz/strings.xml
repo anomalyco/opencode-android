@@ -75,12 +75,45 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Yangi faollik</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ta buyruq ishga tushirilsinmi?</item>
+        <item quantity="other">%1$d ta buyruq ishga tushirilsinmi?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ta fayl tahrirlansinmi?</item>
+        <item quantity="other">%1$d ta fayl tahrirlansinmi?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ta fayl o‘qilsinmi?</item>
+        <item quantity="other">%1$d ta fayl o‘qilsinmi?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Veb-sayt ochilsinmi?</string>
+    <string name="system_push_permission_websearch">Internetda qidirilsinmi?</string>
+    <string name="system_push_permission_external_directory">Jildga kirilsinmi?</string>
+    <string name="system_push_permission_other">%1$s dan foydalanilsinmi?</string>
+    <string name="system_push_allow">Ruxsat berish</string>
+    <string name="system_push_deny">Rad etish</string>
+    <string name="system_push_reply">Javob berish</string>
+    <string name="system_push_message_hint">Xabar</string>
+    <string name="system_push_sending">Yuborilmoqda…</string>
+    <string name="system_push_send_failed">Yuborib bo‘lmadi. Qayta urinish uchun oching.</string>
+    <string name="system_push_detail_more">Barchasini ko‘rish uchun oching</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Ovozli qo‘ng‘iroqlar</string>
     <string name="system_channel_recording">Yozib olinmoqda</string>
     <string name="system_channel_session_runs">Sessiya jarayonlari</string>
-    <string name="system_channel_session_updates">Sessiya yangilanishlari</string>
+    <string name="system_channel_session_finished">Yakunlangan sessiyalar</string>
+    <string name="system_channel_session_failed">Muvaffaqiyatsiz sessiyalar</string>
+    <string name="system_channel_session_questions">Savollar</string>
+    <string name="system_channel_session_permissions">Ruxsat so‘rovlari</string>
+    <string name="system_channel_session_other">Sessiyaning boshqa yangilanishlari</string>
+    <string name="system_channel_session_runs_description">Bu telefondan yuborgan sessiyangizning borishi</string>
+    <string name="system_channel_session_finished_description">Sessiya o‘z qadamini yakunladi</string>
+    <string name="system_channel_session_failed_description">Sessiya xato bilan to‘xtadi</string>
+    <string name="system_channel_session_questions_description">Sessiya sizga savol bermoqda</string>
+    <string name="system_channel_session_permissions_description">Sessiya davom etishi uchun ruxsatingiz kerak</string>
+    <string name="system_channel_session_other_description">Sessiyalaringizdan boshqa yangilanishlar</string>
     <string name="system_channel_shared_items">Ulashilgan elementlar</string>
 
     <!-- Share sheet: notifications -->

@@ -75,12 +75,51 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Новая активность</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Выполнить %1$d команду?</item>
+        <item quantity="few">Выполнить %1$d команды?</item>
+        <item quantity="many">Выполнить %1$d команд?</item>
+        <item quantity="other">Выполнить %1$d команды?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Редактировать %1$d файл?</item>
+        <item quantity="few">Редактировать %1$d файла?</item>
+        <item quantity="many">Редактировать %1$d файлов?</item>
+        <item quantity="other">Редактировать %1$d файла?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Прочитать %1$d файл?</item>
+        <item quantity="few">Прочитать %1$d файла?</item>
+        <item quantity="many">Прочитать %1$d файлов?</item>
+        <item quantity="other">Прочитать %1$d файла?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Открыть сайт?</string>
+    <string name="system_push_permission_websearch">Искать в интернете?</string>
+    <string name="system_push_permission_external_directory">Открыть доступ к папке?</string>
+    <string name="system_push_permission_other">Использовать %1$s?</string>
+    <string name="system_push_allow">Разрешить</string>
+    <string name="system_push_deny">Запретить</string>
+    <string name="system_push_reply">Ответить</string>
+    <string name="system_push_message_hint">Сообщение</string>
+    <string name="system_push_sending">Отправка…</string>
+    <string name="system_push_send_failed">Не удалось отправить. Откройте, чтобы повторить.</string>
+    <string name="system_push_detail_more">Откройте, чтобы посмотреть всё</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Голосовые звонки</string>
     <string name="system_channel_recording">Идёт запись</string>
     <string name="system_channel_session_runs">Запуски сессий</string>
-    <string name="system_channel_session_updates">Обновления сессий</string>
+    <string name="system_channel_session_finished">Завершённые сессии</string>
+    <string name="system_channel_session_failed">Сессии с ошибками</string>
+    <string name="system_channel_session_questions">Вопросы</string>
+    <string name="system_channel_session_permissions">Запросы разрешений</string>
+    <string name="system_channel_session_other">Другие обновления сессий</string>
+    <string name="system_channel_session_runs_description">Прогресс сессии, отправленной с этого телефона</string>
+    <string name="system_channel_session_finished_description">Сессия завершила ход</string>
+    <string name="system_channel_session_failed_description">Сессия остановилась с ошибкой</string>
+    <string name="system_channel_session_questions_description">Сессия задаёт вам вопрос</string>
+    <string name="system_channel_session_permissions_description">Сессии нужно ваше разрешение, чтобы продолжить</string>
+    <string name="system_channel_session_other_description">Другие обновления ваших сессий</string>
     <string name="system_channel_shared_items">Отправленные материалы</string>
 
     <!-- Share sheet: notifications -->

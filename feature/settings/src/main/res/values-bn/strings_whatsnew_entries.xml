@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">দুর্বল সংযোগে এখন কয়েক সেকেন্ড নীরব থাকার বদলে কলে সামান্য বিঘ্ন ঘটে।</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">সেশন মিউট করুন</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">মিউট করা সেশন তালিকায় থাকে, তবে আপডেট দেখুন-এ আসে না বা অপঠিত চিহ্ন দেখায় না।</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">সব পড়া হয়েছে হিসেবে চিহ্নিত করতে আপডেট দেখুন চেপে ধরুন। আপনার অপেক্ষায় থাকা সেশনগুলো থেকে যাবে।</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">ড্রয়ারে একটি সেশন চেপে ধরে মিউট করুন-এ ট্যাপ করুন</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">যেকোনো জায়গা থেকে পেয়ার করুন</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">গাণিতিক রাশির আকার আপনার পাঠ্যের আকার অনুযায়ী বদলায়।</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">বার্তা কীভাবে পাঠানো হয়, তার একটি ফ্লোচার্ট চাইতে পারেন</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">বার্তা কীভাবে পাঠানো হয়, তার একটি ফ্লোচার্ট আঁকো</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">শেষ হলে বিজ্ঞপ্তি</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">এখান থেকে শুরু করা সেশনের কাজ শেষ হলে কী হয়েছে তার সংক্ষিপ্তসারসহ বিজ্ঞপ্তি পাবেন।</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">কম্পিউটার থেকে শুরু করা কাজসহ প্রতিটি জবাবের খবর পেতে সেশনের প্যানেলে সর্বদা বিজ্ঞপ্তি দিন চালু করুন।</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">সেশন খুলতে তার বিজ্ঞপ্তিতে ট্যাপ করুন।</string>
-    <string name="settings_whatsnew_entry_always_notify_example">একটি বার্তা পাঠিয়ে ফোন লক করুন</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">সার্ভার বদলান</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">অ্যাপ আইকনে ব্যাজ</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">কতটি সেশন অপঠিত বা আপনার অপেক্ষায় আছে, অ্যাপ আইকনে সেই সংখ্যা দেখায়—‘আপডেট দেখুন’-এর মতোই।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">মিউট করা সেশন গোনা হয় না।</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">এর জন্য বিজ্ঞপ্তি চালু থাকতে হবে।</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">কোনো সেশনে প্রশ্নের উত্তর না দিয়ে হোম স্ক্রিনে যান</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">ফোল্ডার না থাকলেও সেশন থাকে</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">কোনো সেশনের ফোল্ডার না থাকলে, যেমন ওয়ার্কস্পেস মুছে ফেলা হলে, বার্তা পাঠানো ব্যর্থ হলে সেটিকে প্রকল্পের ফোল্ডারে সরিয়ে আবার পাঠানোর সুযোগ দেয়।</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">OpenCode দিয়ে বিজ্ঞপ্তি সেট আপ করুন</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">সেটিংস → বিজ্ঞপ্তি-তে OpenCode দিয়ে সেট আপ করুন-এ ট্যাপ করে প্রয়োজনীয় বিজ্ঞপ্তি প্লাগইন ইনস্টল করার প্রম্পটটি পর্যালোচনা করুন।</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">কলের কার্ড এখন নিচের অংশ জুড়ে</string>

@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">新しいアクティビティ</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">%1$d件のコマンドを実行しますか？</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">%1$d件のファイルを編集しますか？</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">%1$d件のファイルを読み込みますか？</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Webサイトを開きますか？</string>
+    <string name="system_push_permission_websearch">Webを検索しますか？</string>
+    <string name="system_push_permission_external_directory">フォルダにアクセスしますか？</string>
+    <string name="system_push_permission_other">%1$sを使用しますか？</string>
+    <string name="system_push_allow">許可</string>
+    <string name="system_push_deny">拒否</string>
+    <string name="system_push_reply">返信</string>
+    <string name="system_push_message_hint">メッセージ</string>
+    <string name="system_push_sending">送信中…</string>
+    <string name="system_push_send_failed">送信できませんでした。開いて再試行してください。</string>
+    <string name="system_push_detail_more">開いてすべて表示</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">音声通話</string>
     <string name="system_channel_recording">録音中</string>
     <string name="system_channel_session_runs">セッションの実行</string>
-    <string name="system_channel_session_updates">セッションの更新</string>
+    <string name="system_channel_session_finished">完了したセッション</string>
+    <string name="system_channel_session_failed">失敗したセッション</string>
+    <string name="system_channel_session_questions">質問</string>
+    <string name="system_channel_session_permissions">権限のリクエスト</string>
+    <string name="system_channel_session_other">その他のセッション更新</string>
+    <string name="system_channel_session_runs_description">このスマホから送信したセッションの進行状況</string>
+    <string name="system_channel_session_finished_description">セッションのターンが完了したとき</string>
+    <string name="system_channel_session_failed_description">セッションがエラーで停止したとき</string>
+    <string name="system_channel_session_questions_description">セッションから質問があるとき</string>
+    <string name="system_channel_session_permissions_description">セッションの続行に権限が必要なとき</string>
+    <string name="system_channel_session_other_description">セッションからのその他の更新</string>
     <string name="system_channel_shared_items">共有アイテム</string>
 
     <!-- Share sheet: notifications -->

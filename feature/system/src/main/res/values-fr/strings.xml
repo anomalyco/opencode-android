@@ -75,12 +75,48 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">Nouvelle activité</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Exécuter %1$d commande ?</item>
+        <item quantity="many">Exécuter %1$d commandes ?</item>
+        <item quantity="other">Exécuter %1$d commandes ?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Modifier %1$d fichier ?</item>
+        <item quantity="many">Modifier %1$d fichiers ?</item>
+        <item quantity="other">Modifier %1$d fichiers ?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Lire %1$d fichier ?</item>
+        <item quantity="many">Lire %1$d fichiers ?</item>
+        <item quantity="other">Lire %1$d fichiers ?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Ouvrir un site Web ?</string>
+    <string name="system_push_permission_websearch">Rechercher sur le Web ?</string>
+    <string name="system_push_permission_external_directory">Accéder à un dossier ?</string>
+    <string name="system_push_permission_other">Utiliser %1$s ?</string>
+    <string name="system_push_allow">Autoriser</string>
+    <string name="system_push_deny">Refuser</string>
+    <string name="system_push_reply">Répondre</string>
+    <string name="system_push_message_hint">Message</string>
+    <string name="system_push_sending">Envoi en cours…</string>
+    <string name="system_push_send_failed">Échec de l’envoi. Ouvrir pour réessayer.</string>
+    <string name="system_push_detail_more">Ouvrir pour tout voir</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">Appels vocaux</string>
     <string name="system_channel_recording">Enregistrement</string>
     <string name="system_channel_session_runs">Exécution des sessions</string>
-    <string name="system_channel_session_updates">Mises à jour des sessions</string>
+    <string name="system_channel_session_finished">Sessions terminées</string>
+    <string name="system_channel_session_failed">Sessions en échec</string>
+    <string name="system_channel_session_questions">Questions</string>
+    <string name="system_channel_session_permissions">Demandes de permission</string>
+    <string name="system_channel_session_other">Autres mises à jour de session</string>
+    <string name="system_channel_session_runs_description">Progression d’une session envoyée depuis ce téléphone</string>
+    <string name="system_channel_session_finished_description">Une session a terminé son tour</string>
+    <string name="system_channel_session_failed_description">Une session s’est arrêtée avec une erreur</string>
+    <string name="system_channel_session_questions_description">Une session vous pose une question</string>
+    <string name="system_channel_session_permissions_description">Une session a besoin de votre permission pour continuer</string>
+    <string name="system_channel_session_other_description">Autres mises à jour de vos sessions</string>
     <string name="system_channel_shared_items">Éléments partagés</string>
 
     <!-- Share sheet: notifications -->

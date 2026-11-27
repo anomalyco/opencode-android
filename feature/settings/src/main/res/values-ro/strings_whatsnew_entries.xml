@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">O conexiune instabilă provoacă doar o scurtă întrerupere în apel, nu secunde de liniște.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Dezactivează notificările sesiunilor</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Sesiunile cu notificările oprite rămân în listă, dar nu apar în La zi și nu au punct de necitit.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Ține apăsat La zi pentru a marca totul ca citit. Sesiunile care așteaptă un răspuns de la tine rămân.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Ține apăsată o sesiune în panoul lateral și atinge Dezactivează notificările</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Asociere de oriunde</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Formulele respectă dimensiunea textului tău.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Cere o schemă logică a trimiterii unui mesaj</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Desenează o schemă logică a trimiterii unui mesaj</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Notificare la final</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Primești o notificare când se termină o sesiune pornită aici, cu un scurt rezumat al celor întâmplate.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Activează Notifică mereu în panoul sesiunii pentru a primi notificări la fiecare răspuns, chiar și pentru cele pornite de pe computer.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Atinge o notificare ca să deschizi sesiunea ei.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Trimite un mesaj, apoi blochează telefonul</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Schimbă serverul</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Insignă pe pictograma aplicației</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Pictograma aplicației arată câte sesiuni sunt necitite sau te așteaptă, același număr ca în La zi.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesiunile cu notificările oprite nu se numără.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Notificările trebuie să fie activate.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Lasă o sesiune în așteptarea unui răspuns la o întrebare, apoi mergi la ecranul de pornire</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sesiunile rămân fără folderul lor</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Când folderul unei sesiuni nu mai există, de exemplu după ștergerea unui spațiu de lucru, o trimitere eșuată îți propune să muți sesiunea în folderul proiectului și să retrimiți mesajul.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Configurează notificările cu OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">În Setări → Notificări, atinge Configurează cu OpenCode pentru a verifica o solicitare care instalează pluginul de notificări lipsă.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Cardul apelului ocupă partea de jos</string>

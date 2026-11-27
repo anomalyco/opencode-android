@@ -75,12 +75,42 @@
 
     <!-- Session notifications -->
     <string name="system_notification_placeholder_body">សកម្មភាពថ្មី</string>
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">ដំណើរការពាក្យបញ្ជាចំនួន %1$d?</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">កែសម្រួលឯកសារចំនួន %1$d?</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">អានឯកសារចំនួន %1$d?</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">បើកគេហទំព័រ?</string>
+    <string name="system_push_permission_websearch">ស្វែងរកគេហទំព័រ?</string>
+    <string name="system_push_permission_external_directory">ចូលប្រើថត?</string>
+    <string name="system_push_permission_other">ប្រើ %1$s?</string>
+    <string name="system_push_allow">អនុញ្ញាត</string>
+    <string name="system_push_deny">បដិសេធ</string>
+    <string name="system_push_reply">ឆ្លើយតប</string>
+    <string name="system_push_message_hint">សារ</string>
+    <string name="system_push_sending">កំពុងផ្ញើ…</string>
+    <string name="system_push_send_failed">មិនអាចផ្ញើបានទេ។ បើកដើម្បីព្យាយាមម្តងទៀត។</string>
+    <string name="system_push_detail_more">បើកដើម្បីមើលទាំងអស់</string>
 
     <!-- Notification channels -->
     <string name="system_channel_voice_calls">ការហៅជាសំឡេង</string>
     <string name="system_channel_recording">កំពុងថតសំឡេង</string>
     <string name="system_channel_session_runs">ការដំណើរការសម័យ</string>
-    <string name="system_channel_session_updates">បច្ចុប្បន្នភាពសម័យ</string>
+    <string name="system_channel_session_finished">សម័យដែលបានបញ្ចប់</string>
+    <string name="system_channel_session_failed">សម័យដែលបានបរាជ័យ</string>
+    <string name="system_channel_session_questions">សំណួរ</string>
+    <string name="system_channel_session_permissions">សំណើសុំការអនុញ្ញាត</string>
+    <string name="system_channel_session_other">បច្ចុប្បន្នភាពសម័យផ្សេងទៀត</string>
+    <string name="system_channel_session_runs_description">វឌ្ឍនភាពនៃសម័យដែលអ្នកបានផ្ញើពីទូរសព្ទនេះ</string>
+    <string name="system_channel_session_finished_description">សម័យមួយបានបញ្ចប់វេនរបស់វា</string>
+    <string name="system_channel_session_failed_description">សម័យមួយបានឈប់ដោយមានកំហុស</string>
+    <string name="system_channel_session_questions_description">សម័យមួយកំពុងសួរសំណួរអ្នក</string>
+    <string name="system_channel_session_permissions_description">សម័យមួយត្រូវការការអនុញ្ញាតពីអ្នកដើម្បីបន្ត</string>
+    <string name="system_channel_session_other_description">បច្ចុប្បន្នភាពផ្សេងទៀតពីសម័យរបស់អ្នក</string>
     <string name="system_channel_shared_items">ធាតុដែលបានចែករំលែក</string>
 
     <!-- Share sheet: notifications -->

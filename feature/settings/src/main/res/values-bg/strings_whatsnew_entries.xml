@@ -18,10 +18,6 @@
     <string name="settings_whatsnew_entry_voice_webrtc_weak_connection_summary">При нестабилна връзка вече има само кратко смущение вместо секунди тишина.</string>
 
     <!-- 2026-10-08-02-mute-sessions -->
-    <string name="settings_whatsnew_entry_mute_sessions_title">Заглушаване на сесии</string>
-    <string name="settings_whatsnew_entry_mute_sessions_summary">Заглушените сесии остават в списъка, но не се включват в Наваксване и нямат точка за непрочетено.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_detail_1">Задръжте Наваксване, за да маркирате всичко като прочетено. Сесиите, които чакат действие от вас, остават.</string>
-    <string name="settings_whatsnew_entry_mute_sessions_example">Задръжте сесия в страничното меню и докоснете Заглушаване</string>
 
     <!-- 2026-10-08-03-pair-from-anywhere -->
     <string name="settings_whatsnew_entry_pair_from_anywhere_title">Сдвояване отвсякъде</string>
@@ -64,13 +60,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_detail_2">Формулите следват размера на текста ви.</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Поискайте блок-схема за изпращането на съобщение</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Начертай блок-схема за изпращането на съобщение</string>
-
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Известие при приключване</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Получавайте известие с кратко обобщение, когато сесия, стартирана тук, приключи работа.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Включете Винаги известявай в панела на сесията, за да получавате известия за всеки отговор, дори на заявки от компютъра.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Докоснете известие, за да отворите съответната сесия.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Изпратете съобщение, после заключете телефона си</string>
 
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Смяна на сървъри</string>
@@ -182,7 +171,6 @@
     <!-- 2026-10-12-08-app-icon-badge -->
     <string name="settings_whatsnew_entry_app_icon_badge_title">Значка върху иконата на приложението</string>
     <string name="settings_whatsnew_entry_app_icon_badge_summary">Иконата на приложението показва броя на непрочетените сесии и тези, които ви чакат — същия като в „Наваксване“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Заглушените сесии не се броят.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Известията трябва да са включени.</string>
     <string name="settings_whatsnew_entry_app_icon_badge_example">Оставете сесия да чака отговор на въпрос и отидете на началния екран</string>
 
@@ -737,10 +725,6 @@
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сесиите остават и без папката си</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Когато папката на сесия липсва, например след премахване на работно пространство, при неуспешно изпращане приложението предлага да я премести в папката на проекта и да изпрати отново.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Настройване на известия с OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">В Настройки → Известия докоснете „Настройване с OpenCode“, за да прегледате подкана за инсталиране на липсващия плъгин за известия.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Картата на обаждането заема долната част</string>
