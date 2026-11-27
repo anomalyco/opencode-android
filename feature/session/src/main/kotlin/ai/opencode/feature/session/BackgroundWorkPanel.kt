@@ -1212,12 +1212,11 @@ fun BackgroundWorkPanel(
 
 private object BackgroundWorkRowMetrics {
     const val listPadding = 4f
-    const val rowHeight = 40f
+    const val rowHeight = 32f
 
     /** A row's glyph stands under the capsule's, and its title under the capsule's counts. */
     val leading: Float get() = BackgroundWorkTunables.glyphLeading - listPadding
-    const val trailing = 6f
-    const val stopSlot = 44f
+    const val stopSlot = 34f
 }
 
 @Composable
@@ -1251,7 +1250,7 @@ private fun BackgroundWorkRow(
                     onClick(label = stopLabel ?: accessibilityHint) { onStop(); true }
                 }
             }
-            .padding(start = BackgroundWorkRowMetrics.leading.dp, end = BackgroundWorkRowMetrics.trailing.dp),
+            .padding(start = BackgroundWorkRowMetrics.leading.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.width(18.dp).clearAndSetSemantics { }, contentAlignment = Alignment.Center) { leading() }
@@ -1294,21 +1293,19 @@ private fun BackgroundWorkStop(label: String?, onStop: () -> Unit, isStopping: B
             .width(BackgroundWorkRowMetrics.stopSlot.dp)
             .clickable(interactionSource = interactions, indication = null, enabled = !isStopping, role = Role.Button, onClickLabel = label, onClick = onStop)
             .openCodeTapTarget(accessibility = false),
-        contentAlignment = Alignment.CenterEnd,
+        contentAlignment = Alignment.Center,
     ) {
         Box(
             Modifier
                 .size(28.dp)
                 .clip(OpenCodeShape.control)
-                .background(OpenCodeSurfaces.neutralFill)
-                .openCodeHairline(OpenCodeShape.control)
                 .indication(interactions, LocalIndication.current),
             contentAlignment = Alignment.Center,
         ) {
             if (isStopping) {
                 CircularProgressIndicator(Modifier.size(12.dp), color = OpenCodeTheme.colors.secondaryText, strokeWidth = 1.5.dp)
             } else {
-                OpenCodeIcon(SFSymbol.StopFill, contentDescription = null, size = 14.dp, tint = OpenCodeTheme.colors.text)
+                OpenCodeIcon(SFSymbol.Xmark, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.secondaryText)
             }
         }
     }
