@@ -105,7 +105,6 @@
     <string name="system_push_permission_other">%1$s ব্যবহার করতে চায়</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">“সর্বদা অনুমতি দিন”-এ %1$s অন্তর্ভুক্ত</string>
     <plurals name="system_push_more">
         <item quantity="one">আরও %1$dটি</item>
         <item quantity="other">আরও %1$dটি</item>

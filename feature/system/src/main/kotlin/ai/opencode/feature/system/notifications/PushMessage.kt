@@ -36,7 +36,6 @@ data class PushMessage(
         val resources: List<String> = emptyList(),
         /** How many resources the request has, when [resources] were left out. */
         val resourceCount: Int? = null,
-        val save: List<String> = emptyList(),
         val decisions: List<String> = emptyList(),
         val truncated: Boolean = false,
     )
@@ -101,7 +100,6 @@ data class PushMessage(
                 action = data.string("action"),
                 resources = data.strings("resources"),
                 resourceCount = data.int("resourceCount"),
-                save = data.strings("save"),
                 decisions = data.strings("decisions"),
                 truncated = data.boolean("truncated"),
             )

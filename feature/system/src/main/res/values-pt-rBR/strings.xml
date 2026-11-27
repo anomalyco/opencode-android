@@ -108,7 +108,6 @@
     <string name="system_push_permission_other">Quer usar %1$s</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">Permitir sempre vale para %1$s</string>
     <plurals name="system_push_more">
         <item quantity="one">Mais %1$d</item>
         <item quantity="many">Mais %1$d</item>

@@ -86,7 +86,6 @@ data class PushShown(
                 if ("always" in permission.decisions) actions += Action.AlwaysAllow
                 if ("once" in permission.decisions) actions += Action.Allow
             }
-            val covers = permission.save.takeIf { Action.AlwaysAllow in actions && it.isNotEmpty() }
             val hidden = count - visible
             return PushShown(
                 kind = Kind.Permission,
@@ -94,11 +93,7 @@ data class PushShown(
                 text = text,
                 expandedText = summary,
                 code = code.take(visible),
-                note = when {
-                    covers != null -> localized(R.string.system_push_permission_always_covers, covers.joinToString(", "))
-                    hidden > 0 && code.isNotEmpty() -> localizedPlural(R.plurals.system_push_more, hidden, hidden)
-                    else -> null
-                },
+                note = if (hidden > 0 && code.isNotEmpty()) localizedPlural(R.plurals.system_push_more, hidden, hidden) else null,
                 actions = actions,
             )
         }

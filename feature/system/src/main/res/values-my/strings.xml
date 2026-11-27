@@ -102,7 +102,6 @@
     <string name="system_push_permission_other">%1$s ကို သုံးလိုသည်</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">“အမြဲခွင့်ပြုပါ” သည် %1$s အတွက် အကျုံးဝင်သည်</string>
     <plurals name="system_push_more">
         <item quantity="other">နောက်ထပ် %1$d ခု</item>
     </plurals>

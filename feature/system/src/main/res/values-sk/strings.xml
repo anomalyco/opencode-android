@@ -111,7 +111,6 @@
     <string name="system_push_permission_other">Chce použiť %1$s</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">Vždy povoliť platí pre %1$s</string>
     <plurals name="system_push_more">
         <item quantity="one">Ešte %1$d</item>
         <item quantity="few">Ešte %1$d</item>

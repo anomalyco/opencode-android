@@ -105,7 +105,6 @@
     <string name="system_push_permission_other">Мехоҳад %1$s-ро истифода барад</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">«Ҳамеша иҷозат диҳед» %1$s-ро фаро мегирад</string>
     <plurals name="system_push_more">
         <item quantity="one">Боз %1$d</item>
         <item quantity="other">Боз %1$d</item>

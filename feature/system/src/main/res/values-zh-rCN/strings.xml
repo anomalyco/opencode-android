@@ -102,7 +102,6 @@
     <string name="system_push_permission_other">请求使用 %1$s</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s：%2$s</string>
-    <string name="system_push_permission_always_covers">“始终允许”适用于 %1$s</string>
     <plurals name="system_push_more">
         <item quantity="other">还有 %1$d 项</item>
     </plurals>

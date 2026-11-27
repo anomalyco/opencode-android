@@ -29,7 +29,7 @@ class PushNotificationTests {
         assertEquals("Wants to run 2 commands: git add .", shown.text)
         assertEquals("Wants to run 2 commands", shown.expandedText)
         assertEquals(listOf("$ git add .", "$ git commit -m \"x\""), shown.code)
-        assertEquals("Always Allow covers git add *, git commit *", shown.note)
+        assertNull(shown.note)
         assertEquals(listOf(PushShown.Action.Deny, PushShown.Action.AlwaysAllow, PushShown.Action.Allow), shown.actions)
     }
 

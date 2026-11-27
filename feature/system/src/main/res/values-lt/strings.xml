@@ -111,7 +111,6 @@
     <string name="system_push_permission_other">Nori naudoti %1$s</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">„Leiskite visada“ apima %1$s</string>
     <plurals name="system_push_more">
         <item quantity="one">Dar %1$d</item>
         <item quantity="few">Dar %1$d</item>

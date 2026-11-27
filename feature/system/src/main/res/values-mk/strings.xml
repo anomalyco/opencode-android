@@ -105,7 +105,6 @@
     <string name="system_push_permission_other">Сака да користи %1$s</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">„Дозволете секогаш“ важи за %1$s</string>
     <plurals name="system_push_more">
         <item quantity="one">Уште %1$d</item>
         <item quantity="other">Уште %1$d</item>

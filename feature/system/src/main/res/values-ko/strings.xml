@@ -102,7 +102,6 @@
     <string name="system_push_permission_other">%1$s 사용 요청</string>
     <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
     <string name="system_push_permission_collapsed">%1$s: %2$s</string>
-    <string name="system_push_permission_always_covers">항상 허용 범위: %1$s</string>
     <plurals name="system_push_more">
         <item quantity="other">외 %1$d개</item>
     </plurals>
