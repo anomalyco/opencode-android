@@ -166,6 +166,7 @@ internal object PushNotifications {
             .setContentIntent(open)
             .setDeleteIntent(broadcast(context, PushActionReceiver.ACTION_DISMISSED, target))
             .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+            .setAllowSystemGeneratedContextualActions(false)
             .setPublicVersion(hidden.build())
         if (message.time > 0) builder.setWhen(message.time)
         if (shown.kind == PushShown.Kind.Permission || shown.kind == PushShown.Kind.Question) {
