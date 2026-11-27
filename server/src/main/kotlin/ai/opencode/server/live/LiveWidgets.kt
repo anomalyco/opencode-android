@@ -7,6 +7,8 @@ import ai.opencode.server.internal.req
 import ai.opencode.server.internal.str
 import ai.opencode.server.model.OpenCodeWidgetError
 import ai.opencode.server.model.OpenCodeWidgetFailure
+import ai.opencode.server.model.OpenCodeWidgetCall
+import ai.opencode.server.model.OpenCodeWidgetInstance
 import ai.opencode.server.model.OpenCodeWidgetMessageValue
 import ai.opencode.server.model.OpenCodeWidgetRef
 import ai.opencode.server.model.OpenCodeWidgetResponse
@@ -69,6 +71,26 @@ internal suspend fun requestWidgetProgramRPC(server: OpenCodeServer, directory: 
 internal suspend fun requestWidgetStates(server: OpenCodeServer, directory: String?, sessionID: String): List<OpenCodeWidgetState> {
     val output = requestWidgetRPC(server, "states", directory, buildJsonObject { put("sessionID", sessionID) }, RequestIdempotency.Idempotent)
     return (output as? JsonArray)?.mapNotNull(::decodeWidgetState) ?: emptyList()
+}
+
+/** Every widget of the server but superseded ones, last updated first; one this client can't read is skipped. */
+internal suspend fun requestWidgetInstances(server: OpenCodeServer): List<OpenCodeWidgetInstance> {
+    val output = requestWidgetRPC(server, "instances", null, buildJsonObject {}, RequestIdempotency.Idempotent)
+    return (output as? JsonArray)?.mapNotNull { element ->
+        val o = element as? JsonObject ?: return@mapNotNull null
+        val state = decodeWidgetState(o["state"]) ?: return@mapNotNull null
+        val session = o["session"] as? JsonObject
+        val location = session?.get("location") as? JsonObject
+        val directory = (location?.get("directory") as? JsonPrimitive)?.takeIf { it.isString }?.content ?: return@mapNotNull null
+        OpenCodeWidgetInstance(
+            state = state,
+            data = o["data"]?.toString(),
+            sessionTitle = (session["title"] as? JsonPrimitive)?.takeIf { it.isString }?.content,
+            directory = directory,
+            updated = (o["updated"] as? JsonPrimitive)?.content?.toDoubleOrNull()?.toLong() ?: 0L,
+            replaced = (o["replaced"] as? JsonArray)?.mapNotNull(::decodeWidgetCall) ?: emptyList(),
+        )
+    } ?: emptyList()
 }
 
 /** Answers an open widget once; `closed` means it was answered already. */
@@ -155,7 +177,15 @@ internal fun decodeWidgetState(element: JsonElement?): OpenCodeWidgetState? {
         httpsHosts = hosts?.mapNotNull { (it as? JsonPrimitive)?.takeIf { p -> p.isString }?.content },
         storage = (o["capabilities"] as? JsonObject)?.get("storage") is JsonObject,
         failure = decodeWidgetFailure(o["failure"] as? JsonObject),
+        supersededBy = decodeWidgetCall(o["supersededBy"]),
     )
+}
+
+private fun decodeWidgetCall(element: JsonElement?): OpenCodeWidgetCall? {
+    val o = element as? JsonObject ?: return null
+    val messageID = (o["messageID"] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: return null
+    val callID = (o["callID"] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: return null
+    return OpenCodeWidgetCall(messageID, callID)
 }
 
 private fun decodeWidgetFailure(o: JsonObject?): OpenCodeWidgetFailure? {

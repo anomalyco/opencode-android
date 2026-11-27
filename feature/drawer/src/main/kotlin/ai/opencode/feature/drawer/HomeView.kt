@@ -15,6 +15,8 @@ import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.StoreOf
 import ai.opencode.core.store.observe
 import ai.opencode.core.store.scope
+import ai.opencode.feature.drawer.miniapps.MiniAppsFeature
+import ai.opencode.feature.drawer.miniapps.MiniAppsView
 import ai.opencode.core.ui.LocalAccessibilityFocusMoves
 import ai.opencode.core.ui.OpenCodeIconButton
 import ai.opencode.core.ui.OpenCodeIconButtonStyle
@@ -141,6 +143,7 @@ fun HomeView(
         settings = { HomeSettings(store) },
         modifier = modifier,
     ) {
+      HomeMiniApps(store) {
         ai.opencode.feature.composer.OpenCodeSheetHost {
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 // An iPad-wide window lists the sessions in a sidebar beside the session; anything
@@ -155,6 +158,7 @@ fun HomeView(
                 HomeSidebarEffects(store, view, usesSidebar)
             }
         }
+      }
     }
     HomeSettingsBack(store)
     HomeWelcome(store, welcomeMark)
@@ -185,7 +189,7 @@ private fun HomeLayout(
     val selectedSessionID by store.observe { it.sessionDetail?.session?.id }
     // A subagent or a web page pushed over the session: its back gesture has the drag.
     val pushed by store.observe { it.subagentStack.isNotEmpty() || it.sessionDetail?.browser?.pageID != null }
-    val settingsShown by store.observe { it.isSettingsShown }
+    val settingsShown by store.observe { it.isSettingsShown || it.miniApps != null }
     val sheetPresented by store.observe { it.topDetail?.activePicker != null || it.topDetail?.shellOutput != null }
     val catchUpProxy = remember { CatchUpStageProxy() }
     val currentReducedMotion by rememberUpdatedState(reducedMotion)
@@ -739,6 +743,32 @@ internal fun HomeLifecycle(store: StoreOf<HomeFeature.State, HomeFeature.Action>
         catchingUp = false
         onDispose { lifecycle.removeObserver(observer) }
     }
+}
+
+/**
+ * Mini Apps ([HomeFeature.State.miniApps]) full screen over Home, presented as Settings is (the same page motion and
+ * predictive back); it keeps its last state while it slides out.
+ */
+@Composable
+private fun HomeMiniApps(store: StoreOf<HomeFeature.State, HomeFeature.Action>, content: @Composable () -> Unit) {
+    val shown by store.observe { it.miniApps != null }
+    val close = { store.send(HomeFeature.Action.MiniApps(PresentationAction.Dismiss)) }
+    SettingsPresentation(
+        isShown = shown,
+        atRoot = true,
+        onClose = close,
+        settings = {
+            val miniApps = remember(store) {
+                var last: MiniAppsFeature.State? = null
+                store.scope<HomeFeature.State, HomeFeature.Action, MiniAppsFeature.State, MiniAppsFeature.Action>(
+                    state = { home -> home.miniApps?.also { last = it } ?: last ?: MiniAppsFeature.State(server = home.server) },
+                    action = { HomeFeature.Action.MiniApps(PresentationAction.Presented(it)) },
+                )
+            }
+            MiniAppsView(miniApps, onClose = close)
+        },
+        content = content,
+    )
 }
 
 /**

@@ -123,6 +123,20 @@ object AgentWidgetAdapter {
         return states ?: emptyMap()
     }
 
+    /** A widget outside its transcript, from its plugin state and its tool call's `data` (JSON text). */
+    fun state(record: OpenCodeWidgetState, data: String?): AgentWidgetState = AgentWidgetState(
+        messageID = record.messageID,
+        callID = record.callID,
+        title = record.title,
+        widgetTemplate = record.widgetTemplate,
+        data = data ?: "null",
+        status = status(record.status),
+        response = record.response,
+        httpsHosts = record.httpsHosts,
+        storage = record.storage,
+        failure = record.failure,
+    )
+
     private fun status(status: OpenCodeWidgetStatus) = when (status) {
         OpenCodeWidgetStatus.Open -> AgentWidgetState.Status.Open
         OpenCodeWidgetStatus.Submitted -> AgentWidgetState.Status.Submitted

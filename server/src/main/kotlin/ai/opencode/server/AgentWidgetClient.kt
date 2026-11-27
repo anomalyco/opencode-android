@@ -12,7 +12,9 @@ import ai.opencode.server.live.requestWidgetProgramRPC
 import ai.opencode.server.live.requestWidgetReportRPC
 import ai.opencode.server.live.requestWidgetSendRPC
 import ai.opencode.server.live.requestWidgetStates
+import ai.opencode.server.live.requestWidgetInstances
 import ai.opencode.server.model.OpenCodeWidgetError
+import ai.opencode.server.model.OpenCodeWidgetInstance
 import ai.opencode.server.model.OpenCodeWidgetMessageValue
 import ai.opencode.server.model.OpenCodeWidgetProgram
 import ai.opencode.server.model.OpenCodeWidgetRef
@@ -40,6 +42,8 @@ class AgentWidgetClient(
     val send: suspend (server: OpenCodeServer, directory: String?, sessionID: String, messageID: String, callID: String, message: OpenCodeWidgetMessageValue) -> Unit,
     /** A program error on this device (`report`), recorded on the widget; [ask]: the user asks the agent to fix it. */
     val report: suspend (server: OpenCodeServer, directory: String?, sessionID: String, messageID: String, callID: String, error: OpenCodeWidgetError, ask: Boolean) -> Unit,
+    /** Every widget of the server but superseded ones, last updated first (`instances`). */
+    val instances: suspend (server: OpenCodeServer) -> List<OpenCodeWidgetInstance> = { emptyList() },
 ) {
     companion object Key : DependencyKey<AgentWidgetClient> {
         override val liveValue: AgentWidgetClient by lazy {
@@ -58,6 +62,7 @@ class AgentWidgetClient(
                 report = { server, directory, sessionID, messageID, callID, error, ask ->
                     whileUnavailable { requestWidgetReportRPC(server, directory, sessionID, messageID, callID, error, ask) }
                 },
+                instances = { server -> whileUnavailable { requestWidgetInstances(server) } },
             )
         }
 

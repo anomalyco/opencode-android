@@ -38,6 +38,7 @@ import ai.opencode.feature.system.liveactivity.SessionLiveActivity
 import ai.opencode.feature.voice.VoiceSharedKeys
 import ai.opencode.feature.voice.VoiceEngine
 import ai.opencode.feature.settings.SettingsFeature
+import ai.opencode.feature.drawer.miniapps.MiniAppsFeature
 import ai.opencode.feature.settings.SettingsPage
 import ai.opencode.feature.settings.onboarding.WelcomeFeature
 import ai.opencode.feature.settings.whatsnew.WhatsNewFeature
@@ -174,6 +175,8 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
          * is this with `root = whatsNew`.
          */
         val settings: SettingsFeature.State? = null,
+        /** Mini Apps, full screen over the drawer and the session, like Settings. */
+        val miniApps: MiniAppsFeature.State? = null,
         /**
          * The Voice page Settings opens at, when a call asked for it; the cog and What's New open
          * Settings' root.
@@ -653,6 +656,9 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data class Settings(val action: HomeSettingsFeature.Action) : Action
         /** The presented Settings ([State.settings]); its delegates are handled in `HomeFeatureSettings.kt`. */
         data class SettingsScreen(val action: PresentationAction<SettingsFeature.Action>) : Action
+        /** The presented Mini Apps ([State.miniApps]). */
+        data class MiniApps(val action: PresentationAction<MiniAppsFeature.Action>) : Action
+        data object MiniAppsTapped : Action
         /** Show Welcome over Home ([State.welcome]); its pairing requests go to the app. */
         data class Welcome(val action: PresentationAction<WelcomeFeature.Action>) : Action
         data class SearchChanged(val text: String) : Action

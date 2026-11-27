@@ -11,6 +11,8 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
+import ai.opencode.core.store.PresentationAction
+import ai.opencode.feature.drawer.miniapps.MiniAppsFeature
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
 import ai.opencode.feature.session.SessionFeature
@@ -133,10 +135,22 @@ internal fun HomeFeature.reduceServerEvent(state: State, event: OpenCodeServerEv
         }
 
         is OpenCodeServerEvent.PluginsUpdated ->
-            return Reduced(state, forwardToScreens(state, SessionFeature.Action.PluginsUpdated(event.directory)))
+            return Reduced(
+                state,
+                Effect.merge(
+                    forwardToScreens(state, SessionFeature.Action.PluginsUpdated(event.directory)),
+                    toMiniApps(state, MiniAppsFeature.Action.PluginsUpdated),
+                ),
+            )
 
         is OpenCodeServerEvent.WidgetChanged ->
-            return Reduced(state, forwardToSession(state, event.sessionID, SessionFeature.Action.WidgetChanged(event.sessionID, event.state)))
+            return Reduced(
+                state,
+                Effect.merge(
+                    forwardToSession(state, event.sessionID, SessionFeature.Action.WidgetChanged(event.sessionID, event.state)),
+                    toMiniApps(state, MiniAppsFeature.Action.WidgetChanged(event.sessionID, event.state)),
+                ),
+            )
 
         is OpenCodeServerEvent.RevertChanged -> {
             val s = state.updatingSession(event.sessionID) { it.copy(revertMessageID = event.messageID) }
@@ -432,3 +446,7 @@ private fun removingSnapshotQueuedInput(state: State, sessionID: String, inputID
     state.updatingSnapshot(sessionID) { snapshot ->
         snapshot.copy(queued = snapshot.queued.filterNot { it.id == inputID }, positions = snapshot.positions - inputID)
     }
+
+/** Mini Apps, while it's open, keeps its widgets current. */
+private fun toMiniApps(state: State, action: MiniAppsFeature.Action): Effect<Action> =
+    if (state.miniApps == null) Effect.none() else Effect.send(Action.MiniApps(PresentationAction.Presented(action)))

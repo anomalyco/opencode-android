@@ -10,6 +10,7 @@ import ai.opencode.core.store.Effect
 import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
+import ai.opencode.feature.drawer.miniapps.MiniAppsFeature
 import ai.opencode.core.store.combine
 import ai.opencode.core.store.forEach
 import ai.opencode.core.store.ifLet
@@ -49,6 +50,7 @@ import java.util.UUID
 private object SessionDetailSlot
 private object SettingsSlot
 private object WelcomeSlot
+private object MiniAppsSlot
 private object SubagentStackSlot
 
 internal fun HomeFeature.builtBody(): Reducer<State, Action> {
@@ -91,7 +93,15 @@ private fun HomeFeature.fullBody(): Reducer<State, Action> =
         id = SettingsSlot,
         parent = ifLet<State, Action, WelcomeFeature.State, WelcomeFeature.Action>(
             id = WelcomeSlot,
-            parent = homeReducers(),
+            parent = ifLet<State, Action, MiniAppsFeature.State, MiniAppsFeature.Action>(
+                id = MiniAppsSlot,
+                parent = homeReducers(),
+                state = { it.miniApps },
+                setState = { s: State, c: MiniAppsFeature.State? -> s.copy(miniApps = c) },
+                action = { (it as? Action.MiniApps)?.action },
+                embed = Action::MiniApps,
+                child = MiniAppsFeature(),
+            ),
             state = { it.welcome },
             setState = { s: State, c: WelcomeFeature.State? -> s.copy(welcome = c) },
             action = { (it as? Action.Welcome)?.action },

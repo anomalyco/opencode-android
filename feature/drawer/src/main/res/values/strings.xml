@@ -171,4 +171,24 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Help me improve the session screen. Show me what you find and explain the changes.</string>
     <string name="drawer_appearance_preview_assistant_text">I found the layout issue in `SessionView.swift`. The transcript and composer share the available height, so the keyboard is a useful stress test.</string>
+
+    <!-- Mini Apps -->
+    <string name="drawer_mini_apps_title">Mini Apps</string>
+    <string name="drawer_mini_apps_dashboard">Dashboard</string>
+    <string name="drawer_mini_apps_all_widgets">All Widgets</string>
+    <string name="drawer_mini_apps_add">Add to Dashboard</string>
+    <string name="drawer_mini_apps_on_dashboard">On Dashboard</string>
+    <string name="drawer_mini_apps_empty_title">No Mini Apps Yet</string>
+    <string name="drawer_mini_apps_empty_message">Add widgets from your sessions in All Widgets, then arrange them here.</string>
+    <string name="drawer_mini_apps_no_widgets_title">No Widgets</string>
+    <string name="drawer_mini_apps_no_widgets_message">Widgets that agents show in this server’s sessions appear here.</string>
+    <string name="drawer_mini_apps_load_failed">Couldn’t Load Widgets</string>
+    <string name="drawer_mini_apps_missing">This widget isn’t on the server any more.</string>
+    <string name="drawer_mini_apps_remove">Remove %1$s</string>
+    <string name="drawer_mini_apps_resize">Resize %1$s</string>
+    <string name="drawer_mini_apps_details">%1$s · %2$s · %3$s</string>
+    <string name="drawer_mini_apps_status_open">Open</string>
+    <string name="drawer_mini_apps_status_submitted">Submitted</string>
+    <string name="drawer_mini_apps_status_dismissed">Dismissed</string>
+    <string name="drawer_mini_apps_status_failed">Failed</string>
 </resources>

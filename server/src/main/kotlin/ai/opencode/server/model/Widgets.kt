@@ -70,12 +70,39 @@ data class OpenCodeWidgetState(
     val storage: Boolean = false,
     /** The program error the last report recorded; the widget keeps its status. */
     val failure: OpenCodeWidgetFailure? = null,
+    /** The widget that replaced this superseded one (same session). */
+    val supersededBy: OpenCodeWidgetCall? = null,
 ) {
     /** One widget in a session: a call ID is unique only within its message. */
     val key: String get() = key(messageID, callID)
 
     companion object {
         fun key(messageID: String, callID: String): String = "$messageID/$callID"
+    }
+}
+
+/** A `widget` tool call in a session. */
+data class OpenCodeWidgetCall(val messageID: String, val callID: String)
+
+/**
+ * One widget of the server (`opencode.widget` `instances`): its [state], the `widget` tool call's `data` as JSON text
+ * (null when its message couldn't be read), its session's title and directory (where its calls go), and when it last
+ * changed (epoch ms).
+ */
+data class OpenCodeWidgetInstance(
+    val state: OpenCodeWidgetState,
+    val data: String?,
+    val sessionTitle: String?,
+    val directory: String,
+    val updated: Long,
+    /** The superseded widgets of its session it replaced, directly or through others. */
+    val replaced: List<OpenCodeWidgetCall> = emptyList(),
+) {
+    /** The dashboard's key: `sessionID:messageID:callID`. */
+    val key: String get() = key(state.sessionID, state.messageID, state.callID)
+
+    companion object {
+        fun key(sessionID: String, messageID: String, callID: String): String = "$sessionID:$messageID:$callID"
     }
 }
 

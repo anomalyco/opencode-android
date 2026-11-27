@@ -5,6 +5,7 @@ import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.PresentationAction
 import ai.opencode.core.store.Reduced
+import ai.opencode.feature.drawer.miniapps.MiniAppsFeature
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
 import ai.opencode.feature.session.SessionFeature
@@ -45,6 +46,8 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     is Action.CatchUp -> reduceCatchUp(state, action.action)
     // The scoped `TraceUploadsFeature` reduces it (`HomeFeature+Composition`).
     is Action.Traces -> Reduced(state)
+    is Action.MiniApps -> Reduced(state)
+    Action.MiniAppsTapped -> Reduced(state.copy(miniApps = state.miniApps ?: MiniAppsFeature.State(server = state.server)))
     // The scoped `InboxSidebarFeature` owns Archive and Unarchive; Home stamps a confirmed archive
     // and restores an unarchived one, refetching the list.
     is Action.InboxSidebar -> when (val inbox = action.action) {

@@ -603,6 +603,14 @@ private fun DrawerFooterTrailing(
             contentColor = OpenCodeTheme.colors.text,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                OpenCodeIconButton(
+                    symbol = SFSymbol.SquareGrid2x2,
+                    contentDescription = stringResource(R.string.drawer_mini_apps_title),
+                    onClick = { store.send(HomeFeature.Action.MiniAppsTapped) },
+                    style = OpenCodeIconButtonStyle.Standard,
+                    size = square,
+                    modifier = Modifier.testTag("drawer-mini-apps"),
+                )
                 AnimatedVisibility(
                     visible = offersCall && showsCall,
                     // The call button comes on layout and goes on collapse.
