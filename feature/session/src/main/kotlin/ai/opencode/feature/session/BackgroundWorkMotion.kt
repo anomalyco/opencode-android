@@ -31,9 +31,9 @@ object BackgroundWorkTunables {
 }
 
 object BackgroundWorkMotion {
-    /** The panel arrives above the capsule on `swap` and leaves on its shorter exit. */
+    /** The panel rises out of the capsule on `panelOpen` and slides back into it on the shorter `panelClose`. */
     fun <T> present(opening: Boolean, reduceMotion: Boolean): FiniteAnimationSpec<T> =
-        Motion.swap.animation(if (opening) MotionPhase.Enter else MotionPhase.Exit, reduceMotion)
+        (if (opening) Motion.panelOpen else Motion.panelClose).animation(MotionPhase.Enter, reduceMotion)
 
     /** Reduce Motion's cross-fade, for the capsule's counts. */
     fun <T> fade(): FiniteAnimationSpec<T> = Motion.reduced.animation(reduceMotion = true)
@@ -54,11 +54,20 @@ object BackgroundWorkMotion {
     const val panelMaxWidth: Float = 360f
     const val panelMaxHeight: Float = 320f
 
-    /** The panel grows from this scale out of the capsule's top leading corner, and shrinks back into it. */
-    const val presentScale: Float = 0.85f
-
     /** Let go, the panel closes when pulled down past [dragCloses] (dp), or past [throwFrom] (dp) and thrown down faster than [throwCloses] (dp/s). */
     const val dragCloses: Float = 56f
     const val throwFrom: Float = 12f
     const val throwCloses: Float = 550f
+
+    /** Once the panel's bottom edge meets the capsule's top, the two become one outline over this much more travel (dp). */
+    const val mergeFuse: Float = 14f
+
+    /** The step from the panel's width to the capsule's rounds by this (dp). */
+    const val mergeFillet: Float = 8f
+
+    /** Over the last of its way in (dp), the panel is as narrow as the capsule and its rows fade out. */
+    const val mergeTail: Float = 16f
+
+    /** Rows soften over this much (dp) above the capsule's edge. */
+    const val mergeFade: Float = 12f
 }

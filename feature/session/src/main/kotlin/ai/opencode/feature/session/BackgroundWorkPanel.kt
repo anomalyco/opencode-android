@@ -90,12 +90,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -106,6 +116,7 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.node.GlobalPositionAwareModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
@@ -126,9 +137,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.util.lerp
 import java.time.Duration
 import java.time.Instant
@@ -490,8 +503,11 @@ fun BackgroundWorkPresentation(
     val capsuleAlpha = remember { Animatable(if (hasWork) 1f else 0f) }
     var origin by remember { mutableStateOf(Offset.Zero) }
     var overlayWidth by remember { mutableFloatStateOf(0f) }
-    // How far a finger has pulled the panel down (px).
+    // How far a finger has pulled the panel down (px), and how fast it let go (px/s).
     var dragOffset by remember { mutableFloatStateOf(0f) }
+    var releaseVelocity by remember { mutableFloatStateOf(0f) }
+    var panelSize by remember { mutableStateOf(Size.Zero) }
+    val panelGap = BackgroundWorkMotion.panelGap * density.density
 
     val latestPresented by rememberUpdatedState(isPresented)
     val latestHasWork by rememberUpdatedState(hasWork)
@@ -539,6 +555,7 @@ fun BackgroundWorkPresentation(
         settled = false
         scope.launch { scrollState.scrollTo(0) }
         dragOffset = 0f
+        releaseVelocity = 0f
         stage = BackgroundWorkStage.panel
         scope.launch {
             try {
@@ -569,9 +586,14 @@ fun BackgroundWorkPresentation(
         stage = BackgroundWorkStage.capsule
         if (InternalBuild.isDebug) LabMarks.mark("background_work_close")
         if (!latestHasWork) setCapsuleShown(false, animated = true)
+        // A pull let go keeps its speed on the way into the capsule.
+        val left = panelSize.height + panelGap - dragOffset
+        val velocity =
+            if (releaseVelocity != 0f && left > 0f) Motion.panelClose.initialVelocity(-releaseVelocity / left, reduceMotion) else progress.velocity
+        releaseVelocity = 0f
         scope.launch {
             try {
-                progress.animateTo(0f, BackgroundWorkMotion.present(opening = false, reduceMotion = reduceMotion))
+                progress.animateTo(0f, BackgroundWorkMotion.present(opening = false, reduceMotion = reduceMotion), velocity)
                 if (current == motion && !latestPresented && stage == BackgroundWorkStage.capsule) {
                     stage = BackgroundWorkStage.closed
                     if (!latestHasWork) capsuleMounted = false else if (!latestCovered) capsuleFocus = current
@@ -624,26 +646,33 @@ fun BackgroundWorkPresentation(
         object : NestedScrollConnection {
             var settle: Job? = null
 
+            // The list's pixels are the panel's own, which shrink as it nears the capsule.
+            fun scale(): Float =
+                if (reduceMotion) 1f else PanelMerge(panelSize, panelGap, (retained.capsule?.width ?: 0f) * density.density, dragOffset, 1f, BackgroundWorkMotion.mergeTail * density.density).scale
+
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
                 if (source != NestedScrollSource.UserInput || dragOffset <= 0f || available.y >= 0f) return Offset.Zero
                 settle?.cancel()
-                val moved = max(available.y, -dragOffset)
+                val scale = scale()
+                val moved = max(available.y * scale, -dragOffset)
                 dragOffset += moved
-                return Offset(0f, moved)
+                return Offset(0f, moved / scale)
             }
 
             override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
                 if (source != NestedScrollSource.UserInput || available.y <= 0f) return Offset.Zero
                 settle?.cancel()
-                dragOffset += available.y
+                dragOffset += available.y * scale()
                 return Offset(0f, available.y)
             }
 
             override suspend fun onPreFling(available: Velocity): Velocity {
                 if (dragOffset <= 0f) return Velocity.Zero
+                val velocity = available.y * scale()
                 val thrown = dragOffset > BackgroundWorkMotion.throwFrom * density.density &&
-                    available.y / density.density > BackgroundWorkMotion.throwCloses
+                    velocity / density.density > BackgroundWorkMotion.throwCloses
                 if (dragOffset > dragCloses || thrown) {
+                    releaseVelocity = velocity
                     latestOnPresentedChange(false)
                 } else {
                     settle = scope.launch {
@@ -698,6 +727,68 @@ fun BackgroundWorkPresentation(
             if (isPresented) R.string.session_background_work_expanded_description else R.string.session_background_work_collapsed_description,
         )
         val surfaceColor = OpenCodeSurfaces.color
+        val borderColor = OpenCodeTheme.colors.border
+
+        // The panel: just above the capsule, their leading edges in line. Its rows stay composed
+        // (held still, out of sight and touch) while it is closed, so opening never composes them
+        // in its first frame.
+        val rowsOpen = stage != BackgroundWorkStage.closed
+        val safeTop = WindowInsets.safeDrawing.getTop(density) / density.density - origin.y / density.density
+        val widthDp = overlayWidth / density.density
+        val margin = if (isRtl) widthDp - pill.right else pill.left
+        val maxWidth = max(pill.width, min(BackgroundWorkMotion.panelMaxWidth, widthDp - 2 * margin))
+        val minWidth = min(maxWidth, max(pill.width, BackgroundWorkMotion.panelMinWidth))
+        val panelBottom = pill.top - BackgroundWorkMotion.panelGap
+        val maxHeight = max(96f, min(BackgroundWorkMotion.panelMaxHeight, panelBottom - max(0f, safeTop) - 56f))
+        val canAct = isPanel && !hidden
+
+        // The capsule and the panel's resting bottom edge as they are placed (px).
+        val d = density.density
+        val pillPx = Rect(
+            Offset((pill.left * d).roundToInt().toFloat(), (pill.top * d).roundToInt().toFloat()),
+            Size((pill.width * d).roundToInt().toFloat(), (pill.height * d).roundToInt().toFloat()),
+        )
+        val restBottom = (panelBottom * d).roundToInt().toFloat()
+        // While the panel is up, the capsule and the panel share one surface and one border.
+        // Reduce Motion fades the panel in its place, as a popover of its own.
+        val merges = rowsOpen && !reduceMotion
+        fun merge(size: Size): PanelMerge = PanelMerge(
+            size = size,
+            gap = pillPx.top - restBottom,
+            capsuleWidth = pillPx.width,
+            drag = dragOffset,
+            progress = progress.value,
+            tail = BackgroundWorkMotion.mergeTail * d,
+        )
+        fun outline(size: Size, merge: PanelMerge): MergedOutline = MergedOutline(
+            pill = pillPx,
+            top = restBottom - size.height + merge.slide,
+            width = size.width * merge.scale,
+            height = size.height * merge.scale,
+            sunk = merge.sunk,
+            radius = OpenCodeRadius.card.value * d,
+            pillRadius = OpenCodeRadius.fill.value * d,
+            fuse = BackgroundWorkMotion.mergeFuse * d,
+            fillet = BackgroundWorkMotion.mergeFillet * d,
+        )
+        val outlinePath = remember { Path() }
+
+        if (merges) {
+            Box(
+                Modifier
+                    .matchParentSize()
+                    .graphicsLayer {
+                        alpha = hiddenAlpha * capsuleAlpha.value
+                        shadowElevation = lerp(OpenCodeSurfaces.raisedShadow.toPx(), OpenCodeSurfaces.popoverShadow.toPx(), progress.value)
+                        shape = MergedShape(outline(panelSize, merge(panelSize)))
+                        clip = false
+                    }
+                    .drawBehind {
+                        outline(panelSize, merge(panelSize)).addTo(outlinePath)
+                        drawPath(outlinePath, surfaceColor)
+                    },
+            )
+        }
 
         // The capsule keeps its place whether the panel is open or not.
         Box(
@@ -716,10 +807,9 @@ fun BackgroundWorkPresentation(
                     val dy = if (stage == BackgroundWorkStage.closed && composedTop != null && now != null) now.y - composedTop else 0f
                     if (dy == 0f) drawContent() else translate(top = dy) { this@drawWithContent.drawContent() }
                 }
-                .shadow(OpenCodeSurfaces.raisedShadow, OpenCodeShape.control, clip = false)
+                .then(if (merges) Modifier else Modifier.shadow(OpenCodeSurfaces.raisedShadow, OpenCodeShape.control, clip = false))
                 .clip(OpenCodeShape.control)
-                .background(surfaceColor)
-                .openCodeHairline(OpenCodeShape.control)
+                .then(if (merges) Modifier else Modifier.background(surfaceColor).openCodeHairline(OpenCodeShape.control))
                 .accessibilityFocusRequest(capsuleFocusRequest)
                 .then(
                     // A capsule fading with the work, or gone, takes no touch.
@@ -747,23 +837,9 @@ fun BackgroundWorkPresentation(
             }
         }
 
-        // The panel: just above the capsule, their leading edges in line. Its rows stay composed
-        // (held still, out of sight and touch) while it is closed, so opening never composes them
-        // in its first frame.
-        val rowsOpen = stage != BackgroundWorkStage.closed
-        val safeTop = WindowInsets.safeDrawing.getTop(density) / density.density - origin.y / density.density
-        val widthDp = overlayWidth / density.density
-        val margin = if (isRtl) widthDp - pill.right else pill.left
-        val maxWidth = max(pill.width, min(BackgroundWorkMotion.panelMaxWidth, widthDp - 2 * margin))
-        val minWidth = min(maxWidth, max(pill.width, BackgroundWorkMotion.panelMinWidth))
-        val panelBottom = pill.top - BackgroundWorkMotion.panelGap
-        val maxHeight = max(96f, min(BackgroundWorkMotion.panelMaxHeight, panelBottom - max(0f, safeTop) - 56f))
-        val shape = OpenCodeSurfaces.popoverShape
-        val canAct = isPanel && !hidden
         Box(
             Modifier
                 .layout { measurable, _ ->
-                    val d = density.density
                     val placeable = measurable.measure(
                         Constraints(minWidth = (minWidth * d).roundToInt(), maxWidth = (maxWidth * d).roundToInt(), maxHeight = (maxHeight * d).roundToInt()),
                     )
@@ -774,21 +850,51 @@ fun BackgroundWorkPresentation(
                     }
                 }
                 .graphicsLayer {
-                    val t = progress.value
-                    alpha = hiddenAlpha * t
-                    translationY = dragOffset
-                    if (!reduceMotion) {
-                        val scale = lerp(BackgroundWorkMotion.presentScale, 1f, t)
-                        scaleX = scale
-                        scaleY = scale
-                        val capsuleTop = size.height + BackgroundWorkMotion.panelGap * density.density - dragOffset
-                        transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, capsuleTop / size.height)
+                    if (reduceMotion) {
+                        alpha = hiddenAlpha * progress.value
+                        translationY = dragOffset
+                    } else {
+                        val merge = merge(size)
+                        // The last of the rows fade as they reach the capsule.
+                        alpha = hiddenAlpha * capsuleAlpha.value * min(1f, merge.left / BackgroundWorkMotion.mergeTail.dp.toPx())
+                        translationY = merge.slide
+                        scaleX = merge.scale
+                        scaleY = merge.scale
+                        transformOrigin = TransformOrigin(if (isRtl) 1f else 0f, 0f)
+                        shape = PanelClipShape(outline(size, merge), merge)
+                        clip = true
                     }
                 }
-                .shadow(OpenCodeSurfaces.popoverShadow, shape, clip = false)
-                .clip(shape)
-                .background(surfaceColor)
-                .openCodeHairline(shape)
+                .onSizeChanged { panelSize = it.toSize() }
+                .then(
+                    if (reduceMotion) {
+                        Modifier
+                            .shadow(OpenCodeSurfaces.popoverShadow, OpenCodeSurfaces.popoverShape, clip = false)
+                            .clip(OpenCodeSurfaces.popoverShape)
+                            .background(surfaceColor)
+                            .openCodeHairline(OpenCodeSurfaces.popoverShape)
+                    } else {
+                        // Rows soften into the capsule's edge, which has no line to cut them.
+                        Modifier.drawWithContent {
+                            drawContent()
+                            val merge = merge(size)
+                            val fused = outline(size, merge).fused
+                            if (fused > 0f) {
+                                val band = BackgroundWorkMotion.mergeFade.dp.toPx() / merge.scale
+                                drawRect(
+                                    brush = Brush.verticalGradient(
+                                        listOf(surfaceColor.copy(alpha = 0f), surfaceColor),
+                                        startY = merge.visibleHeight - band,
+                                        endY = merge.visibleHeight,
+                                    ),
+                                    topLeft = Offset(0f, merge.visibleHeight - band),
+                                    size = Size(size.width, band),
+                                    alpha = fused,
+                                )
+                            }
+                        }
+                    },
+                )
                 .nestedScroll(panelDrag)
                 .pointerInput(Unit) { detectTapGestures { } }
                 .then(if (settled && !hidden) Modifier.testTag("background-work-panel") else Modifier.clearAndSetSemantics { }),
@@ -823,6 +929,170 @@ fun BackgroundWorkPresentation(
                 },
             )
         }
+
+        // The one border around both, over the rows.
+        if (merges) {
+            Box(
+                Modifier
+                    .matchParentSize()
+                    .graphicsLayer { alpha = hiddenAlpha * capsuleAlpha.value }
+                    .drawBehind {
+                        val merged = outline(panelSize, merge(panelSize))
+                        merged.addTo(outlinePath)
+                        val stroke = OpenCodeSurfaces.hairline.toPx()
+                        clipPath(outlinePath) { drawPath(outlinePath, borderColor, style = Stroke(stroke * 2)) }
+                        if (merged.seam > 0f) {
+                            drawLine(
+                                color = borderColor,
+                                start = Offset(merged.seamStart, pillPx.top),
+                                end = Offset(merged.seamEnd, pillPx.top),
+                                strokeWidth = stroke * 2,
+                                alpha = merged.seam,
+                            )
+                        }
+                    },
+            )
+        }
+    }
+}
+
+/**
+ * The panel on its way into the capsule under it. It slides down [slide] px from its place, shrinking
+ * to the capsule's width, and only its top [visibleHeight] px (its own, before scaling) still shows above the capsule.
+ */
+private class PanelMerge(size: Size, gap: Float, capsuleWidth: Float, drag: Float, progress: Float, tail: Float) {
+    val slide: Float
+    val scale: Float
+    val visibleHeight: Float
+
+    /** How far it still has to go (px). */
+    val left: Float
+
+    /** How far its bottom edge has gone under the capsule's top (px); negative while they are apart. */
+    val sunk: Float
+
+    init {
+        val travel = size.height + gap
+        slide = min(travel, lerp(travel, drag, progress))
+        left = travel - slide
+        // As narrow as the capsule for the last [tail] px, so the two end as one shape.
+        val narrowed = (slide / max(1f, travel - tail)).coerceIn(0f, 1f)
+        scale = if (size.width > 0f) lerp(1f, capsuleWidth / size.width, narrowed) else 1f
+        visibleHeight = min(size.height, left / scale)
+        sunk = size.height * scale - left
+    }
+}
+
+/**
+ * The capsule and the panel above it as one outline (px, overlay-local). Apart, they are two rounded
+ * rectangles. Once the panel's bottom edge meets the capsule's top, the corners between them close
+ * over [fuse] px more of travel, and the step between their widths rounds by [fillet].
+ */
+private class MergedOutline(
+    private val pill: Rect,
+    private val top: Float,
+    width: Float,
+    height: Float,
+    sunk: Float,
+    radius: Float,
+    pillRadius: Float,
+    fuse: Float,
+    fillet: Float,
+) {
+    private val hasPanel = width > 0f && height > 0f
+    private val merged = hasPanel && sunk >= 0f
+
+    /** 0 as the two touch, 1 once they are one. */
+    val fused: Float = if (merged) (sunk / fuse).coerceIn(0f, 1f) else 0f
+
+    // The corners where the two meet shrink away over the first half, then the step rounds.
+    private val pinch = if (merged) max(0f, 1f - 2f * fused) else 0f
+    private val rounding = max(0f, 2f * fused - 1f)
+
+    private val capsuleRadius = min(pillRadius, min(pill.width, pill.height) / 2)
+    private val bottom = if (merged) pill.top else top + height
+    private val right = if (merged) max(pill.right, pill.left + width) else pill.left + width
+
+    /** The panel above the capsule, and how much wider it is. */
+    private val rise = bottom - top
+    private val step = right - pill.right
+
+    private val apart = min(radius, min(width, height) / 2)
+    private val capsulePinch = capsuleRadius * pinch
+    private val crown = lerp(capsuleRadius, radius, (rise / (2 * radius)).coerceIn(0f, 1f))
+
+    /** The panel's corners: near is the side in line with the capsule's leading edge. */
+    val bottomNear: Float = if (merged) min(radius * pinch, rise / 2) else apart
+    private val stepCorner = min(radius, step / 2)
+    private val closingCorner = min(radius * pinch, step + capsulePinch)
+    val bottomFar: Float = if (merged) min(rise / 2, max(stepCorner, closingCorner)) else apart
+    val topNear: Float = if (!merged) apart else if (bottomNear > 0f) min(crown, rise - bottomNear) else crown
+    val topFar: Float = if (!merged) apart else if (bottomFar > 0f) min(crown, rise - bottomFar) else crown
+
+    private val filletRadius =
+        if (merged) max(0f, min(fillet * rounding, min(step - bottomFar, pill.height - capsuleRadius))) else 0f
+
+    /** The line where the two edges met, fading as they become one: its opacity and ends. */
+    val seam: Float = pinch
+    val seamStart: Float = pill.left + max(bottomNear, capsulePinch)
+    val seamEnd: Float = pill.right - capsulePinch
+
+    fun addTo(path: Path) {
+        path.rewind()
+        if (!merged) {
+            path.addRoundRect(RoundRect(pill, CornerRadius(capsuleRadius)))
+            if (hasPanel) path.addRoundRect(RoundRect(pill.left, top, right, bottom, CornerRadius(apart)))
+            return
+        }
+        val near = pill.left
+        path.moveTo(near + topNear, top)
+        path.corner(right - topFar, top + topFar, topFar, 270f)
+        if (step > 0f || bottomFar > 0f) {
+            path.corner(right - bottomFar, pill.top - bottomFar, bottomFar, 0f)
+            if (filletRadius > 0f) {
+                path.corner(pill.right + filletRadius, pill.top + filletRadius, filletRadius, 270f, -90f)
+            } else {
+                path.corner(pill.right - capsulePinch, pill.top + capsulePinch, capsulePinch, 270f)
+            }
+        }
+        path.corner(pill.right - capsuleRadius, pill.bottom - capsuleRadius, capsuleRadius, 0f)
+        path.corner(near + capsuleRadius, pill.bottom - capsuleRadius, capsuleRadius, 90f)
+        if (capsulePinch > 0f || bottomNear > 0f) {
+            path.corner(near + capsulePinch, pill.top + capsulePinch, capsulePinch, 180f)
+            path.corner(near + bottomNear, pill.top - bottomNear, bottomNear, 90f)
+        }
+        path.corner(near + topNear, top + topNear, topNear, 180f)
+        path.close()
+    }
+
+    /** A quarter turn of radius [r] about ([cx], [cy]) from [start] degrees, or the corner itself. */
+    private fun Path.corner(cx: Float, cy: Float, r: Float, start: Float, sweep: Float = 90f) {
+        if (r < 0.01f) return lineTo(cx, cy)
+        arcTo(Rect(cx - r, cy - r, cx + r, cy + r), start, sweep, forceMoveTo = false)
+    }
+}
+
+private class MergedShape(val outline: MergedOutline) : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline =
+        Outline.Generic(Path().also(outline::addTo))
+}
+
+/** The panel's part of [outline], in the panel's own pixels: what still shows of its rows. */
+private class PanelClipShape(val outline: MergedOutline, val merge: PanelMerge) : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        val scale = merge.scale
+        return Outline.Rounded(
+            RoundRect(
+                left = 0f,
+                top = 0f,
+                right = size.width,
+                bottom = merge.visibleHeight,
+                topLeftCornerRadius = CornerRadius(outline.topNear / scale),
+                topRightCornerRadius = CornerRadius(outline.topFar / scale),
+                bottomRightCornerRadius = CornerRadius(outline.bottomFar / scale),
+                bottomLeftCornerRadius = CornerRadius(outline.bottomNear / scale),
+            ),
+        )
     }
 }
 
@@ -942,6 +1212,7 @@ fun BackgroundWorkPanel(
 
 private object BackgroundWorkRowMetrics {
     const val listPadding = 4f
+    const val rowHeight = 40f
 
     /** A row's glyph stands under the capsule's, and its title under the capsule's counts. */
     val leading: Float get() = BackgroundWorkTunables.glyphLeading - listPadding
@@ -966,7 +1237,7 @@ private fun BackgroundWorkRow(
     Row(
         modifier
             .fillMaxWidth()
-            .heightIn(min = 48.dp)
+            .heightIn(min = BackgroundWorkRowMetrics.rowHeight.dp)
             .clip(RoundedCornerShape(OpenCodeRadius.sm))
             .then(if (onTap != null) Modifier.clickable(role = Role.Button, onClickLabel = accessibilityHint, onClick = onTap) else Modifier)
             .semantics(mergeDescendants = true) {
@@ -1019,6 +1290,7 @@ private fun BackgroundWorkStop(label: String?, onStop: () -> Unit, isStopping: B
     val interactions = remember { MutableInteractionSource() }
     Box(
         modifier
+            .heightIn(max = BackgroundWorkRowMetrics.rowHeight.dp)
             .width(BackgroundWorkRowMetrics.stopSlot.dp)
             .clickable(interactionSource = interactions, indication = null, enabled = !isStopping, role = Role.Button, onClickLabel = label, onClick = onStop)
             .openCodeTapTarget(accessibility = false),
