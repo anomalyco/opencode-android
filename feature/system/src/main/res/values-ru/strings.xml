@@ -82,6 +82,87 @@
     <string name="system_channel_session_runs">Запуски сессий</string>
     <string name="system_channel_session_updates">Обновления сессий</string>
     <string name="system_channel_shared_items">Отправленные материалы</string>
+    <string name="system_channel_push_attention">Требует внимания</string>
+    <string name="system_channel_push_finished">Завершено</string>
+    <string name="system_channel_push_failed">Ошибка</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Хочет выполнить %1$d команду</item>
+        <item quantity="few">Хочет выполнить %1$d команды</item>
+        <item quantity="many">Хочет выполнить %1$d команд</item>
+        <item quantity="other">Хочет выполнить %1$d команд</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Хочет изменить %1$d файл</item>
+        <item quantity="few">Хочет изменить %1$d файла</item>
+        <item quantity="many">Хочет изменить %1$d файлов</item>
+        <item quantity="other">Хочет изменить %1$d файлов</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Хочет прочитать %1$d файл</item>
+        <item quantity="few">Хочет прочитать %1$d файла</item>
+        <item quantity="many">Хочет прочитать %1$d файлов</item>
+        <item quantity="other">Хочет прочитать %1$d файлов</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Хочет загрузить страницу</string>
+    <string name="system_push_permission_websearch">Хочет поискать в интернете</string>
+    <string name="system_push_permission_external_directory">Хочет использовать папку вне проекта</string>
+    <string name="system_push_permission_other">Хочет использовать %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">«Разрешить всегда» действует для %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Ещё %1$d</item>
+        <item quantity="few">Ещё %1$d</item>
+        <item quantity="many">Ещё %1$d</item>
+        <item quantity="other">Ещё %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Вопрос %1$d из %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d вариант</item>
+        <item quantity="few">%1$d варианта</item>
+        <item quantity="many">%1$d вариантов</item>
+        <item quantity="other">%1$d вариантов</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Ещё %1$d вариант</item>
+        <item quantity="few">Ещё %1$d варианта</item>
+        <item quantity="many">Ещё %1$d вариантов</item>
+        <item quantity="other">Ещё %1$d вариантов</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d фоновая задача ещё выполняется</item>
+        <item quantity="few">%1$d фоновые задачи ещё выполняются</item>
+        <item quantity="many">%1$d фоновых задач ещё выполняются</item>
+        <item quantity="other">%1$d фоновых задач ещё выполняются</item>
+    </plurals>
+    <string name="system_push_finished">Завершено</string>
+    <string name="system_push_failed">Ошибка</string>
+    <string name="system_push_failed_rate_limit">Превышен лимит запросов</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Превышен лимит запросов. Попробуйте снова через %1$d секунду.</item>
+        <item quantity="few">Превышен лимит запросов. Попробуйте снова через %1$d секунды.</item>
+        <item quantity="many">Превышен лимит запросов. Попробуйте снова через %1$d секунд.</item>
+        <item quantity="other">Превышен лимит запросов. Попробуйте снова через %1$d секунд.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Превышен лимит запросов. Попробуйте снова через %1$d минуту.</item>
+        <item quantity="few">Превышен лимит запросов. Попробуйте снова через %1$d минуты.</item>
+        <item quantity="many">Превышен лимит запросов. Попробуйте снова через %1$d минут.</item>
+        <item quantity="other">Превышен лимит запросов. Попробуйте снова через %1$d минут.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Провайдер отклонил вход</string>
+    <string name="system_push_public_permission">Нужно разрешение</string>
+    <string name="system_push_public_question">Есть вопрос</string>
+    <string name="system_push_action_allow">Разрешить</string>
+    <string name="system_push_action_always_allow">Разрешить всегда</string>
+    <string name="system_push_action_deny">Запретить</string>
+    <string name="system_push_action_reply">Ответить</string>
+    <string name="system_push_action_open">Открыть</string>
+    <string name="system_push_hint_answer">Введите свой ответ</string>
+    <string name="system_push_hint_reply">Ответить OpenCode</string>
+    <string name="system_push_send_failed">Не удалось отправить. Нажмите, чтобы открыть сессию.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Нажмите, чтобы продолжить в OpenCode</string>

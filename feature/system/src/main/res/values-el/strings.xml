@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Εκτελέσεις συνεδριών</string>
     <string name="system_channel_session_updates">Ενημερώσεις συνεδριών</string>
     <string name="system_channel_shared_items">Κοινοποιημένα στοιχεία</string>
+    <string name="system_channel_push_attention">Σας χρειάζεται</string>
+    <string name="system_channel_push_finished">Ολοκληρώθηκε</string>
+    <string name="system_channel_push_failed">Απέτυχε</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Θέλει να εκτελέσει %1$d εντολή</item>
+        <item quantity="other">Θέλει να εκτελέσει %1$d εντολές</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Θέλει να επεξεργαστεί %1$d αρχείο</item>
+        <item quantity="other">Θέλει να επεξεργαστεί %1$d αρχεία</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Θέλει να διαβάσει %1$d αρχείο</item>
+        <item quantity="other">Θέλει να διαβάσει %1$d αρχεία</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Θέλει να ανακτήσει μια σελίδα</string>
+    <string name="system_push_permission_websearch">Θέλει να κάνει αναζήτηση στον ιστό</string>
+    <string name="system_push_permission_external_directory">Θέλει να χρησιμοποιήσει έναν φάκελο εκτός του έργου</string>
+    <string name="system_push_permission_other">Θέλει να χρησιμοποιήσει το %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Το «Να επιτρέπεται πάντα» καλύπτει: %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d ακόμη</item>
+        <item quantity="other">%1$d ακόμη</item>
+    </plurals>
+    <string name="system_push_question_position">Ερώτηση %1$d από %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d επιλογή</item>
+        <item quantity="other">%1$d επιλογές</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d ακόμη επιλογή</item>
+        <item quantity="other">%1$d ακόμη επιλογές</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d εργασία στο παρασκήνιο εκτελείται ακόμη</item>
+        <item quantity="other">%1$d εργασίες στο παρασκήνιο εκτελούνται ακόμη</item>
+    </plurals>
+    <string name="system_push_finished">Ολοκληρώθηκε</string>
+    <string name="system_push_failed">Απέτυχε</string>
+    <string name="system_push_failed_rate_limit">Υπέρβαση ορίου αιτημάτων</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Υπέρβαση ορίου αιτημάτων. Δοκιμάστε ξανά σε %1$d δευτερόλεπτο.</item>
+        <item quantity="other">Υπέρβαση ορίου αιτημάτων. Δοκιμάστε ξανά σε %1$d δευτερόλεπτα.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Υπέρβαση ορίου αιτημάτων. Δοκιμάστε ξανά σε %1$d λεπτό.</item>
+        <item quantity="other">Υπέρβαση ορίου αιτημάτων. Δοκιμάστε ξανά σε %1$d λεπτά.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Ο πάροχος δεν αποδέχτηκε τη σύνδεση</string>
+    <string name="system_push_public_permission">Χρειάζεται άδεια</string>
+    <string name="system_push_public_question">Έχει μια ερώτηση</string>
+    <string name="system_push_action_allow">Να επιτρέπεται</string>
+    <string name="system_push_action_always_allow">Να επιτρέπεται πάντα</string>
+    <string name="system_push_action_deny">Απόρριψη</string>
+    <string name="system_push_action_reply">Απάντηση</string>
+    <string name="system_push_action_open">Άνοιγμα</string>
+    <string name="system_push_hint_answer">Γράψτε τη δική σας απάντηση</string>
+    <string name="system_push_hint_reply">Απάντηση στο OpenCode</string>
+    <string name="system_push_send_failed">Αδυναμία αποστολής. Πατήστε για να ανοίξετε τη συνεδρία.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Πατήστε για συνέχεια στο OpenCode</string>

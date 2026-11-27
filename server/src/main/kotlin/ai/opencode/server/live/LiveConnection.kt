@@ -118,39 +118,36 @@ internal suspend fun requestNotifyPluginStatus(server: OpenCodeServer): OpenCode
 }
 
 @Serializable
-private data class NotificationPreviewPairBody(val input: Input) {
-    @Serializable
-    data class Input(val callbackURL: String, val ref: String, val publicKey: String)
-}
+private data class PushRegisterBody(
+    val callbackURL: String,
+    val expiresAt: Long,
+    val publicKey: String,
+    val platform: String,
+    val name: String,
+)
 
 @Serializable
-private data class NotificationPreviewPairReply(val output: Output) {
+private data class PushRegisterReply(val data: Data) {
     @Serializable
-    data class Output(val publicKey: String)
+    data class Data(val publicKey: String)
 }
 
-/**
- * Exchanges public keys on the saved server, never on the push relay. A plain LAN connection can't
- * authenticate this exchange, so only a paired HTTPS address is used; without one it fails before
- * sending anything.
- */
-internal suspend fun requestPairNotificationPreview(
+internal suspend fun requestRegisterPushDevice(
     server: OpenCodeServer,
+    deviceID: String,
     callbackURL: String,
-    ref: String,
+    expiresAt: Long,
     publicKey: String,
+    name: String,
 ): String {
-    val secure = server.candidateURLs.firstOrNull { it.substringBefore("://", "").lowercase() == "https" }
-        ?: throw OpenCodeClientError(localized(R.string.server_error_notification_previews_need_https))
-    val reply = request<NotificationPreviewPairReply>(
-        "/api/rpc/mobile-notifications/pair",
-        method = "POST",
-        body = encodedBody(NotificationPreviewPairBody(NotificationPreviewPairBody.Input(callbackURL, ref, publicKey))),
+    val reply = request<PushRegisterReply>(
+        "/api/experimental/push/device/$deviceID",
+        method = "PUT",
+        body = encodedBody(PushRegisterBody(callbackURL, expiresAt, publicKey, "android", name)),
         timeout = 3.seconds,
-        idempotency = RequestIdempotency.Idempotent,
         retry = RetryPolicy.once,
         followsRedirects = false,
-        server = server.at(secure),
+        server = server,
     )
-    return reply.output.publicKey
+    return reply.data.publicKey
 }

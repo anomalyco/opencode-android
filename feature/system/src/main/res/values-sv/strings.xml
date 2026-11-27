@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Sessionskörningar</string>
     <string name="system_channel_session_updates">Sessionsuppdateringar</string>
     <string name="system_channel_shared_items">Delade objekt</string>
+    <string name="system_channel_push_attention">Behöver dig</string>
+    <string name="system_channel_push_finished">Klar</string>
+    <string name="system_channel_push_failed">Misslyckades</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vill köra %1$d kommando</item>
+        <item quantity="other">Vill köra %1$d kommandon</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vill redigera %1$d fil</item>
+        <item quantity="other">Vill redigera %1$d filer</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vill läsa %1$d fil</item>
+        <item quantity="other">Vill läsa %1$d filer</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vill hämta en sida</string>
+    <string name="system_push_permission_websearch">Vill söka på webben</string>
+    <string name="system_push_permission_external_directory">Vill använda en mapp utanför projektet</string>
+    <string name="system_push_permission_other">Vill använda %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Tillåt alltid gäller %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d till</item>
+        <item quantity="other">%1$d till</item>
+    </plurals>
+    <string name="system_push_question_position">Fråga %1$d av %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d alternativ</item>
+        <item quantity="other">%1$d alternativ</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d alternativ till</item>
+        <item quantity="other">%1$d alternativ till</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d bakgrundsjobb körs fortfarande</item>
+        <item quantity="other">%1$d bakgrundsjobb körs fortfarande</item>
+    </plurals>
+    <string name="system_push_finished">Klar</string>
+    <string name="system_push_failed">Misslyckades</string>
+    <string name="system_push_failed_rate_limit">Hastighetsbegränsad</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Hastighetsbegränsad. Försök igen om %1$d sekund.</item>
+        <item quantity="other">Hastighetsbegränsad. Försök igen om %1$d sekunder.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Hastighetsbegränsad. Försök igen om %1$d minut.</item>
+        <item quantity="other">Hastighetsbegränsad. Försök igen om %1$d minuter.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Leverantören godtog inte inloggningen</string>
+    <string name="system_push_public_permission">Behöver behörighet</string>
+    <string name="system_push_public_question">Har en fråga</string>
+    <string name="system_push_action_allow">Tillåt</string>
+    <string name="system_push_action_always_allow">Tillåt alltid</string>
+    <string name="system_push_action_deny">Neka</string>
+    <string name="system_push_action_reply">Svara</string>
+    <string name="system_push_action_open">Öppna</string>
+    <string name="system_push_hint_answer">Skriv ditt eget svar</string>
+    <string name="system_push_hint_reply">Svara OpenCode</string>
+    <string name="system_push_send_failed">Kunde inte skicka. Tryck för att öppna sessionen.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tryck för att fortsätta i OpenCode</string>

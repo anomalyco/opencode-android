@@ -103,18 +103,19 @@ class WireRequestTests {
     }
 
     @Test
-    fun previewEnrollmentExchangesOnlyPublicKeysOnTheSavedHTTPSOrigin() = runTest {
-        withFixture(WireFixture { Reply.Json(200, """{"output":{"publicKey":"server-public"}}""") }) { fixture ->
+    fun pushRegistrationSendsTheCallbackAndReadsTheServerKey() = runTest {
+        withFixture(WireFixture { Reply.Json(200, """{"data":{"publicKey":"server-public"}}""") }) { fixture ->
             val url = "https://relay.example/v2/notify/sealed"
-            var server = fixture.server.copy(url = "http://local.example", alternateURLs = listOf(fixture.server.url))
-            val key = OpenCodeClient.pairNotificationPreview(server, callbackURL = url, ref = "ref", publicKey = "phone-public")
+            val key = OpenCodeClient.registerPushDevice(
+                fixture.server, deviceID = "device", callbackURL = url, expiresAt = 1795644290720, publicKey = "phone-public", name = "Pixel 8",
+            )
             assertEquals("server-public", key)
             val request = fixture.requests.first()
-            assertEquals("POST /api/rpc/mobile-notifications/pair", request.route)
-            assertEquals(json("""{"input":{"ref":"ref","publicKey":"phone-public","callbackURL":"$url"}}"""), request.json())
-            server = server.copy(alternateURLs = emptyList())
-            expectClientError { OpenCodeClient.pairNotificationPreview(server, callbackURL = url, ref = "ref", publicKey = "phone-public") }
-            assertEquals(1, fixture.requests.size)
+            assertEquals("PUT /api/experimental/push/device/device", request.route)
+            assertEquals(
+                json("""{"callbackURL":"$url","expiresAt":1795644290720,"publicKey":"phone-public","platform":"android","name":"Pixel 8"}"""),
+                request.json(),
+            )
         }
     }
 

@@ -82,6 +82,60 @@
     <string name="system_channel_session_runs">会话运行</string>
     <string name="system_channel_session_updates">会话更新</string>
     <string name="system_channel_shared_items">分享的内容</string>
+    <string name="system_channel_push_attention">需要你处理</string>
+    <string name="system_channel_push_finished">已完成</string>
+    <string name="system_channel_push_failed">失败</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">请求运行 %1$d 条命令</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">请求编辑 %1$d 个文件</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">请求读取 %1$d 个文件</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">请求获取网页</string>
+    <string name="system_push_permission_websearch">请求搜索网页</string>
+    <string name="system_push_permission_external_directory">请求使用项目外的文件夹</string>
+    <string name="system_push_permission_other">请求使用 %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s：%2$s</string>
+    <string name="system_push_permission_always_covers">“始终允许”适用于 %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">还有 %1$d 项</item>
+    </plurals>
+    <string name="system_push_question_position">问题 %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d 个选项</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">还有 %1$d 个选项</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">%1$d 个后台任务仍在运行</item>
+    </plurals>
+    <string name="system_push_finished">已完成</string>
+    <string name="system_push_failed">失败</string>
+    <string name="system_push_failed_rate_limit">已达速率限制</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">已达速率限制，请 %1$d 秒后再试。</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">已达速率限制，请 %1$d 分钟后再试。</item>
+    </plurals>
+    <string name="system_push_failed_auth">提供商拒绝了登录</string>
+    <string name="system_push_public_permission">需要权限</string>
+    <string name="system_push_public_question">有一个问题</string>
+    <string name="system_push_action_allow">允许</string>
+    <string name="system_push_action_always_allow">始终允许</string>
+    <string name="system_push_action_deny">拒绝</string>
+    <string name="system_push_action_reply">回复</string>
+    <string name="system_push_action_open">打开</string>
+    <string name="system_push_hint_answer">输入你的答案</string>
+    <string name="system_push_hint_reply">回复 OpenCode</string>
+    <string name="system_push_send_failed">发送失败，点击打开会话。</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">点击在 OpenCode 中继续</string>

@@ -82,6 +82,78 @@
     <string name="system_channel_session_runs">Покретања сесија</string>
     <string name="system_channel_session_updates">Ажурирања сесија</string>
     <string name="system_channel_shared_items">Дељене ставке</string>
+    <string name="system_channel_push_attention">Захтева пажњу</string>
+    <string name="system_channel_push_finished">Завршено</string>
+    <string name="system_channel_push_failed">Неуспешно</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Жели да покрене %1$d команду</item>
+        <item quantity="few">Жели да покрене %1$d команде</item>
+        <item quantity="other">Жели да покрене %1$d команди</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Жели да уреди %1$d датотеку</item>
+        <item quantity="few">Жели да уреди %1$d датотеке</item>
+        <item quantity="other">Жели да уреди %1$d датотека</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Жели да прочита %1$d датотеку</item>
+        <item quantity="few">Жели да прочита %1$d датотеке</item>
+        <item quantity="other">Жели да прочита %1$d датотека</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Жели да преузме страницу</string>
+    <string name="system_push_permission_websearch">Жели да претражи веб</string>
+    <string name="system_push_permission_external_directory">Жели да користи фасциклу ван пројекта</string>
+    <string name="system_push_permission_other">Жели да користи %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">„Дозволи увек“ важи за %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Још %1$d</item>
+        <item quantity="few">Још %1$d</item>
+        <item quantity="other">Још %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Питање %1$d од %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d опција</item>
+        <item quantity="few">%1$d опције</item>
+        <item quantity="other">%1$d опција</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Још %1$d опција</item>
+        <item quantity="few">Још %1$d опције</item>
+        <item quantity="other">Још %1$d опција</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d позадински задатак је још у току</item>
+        <item quantity="few">%1$d позадинска задатка су још у току</item>
+        <item quantity="other">%1$d позадинских задатака је још у току</item>
+    </plurals>
+    <string name="system_push_finished">Завршено</string>
+    <string name="system_push_failed">Неуспешно</string>
+    <string name="system_push_failed_rate_limit">Превише захтева</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Превише захтева. Покушај поново за %1$d секунду.</item>
+        <item quantity="few">Превише захтева. Покушај поново за %1$d секунде.</item>
+        <item quantity="other">Превише захтева. Покушај поново за %1$d секунди.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Превише захтева. Покушај поново за %1$d минут.</item>
+        <item quantity="few">Превише захтева. Покушај поново за %1$d минута.</item>
+        <item quantity="other">Превише захтева. Покушај поново за %1$d минута.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Добављач није прихватио пријаву</string>
+    <string name="system_push_public_permission">Потребна дозвола</string>
+    <string name="system_push_public_question">Има питање</string>
+    <string name="system_push_action_allow">Дозволи</string>
+    <string name="system_push_action_always_allow">Дозволи увек</string>
+    <string name="system_push_action_deny">Одбиј</string>
+    <string name="system_push_action_reply">Одговори</string>
+    <string name="system_push_action_open">Отвори</string>
+    <string name="system_push_hint_answer">Унеси свој одговор</string>
+    <string name="system_push_hint_reply">Одговор за OpenCode</string>
+    <string name="system_push_send_failed">Слање није успело. Додирни да отвориш сесију.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Додирни за наставак у OpenCode</string>

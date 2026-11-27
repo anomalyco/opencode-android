@@ -82,6 +82,60 @@
     <string name="system_channel_session_runs">工作階段執行</string>
     <string name="system_channel_session_updates">工作階段更新</string>
     <string name="system_channel_shared_items">分享的項目</string>
+    <string name="system_channel_push_attention">需要你處理</string>
+    <string name="system_channel_push_finished">已完成</string>
+    <string name="system_channel_push_failed">失敗</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">想執行 %1$d 個命令</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">想編輯 %1$d 個檔案</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">想讀取 %1$d 個檔案</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">想擷取頁面</string>
+    <string name="system_push_permission_websearch">想搜尋網頁</string>
+    <string name="system_push_permission_external_directory">想使用專案外的資料夾</string>
+    <string name="system_push_permission_other">想使用 %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s：%2$s</string>
+    <string name="system_push_permission_always_covers">「永遠允許」涵蓋 %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">還有 %1$d 個</item>
+    </plurals>
+    <string name="system_push_question_position">第 %1$d/%2$d 個問題</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d 個選項</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">還有 %1$d 個選項</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">仍有 %1$d 項背景工作執行中</item>
+    </plurals>
+    <string name="system_push_finished">已完成</string>
+    <string name="system_push_failed">失敗</string>
+    <string name="system_push_failed_rate_limit">已達速率限制</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">已達速率限制。請在 %1$d 秒後再試一次。</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">已達速率限制。請在 %1$d 分鐘後再試一次。</item>
+    </plurals>
+    <string name="system_push_failed_auth">提供者未接受這次登入</string>
+    <string name="system_push_public_permission">需要權限</string>
+    <string name="system_push_public_question">有一個問題</string>
+    <string name="system_push_action_allow">允許</string>
+    <string name="system_push_action_always_allow">永遠允許</string>
+    <string name="system_push_action_deny">拒絕</string>
+    <string name="system_push_action_reply">回覆</string>
+    <string name="system_push_action_open">開啟</string>
+    <string name="system_push_hint_answer">輸入你自己的答案</string>
+    <string name="system_push_hint_reply">回覆 OpenCode</string>
+    <string name="system_push_send_failed">無法傳送。點一下以開啟工作階段。</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">點一下以在 OpenCode 中繼續</string>

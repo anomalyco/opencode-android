@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Seansside käivitused</string>
     <string name="system_channel_session_updates">Seansside uuendused</string>
     <string name="system_channel_shared_items">Jagatud üksused</string>
+    <string name="system_channel_push_attention">Vajab sind</string>
+    <string name="system_channel_push_finished">Lõpetatud</string>
+    <string name="system_channel_push_failed">Ebaõnnestunud</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Soovib käivitada %1$d käsu</item>
+        <item quantity="other">Soovib käivitada %1$d käsku</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Soovib muuta %1$d faili</item>
+        <item quantity="other">Soovib muuta %1$d faili</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Soovib lugeda %1$d faili</item>
+        <item quantity="other">Soovib lugeda %1$d faili</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Soovib tuua lehe</string>
+    <string name="system_push_permission_websearch">Soovib otsida veebist</string>
+    <string name="system_push_permission_external_directory">Soovib kasutada projektivälist kausta</string>
+    <string name="system_push_permission_other">Soovib kasutada %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">„Luba alati“ hõlmab: %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Veel %1$d</item>
+        <item quantity="other">Veel %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Küsimus %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d valik</item>
+        <item quantity="other">%1$d valikut</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Veel %1$d valik</item>
+        <item quantity="other">Veel %1$d valikut</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d taustatöö on veel töös</item>
+        <item quantity="other">%1$d taustatööd on veel töös</item>
+    </plurals>
+    <string name="system_push_finished">Lõpetatud</string>
+    <string name="system_push_failed">Ebaõnnestunud</string>
+    <string name="system_push_failed_rate_limit">Päringupiirang ületatud</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Päringupiirang ületatud. Proovi uuesti %1$d sekundi pärast.</item>
+        <item quantity="other">Päringupiirang ületatud. Proovi uuesti %1$d sekundi pärast.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Päringupiirang ületatud. Proovi uuesti %1$d minuti pärast.</item>
+        <item quantity="other">Päringupiirang ületatud. Proovi uuesti %1$d minuti pärast.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Pakkuja ei võtnud sisselogimist vastu</string>
+    <string name="system_push_public_permission">Vajab luba</string>
+    <string name="system_push_public_question">Esitas küsimuse</string>
+    <string name="system_push_action_allow">Luba</string>
+    <string name="system_push_action_always_allow">Luba alati</string>
+    <string name="system_push_action_deny">Keela</string>
+    <string name="system_push_action_reply">Vasta</string>
+    <string name="system_push_action_open">Ava</string>
+    <string name="system_push_hint_answer">Kirjuta oma vastus</string>
+    <string name="system_push_hint_reply">Vasta OpenCode\'ile</string>
+    <string name="system_push_send_failed">Saatmine ebaõnnestus. Puuduta seansi avamiseks.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Puuduta, et jätkata OpenCode\'is</string>

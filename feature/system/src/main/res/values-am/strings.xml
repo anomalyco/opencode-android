@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">የክፍለ ጊዜ ሂደቶች</string>
     <string name="system_channel_session_updates">የክፍለ ጊዜ ዝማኔዎች</string>
     <string name="system_channel_shared_items">የተጋሩ ንጥሎች</string>
+    <string name="system_channel_push_attention">እርስዎን ይፈልጋል</string>
+    <string name="system_channel_push_finished">ተጠናቋል</string>
+    <string name="system_channel_push_failed">አልተሳካም</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ትዕዛዝ ማስኬድ ይፈልጋል</item>
+        <item quantity="other">%1$d ትዕዛዞች ማስኬድ ይፈልጋል</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ፋይል ማርትዕ ይፈልጋል</item>
+        <item quantity="other">%1$d ፋይሎች ማርትዕ ይፈልጋል</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ፋይል ማንበብ ይፈልጋል</item>
+        <item quantity="other">%1$d ፋይሎች ማንበብ ይፈልጋል</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ገጽ ማምጣት ይፈልጋል</string>
+    <string name="system_push_permission_websearch">የድር ፍለጋ ማድረግ ይፈልጋል</string>
+    <string name="system_push_permission_external_directory">ከፕሮጀክቱ ውጭ ያለ አቃፊ መጠቀም ይፈልጋል</string>
+    <string name="system_push_permission_other">%1$s መጠቀም ይፈልጋል</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s፦ %2$s</string>
+    <string name="system_push_permission_always_covers">“ሁልጊዜ ፍቀድ” የሚሸፍነው፦ %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">ተጨማሪ %1$d</item>
+        <item quantity="other">ተጨማሪ %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">ጥያቄ %1$d ከ%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d አማራጭ</item>
+        <item quantity="other">%1$d አማራጮች</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">ተጨማሪ %1$d አማራጭ</item>
+        <item quantity="other">ተጨማሪ %1$d አማራጮች</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d የጀርባ ሥራ አሁንም እየሠራ ነው</item>
+        <item quantity="other">%1$d የጀርባ ሥራዎች አሁንም እየሠሩ ነው</item>
+    </plurals>
+    <string name="system_push_finished">ተጠናቋል</string>
+    <string name="system_push_failed">አልተሳካም</string>
+    <string name="system_push_failed_rate_limit">የጥያቄ ገደብ ተደርሷል</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">የጥያቄ ገደብ ተደርሷል። ከ%1$d ሰከንድ በኋላ እንደገና ሞክር።</item>
+        <item quantity="other">የጥያቄ ገደብ ተደርሷል። ከ%1$d ሰከንዶች በኋላ እንደገና ሞክር።</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">የጥያቄ ገደብ ተደርሷል። ከ%1$d ደቂቃ በኋላ እንደገና ሞክር።</item>
+        <item quantity="other">የጥያቄ ገደብ ተደርሷል። ከ%1$d ደቂቃዎች በኋላ እንደገና ሞክር።</item>
+    </plurals>
+    <string name="system_push_failed_auth">አቅራቢው መግቢያውን አልተቀበለውም</string>
+    <string name="system_push_public_permission">ፍቃድ ያስፈልገዋል</string>
+    <string name="system_push_public_question">ጥያቄ አለው</string>
+    <string name="system_push_action_allow">ፍቀድ</string>
+    <string name="system_push_action_always_allow">ሁልጊዜ ፍቀድ</string>
+    <string name="system_push_action_deny">ክድ</string>
+    <string name="system_push_action_reply">ምላሽ ስጥ</string>
+    <string name="system_push_action_open">ክፈት</string>
+    <string name="system_push_hint_answer">የራስዎን መልስ ይጻፉ</string>
+    <string name="system_push_hint_reply">ለOpenCode ምላሽ ስጥ</string>
+    <string name="system_push_send_failed">መላክ አልተቻለም። ክፍለ ጊዜውን ለመክፈት መታ ያድርጉ።</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">በOpenCode ለመቀጠል መታ ያድርጉ</string>

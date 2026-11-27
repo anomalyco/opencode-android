@@ -33,12 +33,18 @@ object SessionPushNotifications {
     /** Statuses a needs-input notification carries. */
     val needsInputStatuses = setOf("needs-input", "permission", "question", "form")
 
-    private const val EXTRA_SESSION = "opencode.sessionID"
-    private const val EXTRA_STATUS = "opencode.status"
+    internal const val EXTRA_SESSION = "opencode.sessionID"
+    internal const val EXTRA_STATUS = "opencode.status"
     private const val EXTRA_ENVELOPE = "opencode.envelope"
 
     @SuppressLint("MissingPermission")
     fun handle(context: Context, data: Map<String, String>) {
+        val envelope = NotificationContent.Envelope.from(data)
+        val message = envelope?.let { PushNotifications.open(it) }
+        if (envelope != null && message != null) {
+            PushNotifications.handle(context, envelope.ref, message)
+            return
+        }
         val verified = NotificationContent.verifiedPayload(data)
         val shown = NotificationContent.content(data, verified)
         val sessionID = verified?.payload?.sessionID
@@ -107,6 +113,7 @@ object SessionPushNotifications {
             if (id !in sessionIDs) continue
             manager.cancel(notification.tag, notification.id)
         }
+        PushNotifications.removeEmptySummaries(context)
     }
 
     /** What [remove] reads from a shown notification. */
@@ -167,5 +174,5 @@ object SessionPushNotifications {
         }
     }
 
-    private const val NOTIFICATION_ID = 4201
+    internal const val NOTIFICATION_ID = 4201
 }

@@ -82,6 +82,78 @@
     <string name="system_channel_session_runs">Esecuzioni delle sessioni</string>
     <string name="system_channel_session_updates">Aggiornamenti delle sessioni</string>
     <string name="system_channel_shared_items">Elementi condivisi</string>
+    <string name="system_channel_push_attention">Ha bisogno di te</string>
+    <string name="system_channel_push_finished">Terminato</string>
+    <string name="system_channel_push_failed">Operazione non riuscita</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vuole eseguire %1$d comando</item>
+        <item quantity="many">Vuole eseguire %1$d comandi</item>
+        <item quantity="other">Vuole eseguire %1$d comandi</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vuole modificare %1$d file</item>
+        <item quantity="many">Vuole modificare %1$d file</item>
+        <item quantity="other">Vuole modificare %1$d file</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vuole leggere %1$d file</item>
+        <item quantity="many">Vuole leggere %1$d file</item>
+        <item quantity="other">Vuole leggere %1$d file</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vuole recuperare una pagina</string>
+    <string name="system_push_permission_websearch">Vuole cercare sul web</string>
+    <string name="system_push_permission_external_directory">Vuole usare una cartella fuori dal progetto</string>
+    <string name="system_push_permission_other">Vuole usare %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Consenti sempre vale per %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d in più</item>
+        <item quantity="many">Altri %1$d</item>
+        <item quantity="other">Altri %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Domanda %1$d di %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opzione</item>
+        <item quantity="many">%1$d opzioni</item>
+        <item quantity="other">%1$d opzioni</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d opzione in più</item>
+        <item quantity="many">%1$d opzioni in più</item>
+        <item quantity="other">%1$d opzioni in più</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d attività in background ancora in esecuzione</item>
+        <item quantity="many">%1$d attività in background ancora in esecuzione</item>
+        <item quantity="other">%1$d attività in background ancora in esecuzione</item>
+    </plurals>
+    <string name="system_push_finished">Terminato</string>
+    <string name="system_push_failed">Operazione non riuscita</string>
+    <string name="system_push_failed_rate_limit">Limite di richieste raggiunto</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Limite di richieste raggiunto. Riprova tra %1$d secondo.</item>
+        <item quantity="many">Limite di richieste raggiunto. Riprova tra %1$d secondi.</item>
+        <item quantity="other">Limite di richieste raggiunto. Riprova tra %1$d secondi.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Limite di richieste raggiunto. Riprova tra %1$d minuto.</item>
+        <item quantity="many">Limite di richieste raggiunto. Riprova tra %1$d minuti.</item>
+        <item quantity="other">Limite di richieste raggiunto. Riprova tra %1$d minuti.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Il provider non ha accettato l\'accesso</string>
+    <string name="system_push_public_permission">Richiede autorizzazione</string>
+    <string name="system_push_public_question">Ha una domanda</string>
+    <string name="system_push_action_allow">Consenti</string>
+    <string name="system_push_action_always_allow">Consenti sempre</string>
+    <string name="system_push_action_deny">Nega</string>
+    <string name="system_push_action_reply">Rispondi</string>
+    <string name="system_push_action_open">Apri</string>
+    <string name="system_push_hint_answer">Scrivi la tua risposta</string>
+    <string name="system_push_hint_reply">Rispondi a OpenCode</string>
+    <string name="system_push_send_failed">Invio non riuscito. Tocca per aprire la sessione.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tocca per continuare in OpenCode</string>

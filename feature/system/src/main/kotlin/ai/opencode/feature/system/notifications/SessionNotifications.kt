@@ -10,9 +10,11 @@ import ai.opencode.core.sharing.SharedKey
 import ai.opencode.core.sharing.shared
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
+import ai.opencode.server.ServerSharedKeys
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.content.pm.PackageManager
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
@@ -183,19 +185,15 @@ enum class NotificationPresentation { None, Banner, ListOnly }
  * server; it is random, never derived from the server's address or credentials.
  *
  * Previews are encrypted: for each ref this phone makes a P-256 key and swaps
- * public keys with the saved server over HTTPS ([OpenCodeClient.pairNotificationPreview]); the
+ * public keys with the saved server ([OpenCodeClient.registerPushDevice], the ref being its device ID); the
  * server seals each push's text with the derived key, so the relay and FCM only carry a
  * `v2` envelope. Only `/v2/notify/` callbacks on the relay are minted or reused
  * ([isEncryptedCallback]); a missing plugin, unavailable key store or failed exchange can
  * yield a generic "New activity" notification, never a clear-text one.
  *
  * Android pushes ride FCM: the build's push environment is [FCM_ENVIRONMENT], and the token is the
- * FCM registration token. The relay (`packages/notify-relay`) seals APNs tokens only today, so it
- * answers this registration with 400 and every send goes without a callback, failing open as any
- * relay outage does; docs/parity/system.md lists the relay change FCM needs. Until a build carries
- * a Firebase configuration there is no environment at all ([isAvailable] false) and nothing is
- * asked of the relay. The whole path (permission, token wait, mint, saved callbacks, tap routing,
- * the push handler) is in place behind [PushTokenProvider].
+ * FCM registration token. Until a build carries a Firebase configuration there is no environment
+ * at all ([isAvailable] false) and nothing is asked of the relay.
  */
 class SessionNotifications internal constructor(private val tokens: PushTokenProvider) {
     /** The session on screen while the app is in the foreground. Its own "finished" notifications aren't shown. */
@@ -375,7 +373,9 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         // store or failed handshake can yield a generic v2 notification, never a v1 callback.
         var paired = false
         if (publicKey != null) {
-            val serverKey = runCatching { OpenCodeClient.pairNotificationPreview(server, callback.url, ref, publicKey) }
+            val serverKey = runCatching {
+                OpenCodeClient.registerPushDevice(server, ref, callback.url, callback.expiresAt.toEpochMilli(), publicKey, Build.MODEL ?: "Android")
+            }
                 .onFailure { if (it is CancellationException) throw it }
                 .getOrNull()
             if (serverKey != null) {
@@ -419,6 +419,13 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
     fun destination(ref: String, sessionID: String): NotificationDestination? {
         val serverKey = saved.value.refs.entries.firstOrNull { it.value == ref }?.key ?: return null
         return NotificationDestination(serverKey, sessionID).takeIf { it.isValid }
+    }
+
+    /** The saved server a push's `ref` was minted for. */
+    fun server(ref: String): OpenCodeServer? {
+        val key = saved.value.refs.entries.firstOrNull { it.value == ref }?.key ?: return null
+        val servers = shared(ServerSharedKeys.savedServers).value + listOfNotNull(shared(ServerSharedKeys.savedServer).value)
+        return servers.firstOrNull { it.persistenceID == key }
     }
 
     /** A tapped notification: its envelope is authenticated again, then routed. */

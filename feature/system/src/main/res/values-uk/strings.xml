@@ -82,6 +82,87 @@
     <string name="system_channel_session_runs">Запуски сесій</string>
     <string name="system_channel_session_updates">Оновлення сесій</string>
     <string name="system_channel_shared_items">Надіслані елементи</string>
+    <string name="system_channel_push_attention">Потрібна ваша увага</string>
+    <string name="system_channel_push_finished">Завершено</string>
+    <string name="system_channel_push_failed">Помилка</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Хоче виконати %1$d команду</item>
+        <item quantity="few">Хоче виконати %1$d команди</item>
+        <item quantity="many">Хоче виконати %1$d команд</item>
+        <item quantity="other">Хоче виконати %1$d команд</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Хоче відредагувати %1$d файл</item>
+        <item quantity="few">Хоче відредагувати %1$d файли</item>
+        <item quantity="many">Хоче відредагувати %1$d файлів</item>
+        <item quantity="other">Хоче відредагувати %1$d файлів</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Хоче прочитати %1$d файл</item>
+        <item quantity="few">Хоче прочитати %1$d файли</item>
+        <item quantity="many">Хоче прочитати %1$d файлів</item>
+        <item quantity="other">Хоче прочитати %1$d файлів</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Хоче завантажити сторінку</string>
+    <string name="system_push_permission_websearch">Хоче пошукати в інтернеті</string>
+    <string name="system_push_permission_external_directory">Хоче використати папку поза проєктом</string>
+    <string name="system_push_permission_other">Хоче використати %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">«Дозволяти завжди» діятиме для %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Ще %1$d</item>
+        <item quantity="few">Ще %1$d</item>
+        <item quantity="many">Ще %1$d</item>
+        <item quantity="other">Ще %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Запитання %1$d з %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d варіант</item>
+        <item quantity="few">%1$d варіанти</item>
+        <item quantity="many">%1$d варіантів</item>
+        <item quantity="other">%1$d варіантів</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Ще %1$d варіант</item>
+        <item quantity="few">Ще %1$d варіанти</item>
+        <item quantity="many">Ще %1$d варіантів</item>
+        <item quantity="other">Ще %1$d варіантів</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d фонове завдання ще виконується</item>
+        <item quantity="few">%1$d фонові завдання ще виконуються</item>
+        <item quantity="many">%1$d фонових завдань ще виконуються</item>
+        <item quantity="other">%1$d фонових завдань ще виконуються</item>
+    </plurals>
+    <string name="system_push_finished">Завершено</string>
+    <string name="system_push_failed">Помилка</string>
+    <string name="system_push_failed_rate_limit">Перевищено ліміт запитів</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Перевищено ліміт запитів. Спробуйте ще раз через %1$d секунду.</item>
+        <item quantity="few">Перевищено ліміт запитів. Спробуйте ще раз через %1$d секунди.</item>
+        <item quantity="many">Перевищено ліміт запитів. Спробуйте ще раз через %1$d секунд.</item>
+        <item quantity="other">Перевищено ліміт запитів. Спробуйте ще раз через %1$d секунд.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Перевищено ліміт запитів. Спробуйте ще раз через %1$d хвилину.</item>
+        <item quantity="few">Перевищено ліміт запитів. Спробуйте ще раз через %1$d хвилини.</item>
+        <item quantity="many">Перевищено ліміт запитів. Спробуйте ще раз через %1$d хвилин.</item>
+        <item quantity="other">Перевищено ліміт запитів. Спробуйте ще раз через %1$d хвилин.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Провайдер відхилив вхід</string>
+    <string name="system_push_public_permission">Потрібен дозвіл</string>
+    <string name="system_push_public_question">Є запитання</string>
+    <string name="system_push_action_allow">Дозволити</string>
+    <string name="system_push_action_always_allow">Дозволяти завжди</string>
+    <string name="system_push_action_deny">Заборонити</string>
+    <string name="system_push_action_reply">Відповісти</string>
+    <string name="system_push_action_open">Відкрити</string>
+    <string name="system_push_hint_answer">Введіть свою відповідь</string>
+    <string name="system_push_hint_reply">Відповісти OpenCode</string>
+    <string name="system_push_send_failed">Не вдалося надіслати. Торкніться, щоб відкрити сесію.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Торкніться, щоб продовжити в OpenCode</string>

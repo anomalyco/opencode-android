@@ -81,7 +81,8 @@ object NotificationCrypto {
         return hkdfSHA256(secret, salt = ref.toByteArray(Charsets.UTF_8), info = CONTEXT.toByteArray(Charsets.UTF_8), length = 32)
     }
 
-    fun open(box: String, ref: String, key: ByteArray): Payload {
+    /** The box's authenticated text. */
+    fun openText(box: String, ref: String, key: ByteArray): String {
         validate(ref)
         if (box.toByteArray(Charsets.UTF_8).size > ((MAXIMUM_BOX_BYTES + 2) / 3) * 4) throw Failure.InvalidBox
         val data = strictBase64(box)
@@ -98,6 +99,11 @@ object NotificationCrypto {
                 .decode(ByteBuffer.wrap(plaintext))
                 .toString()
         }.getOrElse { throw Failure.InvalidPayload }
+        return text
+    }
+
+    fun open(box: String, ref: String, key: ByteArray): Payload {
+        val text = openText(box, ref, key)
         val payload = runCatching { json.decodeFromString(Payload.serializer(), text) }.getOrElse { throw Failure.InvalidPayload }
         if (!payload.isValid) throw Failure.InvalidPayload
         return payload

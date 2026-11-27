@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Sessionskørsler</string>
     <string name="system_channel_session_updates">Sessionsopdateringer</string>
     <string name="system_channel_shared_items">Delte elementer</string>
+    <string name="system_channel_push_attention">Har brug for dig</string>
+    <string name="system_channel_push_finished">Afsluttet</string>
+    <string name="system_channel_push_failed">Mislykkedes</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vil køre %1$d kommando</item>
+        <item quantity="other">Vil køre %1$d kommandoer</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vil redigere %1$d fil</item>
+        <item quantity="other">Vil redigere %1$d filer</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vil læse %1$d fil</item>
+        <item quantity="other">Vil læse %1$d filer</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vil hente en side</string>
+    <string name="system_push_permission_websearch">Vil søge på nettet</string>
+    <string name="system_push_permission_external_directory">Vil bruge en mappe uden for projektet</string>
+    <string name="system_push_permission_other">Vil bruge %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Tillad altid dækker %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d mere</item>
+        <item quantity="other">%1$d flere</item>
+    </plurals>
+    <string name="system_push_question_position">Spørgsmål %1$d af %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d mulighed</item>
+        <item quantity="other">%1$d muligheder</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d mulighed mere</item>
+        <item quantity="other">%1$d muligheder mere</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d baggrundsopgave kører stadig</item>
+        <item quantity="other">%1$d baggrundsopgaver kører stadig</item>
+    </plurals>
+    <string name="system_push_finished">Afsluttet</string>
+    <string name="system_push_failed">Mislykkedes</string>
+    <string name="system_push_failed_rate_limit">For mange forespørgsler</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">For mange forespørgsler. Prøv igen om %1$d sekund.</item>
+        <item quantity="other">For mange forespørgsler. Prøv igen om %1$d sekunder.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">For mange forespørgsler. Prøv igen om %1$d minut.</item>
+        <item quantity="other">For mange forespørgsler. Prøv igen om %1$d minutter.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Udbyderen godkendte ikke dit login</string>
+    <string name="system_push_public_permission">Kræver tilladelse</string>
+    <string name="system_push_public_question">Har et spørgsmål</string>
+    <string name="system_push_action_allow">Tillad</string>
+    <string name="system_push_action_always_allow">Tillad altid</string>
+    <string name="system_push_action_deny">Afvis</string>
+    <string name="system_push_action_reply">Svar</string>
+    <string name="system_push_action_open">Åbn</string>
+    <string name="system_push_hint_answer">Skriv dit eget svar</string>
+    <string name="system_push_hint_reply">Svar OpenCode</string>
+    <string name="system_push_send_failed">Kunne ikke sende. Tryk for at åbne sessionen.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tryk for at fortsætte i OpenCode</string>

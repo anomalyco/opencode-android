@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Ekzekutimet e sesioneve</string>
     <string name="system_channel_session_updates">Përditësimet e sesioneve</string>
     <string name="system_channel_shared_items">Artikujt e ndarë</string>
+    <string name="system_channel_push_attention">Ka nevojë për ty</string>
+    <string name="system_channel_push_finished">Përfundoi</string>
+    <string name="system_channel_push_failed">Dështoi</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Dëshiron të ekzekutojë %1$d komandë</item>
+        <item quantity="other">Dëshiron të ekzekutojë %1$d komanda</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Dëshiron të redaktojë %1$d skedar</item>
+        <item quantity="other">Dëshiron të redaktojë %1$d skedarë</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Dëshiron të lexojë %1$d skedar</item>
+        <item quantity="other">Dëshiron të lexojë %1$d skedarë</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Dëshiron të marrë një faqe</string>
+    <string name="system_push_permission_websearch">Dëshiron të kërkojë në ueb</string>
+    <string name="system_push_permission_external_directory">Dëshiron të përdorë një dosje jashtë projektit</string>
+    <string name="system_push_permission_other">Dëshiron të përdorë %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">“Lejo gjithmonë” vlen për %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d tjetër</item>
+        <item quantity="other">%1$d të tjera</item>
+    </plurals>
+    <string name="system_push_question_position">Pyetja %1$d nga %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opsion</item>
+        <item quantity="other">%1$d opsione</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d opsion tjetër</item>
+        <item quantity="other">%1$d opsione të tjera</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d detyrë në sfond ende në ekzekutim</item>
+        <item quantity="other">%1$d detyra në sfond ende në ekzekutim</item>
+    </plurals>
+    <string name="system_push_finished">Përfundoi</string>
+    <string name="system_push_failed">Dështoi</string>
+    <string name="system_push_failed_rate_limit">U arrit kufiri i kërkesave</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">U arrit kufiri i kërkesave. Provo sërish pas %1$d sekonde.</item>
+        <item quantity="other">U arrit kufiri i kërkesave. Provo sërish pas %1$d sekondash.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">U arrit kufiri i kërkesave. Provo sërish pas %1$d minute.</item>
+        <item quantity="other">U arrit kufiri i kërkesave. Provo sërish pas %1$d minutash.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Ofruesi nuk e pranoi hyrjen</string>
+    <string name="system_push_public_permission">Kërkon leje</string>
+    <string name="system_push_public_question">Ka një pyetje</string>
+    <string name="system_push_action_allow">Lejo</string>
+    <string name="system_push_action_always_allow">Lejo gjithmonë</string>
+    <string name="system_push_action_deny">Moho</string>
+    <string name="system_push_action_reply">Përgjigju</string>
+    <string name="system_push_action_open">Hap</string>
+    <string name="system_push_hint_answer">Shkruaj përgjigjen tënde</string>
+    <string name="system_push_hint_reply">Përgjigju në OpenCode</string>
+    <string name="system_push_send_failed">Nuk u dërgua dot. Prek për të hapur sesionin.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Prek për të vazhduar në OpenCode</string>

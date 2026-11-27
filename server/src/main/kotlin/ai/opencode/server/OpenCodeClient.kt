@@ -265,11 +265,13 @@ data class OpenCodeClient(
             markdownImageCacheKey(server, directory, source).removePrefix("markdown:")
 
         /**
-         * Sends this phone's notification public key for `ref` to the saved server's HTTPS address
-         * and returns the server's. Only public keys cross; throws without an HTTPS address.
+         * Registers this phone for the server's push notifications
+         * (`PUT /api/experimental/push/device/:deviceID`) and returns the server's public key for it.
+         * [expiresAt] is the callback's expiry in milliseconds since the epoch.
          */
-        suspend fun pairNotificationPreview(server: OpenCodeServer, callbackURL: String, ref: String, publicKey: String): String =
-            ai.opencode.server.live.requestPairNotificationPreview(server, callbackURL, ref, publicKey)
+        suspend fun registerPushDevice(
+            server: OpenCodeServer, deviceID: String, callbackURL: String, expiresAt: Long, publicKey: String, name: String,
+        ): String = ai.opencode.server.live.requestRegisterPushDevice(server, deviceID, callbackURL, expiresAt, publicKey, name)
 
         /** A prompt's reply in a `/message` page. */
         fun assistantReply(messagesJSON: ByteArray, afterMessageID: String, acrossSteers: Boolean = false): String? =

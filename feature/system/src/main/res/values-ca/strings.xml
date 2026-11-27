@@ -82,6 +82,78 @@
     <string name="system_channel_session_runs">Execucions de sessions</string>
     <string name="system_channel_session_updates">Actualitzacions de sessions</string>
     <string name="system_channel_shared_items">Elements compartits</string>
+    <string name="system_channel_push_attention">Et necessita</string>
+    <string name="system_channel_push_finished">Acabat</string>
+    <string name="system_channel_push_failed">Ha fallat</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vol executar %1$d ordre</item>
+        <item quantity="many">Vol executar %1$d d\'ordres</item>
+        <item quantity="other">Vol executar %1$d ordres</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vol editar %1$d fitxer</item>
+        <item quantity="many">Vol editar %1$d de fitxers</item>
+        <item quantity="other">Vol editar %1$d fitxers</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vol llegir %1$d fitxer</item>
+        <item quantity="many">Vol llegir %1$d de fitxers</item>
+        <item quantity="other">Vol llegir %1$d fitxers</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vol obtenir una pàgina</string>
+    <string name="system_push_permission_websearch">Vol cercar al web</string>
+    <string name="system_push_permission_external_directory">Vol fer servir una carpeta fora del projecte</string>
+    <string name="system_push_permission_other">Vol fer servir %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Permetre sempre cobreix %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d més</item>
+        <item quantity="many">%1$d més</item>
+        <item quantity="other">%1$d més</item>
+    </plurals>
+    <string name="system_push_question_position">Pregunta %1$d de %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opció</item>
+        <item quantity="many">%1$d d\'opcions</item>
+        <item quantity="other">%1$d opcions</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d opció més</item>
+        <item quantity="many">%1$d d\'opcions més</item>
+        <item quantity="other">%1$d opcions més</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d tasca en segon pla encara en execució</item>
+        <item quantity="many">%1$d de tasques en segon pla encara en execució</item>
+        <item quantity="other">%1$d tasques en segon pla encara en execució</item>
+    </plurals>
+    <string name="system_push_finished">Acabat</string>
+    <string name="system_push_failed">Ha fallat</string>
+    <string name="system_push_failed_rate_limit">Límit de sol·licituds assolit</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d segon.</item>
+        <item quantity="many">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d de segons.</item>
+        <item quantity="other">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d segons.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d minut.</item>
+        <item quantity="many">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d de minuts.</item>
+        <item quantity="other">Límit de sol·licituds assolit. Torna-ho a provar d\'aquí a %1$d minuts.</item>
+    </plurals>
+    <string name="system_push_failed_auth">El proveïdor no ha acceptat l\'inici de sessió</string>
+    <string name="system_push_public_permission">Cal permís</string>
+    <string name="system_push_public_question">Té una pregunta</string>
+    <string name="system_push_action_allow">Permet</string>
+    <string name="system_push_action_always_allow">Permetre sempre</string>
+    <string name="system_push_action_deny">Negar</string>
+    <string name="system_push_action_reply">Respon</string>
+    <string name="system_push_action_open">Obre</string>
+    <string name="system_push_hint_answer">Escriu la teva resposta</string>
+    <string name="system_push_hint_reply">Respon a OpenCode</string>
+    <string name="system_push_send_failed">No s\'ha pogut enviar. Toca per obrir la sessió.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Toca per continuar a OpenCode</string>

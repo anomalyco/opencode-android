@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Keyrslur setna</string>
     <string name="system_channel_session_updates">Uppfærslur setna</string>
     <string name="system_channel_shared_items">Deilt efni</string>
+    <string name="system_channel_push_attention">Þarfnast þín</string>
+    <string name="system_channel_push_finished">Lokið</string>
+    <string name="system_channel_push_failed">Mistókst</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vill keyra %1$d skipun</item>
+        <item quantity="other">Vill keyra %1$d skipanir</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vill breyta %1$d skrá</item>
+        <item quantity="other">Vill breyta %1$d skrám</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vill lesa %1$d skrá</item>
+        <item quantity="other">Vill lesa %1$d skrár</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vill sækja síðu</string>
+    <string name="system_push_permission_websearch">Vill leita á vefnum</string>
+    <string name="system_push_permission_external_directory">Vill nota möppu utan verkefnisins</string>
+    <string name="system_push_permission_other">Vill nota %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">„Leyfðu alltaf“ nær yfir %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d í viðbót</item>
+        <item quantity="other">%1$d í viðbót</item>
+    </plurals>
+    <string name="system_push_question_position">Spurning %1$d af %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d valkostur</item>
+        <item quantity="other">%1$d valkostir</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d valkostur í viðbót</item>
+        <item quantity="other">%1$d valkostir í viðbót</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d bakgrunnsverk enn í gangi</item>
+        <item quantity="other">%1$d bakgrunnsverk enn í gangi</item>
+    </plurals>
+    <string name="system_push_finished">Lokið</string>
+    <string name="system_push_failed">Mistókst</string>
+    <string name="system_push_failed_rate_limit">Beiðnamörkum náð</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Beiðnamörkum náð. Reyndu aftur eftir %1$d sekúndu.</item>
+        <item quantity="other">Beiðnamörkum náð. Reyndu aftur eftir %1$d sekúndur.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Beiðnamörkum náð. Reyndu aftur eftir %1$d mínútu.</item>
+        <item quantity="other">Beiðnamörkum náð. Reyndu aftur eftir %1$d mínútur.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Þjónustuveitan samþykkti ekki innskráninguna</string>
+    <string name="system_push_public_permission">Þarf heimild</string>
+    <string name="system_push_public_question">Er með spurningu</string>
+    <string name="system_push_action_allow">Leyfa</string>
+    <string name="system_push_action_always_allow">Leyfðu alltaf</string>
+    <string name="system_push_action_deny">Neita</string>
+    <string name="system_push_action_reply">Svara</string>
+    <string name="system_push_action_open">Opna</string>
+    <string name="system_push_hint_answer">Skrifaðu eigið svar</string>
+    <string name="system_push_hint_reply">Svara OpenCode</string>
+    <string name="system_push_send_failed">Ekki tókst að senda. Pikkaðu til að opna setuna.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Pikkaðu til að halda áfram í OpenCode</string>

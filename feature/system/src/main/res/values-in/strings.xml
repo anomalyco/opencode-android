@@ -82,6 +82,60 @@
     <string name="system_channel_session_runs">Sesi berjalan</string>
     <string name="system_channel_session_updates">Pembaruan sesi</string>
     <string name="system_channel_shared_items">Item yang dibagikan</string>
+    <string name="system_channel_push_attention">Perlu tindakan Anda</string>
+    <string name="system_channel_push_finished">Selesai</string>
+    <string name="system_channel_push_failed">Gagal</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">Ingin menjalankan %1$d perintah</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">Ingin menyunting %1$d berkas</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">Ingin membaca %1$d berkas</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Ingin mengambil halaman</string>
+    <string name="system_push_permission_websearch">Ingin mencari di web</string>
+    <string name="system_push_permission_external_directory">Ingin menggunakan folder di luar proyek</string>
+    <string name="system_push_permission_other">Ingin menggunakan %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Izinkan selalu mencakup %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">%1$d lagi</item>
+    </plurals>
+    <string name="system_push_question_position">Pertanyaan %1$d dari %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d opsi</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">%1$d opsi lagi</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">%1$d tugas latar belakang masih berjalan</item>
+    </plurals>
+    <string name="system_push_finished">Selesai</string>
+    <string name="system_push_failed">Gagal</string>
+    <string name="system_push_failed_rate_limit">Batas permintaan tercapai</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">Batas permintaan tercapai. Coba lagi dalam %1$d detik.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">Batas permintaan tercapai. Coba lagi dalam %1$d menit.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Penyedia menolak proses masuk</string>
+    <string name="system_push_public_permission">Perlu izin</string>
+    <string name="system_push_public_question">Ada pertanyaan</string>
+    <string name="system_push_action_allow">Izinkan</string>
+    <string name="system_push_action_always_allow">Izinkan selalu</string>
+    <string name="system_push_action_deny">Tolak</string>
+    <string name="system_push_action_reply">Balas</string>
+    <string name="system_push_action_open">Buka</string>
+    <string name="system_push_hint_answer">Ketik jawaban sendiri</string>
+    <string name="system_push_hint_reply">Balas OpenCode</string>
+    <string name="system_push_send_failed">Gagal mengirim. Ketuk untuk membuka sesi.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Ketuk untuk melanjutkan di OpenCode</string>

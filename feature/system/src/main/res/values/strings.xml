@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Session Runs</string>
     <string name="system_channel_session_updates">Session Updates</string>
     <string name="system_channel_shared_items">Shared Items</string>
+    <string name="system_channel_push_attention">Needs You</string>
+    <string name="system_channel_push_finished">Finished</string>
+    <string name="system_channel_push_failed">Failed</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Wants to run %1$d command</item>
+        <item quantity="other">Wants to run %1$d commands</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Wants to edit %1$d file</item>
+        <item quantity="other">Wants to edit %1$d files</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Wants to read %1$d file</item>
+        <item quantity="other">Wants to read %1$d files</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Wants to fetch a page</string>
+    <string name="system_push_permission_websearch">Wants to search the web</string>
+    <string name="system_push_permission_external_directory">Wants to use a folder outside the project</string>
+    <string name="system_push_permission_other">Wants to use %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">Always Allow covers %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d more</item>
+        <item quantity="other">%1$d more</item>
+    </plurals>
+    <string name="system_push_question_position">Question %1$d of %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d option</item>
+        <item quantity="other">%1$d options</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d more option</item>
+        <item quantity="other">%1$d more options</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d background job still running</item>
+        <item quantity="other">%1$d background jobs still running</item>
+    </plurals>
+    <string name="system_push_finished">Finished</string>
+    <string name="system_push_failed">Failed</string>
+    <string name="system_push_failed_rate_limit">Rate limited</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Rate limited. Try again in %1$d second.</item>
+        <item quantity="other">Rate limited. Try again in %1$d seconds.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Rate limited. Try again in %1$d minute.</item>
+        <item quantity="other">Rate limited. Try again in %1$d minutes.</item>
+    </plurals>
+    <string name="system_push_failed_auth">The provider didn’t accept the sign-in</string>
+    <string name="system_push_public_permission">Needs permission</string>
+    <string name="system_push_public_question">Has a question</string>
+    <string name="system_push_action_allow">Allow</string>
+    <string name="system_push_action_always_allow">Always Allow</string>
+    <string name="system_push_action_deny">Deny</string>
+    <string name="system_push_action_reply">Reply</string>
+    <string name="system_push_action_open">Open</string>
+    <string name="system_push_hint_answer">Type your own answer</string>
+    <string name="system_push_hint_reply">Reply to OpenCode</string>
+    <string name="system_push_send_failed">Couldn’t send. Tap to open the session.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tap to continue in OpenCode</string>

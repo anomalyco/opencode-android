@@ -82,6 +82,60 @@
     <string name="system_channel_session_runs">ການເຮັດວຽກຂອງເຊດຊັນ</string>
     <string name="system_channel_session_updates">ອັບເດດເຊດຊັນ</string>
     <string name="system_channel_shared_items">ລາຍການທີ່ແບ່ງປັນ</string>
+    <string name="system_channel_push_attention">ຕ້ອງການເຈົ້າ</string>
+    <string name="system_channel_push_finished">ສຳເລັດແລ້ວ</string>
+    <string name="system_channel_push_failed">ລົ້ມເຫລວ</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">ຕ້ອງການແລ່ນ %1$d ຄໍາສັ່ງ</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ຕ້ອງການແກ້ໄຂ %1$d ໄຟລ໌</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ຕ້ອງການອ່ານ %1$d ໄຟລ໌</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ຕ້ອງການດຶງຂໍ້ມູນໜ້າເວັບ</string>
+    <string name="system_push_permission_websearch">ຕ້ອງການຄົ້ນຫາເວັບ</string>
+    <string name="system_push_permission_external_directory">ຕ້ອງການໃຊ້ໂຟນເດີນອກໂຄງການ</string>
+    <string name="system_push_permission_other">ຕ້ອງການໃຊ້ %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">ອະນຸຍາດສະເໝີ ຈະຄອບຄຸມ %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">ອີກ %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">ຄຳຖາມທີ %1$d ຈາກ %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d ທາງເລືອກ</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">ອີກ %1$d ທາງເລືອກ</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">ຍັງມີ %1$d ວຽກພື້ນຫຼັງກຳລັງເຮັດວຽກ</item>
+    </plurals>
+    <string name="system_push_finished">ສຳເລັດແລ້ວ</string>
+    <string name="system_push_failed">ລົ້ມເຫລວ</string>
+    <string name="system_push_failed_rate_limit">ເກີນຂີດຈຳກັດການຮ້ອງຂໍ</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">ເກີນຂີດຈຳກັດການຮ້ອງຂໍ. ລອງໃໝ່ໃນອີກ %1$d ວິນາທີ.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">ເກີນຂີດຈຳກັດການຮ້ອງຂໍ. ລອງໃໝ່ໃນອີກ %1$d ນາທີ.</item>
+    </plurals>
+    <string name="system_push_failed_auth">ຜູ້ໃຫ້ບໍລິການບໍ່ຍອມຮັບການເຂົ້າສູ່ລະບົບ</string>
+    <string name="system_push_public_permission">ຕ້ອງການການອະນຸຍາດ</string>
+    <string name="system_push_public_question">ມີຄຳຖາມ</string>
+    <string name="system_push_action_allow">ອະນຸຍາດ</string>
+    <string name="system_push_action_always_allow">ອະນຸຍາດສະເໝີ</string>
+    <string name="system_push_action_deny">ປະຕິເສດ</string>
+    <string name="system_push_action_reply">ຕອບກັບ</string>
+    <string name="system_push_action_open">ເປີດ</string>
+    <string name="system_push_hint_answer">ພິມຄຳຕອບຂອງເຈົ້າເອງ</string>
+    <string name="system_push_hint_reply">ຕອບກັບ OpenCode</string>
+    <string name="system_push_send_failed">ສົ່ງບໍ່ໄດ້. ແຕະເພື່ອເປີດເຊດຊັນ.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">ແຕະເພື່ອສືບຕໍ່ໃນ OpenCode</string>

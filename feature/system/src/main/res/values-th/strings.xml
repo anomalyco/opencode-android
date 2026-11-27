@@ -82,6 +82,60 @@
     <string name="system_channel_session_runs">การทำงานของเซสชัน</string>
     <string name="system_channel_session_updates">การอัปเดตเซสชัน</string>
     <string name="system_channel_shared_items">รายการที่แชร์</string>
+    <string name="system_channel_push_attention">รอคุณดำเนินการ</string>
+    <string name="system_channel_push_finished">เสร็จสิ้นแล้ว</string>
+    <string name="system_channel_push_failed">ล้มเหลว</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">ต้องการรัน %1$d คำสั่ง</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ต้องการแก้ไข %1$d ไฟล์</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ต้องการอ่าน %1$d ไฟล์</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ต้องการดึงข้อมูลหน้าเว็บ</string>
+    <string name="system_push_permission_websearch">ต้องการค้นหาบนเว็บ</string>
+    <string name="system_push_permission_external_directory">ต้องการใช้โฟลเดอร์นอกโปรเจกต์</string>
+    <string name="system_push_permission_other">ต้องการใช้ %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">อนุญาตเสมอจะครอบคลุม %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">อีก %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">คำถามที่ %1$d จาก %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d ตัวเลือก</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">อีก %1$d ตัวเลือก</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">งานเบื้องหลัง %1$d รายการยังทำงานอยู่</item>
+    </plurals>
+    <string name="system_push_finished">เสร็จสิ้นแล้ว</string>
+    <string name="system_push_failed">ล้มเหลว</string>
+    <string name="system_push_failed_rate_limit">ถึงขีดจำกัดคำขอแล้ว</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">ถึงขีดจำกัดคำขอแล้ว ลองอีกครั้งใน %1$d วินาที</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">ถึงขีดจำกัดคำขอแล้ว ลองอีกครั้งใน %1$d นาที</item>
+    </plurals>
+    <string name="system_push_failed_auth">ผู้ให้บริการไม่ยอมรับการลงชื่อเข้าใช้</string>
+    <string name="system_push_public_permission">ต้องการการอนุญาต</string>
+    <string name="system_push_public_question">มีคำถาม</string>
+    <string name="system_push_action_allow">อนุญาต</string>
+    <string name="system_push_action_always_allow">อนุญาตเสมอ</string>
+    <string name="system_push_action_deny">ปฏิเสธ</string>
+    <string name="system_push_action_reply">ตอบกลับ</string>
+    <string name="system_push_action_open">เปิด</string>
+    <string name="system_push_hint_answer">พิมพ์คำตอบของคุณ</string>
+    <string name="system_push_hint_reply">ตอบกลับ OpenCode</string>
+    <string name="system_push_send_failed">ส่งไม่ได้ แตะเพื่อเปิดเซสชัน</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">แตะเพื่อดำเนินการต่อใน OpenCode</string>

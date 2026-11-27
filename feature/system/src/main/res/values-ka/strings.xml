@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">სესიების გაშვება</string>
     <string name="system_channel_session_updates">სესიების განახლებები</string>
     <string name="system_channel_shared_items">გაზიარებული ელემენტები</string>
+    <string name="system_channel_push_attention">საჭიროებს ყურადღებას</string>
+    <string name="system_channel_push_finished">დასრულდა</string>
+    <string name="system_channel_push_failed">ვერ შედგა</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">სურს %1$d ბრძანების გაშვება</item>
+        <item quantity="other">სურს %1$d ბრძანების გაშვება</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">სურს %1$d ფაილის რედაქტირება</item>
+        <item quantity="other">სურს %1$d ფაილის რედაქტირება</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">სურს %1$d ფაილის წაკითხვა</item>
+        <item quantity="other">სურს %1$d ფაილის წაკითხვა</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">სურს გვერდის ჩამოტვირთვა</string>
+    <string name="system_push_permission_websearch">სურს ვებში ძიება</string>
+    <string name="system_push_permission_external_directory">სურს პროექტის გარეთ არსებული საქაღალდის გამოყენება</string>
+    <string name="system_push_permission_other">სურს %1$s-ის გამოყენება</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">„ყოველთვის ნებადართული“ მოიცავს: %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">კიდევ %1$d</item>
+        <item quantity="other">კიდევ %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">კითხვა %1$d / %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d ვარიანტი</item>
+        <item quantity="other">%1$d ვარიანტი</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">კიდევ %1$d ვარიანტი</item>
+        <item quantity="other">კიდევ %1$d ვარიანტი</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d ფონური დავალება ჯერ კიდევ მიმდინარეობს</item>
+        <item quantity="other">%1$d ფონური დავალება ჯერ კიდევ მიმდინარეობს</item>
+    </plurals>
+    <string name="system_push_finished">დასრულდა</string>
+    <string name="system_push_failed">ვერ შედგა</string>
+    <string name="system_push_failed_rate_limit">მოთხოვნების ლიმიტი ამოიწურა</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">მოთხოვნების ლიმიტი ამოიწურა. ხელახლა სცადეთ %1$d წამში.</item>
+        <item quantity="other">მოთხოვნების ლიმიტი ამოიწურა. ხელახლა სცადეთ %1$d წამში.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">მოთხოვნების ლიმიტი ამოიწურა. ხელახლა სცადეთ %1$d წუთში.</item>
+        <item quantity="other">მოთხოვნების ლიმიტი ამოიწურა. ხელახლა სცადეთ %1$d წუთში.</item>
+    </plurals>
+    <string name="system_push_failed_auth">პროვაიდერმა შესვლა არ მიიღო</string>
+    <string name="system_push_public_permission">საჭიროებს ნებართვას</string>
+    <string name="system_push_public_question">კითხვა აქვს</string>
+    <string name="system_push_action_allow">დაშვება</string>
+    <string name="system_push_action_always_allow">ყოველთვის ნებადართული</string>
+    <string name="system_push_action_deny">უარი</string>
+    <string name="system_push_action_reply">პასუხი</string>
+    <string name="system_push_action_open">გახსნა</string>
+    <string name="system_push_hint_answer">აკრიფეთ თქვენი პასუხი</string>
+    <string name="system_push_hint_reply">უპასუხეთ OpenCode-ს</string>
+    <string name="system_push_send_failed">გაგზავნა ვერ მოხერხდა. შეეხეთ სესიის გასახსნელად.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">შეეხეთ OpenCode-ში გასაგრძელებლად</string>

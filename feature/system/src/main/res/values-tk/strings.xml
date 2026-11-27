@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Sessiýa işledilişleri</string>
     <string name="system_channel_session_updates">Sessiýa täzelenmeleri</string>
     <string name="system_channel_shared_items">Paýlaşylan zatlar</string>
+    <string name="system_channel_push_attention">Ünsüňiz gerek</string>
+    <string name="system_channel_push_finished">Tamamlandy</string>
+    <string name="system_channel_push_failed">Şowsuz</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d buýruk işletmek isleýär</item>
+        <item quantity="other">%1$d buýruk işletmek isleýär</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d faýl redaktirlemek isleýär</item>
+        <item quantity="other">%1$d faýl redaktirlemek isleýär</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d faýl okamak isleýär</item>
+        <item quantity="other">%1$d faýl okamak isleýär</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Sahypa almak isleýär</string>
+    <string name="system_push_permission_websearch">Webde gözlemek isleýär</string>
+    <string name="system_push_permission_external_directory">Taslamadan daşardaky papkany ulanmak isleýär</string>
+    <string name="system_push_permission_other">%1$s ulanmak isleýär</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">“Elmydama rugsat beriň” %1$s üçin geçerli</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Ýene %1$d</item>
+        <item quantity="other">Ýene %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Sorag %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d wariant</item>
+        <item quantity="other">%1$d wariant</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Ýene %1$d wariant</item>
+        <item quantity="other">Ýene %1$d wariant</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d fon işi henizem işleýär</item>
+        <item quantity="other">%1$d fon işi henizem işleýär</item>
+    </plurals>
+    <string name="system_push_finished">Tamamlandy</string>
+    <string name="system_push_failed">Şowsuz</string>
+    <string name="system_push_failed_rate_limit">Talap çägi doldy</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Talap çägi doldy. %1$d sekuntdan täzeden synanyşyň.</item>
+        <item quantity="other">Talap çägi doldy. %1$d sekuntdan täzeden synanyşyň.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Talap çägi doldy. %1$d minutdan täzeden synanyşyň.</item>
+        <item quantity="other">Talap çägi doldy. %1$d minutdan täzeden synanyşyň.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Üpjün ediji girişi kabul etmedi</string>
+    <string name="system_push_public_permission">Rugsat gerek</string>
+    <string name="system_push_public_question">Soragy bar</string>
+    <string name="system_push_action_allow">Rugsat beriň</string>
+    <string name="system_push_action_always_allow">Elmydama rugsat beriň</string>
+    <string name="system_push_action_deny">Inkär et</string>
+    <string name="system_push_action_reply">Jogap ber</string>
+    <string name="system_push_action_open">Açyň</string>
+    <string name="system_push_hint_answer">Öz jogabyňyzy ýazyň</string>
+    <string name="system_push_hint_reply">OpenCode-a jogap beriň</string>
+    <string name="system_push_send_failed">Iberip bolmady. Sessiýany açmak üçin basyň.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-da dowam etmek üçin basyň</string>

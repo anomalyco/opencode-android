@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">Sessiya jarayonlari</string>
     <string name="system_channel_session_updates">Sessiya yangilanishlari</string>
     <string name="system_channel_shared_items">Ulashilgan elementlar</string>
+    <string name="system_channel_push_attention">E’tiboringiz kerak</string>
+    <string name="system_channel_push_finished">Yakunlandi</string>
+    <string name="system_channel_push_failed">Muvaffaqiyatsiz</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d ta buyruqni ishga tushirmoqchi</item>
+        <item quantity="other">%1$d ta buyruqni ishga tushirmoqchi</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d ta faylni tahrirlamoqchi</item>
+        <item quantity="other">%1$d ta faylni tahrirlamoqchi</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d ta faylni o‘qimoqchi</item>
+        <item quantity="other">%1$d ta faylni o‘qimoqchi</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Sahifani olmoqchi</string>
+    <string name="system_push_permission_websearch">Vebda qidirmoqchi</string>
+    <string name="system_push_permission_external_directory">Loyihadan tashqaridagi jilddan foydalanmoqchi</string>
+    <string name="system_push_permission_other">%1$s dan foydalanmoqchi</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">“Har doim ruxsat bering” %1$s ni qamrab oladi</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Yana %1$d ta</item>
+        <item quantity="other">Yana %1$d ta</item>
+    </plurals>
+    <string name="system_push_question_position">%2$d tadan %1$d-savol</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d ta variant</item>
+        <item quantity="other">%1$d ta variant</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Yana %1$d ta variant</item>
+        <item quantity="other">Yana %1$d ta variant</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d ta fon vazifasi hali ham ishlamoqda</item>
+        <item quantity="other">%1$d ta fon vazifasi hali ham ishlamoqda</item>
+    </plurals>
+    <string name="system_push_finished">Yakunlandi</string>
+    <string name="system_push_failed">Muvaffaqiyatsiz</string>
+    <string name="system_push_failed_rate_limit">So‘rovlar limiti oshdi</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">So‘rovlar limiti oshdi. %1$d soniyadan keyin qayta urinib ko‘ring.</item>
+        <item quantity="other">So‘rovlar limiti oshdi. %1$d soniyadan keyin qayta urinib ko‘ring.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">So‘rovlar limiti oshdi. %1$d daqiqadan keyin qayta urinib ko‘ring.</item>
+        <item quantity="other">So‘rovlar limiti oshdi. %1$d daqiqadan keyin qayta urinib ko‘ring.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Provayder kirishni qabul qilmadi</string>
+    <string name="system_push_public_permission">Ruxsat kerak</string>
+    <string name="system_push_public_question">Savol bor</string>
+    <string name="system_push_action_allow">Ruxsat berish</string>
+    <string name="system_push_action_always_allow">Har doim ruxsat bering</string>
+    <string name="system_push_action_deny">Rad etish</string>
+    <string name="system_push_action_reply">Javob berish</string>
+    <string name="system_push_action_open">Ochish</string>
+    <string name="system_push_hint_answer">O‘z javobingizni yozing</string>
+    <string name="system_push_hint_reply">OpenCode’ga javob yozing</string>
+    <string name="system_push_send_failed">Yuborib bo‘lmadi. Sessiyani ochish uchun bosing.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode’da davom etish uchun bosing</string>

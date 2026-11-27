@@ -82,6 +82,69 @@
     <string name="system_channel_session_runs">सेशन का संचालन</string>
     <string name="system_channel_session_updates">सेशन अपडेट</string>
     <string name="system_channel_shared_items">शेयर किए गए आइटम</string>
+    <string name="system_channel_push_attention">आपकी ज़रूरत है</string>
+    <string name="system_channel_push_finished">पूरा हुआ</string>
+    <string name="system_channel_push_failed">असफल</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d कमांड चलाना चाहता है</item>
+        <item quantity="other">%1$d कमांड चलाना चाहता है</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d फ़ाइल संपादित करना चाहता है</item>
+        <item quantity="other">%1$d फ़ाइलें संपादित करना चाहता है</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d फ़ाइल पढ़ना चाहता है</item>
+        <item quantity="other">%1$d फ़ाइलें पढ़ना चाहता है</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">एक पेज प्राप्त करना चाहता है</string>
+    <string name="system_push_permission_websearch">वेब पर खोजना चाहता है</string>
+    <string name="system_push_permission_external_directory">प्रोजेक्ट के बाहर के फ़ोल्डर का उपयोग करना चाहता है</string>
+    <string name="system_push_permission_other">%1$s का उपयोग करना चाहता है</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">“हमेशा अनुमति दें” में %1$s शामिल है</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d और</item>
+        <item quantity="other">%1$d और</item>
+    </plurals>
+    <string name="system_push_question_position">%2$d में से प्रश्न %1$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d विकल्प</item>
+        <item quantity="other">%1$d विकल्प</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d और विकल्प</item>
+        <item quantity="other">%1$d और विकल्प</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d बैकग्राउंड कार्य अभी भी चल रहा है</item>
+        <item quantity="other">%1$d बैकग्राउंड कार्य अभी भी चल रहे हैं</item>
+    </plurals>
+    <string name="system_push_finished">पूरा हुआ</string>
+    <string name="system_push_failed">असफल</string>
+    <string name="system_push_failed_rate_limit">अनुरोध सीमा पूरी हो गई</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">अनुरोध सीमा पूरी हो गई। %1$d सेकंड में फिर से कोशिश करें।</item>
+        <item quantity="other">अनुरोध सीमा पूरी हो गई। %1$d सेकंड में फिर से कोशिश करें।</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">अनुरोध सीमा पूरी हो गई। %1$d मिनट में फिर से कोशिश करें।</item>
+        <item quantity="other">अनुरोध सीमा पूरी हो गई। %1$d मिनट में फिर से कोशिश करें।</item>
+    </plurals>
+    <string name="system_push_failed_auth">प्रोवाइडर ने साइन-इन स्वीकार नहीं किया</string>
+    <string name="system_push_public_permission">अनुमति चाहिए</string>
+    <string name="system_push_public_question">एक प्रश्न है</string>
+    <string name="system_push_action_allow">अनुमति दें</string>
+    <string name="system_push_action_always_allow">हमेशा अनुमति दें</string>
+    <string name="system_push_action_deny">अस्वीकार करें</string>
+    <string name="system_push_action_reply">जवाब दें</string>
+    <string name="system_push_action_open">खोलें</string>
+    <string name="system_push_hint_answer">अपना जवाब लिखें</string>
+    <string name="system_push_hint_reply">OpenCode को जवाब दें</string>
+    <string name="system_push_send_failed">भेज नहीं सके। सेशन खोलने के लिए टैप करें।</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode में जारी रखने के लिए टैप करें</string>

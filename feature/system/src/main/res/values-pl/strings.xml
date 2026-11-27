@@ -82,6 +82,87 @@
     <string name="system_channel_session_runs">Uruchomienia sesji</string>
     <string name="system_channel_session_updates">Aktualizacje sesji</string>
     <string name="system_channel_shared_items">Udostępnione elementy</string>
+    <string name="system_channel_push_attention">Wymaga uwagi</string>
+    <string name="system_channel_push_finished">Zakończono</string>
+    <string name="system_channel_push_failed">Błąd</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Chce uruchomić %1$d polecenie</item>
+        <item quantity="few">Chce uruchomić %1$d polecenia</item>
+        <item quantity="many">Chce uruchomić %1$d poleceń</item>
+        <item quantity="other">Chce uruchomić %1$d polecenia</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Chce edytować %1$d plik</item>
+        <item quantity="few">Chce edytować %1$d pliki</item>
+        <item quantity="many">Chce edytować %1$d plików</item>
+        <item quantity="other">Chce edytować %1$d pliku</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Chce odczytać %1$d plik</item>
+        <item quantity="few">Chce odczytać %1$d pliki</item>
+        <item quantity="many">Chce odczytać %1$d plików</item>
+        <item quantity="other">Chce odczytać %1$d pliku</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Chce pobrać stronę</string>
+    <string name="system_push_permission_websearch">Chce przeszukać sieć</string>
+    <string name="system_push_permission_external_directory">Chce użyć folderu spoza projektu</string>
+    <string name="system_push_permission_other">Chce użyć %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <string name="system_push_permission_always_covers">„Zezwalaj zawsze” obejmuje %1$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Jeszcze %1$d</item>
+        <item quantity="few">Jeszcze %1$d</item>
+        <item quantity="many">Jeszcze %1$d</item>
+        <item quantity="other">Jeszcze %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Pytanie %1$d z %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opcja</item>
+        <item quantity="few">%1$d opcje</item>
+        <item quantity="many">%1$d opcji</item>
+        <item quantity="other">%1$d opcji</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Jeszcze %1$d opcja</item>
+        <item quantity="few">Jeszcze %1$d opcje</item>
+        <item quantity="many">Jeszcze %1$d opcji</item>
+        <item quantity="other">Jeszcze %1$d opcji</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d zadanie w tle nadal działa</item>
+        <item quantity="few">%1$d zadania w tle nadal działają</item>
+        <item quantity="many">%1$d zadań w tle nadal działa</item>
+        <item quantity="other">%1$d zadania w tle nadal działa</item>
+    </plurals>
+    <string name="system_push_finished">Zakończono</string>
+    <string name="system_push_failed">Błąd</string>
+    <string name="system_push_failed_rate_limit">Przekroczono limit zapytań</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Przekroczono limit zapytań. Spróbuj ponownie za %1$d sekundę.</item>
+        <item quantity="few">Przekroczono limit zapytań. Spróbuj ponownie za %1$d sekundy.</item>
+        <item quantity="many">Przekroczono limit zapytań. Spróbuj ponownie za %1$d sekund.</item>
+        <item quantity="other">Przekroczono limit zapytań. Spróbuj ponownie za %1$d sekundy.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Przekroczono limit zapytań. Spróbuj ponownie za %1$d minutę.</item>
+        <item quantity="few">Przekroczono limit zapytań. Spróbuj ponownie za %1$d minuty.</item>
+        <item quantity="many">Przekroczono limit zapytań. Spróbuj ponownie za %1$d minut.</item>
+        <item quantity="other">Przekroczono limit zapytań. Spróbuj ponownie za %1$d minuty.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Dostawca nie zaakceptował logowania</string>
+    <string name="system_push_public_permission">Wymaga zgody</string>
+    <string name="system_push_public_question">Ma pytanie</string>
+    <string name="system_push_action_allow">Zezwól</string>
+    <string name="system_push_action_always_allow">Zezwalaj zawsze</string>
+    <string name="system_push_action_deny">Odmów</string>
+    <string name="system_push_action_reply">Odpowiedz</string>
+    <string name="system_push_action_open">Otwórz</string>
+    <string name="system_push_hint_answer">Wpisz własną odpowiedź</string>
+    <string name="system_push_hint_reply">Odpowiedz OpenCode</string>
+    <string name="system_push_send_failed">Nie udało się wysłać. Dotknij, aby otworzyć sesję.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Dotknij, aby kontynuować w OpenCode</string>
