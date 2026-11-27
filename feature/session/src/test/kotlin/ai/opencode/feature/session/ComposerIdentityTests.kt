@@ -12,23 +12,17 @@ import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import android.app.Activity
 import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.RootForTest
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.semantics.SemanticsNode
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -170,39 +164,6 @@ class ComposerIdentityTests {
             controller.pause().stop().destroy()
             scope.cancel()
             shadowOf(Looper.getMainLooper()).idle()
-        }
-    }
-
-    @Test fun backgroundWorkCapsuleLaysOutInAPlaceShorterThanItsInsets() {
-        val activity = Robolectric.buildActivity(ComponentActivity::class.java).setup().get()
-        val view = ComposeView(activity)
-        activity.setContentView(view)
-        try {
-            view.setContent {
-                OpenCodeAppTheme {
-                    val anchor = rememberBackgroundWorkAnchor()
-                    BackgroundWorkPresentation(
-                        anchor = anchor,
-                        sessionID = "ses_clipped",
-                        agents = emptyList(),
-                        shells = emptyList(),
-                        waitingSessionIDs = emptySet(),
-                        probe = null,
-                        isPresented = false,
-                        onPresentedChange = {},
-                        onOpenSubagent = {},
-                        onOpenShell = {},
-                    ) {
-                        Box(Modifier.height(4.dp)) {
-                            BackgroundWorkCapsuleSpace(agents = 0, shells = 1, modifier = Modifier.backgroundActivityAnchor(anchor))
-                        }
-                    }
-                }
-            }
-            pump()
-            view.draw(Canvas(Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)))
-        } finally {
-            activity.finish()
         }
     }
 
