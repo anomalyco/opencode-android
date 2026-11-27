@@ -376,9 +376,13 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
             val serverKey = runCatching {
                 OpenCodeClient.registerPushDevice(server, ref, callback.url, callback.expiresAt.toEpochMilli(), publicKey, Build.MODEL ?: "Android")
             }
-                .onFailure { if (it is CancellationException) throw it }
+                .onFailure {
+                    if (it is CancellationException) throw it
+                    AppLog.app.info { "Push device not registered: ${it::class.java.simpleName}" }
+                }
                 .getOrNull()
             if (serverKey != null) {
+                AppLog.app.info { "Push device registered" }
                 if (!current()) return null
                 paired = runCatching { keys.establish(ref, serverKey) }.onFailure { if (it is CancellationException) throw it }.isSuccess
             }
