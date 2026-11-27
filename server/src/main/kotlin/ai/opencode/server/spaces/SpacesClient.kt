@@ -31,10 +31,11 @@ import kotlinx.serialization.json.putJsonArray
  */
 data class SpacesClient(
     /**
-     * Follows [space] on [server] while collected: its entries once synced, and after every change.
+     * Follows [space] on [server] while collected: its entries as each sync page arrives, and after
+     * every change.
      * A server without spaces never yields.
      */
-    val entries: (server: OpenCodeServer, space: String) -> Flow<Map<String, String>>,
+    val entries: (server: OpenCodeServer, space: String) -> Flow<SpaceEntries>,
     /** The event stream's [OpenCodeServerEvent.StreamOpened] and [OpenCodeServerEvent.SpaceEvent]s, in order. */
     val receive: suspend (server: OpenCodeServer, event: OpenCodeServerEvent) -> Unit,
     /**
@@ -56,6 +57,9 @@ data class SpacesClient(
         )
     }
 }
+
+/** A space's entries; [isSyncComplete] is false while a sync is still on its way to its last page. */
+data class SpaceEntries(val entries: Map<String, String>, val isSyncComplete: Boolean)
 
 @Serializable
 internal data class SpacePage(
@@ -89,11 +93,12 @@ internal class SpaceStore {
     private class Space(val name: String) {
         val writing = Mutex()
         /** Null until the first sync. */
-        val entries = MutableStateFlow<Map<String, String>?>(null)
+        val entries = MutableStateFlow<SpaceEntries?>(null)
         /** The space as the server has it at [revision]; [entries] shows it with the pending writes on top. */
         var confirmed: Map<String, String>? = null
         var cursor: String? = null
         var revision = -1L
+        var isSyncComplete = false
         /** The stream it's subscribed on. */
         var stream: String? = null
         var followers = 0
@@ -102,7 +107,8 @@ internal class SpaceStore {
 
         fun show() {
             val confirmed = confirmed ?: return
-            entries.value = if (pending.isEmpty()) confirmed else applying(confirmed, pending.entries.map { it.toPair() })
+            val shown = if (pending.isEmpty()) confirmed else applying(confirmed, pending.entries.map { it.toPair() })
+            entries.value = SpaceEntries(shown, isSyncComplete)
         }
     }
 
@@ -114,7 +120,7 @@ internal class SpaceStore {
 
     private val lock = Any()
     private val syncing = Mutex()
-    private val spaces = HashMap<Pair<String, String>, Space>()
+    private val spaces = LinkedHashMap<Pair<String, String>, Space>()
     /** Each server's newest event stream. */
     private val streams = HashMap<String, String>()
     /** Servers that answered 404, with the stream they answered on: tried again on the next one. */
@@ -125,7 +131,7 @@ internal class SpaceStore {
     private fun space(server: OpenCodeServer, name: String): Space =
         synchronized(lock) { spaces.getOrPut(server.persistenceID to name) { Space(name) } }
 
-    private fun entries(server: OpenCodeServer, name: String): Flow<Map<String, String>> = flow {
+    private fun entries(server: OpenCodeServer, name: String): Flow<SpaceEntries> = flow {
         val space = space(server, name)
         val stream = synchronized(lock) {
             space.followers += 1
@@ -213,7 +219,13 @@ internal class SpaceStore {
      * budget didn't reach asks again with the same cursor.
      */
     private suspend fun sync(server: OpenCodeServer, spaces: List<Space>) {
-        val states = synchronized(lock) { spaces.map { Syncing(it, it.cursor) } }
+        val states = synchronized(lock) {
+            spaces.map { space ->
+                space.isSyncComplete = false
+                space.show()
+                Syncing(space, space.cursor)
+            }
+        }
         while (true) {
             val asking = states.filter { !it.done }.take(MAX_SPACES)
             if (asking.isEmpty()) return
@@ -253,8 +265,8 @@ internal class SpaceStore {
         if (page.type != "snapshot" || page.next == null) space.cursor = page.cursor
         val next = page.next
         if (next == null) state.done = true else state.cursor = next
-        // A space shown for the first time waits for its whole first snapshot.
-        if (space.entries.value != null || page.type != "snapshot" || next == null) space.show()
+        space.isSyncComplete = next == null
+        space.show()
     }
 
     private suspend fun write(server: OpenCodeServer, name: String, changes: Map<String, String?>) {

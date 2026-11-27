@@ -71,13 +71,17 @@ class SpacesClientTests {
     ).toString()
 
     @Test fun aSyncFollowsEveryPageThenSubscribesTheStreamFromTheLastCursor() = runTest {
+        var continuations = 0
         val fixture = WireFixture { request ->
             when (request.route) {
-                sync -> pages(request) { _, cursor ->
-                    when (cursor) {
-                        null -> page("snapshot", 2, mapOf("a" to "1", "b" to "1"), cursor = "e.2", next = "e.2.4")
-                        "e.2.4" -> page("snapshot", 4, mapOf("c" to "1"), cursor = "e.4")
-                        else -> null
+                sync -> {
+                    if (asked(request).single().second == "e.2.4" && continuations++ == 0) return@WireFixture Reply.status(500)
+                    pages(request) { _, cursor ->
+                        when (cursor) {
+                            null -> page("snapshot", 2, mapOf("a" to "1", "b" to "1"), cursor = "e.2", next = "e.2.4")
+                            "e.2.4" -> page("snapshot", 4, mapOf("c" to "1"), cursor = "e.4")
+                            else -> null
+                        }
                     }
                 }
                 subscribe -> Reply.status(204)
@@ -86,17 +90,20 @@ class SpacesClientTests {
         }
         try {
             val client = SpaceStore().client
-            val seen = mutableListOf<Map<String, String>>()
-            backgroundScope.launch { client.entries(fixture.server, "pins").collect { seen += it } }
+            var shown: SpaceEntries? = null
+            backgroundScope.launch { client.entries(fixture.server, "pins").collect { shown = it } }
             runCurrent()
             assertTrue("nothing to sync before the stream is known", fixture.requests.isEmpty())
 
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
             runCurrent()
+            assertEquals("the first sync's pages show as they arrive", SpaceEntries(mapOf("a" to "1", "b" to "1"), isSyncComplete = false), shown)
 
-            assertEquals("a space shown for the first time shows its whole snapshot", listOf(mapOf("a" to "1", "b" to "1", "c" to "1")), seen)
-            assertEquals(listOf("pins@null", "pins@e.2.4"), synced(fixture))
-            assertEquals(subscribed("s1", "pins" to "e.4"), subscription(fixture.requests.single { it.route == subscribe }))
+            client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
+            runCurrent()
+            assertEquals(SpaceEntries(mapOf("a" to "1", "b" to "1", "c" to "1"), isSyncComplete = true), shown)
+            assertEquals(listOf("pins@null", "pins@e.2.4", "pins@null", "pins@e.2.4"), synced(fixture))
+            assertEquals(subscribed("s2", "pins" to "e.4"), subscription(fixture.requests.single { it.route == subscribe }))
         } finally {
             fixture.close()
         }
@@ -128,8 +135,8 @@ class SpacesClientTests {
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
 
             assertEquals(listOf("pins@null tags@null", "tags@null"), synced(fixture))
-            assertEquals(mapOf("a" to "1"), client.entries(fixture.server, "pins").first())
-            assertEquals(mapOf("x" to "1"), client.entries(fixture.server, "tags").first())
+            assertEquals(mapOf("a" to "1"), client.entries(fixture.server, "pins").first().entries)
+            assertEquals(mapOf("x" to "1"), client.entries(fixture.server, "tags").first().entries)
             assertEquals(
                 "both spaces in one subscribe",
                 listOf(subscribed("s1", "pins" to "p.1", "tags" to "t.1")),
@@ -168,11 +175,11 @@ class SpacesClientTests {
             assertEquals(
                 "a snapshot page applies at once, but removes nothing before its last page",
                 mapOf("a" to "2", "b" to "1", "old" to "1"),
-                client.entries(fixture.server, "pins").first(),
+                client.entries(fixture.server, "pins").first().entries,
             )
 
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
-            assertEquals(mapOf("a" to "2", "b" to "1"), client.entries(fixture.server, "pins").first())
+            assertEquals(mapOf("a" to "2", "b" to "1"), client.entries(fixture.server, "pins").first().entries)
             assertEquals(
                 "a reconnect mid-snapshot starts again from the last whole cursor",
                 listOf("pins@null", "pins@e.1", "pins@e.5.6", "pins@e.1", "pins@e.5.6"),
@@ -206,7 +213,7 @@ class SpacesClientTests {
             runCurrent()
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
             client.receive(fixture.server, OpenCodeServerEvent.SpaceResync("pins"))
-            assertEquals("the delta shows though its next page failed", mapOf("a" to "1", "b" to "1"), client.entries(fixture.server, "pins").first())
+            assertEquals("the delta shows though its next page failed", mapOf("a" to "1", "b" to "1"), client.entries(fixture.server, "pins").first().entries)
 
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
             assertEquals(listOf("pins@null", "pins@e.1", "pins@e.2", "pins@e.2"), synced(fixture))
@@ -226,7 +233,7 @@ class SpacesClientTests {
         try {
             val client = SpaceStore().client
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
-            assertEquals(mapOf("a" to "1", "b" to "1"), client.entries(fixture.server, "pins").first())
+            assertEquals(mapOf("a" to "1", "b" to "1"), client.entries(fixture.server, "pins").first().entries)
             assertEquals("the stream was known: one sync", 2, fixture.requests.size)
 
             client.receive(fixture.server, OpenCodeServerEvent.SpaceUpdated("pins", "c", "1", revision = 6))
@@ -234,7 +241,7 @@ class SpacesClientTests {
             client.receive(fixture.server, OpenCodeServerEvent.SpaceUpdated("pins", "old", "1", revision = 5))
             client.receive(fixture.server, OpenCodeServerEvent.SpaceUpdated("other", "x", "1", revision = 8))
 
-            assertEquals(mapOf("b" to "1", "c" to "1"), client.entries(fixture.server, "pins").first())
+            assertEquals(mapOf("b" to "1", "c" to "1"), client.entries(fixture.server, "pins").first().entries)
             assertEquals("events cost no requests", 2, fixture.requests.size)
         } finally {
             fixture.close()
@@ -259,7 +266,7 @@ class SpacesClientTests {
         try {
             val client = SpaceStore().client
             val seen = mutableListOf<Map<String, String>>()
-            backgroundScope.launch { client.entries(fixture.server, "pins").collect { seen += it } }
+            backgroundScope.launch { client.entries(fixture.server, "pins").collect { if (seen.lastOrNull() != it.entries) seen += it.entries } }
             runCurrent()
             suspend fun receive(event: OpenCodeServerEvent) {
                 client.receive(fixture.server, event)
@@ -289,11 +296,11 @@ class SpacesClientTests {
         try {
             val client = SpaceStore().client
             val seen = mutableListOf<Map<String, String>>()
-            backgroundScope.launch { client.entries(fixture.server, "pins").collect { seen += it } }
+            backgroundScope.launch { client.entries(fixture.server, "pins").collect { if (seen.lastOrNull() != it.entries) seen += it.entries } }
             runCurrent()
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
             client.receive(fixture.server, OpenCodeServerEvent.SpaceResync("pins"))
-            backgroundScope.launch { client.entries(fixture.server, "pins").collect { seen += it } }
+            backgroundScope.launch { client.entries(fixture.server, "pins").collect { if (seen.lastOrNull() != it.entries) seen += it.entries } }
             runCurrent()
             client.write(fixture.server, "pins", mapOf("a" to "1"))
             client.write(fixture.server, "pins", mapOf("a" to null))
@@ -332,7 +339,7 @@ class SpacesClientTests {
             // Deleting `x`, which isn't set, takes no revision: 1 + 2 = 3 follows straight on.
             client.write(fixture.server, "pins", mapOf("ses_b" to "1", "a" to null, "x" to null))
 
-            assertEquals(mapOf("ses_b" to "1"), client.entries(fixture.server, "pins").first())
+            assertEquals(mapOf("ses_b" to "1"), client.entries(fixture.server, "pins").first().entries)
             assertEquals(changes("ses_b" to "1", "a" to null, "x" to null), written(fixture.requests.single { it.route == write }))
 
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s2"))
@@ -370,7 +377,7 @@ class SpacesClientTests {
             val client = SpaceStore().client
             backgroundScope.launch { client.entries(fixture.server, "pins").collect {} }
             runCurrent()
-            suspend fun shown() = client.entries(fixture.server, "pins").first()
+            suspend fun shown() = client.entries(fixture.server, "pins").first().entries
             client.receive(fixture.server, OpenCodeServerEvent.StreamOpened("s1"))
 
             writesFail = true

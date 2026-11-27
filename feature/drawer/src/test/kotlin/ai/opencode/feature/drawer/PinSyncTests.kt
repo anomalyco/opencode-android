@@ -14,6 +14,7 @@ import ai.opencode.feature.drawer.HomeFeatureTestSupport.snapshot
 import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
+import ai.opencode.server.spaces.SpaceEntries
 import ai.opencode.server.spaces.SpacesClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -34,7 +35,7 @@ class PinSyncTests {
 
     /** The server's `pins` space, and what the phone wrote to it. */
     private class Spaces {
-        val pins = MutableStateFlow<Map<String, String>?>(null)
+        val pins = MutableStateFlow<SpaceEntries?>(null)
         val writes = LockIsolated<List<String>>(emptyList())
         val received = LockIsolated<List<OpenCodeServerEvent>>(emptyList())
         val client = SpacesClient(
@@ -43,8 +44,8 @@ class PinSyncTests {
             write = { _, space, changes -> writes.append("$space $changes") },
         )
 
-        fun remote(vararg ids: String) {
-            pins.value = ids.associateWith { "1" }
+        fun remote(vararg ids: String, complete: Boolean = true) {
+            pins.value = SpaceEntries(ids.associateWith { "1" }, complete)
         }
     }
 
@@ -120,6 +121,38 @@ class PinSyncTests {
         settle()
         assertEquals("the merge goes out as one write", listOf("pins {b=1, a=1}"), spaces.writes.value)
         assertEquals("the order stays this phone's", listOf("b", "a", "c"), store.state.pinnedSessions.map { it.id })
+    }
+
+    @Test fun beforeTheSyncIsCompleteOnlyAdditionsApply() = homeTest { h ->
+        h.setShared(SharedKeys.pinnedSessionKeys, listOf(key("b"), key("a")))
+        val spaces = Spaces()
+        val store = h.store(h.state { HomeFeature.State(server, snapshot(sessions)) }) {
+            this[ExperimentalFeatures] = syncOn
+            this[SpacesClient] = spaces.client
+        }
+        store.send(switched(true))
+        spaces.remote("c", complete = false)
+        store.receive(Action.PinSpaceChanged(listOf("c"), isSyncComplete = false)) {
+            it.copy(pinnedSessionKeys = listOf(key("b"), key("a"), key("c")))
+        }
+        settle()
+        assertTrue("no merge before the sync is complete", spaces.writes.value.isEmpty())
+        assertTrue(h.shared(SharedKeys.pinSyncServerIDs).isEmpty())
+
+        spaces.remote("c", "b", complete = true)
+        store.receive(Action.PinSpaceChanged(listOf("c", "b")))
+        settle()
+        assertEquals("the merge writes what the space lacked", listOf("pins {a=1}"), spaces.writes.value)
+        assertEquals("the order stays this phone's", listOf("b", "a", "c"), store.state.pinnedSessions.map { it.id })
+
+        // Merged: a resync's first page lacks pins, but nothing unpins before its last page.
+        spaces.remote("c", complete = false)
+        store.receive(Action.PinSpaceChanged(listOf("c"), previous = listOf("c", "b"), isSyncComplete = false))
+        spaces.remote("c", "a", complete = true)
+        store.receive(Action.PinSpaceChanged(listOf("c", "a"), previous = listOf("c", "b"))) {
+            it.copy(pinnedSessionKeys = listOf(key("a"), key("c")))
+        }
+        assertEquals(listOf("a", "c"), store.state.pinnedSessions.map { it.id })
     }
 
     @Test fun pinningAndUnpinningHereWritesTheSpaceOnceMerged() = homeTest { h ->

@@ -38,9 +38,9 @@ internal fun followPins(state: State): Effect<Action> {
     return Effect.run<Action> { send ->
         var previous: List<String>? = null
         spaces.entries(server, PIN_SPACE).collect {
-            val ids = it.keys.toList()
-            send(Action.PinSpaceChanged(ids, previous))
-            previous = ids
+            val ids = it.entries.keys.toList()
+            send(Action.PinSpaceChanged(ids, previous, it.isSyncComplete))
+            if (it.isSyncComplete) previous = ids
         }
     }.cancellable(CancelID.PinSync, cancelInFlight = true)
 }
@@ -62,13 +62,16 @@ internal fun pinSyncSwitched(state: State, on: Boolean): HomeReduced {
 }
 
 /**
- * The space's pins: removals unpin here, additions pin at the end. Once followed, only what changed
- * since [previous] applies, so writes still landing one by one undo nothing.
+ * The space's pins: additions pin at the end at once; removals, and the merge, wait for the sync to
+ * reach its last page. Once followed, only what changed since [previous] (the last complete view)
+ * applies, so writes still landing one by one undo nothing.
  */
-internal fun pinSpaceChanged(state: State, remote: List<String>, previous: List<String>?): HomeReduced {
+internal fun pinSpaceChanged(state: State, remote: List<String>, previous: List<String>?, isSyncComplete: Boolean): HomeReduced {
     if (!isPinSyncOn) return Reduced(state)
-    val serverID = state.server.persistenceID
     val local = state.pinnedIDs
+    val added = remote.filterNot { it in local || previous?.contains(it) == true }.map(state::sessionKey)
+    if (!isSyncComplete) return Reduced(state.updatingPins(removed = emptySet(), added = added))
+    val serverID = state.server.persistenceID
     var members = remote.toSet()
     var writes: Effect<Action> = Effect.none()
     val merged = shared(SharedKeys.pinSyncServerIDs)
@@ -79,14 +82,15 @@ internal fun pinSpaceChanged(state: State, remote: List<String>, previous: List<
         merged.update { it + serverID }
     }
     val gone = if (previous == null) local.filterNot { it in members } else previous.filterNot { it in members }
-    val removed = gone.map(state::sessionKey).toSet()
-    val added = remote.filterNot { it in local || previous?.contains(it) == true }.map(state::sessionKey)
-    if (removed.isEmpty() && added.isEmpty()) return Reduced(state, writes)
-    val s = state.updatingPinnedSessionKeys { keys ->
+    return Reduced(state.updatingPins(removed = gone.map(state::sessionKey).toSet(), added = added), writes)
+}
+
+private fun State.updatingPins(removed: Set<String>, added: List<String>): State {
+    if (removed.isEmpty() && added.isEmpty()) return this
+    return updatingPinnedSessionKeys { keys ->
         val kept = keys.filterNot { it in removed }
         kept + added.filterNot { it in kept }
     }
-    return Reduced(s, writes)
 }
 
 /** Pins and unpins made here go to the merged space; the space's own changes don't echo back. */

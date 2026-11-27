@@ -90,7 +90,7 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     -> reduceConnection(state, action)
 
     is Action.ServerEvent -> reduceServerEvent(state, action.event)
-    is Action.PinSpaceChanged -> pinSpaceChanged(state, action.sessionIDs, action.previous)
+    is Action.PinSpaceChanged -> pinSpaceChanged(state, action.sessionIDs, action.previous, action.isSyncComplete)
 
     is Action.SessionPages -> reduceSessionPages(state, action.action)
 
