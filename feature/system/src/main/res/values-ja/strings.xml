@@ -82,6 +82,59 @@
     <string name="system_channel_session_runs">セッションの実行</string>
     <string name="system_channel_session_updates">セッションの更新</string>
     <string name="system_channel_shared_items">共有アイテム</string>
+    <string name="system_channel_push_attention">要対応</string>
+    <string name="system_channel_push_finished">完了</string>
+    <string name="system_channel_push_failed">失敗</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">%1$d件のコマンドを実行しようとしています</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">%1$d件のファイルを編集しようとしています</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">%1$d件のファイルを読み込もうとしています</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ページを取得しようとしています</string>
+    <string name="system_push_permission_websearch">Webを検索しようとしています</string>
+    <string name="system_push_permission_external_directory">プロジェクト外のフォルダを使おうとしています</string>
+    <string name="system_push_permission_other">%1$sを使おうとしています</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s：%2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">ほか%1$d件</item>
+    </plurals>
+    <string name="system_push_question_position">質問 %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d件の選択肢</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">ほか%1$d件の選択肢</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">%1$d件のバックグラウンドジョブがまだ実行中</item>
+    </plurals>
+    <string name="system_push_finished">完了</string>
+    <string name="system_push_failed">失敗</string>
+    <string name="system_push_failed_rate_limit">レート制限に達しました</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">レート制限に達しました。%1$d秒後にもう一度お試しください。</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">レート制限に達しました。%1$d分後にもう一度お試しください。</item>
+    </plurals>
+    <string name="system_push_failed_auth">プロバイダーがサインインを受け付けませんでした</string>
+    <string name="system_push_public_permission">許可が必要です</string>
+    <string name="system_push_public_question">質問があります</string>
+    <string name="system_push_action_allow">許可</string>
+    <string name="system_push_action_always_allow">常に許可</string>
+    <string name="system_push_action_deny">拒否</string>
+    <string name="system_push_action_reply">返信</string>
+    <string name="system_push_action_open">開く</string>
+    <string name="system_push_hint_answer">自分の回答を入力</string>
+    <string name="system_push_hint_reply">OpenCodeに返信</string>
+    <string name="system_push_send_failed">送信できませんでした。タップしてセッションを開きます。</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">タップしてOpenCodeで続行</string>

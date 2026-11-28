@@ -82,6 +82,59 @@
     <string name="system_channel_session_runs">ལཱ་ཡུན་གཡོག་བཀོལ།</string>
     <string name="system_channel_session_updates">ལཱ་ཡུན་གྱི་དུས་མཐུན་ཚུ།</string>
     <string name="system_channel_shared_items">བགོ་བཤའ་རྐྱབ་མི་ཅ་ལ་ཚུ།</string>
+    <string name="system_channel_push_attention">ཁྱོད་དགོ</string>
+    <string name="system_channel_push_finished">མཇུག་བསྡུ་ཡོདཔ།</string>
+    <string name="system_channel_push_failed">མཐར་མ་འཁྱོལ་བ</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">བརྡ་བཀོད་ %1$d གཡོག་བཀོལ་དགོ་མནོ་དོ</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ཡིག་སྣོད་ %1$d ཞུན་དག་འབད་དགོ་མནོ་དོ</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ཡིག་སྣོད་ %1$d ལྷག་དགོ་མནོ་དོ</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">ཤོག་ལེབ་ཅིག་ལེན་དགོ་མནོ་དོ</string>
+    <string name="system_push_permission_websearch">ཝེབ་འཚོལ་ཞིབ་འབད་དགོ་མནོ་དོ</string>
+    <string name="system_push_permission_external_directory">ལས་གཞིའི་ཕྱི་ཁའི་སྣོད་འཛིན་ཅིག་ལག་ལེན་འཐབ་དགོ་མནོ་དོ</string>
+    <string name="system_push_permission_other">%1$s ལག་ལེན་འཐབ་དགོ་མནོ་དོ</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">ད་རུང་ %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">དྲི་བ་ %2$d ལས་ %1$d པ།</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">གདམ་ཁ་ %1$d</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">ད་རུང་གདམ་ཁ་ %1$d</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">རྒྱབ་གཞིའི་ལཱ་ %1$d ད་ལྟོ་ཡང་གཡོག་བཀོལ་དོ།</item>
+    </plurals>
+    <string name="system_push_finished">མཇུག་བསྡུ་ཡོདཔ།</string>
+    <string name="system_push_failed">མཐར་མ་འཁྱོལ་བ</string>
+    <string name="system_push_failed_rate_limit">ཚད་གཞི་ལས་བརྒལ་ཡོདཔ།</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">ཚད་གཞི་ལས་བརྒལ་ཡོདཔ། སྐར་ཆ་ %1$d གི་ཤུལ་ལས་བསྐྱར་དུ་ཚོད་ལྟ་འབད།</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">ཚད་གཞི་ལས་བརྒལ་ཡོདཔ། སྐར་མ་ %1$d གི་ཤུལ་ལས་བསྐྱར་དུ་ཚོད་ལྟ་འབད།</item>
+    </plurals>
+    <string name="system_push_failed_auth">བྱིན་མི་གིས་ནང་བསྐྱོད་ངོས་ལེན་མ་འབད་བས།</string>
+    <string name="system_push_public_permission">གནང་བ་དགོ</string>
+    <string name="system_push_public_question">དྲི་བ་ཅིག་ཡོད།</string>
+    <string name="system_push_action_allow">གནང་བ་བྱིན།</string>
+    <string name="system_push_action_always_allow">ཨ་རྟག་ར་གནང་བཅུག།</string>
+    <string name="system_push_action_deny">ཁས༌མི༌ལེན</string>
+    <string name="system_push_action_reply">ལན་འདེབས།</string>
+    <string name="system_push_action_open">ཁ་ཕྱེ།</string>
+    <string name="system_push_hint_answer">རང་གི་ལན་བྲིས།</string>
+    <string name="system_push_hint_reply">OpenCode ལུ་ལན་འདེབས་འབད།</string>
+    <string name="system_push_send_failed">གཏང་མ་ཚུགས། ལཱ་ཡུན་ཁ་ཕྱེ་ནི་ལུ་ཨེབ།</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode ནང་འཕྲོ་མཐུད་ནི་ལུ་ཨེབ།</string>

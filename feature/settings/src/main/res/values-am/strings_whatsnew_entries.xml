@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">መልእክት እንዴት እንደሚላክ የሂደት ንድፍ ይጠይቁ</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">መልእክት እንዴት እንደሚላክ የሂደት ንድፍ ሳል</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">ሲጠናቀቅ አሳውቅ</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">እዚህ የጀመሩት ክፍለ ጊዜ ሲጠናቀቅ፣ የተከናወነውን በአጭሩ የሚገልጽ ማሳወቂያ ያግኙ።</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">በኮምፒውተርዎ ለጀመሯቸውም ጭምር ለእያንዳንዱ ምላሽ ማሳወቂያ ለማግኘት፣ በክፍለ ጊዜው ፓነል «ሁልጊዜ አሳውቅ» ያብሩ።</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">ክፍለ ጊዜውን ለመክፈት ማሳወቂያውን መታ ያድርጉ።</string>
-    <string name="settings_whatsnew_entry_always_notify_example">መልእክት ይላኩ፣ ከዚያ ስልክዎን ይቆልፉ</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">አገልጋይ ቀይር</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">የተገናኙበት አገልጋይ የጎን ምናሌው ርዕስ ነው። ወደ ሌላ አገልጋይ ለመቀየር ወይም አዲስ ለማከል መታ ያድርጉት።</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">«በOpenCode ቀጥል» ያጋሩትን በመልእክት ሳጥኑ ውስጥ አስቀምጦ ክፍለ ጊዜውን ይከፍታል።</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">መላክ ካልተቻለ፣ «በኋላ ላክ» በሚቀጥለው ጊዜ መተግበሪያውን ሲከፍቱ ይልከዋል።</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">የማያ ገጽ ፎቶ ለOpenCode ያጋሩ፣ ጥያቄ ይጻፉና «ላክ» የሚለውን ይንኩ</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">በመተግበሪያው አዶ ላይ ቆጣሪ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">የመተግበሪያው አዶ ስንት ክፍለ ጊዜዎች እንዳልተነበቡ ወይም እርስዎን እንደሚጠብቁ ያሳያል፤ ቁጥሩም በ«ያመለጠዎትን ይዩ» ካለው ጋር አንድ ነው።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">ድምፀ ከል የተደረጉ ክፍለ ጊዜዎች አይቆጠሩም።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ማሳወቂያዎች መብራት አለባቸው።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ክፍለ ጊዜን የጥያቄ መልስ እየጠበቀ ይተዉት፣ ከዚያ ወደ መነሻ ማያ ገጽ ይሂዱ</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">የቁልፍ ሰሌዳው ከጎን ምናሌው ጋር ይንሸራተታል</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">የድምፅ ክብ ምልክቱ አሁን Wisp ነው</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">የጥሪው ክብ ምልክት አሁን የWisp መልክ አለው፦ በሁለቱም ድምፆች በሚበሩ ነጥቦች ላይ ያለ የብርጭቆ ሌንስ፣ ሲገናኝ፣ ሲያዳምጥ፣ ሲሠራ፣ ሲናገርና እርስዎን ሲጠብቅ የWisp ስሜቶችን ያሳያል። ብቸኛው የክብ ምልክት ቅጥ ስለሆነ፣ የቀድሞ ቅጦችና የክብ ምልክት ቅንብሮች ተወግደዋል።</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">የተመሰጠሩ የማሳወቂያ ቅድመ እይታዎች</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">በተዘመነው የማሳወቂያ ፕለጊንና በHTTPS ግንኙነት፣ አገልጋይዎ ርዕሱንና መልእክቱን ለዚህ መሣሪያ ያመሰጥራል። ቅድመ እይታው መከፈት ካልቻለ፣ ማሳወቂያው «አዲስ እንቅስቃሴ» ብቻ ይላል።</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">አቃፊያቸው ቢጠፋም ክፍለ-ጊዜዎች ይቀጥላሉ</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">የክፍለ ጊዜ አቃፊ ሲጠፋ፣ ለምሳሌ የGit worktree ሲወገድ፣ መላክ ካልተሳካ ክፍለ ጊዜውን ወደ ፕሮጀክቱ አቃፊ ለማንቀሳቀስ አማራጭ ይቀርባል፣ ከዚያም እንደገና ይላካል።</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">ማሳወቂያዎችን በOpenCode አዋቅር</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">በቅንብሮች → ማሳወቂያዎች ውስጥ፣ የጎደለውን የማሳወቂያ ፕለጊን የሚጭን ፕሮምፕት ለመገምገም «በOpenCode አዋቅር» ይንኩ።</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">የጥሪው ካርድ የማያ ገጹን ታችኛውን ክፍል ይሞላል</string>

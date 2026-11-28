@@ -82,6 +82,86 @@
     <string name="system_channel_session_runs">Běh relací</string>
     <string name="system_channel_session_updates">Aktualizace relací</string>
     <string name="system_channel_shared_items">Sdílené položky</string>
+    <string name="system_channel_push_attention">Potřebuje vás</string>
+    <string name="system_channel_push_finished">Dokončeno</string>
+    <string name="system_channel_push_failed">Selhalo</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Chce spustit %1$d příkaz</item>
+        <item quantity="few">Chce spustit %1$d příkazy</item>
+        <item quantity="many">Chce spustit %1$d příkazu</item>
+        <item quantity="other">Chce spustit %1$d příkazů</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Chce upravit %1$d soubor</item>
+        <item quantity="few">Chce upravit %1$d soubory</item>
+        <item quantity="many">Chce upravit %1$d souboru</item>
+        <item quantity="other">Chce upravit %1$d souborů</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Chce přečíst %1$d soubor</item>
+        <item quantity="few">Chce přečíst %1$d soubory</item>
+        <item quantity="many">Chce přečíst %1$d souboru</item>
+        <item quantity="other">Chce přečíst %1$d souborů</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Chce načíst stránku</string>
+    <string name="system_push_permission_websearch">Chce hledat na webu</string>
+    <string name="system_push_permission_external_directory">Chce použít složku mimo projekt</string>
+    <string name="system_push_permission_other">Chce použít %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Další %1$d</item>
+        <item quantity="few">Další %1$d</item>
+        <item quantity="many">Dalších %1$d</item>
+        <item quantity="other">Dalších %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Otázka %1$d z %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d možnost</item>
+        <item quantity="few">%1$d možnosti</item>
+        <item quantity="many">%1$d možnosti</item>
+        <item quantity="other">%1$d možností</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d další možnost</item>
+        <item quantity="few">%1$d další možnosti</item>
+        <item quantity="many">%1$d další možnosti</item>
+        <item quantity="other">%1$d dalších možností</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">Stále běží %1$d úloha na pozadí</item>
+        <item quantity="few">Stále běží %1$d úlohy na pozadí</item>
+        <item quantity="many">Stále běží %1$d úlohy na pozadí</item>
+        <item quantity="other">Stále běží %1$d úloh na pozadí</item>
+    </plurals>
+    <string name="system_push_finished">Dokončeno</string>
+    <string name="system_push_failed">Selhalo</string>
+    <string name="system_push_failed_rate_limit">Překročen limit požadavků</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Překročen limit požadavků. Zkuste to znovu za %1$d sekundu.</item>
+        <item quantity="few">Překročen limit požadavků. Zkuste to znovu za %1$d sekundy.</item>
+        <item quantity="many">Překročen limit požadavků. Zkuste to znovu za %1$d sekundy.</item>
+        <item quantity="other">Překročen limit požadavků. Zkuste to znovu za %1$d sekund.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Překročen limit požadavků. Zkuste to znovu za %1$d minutu.</item>
+        <item quantity="few">Překročen limit požadavků. Zkuste to znovu za %1$d minuty.</item>
+        <item quantity="many">Překročen limit požadavků. Zkuste to znovu za %1$d minuty.</item>
+        <item quantity="other">Překročen limit požadavků. Zkuste to znovu za %1$d minut.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Poskytovatel nepřijal přihlášení</string>
+    <string name="system_push_public_permission">Vyžaduje oprávnění</string>
+    <string name="system_push_public_question">Má otázku</string>
+    <string name="system_push_action_allow">Povolit</string>
+    <string name="system_push_action_always_allow">Vždy povolit</string>
+    <string name="system_push_action_deny">Odmítnout</string>
+    <string name="system_push_action_reply">Odpovědět</string>
+    <string name="system_push_action_open">Otevřít</string>
+    <string name="system_push_hint_answer">Napište vlastní odpověď</string>
+    <string name="system_push_hint_reply">Odpovědět OpenCode</string>
+    <string name="system_push_send_failed">Nepodařilo se odeslat. Klepnutím otevřete relaci.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Klepnutím pokračujte v OpenCode</string>

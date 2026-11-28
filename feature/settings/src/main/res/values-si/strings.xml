@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">දැනුම්දීම්</string>
-    <string name="settings_notifications_device_header">මෙම %1$s</string>
-    <string name="settings_notifications_device_footer">දැනුම්දීම් කිසිවක් ගබඩා නොකරන අතරමැදියෙකු හරහා යැවේ. මෙම %1$s මත ඇරඹූ සැසිවල දැනුම්දීම් පමණක් එයට ලැබේ.</string>
-    <string name="settings_notifications_allow">දැනුම්දීම්වලට ඉඩ දෙන්න</string>
+    <string name="settings_notifications_notify_about">දැනුම් දිය යුතු දේ</string>
+    <string name="settings_notifications_level_all">සියල්ල</string>
+    <string name="settings_notifications_level_attention">මගේ අවධානය අවශ්‍ය විට පමණි</string>
+    <string name="settings_notifications_off_footer">සැසියක් අවසන් වූ විට, ප්‍රශ්නයක් ඇසූ විට හෝ අවසරය අවශ්‍ය වූ විට දැනුම්දීමක් ලබාගන්න.</string>
+    <string name="settings_notifications_blocked_footer">Android සැකසීම් තුළ OpenCode සඳහා දැනුම්දීම් අක්‍රිය කර ඇත.</string>
+    <string name="settings_notifications_unsupported_footer">මෙම සේවාදායකය දැනුම්දීම්වලට සහය නොදක්වයි. ඔබේ පරිගණකයේ OpenCode යාවත්කාලීන කරන්න.</string>
     <string name="settings_notifications_open_android_settings">Android සැකසුම් විවෘත කරන්න</string>
-    <string name="settings_notifications_turn_on">දැනුම්දීම් සක්‍රිය කරන්න</string>
-    <string name="settings_notifications_server_header">සේවාදායකය</string>
-    <string name="settings_notifications_set_up_footer">ප්ලගීනය ස්ථාපනය කරන ලෙස OpenCode වෙතින් ඉල්ලන සැසියක් විවෘත කරයි. ඉල්ලීම යවා නැවත පරීක්ෂා කරන්න.</string>
-    <string name="settings_notifications_plugin_needed_footer">සේවාදායකයට OpenCode notify ප්ලගීනය අවශ්‍යයි.</string>
-    <string name="settings_notifications_notify_plugin">දැනුම්දීමේ ප්ලගීනය</string>
-    <string name="settings_notifications_plugin_installed">ස්ථාපනය කර ඇත</string>
-    <string name="settings_notifications_plugin_not_running">ක්‍රියාත්මක නැත</string>
-    <string name="settings_notifications_plugin_not_installed">ස්ථාපනය කර නැත</string>
-    <string name="settings_notifications_plugin_check_failed">තත්ත්වය පරීක්ෂා කිරීමට නොහැකි විය</string>
-    <string name="settings_notifications_set_up">OpenCode සමඟ සකසන්න</string>
-    <string name="settings_notifications_check_again">නැවත පරීක්ෂා කරන්න</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">සැසි</string>

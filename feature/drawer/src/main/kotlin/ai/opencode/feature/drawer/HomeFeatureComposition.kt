@@ -240,8 +240,8 @@ private fun HomeFeature.detailSessionsCore(): Reducer<State, Action> {
         scope(
             state = { it.notifications },
             setState = { s: State, c: HomeNotificationsFeature.State -> s.copy(notificationState = c.status) },
-            action = ::notificationsAction,
-            embed = ::homeAction,
+            action = { (it as? Action.Notifications)?.action },
+            embed = Action::Notifications,
             child = notifications,
         ),
         scope(
@@ -359,27 +359,6 @@ internal fun isFastStreamAction(state: State, action: Action): Boolean = when (a
 val State.notifications: HomeNotificationsFeature.State
     get() = HomeNotificationsFeature.State(server = server, status = notificationState)
 
-private fun notificationsAction(action: Action): HomeNotificationsFeature.Action? = when (action) {
-    Action.NotificationSettingsRequested -> HomeNotificationsFeature.Action.NotificationSettingsRequested
-    is Action.NotificationPermissionLoaded -> HomeNotificationsFeature.Action.NotificationPermissionLoaded(action.permission)
-    Action.EnableNotificationsTapped -> HomeNotificationsFeature.Action.EnableNotificationsTapped
-    is Action.NotificationPermissionRequested -> HomeNotificationsFeature.Action.NotificationPermissionRequested(action.permission)
-    is Action.NotificationSettingsOpened -> HomeNotificationsFeature.Action.NotificationSettingsOpened(action.opened)
-    Action.NotifyPluginCheckRequested -> HomeNotificationsFeature.Action.NotifyPluginCheckRequested
-    is Action.NotifyPluginChecked -> HomeNotificationsFeature.Action.NotifyPluginChecked(action.status)
-    else -> null
-}
-
-private fun homeAction(action: HomeNotificationsFeature.Action): Action = when (action) {
-    HomeNotificationsFeature.Action.NotificationSettingsRequested -> Action.NotificationSettingsRequested
-    is HomeNotificationsFeature.Action.NotificationPermissionLoaded -> Action.NotificationPermissionLoaded(action.permission)
-    HomeNotificationsFeature.Action.EnableNotificationsTapped -> Action.EnableNotificationsTapped
-    is HomeNotificationsFeature.Action.NotificationPermissionRequested -> Action.NotificationPermissionRequested(action.permission)
-    is HomeNotificationsFeature.Action.NotificationSettingsOpened -> Action.NotificationSettingsOpened(action.opened)
-    HomeNotificationsFeature.Action.NotifyPluginCheckRequested -> Action.NotifyPluginCheckRequested
-    is HomeNotificationsFeature.Action.NotifyPluginChecked -> Action.NotifyPluginChecked(action.status)
-}
-
 private fun connectionAction(action: Action): HomeConnectionFeature.Action? = when (action) {
     Action.Task -> HomeConnectionFeature.Action.Task
     Action.SceneEnteredBackground -> HomeConnectionFeature.Action.SceneEnteredBackground
@@ -416,8 +395,8 @@ private fun homeAction(action: HomeConnectionFeature.Action): Action = when (act
 }
 
 /**
- * A session on screen clears its delivered notifications, an answered request clears its needs-input notifications, the icon's badge counts what Catch Up
- * holds, the share sheet offers what the drawer does, and the system publication follows the list.
+ * A session on screen clears its delivered notifications, an answered request clears its needs-input notifications, fresh state clears stale ones,
+ * the share sheet offers what the drawer does, and the system publication follows the list.
  */
 private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): Reducer<State, Action> =
     onChange({ it.viewing }) { _, _, state ->
@@ -432,12 +411,7 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
             val delivered = dependency(DeliveredNotificationsClient)
             Reduced(state, Effect.run { delivered.removeNeedsInput(answered) })
         }
-        // The icon's badge counts what Catch Up holds.
-        .onChange({ it.appBadgePublication }) { old, new, state ->
-            val next = new.ledger
-            if (next == old.ledger) return@onChange Reduced(state)
-            Reduced(state, feature.publishAppBadge(state, next))
-        }
+        .onChange({ it.isFresh }) { _, _, state -> Reduced(state, removeStaleNotifications(state)) }
         // The share sheet offers what the drawer does, kept current for a share sheet opened over the app.
         .onChange({ it.shareTargetsPublication }) { old, _, state ->
             if (!state.hasConnected) return@onChange Reduced(state)

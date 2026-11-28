@@ -49,21 +49,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">ການແຈ້ງເຕືອນ</string>
-    <string name="settings_notifications_device_header">%1$s ນີ້</string>
-    <string name="settings_notifications_device_footer">ການແຈ້ງເຕືອນຜ່ານຕົວສົ່ງຕໍ່ທີ່ບໍ່ເກັບຂໍ້ມູນໃດໆ. ມີພຽງເຊດຊັນທີ່ເລີ່ມໃນ %1$s ນີ້ທີ່ຈະແຈ້ງເຕືອນມາ.</string>
-    <string name="settings_notifications_allow">ອະນຸຍາດການແຈ້ງເຕືອນ</string>
+    <string name="settings_notifications_notify_about">ແຈ້ງເຕືອນກ່ຽວກັບ</string>
+    <string name="settings_notifications_level_all">ທຸກຢ່າງ</string>
+    <string name="settings_notifications_level_attention">ສະເພາະເມື່ອຕ້ອງການຂ້ອຍ</string>
+    <string name="settings_notifications_off_footer">ຮັບການແຈ້ງເຕືອນເມື່ອເຊດຊັນສຳເລັດ, ຖາມຄຳຖາມ ຫຼື ຕ້ອງການການອະນຸຍາດ.</string>
+    <string name="settings_notifications_blocked_footer">ການແຈ້ງເຕືອນສຳລັບ OpenCode ຖືກປິດໄວ້ໃນການຕັ້ງຄ່າ Android.</string>
+    <string name="settings_notifications_unsupported_footer">ເຊີບເວີນີ້ບໍ່ຮອງຮັບການແຈ້ງເຕືອນ. ອັບເດດ OpenCode ໃນຄອມພິວເຕີຂອງເຈົ້າ.</string>
     <string name="settings_notifications_open_android_settings">ເປີດການຕັ້ງຄ່າ Android</string>
-    <string name="settings_notifications_turn_on">ເປີດການແຈ້ງເຕືອນ</string>
-    <string name="settings_notifications_server_header">ເຊີບເວີ</string>
-    <string name="settings_notifications_set_up_footer">ເປີດເຊດຊັນເພື່ອຂໍໃຫ້ OpenCode ຕິດຕັ້ງປລັກອິນ. ສົ່ງຂໍ້ຄວາມແລ້ວກວດອີກຄັ້ງ.</string>
-    <string name="settings_notifications_plugin_needed_footer">ເຊີບເວີຕ້ອງມີປລັກອິນແຈ້ງເຕືອນຂອງ OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">ປລັກອິນແຈ້ງເຕືອນ</string>
-    <string name="settings_notifications_plugin_installed">ຕິດຕັ້ງແລ້ວ</string>
-    <string name="settings_notifications_plugin_not_running">ບໍ່ໄດ້ເຮັດວຽກ</string>
-    <string name="settings_notifications_plugin_not_installed">ຍັງບໍ່ຕິດຕັ້ງ</string>
-    <string name="settings_notifications_plugin_check_failed">ກວດສະຖານະບໍ່ໄດ້</string>
-    <string name="settings_notifications_set_up">ຕັ້ງຄ່າດ້ວຍ OpenCode</string>
-    <string name="settings_notifications_check_again">ກວດອີກຄັ້ງ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ເຊດຊັນ</string>

@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Побарај дијаграм на тек за тоа како се испраќа порака</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Нацртај дијаграм на тек за тоа како се испраќа порака</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Извести кога ќе заврши</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Добиј известување кога ќе заврши сесија што ја започна тука, со кратко резиме на сработеното.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Вклучи „Секогаш известувај“ во панелот на сесијата за известување за секој одговор, дури и за оние започнати на компјутерот.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Допри известување за да ја отвориш неговата сесија.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Испрати порака, па заклучи го телефонот</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Смени сервер</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Тековниот сервер е насловот на страничното мени. Допри го за да смениш сервер или да додадеш нов.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">„Продолжи во OpenCode“ ја отвора сесијата со споделената содржина во полето за порака.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ако испраќањето не успее, „Испрати подоцна“ ќе ја испрати следниот пат кога ќе ја отвориш апликацијата.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Сподели слика од екранот во OpenCode, напиши прашање и допри „Испрати“</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Ознака на иконата на апликацијата</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Иконата на апликацијата покажува колку сесии се непрочитани или чекаат на тебе — ист број како во „Биди во тек“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сесиите без известувања не се бројат.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Известувањата мора да се вклучени.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Остави сесија да чека одговор на прашање, па оди на почетниот екран</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Тастатурата се лизга со страничното мени</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Гласовниот круг сега е Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Кругот за повици сега го има изгледот на Wisp: стаклена леќа над светлечки точки што ги осветлуваат двата гласа, со состојбите на Wisp за поврзување, слушање, работа, зборување и чекање на тебе. Ова е единствениот стил, па старите стилови и поставките за Круг се отстранети.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Шифрирани прегледи на известувања</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Со ажурираниот приклучок за известувања и HTTPS врска, серверот ги шифрира насловот и пораката за овој уред. Ако прегледот не може да се отвори, известувањето само вели „Нова активност“.</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сесиите остануваат и без папката</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Кога папката на сесијата веќе ја нема, на пример по отстранување работен простор, неуспешното испраќање нуди да ја премести сесијата во папката на проектот и повторно да испрати.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Постави известувања со OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Во Поставки → Известувања, допри Постави со OpenCode за да го прегледаш прашањето со кое се инсталира приклучокот за известувања што недостасува.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Картичката за повик го зафаќа долниот дел</string>

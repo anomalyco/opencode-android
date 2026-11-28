@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Saatmine</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Loa taotlemine ebaõnnestus. Proovi uuesti.</string>
-    <string name="drawer_notifications_open_settings_error">Seadete avamine ebaõnnestus. Ava Androidi seaded ja vali Teavitused → OpenCode.</string>
     <string name="drawer_delete_session_error">„%1$s” kustutamine ebaõnnestus</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d seansi kustutamine ebaõnnestus</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aita mul seansikuva paremaks teha. Näita, mida leiad, ja selgita muudatusi.</string>
     <string name="drawer_appearance_preview_assistant_text">Leidsin paigutusvea failist `SessionView.swift`. Vestluse tekst ja sõnumiredaktor jagavad saadaolevat kõrgust, nii et klaviatuur aitab paigutust proovile panna.</string>
+    <string name="drawer_notifications_change_error">Teavituste muutmine ebaõnnestus. Proovi uuesti.</string>
 </resources>

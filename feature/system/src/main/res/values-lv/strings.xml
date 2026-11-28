@@ -82,6 +82,77 @@
     <string name="system_channel_session_runs">Sesiju izpilde</string>
     <string name="system_channel_session_updates">Sesiju atjauninājumi</string>
     <string name="system_channel_shared_items">Kopīgotie vienumi</string>
+    <string name="system_channel_push_attention">Nepieciešama uzmanība</string>
+    <string name="system_channel_push_finished">Pabeigts</string>
+    <string name="system_channel_push_failed">Neizdevās</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="zero">Vēlas izpildīt %1$d komandu</item>
+        <item quantity="one">Vēlas izpildīt %1$d komandu</item>
+        <item quantity="other">Vēlas izpildīt %1$d komandas</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="zero">Vēlas rediģēt %1$d failu</item>
+        <item quantity="one">Vēlas rediģēt %1$d failu</item>
+        <item quantity="other">Vēlas rediģēt %1$d failus</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="zero">Vēlas lasīt %1$d failu</item>
+        <item quantity="one">Vēlas lasīt %1$d failu</item>
+        <item quantity="other">Vēlas lasīt %1$d failus</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vēlas iegūt lapu</string>
+    <string name="system_push_permission_websearch">Vēlas meklēt tīmeklī</string>
+    <string name="system_push_permission_external_directory">Vēlas izmantot mapi ārpus projekta</string>
+    <string name="system_push_permission_other">Vēlas izmantot %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="zero">Vēl %1$d</item>
+        <item quantity="one">Vēl %1$d</item>
+        <item quantity="other">Vēl %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">%1$d. jautājums no %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="zero">%1$d opciju</item>
+        <item quantity="one">%1$d opcija</item>
+        <item quantity="other">%1$d opcijas</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="zero">Vēl %1$d opciju</item>
+        <item quantity="one">Vēl %1$d opcija</item>
+        <item quantity="other">Vēl %1$d opcijas</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="zero">Vēl darbojas %1$d fona uzdevumu</item>
+        <item quantity="one">Vēl darbojas %1$d fona uzdevums</item>
+        <item quantity="other">Vēl darbojas %1$d fona uzdevumi</item>
+    </plurals>
+    <string name="system_push_finished">Pabeigts</string>
+    <string name="system_push_failed">Neizdevās</string>
+    <string name="system_push_failed_rate_limit">Sasniegts pieprasījumu limits</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="zero">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d sekundēm.</item>
+        <item quantity="one">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d sekundes.</item>
+        <item quantity="other">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d sekundēm.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="zero">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d minūtēm.</item>
+        <item quantity="one">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d minūtes.</item>
+        <item quantity="other">Sasniegts pieprasījumu limits. Mēģini vēlreiz pēc %1$d minūtēm.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Pakalpojumu sniedzējs nepieņēma pierakstīšanos</string>
+    <string name="system_push_public_permission">Nepieciešama atļauja</string>
+    <string name="system_push_public_question">Ir jautājums</string>
+    <string name="system_push_action_allow">Atļaut</string>
+    <string name="system_push_action_always_allow">Atļaut vienmēr</string>
+    <string name="system_push_action_deny">Liegt</string>
+    <string name="system_push_action_reply">Atbildēt</string>
+    <string name="system_push_action_open">Atvērt</string>
+    <string name="system_push_hint_answer">Ieraksti savu atbildi</string>
+    <string name="system_push_hint_reply">Atbildēt OpenCode</string>
+    <string name="system_push_send_failed">Neizdevās nosūtīt. Pieskaries, lai atvērtu sesiju.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Pieskaries, lai turpinātu OpenCode</string>

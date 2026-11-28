@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Sessie-uitvoeringen</string>
     <string name="system_channel_session_updates">Sessie-updates</string>
     <string name="system_channel_shared_items">Gedeelde items</string>
+    <string name="system_channel_push_attention">Heeft je nodig</string>
+    <string name="system_channel_push_finished">Voltooid</string>
+    <string name="system_channel_push_failed">Mislukt</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Wil %1$d opdracht uitvoeren</item>
+        <item quantity="other">Wil %1$d opdrachten uitvoeren</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Wil %1$d bestand bewerken</item>
+        <item quantity="other">Wil %1$d bestanden bewerken</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Wil %1$d bestand lezen</item>
+        <item quantity="other">Wil %1$d bestanden lezen</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Wil een pagina ophalen</string>
+    <string name="system_push_permission_websearch">Wil op internet zoeken</string>
+    <string name="system_push_permission_external_directory">Wil een map buiten het project gebruiken</string>
+    <string name="system_push_permission_other">Wil %1$s gebruiken</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d meer</item>
+        <item quantity="other">%1$d meer</item>
+    </plurals>
+    <string name="system_push_question_position">Vraag %1$d van %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d optie</item>
+        <item quantity="other">%1$d opties</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Nog %1$d optie</item>
+        <item quantity="other">Nog %1$d opties</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">Nog %1$d achtergrondtaak bezig</item>
+        <item quantity="other">Nog %1$d achtergrondtaken bezig</item>
+    </plurals>
+    <string name="system_push_finished">Voltooid</string>
+    <string name="system_push_failed">Mislukt</string>
+    <string name="system_push_failed_rate_limit">Limiet bereikt</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Limiet bereikt. Probeer het over %1$d seconde opnieuw.</item>
+        <item quantity="other">Limiet bereikt. Probeer het over %1$d seconden opnieuw.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Limiet bereikt. Probeer het over %1$d minuut opnieuw.</item>
+        <item quantity="other">Limiet bereikt. Probeer het over %1$d minuten opnieuw.</item>
+    </plurals>
+    <string name="system_push_failed_auth">De aanbieder heeft het aanmelden niet geaccepteerd</string>
+    <string name="system_push_public_permission">Toestemming nodig</string>
+    <string name="system_push_public_question">Heeft een vraag</string>
+    <string name="system_push_action_allow">Toestaan</string>
+    <string name="system_push_action_always_allow">Altijd toestaan</string>
+    <string name="system_push_action_deny">Weigeren</string>
+    <string name="system_push_action_reply">Beantwoorden</string>
+    <string name="system_push_action_open">Openen</string>
+    <string name="system_push_hint_answer">Typ je eigen antwoord</string>
+    <string name="system_push_hint_reply">Reageer op OpenCode</string>
+    <string name="system_push_send_failed">Verzenden mislukt. Tik om de sessie te openen.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tik om door te gaan in OpenCode</string>

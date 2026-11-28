@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Biddu um flæðirit sem sýnir hvernig skilaboð eru send</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Teiknaðu flæðirit sem sýnir hvernig skilaboð eru send</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Láta vita þegar verki lýkur</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Fáðu tilkynningu þegar seta sem þú hófst hér lýkur vinnu, ásamt stuttri samantekt á því sem var gert.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Kveiktu á Tilkynna alltaf í valmynd setunnar til að fá tilkynningu um hvert svar, líka þegar vinna hefst í tölvunni.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Pikkaðu á tilkynningu til að opna setuna.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Sendu skilaboð og læstu svo símanum</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Skipta um netþjón</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Netþjónninn sem þú ert tengdur við er titill hliðarvalmyndarinnar. Pikkaðu á hann til að skipta um netþjón eða bæta við nýjum.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">Halda áfram í OpenCode opnar setuna með því sem þú deildir í skilaboðareitnum.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ef sending tekst ekki sendir Senda síðar það næst þegar þú opnar forritið.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Deildu skjámynd í OpenCode, skrifaðu spurningu og pikkaðu á Senda</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tölumerki á táknmynd forritsins</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Táknmynd forritsins sýnir fjölda ólesinna seta eða seta sem bíða eftir þér, sömu tölu og Fara yfir nýtt.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Þaggaðar setur telja ekki með.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Kveikt þarf að vera á tilkynningum.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Láttu setu bíða eftir svari við spurningu og farðu svo á heimaskjáinn</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Lyklaborðið fylgir hliðarvalmyndinni</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Raddkúlan er nú Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Símtalskúlan hefur nú útlit Wisp: glerlinsu yfir glóandi punktum sem báðar raddir lýsa upp, með svipbrigðum Wisp við tengingu, hlustun, vinnu, tal og bið eftir þér. Þetta er eini kúlustíllinn, svo eldri stílar og kúlustillingar eru horfin.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Dulkóðuð forskoðun tilkynninga</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Með uppfærðu tilkynningaviðbótinni og HTTPS-tengingu dulkóðar netþjónninn titil og skilaboð fyrir þetta tæki. Ef ekki er hægt að opna forskoðunina stendur aðeins „Ný virkni“ í tilkynningunni.</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Setur lifa möppurnar af</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Ef mappa setu er horfin, til dæmis eftir að vinnusvæði er eytt, býðst þér við misheppnaða sendingu að færa setuna í verkefnismöppuna og senda aftur.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Setja upp tilkynningar með OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Í Stillingar → Tilkynningar skaltu pikka á Setja upp með OpenCode til að yfirfara kvaðningu sem setur upp tilkynningaviðbótina sem vantar.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Símtalsspjaldið tekur neðri hlutann</string>

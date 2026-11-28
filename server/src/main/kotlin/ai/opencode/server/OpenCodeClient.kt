@@ -39,12 +39,14 @@ import ai.opencode.server.live.requestMessage
 import ai.opencode.server.live.requestModelCatalog
 import ai.opencode.server.live.requestMoveSession
 import ai.opencode.server.live.requestMoveToBackground
-import ai.opencode.server.live.requestNotifyPluginStatus
 import ai.opencode.server.live.requestPendingInputs
 import ai.opencode.server.live.requestPrimaryAgents
 import ai.opencode.server.live.requestRedeemPairing
 import ai.opencode.server.live.requestRenameSession
 import ai.opencode.server.live.requestReplyForm
+import ai.opencode.server.live.requestOffersPush
+import ai.opencode.server.live.requestRegisterPushDevice
+import ai.opencode.server.live.requestRemovePushDevice
 import ai.opencode.server.live.requestReplyPermission
 import ai.opencode.server.live.requestRunMessages
 import ai.opencode.server.live.requestRunReply
@@ -56,7 +58,6 @@ import ai.opencode.server.live.requestSendDeliveredPrompt
 import ai.opencode.server.live.requestSendPrompt
 import ai.opencode.server.live.requestServerCapabilities
 import ai.opencode.server.live.requestSessionFamily
-import ai.opencode.server.live.requestSetAlwaysNotify
 import ai.opencode.server.live.requestSetMCPConnected
 import ai.opencode.server.live.requestSetPendingInputDelivery
 import ai.opencode.server.live.requestShell
@@ -89,7 +90,6 @@ import ai.opencode.server.model.OpenCodeFormValue
 import ai.opencode.server.model.OpenCodeHomeSnapshot
 import ai.opencode.server.model.OpenCodeModelCatalog
 import ai.opencode.server.model.OpenCodeModelRef
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
 import ai.opencode.server.model.OpenCodeOAuthAttempt
 import ai.opencode.server.model.OpenCodeOAuthStatus
 import ai.opencode.server.model.OpenCodeOutgoingAttachment
@@ -182,8 +182,6 @@ data class OpenCodeClient(
     val replyForm: suspend (server: OpenCodeServer, sessionID: String, formID: String, answer: Map<String, OpenCodeFormValue>) -> Unit,
     val cancelForm: suspend (server: OpenCodeServer, sessionID: String, formID: String, message: String?) -> Unit,
     val getSession: suspend (server: OpenCodeServer, sessionID: String) -> OpenCodeSession,
-    /** Whether the server loaded the notify plugin (`GET /api/plugin`). */
-    val notifyPluginStatus: suspend (server: OpenCodeServer) -> OpenCodeNotifyPluginStatus,
     /** Location-scoped: pass only the open session's directory. */
     val runningShells: suspend (server: OpenCodeServer, directory: String) -> List<OpenCodeShell>,
     /** The session's running background jobs, its descendants' included (`GET /api/experimental/job`). */
@@ -209,8 +207,6 @@ data class OpenCodeClient(
     val unarchiveSession: suspend (server: OpenCodeServer, sessionID: String) -> Unit,
     /** The newest archived root sessions (`archived=true`) matching `search` (all when empty), as desktop's Archived list. */
     val archivedSessions: suspend (server: OpenCodeServer, search: String, limit: Int) -> List<OpenCodeSession>,
-    /** Turns Always Notify on (with the phone's callback URL) or off (null), keeping other metadata. */
-    val setAlwaysNotify: suspend (server: OpenCodeServer, sessionID: String, callbackURL: String?) -> Unit,
     /** Queues a compaction; it runs after the session's current run. */
     val compactSession: suspend (server: OpenCodeServer, sessionID: String) -> Unit,
     /** Undoes from a message on (V2's `revert/stage`, as the TUI's `/undo`). */
@@ -258,18 +254,29 @@ data class OpenCodeClient(
     val markdownImage: suspend (server: OpenCodeServer, directory: String?, source: String, fallback: FileReadTarget?) -> ByteArray?,
     /** Long-lived SSE subscription; the flow throws on disconnect and the caller owns reconnecting. */
     val events: (server: OpenCodeServer) -> Flow<OpenCodeServerEvent>,
+    /**
+     * Registers this phone for the server's push notifications
+     * (`PUT /api/experimental/push/device/:deviceID`) and returns the server's public key for it.
+     * `expiresAt` is the callback's expiry in milliseconds since the epoch; `level` is `all` or `attention`.
+     */
+    val registerPushDevice: suspend (
+        server: OpenCodeServer,
+        deviceID: String,
+        callbackURL: String,
+        expiresAt: Long,
+        publicKey: String,
+        name: String,
+        level: String,
+    ) -> String,
+    /** Stops the server's push notifications to this phone (`DELETE /api/experimental/push/device/:deviceID`). */
+    val removePushDevice: suspend (server: OpenCodeServer, deviceID: String) -> Unit,
+    /** Whether the server sends push notifications at all (`GET /api/experimental/push`). */
+    val offersPush: suspend (server: OpenCodeServer) -> Boolean,
 ) {
     companion object Key : DependencyKey<OpenCodeClient> {
         /** The cache key [cachedMarkdownImage] takes for a Markdown image on `server`. */
         fun markdownImageKey(server: OpenCodeServer, directory: String?, source: String): String =
             markdownImageCacheKey(server, directory, source).removePrefix("markdown:")
-
-        /**
-         * Sends this phone's notification public key for `ref` to the saved server's HTTPS address
-         * and returns the server's. Only public keys cross; throws without an HTTPS address.
-         */
-        suspend fun pairNotificationPreview(server: OpenCodeServer, callbackURL: String, ref: String, publicKey: String): String =
-            ai.opencode.server.live.requestPairNotificationPreview(server, callbackURL, ref, publicKey)
 
         /** A prompt's reply in a `/message` page. */
         fun assistantReply(messagesJSON: ByteArray, afterMessageID: String, acrossSteers: Boolean = false): String? =
@@ -312,7 +319,6 @@ data class OpenCodeClient(
             replyForm = ::requestReplyForm,
             cancelForm = ::requestCancelForm,
             getSession = ::requestGetSession,
-            notifyPluginStatus = ::requestNotifyPluginStatus,
             runningShells = ::requestRunningShells,
             runningJobs = ::requestRunningJobs,
             cancelJob = ::requestCancelJob,
@@ -327,7 +333,6 @@ data class OpenCodeClient(
             archiveSession = ::requestArchiveSession,
             unarchiveSession = ::requestUnarchiveSession,
             archivedSessions = ::requestArchivedSessions,
-            setAlwaysNotify = ::requestSetAlwaysNotify,
             compactSession = ::requestCompactSession,
             stageRevert = ::requestStageRevert,
             clearRevert = ::requestClearRevert,
@@ -351,6 +356,9 @@ data class OpenCodeClient(
             cachedMarkdownImage = { dependency(MarkdownImageCache).image("markdown:$it") },
             markdownImage = { server, directory, source, fallback -> requestMarkdownImage(server, directory, source, fallback) },
             events = ::subscribeEventsSharingWindows,
+            registerPushDevice = ::requestRegisterPushDevice,
+            removePushDevice = ::requestRemovePushDevice,
+            offersPush = ::requestOffersPush,
         )
 
         /**
@@ -393,7 +401,6 @@ data class OpenCodeClient(
                     replyForm = { _, _, _, _ -> unimplemented("replyForm") },
                     cancelForm = { _, _, _, _ -> unimplemented("cancelForm") },
                     getSession = { _, _ -> unimplemented("getSession") },
-                    notifyPluginStatus = { unimplemented("notifyPluginStatus") },
                     runningShells = { _, _ -> unimplemented("runningShells") },
                     runningJobs = { _, _ -> emptyList() },
                     cancelJob = { _, _ -> },
@@ -408,7 +415,6 @@ data class OpenCodeClient(
                     archiveSession = { _, _ -> unimplemented("archiveSession") },
                     unarchiveSession = { _, _ -> unimplemented("unarchiveSession") },
                     archivedSessions = { _, _, _ -> unimplemented("archivedSessions") },
-                    setAlwaysNotify = { _, _, _ -> unimplemented("setAlwaysNotify") },
                     compactSession = { _, _ -> unimplemented("compactSession") },
                     stageRevert = { _, _, _ -> unimplemented("stageRevert") },
                     clearRevert = { _, _ -> unimplemented("clearRevert") },
@@ -432,6 +438,9 @@ data class OpenCodeClient(
                     cachedMarkdownImage = { images.image("markdown:$it") },
                     markdownImage = { server, directory, source, fallback -> requestMarkdownImage(server, directory, source, fallback, images) },
                     events = { unimplemented("events") },
+                    registerPushDevice = { _, _, _, _, _, _, _ -> unimplemented("registerPushDevice") },
+                    removePushDevice = { _, _ -> unimplemented("removePushDevice") },
+                    offersPush = { unimplemented("offersPush") },
                 )
             }
 

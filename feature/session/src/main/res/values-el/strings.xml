@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Κόστος</string>
     <string name="session_sheet_media">Πολυμέσα</string>
     <string name="session_sheet_media_value">Αρχεία και σύνδεσμοι</string>
-    <string name="session_always_notify">Ειδοποίηση πάντα</string>
-    <string name="session_always_notify_message_phone">Ειδοποίηση σε αυτό το κινητό όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>
-    <string name="session_always_notify_message_tablet">Ειδοποίηση σε αυτό το τάμπλετ όταν ολοκληρώνεται μια απάντηση, ακόμα κι αν το μήνυμα στάλθηκε από αλλού.</string>
     <string name="session_delete_session">Διαγραφή συνεδρίας</string>
     <string name="session_rename_placeholder">Τίτλος</string>
     <string name="session_auto_rename">Αυτόματη μετονομασία</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Αδυναμία διακλάδωσης συνεδρίας</string>
     <string name="session_sheet_save_export_failed">Αδυναμία αποθήκευσης εξαγωγής</string>
     <string name="session_sheet_export_failed_title">Αδυναμία εξαγωγής συνεδρίας</string>
-    <string name="session_sheet_notifications_off_message">Ενεργοποιήστε πρώτα τις ειδοποιήσεις στις Ρυθμίσεις.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Αδυναμία ενεργοποίησης της επιλογής «Ειδοποίηση πάντα»</string>
-    <string name="session_sheet_always_notify_off_failed_title">Αδυναμία απενεργοποίησης της επιλογής «Ειδοποίηση πάντα»</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Ο διακομιστής δεν υποστηρίζει αρχεία</string>

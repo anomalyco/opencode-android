@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_app_id" translatable="false">1:193487977904:android:2a11e95357642b92bfaa75</string>
+    <string name="gcm_defaultSenderId" translatable="false">193487977904</string>
+    <string name="google_api_key" translatable="false">AIzaSyDvIai3E9NJgiK6nSLRXxuQzawlyyudprM</string>
+    <string name="project_id" translatable="false">opencode-android-push</string>
+</resources>

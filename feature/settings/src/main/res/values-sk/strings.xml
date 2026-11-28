@@ -52,21 +52,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Upozornenia</string>
-    <string name="settings_notifications_device_header">Zariadenie %1$s</string>
-    <string name="settings_notifications_device_footer">Upozornenia prechádzajú cez sprostredkujúci server, ktorý nič neukladá. Na toto zariadenie (%1$s) prídu len upozornenia z relácií spustených na ňom.</string>
-    <string name="settings_notifications_allow">Povoliť upozornenia</string>
+    <string name="settings_notifications_notify_about">Upozorňovať na</string>
+    <string name="settings_notifications_level_all">Všetko</string>
+    <string name="settings_notifications_level_attention">Len keď ma potrebuje</string>
+    <string name="settings_notifications_off_footer">Dostávajte upozornenia, keď sa relácia dokončí, položí otázku alebo bude potrebovať povolenie.</string>
+    <string name="settings_notifications_blocked_footer">Upozornenia pre OpenCode sú v nastaveniach Androidu vypnuté.</string>
+    <string name="settings_notifications_unsupported_footer">Tento server nepodporuje upozornenia. Aktualizujte OpenCode na svojom počítači.</string>
     <string name="settings_notifications_open_android_settings">Otvoriť nastavenia Androidu</string>
-    <string name="settings_notifications_turn_on">Zapnúť upozornenia</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Otvorí reláciu so žiadosťou, aby OpenCode nainštaloval zásuvný modul. Odošlite ju a potom stav znova skontrolujte.</string>
-    <string name="settings_notifications_plugin_needed_footer">Server potrebuje zásuvný modul OpenCode notify.</string>
-    <string name="settings_notifications_notify_plugin">Zásuvný modul notify</string>
-    <string name="settings_notifications_plugin_installed">Nainštalovaný</string>
-    <string name="settings_notifications_plugin_not_running">Nie je spustený</string>
-    <string name="settings_notifications_plugin_not_installed">Nenainštalovaný</string>
-    <string name="settings_notifications_plugin_check_failed">Nepodarilo sa overiť stav</string>
-    <string name="settings_notifications_set_up">Nastaviť cez OpenCode</string>
-    <string name="settings_notifications_check_again">Skontrolovať znova</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Relácie</string>

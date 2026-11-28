@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Слање</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Није могуће затражити дозволу. Покушајте поново.</string>
-    <string name="drawer_notifications_open_settings_error">Није могуће отворити подешавања. Отворите подешавања Android система и изаберите Обавештења → OpenCode.</string>
     <string name="drawer_delete_session_error">Није могуће избрисати „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Није могуће избрисати %1$d сесију</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помози ми да побољшам екран сесије. Покажи шта пронађеш и објасни измене.</string>
     <string name="drawer_appearance_preview_assistant_text">Пронашао сам проблем са распоредом у `SessionView.swift`. Транскрипт и унос поруке деле расположиву висину, па тастатура добро служи за проверу у скученом простору.</string>
+    <string name="drawer_notifications_change_error">Није могуће променити обавештења. Покушајте поново.</string>
 </resources>

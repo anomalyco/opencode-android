@@ -1,7 +1,5 @@
 package ai.opencode.feature.system.notifications
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
@@ -47,15 +45,6 @@ object NotificationCrypto {
         data object InvalidPayload : Failure("invalid payload") { private fun readResolve(): Any = InvalidPayload }
     }
 
-    @Serializable
-    data class Payload(val title: String, val body: String, val sessionID: String, val status: String) {
-        val isValid: Boolean
-            get() = title.isNotEmpty() && body.isNotEmpty() && isValid(sessionID = sessionID) &&
-                status in setOf("succeeded", "failed", "interrupted")
-    }
-
-    private val json = Json { ignoreUnknownKeys = true }
-
     fun isValid(sessionID: String): Boolean {
         val bytes = sessionID.toByteArray(Charsets.UTF_8)
         return sessionID.startsWith("ses") && bytes.size in 4..200 &&
@@ -81,7 +70,8 @@ object NotificationCrypto {
         return hkdfSHA256(secret, salt = ref.toByteArray(Charsets.UTF_8), info = CONTEXT.toByteArray(Charsets.UTF_8), length = 32)
     }
 
-    fun open(box: String, ref: String, key: ByteArray): Payload {
+    /** The box's authenticated text. */
+    fun openText(box: String, ref: String, key: ByteArray): String {
         validate(ref)
         if (box.toByteArray(Charsets.UTF_8).size > ((MAXIMUM_BOX_BYTES + 2) / 3) * 4) throw Failure.InvalidBox
         val data = strictBase64(box)
@@ -98,9 +88,7 @@ object NotificationCrypto {
                 .decode(ByteBuffer.wrap(plaintext))
                 .toString()
         }.getOrElse { throw Failure.InvalidPayload }
-        val payload = runCatching { json.decodeFromString(Payload.serializer(), text) }.getOrElse { throw Failure.InvalidPayload }
-        if (!payload.isValid) throw Failure.InvalidPayload
-        return payload
+        return text
     }
 
     // Key shapes.

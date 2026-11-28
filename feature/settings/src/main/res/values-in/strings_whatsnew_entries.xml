@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Minta diagram alir tentang cara pesan dikirim</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Buat diagram alir tentang cara pesan dikirim</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Beri tahu saat selesai</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Dapatkan notifikasi saat sesi yang Anda mulai di sini selesai, beserta ringkasan singkat hasilnya.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Aktifkan Selalu beri notifikasi di panel sesi untuk mendapat notifikasi setiap balasan, termasuk yang dimulai di komputer.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Ketuk notifikasi untuk membuka sesinya.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Kirim pesan, lalu kunci ponsel</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Ganti server</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Server yang digunakan menjadi judul panel samping. Ketuk untuk beralih ke server lain atau menambahkan server.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">Lanjutkan di OpenCode membuka sesi dengan konten yang Anda bagikan di kotak pesan.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jika belum bisa dikirim, Kirim nanti akan mengirimnya saat Anda membuka aplikasi lagi.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Bagikan tangkapan layar ke OpenCode, tulis pertanyaan, lalu ketuk Kirim</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Lencana di ikon aplikasi</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikon aplikasi menampilkan jumlah sesi yang belum dibaca atau menunggu Anda, sama seperti di Tinjau pembaruan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesi yang dibisukan tidak dihitung.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Notifikasi harus diaktifkan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Biarkan sesi menunggu jawaban Anda, lalu buka layar utama</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Keyboard bergeser bersama panel samping</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Bola suara kini menjadi Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Bola panggilan kini tampil seperti Wisp: lensa kaca di atas titik-titik bercahaya yang menyala oleh kedua suara, dengan ekspresi Wisp saat menghubungkan, mendengarkan, bekerja, bicara, dan menunggu Anda. Ini satu-satunya gaya bola, jadi gaya lama dan pengaturan Bola dihapus.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Pratinjau notifikasi terenkripsi</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Dengan plugin notifikasi terbaru dan koneksi HTTPS, server mengenkripsi judul dan pesan untuk perangkat ini. Jika pratinjau tidak bisa dibuka, notifikasi hanya menampilkan “Aktivitas baru.”</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sesi tetap ada meski folder hilang</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Jika folder sesi sudah tidak ada, misalnya ruang kerja yang dihapus, pengiriman yang gagal akan menawarkan pemindahan sesi ke folder proyeknya, lalu mengirim ulang.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Siapkan notifikasi dengan OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Di Pengaturan → Notifikasi, ketuk Siapkan dengan OpenCode untuk meninjau prompt yang memasang plugin notifikasi yang belum ada.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Kartu panggilan mengisi bagian bawah</string>

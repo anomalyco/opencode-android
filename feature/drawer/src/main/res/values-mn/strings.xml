@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Илгээж байна</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Зөвшөөрөл хүсэж чадсангүй. Дахин оролдоно уу.</string>
-    <string name="drawer_notifications_open_settings_error">Тохиргоог нээж чадсангүй. Android тохиргоог нээгээд Мэдэгдэл → OpenCode-г сонгоно уу.</string>
     <string name="drawer_delete_session_error">“%1$s”-г устгаж чадсангүй</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d сессийг устгаж чадсангүй</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Сессийн дэлгэцийг сайжруулахад туслаач. Олсон зүйлсээ харуулаад өөрчлөлтүүдийг тайлбарлаарай.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` дотроос байрлалын алдааг оллоо. Ярианы бичвэр болон мессеж бичих хэсэг боломжит өндрийг хуваан ашигладаг тул гар нээж шалгах нь зай багатай үед хэрхэн ажиллахыг туршихад тустай.</string>
+    <string name="drawer_notifications_change_error">Мэдэгдлийг өөрчилж чадсангүй. Дахин оролдоно уу.</string>
 </resources>

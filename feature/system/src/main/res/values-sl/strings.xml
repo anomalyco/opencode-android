@@ -82,6 +82,86 @@
     <string name="system_channel_session_runs">Izvajanja sej</string>
     <string name="system_channel_session_updates">Posodobitve sej</string>
     <string name="system_channel_shared_items">Deljeni elementi</string>
+    <string name="system_channel_push_attention">Potrebuje vas</string>
+    <string name="system_channel_push_finished">Končano</string>
+    <string name="system_channel_push_failed">Ni uspelo</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Želi izvesti %1$d ukaz</item>
+        <item quantity="two">Želi izvesti %1$d ukaza</item>
+        <item quantity="few">Želi izvesti %1$d ukaze</item>
+        <item quantity="other">Želi izvesti %1$d ukazov</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Želi urediti %1$d datoteko</item>
+        <item quantity="two">Želi urediti %1$d datoteki</item>
+        <item quantity="few">Želi urediti %1$d datoteke</item>
+        <item quantity="other">Želi urediti %1$d datotek</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Želi prebrati %1$d datoteko</item>
+        <item quantity="two">Želi prebrati %1$d datoteki</item>
+        <item quantity="few">Želi prebrati %1$d datoteke</item>
+        <item quantity="other">Želi prebrati %1$d datotek</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Želi pridobiti stran</string>
+    <string name="system_push_permission_websearch">Želi iskati po spletu</string>
+    <string name="system_push_permission_external_directory">Želi uporabiti mapo zunaj projekta</string>
+    <string name="system_push_permission_other">Želi uporabiti %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Še %1$d</item>
+        <item quantity="two">Še %1$d</item>
+        <item quantity="few">Še %1$d</item>
+        <item quantity="other">Še %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Vprašanje %1$d od %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d možnost</item>
+        <item quantity="two">%1$d možnosti</item>
+        <item quantity="few">%1$d možnosti</item>
+        <item quantity="other">%1$d možnosti</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Še %1$d možnost</item>
+        <item quantity="two">Še %1$d možnosti</item>
+        <item quantity="few">Še %1$d možnosti</item>
+        <item quantity="other">Še %1$d možnosti</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d opravilo v ozadju se še izvaja</item>
+        <item quantity="two">%1$d opravili v ozadju se še izvajata</item>
+        <item quantity="few">%1$d opravila v ozadju se še izvajajo</item>
+        <item quantity="other">%1$d opravil v ozadju se še izvaja</item>
+    </plurals>
+    <string name="system_push_finished">Končano</string>
+    <string name="system_push_failed">Ni uspelo</string>
+    <string name="system_push_failed_rate_limit">Presežena omejitev zahtev</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Presežena omejitev zahtev. Poskusi znova čez %1$d sekundo.</item>
+        <item quantity="two">Presežena omejitev zahtev. Poskusi znova čez %1$d sekundi.</item>
+        <item quantity="few">Presežena omejitev zahtev. Poskusi znova čez %1$d sekunde.</item>
+        <item quantity="other">Presežena omejitev zahtev. Poskusi znova čez %1$d sekund.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Presežena omejitev zahtev. Poskusi znova čez %1$d minuto.</item>
+        <item quantity="two">Presežena omejitev zahtev. Poskusi znova čez %1$d minuti.</item>
+        <item quantity="few">Presežena omejitev zahtev. Poskusi znova čez %1$d minute.</item>
+        <item quantity="other">Presežena omejitev zahtev. Poskusi znova čez %1$d minut.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Ponudnik ni sprejel prijave</string>
+    <string name="system_push_public_permission">Potrebuje dovoljenje</string>
+    <string name="system_push_public_question">Ima vprašanje</string>
+    <string name="system_push_action_allow">Dovoli</string>
+    <string name="system_push_action_always_allow">Dovoli vedno</string>
+    <string name="system_push_action_deny">Zavrni</string>
+    <string name="system_push_action_reply">Odgovori</string>
+    <string name="system_push_action_open">Odpri</string>
+    <string name="system_push_hint_answer">Vnesi svoj odgovor</string>
+    <string name="system_push_hint_reply">Odgovor za OpenCode</string>
+    <string name="system_push_send_failed">Pošiljanje ni uspelo. Tapni za odprtje seje.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Tapni za nadaljevanje v OpenCode</string>

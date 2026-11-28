@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Sender</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Kunne ikke be om tillatelse. Prøv igjen.</string>
-    <string name="drawer_notifications_open_settings_error">Kunne ikke åpne innstillinger. Åpne Android-innstillingene og velg Varsler → OpenCode.</string>
     <string name="drawer_delete_session_error">Kunne ikke slette «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Kunne ikke slette %1$d sesjon</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjelp meg å forbedre sesjonsvisningen. Vis meg hva du finner, og forklar endringene.</string>
     <string name="drawer_appearance_preview_assistant_text">Jeg fant layoutproblemet i `SessionView.swift`. Samtaleloggen og skrivefeltet deler den tilgjengelige høyden, så tastaturet er en nyttig stresstest.</string>
+    <string name="drawer_notifications_change_error">Kunne ikke endre varsler. Prøv igjen.</string>
 </resources>

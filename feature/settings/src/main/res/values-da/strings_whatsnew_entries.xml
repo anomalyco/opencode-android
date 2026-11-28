@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Bed om et rutediagram over, hvordan en besked sendes</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Tegn et rutediagram over, hvordan en besked sendes</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Giv besked, når det er færdigt</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Få en meddelelse, når en session, du startede her, er færdig, med et kort resumé af, hvad der skete.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Slå Giv altid besked til i sessionens panel for at få besked om hvert svar, også dem, der er sat i gang på computeren.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Tryk på en meddelelse for at åbne sessionen.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Send en besked, og lås så din telefon</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Skift server</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Din aktuelle server står som titel i sidepanelet. Tryk på den for at skifte server eller tilføje en.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">Fortsæt i OpenCode åbner sessionen med det, du delte, i beskedfeltet.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Hvis det ikke kan sendes, sender Send senere det, næste gang du åbner appen.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Del et skærmbillede til OpenCode, skriv et spørgsmål, og tryk på Send</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tæller på appikonet</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Appikonet viser antallet af ulæste sessioner og sessioner, der venter på dig – samme antal som i Bliv opdateret.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Lydløse sessioner tæller ikke med.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Det kræver, at meddelelser er slået til.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lad en session vente på svar på et spørgsmål, og gå så til hjemmeskærmen</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastaturet følger med sidepanelet</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Stemmekuglen er nu Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Opkaldets kugle har nu Wisps udseende: en glaslinse over glødende prikker, som begge stemmer lyser op, med Wisps udtryk for at forbinde, lytte, arbejde, tale og vente på dig. Det er den eneste kuglestil, så de gamle stilarter og kugleindstillingerne er fjernet.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Krypterede forhåndsvisninger af meddelelser</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Med det opdaterede meddelelsesplugin og en HTTPS-forbindelse krypterer din server titlen og beskeden til denne enhed. Hvis en forhåndsvisning ikke kan åbnes, står der blot »Ny aktivitet« i meddelelsen.</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Sessioner lever videre uden mappen</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Hvis en sessions mappe er væk, f.eks. et slettet arbejdsområde, får du ved mislykket afsendelse tilbud om at flytte sessionen til projektets mappe og sende igen.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Opsæt meddelelser med OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Tryk på Opsæt med OpenCode i Indstillinger → Meddelelser for at gennemgå en prompt, der installerer det manglende meddelelsesplugin.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Opkaldskortet overtager bunden</string>

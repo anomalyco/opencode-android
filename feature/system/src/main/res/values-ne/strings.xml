@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">सत्र सञ्चालनहरू</string>
     <string name="system_channel_session_updates">सत्र अपडेटहरू</string>
     <string name="system_channel_shared_items">साझा गरिएका सामग्री</string>
+    <string name="system_channel_push_attention">तपाईंको ध्यान चाहिन्छ</string>
+    <string name="system_channel_push_finished">सकियो</string>
+    <string name="system_channel_push_failed">असफल</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d आदेश चलाउन चाहन्छ</item>
+        <item quantity="other">%1$d आदेशहरू चलाउन चाहन्छ</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d फाइल सम्पादन गर्न चाहन्छ</item>
+        <item quantity="other">%1$d फाइलहरू सम्पादन गर्न चाहन्छ</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d फाइल पढ्न चाहन्छ</item>
+        <item quantity="other">%1$d फाइलहरू पढ्न चाहन्छ</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">पृष्ठ प्राप्त गर्न चाहन्छ</string>
+    <string name="system_push_permission_websearch">वेब खोज्न चाहन्छ</string>
+    <string name="system_push_permission_external_directory">परियोजना बाहिरको फोल्डर प्रयोग गर्न चाहन्छ</string>
+    <string name="system_push_permission_other">%1$s प्रयोग गर्न चाहन्छ</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">थप %1$d</item>
+        <item quantity="other">थप %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">%2$d मध्ये प्रश्न %1$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d विकल्प</item>
+        <item quantity="other">%1$d विकल्पहरू</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">थप %1$d विकल्प</item>
+        <item quantity="other">थप %1$d विकल्पहरू</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d ब्याकग्राउन्ड काम अझै चलिरहेको छ</item>
+        <item quantity="other">%1$d ब्याकग्राउन्ड कामहरू अझै चलिरहेका छन्</item>
+    </plurals>
+    <string name="system_push_finished">सकियो</string>
+    <string name="system_push_failed">असफल</string>
+    <string name="system_push_failed_rate_limit">दर सीमा पुग्यो</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">दर सीमा पुग्यो। %1$d सेकेन्डमा फेरि प्रयास गर्नुहोस्।</item>
+        <item quantity="other">दर सीमा पुग्यो। %1$d सेकेन्डमा फेरि प्रयास गर्नुहोस्।</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">दर सीमा पुग्यो। %1$d मिनेटमा फेरि प्रयास गर्नुहोस्।</item>
+        <item quantity="other">दर सीमा पुग्यो। %1$d मिनेटमा फेरि प्रयास गर्नुहोस्।</item>
+    </plurals>
+    <string name="system_push_failed_auth">प्रदायकले साइन इन स्वीकार गरेन</string>
+    <string name="system_push_public_permission">अनुमति चाहिन्छ</string>
+    <string name="system_push_public_question">प्रश्न छ</string>
+    <string name="system_push_action_allow">अनुमति दिनुहोस्</string>
+    <string name="system_push_action_always_allow">सधैं अनुमति दिनुहोस्</string>
+    <string name="system_push_action_deny">अस्वीकार गर्नुहोस्</string>
+    <string name="system_push_action_reply">जवाफ दिनुहोस्</string>
+    <string name="system_push_action_open">खोल्नुहोस्</string>
+    <string name="system_push_hint_answer">आफ्नो उत्तर टाइप गर्नुहोस्</string>
+    <string name="system_push_hint_reply">OpenCode लाई जवाफ दिनुहोस्</string>
+    <string name="system_push_send_failed">पठाउन सकिएन। सत्र खोल्न ट्याप गर्नुहोस्।</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode मा जारी राख्न ट्याप गर्नुहोस्</string>

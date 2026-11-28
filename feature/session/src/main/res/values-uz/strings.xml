@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Xarajat</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Fayllar va havolalar</string>
-    <string name="session_always_notify">Doim bildirish</string>
-    <string name="session_always_notify_message_phone">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu telefonga bildirishnoma yuborilsin.</string>
-    <string name="session_always_notify_message_tablet">Har bir javob tayyor bo‘lganda, hatto so‘rov bu yerdan yuborilmagan bo‘lsa ham, bu planshetga bildirishnoma yuborilsin.</string>
     <string name="session_delete_session">Seansni o\'chirish</string>
     <string name="session_rename_placeholder">Sarlavha</string>
     <string name="session_auto_rename">Avtomatik nomlash</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Sessiyani tarmoqlab bo‘lmadi</string>
     <string name="session_sheet_save_export_failed">Eksportni saqlab bo‘lmadi</string>
     <string name="session_sheet_export_failed_title">Sessiyani eksport qilib bo‘lmadi</string>
-    <string name="session_sheet_notifications_off_message">Avval sozlamalarda bildirishnomalarni yoqing.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Doim bildirishni yoqib bo‘lmadi</string>
-    <string name="session_sheet_always_notify_off_failed_title">Doim bildirishni o‘chirib bo‘lmadi</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server fayllarni qo‘llab-quvvatlamaydi</string>

@@ -13,15 +13,11 @@ import ai.opencode.feature.session.SessionFeature.State
 import ai.opencode.feature.session.SessionTestSupport.Harness
 import ai.opencode.feature.session.SessionTestSupport.LockIsolated
 import ai.opencode.feature.session.SessionTestSupport.append
-import ai.opencode.feature.session.SessionTestSupport.increment
 import ai.opencode.feature.session.SessionTestSupport.receive
 import ai.opencode.feature.session.SessionTestSupport.sessionTest
 import ai.opencode.feature.session.SessionTestSupport.settle
 import ai.opencode.feature.session.header.SessionContextRing
 import ai.opencode.feature.session.header.SessionContextText
-import ai.opencode.feature.system.notifications.NotificationPermission
-import ai.opencode.feature.system.notifications.NotificationPermissionClient
-import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeLiveContentEvent
@@ -103,10 +99,6 @@ class SessionSheetTests {
     private fun State.renamed(title: String) = copy(
         session = session?.copy(serverTitle = title),
         familySessions = familySessions.mapIndexed { index, s -> if (index == 0) s.copy(serverTitle = title) else s },
-    )
-    private fun State.alwaysNotify(isOn: Boolean) = copy(
-        session = session?.copy(alwaysNotify = isOn),
-        familySessions = familySessions.mapIndexed { index, s -> if (index == 0) s.copy(alwaysNotify = isOn) else s },
     )
 
     // region Context usage
@@ -712,102 +704,6 @@ class SessionSheetTests {
         val global = session().copy(projectID = "global")
         assertNull(SessionListContext.project(global, projects))
         assertNull(SessionListContext.project(null, projects))
-    }
-
-    @Test fun alwaysNotifyNeedsNotificationsAndUpdatesTheSession() = sessionTest { h ->
-        val written = LockIsolated(listOf<String?>())
-        val callback = LockIsolated<String?>(null)
-        val store = h.sheetStore {
-            client {
-                copy(
-                    setAlwaysNotify = { _, id, url ->
-                        assertEquals("ses_sheet", id)
-                        written.append(url)
-                    },
-                )
-            }
-            this[SessionNotificationsClient] = SessionNotificationsClient(
-                isAvailable = true,
-                callbackURL = { callback.value },
-                prepare = {},
-                forget = {},
-            )
-        }
-        openSheet(store)
-
-        // Notifications off: nothing is written and the sheet says why.
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(true))) { it.updatingSheet { copy(alwaysNotifyPending = true) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) {
-            it.updatingSheet {
-                copy(
-                    alwaysNotifyPending = null,
-                    failure = SessionSheetFeature.Failure(title = "Couldn’t Turn On Always Notify", message = "Turn on notifications in Settings first."),
-                )
-            }
-        }
-        assertTrue(written.value.isEmpty())
-        store.send(sheet(SessionSheetFeature.Action.FailureDismissed)) { it.updatingSheet { copy(failure = null) } }
-
-        callback.setValue("https://relay/v1/notify/abc")
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(true))) { it.updatingSheet { copy(alwaysNotifyPending = true) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) { it.updatingSheet { copy(alwaysNotifyPending = null) } }
-        store.receive(sheetDelegate(SessionSheetFeature.Delegate.AlwaysNotifyChanged(true))) { it.alwaysNotify(true) }
-
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(false))) { it.updatingSheet { copy(alwaysNotifyPending = false) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) { it.updatingSheet { copy(alwaysNotifyPending = null) } }
-        store.receive(sheetDelegate(SessionSheetFeature.Delegate.AlwaysNotifyChanged(false))) { it.alwaysNotify(false) }
-        assertEquals(listOf("https://relay/v1/notify/abc", null), written.value)
-        store.finish()
-    }
-
-    @Test fun alwaysNotifyAsksForNotificationsWhenNeverAsked() = sessionTest { h ->
-        // Until the app asks, there's nothing in Settings worth sending people to,
-        // so "Turn on notifications in Settings first" would be a dead end.
-        val permission = LockIsolated(NotificationPermission.NotDetermined)
-        val requests = LockIsolated(0)
-        val written = LockIsolated(listOf<String?>())
-        val store = h.sheetStore {
-            client { copy(setAlwaysNotify = { _, _, url -> written.append(url) }) }
-            this[NotificationPermissionClient] = NotificationPermissionClient(
-                status = { permission.value },
-                request = {
-                    requests.increment()
-                    permission.setValue(NotificationPermission.Enabled)
-                    NotificationPermission.Enabled
-                },
-                openSettings = { true },
-            )
-            this[SessionNotificationsClient] = SessionNotificationsClient(
-                isAvailable = true,
-                callbackURL = { if (permission.value == NotificationPermission.Enabled) "https://relay/v1/notify/abc" else null },
-                prepare = {},
-                forget = {},
-            )
-        }
-        openSheet(store)
-
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(true))) { it.updatingSheet { copy(alwaysNotifyPending = true) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) { it.updatingSheet { copy(alwaysNotifyPending = null) } }
-        store.receive(sheetDelegate(SessionSheetFeature.Delegate.AlwaysNotifyChanged(true))) { it.alwaysNotify(true) }
-        assertEquals(1, requests.value)
-        assertEquals(listOf<String?>("https://relay/v1/notify/abc"), written.value)
-
-        // Already decided: never prompts again.
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(false))) { it.updatingSheet { copy(alwaysNotifyPending = false) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) { it.updatingSheet { copy(alwaysNotifyPending = null) } }
-        store.receive(sheetDelegate(SessionSheetFeature.Delegate.AlwaysNotifyChanged(false))) { it.alwaysNotify(false) }
-        permission.setValue(NotificationPermission.Disabled)
-        store.send(sheet(SessionSheetFeature.Action.AlwaysNotifyToggled(true))) { it.updatingSheet { copy(alwaysNotifyPending = true) } }
-        store.receive(SessionSheetActionMatcher<SessionSheetFeature.Action.AlwaysNotifyFinished>()) {
-            it.updatingSheet {
-                copy(
-                    alwaysNotifyPending = null,
-                    failure = SessionSheetFeature.Failure(title = "Couldn’t Turn On Always Notify", message = "Turn on notifications in Settings first."),
-                )
-            }
-        }
-        assertEquals(1, requests.value)
-        store.finish()
     }
 
     @Test fun copySessionIDMenuActionWritesToPasteboard() = sessionTest { h ->

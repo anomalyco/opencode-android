@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Göndərilir</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">İcazə istənilə bilmədi. Yenidən cəhd edin.</string>
-    <string name="drawer_notifications_open_settings_error">Tənzimləmələr açıla bilmədi. Android tənzimləmələrini açın və Bildirişlər → OpenCode seçin.</string>
     <string name="drawer_delete_session_error">“%1$s” silinə bilmədi</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d sessiya silinə bilmədi</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiya ekranını yaxşılaşdırmağa kömək et. Tapdıqlarını göstər və dəyişiklikləri izah et.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faylında düzülüş problemini tapdım. Transkript və mesaj yazma sahəsi mövcud hündürlüyü bölüşür, buna görə klaviatura ilə bunu yaxşı sınaqdan keçirmək olar.</string>
+    <string name="drawer_notifications_change_error">Bildirişləri dəyişmək mümkün olmadı. Yenidən cəhd edin.</string>
 </resources>

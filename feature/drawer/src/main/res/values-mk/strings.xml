@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Се испраќа</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Не успеа барањето дозвола. Обиди се повторно.</string>
-    <string name="drawer_notifications_open_settings_error">Не успеа отворањето на поставките. Отвори ги поставките на Android и избери Известувања → OpenCode.</string>
     <string name="drawer_delete_session_error">Не успеа бришењето на „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Не успеа бришењето на %1$d сесија</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помогни ми да го подобрам екранот на сесијата. Покажи ми што ќе најдеш и објасни ги промените.</string>
     <string name="drawer_appearance_preview_assistant_text">Го најдов проблемот со распоредот во `SessionView.swift`. Транскриптот и полето за пораки ја делат достапната висина, па тастатурата е добар тест за распоредот.</string>
+    <string name="drawer_notifications_change_error">Не успеа промената на известувањата. Обиди се повторно.</string>
 </resources>

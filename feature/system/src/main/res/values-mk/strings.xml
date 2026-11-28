@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Извршувања на сесии</string>
     <string name="system_channel_session_updates">Ажурирања на сесии</string>
     <string name="system_channel_shared_items">Споделени ставки</string>
+    <string name="system_channel_push_attention">Бара внимание</string>
+    <string name="system_channel_push_finished">Завршено</string>
+    <string name="system_channel_push_failed">Неуспешно</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Сака да изврши %1$d наредба</item>
+        <item quantity="other">Сака да изврши %1$d наредби</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Сака да уреди %1$d датотека</item>
+        <item quantity="other">Сака да уреди %1$d датотеки</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Сака да прочита %1$d датотека</item>
+        <item quantity="other">Сака да прочита %1$d датотеки</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Сака да преземе страница</string>
+    <string name="system_push_permission_websearch">Сака да пребарува на веб</string>
+    <string name="system_push_permission_external_directory">Сака да користи папка надвор од проектот</string>
+    <string name="system_push_permission_other">Сака да користи %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Уште %1$d</item>
+        <item quantity="other">Уште %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Прашање %1$d од %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d опција</item>
+        <item quantity="other">%1$d опции</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Уште %1$d опција</item>
+        <item quantity="other">Уште %1$d опции</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d заднинска задача сè уште се извршува</item>
+        <item quantity="other">%1$d заднински задачи сè уште се извршуваат</item>
+    </plurals>
+    <string name="system_push_finished">Завршено</string>
+    <string name="system_push_failed">Не успеа</string>
+    <string name="system_push_failed_rate_limit">Ограничен број барања</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Ограничен број барања. Обиди се повторно за %1$d секунда.</item>
+        <item quantity="other">Ограничен број барања. Обиди се повторно за %1$d секунди.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Ограничен број барања. Обиди се повторно за %1$d минута.</item>
+        <item quantity="other">Ограничен број барања. Обиди се повторно за %1$d минути.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Провајдерот не ја прифати најавата</string>
+    <string name="system_push_public_permission">Бара дозвола</string>
+    <string name="system_push_public_question">Има прашање</string>
+    <string name="system_push_action_allow">Дозволете</string>
+    <string name="system_push_action_always_allow">Дозволете секогаш</string>
+    <string name="system_push_action_deny">Негирајте</string>
+    <string name="system_push_action_reply">Одговори</string>
+    <string name="system_push_action_open">Отвори</string>
+    <string name="system_push_hint_answer">Внеси свој одговор</string>
+    <string name="system_push_hint_reply">Одговори му на OpenCode</string>
+    <string name="system_push_send_failed">Не успеа испраќањето. Допри за да ја отвориш сесијата.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Допрете за да продолжите во OpenCode</string>

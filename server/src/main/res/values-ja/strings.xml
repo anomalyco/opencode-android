@@ -101,7 +101,6 @@
     <!-- LiveConnection.kt -->
     <string name="server_error_pairing_expired">このペアリングコードは期限切れか、使用済みです。`opencode pair --remote`をもう一度実行してください。</string>
     <string name="server_error_pairing_unsupported">このサーバーはペアリングリンクに対応していません。パソコンのOpenCodeを更新するか、サーバーを手動で入力してください。</string>
-    <string name="server_error_notification_previews_need_https">暗号化された通知プレビューには、サーバーへのHTTPS接続が必要です。</string>
 
     <!-- LiveEvents.kt, LiveTransport.kt, LiveFiles.kt, MediaReferenceFetch.kt, SharedEvents.kt -->
     <string name="server_error_invalid_url">有効なHTTPまたはHTTPSのサーバーURLを入力してください。</string>
@@ -117,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">プロジェクトとセッションを読み込めませんでした</string>
     <string name="server_error_load_session_family">セッションの親子関係を読み込めませんでした</string>
-    <string name="server_error_update_session">セッションを更新できませんでした</string>
     <string name="server_error_load_session_ancestry">アクティブなセッションの上位セッションを読み込めませんでした</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

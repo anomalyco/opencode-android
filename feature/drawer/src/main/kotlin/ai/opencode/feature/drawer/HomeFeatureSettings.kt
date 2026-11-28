@@ -19,7 +19,6 @@ import ai.opencode.feature.session.isDraft
 import ai.opencode.feature.session.sessionComposer
 import ai.opencode.feature.session.typeBelow
 import ai.opencode.feature.drawer.catchup.CatchUpFeature
-import ai.opencode.feature.settings.NotifyPluginCheck
 import ai.opencode.feature.settings.ConnectionStatus
 import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.settings.SettingsFeature
@@ -43,7 +42,6 @@ import ai.opencode.feature.voice.VoiceRoutePreferences
  */
 internal fun State.presentingSettings(settings: SettingsFeature.State): State {
     val home = settingsHome
-    val notifications = settingsNotifications
     return copy(
         settings = settings.copy(
             voice = settings.voice.copy(server = home.server ?: settings.voice.server, sessions = sessions),
@@ -52,9 +50,7 @@ internal fun State.presentingSettings(settings: SettingsFeature.State): State {
             switchingTo = home.switchingTo,
             connectionErrorMessage = home.connectionErrorMessage,
             credentialsRejected = home.credentialsRejected,
-            notificationPermission = notifications.permission,
-            isRequestingNotifications = notifications.isRequesting,
-            notificationSetupError = notifications.setupError,
+            notifications = notificationState,
         ),
     )
 }
@@ -76,22 +72,9 @@ private val State.settingsHome: SettingsFeature.Action.HomeChanged
 internal val State.settingsHomeInput: SettingsFeature.Action.HomeChanged?
     get() = if (settings == null) null else settingsHome
 
-private val State.settingsNotifications: SettingsFeature.Action.NotificationsChanged
-    get() = SettingsFeature.Action.NotificationsChanged(
-        permission = notificationPermission,
-        isRequesting = isRequestingNotifications,
-        setupError = notificationSetupError,
-        notifyPlugin = when (val check = notifyPlugin) {
-            null -> null
-            HomeNotificationsFeature.NotifyPluginCheck.Checking -> NotifyPluginCheck.Checking
-            is HomeNotificationsFeature.NotifyPluginCheck.Checked -> NotifyPluginCheck.Checked(check.status)
-            HomeNotificationsFeature.NotifyPluginCheck.Failed -> NotifyPluginCheck.Failed
-        },
-    )
-
 /** What Settings shows of Home's notification state while it's up (null while it isn't). */
 internal val State.settingsNotificationsInput: SettingsFeature.Action.NotificationsChanged?
-    get() = if (settings == null) null else settingsNotifications
+    get() = if (settings == null) null else SettingsFeature.Action.NotificationsChanged(notificationState)
 
 /** The drawer's What's New row, read again from What's New's shared keys. */
 internal fun State.refreshingWhatsNewButton(): State {
@@ -167,10 +150,17 @@ internal fun HomeFeature.reduceSettingsScreen(state: State, action: Presentation
             SettingsDelegate.AddServer -> Reduced(state, Effect.send(Action.Delegate(DelegateAction.AddServerRequested)))
             is SettingsDelegate.RemoveServer ->
                 Reduced(state, Effect.send(Action.Delegate(DelegateAction.ServerRemovalConfirmed(delegate.server))))
-            SettingsDelegate.EnableNotificationsTapped -> Reduced(state, Effect.send(Action.EnableNotificationsTapped))
-            SettingsDelegate.NotificationSettingsRequested -> Reduced(state, Effect.send(Action.NotificationSettingsRequested))
-            SettingsDelegate.NotifyPluginCheckRequested -> Reduced(state, Effect.send(Action.NotifyPluginCheckRequested))
-            SettingsDelegate.NotifyPluginSetUpTapped -> Reduced(state, Effect.send(Action.NotifyPluginSetUpTapped))
+            SettingsDelegate.NotificationSettingsRequested -> Reduced(
+                state,
+                Effect.merge(
+                    Effect.send(Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested)),
+                    Effect.send(Action.Notifications(HomeNotificationsFeature.Action.OfferRequested)),
+                ),
+            )
+            is SettingsDelegate.NotificationsToggled -> Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.Toggled(delegate.isOn))))
+            is SettingsDelegate.NotifyAboutPicked -> Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.LevelPicked(delegate.level))))
+            SettingsDelegate.AndroidNotificationSettingsTapped ->
+                Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped)))
             is SettingsDelegate.TryWhatsNew -> tryWhatsNew(delegate.destination, delegate.entryID, state)
         }
         else -> Reduced(state)

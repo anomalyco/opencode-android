@@ -107,7 +107,6 @@
     <!-- LiveConnection.kt -->
     <string name="server_error_pairing_expired">Þessi pörunarkóði er útrunninn eða hefur þegar verið notaður. Keyrðu `opencode pair --remote` aftur.</string>
     <string name="server_error_pairing_unsupported">Þessi netþjónn styður ekki pörunartengla. Uppfærðu OpenCode á tölvunni eða sláðu inn netþjóninn handvirkt.</string>
-    <string name="server_error_notification_previews_need_https">Dulkóðuð forskoðun tilkynninga krefst HTTPS-tengingar við netþjón.</string>
 
     <!-- LiveEvents.kt, LiveTransport.kt, LiveFiles.kt, MediaReferenceFetch.kt, SharedEvents.kt -->
     <string name="server_error_invalid_url">Sláðu inn gilt HTTP- eða HTTPS-veffang netþjóns.</string>
@@ -123,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Ekki tókst að hlaða verkefnum og setum</string>
     <string name="server_error_load_session_family">Ekki tókst að hlaða tengdum setum</string>
-    <string name="server_error_update_session">Ekki tókst að uppfæra setuna</string>
     <string name="server_error_load_session_ancestry">Ekki tókst að hlaða upprunakeðju virku setunnar</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">Đang gửi</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Không thể yêu cầu cấp quyền. Hãy thử lại.</string>
-    <string name="drawer_notifications_open_settings_error">Không thể mở cài đặt. Hãy mở cài đặt Android và chọn Thông báo → OpenCode.</string>
     <string name="drawer_delete_session_error">Không thể xóa “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">Không thể xóa %1$d phiên</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Giúp tôi cải thiện màn hình phiên. Cho tôi xem những gì bạn tìm thấy và giải thích các thay đổi.</string>
     <string name="drawer_appearance_preview_assistant_text">Tôi tìm thấy lỗi bố cục trong `SessionView.swift`. Bản chép lời và ô soạn thảo chia sẻ chiều cao khả dụng, nên có thể dùng bàn phím để kiểm tra khi không gian bị thu hẹp.</string>
+    <string name="drawer_notifications_change_error">Không thể thay đổi thông báo. Hãy thử lại.</string>
 </resources>

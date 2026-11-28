@@ -55,7 +55,7 @@ fun SettingsFeature.State.canTryWhatsNew(destination: WhatsNewEntry.Destination)
 
 /** Notifications are hidden, not disabled, where the build has none. */
 fun SettingsFeature.State.offersWhatsNew(destination: WhatsNewEntry.Destination): Boolean =
-    destination != WhatsNewEntry.Destination.notifications || notificationPermission != null
+    destination != WhatsNewEntry.Destination.notifications || notifications.permission != null
 
 /** Whether a call can start now. False until Home hands Settings its server. */
 fun whatsNewVoiceAvailable(server: OpenCodeServer?): Boolean =

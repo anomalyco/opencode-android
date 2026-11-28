@@ -16,8 +16,14 @@ object SystemNotificationChannels {
     const val DICTATION = "dictation"
     /** A run sent from this phone, while the app is away. */
     const val SESSION_RUN = "session-run"
-    /** A session finished or needs input. */
+    /** A push of a kind this app doesn't know. */
     const val SESSIONS = "sessions"
+    /** A session waits on a permission or a question. */
+    const val PUSH_ATTENTION = "push-attention"
+    /** A session finished. */
+    const val PUSH_FINISHED = "push-finished"
+    /** A session failed. */
+    const val PUSH_FAILED = "push-failed"
     /** The share sheet's “sent” and “continue” notices. */
     const val SHARE = "share"
 
@@ -41,6 +47,9 @@ object SystemNotificationChannels {
                     setShowBadge(false)
                 },
                 NotificationChannel(SESSIONS, context.getString(R.string.system_channel_session_updates), NotificationManager.IMPORTANCE_HIGH),
+                NotificationChannel(PUSH_ATTENTION, context.getString(R.string.system_channel_push_attention), NotificationManager.IMPORTANCE_HIGH),
+                NotificationChannel(PUSH_FINISHED, context.getString(R.string.system_channel_push_finished), NotificationManager.IMPORTANCE_DEFAULT),
+                NotificationChannel(PUSH_FAILED, context.getString(R.string.system_channel_push_failed), NotificationManager.IMPORTANCE_HIGH),
                 NotificationChannel(SHARE, context.getString(R.string.system_channel_shared_items), NotificationManager.IMPORTANCE_DEFAULT).apply {
                     setShowBadge(false)
                 },

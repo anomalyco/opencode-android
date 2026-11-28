@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">ຂໍແຜນວາດຂັ້ນຕອນການສົ່ງຂໍ້ຄວາມ</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">ແຕ້ມແຜນວາດຂັ້ນຕອນການສົ່ງຂໍ້ຄວາມ</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">ແຈ້ງເຕືອນເມື່ອສຳເລັດ</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">ຮັບການແຈ້ງເຕືອນເມື່ອເຊດຊັນທີ່ເຈົ້າເລີ່ມຢູ່ນີ້ເຮັດສຳເລັດ ພ້ອມສະຫຼຸບສັ້ນໆວ່າໄດ້ເຮັດຫຍັງແດ່.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">ເປີດແຈ້ງເຕືອນສະເໝີໃນແຜງເຊດຊັນ ເພື່ອຮັບແຈ້ງທຸກຄຳຕອບ ລວມທັງຄຳຕອບທີ່ເລີ່ມຈາກຄອມພິວເຕີ.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">ແຕະການແຈ້ງເຕືອນເພື່ອເປີດເຊດຊັນນັ້ນ.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">ສົ່ງຂໍ້ຄວາມ ແລ້ວລັອກໂທລະສັບ</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">ສະຫຼັບເຊີບເວີ</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">ຊື່ເຊີບເວີທີ່ໃຊ້ຢູ່ເປັນຫົວຂໍ້ຂອງແຖບເມນູຂ້າງ. ແຕະເພື່ອສະຫຼັບໄປເຊີບເວີອື່ນ ຫຼືເພີ່ມໃໝ່.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">ສືບຕໍ່ໃນ OpenCode ຈະເປີດເຊດຊັນ ພ້ອມສິ່ງທີ່ເຈົ້າແບ່ງປັນໃນຊ່ອງຂໍ້ຄວາມ.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">ຖ້າສົ່ງບໍ່ໄດ້, ສົ່ງພາຍຫຼັງ ຈະສົ່ງໃຫ້ເມື່ອເຈົ້າເປີດແອັບຄັ້ງຕໍ່ໄປ.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">ແບ່ງປັນຮູບໜ້າຈໍໄປທີ່ OpenCode, ພິມຄຳຖາມ ແລ້ວແຕະ ສົ່ງ</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">ປ້າຍຕົວເລກເທິງໄອຄອນແອັບ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">ໄອຄອນແອັບສະແດງຈຳນວນເຊດຊັນທີ່ຍັງບໍ່ອ່ານ ຫຼືລໍຖ້າເຈົ້າ, ເທົ່າກັບຈຳນວນໃນ ຕິດຕາມອັບເດດ.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">ບໍ່ນັບເຊດຊັນທີ່ປິດສຽງໄວ້.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ຕ້ອງເປີດການແຈ້ງເຕືອນກ່ອນ.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ປ່ອຍໃຫ້ເຊດຊັນລໍຖ້າຄຳຕອບ ແລ້ວກັບໄປໜ້າຫຼັກ</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ແປ້ນພິມເລື່ອນຕາມແຖບເມນູຂ້າງ</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">ວົງສຽງຕອນນີ້ເປັນ Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">ວົງການໂທຕອນນີ້ໃຊ້ຮູບແບບຂອງ Wisp: ເລນແກ້ວຄຸມຈຸດເຮືອງແສງທີ່ສະຫວ່າງຕາມສຽງຂອງທັງສອງຝ່າຍ, ພ້ອມທ່າທາງຂອງ Wisp ເມື່ອເຊື່ອມຕໍ່, ຟັງ, ເຮັດວຽກ, ເວົ້າ ແລະລໍຖ້າເຈົ້າ. ນີ້ແມ່ນຮູບແບບວົງພຽງແບບດຽວ, ຈຶ່ງເອົາຮູບແບບເກົ່າ ແລະການຕັ້ງຄ່າວົງອອກແລ້ວ.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">ຕົວຢ່າງແຈ້ງເຕືອນທີ່ເຂົ້າລະຫັດ</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">ເມື່ອໃຊ້ປລັກອິນແຈ້ງເຕືອນທີ່ອັບເດດແລ້ວ ແລະການເຊື່ອມຕໍ່ HTTPS, ເຊີບເວີຈະເຂົ້າລະຫັດຊື່ ແລະຂໍ້ຄວາມສຳລັບອຸປະກອນນີ້. ຖ້າເປີດຕົວຢ່າງບໍ່ໄດ້, ການແຈ້ງເຕືອນຈະບອກພຽງວ່າ “ມີກິດຈະກຳໃໝ່.”</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">ໂຟນເດີຫາຍ ເຊດຊັນຍັງຢູ່</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">ເມື່ອໂຟນເດີຂອງເຊດຊັນຫາຍໄປ, ເຊັ່ນ ພື້ນທີ່ເຮັດວຽກທີ່ຖືກເອົາອອກ, ການສົ່ງທີ່ລົ້ມເຫລວຈະສະເໜີໃຫ້ຍ້າຍເຊດຊັນໄປໂຟນເດີຂອງໂຄງການ ແລ້ວສົ່ງອີກຄັ້ງ.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">ຕັ້ງຄ່າແຈ້ງເຕືອນດ້ວຍ OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">ໃນການຕັ້ງຄ່າ → ການແຈ້ງເຕືອນ, ແຕະຕັ້ງຄ່າດ້ວຍ OpenCode ເພື່ອທົບທວນຄຳສັ່ງທີ່ຈະຕິດຕັ້ງປລັກອິນແຈ້ງເຕືອນທີ່ຍັງບໍ່ມີ.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">ບັດການໂທເຕັມສ່ວນລຸ່ມ</string>

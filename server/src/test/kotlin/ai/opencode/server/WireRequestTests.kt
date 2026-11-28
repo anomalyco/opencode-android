@@ -8,12 +8,10 @@ import ai.opencode.server.live.LOCATION_BOOT_TIMEOUT
 import ai.opencode.server.live.WAIT_POLL_TIMEOUT
 import ai.opencode.server.model.FileReadTarget
 import ai.opencode.server.model.OpenCodeDelivery
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
 import ai.opencode.server.model.OpenCodeOutgoingAttachment
 import ai.opencode.server.model.OpenCodeJob
 import ai.opencode.server.model.OpenCodeShell
 import ai.opencode.server.model.OpenCodeShellOutputPage
-import ai.opencode.server.model.PromptContext
 import ai.opencode.server.testing.WireFixture
 import ai.opencode.server.testing.WireFixture.Reply
 import kotlinx.coroutines.Dispatchers
@@ -57,23 +55,6 @@ class WireRequestTests {
     }
 
     @Test
-    fun phoneSendCarriesItsNotificationCallback() = runTest {
-        withFixture(WireFixture { Reply.Json(200, "{}") }) { fixture ->
-            val callback = "https://relay.example/v2/notify/sealed"
-
-            PromptContext.notificationCallbackURL.withValue(callback) {
-                OpenCodeClient.liveValue.sendPrompt(fixture.server, "ses_1", "hello", emptyList(), emptyList(), "msg_1", OpenCodeDelivery.Steer)
-            }
-
-            val request = fixture.requests.first()
-            assertEquals(
-                json("""{"id":"msg_1","text":"hello","delivery":"steer","metadata":{"notification":{"callbackURL":"$callback"}}}"""),
-                request.json(),
-            )
-        }
-    }
-
-    @Test
     fun aSendToAFolderThatIsGoneSaysSo() = runTest {
         val body = """{"_tag":"LocationNotFoundError","location":{"directory":"/work/linked"},"message":"Location not found: /work/linked"}"""
         withFixture(WireFixture { Reply.Json(404, body) }) { fixture ->
@@ -103,37 +84,17 @@ class WireRequestTests {
     }
 
     @Test
-    fun previewEnrollmentExchangesOnlyPublicKeysOnTheSavedHTTPSOrigin() = runTest {
-        withFixture(WireFixture { Reply.Json(200, """{"output":{"publicKey":"server-public"}}""") }) { fixture ->
+    fun pushRegistrationSendsTheCallbackAndReadsTheServerKey() = runTest {
+        withFixture(WireFixture { Reply.Json(200, """{"data":{"publicKey":"server-public"}}""") }) { fixture ->
             val url = "https://relay.example/v2/notify/sealed"
-            var server = fixture.server.copy(url = "http://local.example", alternateURLs = listOf(fixture.server.url))
-            val key = OpenCodeClient.pairNotificationPreview(server, callbackURL = url, ref = "ref", publicKey = "phone-public")
+            val key = OpenCodeClient.liveValue.registerPushDevice(fixture.server, "device", url, 1795644290720, "phone-public", "Pixel 8", "attention")
             assertEquals("server-public", key)
             val request = fixture.requests.first()
-            assertEquals("POST /api/rpc/mobile-notifications/pair", request.route)
-            assertEquals(json("""{"input":{"ref":"ref","publicKey":"phone-public","callbackURL":"$url"}}"""), request.json())
-            server = server.copy(alternateURLs = emptyList())
-            expectClientError { OpenCodeClient.pairNotificationPreview(server, callbackURL = url, ref = "ref", publicKey = "phone-public") }
-            assertEquals(1, fixture.requests.size)
-        }
-    }
-
-    @Test
-    fun notifyPluginStatusReadsThePluginList() = runTest {
-        for ((body, expected) in listOf(
-            """{"data":[{"id":"opencode.plan","state":{"status":"active"}},{"source":{"type":"x"}},{"id":"opencode-notify-callback","state":{"status":"active"}}]}""" to OpenCodeNotifyPluginStatus.Active,
-            """{"data":[{"id":"opencode-notify-callback","state":{"status":"failed"}}]}""" to OpenCodeNotifyPluginStatus.Inactive,
-            """{"data":[{"id":"opencode.plan","state":{"status":"active"}}]}""" to OpenCodeNotifyPluginStatus.Missing,
-        )) {
-            withFixture(WireFixture { Reply.Json(200, body) }) { fixture ->
-                val status = OpenCodeClient.liveValue.notifyPluginStatus(fixture.server)
-
-                assertEquals(expected, status)
-                val request = fixture.requests.first()
-                assertEquals("GET", request.method)
-                assertEquals("/api/plugin", request.path)
-                assertNull("A location-scoped read would boot that location's services", request.query)
-            }
+            assertEquals("PUT /api/experimental/push/device/device", request.route)
+            assertEquals(
+                json("""{"callbackURL":"$url","expiresAt":1795644290720,"publicKey":"phone-public","platform":"android","name":"Pixel 8","settings":{"default":"attention"}}"""),
+                request.json(),
+            )
         }
     }
 

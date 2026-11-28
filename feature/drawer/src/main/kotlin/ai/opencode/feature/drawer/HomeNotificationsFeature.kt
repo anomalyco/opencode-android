@@ -1,129 +1,119 @@
 package ai.opencode.feature.drawer
 
-import ai.opencode.core.strings.localized
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
-import ai.opencode.core.store.cancellable
+import ai.opencode.core.strings.localized
+import ai.opencode.feature.settings.NotificationsStatus
 import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.notifications.NotificationPermissionClient
+import ai.opencode.feature.system.notifications.PushLevel
+import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
-import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
-import kotlinx.coroutines.CancellationException
 
 /**
- * This phone's notification permission and the server's notify plugin, as Settings › Notifications
- * reads them. Home supplies the current server and keeps [Status] as `notificationState`.
+ * This phone's notifications from one server, as Settings › Notifications shows and changes them.
+ * Home supplies the current server and keeps [NotificationsStatus] as `notificationState`.
  */
 class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNotificationsFeature.Action> {
-    data class Status(
-        /** Null until read, and while this build offers no notifications. */
-        val notificationPermission: NotificationPermission? = null,
-        val isRequestingNotifications: Boolean = false,
-        val notificationSetupError: String? = null,
-        /** The server half of notifications, read when Notifications opens. */
-        val notifyPlugin: NotifyPluginCheck? = null,
-    )
-
-    sealed interface NotifyPluginCheck {
-        data object Checking : NotifyPluginCheck
-        data class Checked(val status: OpenCodeNotifyPluginStatus) : NotifyPluginCheck
-        data object Failed : NotifyPluginCheck
-    }
-
-    data class State(
-        val server: OpenCodeServer,
-        val status: Status = Status(),
-    )
+    data class State(val server: OpenCodeServer, val status: NotificationsStatus = NotificationsStatus())
 
     sealed interface Action {
-        data object NotificationSettingsRequested : Action
-        data class NotificationPermissionLoaded(val permission: NotificationPermission) : Action
-        data object EnableNotificationsTapped : Action
-        data class NotificationPermissionRequested(val permission: NotificationPermission) : Action
-        data class NotificationSettingsOpened(val opened: Boolean) : Action
-        data object NotifyPluginCheckRequested : Action
-        data class NotifyPluginChecked(val status: OpenCodeNotifyPluginStatus?) : Action
+        /** Notifications opened, or the app came back to it. */
+        data object SettingsRequested : Action
+        data class Loaded(val permission: NotificationPermission, val setting: PushSetting) : Action
+        /** Asks the server whether it sends notifications at all. */
+        data object OfferRequested : Action
+        data class OfferLoaded(val isOffered: Boolean?) : Action
+        data class Toggled(val isOn: Boolean) : Action
+        data class LevelPicked(val level: PushLevel) : Action
+        data class Changed(val permission: NotificationPermission, val setting: PushSetting, val error: String?) : Action
+        data object AndroidSettingsTapped : Action
+        /** Shows Android's permission prompt. */
+        data object PermissionWanted : Action
     }
-
-    private enum class CancelID { notifyPlugin }
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> {
         val status = state.status
         return when (action) {
-            Action.NotificationSettingsRequested -> {
-                val sessionNotifications = dependency(SessionNotificationsClient)
-                if (!sessionNotifications.isAvailable) return Reduced(state)
-                val notificationPermission = dependency(NotificationPermissionClient)
-                Reduced(state, Effect.run { send -> send(Action.NotificationPermissionLoaded(notificationPermission.status())) })
+            Action.SettingsRequested -> {
+                if (!dependency(SessionNotificationsClient).isAvailable) return Reduced(state)
+                load(state, asks = false)
             }
 
-            is Action.NotificationPermissionLoaded -> {
-                val next = state.copy(status = status.copy(notificationPermission = action.permission))
-                if (action.permission != NotificationPermission.Enabled) return Reduced(next)
-                // Mint ahead so the next Send rarely waits on the relay.
+            Action.OfferRequested -> {
                 val sessionNotifications = dependency(SessionNotificationsClient)
                 val server = state.server
-                Reduced(next, Effect.run { sessionNotifications.prepare(server) })
+                Reduced(state, Effect.run { send -> send(Action.OfferLoaded(sessionNotifications.isOffered(server))) })
             }
 
-            Action.EnableNotificationsTapped -> {
-                if (status.isRequestingNotifications) return Reduced(state)
-                val next = state.copy(status = status.copy(notificationSetupError = null, isRequestingNotifications = true))
-                val notificationPermission = dependency(NotificationPermissionClient)
-                val permission = status.notificationPermission
-                if (permission != null && permission != NotificationPermission.NotDetermined) {
-                    // Disabled or enabled: only the system's settings can change it.
-                    return Reduced(next, Effect.run { send -> send(Action.NotificationSettingsOpened(notificationPermission.openSettings())) })
-                }
-                Reduced(next, Effect.run { send -> send(Action.NotificationPermissionRequested(notificationPermission.request())) })
-            }
-
-            is Action.NotificationPermissionRequested -> {
-                val error = if (action.permission == NotificationPermission.NotDetermined) {
-                    localized(R.string.drawer_notifications_request_error)
-                } else {
-                    status.notificationSetupError
-                }
-                Reduced(
-                    state.copy(status = status.copy(isRequestingNotifications = false, notificationSetupError = error)),
-                    Effect.send(Action.NotificationPermissionLoaded(action.permission)),
-                )
-            }
-
-            is Action.NotificationSettingsOpened -> {
-                val error = if (!action.opened) {
-                    localized(R.string.drawer_notifications_open_settings_error)
-                } else {
-                    status.notificationSetupError
-                }
-                Reduced(state.copy(status = status.copy(isRequestingNotifications = false, notificationSetupError = error)))
-            }
-
-            Action.NotifyPluginCheckRequested -> {
-                val openCodeClient = dependency(OpenCodeClient)
-                val server = state.server
-                Reduced(
-                    state.copy(status = status.copy(notifyPlugin = NotifyPluginCheck.Checking)),
-                    Effect.run<Action> { send ->
-                        val result = try {
-                            openCodeClient.notifyPluginStatus(server)
-                        } catch (cancellation: CancellationException) {
-                            throw cancellation
-                        } catch (_: Exception) {
-                            null
-                        }
-                        send(Action.NotifyPluginChecked(result))
-                    }.cancellable(CancelID.notifyPlugin, cancelInFlight = true),
-                )
-            }
-
-            is Action.NotifyPluginChecked -> Reduced(
-                state.copy(status = status.copy(notifyPlugin = action.status?.let(NotifyPluginCheck::Checked) ?: NotifyPluginCheck.Failed)),
+            is Action.Loaded -> Reduced(
+                state.copy(
+                    status = status.copy(
+                        permission = action.permission,
+                        // The permission prompt brings the app back while a change is still on its way.
+                        setting = if (status.isChanging) status.setting else action.setting,
+                    ),
+                ),
             )
+
+            is Action.OfferLoaded -> Reduced(state.copy(status = status.copy(isOffered = action.isOffered)))
+
+            is Action.Toggled -> change(state, status.setting.copy(isOn = action.isOn))
+
+            is Action.LevelPicked -> change(state, status.setting.copy(level = action.level))
+
+            is Action.Changed -> Reduced(
+                state.copy(status = status.copy(permission = action.permission, setting = action.setting, isChanging = false, error = action.error)),
+            )
+
+            Action.AndroidSettingsTapped -> {
+                val notificationPermission = dependency(NotificationPermissionClient)
+                Reduced(state, Effect.run { notificationPermission.openSettings() })
+            }
+
+            Action.PermissionWanted -> load(state, asks = true)
         }
+    }
+
+    /** Reads Android's permission, asking for it first when [asks], and this phone's choice. */
+    private fun load(state: State, asks: Boolean): Reduced<State, Action> {
+        val sessionNotifications = dependency(SessionNotificationsClient)
+        val notificationPermission = dependency(NotificationPermissionClient)
+        val serverKey = state.server.persistenceID
+        return Reduced(
+            state,
+            Effect.run { send ->
+                val permission = if (asks) notificationPermission.request() else notificationPermission.status()
+                send(Action.Loaded(permission, sessionNotifications.setting(serverKey)))
+            },
+        )
+    }
+
+    private fun change(state: State, wanted: PushSetting): Reduced<State, Action> {
+        val status = state.status
+        if (status.isChanging) return Reduced(state)
+        val previous = status.setting
+        val server = state.server
+        val sessionNotifications = dependency(SessionNotificationsClient)
+        val notificationPermission = dependency(NotificationPermissionClient)
+        return Reduced(
+            state.copy(status = status.copy(setting = wanted, isChanging = true, error = null)),
+            Effect.run { send ->
+                var permission = notificationPermission.status()
+                if (wanted.isOn && permission == NotificationPermission.NotDetermined) permission = notificationPermission.request()
+                if (wanted.isOn && permission != NotificationPermission.Enabled) {
+                    send(Action.Changed(permission, previous, null))
+                    return@run
+                }
+                if (sessionNotifications.setSetting(server, wanted)) {
+                    send(Action.Changed(permission, wanted, null))
+                } else {
+                    send(Action.Changed(permission, previous, localized(R.string.drawer_notifications_change_error)))
+                }
+            },
+        )
     }
 }

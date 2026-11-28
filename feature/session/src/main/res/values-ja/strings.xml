@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">費用</string>
     <string name="session_sheet_media">メディア</string>
     <string name="session_sheet_media_value">ファイルとリンク</string>
-    <string name="session_always_notify">常に通知</string>
-    <string name="session_always_notify_message_phone">他の端末から送ったメッセージも含め、応答が完了するたびにこのスマホに通知します。</string>
-    <string name="session_always_notify_message_tablet">他の端末から送ったメッセージも含め、応答が完了するたびにこのタブレットに通知します。</string>
     <string name="session_delete_session">セッションを削除</string>
     <string name="session_rename_placeholder">タイトル</string>
     <string name="session_auto_rename">名前を自動設定</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">セッションをフォークできませんでした</string>
     <string name="session_sheet_save_export_failed">エクスポートを保存できませんでした</string>
     <string name="session_sheet_export_failed_title">セッションをエクスポートできませんでした</string>
-    <string name="session_sheet_notifications_off_message">まず設定で通知をオンにしてください。</string>
-    <string name="session_sheet_always_notify_on_failed_title">「常に通知」をオンにできませんでした</string>
-    <string name="session_sheet_always_notify_off_failed_title">「常に通知」をオフにできませんでした</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">サーバーがファイルに対応していません</string>

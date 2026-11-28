@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">იგზავნება</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">ნებართვის მოთხოვნა ვერ მოხერხდა. ხელახლა სცადეთ.</string>
-    <string name="drawer_notifications_open_settings_error">პარამეტრები ვერ გაიხსნა. გახსენით Android-ის პარამეტრები და აირჩიეთ შეტყობინებები → OpenCode.</string>
     <string name="drawer_delete_session_error">„%1$s“ ვერ წაიშალა</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d სესიის წაშლა ვერ მოხერხდა</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">დამეხმარე სესიის ეკრანის გაუმჯობესებაში. მაჩვენე, რას იპოვი და ამიხსენი ცვლილებები.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-ში განლაგების პრობლემა ვიპოვე. ტრანსკრიპტი და შეტყობინების რედაქტორი ხელმისაწვდომ სიმაღლეს ინაწილებენ, ამიტომ კლავიატურით კარგად მოწმდება, როგორ მუშაობს განლაგება შეზღუდულ სივრცეში.</string>
+    <string name="drawer_notifications_change_error">შეტყობინებების შეცვლა ვერ მოხერხდა. ხელახლა სცადეთ.</string>
 </resources>

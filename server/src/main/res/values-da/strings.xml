@@ -107,7 +107,6 @@
     <!-- LiveConnection.kt -->
     <string name="server_error_pairing_expired">Denne parringskode er udløbet eller allerede brugt. Kør `opencode pair --remote` igen.</string>
     <string name="server_error_pairing_unsupported">Denne server understøtter ikke parringslinks. Opdater OpenCode på din computer, eller tilføj serveren manuelt.</string>
-    <string name="server_error_notification_previews_need_https">Krypterede forhåndsvisninger af meddelelser kræver en HTTPS-forbindelse til serveren.</string>
 
     <!-- LiveEvents.kt, LiveTransport.kt, LiveFiles.kt, MediaReferenceFetch.kt, SharedEvents.kt -->
     <string name="server_error_invalid_url">Indtast en gyldig HTTP- eller HTTPS-URL til serveren.</string>
@@ -123,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Kunne ikke indlæse projekter og sessioner</string>
     <string name="server_error_load_session_family">Kunne ikke indlæse sessionsfamilien</string>
-    <string name="server_error_update_session">Kunne ikke opdatere sessionen</string>
     <string name="server_error_load_session_ancestry">Kunne ikke indlæse den aktive sessions overordnede sessioner</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

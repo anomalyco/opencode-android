@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Вартість</string>
     <string name="session_sheet_media">Медіа</string>
     <string name="session_sheet_media_value">Файли й посилання</string>
-    <string name="session_always_notify">Завжди сповіщати</string>
-    <string name="session_always_notify_message_phone">Сповіщати на цьому телефоні про кожну готову відповідь, навіть на запити з інших пристроїв.</string>
-    <string name="session_always_notify_message_tablet">Сповіщати на цьому планшеті про кожну готову відповідь, навіть на запити з інших пристроїв.</string>
     <string name="session_delete_session">Видалити сесію</string>
     <string name="session_rename_placeholder">Назва</string>
     <string name="session_auto_rename">Перейменувати автоматично</string>
@@ -274,9 +271,6 @@
     <string name="session_sheet_fork_failed_title">Не вдалося відгалузити сесію</string>
     <string name="session_sheet_save_export_failed">Не вдалося зберегти експорт</string>
     <string name="session_sheet_export_failed_title">Не вдалося експортувати сесію</string>
-    <string name="session_sheet_notifications_off_message">Спершу увімкніть сповіщення в налаштуваннях.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Не вдалося ввімкнути «Завжди сповіщати»</string>
-    <string name="session_sheet_always_notify_off_failed_title">Не вдалося вимкнути «Завжди сповіщати»</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Сервер не підтримує файли</string>

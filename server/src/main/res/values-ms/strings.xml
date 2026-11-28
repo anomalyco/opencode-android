@@ -101,7 +101,6 @@
     <!-- LiveConnection.kt -->
     <string name="server_error_pairing_expired">Kod pemasangan ini telah tamat tempoh atau sudah digunakan. Jalankan `opencode pair --remote` sekali lagi.</string>
     <string name="server_error_pairing_unsupported">Pelayan ini tidak menyokong pautan pemasangan. Kemas kini OpenCode pada komputer anda, atau masukkan pelayan secara manual.</string>
-    <string name="server_error_notification_previews_need_https">Pratonton notifikasi tersulit memerlukan sambungan pelayan HTTPS.</string>
 
     <!-- LiveEvents.kt, LiveTransport.kt, LiveFiles.kt, MediaReferenceFetch.kt, SharedEvents.kt -->
     <string name="server_error_invalid_url">Masukkan URL pelayan HTTP atau HTTPS yang sah.</string>
@@ -117,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Tidak dapat memuatkan projek dan sesi</string>
     <string name="server_error_load_session_family">Tidak dapat memuatkan kumpulan sesi berkaitan</string>
-    <string name="server_error_update_session">Tidak dapat mengemas kini sesi</string>
     <string name="server_error_load_session_ancestry">Tidak dapat memuatkan rantaian induk sesi aktif</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

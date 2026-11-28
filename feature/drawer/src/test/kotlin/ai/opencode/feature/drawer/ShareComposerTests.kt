@@ -30,7 +30,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -69,7 +68,7 @@ class ShareComposerAppTests {
     private val sessionTapped = { action: HomeFeature.Action -> action is HomeFeature.Action.SessionTapped }
 
     private fun shareInbox(
-        publishCredentials: (ShareCredentials, Boolean) -> Unit = { _, _ -> },
+        publishCredentials: (ShareCredentials) -> Unit = { },
         donateSuggestion: (String, String, String) -> Unit = { _, _, _ -> },
     ) = ShareInboxClient(
         consume = { emptyList() },
@@ -137,10 +136,7 @@ class ShareComposerAppTests {
     fun leavingTheAppSharesTheServersCredentials() = runTest {
         val published = Collections.synchronizedList(mutableListOf<ShareCredentials>())
         val store = context.store(backgroundScope, { home() }) {
-            this[ShareInboxClient] = shareInbox(publishCredentials = { credentials, keeps ->
-                assertTrue("Leaving the app never clears the callback", keeps)
-                published += credentials
-            })
+            this[ShareInboxClient] = shareInbox(publishCredentials = { credentials -> published += credentials })
             this[TranscriptCachePersistence] = TranscriptCachePersistence(identity = "test", load = { null }, schedule = {}, flush = {}, remove = {})
         }
         store.exhaustive = false

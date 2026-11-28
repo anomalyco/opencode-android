@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Трошок</string>
     <string name="session_sheet_media">Медиуми</string>
     <string name="session_sheet_media_value">Датотеки и врски</string>
-    <string name="session_always_notify">Секогаш известувај</string>
-    <string name="session_always_notify_message_phone">Известувај на овој телефон кога е готов одговор, дури и за пораки што не се испратени оттука.</string>
-    <string name="session_always_notify_message_tablet">Известувај на овој таблет кога е готов одговор, дури и за пораки што не се испратени оттука.</string>
     <string name="session_delete_session">Избришете ја сесијата</string>
     <string name="session_rename_placeholder">Наслов</string>
     <string name="session_auto_rename">Автоматско преименување</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Не успеа разгранувањето на сесијата</string>
     <string name="session_sheet_save_export_failed">Не успеа зачувувањето на извозот</string>
     <string name="session_sheet_export_failed_title">Не успеа извозот на сесијата</string>
-    <string name="session_sheet_notifications_off_message">Прво вклучи ги известувањата во Поставки.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Не успеа вклучувањето на „Секогаш известувај“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Не успеа исклучувањето на „Секогаш известувај“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Серверот не поддржува датотеки</string>

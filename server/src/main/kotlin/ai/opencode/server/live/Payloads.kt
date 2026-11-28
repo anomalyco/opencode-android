@@ -4,9 +4,7 @@ import ai.opencode.core.strings.localized
 import ai.opencode.server.ConnectionRoute
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.R
-import ai.opencode.server.internal.ElementSerializer
 import ai.opencode.server.internal.WireJson
-import ai.opencode.server.internal.bool
 import ai.opencode.server.internal.dbl
 import ai.opencode.server.internal.int
 import ai.opencode.server.internal.list
@@ -205,25 +203,11 @@ internal data class SessionPayload(
     val parentID: String? = null,
     val agent: String? = null,
     val cost: Double? = null,
-    @Serializable(with = SessionMetadataPayloadSerializer::class) val metadata: SessionMetadataPayload? = null,
     val revert: RevertPayload? = null,
 )
 
 @Serializable
 internal data class RevertPayload(val messageID: String)
-
-/** Only `metadata.notification.always`; anything else, or another shape, decodes as off. */
-internal data class SessionMetadataPayload(val alwaysNotify: Boolean)
-
-internal object SessionMetadataPayloadSerializer : ElementSerializer<SessionMetadataPayload>(
-    decode = { element ->
-        val always = try {
-            (element as? JsonObject)?.opt("notification") { it.obj() }?.opt("always") { it.bool() }
-        } catch (_: RuntimeException) { null }
-        SessionMetadataPayload(always == true)
-    },
-    encode = { JsonNull },
-)
 
 @Serializable
 internal data class ModelInfoPayload(
@@ -663,12 +647,6 @@ internal data class WrittenFilePayload(val path: String)
 internal data class DirectoryListingPayload(val location: Location, val data: List<Entry>) {
     @Serializable data class Location(val directory: String)
     @Serializable data class Entry(val path: String, val type: String)
-}
-
-/** Lenient: the plugin list mixes builtins and packages; only the ID and status matter. */
-@Serializable
-internal data class PluginPayload(val id: String? = null, val state: State? = null) {
-    @Serializable data class State(val status: String? = null)
 }
 
 @Serializable

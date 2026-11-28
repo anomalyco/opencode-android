@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Küsi sõnumi saatmise vooskeemi</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Joonista sõnumi saatmise vooskeem</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Teavita valmimisest</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Saa siin alustatud seansi töö lõppedes teavitus koos lühikese kokkuvõttega tehtust.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Lülita seansi paneelil sisse „Teavita alati”, et saada teavitus igast vastusest, ka arvutis algatatud vastustest.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Seansi avamiseks puuduta teavitust.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Saada sõnum ja lukusta siis telefon</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Vaheta serverit</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Praegune server on külgpaneeli pealkiri. Puuduta seda, et valida teine server või lisada uus.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">„Jätka OpenCode’is“ avab seansi, kus jagatud sisu on sõnumikastis.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Kui saatmine ei õnnestu, saadab „Saada hiljem“ selle järgmisel rakenduse avamisel.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Jaga kuvatõmmist OpenCode’i, kirjuta küsimus ja puuduta „Saada“</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Märk rakenduse ikoonil</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Rakenduse ikoon näitab lugemata või sinu ootel seansside arvu, nagu vaade „Vaata üle“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Vaigistatud seansse ei loendata.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Selleks peavad teavitused olema sisse lülitatud.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Jäta seanss küsimusele vastust ootama ja mine avakuvale</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klaviatuur liigub koos külgpaneeliga</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Häälkera on nüüd Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Kõnekera on nüüd Wispi nägu: klaaslääts helendavate täppide kohal, mida valgustavad mõlemad hääled. Wispi ilmed näitavad ühendamist, kuulamist, töötamist, rääkimist ja sinu järel ootamist. See on nüüd ainus stiil, nii et vanad stiilid ja kera seaded on eemaldatud.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Krüptitud teavituste eelvaated</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Uuendatud teavitusplugina ja HTTPS-ühenduse korral krüptib server pealkirja ja sõnumi selle seadme jaoks. Kui eelvaadet ei saa avada, näitab teavitus vaid teksti „Uus tegevus”.</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Seansid säilivad ka kaustata</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Kui seansi kaust on kadunud, näiteks tööruumi kustutamisel, pakutakse nurjunud saatmise järel seansi teisaldamist projekti kausta ja saadetakse uuesti.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Seadista teavitused OpenCode’iga</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Puuduta jaotises Seaded → Teavitused valikut Seadista OpenCode’iga, et vaadata üle viip, mis paigaldab puuduva teavitusplugina.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Kõnekaart täidab ekraani alaosa</string>

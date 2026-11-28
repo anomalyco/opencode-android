@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Ilmoitukset</string>
-    <string name="settings_notifications_device_header">Tämä %1$s</string>
-    <string name="settings_notifications_device_footer">Ilmoitukset kulkevat välityspalvelun kautta, joka ei tallenna mitään. Vain tällä %1$s-laitteella aloitetut istunnot lähettävät sille ilmoituksia.</string>
-    <string name="settings_notifications_allow">Salli ilmoitukset</string>
+    <string name="settings_notifications_notify_about">Mistä ilmoitetaan</string>
+    <string name="settings_notifications_level_all">Kaikki</string>
+    <string name="settings_notifications_level_attention">Vain kun minua tarvitaan</string>
+    <string name="settings_notifications_off_footer">Saat ilmoituksen, kun istunto valmistuu, esittää kysymyksen tai tarvitsee luvan.</string>
+    <string name="settings_notifications_blocked_footer">OpenCoden ilmoitukset on poistettu käytöstä Androidin asetuksissa.</string>
+    <string name="settings_notifications_unsupported_footer">Tämä palvelin ei tue ilmoituksia. Päivitä OpenCode tietokoneellasi.</string>
     <string name="settings_notifications_open_android_settings">Avaa Android-asetukset</string>
-    <string name="settings_notifications_turn_on">Ota ilmoitukset käyttöön</string>
-    <string name="settings_notifications_server_header">Palvelin</string>
-    <string name="settings_notifications_set_up_footer">Avaa istunnon, jossa OpenCodea pyydetään asentamaan laajennus. Lähetä pyyntö ja tarkista uudelleen.</string>
-    <string name="settings_notifications_plugin_needed_footer">Palvelin tarvitsee OpenCode-ilmoituslaajennuksen.</string>
-    <string name="settings_notifications_notify_plugin">Ilmoituslaajennus</string>
-    <string name="settings_notifications_plugin_installed">Asennettu</string>
-    <string name="settings_notifications_plugin_not_running">Ei käynnissä</string>
-    <string name="settings_notifications_plugin_not_installed">Ei asennettu</string>
-    <string name="settings_notifications_plugin_check_failed">Tilan tarkistus epäonnistui</string>
-    <string name="settings_notifications_set_up">Ota käyttöön OpenCodella</string>
-    <string name="settings_notifications_check_again">Tarkista uudelleen</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Istunnot</string>

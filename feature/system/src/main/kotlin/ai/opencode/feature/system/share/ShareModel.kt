@@ -196,7 +196,6 @@ class ShareModel(
                 text = text,
                 images = state.images.map { image -> ShareSendRequest.Image(image.jpeg, SharedImageEncoder.MIME) },
                 files = state.files,
-                callbackURL = it.callbackURL,
             )
         }
         if (credentials == null || request == null) {

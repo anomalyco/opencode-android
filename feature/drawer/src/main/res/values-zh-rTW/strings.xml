@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">傳送中</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">無法要求權限，請再試一次。</string>
-    <string name="drawer_notifications_open_settings_error">無法開啟設定。請開啟 Android 設定，選擇「通知」→「OpenCode」。</string>
     <string name="drawer_delete_session_error">無法刪除「%1$s」</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">無法刪除 %1$d 個工作階段</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">幫我改善工作階段畫面。讓我看看你發現了什麼，並說明修改內容。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 找到了版面配置問題。對話紀錄和輸入區共用可用高度，所以可以用鍵盤來測試版面能否正常運作。</string>
+    <string name="drawer_notifications_change_error">無法變更通知設定，請再試一次。</string>
 </resources>

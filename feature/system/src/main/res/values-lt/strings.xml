@@ -82,6 +82,86 @@
     <string name="system_channel_session_runs">Seansų vykdymas</string>
     <string name="system_channel_session_updates">Seansų atnaujinimai</string>
     <string name="system_channel_shared_items">Bendrinami elementai</string>
+    <string name="system_channel_push_attention">Reikia jūsų</string>
+    <string name="system_channel_push_finished">Baigta</string>
+    <string name="system_channel_push_failed">Nepavyko</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Nori vykdyti %1$d komandą</item>
+        <item quantity="few">Nori vykdyti %1$d komandas</item>
+        <item quantity="many">Nori vykdyti %1$d komandos</item>
+        <item quantity="other">Nori vykdyti %1$d komandų</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Nori redaguoti %1$d failą</item>
+        <item quantity="few">Nori redaguoti %1$d failus</item>
+        <item quantity="many">Nori redaguoti %1$d failo</item>
+        <item quantity="other">Nori redaguoti %1$d failų</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Nori skaityti %1$d failą</item>
+        <item quantity="few">Nori skaityti %1$d failus</item>
+        <item quantity="many">Nori skaityti %1$d failo</item>
+        <item quantity="other">Nori skaityti %1$d failų</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Nori gauti puslapį</string>
+    <string name="system_push_permission_websearch">Nori ieškoti internete</string>
+    <string name="system_push_permission_external_directory">Nori naudoti aplanką už projekto ribų</string>
+    <string name="system_push_permission_other">Nori naudoti %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Dar %1$d</item>
+        <item quantity="few">Dar %1$d</item>
+        <item quantity="many">Dar %1$d</item>
+        <item quantity="other">Dar %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Klausimas %1$d iš %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d parinktis</item>
+        <item quantity="few">%1$d parinktys</item>
+        <item quantity="many">%1$d parinkties</item>
+        <item quantity="other">%1$d parinkčių</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Dar %1$d parinktis</item>
+        <item quantity="few">Dar %1$d parinktys</item>
+        <item quantity="many">Dar %1$d parinkties</item>
+        <item quantity="other">Dar %1$d parinkčių</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">Vis dar vykdoma %1$d foninė užduotis</item>
+        <item quantity="few">Vis dar vykdomos %1$d foninės užduotys</item>
+        <item quantity="many">Vis dar vykdoma %1$d foninės užduoties</item>
+        <item quantity="other">Vis dar vykdoma %1$d foninių užduočių</item>
+    </plurals>
+    <string name="system_push_finished">Baigta</string>
+    <string name="system_push_failed">Nepavyko</string>
+    <string name="system_push_failed_rate_limit">Pasiektas užklausų limitas</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d sekundės.</item>
+        <item quantity="few">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d sekundžių.</item>
+        <item quantity="many">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d sekundės.</item>
+        <item quantity="other">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d sekundžių.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d minutės.</item>
+        <item quantity="few">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d minučių.</item>
+        <item quantity="many">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d minutės.</item>
+        <item quantity="other">Pasiektas užklausų limitas. Bandykite dar kartą po %1$d minučių.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Teikėjas nepriėmė prisijungimo</string>
+    <string name="system_push_public_permission">Reikia leidimo</string>
+    <string name="system_push_public_question">Turi klausimą</string>
+    <string name="system_push_action_allow">Leisti</string>
+    <string name="system_push_action_always_allow">Leiskite visada</string>
+    <string name="system_push_action_deny">Atmesti</string>
+    <string name="system_push_action_reply">Atsakyti</string>
+    <string name="system_push_action_open">Atidaryti</string>
+    <string name="system_push_hint_answer">Įveskite savo atsakymą</string>
+    <string name="system_push_hint_reply">Atsakyti OpenCode</string>
+    <string name="system_push_send_failed">Nepavyko išsiųsti. Palieskite, kad atidarytumėte seansą.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Palieskite, kad tęstumėte OpenCode</string>

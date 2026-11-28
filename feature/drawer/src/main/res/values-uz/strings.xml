@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Yuborilmoqda</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Ruxsat so‘rab bo‘lmadi. Qayta urinib ko‘ring.</string>
-    <string name="drawer_notifications_open_settings_error">Sozlamalarni ochib bo‘lmadi. Android sozlamalarini ochib, Bildirishnomalar → OpenCode bandini tanlang.</string>
     <string name="drawer_delete_session_error">“%1$s”ni o‘chirib bo‘lmadi</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d ta sessiyani o‘chirib bo‘lmadi</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiya ekranini yaxshilashga yordam bering. Topganlaringizni ko‘rsating va o‘zgarishlarni tushuntiring.</string>
     <string name="drawer_appearance_preview_assistant_text">Joylashuvdagi muammoni `SessionView.swift` faylida topdim. Suhbat matni va xabar yozish maydoni mavjud balandlikni bo‘lishadi, shuning uchun klaviatura bilan sinash foydali.</string>
+    <string name="drawer_notifications_change_error">Bildirishnomalarni o‘zgartirib bo‘lmadi. Qayta urinib ko‘ring.</string>
 </resources>

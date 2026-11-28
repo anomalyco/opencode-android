@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">සැසි ධාවන</string>
     <string name="system_channel_session_updates">සැසි යාවත්කාලීන</string>
     <string name="system_channel_shared_items">බෙදාගත් අයිතම</string>
+    <string name="system_channel_push_attention">ඔබේ අවධානය අවශ්‍යයි</string>
+    <string name="system_channel_push_finished">අවසන් විය</string>
+    <string name="system_channel_push_failed">අසාර්ථකයි</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">විධාන %1$dක් ධාවනය කිරීමට අවශ්‍යයි</item>
+        <item quantity="other">විධාන %1$dක් ධාවනය කිරීමට අවශ්‍යයි</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">ගොනු %1$dක් සංස්කරණය කිරීමට අවශ්‍යයි</item>
+        <item quantity="other">ගොනු %1$dක් සංස්කරණය කිරීමට අවශ්‍යයි</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">ගොනු %1$dක් කියවීමට අවශ්‍යයි</item>
+        <item quantity="other">ගොනු %1$dක් කියවීමට අවශ්‍යයි</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">පිටුවක් ලබා ගැනීමට අවශ්‍යයි</string>
+    <string name="system_push_permission_websearch">වෙබයේ සෙවීමට අවශ්‍යයි</string>
+    <string name="system_push_permission_external_directory">ව්‍යාපෘතියෙන් පිටත ෆෝල්ඩරයක් භාවිත කිරීමට අවශ්‍යයි</string>
+    <string name="system_push_permission_other">%1$s භාවිත කිරීමට අවශ්‍යයි</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">තවත් %1$dක්</item>
+        <item quantity="other">තවත් %1$dක්</item>
+    </plurals>
+    <string name="system_push_question_position">ප්‍රශ්න %2$dන් %1$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">විකල්ප %1$dක්</item>
+        <item quantity="other">විකල්ප %1$dක්</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">තවත් විකල්ප %1$dක්</item>
+        <item quantity="other">තවත් විකල්ප %1$dක්</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">පසුබිම් කාර්ය %1$dක් තවමත් ක්‍රියාත්මකයි</item>
+        <item quantity="other">පසුබිම් කාර්ය %1$dක් තවමත් ක්‍රියාත්මකයි</item>
+    </plurals>
+    <string name="system_push_finished">අවසන් විය</string>
+    <string name="system_push_failed">අසාර්ථකයි</string>
+    <string name="system_push_failed_rate_limit">ඉල්ලීම් සීමා කර ඇත</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">ඉල්ලීම් සීමා කර ඇත. තත්පර %1$dකින් නැවත උත්සාහ කරන්න.</item>
+        <item quantity="other">ඉල්ලීම් සීමා කර ඇත. තත්පර %1$dකින් නැවත උත්සාහ කරන්න.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">ඉල්ලීම් සීමා කර ඇත. මිනිත්තු %1$dකින් නැවත උත්සාහ කරන්න.</item>
+        <item quantity="other">ඉල්ලීම් සීමා කර ඇත. මිනිත්තු %1$dකින් නැවත උත්සාහ කරන්න.</item>
+    </plurals>
+    <string name="system_push_failed_auth">සපයන්නා පිවිසීම පිළිගත්තේ නැත</string>
+    <string name="system_push_public_permission">අවසරය අවශ්‍යයි</string>
+    <string name="system_push_public_question">ප්‍රශ්නයක් ඇත</string>
+    <string name="system_push_action_allow">ඉඩ දෙන්න</string>
+    <string name="system_push_action_always_allow">සෑම විටම ඉඩ දෙන්න</string>
+    <string name="system_push_action_deny">ප්‍රතික්ෂේප කරන්න</string>
+    <string name="system_push_action_reply">පිළිතුරු දෙන්න</string>
+    <string name="system_push_action_open">විවෘත කරන්න</string>
+    <string name="system_push_hint_answer">ඔබේම පිළිතුරක් ලියන්න</string>
+    <string name="system_push_hint_reply">OpenCode වෙත පිළිතුරු දෙන්න</string>
+    <string name="system_push_send_failed">යැවීමට නොහැකි විය. සැසිය විවෘත කිරීමට තට්ටු කරන්න.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode තුළ දිගටම කරගෙන යාමට තට්ටු කරන්න</string>

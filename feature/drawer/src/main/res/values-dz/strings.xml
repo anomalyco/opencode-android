@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">གཏང་དོ།</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">གནང་བ་ཞུ་མ་ཚུགས། བསྐྱར་དུ་ཚོད་ལྟ་འབད།</string>
-    <string name="drawer_notifications_open_settings_error">སྒྲིག་སྟངས་ཁ་ཕྱེ་མ་ཚུགས། Android གི་སྒྲིག་སྟངས་ཁ་ཕྱེ་སྟེ་ བརྡ་བསྐུལ་ཚུ་ → OpenCode གདམ།</string>
     <string name="drawer_delete_session_error">“%1$s” བཏོན་གཏང་མ་ཚུགས།</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">ལཱ་ཡུན་ %1$d བཏོན་གཏང་མ་ཚུགས།</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ལཱ་ཡུན་གྱི་གསལ་གཞི་ལེགས་བཅོས་འབད་ནི་ལུ་ཆ་རོགས་འབད། འཚོལ་ཐོབ་མི་ཚུ་སྟོན་ཏེ་ བསྒྱུར་བཅོས་ཚུ་འགྲེལ་བཤད་འབད།</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` ནང་བཀོད་རིས་ཀྱི་དཀའ་ངལ་འཚོལ་ཐོབ་ཅི། ཁ་སླབ་ཡིག་འབེབས་དང་འཕྲིན་དོན་འབྲི་ས་གཉིས་ཀྱིས་ ཡོད་པའི་མཐོ་ཚད་བགོ་སྟེ་ལག་ལེན་འཐབ་དོ། དེ་འབདཝ་ལས་ ལྡེ་སྒྲོམ་ཁ་ཕྱེ་སྟེ་ས་སྟོང་ཉུངམ་ད་ཚོད་ལྟ་འབད་བཏུབ།</string>
+    <string name="drawer_notifications_change_error">བརྡ་བསྐུལ་ཚུ་བསྒྱུར་བཅོས་འབད་མ་ཚུགས། ལོག་འབད་རྩོལ་བསྐྱེད།</string>
 </resources>

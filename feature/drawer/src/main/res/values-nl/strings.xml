@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Verzenden</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Toestemming vragen mislukt. Probeer het opnieuw.</string>
-    <string name="drawer_notifications_open_settings_error">Instellingen openen mislukt. Open de Android-instellingen en kies Meldingen → OpenCode.</string>
     <string name="drawer_delete_session_error">“%1$s” verwijderen mislukt</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d sessie verwijderen mislukt</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Help me het sessiescherm te verbeteren. Laat zien wat je vindt en leg de wijzigingen uit.</string>
     <string name="drawer_appearance_preview_assistant_text">Ik heb het indelingsprobleem gevonden in `SessionView.swift`. De transcriptie en berichtinvoer delen de beschikbare hoogte, dus het toetsenbord is een goede stresstest.</string>
+    <string name="drawer_notifications_change_error">Meldingen wijzigen mislukt. Probeer het opnieuw.</string>
 </resources>

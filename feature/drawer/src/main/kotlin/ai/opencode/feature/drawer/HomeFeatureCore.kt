@@ -59,15 +59,7 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
         else -> Reduced(state)
     }
 
-    Action.NotificationSettingsRequested,
-    is Action.NotificationPermissionLoaded,
-    Action.EnableNotificationsTapped,
-    is Action.NotificationPermissionRequested,
-    is Action.NotificationSettingsOpened,
-    Action.NotifyPluginCheckRequested,
-    is Action.NotifyPluginChecked,
-    Action.NotifyPluginSetUpTapped,
-    -> reduceNotifications(state, action)
+    is Action.Notifications -> reduceNotifications(state, action.action)
 
     Action.Task,
     Action.TranscriptCacheFlushRequested,

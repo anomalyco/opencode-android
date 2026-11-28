@@ -49,21 +49,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Thông báo</string>
-    <string name="settings_notifications_device_header">%1$s này</string>
-    <string name="settings_notifications_device_footer">Thông báo đi qua máy chủ chuyển tiếp không lưu trữ gì. Chỉ các phiên bắt đầu trên %1$s này mới gửi thông báo đến thiết bị này.</string>
-    <string name="settings_notifications_allow">Cho phép thông báo</string>
+    <string name="settings_notifications_notify_about">Thông báo về</string>
+    <string name="settings_notifications_level_all">Mọi thứ</string>
+    <string name="settings_notifications_level_attention">Chỉ khi cần tôi</string>
+    <string name="settings_notifications_off_footer">Nhận thông báo khi phiên hoàn tất, đặt câu hỏi hoặc cần cấp quyền.</string>
+    <string name="settings_notifications_blocked_footer">Thông báo cho OpenCode đang tắt trong cài đặt Android.</string>
+    <string name="settings_notifications_unsupported_footer">Máy chủ này không hỗ trợ thông báo. Hãy cập nhật OpenCode trên máy tính của bạn.</string>
     <string name="settings_notifications_open_android_settings">Mở cài đặt Android</string>
-    <string name="settings_notifications_turn_on">Bật thông báo</string>
-    <string name="settings_notifications_server_header">Máy chủ</string>
-    <string name="settings_notifications_set_up_footer">Mở một phiên với yêu cầu OpenCode cài plugin. Hãy gửi yêu cầu rồi kiểm tra lại.</string>
-    <string name="settings_notifications_plugin_needed_footer">Máy chủ cần plugin thông báo của OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Plugin thông báo</string>
-    <string name="settings_notifications_plugin_installed">Đã cài đặt</string>
-    <string name="settings_notifications_plugin_not_running">Không chạy</string>
-    <string name="settings_notifications_plugin_not_installed">Chưa cài đặt</string>
-    <string name="settings_notifications_plugin_check_failed">Không thể kiểm tra trạng thái</string>
-    <string name="settings_notifications_set_up">Thiết lập bằng OpenCode</string>
-    <string name="settings_notifications_check_again">Kiểm tra lại</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Phiên</string>

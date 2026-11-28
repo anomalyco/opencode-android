@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">កំពុងផ្ញើ</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">មិនអាចស្នើសុំការអនុញ្ញាតបាន។ សូមព្យាយាមម្តងទៀត។</string>
-    <string name="drawer_notifications_open_settings_error">មិនអាចបើកការកំណត់បាន។ សូមបើកការកំណត់ Android ហើយជ្រើសរើស ការជូនដំណឹង → OpenCode។</string>
     <string name="drawer_delete_session_error">មិនអាចលុប “%1$s” បាន</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">មិនអាចលុបសម័យ %1$d បាន</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ជួយខ្ញុំកែលម្អអេក្រង់សម័យ។ បង្ហាញអ្វីដែលអ្នករកឃើញ និងពន្យល់ពីការផ្លាស់ប្តូរ។</string>
     <string name="drawer_appearance_preview_assistant_text">ខ្ញុំរកឃើញបញ្ហាប្លង់ក្នុង `SessionView.swift`។ កំណត់ត្រាសន្ទនា និងប្រអប់សរសេរចែកគ្នាប្រើកម្ពស់ដែលមាន ដូច្នេះការបើកក្តារចុចជួយសាកល្បងប្លង់ពេលទំហំមានកំណត់។</string>
+    <string name="drawer_notifications_change_error">មិនអាចផ្លាស់ប្តូរការជូនដំណឹងបានទេ។ សូមព្យាយាមម្តងទៀត។</string>
 </resources>

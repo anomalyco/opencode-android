@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">正在发送</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">无法请求权限，请重试。</string>
-    <string name="drawer_notifications_open_settings_error">无法打开设置。请打开 Android 设置，选择通知 → OpenCode。</string>
     <string name="drawer_delete_session_error">无法删除“%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">无法删除 %1$d 个会话</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">帮我改进会话界面。告诉我发现了什么，并解释这些改动。</string>
     <string name="drawer_appearance_preview_assistant_text">我在 `SessionView.swift` 中找到了布局问题。对话记录和输入框共用可用高度，所以弹出键盘很适合用来测试布局。</string>
+    <string name="drawer_notifications_change_error">无法更改通知设置，请重试。</string>
 </resources>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Фиристода мешавад</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Дархости иҷозат нашуд. Аз нав кӯшиш кунед.</string>
-    <string name="drawer_notifications_open_settings_error">Кушодани танзимот нашуд. Танзимоти Android-ро кушоед ва Огоҳиҳо → OpenCode-ро интихоб кунед.</string>
     <string name="drawer_delete_session_error">Нест кардани «%1$s» нашуд</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Нест кардани %1$d сессия нашуд</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Барои беҳтар кардани экрани сессия кӯмак кун. Он чизеро, ки ёфтӣ, нишон деҳ ва тағйиротро шарҳ деҳ.</string>
     <string name="drawer_appearance_preview_assistant_text">Мушкили тарҳбандиро дар `SessionView.swift` ёфтам. Матни суҳбат ва майдони паём баландии дастрасро тақсим мекунанд, бинобар ин клавиатура барои санҷиши тарҳ дар фазои маҳдуд муфид аст.</string>
+    <string name="drawer_notifications_change_error">Огоҳиҳоро тағйир додан нашуд. Аз нав кӯшиш кунед.</string>
 </resources>

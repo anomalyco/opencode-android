@@ -82,6 +82,59 @@
     <string name="system_channel_session_runs">세션 실행</string>
     <string name="system_channel_session_updates">세션 업데이트</string>
     <string name="system_channel_shared_items">공유 항목</string>
+    <string name="system_channel_push_attention">확인 필요</string>
+    <string name="system_channel_push_finished">완료됨</string>
+    <string name="system_channel_push_failed">실패</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">명령어 %1$d개 실행 요청</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">파일 %1$d개 편집 요청</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">파일 %1$d개 읽기 요청</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">페이지 가져오기 요청</string>
+    <string name="system_push_permission_websearch">웹 검색 요청</string>
+    <string name="system_push_permission_external_directory">프로젝트 외부 폴더 사용 요청</string>
+    <string name="system_push_permission_other">%1$s 사용 요청</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">외 %1$d개</item>
+    </plurals>
+    <string name="system_push_question_position">질문 %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">선택지 %1$d개</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">선택지 %1$d개 더 있음</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">백그라운드 작업 %1$d개 아직 실행 중</item>
+    </plurals>
+    <string name="system_push_finished">완료됨</string>
+    <string name="system_push_failed">실패</string>
+    <string name="system_push_failed_rate_limit">요청 한도 초과</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">요청 한도를 초과했어요. %1$d초 후에 다시 시도하세요.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">요청 한도를 초과했어요. %1$d분 후에 다시 시도하세요.</item>
+    </plurals>
+    <string name="system_push_failed_auth">공급자에서 로그인을 거부했어요</string>
+    <string name="system_push_public_permission">권한이 필요해요</string>
+    <string name="system_push_public_question">질문이 있어요</string>
+    <string name="system_push_action_allow">허용</string>
+    <string name="system_push_action_always_allow">항상 허용</string>
+    <string name="system_push_action_deny">거부</string>
+    <string name="system_push_action_reply">답장</string>
+    <string name="system_push_action_open">열기</string>
+    <string name="system_push_hint_answer">직접 답변 입력</string>
+    <string name="system_push_hint_reply">OpenCode에 답장하기</string>
+    <string name="system_push_send_failed">보낼 수 없어요. 탭하여 세션을 여세요.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">탭하여 OpenCode에서 계속하기</string>

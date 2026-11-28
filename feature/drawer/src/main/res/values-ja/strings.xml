@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">送信中</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">権限をリクエストできませんでした。もう一度試してください。</string>
-    <string name="drawer_notifications_open_settings_error">設定を開けませんでした。Androidの設定を開き、通知 → OpenCodeを選んでください。</string>
     <string name="drawer_delete_session_error">「%1$s」を削除できませんでした</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">%1$d件のセッションを削除できませんでした</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">セッション画面の改善を手伝って。気づいた点を教えて、変更内容を説明して。</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`にレイアウトの問題が見つかりました。会話履歴と入力欄が画面の高さを分け合うため、キーボードを表示するとレイアウトの崩れを確認しやすくなります。</string>
+    <string name="drawer_notifications_change_error">通知設定を変更できませんでした。もう一度試してください。</string>
 </resources>

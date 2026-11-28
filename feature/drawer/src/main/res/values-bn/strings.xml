@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">পাঠানো হচ্ছে</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">অনুমতি চাওয়া যায়নি। আবার চেষ্টা করুন।</string>
-    <string name="drawer_notifications_open_settings_error">সেটিংস খোলা যায়নি। Android সেটিংস খুলে বিজ্ঞপ্তি → OpenCode বেছে নিন।</string>
     <string name="drawer_delete_session_error">“%1$s” মোছা যায়নি</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$dটি সেশন মোছা যায়নি</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">সেশন স্ক্রিন আরও ভালো করতে সাহায্য করুন। কী পেলেন দেখান আর পরিবর্তনগুলো বুঝিয়ে দিন।</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`-এ লেআউটের সমস্যাটি পেয়েছি। ট্রান্সক্রিপ্ট আর কম্পোজার উপলব্ধ উচ্চতা ভাগ করে নেয়, তাই কীবোর্ড দিয়ে লেআউটটি ভালোভাবে পরীক্ষা করা যায়।</string>
+    <string name="drawer_notifications_change_error">বিজ্ঞপ্তি পরিবর্তন করা যায়নি। আবার চেষ্টা করুন।</string>
 </resources>

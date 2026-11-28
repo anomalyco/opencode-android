@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Fráboðanir</string>
-    <string name="settings_notifications_device_header">Hesin %1$s</string>
-    <string name="settings_notifications_device_footer">Fráboðanir fara um ein millumambætara, sum einki goymir. Bert setur, sum eru byrjaðar á hesum %1$s, senda fráboðanir higar.</string>
-    <string name="settings_notifications_allow">Loyv fráboðanum</string>
+    <string name="settings_notifications_notify_about">Boða frá um</string>
+    <string name="settings_notifications_level_all">Alt</string>
+    <string name="settings_notifications_level_attention">Bert tá ið brúk er fyri mær</string>
+    <string name="settings_notifications_off_footer">Fá eina fráboðan, tá ið ein seta endar, setir ein spurning ella krevur loyvi.</string>
+    <string name="settings_notifications_blocked_footer">Fráboðanir eru sløktar fyri OpenCode í Android-innstillingunum.</string>
+    <string name="settings_notifications_unsupported_footer">Hesin ambætarin stuðlar ikki fráboðanum. Dagfør OpenCode á tíni teldu.</string>
     <string name="settings_notifications_open_android_settings">Opna Android-innstillingar</string>
-    <string name="settings_notifications_turn_on">Tendra fráboðanir</string>
-    <string name="settings_notifications_server_header">Ambætari</string>
-    <string name="settings_notifications_set_up_footer">Opnar eina setu, sum biður OpenCode leggja tilskotið inn. Send boðini og kanna so aftur.</string>
-    <string name="settings_notifications_plugin_needed_footer">Ambætarin krevur OpenCode-tilskotið til fráboðanir.</string>
-    <string name="settings_notifications_notify_plugin">Fráboðanartilskot</string>
-    <string name="settings_notifications_plugin_installed">Lagt inn</string>
-    <string name="settings_notifications_plugin_not_running">Koyrir ikki</string>
-    <string name="settings_notifications_plugin_not_installed">Ikki lagt inn</string>
-    <string name="settings_notifications_plugin_check_failed">Kundi ikki kanna støðuna</string>
-    <string name="settings_notifications_set_up">Set upp við OpenCode</string>
-    <string name="settings_notifications_check_again">Kanna aftur</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Setur</string>

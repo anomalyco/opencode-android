@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">সেশন চালানো</string>
     <string name="system_channel_session_updates">সেশন আপডেট</string>
     <string name="system_channel_shared_items">শেয়ার করা আইটেম</string>
+    <string name="system_channel_push_attention">আপনাকে প্রয়োজন</string>
+    <string name="system_channel_push_finished">শেষ হয়েছে</string>
+    <string name="system_channel_push_failed">ব্যর্থ হয়েছে</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$dটি কমান্ড চালাতে চায়</item>
+        <item quantity="other">%1$dটি কমান্ড চালাতে চায়</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$dটি ফাইল সম্পাদনা করতে চায়</item>
+        <item quantity="other">%1$dটি ফাইল সম্পাদনা করতে চায়</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$dটি ফাইল পড়তে চায়</item>
+        <item quantity="other">%1$dটি ফাইল পড়তে চায়</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">একটি পেজ ফেচ করতে চায়</string>
+    <string name="system_push_permission_websearch">ওয়েবে অনুসন্ধান করতে চায়</string>
+    <string name="system_push_permission_external_directory">প্রকল্পের বাইরের একটি ফোল্ডার ব্যবহার করতে চায়</string>
+    <string name="system_push_permission_other">%1$s ব্যবহার করতে চায়</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">আরও %1$dটি</item>
+        <item quantity="other">আরও %1$dটি</item>
+    </plurals>
+    <string name="system_push_question_position">%2$dটির মধ্যে প্রশ্ন %1$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$dটি বিকল্প</item>
+        <item quantity="other">%1$dটি বিকল্প</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">আরও %1$dটি বিকল্প</item>
+        <item quantity="other">আরও %1$dটি বিকল্প</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">ব্যাকগ্রাউন্ডে %1$dটি কাজ এখনও চলছে</item>
+        <item quantity="other">ব্যাকগ্রাউন্ডে %1$dটি কাজ এখনও চলছে</item>
+    </plurals>
+    <string name="system_push_finished">শেষ হয়েছে</string>
+    <string name="system_push_failed">ব্যর্থ হয়েছে</string>
+    <string name="system_push_failed_rate_limit">অনুরোধের সীমা পূর্ণ হয়েছে</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">অনুরোধের সীমা পূর্ণ হয়েছে। %1$d সেকেন্ড পর আবার চেষ্টা করুন।</item>
+        <item quantity="other">অনুরোধের সীমা পূর্ণ হয়েছে। %1$d সেকেন্ড পর আবার চেষ্টা করুন।</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">অনুরোধের সীমা পূর্ণ হয়েছে। %1$d মিনিট পর আবার চেষ্টা করুন।</item>
+        <item quantity="other">অনুরোধের সীমা পূর্ণ হয়েছে। %1$d মিনিট পর আবার চেষ্টা করুন।</item>
+    </plurals>
+    <string name="system_push_failed_auth">প্রদানকারী সাইন-ইন গ্রহণ করেনি</string>
+    <string name="system_push_public_permission">অনুমতি প্রয়োজন</string>
+    <string name="system_push_public_question">একটি প্রশ্ন আছে</string>
+    <string name="system_push_action_allow">অনুমতি দিন</string>
+    <string name="system_push_action_always_allow">সর্বদা অনুমতি দিন</string>
+    <string name="system_push_action_deny">অস্বীকার করুন</string>
+    <string name="system_push_action_reply">জবাব দিন</string>
+    <string name="system_push_action_open">খুলুন</string>
+    <string name="system_push_hint_answer">নিজের উত্তর লিখুন</string>
+    <string name="system_push_hint_reply">OpenCode-কে জবাব দিন</string>
+    <string name="system_push_send_failed">পাঠানো যায়নি। সেশন খুলতে ট্যাপ করুন।</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-এ চালিয়ে যেতে ট্যাপ করুন</string>

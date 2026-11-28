@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Istuntojen suoritukset</string>
     <string name="system_channel_session_updates">Istuntojen päivitykset</string>
     <string name="system_channel_shared_items">Jaetut kohteet</string>
+    <string name="system_channel_push_attention">Vaatii huomiota</string>
+    <string name="system_channel_push_finished">Valmis</string>
+    <string name="system_channel_push_failed">Epäonnistui</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Haluaa suorittaa %1$d komennon</item>
+        <item quantity="other">Haluaa suorittaa %1$d komentoa</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Haluaa muokata %1$d tiedostoa</item>
+        <item quantity="other">Haluaa muokata %1$d tiedostoa</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Haluaa lukea %1$d tiedoston</item>
+        <item quantity="other">Haluaa lukea %1$d tiedostoa</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Haluaa noutaa sivun</string>
+    <string name="system_push_permission_websearch">Haluaa hakea verkosta</string>
+    <string name="system_push_permission_external_directory">Haluaa käyttää projektin ulkopuolista kansiota</string>
+    <string name="system_push_permission_other">Haluaa käyttää työkalua %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d lisää</item>
+        <item quantity="other">%1$d lisää</item>
+    </plurals>
+    <string name="system_push_question_position">Kysymys %1$d / %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d vaihtoehto</item>
+        <item quantity="other">%1$d vaihtoehtoa</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d vaihtoehto lisää</item>
+        <item quantity="other">%1$d vaihtoehtoa lisää</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d taustatehtävä yhä käynnissä</item>
+        <item quantity="other">%1$d taustatehtävää yhä käynnissä</item>
+    </plurals>
+    <string name="system_push_finished">Valmis</string>
+    <string name="system_push_failed">Epäonnistui</string>
+    <string name="system_push_failed_rate_limit">Pyyntöraja ylitetty</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Pyyntöraja ylitetty. Yritä uudelleen %1$d sekunnin kuluttua.</item>
+        <item quantity="other">Pyyntöraja ylitetty. Yritä uudelleen %1$d sekunnin kuluttua.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Pyyntöraja ylitetty. Yritä uudelleen %1$d minuutin kuluttua.</item>
+        <item quantity="other">Pyyntöraja ylitetty. Yritä uudelleen %1$d minuutin kuluttua.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Palveluntarjoaja ei hyväksynyt kirjautumista</string>
+    <string name="system_push_public_permission">Vaatii luvan</string>
+    <string name="system_push_public_question">Kysymys odottaa</string>
+    <string name="system_push_action_allow">Salli</string>
+    <string name="system_push_action_always_allow">Salli aina</string>
+    <string name="system_push_action_deny">Kiellä</string>
+    <string name="system_push_action_reply">Vastaa</string>
+    <string name="system_push_action_open">Avaa</string>
+    <string name="system_push_hint_answer">Kirjoita oma vastaus</string>
+    <string name="system_push_hint_reply">Vastaa OpenCodelle</string>
+    <string name="system_push_send_failed">Lähetys epäonnistui. Avaa istunto napauttamalla.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Jatka OpenCodessa napauttamalla</string>

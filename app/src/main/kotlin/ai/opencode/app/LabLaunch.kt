@@ -30,7 +30,10 @@ internal object LabLaunch {
         }
         val labServerURL = intent.getStringExtra("lab-server-url")
         val isLab = labServerURL != null
-        if (labServerURL != null) OpenCodeServer(url = labServerURL, username = "opencode", password = "").remember()
+        if (labServerURL != null) {
+            val password = intent.getStringExtra("lab-server-password").orEmpty()
+            OpenCodeServer(url = labServerURL, username = "opencode", password = password).remember()
+        }
         if (isLab && intent.getBooleanExtra("lab-reset-model-preferences", false)) {
             shared(SharedKeys.favoriteModelIDs).set(emptySet())
             shared(SharedKeys.recentModelIDs).set(emptyList())

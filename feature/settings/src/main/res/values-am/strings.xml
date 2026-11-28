@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">ማሳወቂያዎች</string>
-    <string name="settings_notifications_device_header">ይህ %1$s</string>
-    <string name="settings_notifications_device_footer">ማሳወቂያዎች ምንም በማያስቀምጥ አስተላላፊ በኩል ይላካሉ። ለዚህ %1$s ማሳወቂያ የሚላከው በእሱ ላይ ለተጀመሩ ክፍለ ጊዜዎች ብቻ ነው።</string>
-    <string name="settings_notifications_allow">ማሳወቂያዎችን ፍቀድ</string>
+    <string name="settings_notifications_notify_about">ማሳወቂያ የሚላክባቸው</string>
+    <string name="settings_notifications_level_all">ሁሉም ነገር</string>
+    <string name="settings_notifications_level_attention">እኔን ሲፈልግ ብቻ</string>
+    <string name="settings_notifications_off_footer">ክፍለ ጊዜ ሲጠናቀቅ፣ ጥያቄ ሲጠይቅ ወይም ፈቃድ ሲፈልግ ማሳወቂያ ያግኙ።</string>
+    <string name="settings_notifications_blocked_footer">በAndroid ቅንብሮች ውስጥ ለOpenCode ማሳወቂያዎች ጠፍተዋል።</string>
+    <string name="settings_notifications_unsupported_footer">ይህ አገልጋይ ማሳወቂያዎችን አይደግፍም። በኮምፒውተርዎ ላይ OpenCodeን ያዘምኑ።</string>
     <string name="settings_notifications_open_android_settings">የAndroid ቅንብሮችን ክፈት</string>
-    <string name="settings_notifications_turn_on">ማሳወቂያዎችን አብራ</string>
-    <string name="settings_notifications_server_header">አገልጋይ</string>
-    <string name="settings_notifications_set_up_footer">ፕለጊኑን እንዲጭን OpenCodeን የሚጠይቅ ክፍለ ጊዜ ይከፍታል። ጥያቄውን ይላኩና እንደገና ያረጋግጡ።</string>
-    <string name="settings_notifications_plugin_needed_footer">አገልጋዩ የOpenCode notify ፕለጊን ያስፈልገዋል።</string>
-    <string name="settings_notifications_notify_plugin">የማሳወቂያ ፕለጊን</string>
-    <string name="settings_notifications_plugin_installed">ተጭኗል</string>
-    <string name="settings_notifications_plugin_not_running">እየሠራ አይደለም</string>
-    <string name="settings_notifications_plugin_not_installed">አልተጫነም</string>
-    <string name="settings_notifications_plugin_check_failed">ሁኔታውን ማረጋገጥ አልተቻለም</string>
-    <string name="settings_notifications_set_up">በOpenCode አዋቅር</string>
-    <string name="settings_notifications_check_again">እንደገና አረጋግጥ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ክፍለ-ጊዜዎች</string>

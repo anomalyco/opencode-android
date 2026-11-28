@@ -49,21 +49,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">通知</string>
-    <string name="settings_notifications_device_header">この%1$s</string>
-    <string name="settings_notifications_device_footer">通知はデータを保存しない中継サーバーを経由します。この%1$sで開始したセッションの通知だけが届きます。</string>
-    <string name="settings_notifications_allow">通知を許可</string>
+    <string name="settings_notifications_notify_about">通知する内容</string>
+    <string name="settings_notifications_level_all">すべて</string>
+    <string name="settings_notifications_level_attention">対応が必要なときのみ</string>
+    <string name="settings_notifications_off_footer">セッションが完了したときや、質問・許可が必要なときに通知を受け取ります。</string>
+    <string name="settings_notifications_blocked_footer">Androidの設定でOpenCodeの通知がオフになっています。</string>
+    <string name="settings_notifications_unsupported_footer">このサーバーは通知に対応していません。コンピューターのOpenCodeを更新してください。</string>
     <string name="settings_notifications_open_android_settings">Androidの設定を開く</string>
-    <string name="settings_notifications_turn_on">通知をオンにする</string>
-    <string name="settings_notifications_server_header">サーバー</string>
-    <string name="settings_notifications_set_up_footer">OpenCodeにプラグインのインストールを依頼するセッションを開きます。メッセージを送信してから、もう一度確認してください。</string>
-    <string name="settings_notifications_plugin_needed_footer">サーバーにOpenCodeのnotifyプラグインが必要です。</string>
-    <string name="settings_notifications_notify_plugin">notifyプラグイン</string>
-    <string name="settings_notifications_plugin_installed">インストール済み</string>
-    <string name="settings_notifications_plugin_not_running">停止中</string>
-    <string name="settings_notifications_plugin_not_installed">未インストール</string>
-    <string name="settings_notifications_plugin_check_failed">状態を確認できませんでした</string>
-    <string name="settings_notifications_set_up">OpenCodeで設定</string>
-    <string name="settings_notifications_check_again">もう一度確認</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">セッション</string>

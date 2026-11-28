@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">খরচ</string>
     <string name="session_sheet_media">মিডিয়া</string>
     <string name="session_sheet_media_value">ফাইল ও লিঙ্ক</string>
-    <string name="session_always_notify">সবসময় জানান</string>
-    <string name="session_always_notify_message_phone">প্রতিটি জবাব শেষ হলে এই ফোনে জানান, এমনকি বার্তা এখান থেকে না পাঠালেও।</string>
-    <string name="session_always_notify_message_tablet">প্রতিটি জবাব শেষ হলে এই ট্যাবলেটে জানান, এমনকি বার্তা এখান থেকে না পাঠালেও।</string>
     <string name="session_delete_session">সেশন মুছুন</string>
     <string name="session_rename_placeholder">শিরোনাম</string>
     <string name="session_auto_rename">স্বয়ংক্রিয় নাম পরিবর্তন</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">সেশন ফর্ক করা যায়নি</string>
     <string name="session_sheet_save_export_failed">রপ্তানি সংরক্ষণ করা যায়নি</string>
     <string name="session_sheet_export_failed_title">সেশন রপ্তানি করা যায়নি</string>
-    <string name="session_sheet_notifications_off_message">আগে সেটিংসে বিজ্ঞপ্তি চালু করুন।</string>
-    <string name="session_sheet_always_notify_on_failed_title">‘সবসময় জানান’ চালু করা যায়নি</string>
-    <string name="session_sheet_always_notify_off_failed_title">‘সবসময় জানান’ বন্ধ করা যায়নি</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">সার্ভার ফাইল সমর্থন করে না</string>

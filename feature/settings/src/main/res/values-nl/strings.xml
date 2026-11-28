@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Meldingen</string>
-    <string name="settings_notifications_device_header">Deze %1$s</string>
-    <string name="settings_notifications_device_footer">Meldingen gaan via een tussenserver die niets opslaat. Alleen sessies die op deze %1$s zijn gestart, sturen er meldingen naartoe.</string>
-    <string name="settings_notifications_allow">Meldingen toestaan</string>
+    <string name="settings_notifications_notify_about">Meldingen voor</string>
+    <string name="settings_notifications_level_all">Alles</string>
+    <string name="settings_notifications_level_attention">Alleen als ik nodig ben</string>
+    <string name="settings_notifications_off_footer">Ontvang een melding als een sessie klaar is, een vraag stelt of toestemming nodig heeft.</string>
+    <string name="settings_notifications_blocked_footer">Meldingen voor OpenCode staan uit in de Android-instellingen.</string>
+    <string name="settings_notifications_unsupported_footer">Deze server ondersteunt geen meldingen. Werk OpenCode bij op je computer.</string>
     <string name="settings_notifications_open_android_settings">Android-instellingen openen</string>
-    <string name="settings_notifications_turn_on">Meldingen inschakelen</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Opent een sessie met het verzoek aan OpenCode om de plug-in te installeren. Verzend het bericht en controleer opnieuw.</string>
-    <string name="settings_notifications_plugin_needed_footer">De server heeft de OpenCode notify-plug-in nodig.</string>
-    <string name="settings_notifications_notify_plugin">Notify-plug-in</string>
-    <string name="settings_notifications_plugin_installed">Geïnstalleerd</string>
-    <string name="settings_notifications_plugin_not_running">Niet actief</string>
-    <string name="settings_notifications_plugin_not_installed">Niet geïnstalleerd</string>
-    <string name="settings_notifications_plugin_check_failed">Status controleren mislukt</string>
-    <string name="settings_notifications_set_up">Instellen met OpenCode</string>
-    <string name="settings_notifications_check_again">Opnieuw controleren</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessies</string>

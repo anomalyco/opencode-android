@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Teavitused</string>
-    <string name="settings_notifications_device_header">See %1$s</string>
-    <string name="settings_notifications_device_footer">Teavitused liiguvad läbi vahendusserveri, mis ei salvesta midagi. Siia saadavad teavitusi ainult seadmes %1$s alustatud seansid.</string>
-    <string name="settings_notifications_allow">Luba teavitused</string>
+    <string name="settings_notifications_notify_about">Millest teavitada</string>
+    <string name="settings_notifications_level_all">Kõik</string>
+    <string name="settings_notifications_level_attention">Ainult siis, kui mind on vaja</string>
+    <string name="settings_notifications_off_footer">Saad teavituse, kui seanss lõpeb, esitab küsimuse või vajab luba.</string>
+    <string name="settings_notifications_blocked_footer">OpenCode\'i teavitused on Androidi seadetes välja lülitatud.</string>
+    <string name="settings_notifications_unsupported_footer">See server ei toeta teavitusi. Uuenda OpenCode\'i oma arvutis.</string>
     <string name="settings_notifications_open_android_settings">Ava Androidi seaded</string>
-    <string name="settings_notifications_turn_on">Lülita teavitused sisse</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Avab seansi, kus palutakse OpenCode\'il plugin paigaldada. Saada sõnum ja kontrolli siis uuesti.</string>
-    <string name="settings_notifications_plugin_needed_footer">Server vajab OpenCode notify pluginat.</string>
-    <string name="settings_notifications_notify_plugin">Notify plugin</string>
-    <string name="settings_notifications_plugin_installed">Paigaldatud</string>
-    <string name="settings_notifications_plugin_not_running">Ei tööta</string>
-    <string name="settings_notifications_plugin_not_installed">Paigaldamata</string>
-    <string name="settings_notifications_plugin_check_failed">Oleku kontroll ebaõnnestus</string>
-    <string name="settings_notifications_set_up">Seadista OpenCode\'iga</string>
-    <string name="settings_notifications_check_again">Kontrolli uuesti</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Seansid</string>

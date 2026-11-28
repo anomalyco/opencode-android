@@ -82,6 +82,77 @@
     <string name="system_channel_session_runs">Exécution des sessions</string>
     <string name="system_channel_session_updates">Mises à jour des sessions</string>
     <string name="system_channel_shared_items">Éléments partagés</string>
+    <string name="system_channel_push_attention">A besoin de vous</string>
+    <string name="system_channel_push_finished">Terminé</string>
+    <string name="system_channel_push_failed">Échec</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Veut exécuter %1$d commande</item>
+        <item quantity="many">Veut exécuter %1$d commandes</item>
+        <item quantity="other">Veut exécuter %1$d commandes</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Veut modifier %1$d fichier</item>
+        <item quantity="many">Veut modifier %1$d fichiers</item>
+        <item quantity="other">Veut modifier %1$d fichiers</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Veut lire %1$d fichier</item>
+        <item quantity="many">Veut lire %1$d fichiers</item>
+        <item quantity="other">Veut lire %1$d fichiers</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Veut récupérer une page</string>
+    <string name="system_push_permission_websearch">Veut rechercher sur le Web</string>
+    <string name="system_push_permission_external_directory">Veut utiliser un dossier hors du projet</string>
+    <string name="system_push_permission_other">Veut utiliser %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s : %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d de plus</item>
+        <item quantity="many">%1$d de plus</item>
+        <item quantity="other">%1$d de plus</item>
+    </plurals>
+    <string name="system_push_question_position">Question %1$d sur %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d option</item>
+        <item quantity="many">%1$d options</item>
+        <item quantity="other">%1$d options</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d autre option</item>
+        <item quantity="many">%1$d autres options</item>
+        <item quantity="other">%1$d autres options</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d tâche en arrière-plan toujours en cours</item>
+        <item quantity="many">%1$d tâches en arrière-plan toujours en cours</item>
+        <item quantity="other">%1$d tâches en arrière-plan toujours en cours</item>
+    </plurals>
+    <string name="system_push_finished">Terminé</string>
+    <string name="system_push_failed">Échec</string>
+    <string name="system_push_failed_rate_limit">Limite de requêtes atteinte</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Limite de requêtes atteinte. Réessayez dans %1$d seconde.</item>
+        <item quantity="many">Limite de requêtes atteinte. Réessayez dans %1$d secondes.</item>
+        <item quantity="other">Limite de requêtes atteinte. Réessayez dans %1$d secondes.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Limite de requêtes atteinte. Réessayez dans %1$d minute.</item>
+        <item quantity="many">Limite de requêtes atteinte. Réessayez dans %1$d minutes.</item>
+        <item quantity="other">Limite de requêtes atteinte. Réessayez dans %1$d minutes.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Le fournisseur a refusé la connexion</string>
+    <string name="system_push_public_permission">Autorisation requise</string>
+    <string name="system_push_public_question">A une question</string>
+    <string name="system_push_action_allow">Autoriser</string>
+    <string name="system_push_action_always_allow">Toujours autoriser</string>
+    <string name="system_push_action_deny">Refuser</string>
+    <string name="system_push_action_reply">Répondre</string>
+    <string name="system_push_action_open">Ouvrir</string>
+    <string name="system_push_hint_answer">Écrivez votre réponse</string>
+    <string name="system_push_hint_reply">Répondre à OpenCode</string>
+    <string name="system_push_send_failed">Échec de l’envoi. Appuyez pour ouvrir la session.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Appuyez pour continuer dans OpenCode</string>

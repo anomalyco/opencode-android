@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">Menghantar</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Tidak dapat meminta kebenaran. Cuba lagi.</string>
-    <string name="drawer_notifications_open_settings_error">Tidak dapat membuka tetapan. Buka tetapan Android dan pilih Notifikasi → OpenCode.</string>
     <string name="drawer_delete_session_error">Tidak dapat memadam “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">Tidak dapat memadam %1$d sesi</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya menambah baik skrin sesi. Tunjukkan apa yang anda temui dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemui masalah susun atur dalam `SessionView.swift`. Transkrip dan ruang karang berkongsi ketinggian yang tersedia, jadi papan kekunci berguna untuk menguji had susun atur ini.</string>
+    <string name="drawer_notifications_change_error">Tidak dapat mengubah notifikasi. Cuba lagi.</string>
 </resources>

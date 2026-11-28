@@ -786,7 +786,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         val homeServer = next.homeServer
         if (home != null && homeServer?.persistenceID == destination.serverKey) {
             if (home.sessions.any { it.id == destination.sessionID }) {
-                val opened = next.copy(pendingNotification = null)
+                val opened = next.copy(pendingNotification = null).closingHomeCovers()
                 return Reduced(opened, openSession(opened, destination.sessionID))
             }
             return Reduced(next, loadNotificationSession(destination, homeServer))
@@ -802,7 +802,7 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         if (session == null || session.id != destination.sessionID) {
             return Reduced(next.copy(notificationError = sessionNoLongerAvailableMessage))
         }
-        val inserted = next.insertingSession(session)
+        val inserted = next.insertingSession(session).closingHomeCovers()
         return Reduced(inserted, openSession(inserted, session.id))
     }
 
@@ -894,6 +894,11 @@ class AppFeature : Reducer<AppFeature.State, AppFeature.Action> {
         val home = home ?: return this
         if (home.sessions.any { it.id == session.id }) return this
         return copy(home = home.copy(sessions = listOf(session) + home.sessions))
+    }
+
+    private fun State.closingHomeCovers(): State {
+        val home = home ?: return this
+        return copy(home = home.copy(settings = null, drawerCloseRequests = home.drawerCloseRequests + 1))
     }
 
     private fun openSession(state: State, sessionID: String): Effect<Action> {

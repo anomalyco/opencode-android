@@ -52,21 +52,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Notifications</string>
-    <string name="settings_notifications_device_header">This %1$s</string>
-    <string name="settings_notifications_device_footer">Notifications go through a relay that stores nothing. Only sessions started on this %1$s notify it.</string>
-    <string name="settings_notifications_allow">Allow Notifications</string>
+    <string name="settings_notifications_notify_about">Notify About</string>
+    <string name="settings_notifications_level_all">Everything</string>
+    <string name="settings_notifications_level_attention">Only When It Needs Me</string>
+    <string name="settings_notifications_off_footer">Get a notification when a session finishes, asks a question or needs permission.</string>
+    <string name="settings_notifications_blocked_footer">Notifications are turned off for OpenCode in Android settings.</string>
+    <string name="settings_notifications_unsupported_footer">This server doesn’t support notifications. Update OpenCode on your computer.</string>
     <string name="settings_notifications_open_android_settings">Open Android Settings</string>
-    <string name="settings_notifications_turn_on">Turn On Notifications</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Opens a session that asks OpenCode to install the plugin. Send it, then check again.</string>
-    <string name="settings_notifications_plugin_needed_footer">The server needs the OpenCode notify plugin.</string>
-    <string name="settings_notifications_notify_plugin">Notify Plugin</string>
-    <string name="settings_notifications_plugin_installed">Installed</string>
-    <string name="settings_notifications_plugin_not_running">Not running</string>
-    <string name="settings_notifications_plugin_not_installed">Not installed</string>
-    <string name="settings_notifications_plugin_check_failed">Couldn’t check status</string>
-    <string name="settings_notifications_set_up">Set Up with OpenCode</string>
-    <string name="settings_notifications_check_again">Check Again</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessions</string>

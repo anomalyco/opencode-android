@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Küldés</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nem sikerült engedélyt kérni. Próbálja újra.</string>
-    <string name="drawer_notifications_open_settings_error">Nem sikerült megnyitni a beállításokat. Nyissa meg az Android beállításait, és válassza az Értesítések → OpenCode lehetőséget.</string>
     <string name="drawer_delete_session_error">Nem sikerült törölni: „%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nem sikerült törölni %1$d munkamenetet</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Segítsen javítani a munkamenet képernyőjén. Mutassa meg, mit talál, és magyarázza el a változtatásokat.</string>
     <string name="drawer_appearance_preview_assistant_text">Megtaláltam az elrendezési hibát a `SessionView.swift` fájlban. Az átirat és az üzenetszerkesztő osztozik a rendelkezésre álló magasságon, így a billentyűzettel jól tesztelhető az elrendezés.</string>
+    <string name="drawer_notifications_change_error">Nem sikerült módosítani az értesítéseket. Próbálja újra.</string>
 </resources>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Sendir</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Ekki tókst að biðja um leyfi. Reyndu aftur.</string>
-    <string name="drawer_notifications_open_settings_error">Ekki tókst að opna stillingar. Opnaðu stillingar Android og veldu Tilkynningar → OpenCode.</string>
     <string name="drawer_delete_session_error">Ekki tókst að eyða „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Ekki tókst að eyða %1$d setu</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálpaðu mér að bæta setuskjáinn. Sýndu mér hvað þú finnur og útskýrðu breytingarnar.</string>
     <string name="drawer_appearance_preview_assistant_text">Ég fann vandann í uppsetningunni í `SessionView.swift`. Samtalsskráin og innslátturinn deila lausu hæðinni, svo lyklaborðið reynir vel á uppsetninguna.</string>
+    <string name="drawer_notifications_change_error">Ekki tókst að breyta tilkynningum. Reyndu aftur.</string>
 </resources>

@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Invio</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Impossibile richiedere l\'autorizzazione. Riprova.</string>
-    <string name="drawer_notifications_open_settings_error">Impossibile aprire le impostazioni. Apri le impostazioni di Android e scegli Notifiche → OpenCode.</string>
     <string name="drawer_delete_session_error">Impossibile eliminare “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Impossibile eliminare %1$d sessione</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aiutami a migliorare la schermata della sessione. Mostrami cosa trovi e spiega le modifiche.</string>
     <string name="drawer_appearance_preview_assistant_text">Ho trovato il problema di impaginazione in `SessionView.swift`. La trascrizione e il campo di composizione condividono l\'altezza disponibile, quindi la tastiera è un buon banco di prova.</string>
+    <string name="drawer_notifications_change_error">Impossibile modificare le notifiche. Riprova.</string>
 </resources>

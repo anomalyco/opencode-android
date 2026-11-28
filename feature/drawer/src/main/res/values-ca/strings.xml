@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">S\'està enviant</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">No s\'ha pogut demanar permís. Torna-ho a provar.</string>
-    <string name="drawer_notifications_open_settings_error">No s\'ha pogut obrir la configuració. Obre la configuració d\'Android i tria Notificacions → OpenCode.</string>
     <string name="drawer_delete_session_error">No s\'ha pogut suprimir «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">No s\'ha pogut suprimir %1$d sessió</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajuda\'m a millorar la pantalla de la sessió. Mostra\'m què hi trobes i explica els canvis.</string>
     <string name="drawer_appearance_preview_assistant_text">He trobat el problema de disposició a `SessionView.swift`. La transcripció i el redactor comparteixen l\'alçada disponible, així que el teclat és una bona prova d\'estrès.</string>
+    <string name="drawer_notifications_change_error">No s\'han pogut canviar les notificacions. Torna-ho a provar.</string>
 </resources>

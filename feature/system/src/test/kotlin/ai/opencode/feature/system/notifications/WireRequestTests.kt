@@ -19,14 +19,13 @@ class WireRequestTests {
             url = "https://relay.example/v2/notify/test", expiresAt = now.plusSeconds(30L * 86400),
             token = "device", environment = "development", phonePublicKey = "old",
         )
-        fun reuse(publicKey: String?) = cached.isReusable("device", "development", publicKey, relay, now)
+        fun reuse(publicKey: String) = cached.isReusable("device", "development", publicKey, relay, now)
         assertTrue(reuse("old"))
         assertFalse(reuse("new"))
-        assertTrue("A temporarily locked key store is not a new device identity", reuse(null))
     }
 
     @Test
-    fun oldOrForeignNotificationCapabilitiesNeverReachAPrompt() {
+    fun oldOrForeignCallbacksAreNotReused() {
         val relay = "https://relay.example".toHttpUrl()
         assertTrue(SessionNotifications.isEncryptedCallback("https://relay.example/v2/notify/a_B-3", relay))
         for (address in listOf(

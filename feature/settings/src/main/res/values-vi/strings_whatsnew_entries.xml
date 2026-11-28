@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Yêu cầu vẽ lưu đồ mô tả cách gửi tin nhắn</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Vẽ lưu đồ mô tả cách gửi tin nhắn</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Thông báo khi xong</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Nhận thông báo khi phiên bạn bắt đầu tại đây hoàn tất, kèm tóm tắt ngắn về kết quả.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Bật Luôn thông báo trong bảng tùy chọn của phiên để nhận thông báo cho mọi phản hồi, kể cả khi bắt đầu từ máy tính.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Chạm thông báo để mở phiên tương ứng.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Gửi tin nhắn rồi khóa điện thoại</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Chuyển máy chủ</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Tên máy chủ đang kết nối là tiêu đề ngăn điều hướng. Chạm vào để chuyển máy chủ hoặc thêm máy chủ mới.</string>
@@ -178,13 +171,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_3">Tiếp tục trong OpenCode sẽ mở phiên với nội dung bạn chia sẻ trong ô tin nhắn.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Nếu chưa gửi được, Gửi sau sẽ gửi nội dung khi bạn mở ứng dụng lần tới.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Chia sẻ ảnh chụp màn hình tới OpenCode, nhập câu hỏi rồi chạm Gửi</string>
-
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Số trên biểu tượng ứng dụng</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Biểu tượng ứng dụng hiển thị số phiên chưa đọc hoặc đang chờ bạn, giống số trong Xem cập nhật.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Không tính các phiên đã tắt thông báo.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Cần bật thông báo để dùng tính năng này.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Để một phiên chờ bạn trả lời câu hỏi, rồi về màn hình chính</string>
 
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Bàn phím trượt cùng ngăn điều hướng</string>
@@ -730,17 +716,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Quả cầu giọng nói giờ là Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Quả cầu cuộc gọi giờ mang diện mạo Wisp: một thấu kính phủ lên các chấm sáng được thắp lên bởi giọng nói của cả hai bên, cùng các trạng thái Wisp khi kết nối, lắng nghe, làm việc, nói và chờ bạn. Đây là kiểu quả cầu duy nhất, nên các kiểu cũ và cài đặt Quả cầu đã được bỏ.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Bản xem trước thông báo được mã hóa</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">Với plugin thông báo đã cập nhật và kết nối HTTPS, máy chủ sẽ mã hóa tiêu đề và tin nhắn riêng cho thiết bị này. Nếu không mở được bản xem trước, thông báo chỉ hiện “Hoạt động mới”.</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Phiên vẫn còn khi thư mục đã mất</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Khi thư mục của phiên không còn, chẳng hạn không gian làm việc đã bị xóa, lần gửi thất bại sẽ đề xuất chuyển phiên sang thư mục dự án rồi gửi lại.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Thiết lập thông báo với OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">Trong Cài đặt → Thông báo, chạm Thiết lập với OpenCode để xem lại lời nhắc cài plugin thông báo còn thiếu.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Thẻ cuộc gọi chiếm phần cuối màn hình</string>

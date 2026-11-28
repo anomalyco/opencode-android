@@ -82,6 +82,77 @@
     <string name="system_channel_session_runs">Rulări de sesiuni</string>
     <string name="system_channel_session_updates">Actualizări ale sesiunilor</string>
     <string name="system_channel_shared_items">Elemente distribuite</string>
+    <string name="system_channel_push_attention">Are nevoie de tine</string>
+    <string name="system_channel_push_finished">Încheiat</string>
+    <string name="system_channel_push_failed">Eșuat</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Vrea să ruleze %1$d comandă</item>
+        <item quantity="few">Vrea să ruleze %1$d comenzi</item>
+        <item quantity="other">Vrea să ruleze %1$d de comenzi</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Vrea să editeze %1$d fișier</item>
+        <item quantity="few">Vrea să editeze %1$d fișiere</item>
+        <item quantity="other">Vrea să editeze %1$d de fișiere</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Vrea să citească %1$d fișier</item>
+        <item quantity="few">Vrea să citească %1$d fișiere</item>
+        <item quantity="other">Vrea să citească %1$d de fișiere</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Vrea să preia o pagină</string>
+    <string name="system_push_permission_websearch">Vrea să caute pe web</string>
+    <string name="system_push_permission_external_directory">Vrea să folosească un folder din afara proiectului</string>
+    <string name="system_push_permission_other">Vrea să folosească %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Încă %1$d</item>
+        <item quantity="few">Încă %1$d</item>
+        <item quantity="other">Încă %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Întrebarea %1$d din %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opțiune</item>
+        <item quantity="few">%1$d opțiuni</item>
+        <item quantity="other">%1$d de opțiuni</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Încă %1$d opțiune</item>
+        <item quantity="few">Încă %1$d opțiuni</item>
+        <item quantity="other">Încă %1$d de opțiuni</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d sarcină încă rulează în fundal</item>
+        <item quantity="few">%1$d sarcini încă rulează în fundal</item>
+        <item quantity="other">%1$d de sarcini încă rulează în fundal</item>
+    </plurals>
+    <string name="system_push_finished">Încheiat</string>
+    <string name="system_push_failed">Eșuat</string>
+    <string name="system_push_failed_rate_limit">Limită de solicitări atinsă</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Limită de solicitări atinsă. Încearcă din nou peste %1$d secundă.</item>
+        <item quantity="few">Limită de solicitări atinsă. Încearcă din nou peste %1$d secunde.</item>
+        <item quantity="other">Limită de solicitări atinsă. Încearcă din nou peste %1$d de secunde.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Limită de solicitări atinsă. Încearcă din nou peste %1$d minut.</item>
+        <item quantity="few">Limită de solicitări atinsă. Încearcă din nou peste %1$d minute.</item>
+        <item quantity="other">Limită de solicitări atinsă. Încearcă din nou peste %1$d de minute.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Furnizorul nu a acceptat autentificarea</string>
+    <string name="system_push_public_permission">Necesită permisiune</string>
+    <string name="system_push_public_question">Are o întrebare</string>
+    <string name="system_push_action_allow">Permite</string>
+    <string name="system_push_action_always_allow">Permite mereu</string>
+    <string name="system_push_action_deny">Refuză</string>
+    <string name="system_push_action_reply">Răspunde</string>
+    <string name="system_push_action_open">Deschide</string>
+    <string name="system_push_hint_answer">Scrie propriul răspuns</string>
+    <string name="system_push_hint_reply">Răspunde lui OpenCode</string>
+    <string name="system_push_send_failed">Trimiterea nu a reușit. Atinge pentru a deschide sesiunea.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Atinge pentru a continua în OpenCode</string>

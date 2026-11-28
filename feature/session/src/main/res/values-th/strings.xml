@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">ค่าใช้จ่าย</string>
     <string name="session_sheet_media">สื่อ</string>
     <string name="session_sheet_media_value">ไฟล์และลิงก์</string>
-    <string name="session_always_notify">แจ้งเตือนเสมอ</string>
-    <string name="session_always_notify_message_phone">แจ้งเตือนบนมือถือนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>
-    <string name="session_always_notify_message_tablet">แจ้งเตือนบนแท็บเล็ตนี้ทุกครั้งที่ตอบเสร็จ แม้จะไม่ได้ส่งข้อความจากเครื่องนี้</string>
     <string name="session_delete_session">ลบเซสชัน</string>
     <string name="session_rename_placeholder">ชื่อ</string>
     <string name="session_auto_rename">เปลี่ยนชื่ออัตโนมัติ</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">แตกแขนงเซสชันไม่ได้</string>
     <string name="session_sheet_save_export_failed">บันทึกไฟล์ส่งออกไม่ได้</string>
     <string name="session_sheet_export_failed_title">ส่งออกเซสชันไม่ได้</string>
-    <string name="session_sheet_notifications_off_message">เปิดการแจ้งเตือนในการตั้งค่าก่อน</string>
-    <string name="session_sheet_always_notify_on_failed_title">เปิดการแจ้งเตือนเสมอไม่ได้</string>
-    <string name="session_sheet_always_notify_off_failed_title">ปิดการแจ้งเตือนเสมอไม่ได้</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">เซิร์ฟเวอร์ไม่รองรับไฟล์</string>

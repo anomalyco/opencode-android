@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">보내는 중</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">권한을 요청할 수 없어요. 다시 시도해 주세요.</string>
-    <string name="drawer_notifications_open_settings_error">설정을 열 수 없어요. Android 설정에서 알림 → OpenCode를 선택해 주세요.</string>
     <string name="drawer_delete_session_error">“%1$s” 세션을 삭제할 수 없어요</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">세션 %1$d개를 삭제할 수 없어요</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">세션 화면을 개선해 주세요. 발견한 문제를 보여 주고 변경 사항을 설명해 주세요.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift`에서 레이아웃 문제를 찾았어요. 대화 기록과 입력창이 사용 가능한 높이를 나눠 쓰기 때문에 키보드를 띄워 보면 레이아웃을 점검하기 좋아요.</string>
+    <string name="drawer_notifications_change_error">알림 설정을 변경할 수 없어요. 다시 시도해 주세요.</string>
 </resources>

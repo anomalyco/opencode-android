@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kosten</string>
     <string name="session_sheet_media">Medien</string>
     <string name="session_sheet_media_value">Dateien und Links</string>
-    <string name="session_always_notify">Immer benachrichtigen</string>
-    <string name="session_always_notify_message_phone">Dieses Handy bei jeder fertigen Antwort benachrichtigen, auch auf Nachrichten von anderen Geräten.</string>
-    <string name="session_always_notify_message_tablet">Dieses Tablet bei jeder fertigen Antwort benachrichtigen, auch auf Nachrichten von anderen Geräten.</string>
     <string name="session_delete_session">Sitzung löschen</string>
     <string name="session_rename_placeholder">Titel</string>
     <string name="session_auto_rename">Automatisch umbenennen</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Sitzung konnte nicht abgezweigt werden</string>
     <string name="session_sheet_save_export_failed">Export konnte nicht gespeichert werden</string>
     <string name="session_sheet_export_failed_title">Sitzung konnte nicht exportiert werden</string>
-    <string name="session_sheet_notifications_off_message">Aktiviere zuerst Benachrichtigungen in den Einstellungen.</string>
-    <string name="session_sheet_always_notify_on_failed_title">„Immer benachrichtigen“ konnte nicht aktiviert werden</string>
-    <string name="session_sheet_always_notify_off_failed_title">„Immer benachrichtigen“ konnte nicht deaktiviert werden</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server unterstützt keine Dateien</string>

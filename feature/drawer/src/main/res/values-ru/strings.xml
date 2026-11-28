@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Отправка</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Не удалось запросить разрешение. Попробуйте снова.</string>
-    <string name="drawer_notifications_open_settings_error">Не удалось открыть настройки. Откройте настройки Android и выберите Уведомления → OpenCode.</string>
     <string name="drawer_delete_session_error">Не удалось удалить «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Не удалось удалить %1$d сессию</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помоги улучшить экран сессии. Покажи, что найдёшь, и объясни изменения.</string>
     <string name="drawer_appearance_preview_assistant_text">Я нашёл проблему с компоновкой в `SessionView.swift`. Переписка и поле ввода делят доступную высоту, поэтому открытие клавиатуры — хорошая проверка.</string>
+    <string name="drawer_notifications_change_error">Не удалось изменить настройки уведомлений. Попробуйте снова.</string>
 </resources>

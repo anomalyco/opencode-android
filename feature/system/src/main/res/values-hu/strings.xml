@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Munkamenetek futtatása</string>
     <string name="system_channel_session_updates">Munkamenetek frissítései</string>
     <string name="system_channel_shared_items">Megosztott elemek</string>
+    <string name="system_channel_push_attention">Önre vár</string>
+    <string name="system_channel_push_finished">Befejeződött</string>
+    <string name="system_channel_push_failed">Sikertelen</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d parancsot szeretne futtatni</item>
+        <item quantity="other">%1$d parancsot szeretne futtatni</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d fájlt szeretne szerkeszteni</item>
+        <item quantity="other">%1$d fájlt szeretne szerkeszteni</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d fájlt szeretne olvasni</item>
+        <item quantity="other">%1$d fájlt szeretne olvasni</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Egy oldalt szeretne lekérni</string>
+    <string name="system_push_permission_websearch">Keresni szeretne a weben</string>
+    <string name="system_push_permission_external_directory">A projekten kívüli mappát szeretne használni</string>
+    <string name="system_push_permission_other">%1$s használatát kéri</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">További %1$d</item>
+        <item quantity="other">További %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Kérdés: %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d lehetőség</item>
+        <item quantity="other">%1$d lehetőség</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">További %1$d lehetőség</item>
+        <item quantity="other">További %1$d lehetőség</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d háttérfeladat még fut</item>
+        <item quantity="other">%1$d háttérfeladat még fut</item>
+    </plurals>
+    <string name="system_push_finished">Befejeződött</string>
+    <string name="system_push_failed">Sikertelen</string>
+    <string name="system_push_failed_rate_limit">Kérési korlát elérve</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Kérési korlát elérve. Próbálja újra %1$d másodperc múlva.</item>
+        <item quantity="other">Kérési korlát elérve. Próbálja újra %1$d másodperc múlva.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Kérési korlát elérve. Próbálja újra %1$d perc múlva.</item>
+        <item quantity="other">Kérési korlát elérve. Próbálja újra %1$d perc múlva.</item>
+    </plurals>
+    <string name="system_push_failed_auth">A szolgáltató nem fogadta el a bejelentkezést</string>
+    <string name="system_push_public_permission">Engedély szükséges</string>
+    <string name="system_push_public_question">Kérdése van</string>
+    <string name="system_push_action_allow">Engedélyezés</string>
+    <string name="system_push_action_always_allow">Mindig engedje meg</string>
+    <string name="system_push_action_deny">Megtagadás</string>
+    <string name="system_push_action_reply">Válasz</string>
+    <string name="system_push_action_open">Megnyitás</string>
+    <string name="system_push_hint_answer">Írja be a saját válaszát</string>
+    <string name="system_push_hint_reply">Válasz az OpenCode-nak</string>
+    <string name="system_push_send_failed">Nem sikerült elküldeni. Koppintson a munkamenet megnyitásához.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Koppintson a folytatáshoz az OpenCode-ban</string>

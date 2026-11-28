@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Értesítések</string>
-    <string name="settings_notifications_device_header">Ez a %1$s</string>
-    <string name="settings_notifications_device_footer">Az értesítések egy közvetítőn keresztül érkeznek, amely semmit sem tárol. Csak az ezen az eszközön (%1$s) indított munkamenetek küldenek ide értesítést.</string>
-    <string name="settings_notifications_allow">Értesítések engedélyezése</string>
+    <string name="settings_notifications_notify_about">Értesítés ezekről</string>
+    <string name="settings_notifications_level_all">Mindenről</string>
+    <string name="settings_notifications_level_attention">Csak ha rám van szükség</string>
+    <string name="settings_notifications_off_footer">Értesítést kap, ha egy munkamenet befejeződik, kérdést tesz fel vagy engedélyt kér.</string>
+    <string name="settings_notifications_blocked_footer">Az OpenCode értesítései ki vannak kapcsolva az Android beállításaiban.</string>
+    <string name="settings_notifications_unsupported_footer">Ez a kiszolgáló nem támogatja az értesítéseket. Frissítse az OpenCode-ot a számítógépén.</string>
     <string name="settings_notifications_open_android_settings">Android-beállítások megnyitása</string>
-    <string name="settings_notifications_turn_on">Értesítések bekapcsolása</string>
-    <string name="settings_notifications_server_header">Kiszolgáló</string>
-    <string name="settings_notifications_set_up_footer">Megnyit egy munkamenetet, amelyben megkéri az OpenCode-ot a beépülő modul telepítésére. Küldje el az utasítást, majd ellenőrizze újra.</string>
-    <string name="settings_notifications_plugin_needed_footer">A kiszolgálóhoz szükséges az OpenCode notify beépülő modul.</string>
-    <string name="settings_notifications_notify_plugin">Notify beépülő modul</string>
-    <string name="settings_notifications_plugin_installed">Telepítve</string>
-    <string name="settings_notifications_plugin_not_running">Nem fut</string>
-    <string name="settings_notifications_plugin_not_installed">Nincs telepítve</string>
-    <string name="settings_notifications_plugin_check_failed">Nem sikerült ellenőrizni az állapotot</string>
-    <string name="settings_notifications_set_up">Beállítás az OpenCode-dal</string>
-    <string name="settings_notifications_check_again">Újraellenőrzés</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Munkamenetek</string>

@@ -82,6 +82,77 @@
     <string name="system_channel_session_runs">Pokretanja sesija</string>
     <string name="system_channel_session_updates">Ažuriranja sesija</string>
     <string name="system_channel_shared_items">Podijeljene stavke</string>
+    <string name="system_channel_push_attention">Treba vas</string>
+    <string name="system_channel_push_finished">Završeno</string>
+    <string name="system_channel_push_failed">Neuspješno</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Želi pokrenuti %1$d naredbu</item>
+        <item quantity="few">Želi pokrenuti %1$d naredbe</item>
+        <item quantity="other">Želi pokrenuti %1$d naredbi</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Želi urediti %1$d datoteku</item>
+        <item quantity="few">Želi urediti %1$d datoteke</item>
+        <item quantity="other">Želi urediti %1$d datoteka</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Želi pročitati %1$d datoteku</item>
+        <item quantity="few">Želi pročitati %1$d datoteke</item>
+        <item quantity="other">Želi pročitati %1$d datoteka</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Želi dohvatiti stranicu</string>
+    <string name="system_push_permission_websearch">Želi pretražiti web</string>
+    <string name="system_push_permission_external_directory">Želi koristiti mapu izvan projekta</string>
+    <string name="system_push_permission_other">Želi koristiti %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Još %1$d</item>
+        <item quantity="few">Još %1$d</item>
+        <item quantity="other">Još %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Pitanje %1$d od %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d opcija</item>
+        <item quantity="few">%1$d opcije</item>
+        <item quantity="other">%1$d opcija</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Još %1$d opcija</item>
+        <item quantity="few">Još %1$d opcije</item>
+        <item quantity="other">Još %1$d opcija</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d pozadinski zadatak još je u tijeku</item>
+        <item quantity="few">%1$d pozadinska zadatka još su u tijeku</item>
+        <item quantity="other">%1$d pozadinskih zadataka još je u tijeku</item>
+    </plurals>
+    <string name="system_push_finished">Završeno</string>
+    <string name="system_push_failed">Neuspješno</string>
+    <string name="system_push_failed_rate_limit">Dosegnuto ograničenje zahtjeva</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d sekundu.</item>
+        <item quantity="few">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d sekunde.</item>
+        <item quantity="other">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d sekundi.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d minutu.</item>
+        <item quantity="few">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d minute.</item>
+        <item quantity="other">Dosegnuto ograničenje zahtjeva. Pokušaj ponovno za %1$d minuta.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Pružatelj usluga nije prihvatio prijavu</string>
+    <string name="system_push_public_permission">Potrebna dozvola</string>
+    <string name="system_push_public_question">Ima pitanje</string>
+    <string name="system_push_action_allow">Dopusti</string>
+    <string name="system_push_action_always_allow">Dopusti uvijek</string>
+    <string name="system_push_action_deny">Odbij</string>
+    <string name="system_push_action_reply">Odgovori</string>
+    <string name="system_push_action_open">Otvori</string>
+    <string name="system_push_hint_answer">Upiši svoj odgovor</string>
+    <string name="system_push_hint_reply">Odgovori OpenCodeu</string>
+    <string name="system_push_send_failed">Slanje nije uspjelo. Dodirni za otvaranje sesije.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Dodirni za nastavak u aplikaciji OpenCode</string>

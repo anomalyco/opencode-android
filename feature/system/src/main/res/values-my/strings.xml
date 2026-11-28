@@ -82,6 +82,59 @@
     <string name="system_channel_session_runs">စက်ရှင် လုပ်ဆောင်မှုများ</string>
     <string name="system_channel_session_updates">စက်ရှင် အပ်ဒိတ်များ</string>
     <string name="system_channel_shared_items">မျှဝေထားသော အရာများ</string>
+    <string name="system_channel_push_attention">သင့်ကို လိုအပ်သည်</string>
+    <string name="system_channel_push_finished">ပြီးဆုံးခဲ့သည်</string>
+    <string name="system_channel_push_failed">မအောင်မြင်ပါ</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">အမိန့် %1$d ခု လုပ်ဆောင်လိုသည်</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">ဖိုင် %1$d ခု တည်းဖြတ်လိုသည်</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">ဖိုင် %1$d ခု ဖတ်လိုသည်</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">စာမျက်နှာတစ်ခု ရယူလိုသည်</string>
+    <string name="system_push_permission_websearch">ဝဘ်တွင် ရှာဖွေလိုသည်</string>
+    <string name="system_push_permission_external_directory">ပရောဂျက်ပြင်ပရှိ ဖိုင်တွဲတစ်ခုကို သုံးလိုသည်</string>
+    <string name="system_push_permission_other">%1$s ကို သုံးလိုသည်</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">နောက်ထပ် %1$d ခု</item>
+    </plurals>
+    <string name="system_push_question_position">မေးခွန်း %1$d / %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">ရွေးချယ်စရာ %1$d ခု</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">နောက်ထပ် ရွေးချယ်စရာ %1$d ခု</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">နောက်ကွယ်လုပ်ငန်း %1$d ခု လုပ်ဆောင်နေဆဲဖြစ်သည်</item>
+    </plurals>
+    <string name="system_push_finished">ပြီးဆုံးခဲ့သည်</string>
+    <string name="system_push_failed">မအောင်မြင်ပါ</string>
+    <string name="system_push_failed_rate_limit">တောင်းဆိုမှု ကန့်သတ်ခံရသည်</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">တောင်းဆိုမှု ကန့်သတ်ခံရသည်။ %1$d စက္ကန့်အကြာတွင် ပြန်ကြိုးစားပါ။</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">တောင်းဆိုမှု ကန့်သတ်ခံရသည်။ %1$d မိနစ်အကြာတွင် ပြန်ကြိုးစားပါ။</item>
+    </plurals>
+    <string name="system_push_failed_auth">ဝန်ဆောင်မှုပေးသူက အကောင့်ဝင်မှုကို လက်မခံပါ</string>
+    <string name="system_push_public_permission">ခွင့်ပြုချက် လိုအပ်သည်</string>
+    <string name="system_push_public_question">မေးခွန်းတစ်ခု ရှိသည်</string>
+    <string name="system_push_action_allow">ခွင့်ပြုပါ</string>
+    <string name="system_push_action_always_allow">အမြဲခွင့်ပြုပါ။</string>
+    <string name="system_push_action_deny">ငြင်းဆို</string>
+    <string name="system_push_action_reply">ပြန်ဖြေပါ</string>
+    <string name="system_push_action_open">ဖွင့်ပါ။</string>
+    <string name="system_push_hint_answer">ကိုယ်ပိုင်အဖြေ ရိုက်ထည့်ပါ</string>
+    <string name="system_push_hint_reply">OpenCode ကို ပြန်ဖြေပါ</string>
+    <string name="system_push_send_failed">မပို့နိုင်ပါ။ စက်ရှင်ကို ဖွင့်ရန် နှိပ်ပါ။</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode တွင် ဆက်လုပ်ရန် နှိပ်ပါ</string>

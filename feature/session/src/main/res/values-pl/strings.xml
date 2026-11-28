@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Koszt</string>
     <string name="session_sheet_media">Multimedia</string>
     <string name="session_sheet_media_value">Pliki i linki</string>
-    <string name="session_always_notify">Zawsze powiadamiaj</string>
-    <string name="session_always_notify_message_phone">Powiadamiaj ten telefon o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
-    <string name="session_always_notify_message_tablet">Powiadamiaj ten tablet o każdej gotowej odpowiedzi, także na wiadomości wysłane z innych urządzeń.</string>
     <string name="session_delete_session">Usuń sesję</string>
     <string name="session_rename_placeholder">Tytuł</string>
     <string name="session_auto_rename">Nazwij automatycznie</string>
@@ -274,9 +271,6 @@
     <string name="session_sheet_fork_failed_title">Nie udało się rozwidlić sesji</string>
     <string name="session_sheet_save_export_failed">Nie udało się zapisać eksportu</string>
     <string name="session_sheet_export_failed_title">Nie udało się wyeksportować sesji</string>
-    <string name="session_sheet_notifications_off_message">Najpierw włącz powiadomienia w ustawieniach.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nie udało się włączyć opcji „Zawsze powiadamiaj”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nie udało się wyłączyć opcji „Zawsze powiadamiaj”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serwer nie obsługuje plików</string>

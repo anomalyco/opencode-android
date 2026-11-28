@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Oturum çalıştırmaları</string>
     <string name="system_channel_session_updates">Oturum güncellemeleri</string>
     <string name="system_channel_shared_items">Paylaşılan öğeler</string>
+    <string name="system_channel_push_attention">Sizi bekliyor</string>
+    <string name="system_channel_push_finished">Tamamlandı</string>
+    <string name="system_channel_push_failed">Başarısız</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d komut çalıştırmak istiyor</item>
+        <item quantity="other">%1$d komut çalıştırmak istiyor</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d dosya düzenlemek istiyor</item>
+        <item quantity="other">%1$d dosya düzenlemek istiyor</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d dosya okumak istiyor</item>
+        <item quantity="other">%1$d dosya okumak istiyor</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Bir sayfa getirmek istiyor</string>
+    <string name="system_push_permission_websearch">Web\'de arama yapmak istiyor</string>
+    <string name="system_push_permission_external_directory">Proje dışında bir klasör kullanmak istiyor</string>
+    <string name="system_push_permission_other">%1$s kullanmak istiyor</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">%1$d tane daha</item>
+        <item quantity="other">%1$d tane daha</item>
+    </plurals>
+    <string name="system_push_question_position">Soru %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d seçenek</item>
+        <item quantity="other">%1$d seçenek</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">%1$d seçenek daha</item>
+        <item quantity="other">%1$d seçenek daha</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d arka plan işi hâlâ çalışıyor</item>
+        <item quantity="other">%1$d arka plan işi hâlâ çalışıyor</item>
+    </plurals>
+    <string name="system_push_finished">Tamamlandı</string>
+    <string name="system_push_failed">Başarısız</string>
+    <string name="system_push_failed_rate_limit">Hız sınırına ulaşıldı</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Hız sınırına ulaşıldı. %1$d saniye sonra tekrar deneyin.</item>
+        <item quantity="other">Hız sınırına ulaşıldı. %1$d saniye sonra tekrar deneyin.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Hız sınırına ulaşıldı. %1$d dakika sonra tekrar deneyin.</item>
+        <item quantity="other">Hız sınırına ulaşıldı. %1$d dakika sonra tekrar deneyin.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Sağlayıcı oturum açmayı kabul etmedi</string>
+    <string name="system_push_public_permission">İzin gerekiyor</string>
+    <string name="system_push_public_question">Bir sorusu var</string>
+    <string name="system_push_action_allow">İzin ver</string>
+    <string name="system_push_action_always_allow">Her zaman izin ver</string>
+    <string name="system_push_action_deny">Reddet</string>
+    <string name="system_push_action_reply">Yanıtla</string>
+    <string name="system_push_action_open">Aç</string>
+    <string name="system_push_hint_answer">Kendi yanıtınızı yazın</string>
+    <string name="system_push_hint_reply">OpenCode\'a yanıt verin</string>
+    <string name="system_push_send_failed">Gönderilemedi. Oturumu açmak için dokunun.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode\'da devam etmek için dokunun</string>

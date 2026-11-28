@@ -52,21 +52,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Oznámení</string>
-    <string name="settings_notifications_device_header">Toto zařízení (%1$s)</string>
-    <string name="settings_notifications_device_footer">Oznámení procházejí přes prostředníka, který nic neukládá. Na toto zařízení (%1$s) chodí jen oznámení z relací, které na něm byly spuštěny.</string>
-    <string name="settings_notifications_allow">Povolit oznámení</string>
+    <string name="settings_notifications_notify_about">Oznamovat</string>
+    <string name="settings_notifications_level_all">Všechno</string>
+    <string name="settings_notifications_level_attention">Jen když mě potřebuje</string>
+    <string name="settings_notifications_off_footer">Dostanete oznámení, když relace skončí, položí otázku nebo vyžaduje oprávnění.</string>
+    <string name="settings_notifications_blocked_footer">Oznámení pro OpenCode jsou v nastavení Androidu vypnutá.</string>
+    <string name="settings_notifications_unsupported_footer">Tento server nepodporuje oznámení. Aktualizujte OpenCode na svém počítači.</string>
     <string name="settings_notifications_open_android_settings">Otevřít nastavení Androidu</string>
-    <string name="settings_notifications_turn_on">Zapnout oznámení</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Otevře relaci se žádostí, aby OpenCode nainstaloval plugin. Odešlete ji a pak stav znovu zkontrolujte.</string>
-    <string name="settings_notifications_plugin_needed_footer">Server potřebuje plugin OpenCode notify.</string>
-    <string name="settings_notifications_notify_plugin">Plugin notify</string>
-    <string name="settings_notifications_plugin_installed">Nainstalován</string>
-    <string name="settings_notifications_plugin_not_running">Neběží</string>
-    <string name="settings_notifications_plugin_not_installed">Nenainstalován</string>
-    <string name="settings_notifications_plugin_check_failed">Nepodařilo se ověřit stav</string>
-    <string name="settings_notifications_set_up">Nastavit pomocí OpenCode</string>
-    <string name="settings_notifications_check_again">Znovu zkontrolovat</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Relace</string>

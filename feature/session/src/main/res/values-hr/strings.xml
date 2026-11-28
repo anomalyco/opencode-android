@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Trošak</string>
     <string name="session_sheet_media">Mediji</string>
     <string name="session_sheet_media_value">Datoteke i veze</string>
-    <string name="session_always_notify">Uvijek obavijesti</string>
-    <string name="session_always_notify_message_phone">Obavijesti ovaj telefon kad god je odgovor spreman, čak i za poruke koje niste poslali odavde.</string>
-    <string name="session_always_notify_message_tablet">Obavijesti ovaj tablet kad god je odgovor spreman, čak i za poruke koje niste poslali odavde.</string>
     <string name="session_delete_session">Izbriši sesiju</string>
     <string name="session_rename_placeholder">Naslov</string>
     <string name="session_auto_rename">Automatski preimenuj</string>
@@ -266,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Nije moguće odvojiti u novu sesiju</string>
     <string name="session_sheet_save_export_failed">Nije moguće spremiti izvoz</string>
     <string name="session_sheet_export_failed_title">Nije moguće izvesti sesiju</string>
-    <string name="session_sheet_notifications_off_message">Najprije uključite obavijesti u postavkama.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nije moguće uključiti „Uvijek obavijesti”</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nije moguće isključiti „Uvijek obavijesti”</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Poslužitelj ne podržava datoteke</string>

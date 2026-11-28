@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">შეტყობინებები</string>
-    <string name="settings_notifications_device_header">ეს %1$s</string>
-    <string name="settings_notifications_device_footer">შეტყობინებები გადის შუამავალ სერვერზე, რომელიც არაფერს ინახავს. ამ მოწყობილობაზე (%1$s) მხოლოდ მასზე დაწყებული სესიების შეტყობინებები მოდის.</string>
-    <string name="settings_notifications_allow">შეტყობინებების დაშვება</string>
+    <string name="settings_notifications_notify_about">შემატყობინე</string>
+    <string name="settings_notifications_level_all">ყველაფერი</string>
+    <string name="settings_notifications_level_attention">მხოლოდ როცა ვჭირდები</string>
+    <string name="settings_notifications_off_footer">მიიღეთ შეტყობინება, როცა სესია დასრულდება, კითხვას დასვამს ან ნებართვა დასჭირდება.</string>
+    <string name="settings_notifications_blocked_footer">OpenCode-ის შეტყობინებები გამორთულია Android-ის პარამეტრებში.</string>
+    <string name="settings_notifications_unsupported_footer">ამ სერვერს შეტყობინებების მხარდაჭერა არ აქვს. განაახლეთ OpenCode თქვენს კომპიუტერზე.</string>
     <string name="settings_notifications_open_android_settings">Android პარამეტრების გახსნა</string>
-    <string name="settings_notifications_turn_on">შეტყობინებების ჩართვა</string>
-    <string name="settings_notifications_server_header">სერვერი</string>
-    <string name="settings_notifications_set_up_footer">ხსნის სესიას მოთხოვნით, რომ OpenCode-მა დანამატი დააყენოს. გაგზავნეთ მოთხოვნა, შემდეგ ხელახლა შეამოწმეთ.</string>
-    <string name="settings_notifications_plugin_needed_footer">სერვერს OpenCode-ის notify დანამატი სჭირდება.</string>
-    <string name="settings_notifications_notify_plugin">შეტყობინებების დანამატი</string>
-    <string name="settings_notifications_plugin_installed">დაყენებულია</string>
-    <string name="settings_notifications_plugin_not_running">არ მუშაობს</string>
-    <string name="settings_notifications_plugin_not_installed">არ არის დაყენებული</string>
-    <string name="settings_notifications_plugin_check_failed">სტატუსის შემოწმება ვერ მოხერხდა</string>
-    <string name="settings_notifications_set_up">გამართვა OpenCode-ით</string>
-    <string name="settings_notifications_check_again">ხელახლა შემოწმება</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">სესიები</string>

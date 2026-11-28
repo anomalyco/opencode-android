@@ -49,21 +49,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Notifikasi</string>
-    <string name="settings_notifications_device_header">%1$s ini</string>
-    <string name="settings_notifications_device_footer">Notifikasi melalui perantara yang tidak menyimpan apa pun. Hanya sesi yang dimulai di %1$s ini yang mengirim notifikasi ke perangkat ini.</string>
-    <string name="settings_notifications_allow">Izinkan notifikasi</string>
+    <string name="settings_notifications_notify_about">Beri tahu tentang</string>
+    <string name="settings_notifications_level_all">Semuanya</string>
+    <string name="settings_notifications_level_attention">Hanya saat memerlukan saya</string>
+    <string name="settings_notifications_off_footer">Dapatkan notifikasi saat sesi selesai, mengajukan pertanyaan, atau memerlukan izin.</string>
+    <string name="settings_notifications_blocked_footer">Notifikasi untuk OpenCode dinonaktifkan di pengaturan Android.</string>
+    <string name="settings_notifications_unsupported_footer">Server ini tidak mendukung notifikasi. Perbarui OpenCode di komputer Anda.</string>
     <string name="settings_notifications_open_android_settings">Buka pengaturan Android</string>
-    <string name="settings_notifications_turn_on">Aktifkan notifikasi</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Membuka sesi untuk meminta OpenCode memasang plugin. Kirim pesannya, lalu periksa lagi.</string>
-    <string name="settings_notifications_plugin_needed_footer">Server memerlukan plugin OpenCode notify.</string>
-    <string name="settings_notifications_notify_plugin">Plugin notify</string>
-    <string name="settings_notifications_plugin_installed">Terpasang</string>
-    <string name="settings_notifications_plugin_not_running">Tidak berjalan</string>
-    <string name="settings_notifications_plugin_not_installed">Belum terpasang</string>
-    <string name="settings_notifications_plugin_check_failed">Gagal memeriksa status</string>
-    <string name="settings_notifications_set_up">Siapkan dengan OpenCode</string>
-    <string name="settings_notifications_check_again">Periksa lagi</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesi</string>

@@ -4,7 +4,6 @@ import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.server.live.ServerInfoPayload
 import ai.opencode.server.live.request
 import ai.opencode.server.model.OpenCodeHomeSnapshot
-import ai.opencode.server.model.OpenCodeSession
 import ai.opencode.server.testing.WireFixture
 import ai.opencode.server.testing.WireFixture.Reply
 import kotlinx.coroutines.test.runTest
@@ -17,7 +16,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import java.net.URI
-import java.time.Instant
 import java.util.concurrent.atomic.AtomicBoolean
 
 class AppFeatureTests {
@@ -45,18 +43,6 @@ class AppFeatureTests {
             ),
             cache,
         )
-
-        // A session cached before Always Notify has no `alwaysNotify`.
-        val beforeAlwaysNotify = """{"serverID":"kit|https://saved.example","snapshot":{"projects":[],"sessions":[{"id":"ses_1","title":"Release","projectID":"global","directory":"/tmp","updatedAt":"2026-05-09T01:46:40Z","cost":0.5}],"activeSessionIDs":[]}}"""
-        val session = json.decodeFromString(CachedHomeSnapshot.serializer(), beforeAlwaysNotify).snapshot.sessions.first()
-        assertEquals(
-            OpenCodeSession(
-                id = "ses_1", serverTitle = "Release", projectID = "global", directory = "/tmp",
-                updatedAt = Instant.parse("2026-05-09T01:46:40Z"), cost = 0.5,
-            ),
-            session,
-        )
-        assertFalse(session.alwaysNotify)
     }
 
     @Test

@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Çykdajy</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Faýllar we baglanyşyklar</string>
-    <string name="session_always_notify">Elmydama habar ber</string>
-    <string name="session_always_notify_message_phone">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu telefona bildiriş iber.</string>
-    <string name="session_always_notify_message_tablet">Her jogap taýýar bolanda, hatda habar bu ýerden iberilmedik bolsa-da, bu planşete bildiriş iber.</string>
     <string name="session_delete_session">Sessiýany poz</string>
     <string name="session_rename_placeholder">At</string>
     <string name="session_auto_rename">Adyny awtomatik üýtgetmek</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Sessiýany şahalandyryp bolmady</string>
     <string name="session_sheet_save_export_failed">Eksporty saklap bolmady</string>
     <string name="session_sheet_export_failed_title">Sessiýany eksport edip bolmady</string>
-    <string name="session_sheet_notifications_off_message">Ilki Sazlamalarda bildirişleri açyň.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Elmydama habar bermegi açyp bolmady</string>
-    <string name="session_sheet_always_notify_off_failed_title">Elmydama habar bermegi öçürip bolmady</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serwer faýllary goldamaýar</string>

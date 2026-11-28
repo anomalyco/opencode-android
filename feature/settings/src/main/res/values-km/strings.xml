@@ -49,21 +49,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">ការជូនដំណឹង</string>
-    <string name="settings_notifications_device_header">%1$s នេះ</string>
-    <string name="settings_notifications_device_footer">ការជូនដំណឹងឆ្លងកាត់សេវាបញ្ជូនបន្តដែលមិនរក្សាទុកអ្វីទាំងអស់។ មានតែសម័យដែលចាប់ផ្តើមនៅលើ %1$s នេះប៉ុណ្ណោះដែលផ្ញើការជូនដំណឹងមកវា។</string>
-    <string name="settings_notifications_allow">អនុញ្ញាតការជូនដំណឹង</string>
+    <string name="settings_notifications_notify_about">ជូនដំណឹងអំពី</string>
+    <string name="settings_notifications_level_all">អ្វីគ្រប់យ៉ាង</string>
+    <string name="settings_notifications_level_attention">តែពេលត្រូវការខ្ញុំ</string>
+    <string name="settings_notifications_off_footer">ទទួលការជូនដំណឹងនៅពេលសម័យបញ្ចប់ សួរសំណួរ ឬត្រូវការការអនុញ្ញាត។</string>
+    <string name="settings_notifications_blocked_footer">ការជូនដំណឹងត្រូវបានបិទសម្រាប់ OpenCode នៅក្នុងការកំណត់ Android។</string>
+    <string name="settings_notifications_unsupported_footer">ម៉ាស៊ីនមេនេះមិនគាំទ្រការជូនដំណឹងទេ។ ធ្វើបច្ចុប្បន្នភាព OpenCode នៅលើកុំព្យូទ័ររបស់អ្នក។</string>
     <string name="settings_notifications_open_android_settings">បើកការកំណត់ Android</string>
-    <string name="settings_notifications_turn_on">បើកការជូនដំណឹង</string>
-    <string name="settings_notifications_server_header">ម៉ាស៊ីនមេ</string>
-    <string name="settings_notifications_set_up_footer">បើកសម័យដែលស្នើឱ្យ OpenCode ដំឡើងកម្មវិធីជំនួយ។ ផ្ញើសំណើ រួចពិនិត្យម្តងទៀត។</string>
-    <string name="settings_notifications_plugin_needed_footer">ម៉ាស៊ីនមេត្រូវការកម្មវិធីជំនួយជូនដំណឹងរបស់ OpenCode។</string>
-    <string name="settings_notifications_notify_plugin">កម្មវិធីជំនួយជូនដំណឹង</string>
-    <string name="settings_notifications_plugin_installed">បានដំឡើង</string>
-    <string name="settings_notifications_plugin_not_running">មិនកំពុងដំណើរការ</string>
-    <string name="settings_notifications_plugin_not_installed">មិនទាន់ដំឡើង</string>
-    <string name="settings_notifications_plugin_check_failed">មិនអាចពិនិត្យស្ថានភាពបាន</string>
-    <string name="settings_notifications_set_up">រៀបចំជាមួយ OpenCode</string>
-    <string name="settings_notifications_check_again">ពិនិត្យម្តងទៀត</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">សម័យ</string>

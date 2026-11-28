@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Sendir</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Kundi ikki biðja um loyvi. Royn aftur.</string>
-    <string name="drawer_notifications_open_settings_error">Kundi ikki opna innstillingar. Opna Android-innstillingar og vel Fráboðanir → OpenCode.</string>
     <string name="drawer_delete_session_error">Kundi ikki strika „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Kundi ikki strika %1$d setu</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjálp mær at bøta um setuvísingina. Vís mær, hvat tú finnur, og greið frá broytingunum.</string>
     <string name="drawer_appearance_preview_assistant_text">Eg fann uppsetingarfeilin í `SessionView.swift`. Samrøðuteksturin og skriviteigurin deilast um tøku hæddina, so knappaborðið er ein góð roynd undir trýsti.</string>
+    <string name="drawer_notifications_change_error">Kundi ikki broyta fráboðanir. Royn aftur.</string>
 </resources>

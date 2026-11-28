@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Bildirişlər</string>
-    <string name="settings_notifications_device_header">Bu %1$s</string>
-    <string name="settings_notifications_device_footer">Bildirişlər heç nə saxlamayan vasitəçi serverdən keçir. Bu %1$s cihazına yalnız burada başladılan sessiyalardan bildiriş gəlir.</string>
-    <string name="settings_notifications_allow">Bildirişlərə icazə ver</string>
+    <string name="settings_notifications_notify_about">Nə haqqında bildirilsin</string>
+    <string name="settings_notifications_level_all">Hər şey</string>
+    <string name="settings_notifications_level_attention">Yalnız mənə ehtiyac olanda</string>
+    <string name="settings_notifications_off_footer">Sessiya bitəndə, sual verəndə və ya icazə lazım olanda bildiriş alın.</string>
+    <string name="settings_notifications_blocked_footer">Android tənzimləmələrində OpenCode üçün bildirişlər söndürülüb.</string>
+    <string name="settings_notifications_unsupported_footer">Bu server bildirişləri dəstəkləmir. Kompüterinizdə OpenCode-u yeniləyin.</string>
     <string name="settings_notifications_open_android_settings">Android tənzimləmələrini aç</string>
-    <string name="settings_notifications_turn_on">Bildirişləri aktivləşdir</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">OpenCode-dan plagini quraşdırmağı istəyən sessiya açır. Sorğunu göndərin, sonra yenidən yoxlayın.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serverə OpenCode notify plagini lazımdır.</string>
-    <string name="settings_notifications_notify_plugin">Bildiriş plagini</string>
-    <string name="settings_notifications_plugin_installed">Quraşdırılıb</string>
-    <string name="settings_notifications_plugin_not_running">İşləmir</string>
-    <string name="settings_notifications_plugin_not_installed">Quraşdırılmayıb</string>
-    <string name="settings_notifications_plugin_check_failed">Statusu yoxlamaq mümkün olmadı</string>
-    <string name="settings_notifications_set_up">OpenCode ilə quraşdır</string>
-    <string name="settings_notifications_check_again">Yenidən yoxla</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessiyalar</string>

@@ -8,16 +8,13 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 /**
- * FCM, the push channel behind [PushTokenProvider]. Inert without a Firebase configuration:
- * Firebase's init provider makes the default `FirebaseApp` from the `google_app_id`,
- * `gcm_defaultSenderId`, `google_api_key` and `project_id` string resources (what the
- * google-services plugin generates; plain resources in `:app` work too). None ship, so no
- * `FirebaseApp` exists, [FcmPushTokenProvider] fails at once and this service never runs.
+ * FCM, the push channel behind [PushTokenProvider]. Firebase's init provider makes the default
+ * `FirebaseApp` from the `google_app_id`, `gcm_defaultSenderId`, `google_api_key` and
+ * `project_id` string resources in `:app`; a build without them has no `FirebaseApp`, so
+ * [FcmPushTokenProvider] fails at once and this service never runs.
  *
- * The relay is expected to send a data-only, high-priority FCM message whose `data` is the
- * APNs alert's fields (`title`, `body`, `sessionID`, `status`, `ref`), so the app builds the
- * notification itself ([SessionPushNotifications]: the visible session, the badge count)
- * whether it runs or not.
+ * The relay sends a data-only, high-priority FCM message, so the app builds the notification
+ * itself ([SessionPushNotifications]) whether it runs or not.
  */
 class OpenCodeMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
@@ -25,7 +22,6 @@ class OpenCodeMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        // The relay's payload: title, body, sessionID, status and ref, as data.
         SessionPushNotifications.handle(applicationContext, message.data)
     }
 }

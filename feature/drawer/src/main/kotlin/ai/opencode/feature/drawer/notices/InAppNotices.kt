@@ -14,10 +14,12 @@ import kotlinx.coroutines.withContext
  * [SessionPushNotifications.remove], which knows how it posts them.
  */
 class DeliveredNotificationsClient(
-    /** Every notification for these sessions (their thread identifiers). */
+    /** Every notification for these sessions. */
     val removeAll: suspend (sessionIDs: Set<String>) -> Unit,
     /** Only their needs-input notifications, once the request is answered. */
     val removeNeedsInput: suspend (sessionIDs: Set<String>) -> Unit,
+    /** This server's notifications whose session is [read] or, for a request, no longer [waiting]. */
+    val removeStale: suspend (serverKey: String, read: Set<String>, waiting: Set<String>) -> Unit,
 ) {
     companion object Key : DependencyKey<DeliveredNotificationsClient> {
         override val liveValue: DeliveredNotificationsClient by lazy {
@@ -25,9 +27,12 @@ class DeliveredNotificationsClient(
             DeliveredNotificationsClient(
                 removeAll = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = false) } },
                 removeNeedsInput = { ids -> withContext(Dispatchers.Default) { SessionPushNotifications.remove(context, ids, needsInputOnly = true) } },
+                removeStale = { serverKey, read, waiting ->
+                    withContext(Dispatchers.Default) { SessionPushNotifications.removeStale(context, serverKey, read, waiting) }
+                },
             )
         }
-        override val testValue = DeliveredNotificationsClient(removeAll = {}, removeNeedsInput = {})
+        override val testValue = DeliveredNotificationsClient(removeAll = {}, removeNeedsInput = {}, removeStale = { _, _, _ -> })
     }
 }
 

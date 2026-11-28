@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Сессийн ажиллуулалт</string>
     <string name="system_channel_session_updates">Сессийн шинэчлэлтүүд</string>
     <string name="system_channel_shared_items">Хуваалцсан зүйлс</string>
+    <string name="system_channel_push_attention">Таны оролцоо хэрэгтэй</string>
+    <string name="system_channel_push_finished">Дууссан</string>
+    <string name="system_channel_push_failed">Амжилтгүй</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">%1$d тушаал ажиллуулахыг хүсэж байна</item>
+        <item quantity="other">%1$d тушаал ажиллуулахыг хүсэж байна</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">%1$d файл засварлахыг хүсэж байна</item>
+        <item quantity="other">%1$d файл засварлахыг хүсэж байна</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">%1$d файл уншихыг хүсэж байна</item>
+        <item quantity="other">%1$d файл уншихыг хүсэж байна</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Хуудас татахыг хүсэж байна</string>
+    <string name="system_push_permission_websearch">Вэбээс хайхыг хүсэж байна</string>
+    <string name="system_push_permission_external_directory">Төслөөс гадуурх фолдер ашиглахыг хүсэж байна</string>
+    <string name="system_push_permission_other">%1$s ашиглахыг хүсэж байна</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Өөр %1$d</item>
+        <item quantity="other">Өөр %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Асуулт %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d сонголт</item>
+        <item quantity="other">%1$d сонголт</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Өөр %1$d сонголт</item>
+        <item quantity="other">Өөр %1$d сонголт</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d далд ажил ажилласан хэвээр байна</item>
+        <item quantity="other">%1$d далд ажил ажилласан хэвээр байна</item>
+    </plurals>
+    <string name="system_push_finished">Дууссан</string>
+    <string name="system_push_failed">Амжилтгүй</string>
+    <string name="system_push_failed_rate_limit">Хүсэлтийн хязгаарт хүрлээ</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Хүсэлтийн хязгаарт хүрлээ. %1$d секундийн дараа дахин оролдоно уу.</item>
+        <item quantity="other">Хүсэлтийн хязгаарт хүрлээ. %1$d секундийн дараа дахин оролдоно уу.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Хүсэлтийн хязгаарт хүрлээ. %1$d минутын дараа дахин оролдоно уу.</item>
+        <item quantity="other">Хүсэлтийн хязгаарт хүрлээ. %1$d минутын дараа дахин оролдоно уу.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Үйлчилгээ үзүүлэгч нэвтрэлтийг хүлээн авсангүй</string>
+    <string name="system_push_public_permission">Зөвшөөрөл шаардлагатай</string>
+    <string name="system_push_public_question">Асуулт байна</string>
+    <string name="system_push_action_allow">Зөвшөөрөх</string>
+    <string name="system_push_action_always_allow">Үргэлж зөвшөөрөх</string>
+    <string name="system_push_action_deny">Үгүйсгэх</string>
+    <string name="system_push_action_reply">Хариулах</string>
+    <string name="system_push_action_open">Нээх</string>
+    <string name="system_push_hint_answer">Өөрийн хариултаа бичнэ үү</string>
+    <string name="system_push_hint_reply">OpenCode-д хариулах</string>
+    <string name="system_push_send_failed">Илгээж чадсангүй. Сессийг нээхийн тулд товшино уу.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">OpenCode-д үргэлжлүүлэхийн тулд товшино уу</string>

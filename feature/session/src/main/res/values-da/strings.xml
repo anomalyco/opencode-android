@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Pris</string>
     <string name="session_sheet_media">Medier</string>
     <string name="session_sheet_media_value">Filer og links</string>
-    <string name="session_always_notify">Giv altid besked</string>
-    <string name="session_always_notify_message_phone">Giv besked på denne telefon, når et svar er klar, også hvis du ikke skrev herfra.</string>
-    <string name="session_always_notify_message_tablet">Giv besked på denne tablet, når et svar er klar, også hvis du ikke skrev herfra.</string>
     <string name="session_delete_session">Slet session</string>
     <string name="session_rename_placeholder">Titel</string>
     <string name="session_auto_rename">Omdøb automatisk</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Kunne ikke forgrene sessionen</string>
     <string name="session_sheet_save_export_failed">Kunne ikke gemme eksporten</string>
     <string name="session_sheet_export_failed_title">Kunne ikke eksportere sessionen</string>
-    <string name="session_sheet_notifications_off_message">Slå først meddelelser til i indstillingerne.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Kunne ikke slå Giv altid besked til</string>
-    <string name="session_sheet_always_notify_off_failed_title">Kunne ikke slå Giv altid besked fra</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serveren understøtter ikke filer</string>

@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Bildirimler</string>
-    <string name="settings_notifications_device_header">Bu %1$s</string>
-    <string name="settings_notifications_device_footer">Bildirimler, hiçbir şey kaydetmeyen bir aracı sunucudan geçer. Bu %1$s yalnızca üzerinde başlatılan oturumlardan bildirim alır.</string>
-    <string name="settings_notifications_allow">Bildirimlere izin ver</string>
+    <string name="settings_notifications_notify_about">Bildirilecekler</string>
+    <string name="settings_notifications_level_all">Her şey</string>
+    <string name="settings_notifications_level_attention">Yalnızca beni beklediğinde</string>
+    <string name="settings_notifications_off_footer">Bir oturum tamamlandığında, soru sorduğunda veya izin gerektiğinde bildirim alın.</string>
+    <string name="settings_notifications_blocked_footer">Android ayarlarında OpenCode için bildirimler kapalı.</string>
+    <string name="settings_notifications_unsupported_footer">Bu sunucu bildirimleri desteklemiyor. Bilgisayarınızdaki OpenCode\'u güncelleyin.</string>
     <string name="settings_notifications_open_android_settings">Android ayarlarını aç</string>
-    <string name="settings_notifications_turn_on">Bildirimleri aç</string>
-    <string name="settings_notifications_server_header">Sunucu</string>
-    <string name="settings_notifications_set_up_footer">OpenCode\'dan eklentiyi yüklemesini isteyen bir oturum açar. İstemi gönderin, ardından tekrar kontrol edin.</string>
-    <string name="settings_notifications_plugin_needed_footer">Sunucuda OpenCode notify eklentisi gerekiyor.</string>
-    <string name="settings_notifications_notify_plugin">Bildirim eklentisi</string>
-    <string name="settings_notifications_plugin_installed">Yüklü</string>
-    <string name="settings_notifications_plugin_not_running">Çalışmıyor</string>
-    <string name="settings_notifications_plugin_not_installed">Yüklü değil</string>
-    <string name="settings_notifications_plugin_check_failed">Durum kontrol edilemedi</string>
-    <string name="settings_notifications_set_up">OpenCode ile kur</string>
-    <string name="settings_notifications_check_again">Tekrar kontrol et</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Oturumlar</string>

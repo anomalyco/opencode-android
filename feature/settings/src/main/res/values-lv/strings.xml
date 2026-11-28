@@ -51,21 +51,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Paziņojumi</string>
-    <string name="settings_notifications_device_header">Šī ierīce (%1$s)</string>
-    <string name="settings_notifications_device_footer">Paziņojumi tiek pārsūtīti caur starpniekserveri, kas neko nesaglabā. Šī ierīce (%1$s) saņem paziņojumus tikai par tajā sāktām sesijām.</string>
-    <string name="settings_notifications_allow">Atļaut paziņojumus</string>
+    <string name="settings_notifications_notify_about">Paziņot par</string>
+    <string name="settings_notifications_level_all">Viss</string>
+    <string name="settings_notifications_level_attention">Tikai tad, kad nepieciešama uzmanība</string>
+    <string name="settings_notifications_off_footer">Saņem paziņojumu, kad sesija pabeidz darbu, uzdod jautājumu vai prasa atļauju.</string>
+    <string name="settings_notifications_blocked_footer">OpenCode paziņojumi Android iestatījumos ir izslēgti.</string>
+    <string name="settings_notifications_unsupported_footer">Šis serveris neatbalsta paziņojumus. Atjaunini OpenCode savā datorā.</string>
     <string name="settings_notifications_open_android_settings">Atvērt Android iestatījumus</string>
-    <string name="settings_notifications_turn_on">Ieslēgt paziņojumus</string>
-    <string name="settings_notifications_server_header">Serveris</string>
-    <string name="settings_notifications_set_up_footer">Atver sesiju ar lūgumu OpenCode instalēt spraudni. Nosūti ziņu un pārbaudi vēlreiz.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serverim nepieciešams OpenCode paziņojumu spraudnis.</string>
-    <string name="settings_notifications_notify_plugin">Paziņojumu spraudnis</string>
-    <string name="settings_notifications_plugin_installed">Instalēts</string>
-    <string name="settings_notifications_plugin_not_running">Nedarbojas</string>
-    <string name="settings_notifications_plugin_not_installed">Nav instalēts</string>
-    <string name="settings_notifications_plugin_check_failed">Neizdevās pārbaudīt statusu</string>
-    <string name="settings_notifications_set_up">Iestatīt ar OpenCode</string>
-    <string name="settings_notifications_check_again">Pārbaudīt vēlreiz</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesijas</string>

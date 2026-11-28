@@ -51,21 +51,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Obavještenja</string>
-    <string name="settings_notifications_device_header">Ovaj %1$s</string>
-    <string name="settings_notifications_device_footer">Obavještenja idu preko posrednika koji ništa ne pohranjuje. Na ovaj uređaj (%1$s) stižu samo obavještenja za sesije pokrenute na njemu.</string>
-    <string name="settings_notifications_allow">Dozvoli obavještenja</string>
+    <string name="settings_notifications_notify_about">Obavještavaj o</string>
+    <string name="settings_notifications_level_all">Sve</string>
+    <string name="settings_notifications_level_attention">Samo kad zahtijeva pažnju</string>
+    <string name="settings_notifications_off_footer">Primaj obavještenja kad sesija završi, postavi pitanje ili zatraži dozvolu.</string>
+    <string name="settings_notifications_blocked_footer">Obavještenja za OpenCode su isključena u postavkama Androida.</string>
+    <string name="settings_notifications_unsupported_footer">Ovaj server ne podržava obavještenja. Ažuriraj OpenCode na svom računaru.</string>
     <string name="settings_notifications_open_android_settings">Otvori Android postavke</string>
-    <string name="settings_notifications_turn_on">Uključi obavještenja</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Otvara sesiju s upitom da OpenCode instalira plugin. Pošalji upit, pa provjeri ponovo.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serveru je potreban OpenCode plugin za obavještenja.</string>
-    <string name="settings_notifications_notify_plugin">Plugin za obavještenja</string>
-    <string name="settings_notifications_plugin_installed">Instaliran</string>
-    <string name="settings_notifications_plugin_not_running">Nije pokrenut</string>
-    <string name="settings_notifications_plugin_not_installed">Nije instaliran</string>
-    <string name="settings_notifications_plugin_check_failed">Provjera statusa nije uspjela</string>
-    <string name="settings_notifications_set_up">Podesi uz OpenCode</string>
-    <string name="settings_notifications_check_again">Provjeri ponovo</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesije</string>

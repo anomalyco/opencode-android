@@ -82,6 +82,59 @@
     <string name="system_channel_session_runs">Chạy phiên</string>
     <string name="system_channel_session_updates">Cập nhật phiên</string>
     <string name="system_channel_shared_items">Mục được chia sẻ</string>
+    <string name="system_channel_push_attention">Cần bạn</string>
+    <string name="system_channel_push_finished">Đã hoàn tất</string>
+    <string name="system_channel_push_failed">Thất bại</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="other">Muốn chạy %1$d lệnh</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="other">Muốn chỉnh sửa %1$d tệp</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="other">Muốn đọc %1$d tệp</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Muốn tìm nạp một trang</string>
+    <string name="system_push_permission_websearch">Muốn tìm kiếm trên web</string>
+    <string name="system_push_permission_external_directory">Muốn dùng thư mục ngoài dự án</string>
+    <string name="system_push_permission_other">Muốn dùng %1$s</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="other">Thêm %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Câu hỏi %1$d/%2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="other">%1$d lựa chọn</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="other">Thêm %1$d lựa chọn</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="other">%1$d tác vụ nền vẫn đang chạy</item>
+    </plurals>
+    <string name="system_push_finished">Đã hoàn tất</string>
+    <string name="system_push_failed">Thất bại</string>
+    <string name="system_push_failed_rate_limit">Bị giới hạn tốc độ</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="other">Bị giới hạn tốc độ. Thử lại sau %1$d giây.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="other">Bị giới hạn tốc độ. Thử lại sau %1$d phút.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Nhà cung cấp không chấp nhận đăng nhập</string>
+    <string name="system_push_public_permission">Cần cấp quyền</string>
+    <string name="system_push_public_question">Có câu hỏi</string>
+    <string name="system_push_action_allow">Cho phép</string>
+    <string name="system_push_action_always_allow">Cho phép luôn</string>
+    <string name="system_push_action_deny">Từ chối</string>
+    <string name="system_push_action_reply">Trả lời</string>
+    <string name="system_push_action_open">Mở</string>
+    <string name="system_push_hint_answer">Nhập câu trả lời của bạn</string>
+    <string name="system_push_hint_reply">Trả lời OpenCode</string>
+    <string name="system_push_send_failed">Không thể gửi. Chạm để mở phiên.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Chạm để tiếp tục trong OpenCode</string>

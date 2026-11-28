@@ -107,7 +107,6 @@
     <!-- LiveConnection.kt -->
     <string name="server_error_pairing_expired">ይህ የማጣመሪያ ኮድ ጊዜው አልፏል ወይም አስቀድሞ ጥቅም ላይ ውሏል። `opencode pair --remote` እንደገና አሂድ።</string>
     <string name="server_error_pairing_unsupported">ይህ አገልጋይ የማጣመሪያ አገናኞችን አይደግፍም። በኮምፒውተርህ ላይ OpenCodeን አዘምን ወይም አገልጋዩን በእጅ አስገባ።</string>
-    <string name="server_error_notification_previews_need_https">የተመሰጠሩ የማሳወቂያ ቅድመ እይታዎች የHTTPS አገልጋይ ግንኙነት ይፈልጋሉ።</string>
 
     <!-- LiveEvents.kt, LiveTransport.kt, LiveFiles.kt, MediaReferenceFetch.kt, SharedEvents.kt -->
     <string name="server_error_invalid_url">ትክክለኛ የHTTP ወይም HTTPS አገልጋይ URL አስገባ።</string>
@@ -123,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ፕሮጀክቶችንና ክፍለ ጊዜዎችን መጫን አልተቻለም</string>
     <string name="server_error_load_session_family">ተዛማጅ ክፍለ ጊዜዎችን መጫን አልተቻለም</string>
-    <string name="server_error_update_session">ክፍለ ጊዜውን ማዘመን አልተቻለም</string>
     <string name="server_error_load_session_ancestry">የንቁውን ክፍለ ጊዜ መነሻ ክፍለ ጊዜዎች መጫን አልተቻለም</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

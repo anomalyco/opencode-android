@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Wird gesendet</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Berechtigung konnte nicht angefragt werden. Versuche es erneut.</string>
-    <string name="drawer_notifications_open_settings_error">Einstellungen konnten nicht geöffnet werden. Öffne die Android-Einstellungen und wähle Benachrichtigungen → OpenCode.</string>
     <string name="drawer_delete_session_error">„%1$s“ konnte nicht gelöscht werden</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d Sitzung konnte nicht gelöscht werden</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hilf mir, die Sitzungsansicht zu verbessern. Zeig mir, was du findest, und erkläre die Änderungen.</string>
     <string name="drawer_appearance_preview_assistant_text">Ich habe das Layoutproblem in `SessionView.swift` gefunden. Transkript und Nachrichteneingabe teilen sich die verfügbare Höhe. Die Tastatur ist daher ein guter Belastungstest.</string>
+    <string name="drawer_notifications_change_error">Benachrichtigungen konnten nicht geändert werden. Versuche es erneut.</string>
 </resources>

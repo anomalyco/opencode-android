@@ -6,16 +6,17 @@ import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.TestClock
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
+import ai.opencode.feature.settings.NotificationsStatus
 import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.notifications.NotificationPermissionClient
+import ai.opencode.feature.system.notifications.PushLevel
+import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.server.EventStreamOverflow
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flow
@@ -39,85 +40,57 @@ class HomeChildFeatureTests {
 
     private val server = OpenCodeServer(url = "https://home.example", username = "", password = "")
 
-    @Test fun notificationPermissionDecisionIsOwnedByChild() = runTest {
-        for (permission in listOf(NotificationPermission.Enabled, NotificationPermission.Disabled, NotificationPermission.NotDetermined)) {
+    @Test fun turningNotificationsOnAsksPermissionThenTellsTheServer() = runTest {
+        for (permission in listOf(NotificationPermission.Enabled, NotificationPermission.Disabled)) {
+            val off = PushSetting(isOn = false)
+            val on = PushSetting(isOn = true)
             val state = HomeNotificationsFeature.State(
                 server = server,
-                status = HomeNotificationsFeature.Status(notificationPermission = NotificationPermission.NotDetermined),
+                status = NotificationsStatus(permission = NotificationPermission.NotDetermined, setting = off),
             )
-            val prepared = Collections.synchronizedList(mutableListOf<OpenCodeServer>())
+            val told = Collections.synchronizedList(mutableListOf<PushSetting>())
             val store = TestStore(state, HomeNotificationsFeature(), this) {
                 this[NotificationPermissionClient] = NotificationPermissionClient(
-                    status = { permission },
+                    status = { NotificationPermission.NotDetermined },
                     request = { permission },
-                    openSettings = { true },
+                    openSettings = {},
                 )
                 this[SessionNotificationsClient] = SessionNotificationsClient(
                     isAvailable = true,
-                    callbackURL = { null },
-                    prepare = { prepared += it },
-                    forget = {},
+                    setSetting = { _, setting ->
+                        told += setting
+                        true
+                    },
                 )
             }
-            store.send(HomeNotificationsFeature.Action.EnableNotificationsTapped) {
-                it.copy(status = it.status.copy(isRequestingNotifications = true))
+            val settled = if (permission == NotificationPermission.Enabled) on else off
+            store.send(HomeNotificationsFeature.Action.Toggled(true)) {
+                it.copy(status = it.status.copy(setting = on, isChanging = true))
             }
-            store.receive(HomeNotificationsFeature.Action.NotificationPermissionRequested(permission)) {
-                it.copy(
-                    status = it.status.copy(
-                        isRequestingNotifications = false,
-                        notificationSetupError = if (permission == NotificationPermission.NotDetermined) {
-                            "Couldn’t request permission. Try again."
-                        } else {
-                            it.status.notificationSetupError
-                        },
-                    ),
-                )
-            }
-            if (permission == NotificationPermission.NotDetermined) {
-                store.receive(HomeNotificationsFeature.Action.NotificationPermissionLoaded(permission))
-            } else {
-                store.receive(HomeNotificationsFeature.Action.NotificationPermissionLoaded(permission)) {
-                    it.copy(status = it.status.copy(notificationPermission = permission))
-                }
+            store.receive(HomeNotificationsFeature.Action.Changed(permission, settled, null)) {
+                it.copy(status = it.status.copy(permission = permission, setting = settled, isChanging = false))
             }
             store.finish()
-            assertEquals(
-                "$permission",
-                if (permission == NotificationPermission.Enabled) listOf(server) else emptyList(),
-                prepared.toList(),
-            )
+            assertEquals("$permission", if (permission == NotificationPermission.Enabled) listOf(on) else emptyList(), told.toList())
         }
     }
 
-    @Test fun notificationPluginCheckCancelsThePreviousRead() = runTest {
-        val clock = TestClock()
-        var calls = 0
-        val store = TestStore(HomeNotificationsFeature.State(server = server), HomeNotificationsFeature(), this) {
-            this[OpenCodeClient] = this[OpenCodeClient].copy(
-                notifyPluginStatus = {
-                    calls += 1
-                    val call = calls
-                    try {
-                        clock.sleep((if (call == 1) 2 else 1).seconds)
-                    } catch (cancellation: CancellationException) {
-                        throw OpenCodeClientError("Cancelled")
-                    }
-                    if (call == 1) OpenCodeNotifyPluginStatus.Missing else OpenCodeNotifyPluginStatus.Active
-                },
-            )
+    @Test fun aChangeTheServerDidntTakeIsUndone() = runTest {
+        val all = PushSetting(isOn = true, level = PushLevel.All)
+        val state = HomeNotificationsFeature.State(
+            server = server,
+            status = NotificationsStatus(permission = NotificationPermission.Enabled, setting = all),
+        )
+        val store = TestStore(state, HomeNotificationsFeature(), this) {
+            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true, setSetting = { _, _ -> false })
         }
-        store.send(HomeNotificationsFeature.Action.NotifyPluginCheckRequested) {
-            it.copy(status = it.status.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checking))
+        store.send(HomeNotificationsFeature.Action.LevelPicked(PushLevel.Attention)) {
+            it.copy(status = it.status.copy(setting = all.copy(level = PushLevel.Attention), isChanging = true))
         }
-        store.send(HomeNotificationsFeature.Action.NotifyPluginCheckRequested)
-        clock.advance(1.seconds)
-        store.receive(HomeNotificationsFeature.Action.NotifyPluginChecked(OpenCodeNotifyPluginStatus.Active)) {
-            it.copy(status = it.status.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Active)))
+        store.receive(HomeNotificationsFeature.Action.Changed(NotificationPermission.Enabled, all, "Couldn’t change notifications. Try again.")) {
+            it.copy(status = it.status.copy(setting = all, isChanging = false, error = "Couldn’t change notifications. Try again."))
         }
-        clock.advance(1.seconds)
         store.finish()
-        assertEquals(2, calls)
     }
 
     @Test fun connectionRetriesReplaceThePreviousTimerWithoutDisconnecting() = runTest {

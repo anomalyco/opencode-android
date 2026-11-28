@@ -50,21 +50,13 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Varsler</string>
-    <string name="settings_notifications_device_header">Denne enheten (%1$s)</string>
-    <string name="settings_notifications_device_footer">Varsler går via en mellomtjener som ikke lagrer noe. Bare sesjoner startet på denne enheten (%1$s) sender varsler hit.</string>
-    <string name="settings_notifications_allow">Tillat varsler</string>
+    <string name="settings_notifications_notify_about">Varsle om</string>
+    <string name="settings_notifications_level_all">Alt</string>
+    <string name="settings_notifications_level_attention">Bare når den trenger meg</string>
+    <string name="settings_notifications_off_footer">Få varsel når en sesjon er ferdig, stiller et spørsmål eller trenger tillatelse.</string>
+    <string name="settings_notifications_blocked_footer">Varsler er slått av for OpenCode i Android-innstillingene.</string>
+    <string name="settings_notifications_unsupported_footer">Denne serveren støtter ikke varsler. Oppdater OpenCode på datamaskinen din.</string>
     <string name="settings_notifications_open_android_settings">Åpne Android-innstillinger</string>
-    <string name="settings_notifications_turn_on">Slå på varsler</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Åpner en sesjon med en melding som ber OpenCode installere programtillegget. Send meldingen, og sjekk igjen.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serveren trenger varslingsprogramtillegget til OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Varslingsprogramtillegg</string>
-    <string name="settings_notifications_plugin_installed">Installert</string>
-    <string name="settings_notifications_plugin_not_running">Kjører ikke</string>
-    <string name="settings_notifications_plugin_not_installed">Ikke installert</string>
-    <string name="settings_notifications_plugin_check_failed">Kunne ikke sjekke status</string>
-    <string name="settings_notifications_set_up">Sett opp med OpenCode</string>
-    <string name="settings_notifications_check_again">Sjekk igjen</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesjoner</string>

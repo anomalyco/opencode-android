@@ -82,6 +82,68 @@
     <string name="system_channel_session_runs">Иҷрои сессияҳо</string>
     <string name="system_channel_session_updates">Навсозиҳои сессия</string>
     <string name="system_channel_shared_items">Маводҳои мубодилашуда</string>
+    <string name="system_channel_push_attention">Диққати шумо лозим</string>
+    <string name="system_channel_push_finished">Анҷом ёфт</string>
+    <string name="system_channel_push_failed">Ноком шуд</string>
+
+    <!-- Push notifications -->
+    <plurals name="system_push_permission_shell">
+        <item quantity="one">Мехоҳад %1$d фармонро иҷро кунад</item>
+        <item quantity="other">Мехоҳад %1$d фармонро иҷро кунад</item>
+    </plurals>
+    <plurals name="system_push_permission_edit">
+        <item quantity="one">Мехоҳад %1$d файлро таҳрир кунад</item>
+        <item quantity="other">Мехоҳад %1$d файлро таҳрир кунад</item>
+    </plurals>
+    <plurals name="system_push_permission_read">
+        <item quantity="one">Мехоҳад %1$d файлро хонад</item>
+        <item quantity="other">Мехоҳад %1$d файлро хонад</item>
+    </plurals>
+    <string name="system_push_permission_webfetch">Мехоҳад саҳифаро гирад</string>
+    <string name="system_push_permission_websearch">Мехоҳад дар веб ҷустуҷӯ кунад</string>
+    <string name="system_push_permission_external_directory">Мехоҳад папкаи берун аз лоиҳаро истифода барад</string>
+    <string name="system_push_permission_other">Мехоҳад %1$s-ро истифода барад</string>
+    <!-- %1$s is one of the "Wants to…" lines, %2$s the first command, path or address. -->
+    <string name="system_push_permission_collapsed">%1$s: %2$s</string>
+    <plurals name="system_push_more">
+        <item quantity="one">Боз %1$d</item>
+        <item quantity="other">Боз %1$d</item>
+    </plurals>
+    <string name="system_push_question_position">Саволи %1$d аз %2$d</string>
+    <plurals name="system_push_question_options">
+        <item quantity="one">%1$d вариант</item>
+        <item quantity="other">%1$d вариант</item>
+    </plurals>
+    <plurals name="system_push_question_more_options">
+        <item quantity="one">Боз %1$d вариант</item>
+        <item quantity="other">Боз %1$d вариант</item>
+    </plurals>
+    <plurals name="system_push_background">
+        <item quantity="one">%1$d кори пасзамина ҳанӯз иҷро мешавад</item>
+        <item quantity="other">%1$d кори пасзамина ҳанӯз иҷро мешаванд</item>
+    </plurals>
+    <string name="system_push_finished">Анҷом ёфт</string>
+    <string name="system_push_failed">Ноком шуд</string>
+    <string name="system_push_failed_rate_limit">Ҳадди дархост пур шуд</string>
+    <plurals name="system_push_failed_rate_limit_seconds">
+        <item quantity="one">Ҳадди дархост пур шуд. Пас аз %1$d сония аз нав кӯшиш кунед.</item>
+        <item quantity="other">Ҳадди дархост пур шуд. Пас аз %1$d сония аз нав кӯшиш кунед.</item>
+    </plurals>
+    <plurals name="system_push_failed_rate_limit_minutes">
+        <item quantity="one">Ҳадди дархост пур шуд. Пас аз %1$d дақиқа аз нав кӯшиш кунед.</item>
+        <item quantity="other">Ҳадди дархост пур шуд. Пас аз %1$d дақиқа аз нав кӯшиш кунед.</item>
+    </plurals>
+    <string name="system_push_failed_auth">Таъминкунанда воридшавиро қабул накард</string>
+    <string name="system_push_public_permission">Иҷозат лозим</string>
+    <string name="system_push_public_question">Савол дорад</string>
+    <string name="system_push_action_allow">Иҷозат диҳед</string>
+    <string name="system_push_action_always_allow">Ҳамеша иҷозат диҳед</string>
+    <string name="system_push_action_deny">Инкор кардан</string>
+    <string name="system_push_action_reply">Ҷавоб додан</string>
+    <string name="system_push_action_open">Кушодан</string>
+    <string name="system_push_hint_answer">Ҷавоби худро нависед</string>
+    <string name="system_push_hint_reply">Ба OpenCode ҷавоб диҳед</string>
+    <string name="system_push_send_failed">Фиристода нашуд. Барои кушодани сессия ламс кунед.</string>
 
     <!-- Share sheet: notifications -->
     <string name="system_share_continue_notification_body">Барои идома дар OpenCode ламс кунед</string>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Po dërgohet</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nuk u kërkua dot leja. Provo sërish.</string>
-    <string name="drawer_notifications_open_settings_error">Nuk u hapën dot cilësimet. Hap cilësimet e Android dhe zgjidh Njoftimet → OpenCode.</string>
     <string name="drawer_delete_session_error">Nuk u fshi dot “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nuk u fshi dot %1$d sesion</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Më ndihmo të përmirësoj ekranin e sesionit. Më trego çfarë gjen dhe shpjego ndryshimet.</string>
     <string name="drawer_appearance_preview_assistant_text">E gjeta problemin e paraqitjes në `SessionView.swift`. Transkripti dhe zona e shkrimit të mesazheve ndajnë lartësinë e disponueshme, ndaj tastiera është një provë e mirë për këtë.</string>
+    <string name="drawer_notifications_change_error">Nuk u ndryshuan dot njoftimet. Provo sërish.</string>
 </resources>

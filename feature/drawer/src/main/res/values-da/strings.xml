@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Sender</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Kunne ikke anmode om tilladelse. Prøv igen.</string>
-    <string name="drawer_notifications_open_settings_error">Kunne ikke åbne indstillinger. Åbn Android-indstillinger, og vælg Meddelelser → OpenCode.</string>
     <string name="drawer_delete_session_error">Kunne ikke slette “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Kunne ikke slette %1$d session</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjælp mig med at forbedre sessionsskærmen. Vis mig, hvad du finder, og forklar ændringerne.</string>
     <string name="drawer_appearance_preview_assistant_text">Jeg fandt layoutproblemet i `SessionView.swift`. Transskriptionen og skrivefeltet deler den tilgængelige højde, så tastaturet er en god stresstest.</string>
+    <string name="drawer_notifications_change_error">Kunne ikke ændre meddelelser. Prøv igen.</string>
 </resources>
