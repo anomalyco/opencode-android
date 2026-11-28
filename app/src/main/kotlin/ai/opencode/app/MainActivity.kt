@@ -24,6 +24,7 @@ import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import kotlinx.coroutines.CompletableDeferred
 import android.os.Bundle
+import android.os.Process
 import android.os.SystemClock
 import android.view.KeyEvent
 import android.view.ViewGroup
@@ -96,6 +97,12 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // A process started for a backup or restore runs a plain Application, so nothing is installed.
+        if (application !is OpenCodeApplication) {
+            super.onCreate(savedInstanceState)
+            Process.killProcess(Process.myPid())
+            return
+        }
         // Debug lab hooks run before anything reads the store.
         if (savedInstanceState == null) LabLaunch.apply(intent)
         // The transcript cache decodes off the main thread; the store's first read takes it.

@@ -20,6 +20,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
+import android.os.Process
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -29,10 +30,12 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowProcess
 import java.time.Instant
 
 class MultipleWindowsTests {
@@ -227,6 +230,13 @@ class MultipleWindowsFrameworkTests {
             val intent = SceneWindows.intent(RuntimeEnvironment.getApplication(), target)
             assertEquals("Open in New Window still opens its session", target, RootStore.target(intent, saved))
         }
+    }
+
+    @Test
+    fun aProcessStartedForABackupOpensNoWindow() {
+        Robolectric.buildActivity(MainActivity::class.java).create()
+        assertTrue(SceneWindows.all.isEmpty())
+        assertTrue(ShadowProcess.wasKilled(Process.myPid()))
     }
 }
 
