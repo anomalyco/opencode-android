@@ -5,6 +5,7 @@ import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 import ai.opencode.feature.system.notifications.AppBadgeLedger
 import ai.opencode.feature.system.notifications.AppIconBadgeClient
 import ai.opencode.feature.system.notifications.NotificationPermission
@@ -35,6 +36,25 @@ internal fun HomeFeature.askingToNotify(reduced: HomeReduced): HomeReduced {
     return Reduced(reduced.state, Effect.merge(reduced.effect, ask))
 }
 
+/** The session list and its pending requests are fresh from the server. */
+internal val State.isFresh: Boolean
+    get() = isConnected && snapshotLoaded && noticeReadiness == State.NoticeReadiness.settled
+
+/** Removes this server's notifications a lost clear left behind: a read session's, or an answered request's. */
+internal fun removeStaleNotifications(state: State): Effect<Action> {
+    if (!state.isFresh) return Effect.none()
+    val status = state.statusSnapshot()
+    val read = HashSet<String>()
+    for (session in state.sessions) {
+        if (session.parentID != null) continue
+        if (session.isArchived || !status.isUnread(session)) read.add(session.id)
+    }
+    val waiting = state.attentionSessionIDs
+    val serverKey = state.server.persistenceID
+    val delivered = dependency(DeliveredNotificationsClient)
+    return Effect.run { delivered.removeStale(serverKey, read, waiting) }
+}
+
 /** Shows Catch Up's count on the icon, once it can be trusted. */
 @Suppress("UnusedReceiverParameter")
 internal fun HomeFeature.publishAppBadge(state: State, ledger: AppBadgeLedger? = null): Effect<Action> {
@@ -55,8 +75,7 @@ internal val State.appBadgeLedger: AppBadgeLedger? get() = appBadgePublication.l
 /** Change-detection key for [appBadgeLedger]. */
 internal val State.appBadgePublication: AppBadgePublication
     get() {
-        val isReady = isConnected && snapshotLoaded && noticeReadiness == State.NoticeReadiness.settled
-        if (!isReady) return AppBadgePublication.notReady
+        if (!isFresh) return AppBadgePublication.notReady
         return AppBadgePublication(
             isReady = true,
             server = server,

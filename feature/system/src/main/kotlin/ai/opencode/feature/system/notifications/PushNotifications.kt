@@ -158,7 +158,6 @@ internal object PushNotifications {
             .setContentText(shown.text)
             .setSubText(folder)
             .setAutoCancel(true)
-            .setCategory(category(shown.kind))
             .setGroup(group)
             .setContentIntent(open)
             .setDeleteIntent(broadcast(context, PushActionReceiver.ACTION_DISMISSED, target))
@@ -340,12 +339,6 @@ internal object PushNotifications {
         PushShown.Kind.Finished -> SystemNotificationChannels.PUSH_FINISHED
         PushShown.Kind.Failed -> SystemNotificationChannels.PUSH_FAILED
         PushShown.Kind.Other -> SystemNotificationChannels.SESSIONS
-    }
-
-    private fun category(kind: PushShown.Kind): String = when (kind) {
-        PushShown.Kind.Failed -> NotificationCompat.CATEGORY_ERROR
-        PushShown.Kind.Finished -> NotificationCompat.CATEGORY_STATUS
-        else -> NotificationCompat.CATEGORY_MESSAGE
     }
 
     /** What a locked phone that hides notification content shows instead. */

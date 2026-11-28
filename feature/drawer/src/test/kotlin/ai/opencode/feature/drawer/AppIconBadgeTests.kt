@@ -8,6 +8,7 @@ import ai.opencode.core.sharing.shared
 import ai.opencode.core.store.TestStore
 import ai.opencode.core.testing.TestIsolationRule
 import ai.opencode.feature.drawer.HomeFeature.Action
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.system.notifications.AppBadgeLedger
 import ai.opencode.feature.system.notifications.AppIconBadgeClient
@@ -60,11 +61,13 @@ class AppIconBadgeTests {
         state: HomeFeature.State,
         published: MutableList<AppBadgeLedger>,
         attention: () -> Set<String> = { setOf("waiting") },
+        delivered: DeliveredNotificationsClient = DeliveredNotificationsClient.testValue,
     ): TestStore<HomeFeature.State, Action> {
         val listed = state.sessions
         val store = TestStore(state, HomeFeature(), this) {
             this[Clock] = ImmediateClock()
             this[DateClient] = DateClient.constant(Instant.ofEpochSecond(100))
+            this[DeliveredNotificationsClient] = delivered
             this[AppIconBadgeClient] = AppIconBadgeClient(
                 publish = { ledger, persistenceID ->
                     assertEquals(state.server.persistenceID, persistenceID)
@@ -201,6 +204,19 @@ class AppIconBadgeTests {
         assertNotEquals(ShareConversation.serverKey(server.persistenceID), ledger?.serverKey)
         assertEquals(listOf("unread", "waiting"), ledger?.sessionIDs)
         assertEquals(listOf("muted"), ledger?.mutedSessionIDs)
+        store.skipInFlightEffects()
+    }
+
+    @Test fun freshStateClearsThisServersStaleNotifications() = runTest {
+        val stale = Collections.synchronizedList(mutableListOf<Triple<String, Set<String>, Set<String>>>())
+        val delivered = DeliveredNotificationsClient(
+            removeAll = {},
+            removeNeedsInput = {},
+            removeStale = { serverKey, read, waiting -> stale += Triple(serverKey, read, waiting) },
+        )
+        val store = store(home(), published(), delivered = delivered)
+        store.send(Action.AttentionRefreshed(setOf("waiting")))
+        assertEquals(listOf(Triple(server.persistenceID, setOf("read", "waiting"), setOf("waiting"))), stale.toList())
         store.skipInFlightEffects()
     }
 

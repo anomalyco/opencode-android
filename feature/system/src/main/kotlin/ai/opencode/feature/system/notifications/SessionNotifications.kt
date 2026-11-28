@@ -351,13 +351,16 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
     suspend fun isOffered(server: OpenCodeServer): Boolean? =
         runCatching { OpenCodeClient.offersPush(server) }.onFailure { if (it is CancellationException) throw it }.getOrNull()
 
-    /** Forgets a removed server's ref, callback, choice and notification key. */
+    /** Forgets a removed server's ref, callback, choice and notification key, and removes its notifications. */
     suspend fun forget(serverKey: String) {
         registering.withLock {
             registered.remove(serverKey)
             val ref = saved.value.refs[serverKey]
             saved.update { it.copy(refs = it.refs - serverKey, callbacks = it.callbacks - serverKey, settings = it.settings - serverKey) }
-            if (ref != null) runCatching { keys.remove(ref) }
+            if (ref != null) {
+                runCatching { keys.remove(ref) }
+                SessionPushNotifications.removeServer(dependency(AppContext), ref)
+            }
         }
     }
 

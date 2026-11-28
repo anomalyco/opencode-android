@@ -15,6 +15,7 @@ import ai.opencode.feature.media.BrowserLinkPolicy
 import ai.opencode.feature.media.OpenURLClient
 import ai.opencode.feature.media.LinkPreviewPolicy
 import ai.opencode.feature.session.SessionFeature
+import ai.opencode.feature.settings.SettingsFeature
 import ai.opencode.feature.system.NotificationDestination
 import ai.opencode.feature.system.liveactivity.DictationActivityAttributes
 import ai.opencode.feature.system.liveactivity.DictationLiveActivityClient
@@ -130,6 +131,7 @@ class AppFeatureTests {
             home = base.copy(
                 connection = base.connection.copy(connectionStatus = HomeConnectionFeature.State.ConnectionStatus.reconnecting),
                 transcriptCache = base.transcriptCache + (target.id to emptyList()),
+                settings = SettingsFeature.State(),
             ),
         )
         val store = store(
@@ -142,6 +144,8 @@ class AppFeatureTests {
         assertEquals(HomeConnectionFeature.State.ConnectionStatus.reconnecting, store.state.home?.connectionStatus)
         assertEquals(target, store.state.home?.sessionDetail?.session)
         assertNull(store.state.pendingNotification)
+        assertNull(store.state.home?.settings)
+        assertEquals(1, store.state.home?.drawerCloseRequests)
         effects.skipInFlightEffects()
     }
 

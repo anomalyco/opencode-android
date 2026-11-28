@@ -48,6 +48,32 @@ object SessionPushNotifications {
     }
 
     /**
+     * This server's notifications its fresh session list has settled: a needs-input one whose
+     * session isn't [waiting] any more, and a finished or failed one whose session is [read].
+     */
+    fun removeStale(context: Context, serverKey: String, read: Set<String>, waiting: Set<String>) {
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        val ref = SessionNotifications.shared.ref(serverKey)
+        for (notification in manager.activeNotifications) {
+            if (notification.id != NOTIFICATION_ID || notification.tag?.startsWith("$ref:") != true) continue
+            val extras = notification.notification.extras
+            val status = extras.getString(EXTRA_STATUS) ?: continue
+            val sessionID = extras.getString(EXTRA_SESSION) ?: continue
+            val stale = if (status in needsInputStatuses) sessionID !in waiting else sessionID in read
+            if (stale) manager.cancel(notification.tag, notification.id)
+        }
+        PushNotifications.removeEmptySummaries(context)
+    }
+
+    /** Every notification of a server that is being removed from the app. */
+    fun removeServer(context: Context, ref: String) {
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        for (notification in manager.activeNotifications) {
+            if (notification.tag?.startsWith("$ref:") == true) manager.cancel(notification.tag, notification.id)
+        }
+    }
+
+    /**
      * The app icon's count: launchers count from the shown notifications' `number`, so the session
      * notifications still in the shade are reposted silently with the ledger's count.
      */
