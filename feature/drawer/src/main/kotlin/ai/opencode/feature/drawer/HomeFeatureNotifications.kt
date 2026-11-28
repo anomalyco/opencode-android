@@ -27,6 +27,14 @@ internal fun HomeFeature.reduceNotifications(state: State, action: HomeNotificat
     return Reduced(state, Effect.merge(registerForPush(state.server), publishAppBadge(state)))
 }
 
+/** A send is the moment to ask Android's permission, while it has never been asked. */
+@Suppress("UnusedReceiverParameter")
+internal fun HomeFeature.askingToNotify(reduced: HomeReduced): HomeReduced {
+    if (reduced.state.notificationPermission != NotificationPermission.NotDetermined) return reduced
+    val ask = Effect.send<Action>(Action.Notifications(HomeNotificationsFeature.Action.PermissionWanted))
+    return Reduced(reduced.state, Effect.merge(reduced.effect, ask))
+}
+
 /** Shows Catch Up's count on the icon, once it can be trusted. */
 @Suppress("UnusedReceiverParameter")
 internal fun HomeFeature.publishAppBadge(state: State, ledger: AppBadgeLedger? = null): Effect<Action> {

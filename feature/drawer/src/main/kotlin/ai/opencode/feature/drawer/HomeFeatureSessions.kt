@@ -148,7 +148,7 @@ internal fun HomeFeature.reduceSessionDetail(state: State, action: SessionFeatur
                     dependency(ShareInboxClient).donateSuggestion(s.server.persistenceID, sessionID, session.title)
                 }
             }
-            return if (sessionID == null) Reduced(s) else startSessionActivity(s, sessionID)
+            return if (sessionID == null) Reduced(s) else askingToNotify(startSessionActivity(s, sessionID))
         }
 
         is SessionFeature.Action.ViewAcknowledged -> return Reduced(state.notingViewAcknowledged(action.sessionID, action.idle))
@@ -228,7 +228,7 @@ internal fun HomeFeature.reduceSessionDetail(state: State, action: SessionFeatur
             // only now.
             val detail = s.sessionDetail
             if (session.parentID != null || detail?.session?.id != session.id || !detail.isAwaitingReply) return Reduced(s)
-            return startSessionActivity(s, session.id)
+            return askingToNotify(startSessionActivity(s, session.id))
         }
 
         is SessionFeature.Action.Delegate -> return reduceSessionDelegate(state, action.delegate)

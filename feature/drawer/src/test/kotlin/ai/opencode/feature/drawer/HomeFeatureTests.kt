@@ -78,24 +78,30 @@ class HomeFeatureTests {
     ) = OpenCodeSession(id = id, serverTitle = title, projectID = projectID, directory = directory, updatedAt = updatedAt)
 
     @Test
-    fun sendingNeverOffersNotificationSetup() = homeTest { h ->
+    fun aSendAsksToNotifyWhenNeverAsked() = homeTest { h ->
         val session = OpenCodeSession(id = "ses_first", serverTitle = "First", projectID = "p", directory = "/work", updatedAt = Instant.now())
         val state = h.state {
             val base = HomeFeature.State(savedServer, snapshot(listOf(session)))
             base.copy(
                 notificationState = base.notificationState.copy(permission = NotificationPermission.NotDetermined),
-                sessionDetail = SessionFeature.State.session(savedServer, session, cachedItems = emptyList()),
+                sessionDetail = SessionFeature.State.session(savedServer, session, cachedItems = emptyList()).copy(isAwaitingReply = true),
             )
         }
+        val registered = LockIsolated<List<OpenCodeServer>>(emptyList())
         val store = h.store(state) {
-            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                pendingInputs = { _, _ -> emptyList() },
-                message = { _, _, _ -> throw OpenCodeClientError("Missing", statusCode = 404) },
+            this[NotificationPermissionClient] = NotificationPermissionClient(
+                status = { NotificationPermission.NotDetermined },
+                request = { NotificationPermission.Enabled },
+                openSettings = {},
             )
+            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true, register = { server -> registered.append(server) })
         }
         store.exhaustive = false
-        store.send(detail(SessionFeature.Action.PromptAdmitted(sessionID = session.id, messageID = "msg_test", requestEpoch = 1)))
-        assertEquals(NotificationPermission.NotDetermined, store.state.notificationPermission)
+        store.send(detail(SessionFeature.Action.SessionCreated(session)))
+        store.receive(Action.Notifications(HomeNotificationsFeature.Action.PermissionWanted))
+        store.receive(Action.Notifications(HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting())))
+        assertEquals(NotificationPermission.Enabled, store.state.notificationPermission)
+        assertTrue(eventually { registered.value == listOf(savedServer) })
         h.skipInFlightEffects()
     }
 

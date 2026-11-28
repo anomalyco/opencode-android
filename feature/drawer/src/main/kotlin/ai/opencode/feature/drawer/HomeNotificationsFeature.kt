@@ -31,6 +31,8 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
         data class LevelPicked(val level: PushLevel) : Action
         data class Changed(val permission: NotificationPermission, val setting: PushSetting, val error: String?) : Action
         data object AndroidSettingsTapped : Action
+        /** Shows Android's permission prompt. */
+        data object PermissionWanted : Action
     }
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> {
@@ -78,6 +80,18 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
             Action.AndroidSettingsTapped -> {
                 val notificationPermission = dependency(NotificationPermissionClient)
                 Reduced(state, Effect.run { notificationPermission.openSettings() })
+            }
+
+            Action.PermissionWanted -> {
+                val sessionNotifications = dependency(SessionNotificationsClient)
+                val notificationPermission = dependency(NotificationPermissionClient)
+                val serverKey = state.server.persistenceID
+                Reduced(
+                    state,
+                    Effect.run { send ->
+                        send(Action.Loaded(notificationPermission.request(), sessionNotifications.setting(serverKey)))
+                    },
+                )
             }
         }
     }
