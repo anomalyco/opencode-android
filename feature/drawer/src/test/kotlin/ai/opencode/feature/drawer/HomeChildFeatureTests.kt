@@ -50,12 +50,10 @@ class HomeChildFeatureTests {
             )
             val told = Collections.synchronizedList(mutableListOf<PushSetting>())
             val store = TestStore(state, HomeNotificationsFeature(), this) {
-                val permissions = NotificationPermissionClient.testValue
                 this[NotificationPermissionClient] = NotificationPermissionClient(
                     status = { NotificationPermission.NotDetermined },
                     request = { permission },
-                    openSettings = permissions.openSettings,
-                    alerts = permissions.alerts,
+                    openSettings = {},
                 )
                 this[SessionNotificationsClient] = SessionNotificationsClient(
                     isAvailable = true,

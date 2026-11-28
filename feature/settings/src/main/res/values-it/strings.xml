@@ -58,13 +58,6 @@
     <string name="settings_notifications_blocked_footer">Le notifiche per OpenCode sono disattivate nelle impostazioni di Android.</string>
     <string name="settings_notifications_unsupported_footer">Questo server non supporta le notifiche. Aggiorna OpenCode sul tuo computer.</string>
     <string name="settings_notifications_open_android_settings">Apri le impostazioni Android</string>
-    <string name="settings_notifications_alerts_header">Suoni e banner</string>
-    <string name="settings_notifications_needs_you">Ha bisogno di te</string>
-    <string name="settings_notifications_finished">Terminato</string>
-    <string name="settings_notifications_failed">Operazione non riuscita</string>
-    <string name="settings_notifications_alert_banner">Banner, suono</string>
-    <string name="settings_notifications_alert_sound">Suono</string>
-    <string name="settings_notifications_alert_silent">Silenzioso</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessioni</string>

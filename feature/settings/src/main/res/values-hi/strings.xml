@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Android सेटिंग्स में OpenCode के लिए सूचनाएँ बंद हैं।</string>
     <string name="settings_notifications_unsupported_footer">यह सर्वर सूचनाओं का समर्थन नहीं करता। अपने कंप्यूटर पर OpenCode अपडेट करें।</string>
     <string name="settings_notifications_open_android_settings">Android सेटिंग्स खोलें</string>
-    <string name="settings_notifications_alerts_header">ध्वनि और बैनर</string>
-    <string name="settings_notifications_needs_you">आपकी ज़रूरत है</string>
-    <string name="settings_notifications_finished">पूरा हुआ</string>
-    <string name="settings_notifications_failed">असफल</string>
-    <string name="settings_notifications_alert_banner">बैनर, ध्वनि</string>
-    <string name="settings_notifications_alert_sound">ध्वनि</string>
-    <string name="settings_notifications_alert_silent">बिना आवाज़</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">सेशन</string>

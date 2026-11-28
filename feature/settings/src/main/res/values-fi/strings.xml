@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">OpenCoden ilmoitukset on poistettu käytöstä Androidin asetuksissa.</string>
     <string name="settings_notifications_unsupported_footer">Tämä palvelin ei tue ilmoituksia. Päivitä OpenCode tietokoneellasi.</string>
     <string name="settings_notifications_open_android_settings">Avaa Android-asetukset</string>
-    <string name="settings_notifications_alerts_header">Ääni ja bannerit</string>
-    <string name="settings_notifications_needs_you">Vaatii huomiota</string>
-    <string name="settings_notifications_finished">Valmis</string>
-    <string name="settings_notifications_failed">Epäonnistui</string>
-    <string name="settings_notifications_alert_banner">Banneri, ääni</string>
-    <string name="settings_notifications_alert_sound">Ääni</string>
-    <string name="settings_notifications_alert_silent">Äänetön</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Istunnot</string>

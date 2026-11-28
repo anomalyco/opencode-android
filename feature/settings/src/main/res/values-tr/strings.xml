@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Android ayarlarında OpenCode için bildirimler kapalı.</string>
     <string name="settings_notifications_unsupported_footer">Bu sunucu bildirimleri desteklemiyor. Bilgisayarınızdaki OpenCode\'u güncelleyin.</string>
     <string name="settings_notifications_open_android_settings">Android ayarlarını aç</string>
-    <string name="settings_notifications_alerts_header">Ses ve açılır bildirimler</string>
-    <string name="settings_notifications_needs_you">Sizi bekliyor</string>
-    <string name="settings_notifications_finished">Tamamlandı</string>
-    <string name="settings_notifications_failed">Başarısız</string>
-    <string name="settings_notifications_alert_banner">Açılır bildirim, ses</string>
-    <string name="settings_notifications_alert_sound">Ses</string>
-    <string name="settings_notifications_alert_silent">Sessiz</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Oturumlar</string>

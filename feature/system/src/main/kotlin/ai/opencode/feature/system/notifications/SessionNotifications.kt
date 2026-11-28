@@ -12,7 +12,6 @@ import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import android.Manifest
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -50,11 +49,6 @@ import kotlin.time.Duration.Companion.seconds
 
 enum class NotificationPermission { NotDetermined, Disabled, Enabled }
 
-/** How Android shows one kind of notification, read from its channel. */
-enum class NotificationAlert { Off, Silent, Sound, Banner }
-
-data class PushAlerts(val attention: NotificationAlert, val finished: NotificationAlert, val failed: NotificationAlert)
-
 /** What a server notifies this phone about; [wire] is the server's push level. */
 @Serializable
 enum class PushLevel(val wire: String) { All("all"), Attention("attention") }
@@ -66,34 +60,27 @@ data class PushSetting(val isOn: Boolean = true, val level: PushLevel = PushLeve
 class NotificationPermissionClient(
     val status: suspend () -> NotificationPermission,
     val request: suspend () -> NotificationPermission,
-    /** Android's notification settings for the app, or for one channel. */
-    val openSettings: suspend (channelID: String?) -> Unit,
-    val alerts: suspend () -> PushAlerts,
+    /** Android's notification settings for the app. */
+    val openSettings: suspend () -> Unit,
 ) {
     companion object Key : DependencyKey<NotificationPermissionClient> {
         override val liveValue: NotificationPermissionClient by lazy {
             NotificationPermissionClient(
                 status = { SessionNotifications.shared.permissionStatus() },
                 request = { SessionNotifications.shared.requestPermission() },
-                openSettings = { channelID ->
+                openSettings = {
                     val context = dependency(AppContext)
-                    val intent = if (channelID == null) {
-                        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                    } else {
-                        Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_CHANNEL_ID, channelID)
-                    }
-                    runCatching {
-                        context.startActivity(intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    }
+                    val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    runCatching { context.startActivity(intent) }
                 },
-                alerts = { SessionNotifications.shared.alerts() },
             )
         }
         override val testValue = NotificationPermissionClient(
             status = { NotificationPermission.Enabled },
             request = { NotificationPermission.Enabled },
             openSettings = {},
-            alerts = { PushAlerts(NotificationAlert.Banner, NotificationAlert.Sound, NotificationAlert.Banner) },
         )
     }
 }
@@ -273,24 +260,6 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE).edit().putBoolean(ASKED, true).apply()
         val request = synchronized(lock) { permissionRequest.also { permissionRequest = null } }
         request?.complete(granted)
-    }
-
-    fun alerts(): PushAlerts {
-        val context = dependency(AppContext)
-        SystemNotificationChannels.ensure(context)
-        return PushAlerts(
-            attention = alert(context, SystemNotificationChannels.PUSH_ATTENTION),
-            finished = alert(context, SystemNotificationChannels.PUSH_FINISHED),
-            failed = alert(context, SystemNotificationChannels.PUSH_FAILED),
-        )
-    }
-
-    private fun alert(context: Context, channelID: String): NotificationAlert {
-        val importance = NotificationManagerCompat.from(context).getNotificationChannel(channelID)?.importance
-        if (importance == null || importance == NotificationManager.IMPORTANCE_NONE) return NotificationAlert.Off
-        if (importance >= NotificationManager.IMPORTANCE_HIGH) return NotificationAlert.Banner
-        if (importance == NotificationManager.IMPORTANCE_DEFAULT) return NotificationAlert.Sound
-        return NotificationAlert.Silent
     }
 
     /** The random `ref` a server's pushes carry, made and saved the first time it's asked for. */

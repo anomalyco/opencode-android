@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">OpenCode-ის შეტყობინებები გამორთულია Android-ის პარამეტრებში.</string>
     <string name="settings_notifications_unsupported_footer">ამ სერვერს შეტყობინებების მხარდაჭერა არ აქვს. განაახლეთ OpenCode თქვენს კომპიუტერზე.</string>
     <string name="settings_notifications_open_android_settings">Android პარამეტრების გახსნა</string>
-    <string name="settings_notifications_alerts_header">ხმა და ბანერები</string>
-    <string name="settings_notifications_needs_you">საჭიროებს ყურადღებას</string>
-    <string name="settings_notifications_finished">დასრულდა</string>
-    <string name="settings_notifications_failed">ვერ შედგა</string>
-    <string name="settings_notifications_alert_banner">ბანერი, ხმა</string>
-    <string name="settings_notifications_alert_sound">ხმა</string>
-    <string name="settings_notifications_alert_silent">უხმო</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">სესიები</string>

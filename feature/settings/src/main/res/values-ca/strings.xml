@@ -58,13 +58,6 @@
     <string name="settings_notifications_blocked_footer">Les notificacions d\'OpenCode estan desactivades a la configuració d\'Android.</string>
     <string name="settings_notifications_unsupported_footer">Aquest servidor no admet notificacions. Actualitza OpenCode al teu ordinador.</string>
     <string name="settings_notifications_open_android_settings">Obre la configuració d\'Android</string>
-    <string name="settings_notifications_alerts_header">So i bàners</string>
-    <string name="settings_notifications_needs_you">Et necessita</string>
-    <string name="settings_notifications_finished">Acabat</string>
-    <string name="settings_notifications_failed">Ha fallat</string>
-    <string name="settings_notifications_alert_banner">Bàner, so</string>
-    <string name="settings_notifications_alert_sound">So</string>
-    <string name="settings_notifications_alert_silent">Silenci</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessions</string>

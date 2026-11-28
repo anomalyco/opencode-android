@@ -58,13 +58,6 @@
     <string name="settings_notifications_blocked_footer">OpenCode paziņojumi Android iestatījumos ir izslēgti.</string>
     <string name="settings_notifications_unsupported_footer">Šis serveris neatbalsta paziņojumus. Atjaunini OpenCode savā datorā.</string>
     <string name="settings_notifications_open_android_settings">Atvērt Android iestatījumus</string>
-    <string name="settings_notifications_alerts_header">Skaņa un baneri</string>
-    <string name="settings_notifications_needs_you">Nepieciešama uzmanība</string>
-    <string name="settings_notifications_finished">Pabeigts</string>
-    <string name="settings_notifications_failed">Neizdevās</string>
-    <string name="settings_notifications_alert_banner">Baneris, skaņa</string>
-    <string name="settings_notifications_alert_sound">Skaņa</string>
-    <string name="settings_notifications_alert_silent">Bez skaņas</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesijas</string>

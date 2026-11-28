@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Varsler er slått av for OpenCode i Android-innstillingene.</string>
     <string name="settings_notifications_unsupported_footer">Denne serveren støtter ikke varsler. Oppdater OpenCode på datamaskinen din.</string>
     <string name="settings_notifications_open_android_settings">Åpne Android-innstillinger</string>
-    <string name="settings_notifications_alerts_header">Lyd og bannere</string>
-    <string name="settings_notifications_needs_you">Trenger deg</string>
-    <string name="settings_notifications_finished">Fullført</string>
-    <string name="settings_notifications_failed">Mislyktes</string>
-    <string name="settings_notifications_alert_banner">Banner, lyd</string>
-    <string name="settings_notifications_alert_sound">Lyd</string>
-    <string name="settings_notifications_alert_silent">Stille</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesjoner</string>

@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Njoftimet janë çaktivizuar për OpenCode në cilësimet e Android.</string>
     <string name="settings_notifications_unsupported_footer">Ky server nuk mbështet njoftime. Përditëso OpenCode në kompjuterin tënd.</string>
     <string name="settings_notifications_open_android_settings">Hap cilësimet e Android</string>
-    <string name="settings_notifications_alerts_header">Tingulli dhe banderolat</string>
-    <string name="settings_notifications_needs_you">Ka nevojë për ty</string>
-    <string name="settings_notifications_finished">Përfundoi</string>
-    <string name="settings_notifications_failed">Dështoi</string>
-    <string name="settings_notifications_alert_banner">Banderolë, tingull</string>
-    <string name="settings_notifications_alert_sound">Tingull</string>
-    <string name="settings_notifications_alert_silent">Pa zë</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesionet</string>

@@ -2,12 +2,9 @@ package ai.opencode.feature.settings
 
 import ai.opencode.core.store.observe
 import ai.opencode.core.ui.OpenCodeErrorText
-import ai.opencode.feature.system.notifications.NotificationAlert
 import ai.opencode.feature.system.notifications.NotificationPermission
-import ai.opencode.feature.system.notifications.PushAlerts
 import ai.opencode.feature.system.notifications.PushLevel
 import ai.opencode.feature.system.notifications.PushSetting
-import ai.opencode.feature.system.notifications.SystemNotificationChannels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,17 +15,13 @@ data class NotificationsStatus(
     /** Null until read, and while this build offers no notifications (the row is hidden). */
     val permission: NotificationPermission? = null,
     val setting: PushSetting = PushSetting(),
-    val alerts: PushAlerts? = null,
     /** Whether the server sends notifications at all; null until it answers. */
     val isOffered: Boolean? = null,
     val isChanging: Boolean = false,
     val error: String? = null,
 )
 
-/**
- * Settings → Notifications: whether the connected server notifies this phone and about what, and
- * the way into Android's settings for how each kind shows.
- */
+/** Settings → Notifications: whether the connected server notifies this phone and about what. */
 @Composable
 fun NotificationSettingsView(store: SettingsStore) {
     val status by store.observe { it.notifications }
@@ -45,7 +38,6 @@ fun NotificationSettingsView(store: SettingsStore) {
         isOn -> null
         else -> stringResource(R.string.settings_notifications_off_footer)
     }
-    val alertsHeader = stringResource(R.string.settings_notifications_alerts_header)
 
     SettingsPageScaffold(title = stringResource(R.string.settings_notifications_title), store = store) {
         settingsSection(key = "server", header = serverName, footer = footer?.let { footerText(it) }) {
@@ -78,7 +70,7 @@ fun NotificationSettingsView(store: SettingsStore) {
                 SettingsButtonRow(
                     stringResource(R.string.settings_notifications_open_android_settings),
                     onClick = {
-                        store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.AndroidNotificationSettingsTapped(null)))
+                        store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.AndroidNotificationSettingsTapped))
                     },
                 )
             }
@@ -89,28 +81,5 @@ fun NotificationSettingsView(store: SettingsStore) {
                 }
             }
         }
-        val alerts = status.alerts
-        if (isOn && alerts != null) {
-            settingsSection(key = "alerts", header = alertsHeader) {
-                AlertRow(store, R.string.settings_notifications_needs_you, alerts.attention, SystemNotificationChannels.PUSH_ATTENTION)
-                SettingsDivider()
-                AlertRow(store, R.string.settings_notifications_finished, alerts.finished, SystemNotificationChannels.PUSH_FINISHED)
-                SettingsDivider()
-                AlertRow(store, R.string.settings_notifications_failed, alerts.failed, SystemNotificationChannels.PUSH_FAILED)
-            }
-        }
-    }
-}
-
-@Composable
-private fun AlertRow(store: SettingsStore, title: Int, alert: NotificationAlert, channelID: String) {
-    val value = when (alert) {
-        NotificationAlert.Banner -> stringResource(R.string.settings_notifications_alert_banner)
-        NotificationAlert.Sound -> stringResource(R.string.settings_notifications_alert_sound)
-        NotificationAlert.Silent -> stringResource(R.string.settings_notifications_alert_silent)
-        NotificationAlert.Off -> stringResource(R.string.settings_value_off)
-    }
-    SettingsChoiceRow(stringResource(title), value) {
-        store.send(SettingsFeature.Action.Delegate(SettingsFeature.SettingsDelegate.AndroidNotificationSettingsTapped(channelID)))
     }
 }

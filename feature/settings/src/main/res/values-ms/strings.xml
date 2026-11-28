@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Notifikasi dimatikan untuk OpenCode dalam tetapan Android.</string>
     <string name="settings_notifications_unsupported_footer">Pelayan ini tidak menyokong notifikasi. Kemas kini OpenCode pada komputer anda.</string>
     <string name="settings_notifications_open_android_settings">Buka tetapan Android</string>
-    <string name="settings_notifications_alerts_header">Bunyi dan sepanduk</string>
-    <string name="settings_notifications_needs_you">Perlukan anda</string>
-    <string name="settings_notifications_finished">Selesai</string>
-    <string name="settings_notifications_failed">Gagal</string>
-    <string name="settings_notifications_alert_banner">Sepanduk, bunyi</string>
-    <string name="settings_notifications_alert_sound">Bunyi</string>
-    <string name="settings_notifications_alert_silent">Senyap</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesi</string>

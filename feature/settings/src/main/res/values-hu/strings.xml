@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Az OpenCode értesítései ki vannak kapcsolva az Android beállításaiban.</string>
     <string name="settings_notifications_unsupported_footer">Ez a kiszolgáló nem támogatja az értesítéseket. Frissítse az OpenCode-ot a számítógépén.</string>
     <string name="settings_notifications_open_android_settings">Android-beállítások megnyitása</string>
-    <string name="settings_notifications_alerts_header">Hang és felugró értesítések</string>
-    <string name="settings_notifications_needs_you">Önre vár</string>
-    <string name="settings_notifications_finished">Befejeződött</string>
-    <string name="settings_notifications_failed">Sikertelen</string>
-    <string name="settings_notifications_alert_banner">Felugró, hang</string>
-    <string name="settings_notifications_alert_sound">Hang</string>
-    <string name="settings_notifications_alert_silent">Néma</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Munkamenetek</string>

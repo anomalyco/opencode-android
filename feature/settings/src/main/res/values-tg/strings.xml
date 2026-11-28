@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Огоҳиҳо барои OpenCode дар танзимоти Android хомӯш карда шудаанд.</string>
     <string name="settings_notifications_unsupported_footer">Ин сервер огоҳиҳоро дастгирӣ намекунад. OpenCode-ро дар компютери худ навсозӣ кунед.</string>
     <string name="settings_notifications_open_android_settings">Танзимоти Android-ро кушоед</string>
-    <string name="settings_notifications_alerts_header">Садо ва баннерҳо</string>
-    <string name="settings_notifications_needs_you">Диққати шумо лозим</string>
-    <string name="settings_notifications_finished">Анҷом ёфт</string>
-    <string name="settings_notifications_failed">Ноком шуд</string>
-    <string name="settings_notifications_alert_banner">Баннер, садо</string>
-    <string name="settings_notifications_alert_sound">Садо</string>
-    <string name="settings_notifications_alert_silent">Бесадо</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Сеансхо</string>

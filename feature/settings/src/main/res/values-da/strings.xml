@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Meddelelser er slået fra for OpenCode i Android-indstillingerne.</string>
     <string name="settings_notifications_unsupported_footer">Denne server understøtter ikke meddelelser. Opdater OpenCode på din computer.</string>
     <string name="settings_notifications_open_android_settings">Åbn Android-indstillinger</string>
-    <string name="settings_notifications_alerts_header">Lyd og bannere</string>
-    <string name="settings_notifications_needs_you">Har brug for dig</string>
-    <string name="settings_notifications_finished">Afsluttet</string>
-    <string name="settings_notifications_failed">Mislykkedes</string>
-    <string name="settings_notifications_alert_banner">Banner, lyd</string>
-    <string name="settings_notifications_alert_sound">Lyd</string>
-    <string name="settings_notifications_alert_silent">Lydløs</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessioner</string>

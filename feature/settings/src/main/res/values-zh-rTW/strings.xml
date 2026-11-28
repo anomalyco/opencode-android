@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">已在 Android 設定中關閉 OpenCode 的通知。</string>
     <string name="settings_notifications_unsupported_footer">此伺服器不支援通知。請更新電腦上的 OpenCode。</string>
     <string name="settings_notifications_open_android_settings">開啟 Android 設定</string>
-    <string name="settings_notifications_alerts_header">音效與橫幅</string>
-    <string name="settings_notifications_needs_you">需要你處理</string>
-    <string name="settings_notifications_finished">已完成</string>
-    <string name="settings_notifications_failed">失敗</string>
-    <string name="settings_notifications_alert_banner">橫幅、音效</string>
-    <string name="settings_notifications_alert_sound">音效</string>
-    <string name="settings_notifications_alert_silent">靜音</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">工作階段</string>

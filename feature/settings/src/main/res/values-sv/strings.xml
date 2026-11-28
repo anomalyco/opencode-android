@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Aviseringar är avstängda för OpenCode i Androids inställningar.</string>
     <string name="settings_notifications_unsupported_footer">Den här servern stöder inte aviseringar. Uppdatera OpenCode på din dator.</string>
     <string name="settings_notifications_open_android_settings">Öppna Android-inställningar</string>
-    <string name="settings_notifications_alerts_header">Ljud och banderoller</string>
-    <string name="settings_notifications_needs_you">Behöver dig</string>
-    <string name="settings_notifications_finished">Klar</string>
-    <string name="settings_notifications_failed">Misslyckades</string>
-    <string name="settings_notifications_alert_banner">Banderoll, ljud</string>
-    <string name="settings_notifications_alert_sound">Ljud</string>
-    <string name="settings_notifications_alert_silent">Tyst</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessioner</string>

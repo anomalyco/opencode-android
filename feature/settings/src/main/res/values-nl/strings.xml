@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Meldingen voor OpenCode staan uit in de Android-instellingen.</string>
     <string name="settings_notifications_unsupported_footer">Deze server ondersteunt geen meldingen. Werk OpenCode bij op je computer.</string>
     <string name="settings_notifications_open_android_settings">Android-instellingen openen</string>
-    <string name="settings_notifications_alerts_header">Geluid en banners</string>
-    <string name="settings_notifications_needs_you">Heeft je nodig</string>
-    <string name="settings_notifications_finished">Voltooid</string>
-    <string name="settings_notifications_failed">Mislukt</string>
-    <string name="settings_notifications_alert_banner">Banner, geluid</string>
-    <string name="settings_notifications_alert_sound">Geluid</string>
-    <string name="settings_notifications_alert_silent">Stil</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessies</string>

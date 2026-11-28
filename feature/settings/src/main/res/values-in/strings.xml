@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Notifikasi untuk OpenCode dinonaktifkan di pengaturan Android.</string>
     <string name="settings_notifications_unsupported_footer">Server ini tidak mendukung notifikasi. Perbarui OpenCode di komputer Anda.</string>
     <string name="settings_notifications_open_android_settings">Buka pengaturan Android</string>
-    <string name="settings_notifications_alerts_header">Suara dan spanduk</string>
-    <string name="settings_notifications_needs_you">Perlu tindakan Anda</string>
-    <string name="settings_notifications_finished">Selesai</string>
-    <string name="settings_notifications_failed">Gagal</string>
-    <string name="settings_notifications_alert_banner">Spanduk, suara</string>
-    <string name="settings_notifications_alert_sound">Suara</string>
-    <string name="settings_notifications_alert_silent">Senyap</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesi</string>

@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Известията за OpenCode са изключени в настройките на Android.</string>
     <string name="settings_notifications_unsupported_footer">Този сървър не поддържа известия. Актуализирайте OpenCode на компютъра си.</string>
     <string name="settings_notifications_open_android_settings">Отворете настройките на Android</string>
-    <string name="settings_notifications_alerts_header">Звук и банери</string>
-    <string name="settings_notifications_needs_you">Нуждае се от вас</string>
-    <string name="settings_notifications_finished">Завършено</string>
-    <string name="settings_notifications_failed">Неуспешно</string>
-    <string name="settings_notifications_alert_banner">Банер, звук</string>
-    <string name="settings_notifications_alert_sound">Звук</string>
-    <string name="settings_notifications_alert_silent">Без звук</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Сесии</string>

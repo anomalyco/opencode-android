@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Android ဆက်တင်များတွင် OpenCode အတွက် အကြောင်းကြားချက်များကို ပိတ်ထားသည်။</string>
     <string name="settings_notifications_unsupported_footer">ဤဆာဗာသည် အကြောင်းကြားချက်များကို မပံ့ပိုးပါ။ သင့်ကွန်ပျူတာတွင် OpenCode ကို အပ်ဒိတ်လုပ်ပါ။</string>
     <string name="settings_notifications_open_android_settings">Android ဆက်တင်များကို ဖွင့်ပါ</string>
-    <string name="settings_notifications_alerts_header">အသံနှင့် ဘန်နာများ</string>
-    <string name="settings_notifications_needs_you">သင့်ကို လိုအပ်သည်</string>
-    <string name="settings_notifications_finished">ပြီးဆုံးခဲ့သည်</string>
-    <string name="settings_notifications_failed">မအောင်မြင်ပါ။</string>
-    <string name="settings_notifications_alert_banner">ဘန်နာ၊ အသံ</string>
-    <string name="settings_notifications_alert_sound">အသံ</string>
-    <string name="settings_notifications_alert_silent">အသံမဲ့</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ဆက်ရှင်များ</string>

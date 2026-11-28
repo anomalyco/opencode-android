@@ -59,13 +59,6 @@
     <string name="settings_notifications_blocked_footer">OpenCode pranešimai išjungti Android nustatymuose.</string>
     <string name="settings_notifications_unsupported_footer">Šis serveris nepalaiko pranešimų. Atnaujinkite OpenCode savo kompiuteryje.</string>
     <string name="settings_notifications_open_android_settings">Atidaryti Android nustatymus</string>
-    <string name="settings_notifications_alerts_header">Garsas ir pranešimų juostos</string>
-    <string name="settings_notifications_needs_you">Reikia jūsų</string>
-    <string name="settings_notifications_finished">Baigta</string>
-    <string name="settings_notifications_failed">Nepavyko</string>
-    <string name="settings_notifications_alert_banner">Juosta, garsas</string>
-    <string name="settings_notifications_alert_sound">Garsas</string>
-    <string name="settings_notifications_alert_silent">Be garso</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesijos</string>

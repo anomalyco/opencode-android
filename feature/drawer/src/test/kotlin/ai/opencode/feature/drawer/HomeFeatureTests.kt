@@ -258,7 +258,6 @@ class HomeFeatureTests {
                 status = { throw AssertionError("Without a relay the app must not read or ask for permission") },
                 request = { NotificationPermission.Enabled },
                 openSettings = {},
-                alerts = NotificationPermissionClient.testValue.alerts,
             )
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 pendingInputs = { _, _ -> emptyList() },
@@ -286,7 +285,6 @@ class HomeFeatureTests {
                     status = { NotificationPermission.NotDetermined },
                     request = { permission },
                     openSettings = {},
-                    alerts = NotificationPermissionClient.testValue.alerts,
                 )
                 this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true, register = { server -> registered.append(server) })
             }
@@ -309,20 +307,18 @@ class HomeFeatureTests {
             base.copy(notificationState = base.notificationState.copy(permission = NotificationPermission.Disabled))
         }
         val opened = LockIsolated(false)
-        val alerts = NotificationPermissionClient.testValue.alerts()
         val store = h.store(state) {
             this[NotificationPermissionClient] = NotificationPermissionClient(
                 status = { NotificationPermission.Enabled },
                 request = { throw AssertionError("Blocked notifications use Android settings, not the prompt") },
                 openSettings = { opened.setValue(true) },
-                alerts = { alerts },
             )
         }
-        store.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped(null)))
+        store.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped))
         assertTrue(eventually { opened.value })
         store.send(Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested))
-        store.receive(Action.Notifications(HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting(), alerts))) {
-            it.copy(notificationState = it.notificationState.copy(permission = NotificationPermission.Enabled, alerts = alerts))
+        store.receive(Action.Notifications(HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting()))) {
+            it.copy(notificationState = it.notificationState.copy(permission = NotificationPermission.Enabled))
         }
         store.finish()
     }

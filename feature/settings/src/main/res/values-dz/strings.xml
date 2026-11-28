@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Android སྒྲིག་སྟངས་ནང་ OpenCode གི་བརྡ་བསྐུལ་ཚུ་ཁ་བསྡམས་ཡོདཔ་ཨིན།</string>
     <string name="settings_notifications_unsupported_footer">སར་བར་འདི་གིས་བརྡ་བསྐུལ་ཚུ་ལུ་རྒྱབ་སྐྱོར་མི་འབད། ཁྱོད་ཀྱི་གློག་རིག་གུ་ OpenCode དུས་མཐུན་བཟོ།</string>
     <string name="settings_notifications_open_android_settings">Android སྒྲིག་སྟངས་ཁ་ཕྱེ།</string>
-    <string name="settings_notifications_alerts_header">སྒྲ་དང་བརྡ་བྱང་ཚུ།</string>
-    <string name="settings_notifications_needs_you">ཁྱོད་དགོ</string>
-    <string name="settings_notifications_finished">མཇུག་བསྡུ་ཡོདཔ།</string>
-    <string name="settings_notifications_failed">མཐར་མ་འཁྱོལ་བ</string>
-    <string name="settings_notifications_alert_banner">བརྡ་བྱང་དང་སྒྲ།</string>
-    <string name="settings_notifications_alert_sound">སྒྲ།</string>
-    <string name="settings_notifications_alert_silent">སྒྲ་མེད།</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ལཱ་ཡུན་ཚུ།</string>

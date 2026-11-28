@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Thông báo cho OpenCode đang tắt trong cài đặt Android.</string>
     <string name="settings_notifications_unsupported_footer">Máy chủ này không hỗ trợ thông báo. Hãy cập nhật OpenCode trên máy tính của bạn.</string>
     <string name="settings_notifications_open_android_settings">Mở cài đặt Android</string>
-    <string name="settings_notifications_alerts_header">Âm thanh và biểu ngữ</string>
-    <string name="settings_notifications_needs_you">Cần bạn</string>
-    <string name="settings_notifications_finished">Đã hoàn tất</string>
-    <string name="settings_notifications_failed">Thất bại</string>
-    <string name="settings_notifications_alert_banner">Biểu ngữ, âm thanh</string>
-    <string name="settings_notifications_alert_sound">Âm thanh</string>
-    <string name="settings_notifications_alert_silent">Im lặng</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Phiên</string>

@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">በAndroid ቅንብሮች ውስጥ ለOpenCode ማሳወቂያዎች ጠፍተዋል።</string>
     <string name="settings_notifications_unsupported_footer">ይህ አገልጋይ ማሳወቂያዎችን አይደግፍም። በኮምፒውተርዎ ላይ OpenCodeን ያዘምኑ።</string>
     <string name="settings_notifications_open_android_settings">የAndroid ቅንብሮችን ክፈት</string>
-    <string name="settings_notifications_alerts_header">ድምጽ እና ባነሮች</string>
-    <string name="settings_notifications_needs_you">እርስዎን ይፈልጋል</string>
-    <string name="settings_notifications_finished">ተጠናቋል</string>
-    <string name="settings_notifications_failed">አልተሳካም</string>
-    <string name="settings_notifications_alert_banner">ባነር፣ ድምጽ</string>
-    <string name="settings_notifications_alert_sound">ድምጽ</string>
-    <string name="settings_notifications_alert_silent">ያለ ድምጽ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ክፍለ-ጊዜዎች</string>

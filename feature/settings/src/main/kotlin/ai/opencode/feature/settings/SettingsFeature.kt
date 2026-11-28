@@ -170,8 +170,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
         data object NotificationSettingsRequested : SettingsDelegate
         data class NotificationsToggled(val isOn: Boolean) : SettingsDelegate
         data class NotifyAboutPicked(val level: PushLevel) : SettingsDelegate
-        /** A null channel opens the app's notification settings. */
-        data class AndroidNotificationSettingsTapped(val channelID: String?) : SettingsDelegate
+        data object AndroidNotificationSettingsTapped : SettingsDelegate
         /** What's New's action that leaves Settings for a session (`HomeFeature.tryWhatsNew`). */
         data class TryWhatsNew(val destination: WhatsNewEntry.Destination, val entryID: String) : SettingsDelegate
     }

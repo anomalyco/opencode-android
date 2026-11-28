@@ -58,13 +58,6 @@
     <string name="settings_notifications_blocked_footer">Notificările pentru OpenCode sunt dezactivate în setările Android.</string>
     <string name="settings_notifications_unsupported_footer">Acest server nu acceptă notificări. Actualizează OpenCode pe computerul tău.</string>
     <string name="settings_notifications_open_android_settings">Deschide setările Android</string>
-    <string name="settings_notifications_alerts_header">Sunet și bannere</string>
-    <string name="settings_notifications_needs_you">Are nevoie de tine</string>
-    <string name="settings_notifications_finished">Încheiat</string>
-    <string name="settings_notifications_failed">Eroare</string>
-    <string name="settings_notifications_alert_banner">Banner, sunet</string>
-    <string name="settings_notifications_alert_sound">Sunet</string>
-    <string name="settings_notifications_alert_silent">Silențios</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesiuni</string>

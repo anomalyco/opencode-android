@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">ការជូនដំណឹងត្រូវបានបិទសម្រាប់ OpenCode នៅក្នុងការកំណត់ Android។</string>
     <string name="settings_notifications_unsupported_footer">ម៉ាស៊ីនមេនេះមិនគាំទ្រការជូនដំណឹងទេ។ ធ្វើបច្ចុប្បន្នភាព OpenCode នៅលើកុំព្យូទ័ររបស់អ្នក។</string>
     <string name="settings_notifications_open_android_settings">បើកការកំណត់ Android</string>
-    <string name="settings_notifications_alerts_header">សំឡេង និងបដា</string>
-    <string name="settings_notifications_needs_you">ត្រូវការអ្នក</string>
-    <string name="settings_notifications_finished">បានបញ្ចប់</string>
-    <string name="settings_notifications_failed">បរាជ័យ</string>
-    <string name="settings_notifications_alert_banner">បដា និងសំឡេង</string>
-    <string name="settings_notifications_alert_sound">សំឡេង</string>
-    <string name="settings_notifications_alert_silent">ស្ងាត់</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">សម័យ</string>

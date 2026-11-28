@@ -58,13 +58,6 @@
     <string name="settings_notifications_blocked_footer">Obavijesti za OpenCode isključene su u postavkama Androida.</string>
     <string name="settings_notifications_unsupported_footer">Ovaj poslužitelj ne podržava obavijesti. Ažurirajte OpenCode na svom računalu.</string>
     <string name="settings_notifications_open_android_settings">Otvori postavke Androida</string>
-    <string name="settings_notifications_alerts_header">Zvuk i natpisi</string>
-    <string name="settings_notifications_needs_you">Treba vas</string>
-    <string name="settings_notifications_finished">Završeno</string>
-    <string name="settings_notifications_failed">Neuspješno</string>
-    <string name="settings_notifications_alert_banner">Natpis, zvuk</string>
-    <string name="settings_notifications_alert_sound">Zvuk</string>
-    <string name="settings_notifications_alert_silent">Bez zvuka</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sjednice</string>

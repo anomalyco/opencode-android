@@ -8,7 +8,6 @@ import ai.opencode.core.strings.localized
 import ai.opencode.feature.settings.NotificationsStatus
 import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.notifications.NotificationPermissionClient
-import ai.opencode.feature.system.notifications.PushAlerts
 import ai.opencode.feature.system.notifications.PushLevel
 import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
@@ -24,15 +23,14 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
     sealed interface Action {
         /** Notifications opened, or the app came back to it. */
         data object SettingsRequested : Action
-        data class Loaded(val permission: NotificationPermission, val setting: PushSetting, val alerts: PushAlerts) : Action
+        data class Loaded(val permission: NotificationPermission, val setting: PushSetting) : Action
         /** Asks the server whether it sends notifications at all. */
         data object OfferRequested : Action
         data class OfferLoaded(val isOffered: Boolean?) : Action
         data class Toggled(val isOn: Boolean) : Action
         data class LevelPicked(val level: PushLevel) : Action
         data class Changed(val permission: NotificationPermission, val setting: PushSetting, val error: String?) : Action
-        /** A null channel opens the app's notification settings. */
-        data class AndroidSettingsTapped(val channelID: String?) : Action
+        data object AndroidSettingsTapped : Action
     }
 
     override fun reduce(state: State, action: Action): Reduced<State, Action> {
@@ -46,7 +44,7 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
                 Reduced(
                     state,
                     Effect.run { send ->
-                        send(Action.Loaded(notificationPermission.status(), sessionNotifications.setting(serverKey), notificationPermission.alerts()))
+                        send(Action.Loaded(notificationPermission.status(), sessionNotifications.setting(serverKey)))
                     },
                 )
             }
@@ -63,7 +61,6 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
                         permission = action.permission,
                         // The permission prompt brings the app back while a change is still on its way.
                         setting = if (status.isChanging) status.setting else action.setting,
-                        alerts = action.alerts,
                     ),
                 ),
             )
@@ -78,9 +75,9 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
                 state.copy(status = status.copy(permission = action.permission, setting = action.setting, isChanging = false, error = action.error)),
             )
 
-            is Action.AndroidSettingsTapped -> {
+            Action.AndroidSettingsTapped -> {
                 val notificationPermission = dependency(NotificationPermissionClient)
-                Reduced(state, Effect.run { notificationPermission.openSettings(action.channelID) })
+                Reduced(state, Effect.run { notificationPermission.openSettings() })
             }
         }
     }

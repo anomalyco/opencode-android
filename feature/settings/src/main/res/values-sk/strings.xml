@@ -59,13 +59,6 @@
     <string name="settings_notifications_blocked_footer">Upozornenia pre OpenCode sú v nastaveniach Androidu vypnuté.</string>
     <string name="settings_notifications_unsupported_footer">Tento server nepodporuje upozornenia. Aktualizujte OpenCode na svojom počítači.</string>
     <string name="settings_notifications_open_android_settings">Otvoriť nastavenia Androidu</string>
-    <string name="settings_notifications_alerts_header">Zvuk a banery</string>
-    <string name="settings_notifications_needs_you">Potrebuje vás</string>
-    <string name="settings_notifications_finished">Dokončené</string>
-    <string name="settings_notifications_failed">Zlyhalo</string>
-    <string name="settings_notifications_alert_banner">Baner, zvuk</string>
-    <string name="settings_notifications_alert_sound">Zvuk</string>
-    <string name="settings_notifications_alert_silent">Bez zvuku</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Relácie</string>

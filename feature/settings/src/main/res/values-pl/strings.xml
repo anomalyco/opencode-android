@@ -59,13 +59,6 @@
     <string name="settings_notifications_blocked_footer">Powiadomienia dla OpenCode są wyłączone w ustawieniach Androida.</string>
     <string name="settings_notifications_unsupported_footer">Ten serwer nie obsługuje powiadomień. Zaktualizuj OpenCode na komputerze.</string>
     <string name="settings_notifications_open_android_settings">Otwórz ustawienia Androida</string>
-    <string name="settings_notifications_alerts_header">Dźwięk i banery</string>
-    <string name="settings_notifications_needs_you">Wymaga uwagi</string>
-    <string name="settings_notifications_finished">Zakończono</string>
-    <string name="settings_notifications_failed">Błąd</string>
-    <string name="settings_notifications_alert_banner">Baner, dźwięk</string>
-    <string name="settings_notifications_alert_sound">Dźwięk</string>
-    <string name="settings_notifications_alert_silent">Bez dźwięku</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesje</string>

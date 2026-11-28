@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">Androidの設定でOpenCodeの通知がオフになっています。</string>
     <string name="settings_notifications_unsupported_footer">このサーバーは通知に対応していません。コンピューターのOpenCodeを更新してください。</string>
     <string name="settings_notifications_open_android_settings">Androidの設定を開く</string>
-    <string name="settings_notifications_alerts_header">サウンドとバナー</string>
-    <string name="settings_notifications_needs_you">要対応</string>
-    <string name="settings_notifications_finished">完了</string>
-    <string name="settings_notifications_failed">失敗</string>
-    <string name="settings_notifications_alert_banner">バナー、サウンド</string>
-    <string name="settings_notifications_alert_sound">サウンド</string>
-    <string name="settings_notifications_alert_silent">無音</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">セッション</string>

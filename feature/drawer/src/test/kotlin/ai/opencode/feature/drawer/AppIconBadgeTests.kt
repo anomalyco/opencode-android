@@ -12,7 +12,6 @@ import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.system.notifications.AppBadgeLedger
 import ai.opencode.feature.system.notifications.AppIconBadgeClient
 import ai.opencode.feature.system.notifications.NotificationPermission
-import ai.opencode.feature.system.notifications.NotificationPermissionClient
 import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.share.ShareConversation
 import ai.opencode.server.OpenCodeClient
@@ -213,7 +212,7 @@ class AppIconBadgeTests {
         store.send(Action.AttentionRefreshed(setOf("waiting")))
         val before = published.size
         val loaded = Action.Notifications(
-            HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting(), NotificationPermissionClient.testValue.alerts()),
+            HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting()),
         )
 
         store.send(loaded)

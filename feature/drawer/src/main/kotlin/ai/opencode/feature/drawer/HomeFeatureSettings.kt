@@ -159,8 +159,8 @@ internal fun HomeFeature.reduceSettingsScreen(state: State, action: Presentation
             )
             is SettingsDelegate.NotificationsToggled -> Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.Toggled(delegate.isOn))))
             is SettingsDelegate.NotifyAboutPicked -> Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.LevelPicked(delegate.level))))
-            is SettingsDelegate.AndroidNotificationSettingsTapped ->
-                Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped(delegate.channelID))))
+            SettingsDelegate.AndroidNotificationSettingsTapped ->
+                Reduced(state, Effect.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped)))
             is SettingsDelegate.TryWhatsNew -> tryWhatsNew(delegate.destination, delegate.entryID, state)
         }
         else -> Reduced(state)

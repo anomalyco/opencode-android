@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">การแจ้งเตือนของ OpenCode ปิดอยู่ในการตั้งค่า Android</string>
     <string name="settings_notifications_unsupported_footer">เซิร์ฟเวอร์นี้ไม่รองรับการแจ้งเตือน อัปเดต OpenCode บนคอมพิวเตอร์ของคุณ</string>
     <string name="settings_notifications_open_android_settings">เปิดการตั้งค่า Android</string>
-    <string name="settings_notifications_alerts_header">เสียงและแบนเนอร์</string>
-    <string name="settings_notifications_needs_you">รอคุณดำเนินการ</string>
-    <string name="settings_notifications_finished">เสร็จสิ้นแล้ว</string>
-    <string name="settings_notifications_failed">ล้มเหลว</string>
-    <string name="settings_notifications_alert_banner">แบนเนอร์, เสียง</string>
-    <string name="settings_notifications_alert_sound">เสียง</string>
-    <string name="settings_notifications_alert_silent">เงียบ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">เซสชัน</string>

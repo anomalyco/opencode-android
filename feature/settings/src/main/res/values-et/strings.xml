@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">OpenCode\'i teavitused on Androidi seadetes välja lülitatud.</string>
     <string name="settings_notifications_unsupported_footer">See server ei toeta teavitusi. Uuenda OpenCode\'i oma arvutis.</string>
     <string name="settings_notifications_open_android_settings">Ava Androidi seaded</string>
-    <string name="settings_notifications_alerts_header">Heli ja bännerid</string>
-    <string name="settings_notifications_needs_you">Vajab sind</string>
-    <string name="settings_notifications_finished">Lõpetatud</string>
-    <string name="settings_notifications_failed">Ebaõnnestunud</string>
-    <string name="settings_notifications_alert_banner">Bänner, heli</string>
-    <string name="settings_notifications_alert_sound">Heli</string>
-    <string name="settings_notifications_alert_silent">Hääletu</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Seansid</string>

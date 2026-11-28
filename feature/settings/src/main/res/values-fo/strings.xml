@@ -57,13 +57,6 @@
     <string name="settings_notifications_blocked_footer">Fráboðanir eru sløktar fyri OpenCode í Android-innstillingunum.</string>
     <string name="settings_notifications_unsupported_footer">Hesin ambætarin stuðlar ikki fráboðanum. Dagfør OpenCode á tíni teldu.</string>
     <string name="settings_notifications_open_android_settings">Opna Android-innstillingar</string>
-    <string name="settings_notifications_alerts_header">Ljóð og bannarar</string>
-    <string name="settings_notifications_needs_you">Hevur brúk fyri tær</string>
-    <string name="settings_notifications_finished">Endaði</string>
-    <string name="settings_notifications_failed">Mistókst</string>
-    <string name="settings_notifications_alert_banner">Bannari, ljóð</string>
-    <string name="settings_notifications_alert_sound">Ljóð</string>
-    <string name="settings_notifications_alert_silent">Ljóðleyst</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Setur</string>

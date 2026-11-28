@@ -56,13 +56,6 @@
     <string name="settings_notifications_blocked_footer">ການແຈ້ງເຕືອນສຳລັບ OpenCode ຖືກປິດໄວ້ໃນການຕັ້ງຄ່າ Android.</string>
     <string name="settings_notifications_unsupported_footer">ເຊີບເວີນີ້ບໍ່ຮອງຮັບການແຈ້ງເຕືອນ. ອັບເດດ OpenCode ໃນຄອມພິວເຕີຂອງເຈົ້າ.</string>
     <string name="settings_notifications_open_android_settings">ເປີດການຕັ້ງຄ່າ Android</string>
-    <string name="settings_notifications_alerts_header">ສຽງ ແລະ ແບນເນີ</string>
-    <string name="settings_notifications_needs_you">ຕ້ອງການເຈົ້າ</string>
-    <string name="settings_notifications_finished">ສຳເລັດແລ້ວ</string>
-    <string name="settings_notifications_failed">ລົ້ມເຫລວ</string>
-    <string name="settings_notifications_alert_banner">ແບນເນີ, ສຽງ</string>
-    <string name="settings_notifications_alert_sound">ສຽງ</string>
-    <string name="settings_notifications_alert_silent">ບໍ່ມີສຽງ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ເຊດຊັນ</string>
