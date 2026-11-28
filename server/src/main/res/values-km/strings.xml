@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">មិនអាចផ្ទុកគម្រោង និងសម័យបាន</string>
     <string name="server_error_load_session_family">មិនអាចផ្ទុកក្រុមសម័យដែលពាក់ព័ន្ធបាន</string>
-    <string name="server_error_update_session">មិនអាចធ្វើបច្ចុប្បន្នភាពសម័យបាន</string>
     <string name="server_error_load_session_ancestry">មិនអាចផ្ទុកលំដាប់សម័យមេរបស់សម័យសកម្មបាន</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

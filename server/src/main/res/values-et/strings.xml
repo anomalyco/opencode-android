@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Projektide ja seansside laadimine ebaõnnestus</string>
     <string name="server_error_load_session_family">Seansipere laadimine ebaõnnestus</string>
-    <string name="server_error_update_session">Seansi uuendamine ebaõnnestus</string>
     <string name="server_error_load_session_ancestry">Aktiivse seansi eellaste laadimine ebaõnnestus</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

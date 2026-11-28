@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">सूचनाहरू</string>
-    <string name="settings_notifications_device_header">यो %1$s</string>
-    <string name="settings_notifications_device_footer">सूचनाहरू केही पनि भण्डारण नगर्ने रिले हुँदै आउँछन्। यो %1$s मा सुरु गरिएका सत्रका सूचना मात्र यसमा आउँछन्।</string>
-    <string name="settings_notifications_allow">सूचनाहरूको अनुमति दिनुहोस्</string>
+    <string name="settings_notifications_notify_about">के बारे सूचना दिने</string>
+    <string name="settings_notifications_level_all">सबै कुरा</string>
+    <string name="settings_notifications_level_attention">मेरो ध्यान चाहिँदा मात्र</string>
+    <string name="settings_notifications_off_footer">सत्र सकिँदा, प्रश्न सोध्दा वा अनुमति चाहिँदा सूचना पाउनुहोस्।</string>
+    <string name="settings_notifications_blocked_footer">Android सेटिङहरूमा OpenCode का लागि सूचनाहरू बन्द गरिएका छन्।</string>
+    <string name="settings_notifications_unsupported_footer">यो सर्भरले सूचनाहरू समर्थन गर्दैन। आफ्नो कम्प्युटरमा OpenCode अपडेट गर्नुहोस्।</string>
     <string name="settings_notifications_open_android_settings">Android सेटिङहरू खोल्नुहोस्</string>
-    <string name="settings_notifications_turn_on">सूचनाहरू चालु गर्नुहोस्</string>
-    <string name="settings_notifications_server_header">सर्भर</string>
-    <string name="settings_notifications_set_up_footer">OpenCode लाई प्लगइन स्थापना गर्न अनुरोध गर्ने सत्र खोल्छ। अनुरोध पठाएर फेरि जाँच्नुहोस्।</string>
-    <string name="settings_notifications_plugin_needed_footer">सर्भरलाई OpenCode notify प्लगइन चाहिन्छ।</string>
-    <string name="settings_notifications_notify_plugin">Notify प्लगइन</string>
-    <string name="settings_notifications_plugin_installed">स्थापित</string>
-    <string name="settings_notifications_plugin_not_running">चलिरहेको छैन</string>
-    <string name="settings_notifications_plugin_not_installed">स्थापना गरिएको छैन</string>
-    <string name="settings_notifications_plugin_check_failed">स्थिति जाँच्न सकिएन</string>
-    <string name="settings_notifications_set_up">OpenCode बाट सेटअप गर्नुहोस्</string>
-    <string name="settings_notifications_check_again">फेरि जाँच्नुहोस्</string>
+    <string name="settings_notifications_alerts_header">ध्वनि र ब्यानरहरू</string>
+    <string name="settings_notifications_alerts_footer">Android सेटिङहरू खोल्छ, जहाँ प्रत्येक प्रकारका लागि पप-अप देखाउने, ध्वनि बजाउने वा बन्द गर्ने विकल्प छान्न सकिन्छ।</string>
+    <string name="settings_notifications_needs_you">तपाईंको ध्यान चाहिन्छ</string>
+    <string name="settings_notifications_finished">सकियो</string>
+    <string name="settings_notifications_failed">असफल</string>
+    <string name="settings_notifications_alert_banner">ब्यानर, ध्वनि</string>
+    <string name="settings_notifications_alert_sound">ध्वनि</string>
+    <string name="settings_notifications_alert_silent">मौन</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">सत्रहरू</string>

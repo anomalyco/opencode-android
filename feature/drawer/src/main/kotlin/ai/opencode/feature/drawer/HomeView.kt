@@ -641,7 +641,7 @@ internal fun HomeLifecycle(store: StoreOf<HomeFeature.State, HomeFeature.Action>
         if (startedServerID[0] == serverID) return@LaunchedEffect
         startedServerID[0] = serverID
         store.send(HomeFeature.Action.Task)
-        store.send(HomeFeature.Action.NotificationSettingsRequested)
+        store.send(HomeFeature.Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested))
     }
     val firstServer = remember { mutableStateOf<String?>(null) }
     LaunchedEffect(serverID) {
@@ -694,7 +694,7 @@ internal fun HomeLifecycle(store: StoreOf<HomeFeature.State, HomeFeature.Action>
                     if (!leftActive[0]) return@LifecycleEventObserver
                     leftActive[0] = false
                     currentStore.send(HomeFeature.Action.SceneBecameActive)
-                    currentStore.send(HomeFeature.Action.NotificationSettingsRequested)
+                    currentStore.send(HomeFeature.Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested))
                 }
                 Lifecycle.Event.ON_PAUSE -> {
                     leftActive[0] = true

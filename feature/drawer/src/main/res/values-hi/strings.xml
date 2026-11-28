@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">भेजा जा रहा है</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">अनुमति नहीं माँगी जा सकी। फिर से कोशिश करें।</string>
-    <string name="drawer_notifications_open_settings_error">सेटिंग्स नहीं खुल सकीं। Android सेटिंग्स खोलें और सूचनाएँ → OpenCode चुनें।</string>
     <string name="drawer_delete_session_error">“%1$s” हटाया नहीं जा सका</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d सेशन हटाया नहीं जा सका</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">सेशन स्क्रीन बेहतर बनाने में मेरी मदद करें। जो मिले, वह दिखाएँ और बदलाव समझाएँ।</string>
     <string name="drawer_appearance_preview_assistant_text">मुझे `SessionView.swift` में लेआउट की समस्या मिली। बातचीत का टेक्स्ट और संदेश लेखन क्षेत्र उपलब्ध ऊँचाई बाँटते हैं, इसलिए कीबोर्ड से लेआउट की सीमाएँ अच्छी तरह जाँची जा सकती हैं।</string>
+    <string name="drawer_notifications_change_error">सूचनाएँ नहीं बदली जा सकीं। फिर से कोशिश करें।</string>
 </resources>

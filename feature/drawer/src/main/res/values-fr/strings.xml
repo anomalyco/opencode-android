@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Envoi en cours</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Impossible de demander la permission. Réessayez.</string>
-    <string name="drawer_notifications_open_settings_error">Impossible d’ouvrir les paramètres. Ouvrez les paramètres Android, puis choisissez Notifications → OpenCode.</string>
     <string name="drawer_delete_session_error">Impossible de supprimer « %1$s »</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Impossible de supprimer %1$d session</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Aide-moi à améliorer l’écran de session. Montre-moi ce que tu trouves et explique les changements.</string>
     <string name="drawer_appearance_preview_assistant_text">J’ai trouvé le problème de mise en page dans `SessionView.swift`. La transcription et la zone de saisie se partagent la hauteur disponible : le clavier permet donc de bien tester les limites.</string>
+    <string name="drawer_notifications_change_error">Impossible de modifier les notifications. Réessayez.</string>
 </resources>

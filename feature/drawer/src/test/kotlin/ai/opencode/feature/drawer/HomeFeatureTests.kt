@@ -28,6 +28,7 @@ import ai.opencode.feature.settings.HomeSettingsFeature
 import ai.opencode.feature.settings.SettingsFeature
 import ai.opencode.feature.system.notifications.NotificationPermission
 import ai.opencode.feature.system.notifications.NotificationPermissionClient
+import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.voice.CallVoice
 import ai.opencode.feature.voice.VoiceEngine
@@ -38,7 +39,6 @@ import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.OpenCodeServerEvent
 import ai.opencode.server.ServerSharedKeys
-import ai.opencode.server.model.OpenCodeNotifyPluginStatus
 import ai.opencode.server.model.OpenCodeDelivery
 import ai.opencode.server.model.OpenCodePendingInput
 import ai.opencode.server.model.OpenCodePendingRequests
@@ -77,14 +77,13 @@ class HomeFeatureTests {
         updatedAt: Instant = date(1_000),
     ) = OpenCodeSession(id = id, serverTitle = title, projectID = projectID, directory = directory, updatedAt = updatedAt)
 
-    /** Notifications need a server plugin most people won't have yet, so a send never interrupts with an offer. */
     @Test
     fun sendingNeverOffersNotificationSetup() = homeTest { h ->
         val session = OpenCodeSession(id = "ses_first", serverTitle = "First", projectID = "p", directory = "/work", updatedAt = Instant.now())
         val state = h.state {
             val base = HomeFeature.State(savedServer, snapshot(listOf(session)))
             base.copy(
-                notificationState = base.notificationState.copy(notificationPermission = NotificationPermission.NotDetermined),
+                notificationState = base.notificationState.copy(permission = NotificationPermission.NotDetermined),
                 sessionDetail = SessionFeature.State.session(savedServer, session, cachedItems = emptyList()),
             )
         }
@@ -98,33 +97,6 @@ class HomeFeatureTests {
         store.send(detail(SessionFeature.Action.PromptAdmitted(sessionID = session.id, messageID = "msg_test", requestEpoch = 1)))
         assertEquals(NotificationPermission.NotDetermined, store.state.notificationPermission)
         h.skipInFlightEffects()
-    }
-
-    @Test
-    fun notifyPluginCheckReportsTheServersPlugin() {
-        val cases = listOf(
-            OpenCodeNotifyPluginStatus.Active to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Active),
-            OpenCodeNotifyPluginStatus.Missing to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Missing),
-            OpenCodeNotifyPluginStatus.Inactive to HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Inactive),
-            null to HomeNotificationsFeature.NotifyPluginCheck.Failed,
-        )
-        for ((status, expected) in cases) homeTest { h ->
-            val state = h.state { HomeFeature.State(savedServer, snapshot(emptyList())) }
-            val store = h.store(state) {
-                this[OpenCodeClient] = OpenCodeClient.testValue.copy(
-                    notifyPluginStatus = { requested ->
-                        assertEquals(savedServer, requested)
-                        status ?: throw OpenCodeClientError("offline")
-                    },
-                )
-            }
-            store.send(Action.NotifyPluginCheckRequested) {
-                it.copy(notificationState = it.notificationState.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checking))
-            }
-            store.receive(Action.NotifyPluginChecked(status)) {
-                it.copy(notificationState = it.notificationState.copy(notifyPlugin = expected))
-            }
-        }
     }
 
     /** The drawer's Settings pushes Settings over the drawer rather than presenting a sheet, and Back returns to it. */
@@ -274,22 +246,6 @@ class HomeFeatureTests {
     }
 
     @Test
-    fun notifyPluginSetUpOpensADraftAskingOpenCodeToInstallIt() = homeTest { h ->
-        val state = h.state {
-            val base = HomeFeature.State(savedServer, snapshot(emptyList())).presentingSettings(SettingsFeature.State(server = savedServer))
-            base.copy(notificationState = base.notificationState.copy(notifyPlugin = HomeNotificationsFeature.NotifyPluginCheck.Checked(OpenCodeNotifyPluginStatus.Missing)))
-        }
-        val store = h.store(state)
-        store.exhaustive = false
-        store.send(Action.NotifyPluginSetUpTapped)
-        assertFalse(store.state.isSettingsShown)
-        val draft = requireNotNull(store.state.sessionDetail)
-        assertNull(draft.session)
-        assertTrue(draft.draft.contains(OpenCodeNotifyPluginStatus.PACKAGE_ENTRY))
-        assertTrue(draft.draft.contains(OpenCodeNotifyPluginStatus.PLUGIN_ID))
-    }
-
-    @Test
     fun buildsWithoutARelayNeverOfferNotifications() = homeTest { h ->
         val session = OpenCodeSession(id = "ses_first", serverTitle = "First", projectID = "p", directory = "/work", updatedAt = Instant.now())
         val state = h.state {
@@ -297,11 +253,12 @@ class HomeFeatureTests {
                 .copy(sessionDetail = SessionFeature.State.session(savedServer, session, cachedItems = emptyList()))
         }
         val store = h.store(state) {
-            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = false, callbackURL = { null }, prepare = {}, forget = {})
+            this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = false)
             this[NotificationPermissionClient] = NotificationPermissionClient(
                 status = { throw AssertionError("Without a relay the app must not read or ask for permission") },
                 request = { NotificationPermission.Enabled },
-                openSettings = { true },
+                openSettings = {},
+                alerts = NotificationPermissionClient.testValue.alerts,
             )
             this[OpenCodeClient] = OpenCodeClient.testValue.copy(
                 pendingInputs = { _, _ -> emptyList() },
@@ -309,73 +266,63 @@ class HomeFeatureTests {
             )
         }
         store.exhaustive = false
-        store.send(Action.NotificationSettingsRequested)
+        store.send(Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested))
         store.send(detail(SessionFeature.Action.PromptAdmitted(sessionID = session.id, messageID = "msg_test", requestEpoch = 1)))
         assertNull(store.state.notificationPermission)
         h.skipInFlightEffects()
     }
 
     @Test
-    fun notificationSetupHandlesPermissionDecision() {
-        for (permission in listOf(NotificationPermission.Enabled, NotificationPermission.Disabled, NotificationPermission.NotDetermined)) homeTest { h ->
+    fun turningNotificationsOnRegistersThisPhone() {
+        for (permission in listOf(NotificationPermission.Enabled, NotificationPermission.Disabled)) homeTest { h ->
+            val off = PushSetting(isOn = false)
             val state = h.state {
                 val base = HomeFeature.State(savedServer, snapshot(emptyList()))
-                base.copy(notificationState = base.notificationState.copy(notificationPermission = NotificationPermission.NotDetermined))
+                base.copy(notificationState = base.notificationState.copy(permission = NotificationPermission.NotDetermined, setting = off))
             }
-            val prepared = LockIsolated<List<OpenCodeServer>>(emptyList())
+            val registered = LockIsolated<List<OpenCodeServer>>(emptyList())
             val store = h.store(state) {
-                this[NotificationPermissionClient] = NotificationPermissionClient(status = { permission }, request = { permission }, openSettings = { true })
-                this[SessionNotificationsClient] = SessionNotificationsClient(
-                    isAvailable = true,
-                    callbackURL = { null },
-                    prepare = { server -> prepared.append(server) },
-                    forget = {},
+                this[NotificationPermissionClient] = NotificationPermissionClient(
+                    status = { NotificationPermission.NotDetermined },
+                    request = { permission },
+                    openSettings = {},
+                    alerts = NotificationPermissionClient.testValue.alerts,
                 )
+                this[SessionNotificationsClient] = SessionNotificationsClient(isAvailable = true, register = { server -> registered.append(server) })
             }
-            store.send(Action.EnableNotificationsTapped) {
-                it.copy(notificationState = it.notificationState.copy(isRequestingNotifications = true))
+            val settled = if (permission == NotificationPermission.Enabled) PushSetting(isOn = true) else off
+            store.send(Action.Notifications(HomeNotificationsFeature.Action.Toggled(true))) {
+                it.copy(notificationState = it.notificationState.copy(setting = PushSetting(isOn = true), isChanging = true))
             }
-            store.receive(Action.NotificationPermissionRequested(permission)) {
-                it.copy(
-                    notificationState = it.notificationState.copy(
-                        isRequestingNotifications = false,
-                        notificationSetupError = if (permission == NotificationPermission.NotDetermined) "Couldn’t request permission. Try again." else null,
-                    ),
-                )
-            }
-            store.receive(Action.NotificationPermissionLoaded(permission)) {
-                it.copy(notificationState = it.notificationState.copy(notificationPermission = permission))
+            store.receive(Action.Notifications(HomeNotificationsFeature.Action.Changed(permission, settled, null))) {
+                it.copy(notificationState = it.notificationState.copy(permission = permission, setting = settled, isChanging = false))
             }
             store.finish()
-            // Granting permission mints the callback ahead of the next send.
-            assertEquals(if (permission == NotificationPermission.Enabled) listOf(savedServer) else emptyList<OpenCodeServer>(), prepared.value)
+            assertEquals(if (permission == NotificationPermission.Enabled) listOf(savedServer) else emptyList<OpenCodeServer>(), registered.value)
         }
     }
 
     @Test
-    fun deniedNotificationsOpenSettingsAndRefreshOnReturn() = homeTest { h ->
+    fun blockedNotificationsOpenSettingsAndRefreshOnReturn() = homeTest { h ->
         val state = h.state {
             val base = HomeFeature.State(savedServer, snapshot(emptyList()))
-            base.copy(notificationState = base.notificationState.copy(notificationPermission = NotificationPermission.Disabled))
+            base.copy(notificationState = base.notificationState.copy(permission = NotificationPermission.Disabled))
         }
         val opened = LockIsolated(false)
+        val alerts = NotificationPermissionClient.testValue.alerts()
         val store = h.store(state) {
             this[NotificationPermissionClient] = NotificationPermissionClient(
                 status = { NotificationPermission.Enabled },
-                request = { throw AssertionError("Denied permission must use Settings, not ask again") },
-                openSettings = { opened.setValue(true); true },
+                request = { throw AssertionError("Blocked notifications use Android settings, not the prompt") },
+                openSettings = { opened.setValue(true) },
+                alerts = { alerts },
             )
         }
-        store.send(Action.EnableNotificationsTapped) {
-            it.copy(notificationState = it.notificationState.copy(isRequestingNotifications = true))
-        }
-        store.receive(Action.NotificationSettingsOpened(true)) {
-            it.copy(notificationState = it.notificationState.copy(isRequestingNotifications = false))
-        }
-        assertTrue(opened.value)
-        store.send(Action.NotificationSettingsRequested)
-        store.receive(Action.NotificationPermissionLoaded(NotificationPermission.Enabled)) {
-            it.copy(notificationState = it.notificationState.copy(notificationPermission = NotificationPermission.Enabled))
+        store.send(Action.Notifications(HomeNotificationsFeature.Action.AndroidSettingsTapped(null)))
+        assertTrue(eventually { opened.value })
+        store.send(Action.Notifications(HomeNotificationsFeature.Action.SettingsRequested))
+        store.receive(Action.Notifications(HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting(), alerts))) {
+            it.copy(notificationState = it.notificationState.copy(permission = NotificationPermission.Enabled, alerts = alerts))
         }
         store.finish()
     }

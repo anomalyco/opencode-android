@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">費用</string>
     <string name="session_sheet_media">媒體</string>
     <string name="session_sheet_media_value">檔案與連結</string>
-    <string name="session_always_notify">一律通知</string>
-    <string name="session_always_notify_message_phone">每次回覆完成時都通知這支手機，即使訊息不是從這裡傳送的。</string>
-    <string name="session_always_notify_message_tablet">每次回覆完成時都通知這台平板，即使訊息不是從這裡傳送的。</string>
     <string name="session_delete_session">刪除工作階段</string>
     <string name="session_rename_placeholder">標題</string>
     <string name="session_auto_rename">自動重新命名</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">無法分支工作階段</string>
     <string name="session_sheet_save_export_failed">無法儲存匯出檔案</string>
     <string name="session_sheet_export_failed_title">無法匯出工作階段</string>
-    <string name="session_sheet_notifications_off_message">請先在設定中開啟通知。</string>
-    <string name="session_sheet_always_notify_on_failed_title">無法開啟一律通知</string>
-    <string name="session_sheet_always_notify_off_failed_title">無法關閉一律通知</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">伺服器不支援檔案</string>

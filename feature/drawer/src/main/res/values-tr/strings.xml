@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Gönderiliyor</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">İzin istenemedi. Tekrar deneyin.</string>
-    <string name="drawer_notifications_open_settings_error">Ayarlar açılamadı. Android Ayarlarını açıp Bildirimler → OpenCode seçeneğini seçin.</string>
     <string name="drawer_delete_session_error">“%1$s” silinemedi</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d oturum silinemedi</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Oturum ekranını iyileştirmeme yardım et. Bulduklarını göster ve değişiklikleri açıkla.</string>
     <string name="drawer_appearance_preview_assistant_text">Yerleşim sorununu `SessionView.swift` dosyasında buldum. Konuşma dökümü ve mesaj yazma alanı mevcut yüksekliği paylaşıyor, bu yüzden klavye iyi bir zorlayıcı test oluyor.</string>
+    <string name="drawer_notifications_change_error">Bildirimler değiştirilemedi. Tekrar deneyin.</string>
 </resources>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Iberilýär</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Rugsat sorap bolmady. Täzeden synanyş.</string>
-    <string name="drawer_notifications_open_settings_error">Sazlamalary açyp bolmady. Android sazlamalaryny açyň we Bildirişler → OpenCode saýlaň.</string>
     <string name="drawer_delete_session_error">“%1$s” pozup bolmady</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d sessiýany pozup bolmady</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Sessiýa ekranyny gowulandyrmaga kömek et. Tapan zatlaryňy görkez we üýtgeşmeleri düşündir.</string>
     <string name="drawer_appearance_preview_assistant_text">`SessionView.swift` faýlynda ýerleşiş meselesini tapdym. Ýazgy we habar ýazmak meýdany elýeterli beýikligi paýlaşýar, şonuň üçin klawiatura munuň oňat synagydyr.</string>
+    <string name="drawer_notifications_change_error">Bildirişleri üýtgedip bolmady. Täzeden synanyş.</string>
 </resources>

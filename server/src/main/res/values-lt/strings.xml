@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nepavyko įkelti projektų ir seansų</string>
     <string name="server_error_load_session_family">Nepavyko įkelti susijusių seansų</string>
-    <string name="server_error_update_session">Nepavyko atnaujinti seanso</string>
     <string name="server_error_load_session_ancestry">Nepavyko įkelti aktyvaus seanso pirminių seansų</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

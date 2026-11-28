@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Αδυναμία φόρτωσης έργων και συνεδριών</string>
     <string name="server_error_load_session_family">Αδυναμία φόρτωσης της οικογένειας συνεδριών</string>
-    <string name="server_error_update_session">Αδυναμία ενημέρωσης της συνεδρίας</string>
     <string name="server_error_load_session_ancestry">Αδυναμία φόρτωσης των προγονικών συνεδριών της ενεργής συνεδρίας</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

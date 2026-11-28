@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Αποστολή</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Αδυναμία αιτήματος άδειας. Δοκιμάστε ξανά.</string>
-    <string name="drawer_notifications_open_settings_error">Αδυναμία ανοίγματος των ρυθμίσεων. Ανοίξτε τις ρυθμίσεις Android και επιλέξτε Ειδοποιήσεις → OpenCode.</string>
     <string name="drawer_delete_session_error">Αδυναμία διαγραφής του «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Αδυναμία διαγραφής %1$d συνεδρίας</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Βοήθησέ με να βελτιώσω την οθόνη της συνεδρίας. Δείξε μου τι βρίσκεις και εξήγησε τις αλλαγές.</string>
     <string name="drawer_appearance_preview_assistant_text">Βρήκα το πρόβλημα διάταξης στο `SessionView.swift`. Η καταγραφή συνομιλίας και η σύνταξη μοιράζονται το διαθέσιμο ύψος, οπότε το πληκτρολόγιο είναι μια καλή δοκιμή αντοχής.</string>
+    <string name="drawer_notifications_change_error">Αδυναμία αλλαγής ειδοποιήσεων. Δοκιμάστε ξανά.</string>
 </resources>

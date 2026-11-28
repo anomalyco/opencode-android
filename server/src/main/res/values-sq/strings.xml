@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nuk u ngarkuan dot projektet dhe sesionet</string>
     <string name="server_error_load_session_family">Nuk u ngarkua dot familja e sesionit</string>
-    <string name="server_error_update_session">Nuk u përditësua dot sesioni</string>
     <string name="server_error_load_session_ancestry">Nuk u ngarkua dot prejardhja e sesionit aktiv</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Не удалось загрузить проекты и сессии</string>
     <string name="server_error_load_session_family">Не удалось загрузить связанные сессии</string>
-    <string name="server_error_update_session">Не удалось обновить сессию</string>
     <string name="server_error_load_session_ancestry">Не удалось загрузить родительские сессии активной сессии</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

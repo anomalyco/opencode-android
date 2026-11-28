@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Odosiela sa</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nepodarilo sa požiadať o povolenie. Skúste znova.</string>
-    <string name="drawer_notifications_open_settings_error">Nepodarilo sa otvoriť nastavenia. Otvorte nastavenia Androidu a vyberte Upozornenia → OpenCode.</string>
     <string name="drawer_delete_session_error">Nepodarilo sa odstrániť „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nepodarilo sa odstrániť %1$d reláciu</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomôž mi vylepšiť obrazovku relácie. Ukáž mi, čo nájdeš, a vysvetli zmeny.</string>
     <string name="drawer_appearance_preview_assistant_text">Našiel som problém s rozložením v `SessionView.swift`. Prepis a editor správ si delia dostupnú výšku, takže klávesnica je dobrý záťažový test.</string>
+    <string name="drawer_notifications_change_error">Nepodarilo sa zmeniť upozornenia. Skúste znova.</string>
 </resources>

@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Projeler ve oturumlar yüklenemedi</string>
     <string name="server_error_load_session_family">Oturum ailesi yüklenemedi</string>
-    <string name="server_error_update_session">Oturum güncellenemedi</string>
     <string name="server_error_load_session_ancestry">Etkin oturumun üst oturumları yüklenemedi</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

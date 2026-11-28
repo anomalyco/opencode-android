@@ -52,21 +52,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Obvestila</string>
-    <string name="settings_notifications_device_header">Ta %1$s</string>
-    <string name="settings_notifications_device_footer">Obvestila potujejo prek posrednika, ki ničesar ne shranjuje. Na napravo %1$s prihajajo le obvestila sej, začetih na njej.</string>
-    <string name="settings_notifications_allow">Dovoli obvestila</string>
+    <string name="settings_notifications_notify_about">Obveščaj o</string>
+    <string name="settings_notifications_level_all">Vse</string>
+    <string name="settings_notifications_level_attention">Samo, ko me potrebuje</string>
+    <string name="settings_notifications_off_footer">Prejmite obvestilo, ko se seja konča, postavi vprašanje ali potrebuje dovoljenje.</string>
+    <string name="settings_notifications_blocked_footer">Obvestila za OpenCode so v nastavitvah sistema Android izklopljena.</string>
+    <string name="settings_notifications_unsupported_footer">Ta strežnik ne podpira obvestil. Posodobite OpenCode na svojem računalniku.</string>
     <string name="settings_notifications_open_android_settings">Odpri nastavitve Androida</string>
-    <string name="settings_notifications_turn_on">Vklopi obvestila</string>
-    <string name="settings_notifications_server_header">Strežnik</string>
-    <string name="settings_notifications_set_up_footer">Odpre sejo s pozivom, naj OpenCode namesti vtičnik. Pošlji ga in nato znova preveri.</string>
-    <string name="settings_notifications_plugin_needed_footer">Strežnik potrebuje vtičnik OpenCode notify.</string>
-    <string name="settings_notifications_notify_plugin">Vtičnik za obvestila</string>
-    <string name="settings_notifications_plugin_installed">Nameščen</string>
-    <string name="settings_notifications_plugin_not_running">Ne deluje</string>
-    <string name="settings_notifications_plugin_not_installed">Ni nameščen</string>
-    <string name="settings_notifications_plugin_check_failed">Stanja ni bilo mogoče preveriti</string>
-    <string name="settings_notifications_set_up">Nastavi z OpenCode</string>
-    <string name="settings_notifications_check_again">Preveri znova</string>
+    <string name="settings_notifications_alerts_header">Zvok in pasice</string>
+    <string name="settings_notifications_alerts_footer">Odpre nastavitve sistema Android, kjer lahko za vsako vrsto nastavite pojavno obvestilo, zvok ali izklop.</string>
+    <string name="settings_notifications_needs_you">Potrebuje vas</string>
+    <string name="settings_notifications_finished">Končano</string>
+    <string name="settings_notifications_failed">Ni uspelo</string>
+    <string name="settings_notifications_alert_banner">Pasica, zvok</string>
+    <string name="settings_notifications_alert_sound">Zvok</string>
+    <string name="settings_notifications_alert_silent">Brez zvoka</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Seje</string>

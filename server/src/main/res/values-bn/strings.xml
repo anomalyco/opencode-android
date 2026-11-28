@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">প্রকল্প ও সেশন লোড করা যায়নি</string>
     <string name="server_error_load_session_family">সংশ্লিষ্ট সেশনগুলো লোড করা যায়নি</string>
-    <string name="server_error_update_session">সেশন আপডেট করা যায়নি</string>
     <string name="server_error_load_session_ancestry">সক্রিয় সেশনের পূর্বসূরি সেশনগুলো লোড করা যায়নি</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

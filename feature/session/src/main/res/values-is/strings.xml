@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kostnaður</string>
     <string name="session_sheet_media">Margmiðlun</string>
     <string name="session_sheet_media_value">Skrár og tenglar</string>
-    <string name="session_always_notify">Alltaf tilkynna</string>
-    <string name="session_always_notify_message_phone">Tilkynna í þessum síma þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>
-    <string name="session_always_notify_message_tablet">Tilkynna í þessari spjaldtölvu þegar svar er tilbúið, jafnvel við skilaboðum sem þú sendir annars staðar.</string>
     <string name="session_delete_session">Eyða setu</string>
     <string name="session_rename_placeholder">Titill</string>
     <string name="session_auto_rename">Endurnefna sjálfvirkt</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Ekki tókst að kvísla setu</string>
     <string name="session_sheet_save_export_failed">Ekki tókst að vista útflutning</string>
     <string name="session_sheet_export_failed_title">Ekki tókst að flytja út setu</string>
-    <string name="session_sheet_notifications_off_message">Kveiktu fyrst á tilkynningum í stillingum.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Ekki tókst að virkja „Alltaf tilkynna“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Ekki tókst að slökkva á „Alltaf tilkynna“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Netþjónn styður ekki skrár</string>

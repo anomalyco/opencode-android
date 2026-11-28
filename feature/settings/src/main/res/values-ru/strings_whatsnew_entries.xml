@@ -65,13 +65,6 @@
     <string name="settings_whatsnew_entry_math_and_diagrams_example">Попросите показать отправку сообщения в виде блок-схемы</string>
     <string name="settings_whatsnew_entry_math_and_diagrams_prompt">Нарисуй блок-схему отправки сообщения</string>
 
-    <!-- 2026-10-09-04-always-notify -->
-    <string name="settings_whatsnew_entry_always_notify_title">Уведомления о завершении</string>
-    <string name="settings_whatsnew_entry_always_notify_summary">Получайте уведомление с краткими итогами, когда сессия, запущенная здесь, завершит работу.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_1">Включите «Уведомлять всегда» в панели сессии, чтобы получать уведомления о каждом ответе, даже на запросы с компьютера.</string>
-    <string name="settings_whatsnew_entry_always_notify_detail_2">Нажмите на уведомление, чтобы открыть сессию.</string>
-    <string name="settings_whatsnew_entry_always_notify_example">Отправьте сообщение, затем заблокируйте телефон</string>
-
     <!-- 2026-10-09-05-server-switcher -->
     <string name="settings_whatsnew_entry_server_switcher_title">Переключение серверов</string>
     <string name="settings_whatsnew_entry_server_switcher_summary">Имя текущего сервера — в заголовке боковой панели. Нажмите на него, чтобы выбрать другой сервер или добавить новый.</string>
@@ -730,17 +723,9 @@
     <string name="settings_whatsnew_entry_wisp_orb_title">Голосовая сфера теперь в стиле Wisp</string>
     <string name="settings_whatsnew_entry_wisp_orb_summary">Сфера звонка теперь выглядит как Wisp: стеклянная линза над светящимися точками, которые реагируют на оба голоса. Её состояния отражают подключение, прослушивание, работу, речь и ожидание вашего ответа. Это единственный стиль сферы, поэтому прежние стили и настройки сферы удалены.</string>
 
-    <!-- 2026-10-31-01-encrypted-notification-previews -->
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_title">Зашифрованный текст уведомлений</string>
-    <string name="settings_whatsnew_entry_encrypted_notification_previews_summary">С обновлённым плагином уведомлений и подключением по HTTPS сервер шифрует заголовок и текст для этого устройства. Если расшифровать их не удаётся, уведомление просто сообщает: «Новая активность».</string>
-
     <!-- 2026-10-31-02-move-session-folder-gone -->
     <string name="settings_whatsnew_entry_move_session_folder_gone_title">Сессии сохраняются без папки</string>
     <string name="settings_whatsnew_entry_move_session_folder_gone_summary">Если папки сессии больше нет, например после удаления рабочего пространства, при ошибке отправки появится предложение перенести сессию в папку проекта и отправить сообщение снова.</string>
-
-    <!-- 2026-10-31-03-notification-plugin-setup -->
-    <string name="settings_whatsnew_entry_notification_plugin_setup_title">Настройка уведомлений с OpenCode</string>
-    <string name="settings_whatsnew_entry_notification_plugin_setup_summary">В разделе «Настройки → Уведомления» нажмите «Настроить с OpenCode», чтобы просмотреть запрос на установку недостающего плагина уведомлений.</string>
 
     <!-- 2026-11-01-01-call-card-takes-over -->
     <string name="settings_whatsnew_entry_call_card_takes_over_title">Карточка звонка внизу экрана</string>

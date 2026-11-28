@@ -51,21 +51,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Notificări</string>
-    <string name="settings_notifications_device_header">Acest %1$s</string>
-    <string name="settings_notifications_device_footer">Notificările trec printr-un releu care nu stochează nimic. Doar sesiunile pornite pe acest %1$s îi trimit notificări.</string>
-    <string name="settings_notifications_allow">Permite notificările</string>
+    <string name="settings_notifications_notify_about">Notificări pentru</string>
+    <string name="settings_notifications_level_all">Totul</string>
+    <string name="settings_notifications_level_attention">Doar când are nevoie de mine</string>
+    <string name="settings_notifications_off_footer">Primești o notificare când o sesiune se încheie, pune o întrebare sau necesită permisiune.</string>
+    <string name="settings_notifications_blocked_footer">Notificările pentru OpenCode sunt dezactivate în setările Android.</string>
+    <string name="settings_notifications_unsupported_footer">Acest server nu acceptă notificări. Actualizează OpenCode pe computerul tău.</string>
     <string name="settings_notifications_open_android_settings">Deschide setările Android</string>
-    <string name="settings_notifications_turn_on">Activează notificările</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">Deschide o sesiune cu o solicitare către OpenCode de a instala pluginul. Trimite solicitarea, apoi verifică din nou.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serverul are nevoie de pluginul notify pentru OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Plugin notify</string>
-    <string name="settings_notifications_plugin_installed">Instalat</string>
-    <string name="settings_notifications_plugin_not_running">Nu rulează</string>
-    <string name="settings_notifications_plugin_not_installed">Neinstalat</string>
-    <string name="settings_notifications_plugin_check_failed">Nu s-a putut verifica starea</string>
-    <string name="settings_notifications_set_up">Configurează cu OpenCode</string>
-    <string name="settings_notifications_check_again">Verifică din nou</string>
+    <string name="settings_notifications_alerts_header">Sunet și bannere</string>
+    <string name="settings_notifications_alerts_footer">Deschide setările Android, unde fiecare tip poate apărea pe ecran, reda un sunet sau fi dezactivat.</string>
+    <string name="settings_notifications_needs_you">Are nevoie de tine</string>
+    <string name="settings_notifications_finished">Încheiat</string>
+    <string name="settings_notifications_failed">Eroare</string>
+    <string name="settings_notifications_alert_banner">Banner, sunet</string>
+    <string name="settings_notifications_alert_sound">Sunet</string>
+    <string name="settings_notifications_alert_silent">Silențios</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesiuni</string>

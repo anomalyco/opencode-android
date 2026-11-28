@@ -128,7 +128,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nije moguće učitati projekte i sesije</string>
     <string name="server_error_load_session_family">Nije moguće učitati grupu povezanih sesija</string>
-    <string name="server_error_update_session">Nije moguće ažurirati sesiju</string>
     <string name="server_error_load_session_ancestry">Nije moguće učitati nadređene sesije aktivne sesije</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

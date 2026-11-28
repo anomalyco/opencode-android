@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ፕሮጀክቶችንና ክፍለ ጊዜዎችን መጫን አልተቻለም</string>
     <string name="server_error_load_session_family">ተዛማጅ ክፍለ ጊዜዎችን መጫን አልተቻለም</string>
-    <string name="server_error_update_session">ክፍለ ጊዜውን ማዘመን አልተቻለም</string>
     <string name="server_error_load_session_ancestry">የንቁውን ክፍለ ጊዜ መነሻ ክፍለ ጊዜዎች መጫን አልተቻለም</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

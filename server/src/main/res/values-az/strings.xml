@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Layihələr və sessiyalar yüklənə bilmədi</string>
     <string name="server_error_load_session_family">Sessiya ailəsi yüklənə bilmədi</string>
-    <string name="server_error_update_session">Sessiya yenilənə bilmədi</string>
     <string name="server_error_load_session_ancestry">Aktiv sessiyanın üst sessiyaları yüklənə bilmədi</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

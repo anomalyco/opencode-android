@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">पठाउँदै</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">अनुमति माग्न सकिएन। फेरि प्रयास गर्नुहोस्।</string>
-    <string name="drawer_notifications_open_settings_error">सेटिङहरू खोल्न सकिएन। Android सेटिङहरू खोलेर सूचनाहरू → OpenCode छान्नुहोस्।</string>
     <string name="drawer_delete_session_error">“%1$s” मेट्न सकिएन</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d सत्र मेट्न सकिएन</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">सत्रको स्क्रिन सुधार्न मद्दत गर्नुहोस्। के भेटियो देखाउनुहोस् र परिवर्तनहरू बुझाउनुहोस्।</string>
     <string name="drawer_appearance_preview_assistant_text">मैले `SessionView.swift` मा लेआउटको समस्या भेट्टाएँ। वार्तालापको पाठ र सन्देश लेखनले उपलब्ध उचाइ बाँड्छन्, त्यसैले किबोर्ड खोलेर सीमित ठाउँमा कस्तो देखिन्छ जाँच्न सकिन्छ।</string>
+    <string name="drawer_notifications_change_error">सूचनाहरू परिवर्तन गर्न सकिएन। फेरि प्रयास गर्नुहोस्।</string>
 </resources>

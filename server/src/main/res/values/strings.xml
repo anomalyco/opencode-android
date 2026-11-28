@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Couldn’t load projects and sessions</string>
     <string name="server_error_load_session_family">Couldn’t load the session family</string>
-    <string name="server_error_update_session">Couldn’t update the session</string>
     <string name="server_error_load_session_ancestry">Couldn’t load active session ancestry</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kostnad</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Filer och länkar</string>
-    <string name="session_always_notify">Meddela alltid</string>
-    <string name="session_always_notify_message_phone">Meddela den här telefonen när ett svar är klart, även om meddelandet skickades från en annan enhet.</string>
-    <string name="session_always_notify_message_tablet">Meddela den här surfplattan när ett svar är klart, även om meddelandet skickades från en annan enhet.</string>
     <string name="session_delete_session">Ta bort session</string>
     <string name="session_rename_placeholder">Titel</string>
     <string name="session_auto_rename">Byt namn automatiskt</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Kunde inte förgrena sessionen</string>
     <string name="session_sheet_save_export_failed">Kunde inte spara exporten</string>
     <string name="session_sheet_export_failed_title">Kunde inte exportera sessionen</string>
-    <string name="session_sheet_notifications_off_message">Slå först på aviseringar i inställningarna.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Kunde inte slå på Meddela alltid</string>
-    <string name="session_sheet_always_notify_off_failed_title">Kunde inte slå av Meddela alltid</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Servern stöder inte filer</string>

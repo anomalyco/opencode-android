@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">Mengirim</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Gagal meminta izin. Coba lagi.</string>
-    <string name="drawer_notifications_open_settings_error">Gagal membuka pengaturan. Buka pengaturan Android dan pilih Notifikasi → OpenCode.</string>
     <string name="drawer_delete_session_error">Gagal menghapus “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">Gagal menghapus %1$d sesi</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Bantu saya memperbaiki layar sesi. Tunjukkan temuan Anda dan jelaskan perubahannya.</string>
     <string name="drawer_appearance_preview_assistant_text">Saya menemukan masalah tata letak di `SessionView.swift`. Transkrip dan kolom pesan berbagi ruang vertikal yang tersedia, jadi keyboard berguna untuk menguji batas tata letaknya.</string>
+    <string name="drawer_notifications_change_error">Gagal mengubah notifikasi. Coba lagi.</string>
 </resources>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Lähetetään</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Luvan pyytäminen epäonnistui. Yritä uudelleen.</string>
-    <string name="drawer_notifications_open_settings_error">Asetusten avaaminen epäonnistui. Avaa Androidin asetukset ja valitse Ilmoitukset → OpenCode.</string>
     <string name="drawer_delete_session_error">Istunnon ”%1$s” poistaminen epäonnistui.</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d istunnon poistaminen epäonnistui</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Auta minua parantamaan istuntonäkymää. Näytä, mitä löydät, ja selitä muutokset.</string>
     <string name="drawer_appearance_preview_assistant_text">Löysin asetteluongelman tiedostosta `SessionView.swift`. Keskusteluloki ja viestikenttä jakavat käytettävissä olevan korkeuden, joten näppäimistö on hyvä rasitustesti.</string>
+    <string name="drawer_notifications_change_error">Ilmoitusasetusten muuttaminen epäonnistui. Yritä uudelleen.</string>
 </resources>

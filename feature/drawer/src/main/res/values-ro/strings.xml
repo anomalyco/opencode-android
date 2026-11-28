@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Se trimite</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nu s-a putut solicita permisiunea. Încearcă din nou.</string>
-    <string name="drawer_notifications_open_settings_error">Nu s-au putut deschide setările. Deschide setările Android și alege Notificări → OpenCode.</string>
     <string name="drawer_delete_session_error">Nu s-a putut șterge „%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nu s-a putut șterge %1$d sesiune</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ajută-mă să îmbunătățesc ecranul sesiunii. Arată-mi ce găsești și explică modificările.</string>
     <string name="drawer_appearance_preview_assistant_text">Am găsit problema de aranjare în `SessionView.swift`. Transcrierea și editorul de mesaje împart înălțimea disponibilă, așa că tastatura e utilă pentru a testa limitele.</string>
+    <string name="drawer_notifications_change_error">Nu s-au putut modifica notificările. Încearcă din nou.</string>
 </resources>

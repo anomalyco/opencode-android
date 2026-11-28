@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Notiek sūtīšana</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Neizdevās pieprasīt atļauju. Mēģini vēlreiz.</string>
-    <string name="drawer_notifications_open_settings_error">Neizdevās atvērt iestatījumus. Atver Android iestatījumus un izvēlies Paziņojumi → OpenCode.</string>
     <string name="drawer_delete_session_error">Neizdevās dzēst “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="zero">Neizdevās dzēst %1$d sesiju</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Palīdzi uzlabot sesijas ekrānu. Parādi, ko atradi, un paskaidro izmaiņas.</string>
     <string name="drawer_appearance_preview_assistant_text">Atradu izkārtojuma problēmu failā `SessionView.swift`. Sarunas pieraksts un ziņas ievade dala pieejamo augstumu, tāpēc tastatūra labi palīdz pārbaudīt izkārtojumu.</string>
+    <string name="drawer_notifications_change_error">Neizdevās mainīt paziņojumus. Mēģini vēlreiz.</string>
 </resources>

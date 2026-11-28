@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">โหลดโปรเจกต์และเซสชันไม่ได้</string>
     <string name="server_error_load_session_family">โหลดกลุ่มเซสชันไม่ได้</string>
-    <string name="server_error_update_session">อัปเดตเซสชันไม่ได้</string>
     <string name="server_error_load_session_ancestry">โหลดลำดับเซสชันต้นทางของเซสชันที่ใช้งานอยู่ไม่ได้</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

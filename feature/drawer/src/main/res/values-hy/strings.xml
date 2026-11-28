@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Ուղարկվում է</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Չհաջողվեց թույլտվություն խնդրել։ Կրկին փորձեք։</string>
-    <string name="drawer_notifications_open_settings_error">Չհաջողվեց բացել կարգավորումները։ Բացեք Android-ի կարգավորումները և ընտրեք Ծանուցումներ → OpenCode։</string>
     <string name="drawer_delete_session_error">Չհաջողվեց ջնջել «%1$s»-ը</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Չհաջողվեց ջնջել %1$d նիստ</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Օգնիր բարելավել նիստի էկրանը։ Ցույց տուր՝ ինչ ես գտել, և բացատրիր փոփոխությունները։</string>
     <string name="drawer_appearance_preview_assistant_text">Դասավորության խնդիրը գտա `SessionView.swift`-ում։ Սղագրությունն ու հաղորդագրության խմբագրիչը կիսում են հասանելի բարձրությունը, ուստի ստեղնաշարը լավ միջոց է դասավորությունը փորձարկելու համար։</string>
+    <string name="drawer_notifications_change_error">Չհաջողվեց փոխել ծանուցումները։ Կրկին փորձեք։</string>
 </resources>

@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nie udało się wczytać projektów i sesji</string>
     <string name="server_error_load_session_family">Nie udało się wczytać powiązanych sesji</string>
-    <string name="server_error_update_session">Nie udało się zaktualizować sesji</string>
     <string name="server_error_load_session_ancestry">Nie udało się wczytać sesji nadrzędnych aktywnej sesji</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

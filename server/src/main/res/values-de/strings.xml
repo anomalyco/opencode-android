@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Projekte und Sitzungen konnten nicht geladen werden</string>
     <string name="server_error_load_session_family">Die Sitzungsfamilie konnte nicht geladen werden</string>
-    <string name="server_error_update_session">Die Sitzung konnte nicht aktualisiert werden</string>
     <string name="server_error_load_session_ancestry">Übergeordnete Sitzungen der aktiven Sitzung konnten nicht geladen werden</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

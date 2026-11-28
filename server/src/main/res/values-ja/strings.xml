@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">プロジェクトとセッションを読み込めませんでした</string>
     <string name="server_error_load_session_family">セッションの親子関係を読み込めませんでした</string>
-    <string name="server_error_update_session">セッションを更新できませんでした</string>
     <string name="server_error_load_session_ancestry">アクティブなセッションの上位セッションを読み込めませんでした</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

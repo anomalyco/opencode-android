@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Kundi ikki lesa verkætlanir og setur inn</string>
     <string name="server_error_load_session_family">Kundi ikki lesa setufamiljuna inn</string>
-    <string name="server_error_update_session">Kundi ikki dagføra setuna</string>
     <string name="server_error_load_session_ancestry">Kundi ikki lesa yvirskipaðu seturnar hjá virknu setuni inn</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

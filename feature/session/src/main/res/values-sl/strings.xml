@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Strošek</string>
     <string name="session_sheet_media">Predstavnost</string>
     <string name="session_sheet_media_value">Datoteke in povezave</string>
-    <string name="session_always_notify">Vedno obvesti</string>
-    <string name="session_always_notify_message_phone">Obvesti ta telefon ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
-    <string name="session_always_notify_message_tablet">Obvesti to tablico ob vsakem dokončanem odgovoru, tudi na sporočila, poslana od drugod.</string>
     <string name="session_delete_session">Izbriši sejo</string>
     <string name="session_rename_placeholder">Naslov</string>
     <string name="session_auto_rename">Samodejno preimenuj</string>
@@ -274,9 +271,6 @@
     <string name="session_sheet_fork_failed_title">Odcepitev seje ni uspela</string>
     <string name="session_sheet_save_export_failed">Izvoza ni bilo mogoče shraniti</string>
     <string name="session_sheet_export_failed_title">Izvoz seje ni uspel</string>
-    <string name="session_sheet_notifications_off_message">Najprej vklopite obvestila v nastavitvah.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Vklop možnosti »Vedno obvesti« ni uspel</string>
-    <string name="session_sheet_always_notify_off_failed_title">Izklop možnosti »Vedno obvesti« ni uspel</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Strežnik ne podpira datotek</string>

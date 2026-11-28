@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Огоҳиҳо</string>
-    <string name="settings_notifications_device_header">Ин %1$s</string>
-    <string name="settings_notifications_device_footer">Огоҳиҳо аз сервери миёнараве мегузаранд, ки чизеро нигоҳ намедорад. Танҳо сессияҳои дар ин %1$s оғозшуда ба он огоҳӣ мефиристанд.</string>
-    <string name="settings_notifications_allow">Ба огоҳиҳо иҷозат диҳед</string>
+    <string name="settings_notifications_notify_about">Огоҳ кардан дар бораи</string>
+    <string name="settings_notifications_level_all">Ҳама чиз</string>
+    <string name="settings_notifications_level_attention">Танҳо вақте ба ман ниёз дорад</string>
+    <string name="settings_notifications_off_footer">Вақте сессия анҷом меёбад, савол медиҳад ё ба иҷозат ниёз дорад, огоҳӣ гиред.</string>
+    <string name="settings_notifications_blocked_footer">Огоҳиҳо барои OpenCode дар танзимоти Android хомӯш карда шудаанд.</string>
+    <string name="settings_notifications_unsupported_footer">Ин сервер огоҳиҳоро дастгирӣ намекунад. OpenCode-ро дар компютери худ навсозӣ кунед.</string>
     <string name="settings_notifications_open_android_settings">Танзимоти Android-ро кушоед</string>
-    <string name="settings_notifications_turn_on">Огоҳиҳоро фаъол кунед</string>
-    <string name="settings_notifications_server_header">Сервер</string>
-    <string name="settings_notifications_set_up_footer">Сессияеро мекушояд, ки аз OpenCode насби плагинро мепурсад. Паёмро фиристед, сипас аз нав санҷед.</string>
-    <string name="settings_notifications_plugin_needed_footer">Ба сервер плагини notify-и OpenCode лозим аст.</string>
-    <string name="settings_notifications_notify_plugin">Плагини notify</string>
-    <string name="settings_notifications_plugin_installed">Насб шудааст</string>
-    <string name="settings_notifications_plugin_not_running">Иҷро намешавад</string>
-    <string name="settings_notifications_plugin_not_installed">Насб нашудааст</string>
-    <string name="settings_notifications_plugin_check_failed">Ҳолат санҷида нашуд</string>
-    <string name="settings_notifications_set_up">Бо OpenCode танзим кунед</string>
-    <string name="settings_notifications_check_again">Аз нав санҷед</string>
+    <string name="settings_notifications_alerts_header">Садо ва баннерҳо</string>
+    <string name="settings_notifications_alerts_footer">Танзимоти Android-ро мекушояд, ки дар он ҳар намуд метавонад дар экран пайдо шавад, садо диҳад ё хомӯш шавад.</string>
+    <string name="settings_notifications_needs_you">Диққати шумо лозим</string>
+    <string name="settings_notifications_finished">Анҷом ёфт</string>
+    <string name="settings_notifications_failed">Ноком шуд</string>
+    <string name="settings_notifications_alert_banner">Баннер, садо</string>
+    <string name="settings_notifications_alert_sound">Садо</string>
+    <string name="settings_notifications_alert_silent">Бесадо</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Сеансхо</string>

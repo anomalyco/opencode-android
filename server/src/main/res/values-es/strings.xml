@@ -128,7 +128,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">No se pudieron cargar los proyectos y las sesiones</string>
     <string name="server_error_load_session_family">No se pudo cargar la familia de sesiones</string>
-    <string name="server_error_update_session">No se pudo actualizar la sesión</string>
     <string name="server_error_load_session_ancestry">No se pudieron cargar las sesiones antecesoras de la sesión activa</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

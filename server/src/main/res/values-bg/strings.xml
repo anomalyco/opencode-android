@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Неуспешно зареждане на проектите и сесиите</string>
     <string name="server_error_load_session_family">Неуспешно зареждане на свързаните сесии</string>
-    <string name="server_error_update_session">Неуспешно актуализиране на сесията</string>
     <string name="server_error_load_session_ancestry">Неуспешно зареждане на родителските сесии на активната сесия</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

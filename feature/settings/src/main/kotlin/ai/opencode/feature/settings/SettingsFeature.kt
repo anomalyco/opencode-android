@@ -15,7 +15,7 @@ import ai.opencode.feature.settings.whatsnew.WhatsNewFeature
 import ai.opencode.feature.settings.whatsnew.canTryWhatsNew
 import ai.opencode.feature.settings.whatsnew.whatsNewVoiceAvailable
 import ai.opencode.core.sharing.shared
-import ai.opencode.feature.system.notifications.NotificationPermission
+import ai.opencode.feature.system.notifications.PushLevel
 import ai.opencode.feature.voice.VoiceCallLog
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
@@ -91,12 +91,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
         val switchingTo: OpenCodeServer? = null,
         val connectionErrorMessage: String? = null,
         val credentialsRejected: Boolean = false,
-        /** This phone's notification permission (`:feature:system`); null when this build offers no notifications (the row is hidden). */
-        val notificationPermission: NotificationPermission? = null,
-        val isRequestingNotifications: Boolean = false,
-        val notificationSetupError: String? = null,
-        /** The server half of notifications, read when Notifications opens. */
-        val notifyPlugin: NotifyPluginCheck? = null,
+        val notifications: NotificationsStatus = NotificationsStatus(),
         /** What the push shows, fixed as it opens: Settings, or What's New from the drawer's row. */
         val root: Root = Root.settings,
         /** Pages pushed above the root, innermost last. */
@@ -138,12 +133,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
         ) : Action
 
         /** Home's notification state changed. */
-        data class NotificationsChanged(
-            val permission: NotificationPermission?,
-            val isRequesting: Boolean,
-            val setupError: String?,
-            val notifyPlugin: NotifyPluginCheck? = null,
-        ) : Action
+        data class NotificationsChanged(val status: NotificationsStatus) : Action
 
         /** Push a page. */
         data class PagePushed(val page: SettingsPage) : Action
@@ -176,12 +166,12 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
         data object PairServer : SettingsDelegate
         data object AddServer : SettingsDelegate
         data class RemoveServer(val server: OpenCodeServer) : SettingsDelegate
-        data object EnableNotificationsTapped : SettingsDelegate
+        /** Notifications opened, or the app came back to it. */
         data object NotificationSettingsRequested : SettingsDelegate
-        /** Check Again, and opening Notifications. */
-        data object NotifyPluginCheckRequested : SettingsDelegate
-        /** Set Up with OpenCode. */
-        data object NotifyPluginSetUpTapped : SettingsDelegate
+        data class NotificationsToggled(val isOn: Boolean) : SettingsDelegate
+        data class NotifyAboutPicked(val level: PushLevel) : SettingsDelegate
+        /** A null channel opens the app's notification settings. */
+        data class AndroidNotificationSettingsTapped(val channelID: String?) : SettingsDelegate
         /** What's New's action that leaves Settings for a session (`HomeFeature.tryWhatsNew`). */
         data class TryWhatsNew(val destination: WhatsNewEntry.Destination, val entryID: String) : SettingsDelegate
     }
@@ -277,14 +267,7 @@ class SettingsFeature : Reducer<SettingsFeature.State, SettingsFeature.Action> {
                 },
             )
         }
-        is Action.NotificationsChanged -> Reduced(
-            state.copy(
-                notificationPermission = action.permission,
-                isRequestingNotifications = action.isRequesting,
-                notificationSetupError = action.setupError,
-                notifyPlugin = action.notifyPlugin,
-            ),
-        )
+        is Action.NotificationsChanged -> Reduced(state.copy(notifications = action.status))
         is Action.PagePushed -> push(state, action.page)
         Action.BackTapped ->
             if (state.path.isEmpty()) close(state) else setPath(state, state.path.dropLast(1))

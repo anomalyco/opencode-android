@@ -51,21 +51,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Notificações</string>
-    <string name="settings_notifications_device_header">Este %1$s</string>
-    <string name="settings_notifications_device_footer">As notificações passam por um intermediário que não armazena nada. Só sessões iniciadas neste %1$s enviam notificações para ele.</string>
-    <string name="settings_notifications_allow">Permitir notificações</string>
+    <string name="settings_notifications_notify_about">Notificar sobre</string>
+    <string name="settings_notifications_level_all">Tudo</string>
+    <string name="settings_notifications_level_attention">Só quando precisar de mim</string>
+    <string name="settings_notifications_off_footer">Receba uma notificação quando uma sessão terminar, fizer uma pergunta ou precisar de permissão.</string>
+    <string name="settings_notifications_blocked_footer">As notificações do OpenCode estão desativadas nas configurações do Android.</string>
+    <string name="settings_notifications_unsupported_footer">Este servidor não tem suporte a notificações. Atualize o OpenCode no seu computador.</string>
     <string name="settings_notifications_open_android_settings">Abrir configurações do Android</string>
-    <string name="settings_notifications_turn_on">Ativar notificações</string>
-    <string name="settings_notifications_server_header">Servidor</string>
-    <string name="settings_notifications_set_up_footer">Abre uma sessão com um pedido para o OpenCode instalar o plugin. Envie o pedido e verifique novamente.</string>
-    <string name="settings_notifications_plugin_needed_footer">O servidor precisa do plugin notify do OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Plugin notify</string>
-    <string name="settings_notifications_plugin_installed">Instalado</string>
-    <string name="settings_notifications_plugin_not_running">Não está em execução</string>
-    <string name="settings_notifications_plugin_not_installed">Não instalado</string>
-    <string name="settings_notifications_plugin_check_failed">Não foi possível verificar o status</string>
-    <string name="settings_notifications_set_up">Configurar com o OpenCode</string>
-    <string name="settings_notifications_check_again">Verificar novamente</string>
+    <string name="settings_notifications_alerts_header">Som e banners</string>
+    <string name="settings_notifications_alerts_footer">Abre as configurações do Android, onde cada tipo pode aparecer na tela, emitir som ou ser desativado.</string>
+    <string name="settings_notifications_needs_you">Precisa de você</string>
+    <string name="settings_notifications_finished">Concluído</string>
+    <string name="settings_notifications_failed">Falhou</string>
+    <string name="settings_notifications_alert_banner">Banner, som</string>
+    <string name="settings_notifications_alert_sound">Som</string>
+    <string name="settings_notifications_alert_silent">Silencioso</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sessões</string>

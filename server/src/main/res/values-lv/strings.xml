@@ -128,7 +128,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Neizdevās ielādēt projektus un sesijas</string>
     <string name="server_error_load_session_family">Neizdevās ielādēt sesiju saimi</string>
-    <string name="server_error_update_session">Neizdevās atjaunināt sesiju</string>
     <string name="server_error_load_session_ancestry">Neizdevās ielādēt aktīvās sesijas priekštečus</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Tidak dapat memuatkan projek dan sesi</string>
     <string name="server_error_load_session_family">Tidak dapat memuatkan kumpulan sesi berkaitan</string>
-    <string name="server_error_update_session">Tidak dapat mengemas kini sesi</string>
     <string name="server_error_load_session_ancestry">Tidak dapat memuatkan rantaian induk sesi aktif</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

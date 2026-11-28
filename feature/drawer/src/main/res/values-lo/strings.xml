@@ -125,8 +125,6 @@
     <string name="drawer_row_unsent_sending_state">ກຳລັງສົ່ງ</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">ຂໍການອະນຸຍາດບໍ່ໄດ້. ລອງໃໝ່.</string>
-    <string name="drawer_notifications_open_settings_error">ເປີດການຕັ້ງຄ່າບໍ່ໄດ້. ເປີດການຕັ້ງຄ່າ Android ແລ້ວເລືອກ ການແຈ້ງເຕືອນ → OpenCode.</string>
     <string name="drawer_delete_session_error">ລຶບ “%1$s” ບໍ່ໄດ້</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="other">ລຶບ %1$d ເຊດຊັນບໍ່ໄດ້</item>
@@ -159,4 +157,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">ຊ່ວຍຂ້ອຍປັບປຸງໜ້າຈໍເຊດຊັນ. ສະແດງສິ່ງທີ່ພົບ ແລະອະທິບາຍການປ່ຽນແປງ.</string>
     <string name="drawer_appearance_preview_assistant_text">ຂ້ອຍພົບບັນຫາການຈັດວາງໃນ `SessionView.swift`. ບົດຖອດສຽງ ແລະຊ່ອງຂຽນຂໍ້ຄວາມແບ່ງຄວາມສູງທີ່ມີຢູ່ຮ່ວມກັນ, ດັ່ງນັ້ນການເປີດແປ້ນພິມຈຶ່ງຊ່ວຍທົດສອບເມື່ອພື້ນທີ່ຈຳກັດໄດ້ດີ.</string>
+    <string name="drawer_notifications_change_error">ປ່ຽນການແຈ້ງເຕືອນບໍ່ໄດ້. ລອງໃໝ່.</string>
 </resources>

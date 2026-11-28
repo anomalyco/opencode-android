@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">በመላክ ላይ</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">ፈቃድ መጠየቅ አልተቻለም። እንደገና ሞክር።</string>
-    <string name="drawer_notifications_open_settings_error">ቅንብሮችን መክፈት አልተቻለም። የAndroid ቅንብሮችን ክፈትና ማሳወቂያዎች → OpenCode ምረጥ።</string>
     <string name="drawer_delete_session_error">“%1$s”ን መሰረዝ አልተቻለም</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d ክፍለ ጊዜን መሰረዝ አልተቻለም</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">የክፍለ ጊዜውን ማያ ገጽ ለማሻሻል እርዳኝ። ያገኘኸውን አሳየኝና ለውጦቹን አብራራ።</string>
     <string name="drawer_appearance_preview_assistant_text">የአቀማመጡን ችግር በ`SessionView.swift` ውስጥ አግኝቻለሁ። የውይይት ጽሑፉና የመልዕክት መጻፊያው ያለውን ቁመት ስለሚጋሩ፣ የቁልፍ ሰሌዳውን መክፈት አቀማመጡን ለመፈተሽ ይጠቅማል።</string>
+    <string name="drawer_notifications_change_error">ማሳወቂያዎችን መቀየር አልተቻለም። እንደገና ሞክር።</string>
 </resources>

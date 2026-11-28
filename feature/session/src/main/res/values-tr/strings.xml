@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Maliyet</string>
     <string name="session_sheet_media">Medya</string>
     <string name="session_sheet_media_value">Dosyalar ve bağlantılar</string>
-    <string name="session_always_notify">Her zaman bildir</string>
-    <string name="session_always_notify_message_phone">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu telefona bildirim gönder.</string>
-    <string name="session_always_notify_message_tablet">Başka yerden gönderdiğiniz mesajlar dahil, her yanıt tamamlandığında bu tablete bildirim gönder.</string>
     <string name="session_delete_session">Oturumu sil</string>
     <string name="session_rename_placeholder">Başlık</string>
     <string name="session_auto_rename">Otomatik adlandır</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Oturum dallandırılamadı</string>
     <string name="session_sheet_save_export_failed">Dışa aktarılan dosya kaydedilemedi</string>
     <string name="session_sheet_export_failed_title">Oturum dışa aktarılamadı</string>
-    <string name="session_sheet_notifications_off_message">Önce Ayarlar\'dan bildirimleri açın.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Her zaman bildir açılamadı</string>
-    <string name="session_sheet_always_notify_off_failed_title">Her zaman bildir kapatılamadı</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Sunucu dosyaları desteklemiyor</string>

@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Enviando</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Não foi possível solicitar permissão. Tente novamente.</string>
-    <string name="drawer_notifications_open_settings_error">Não foi possível abrir as configurações. Abra as configurações do Android e selecione Notificações → OpenCode.</string>
     <string name="drawer_delete_session_error">Não foi possível excluir “%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Não foi possível excluir %1$d sessão</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Me ajude a melhorar a tela da sessão. Mostre o que encontrar e explique as alterações.</string>
     <string name="drawer_appearance_preview_assistant_text">Encontrei o problema de layout em `SessionView.swift`. A transcrição e o editor de mensagens dividem a altura disponível, então o teclado é um bom teste para esse limite.</string>
+    <string name="drawer_notifications_change_error">Não foi possível alterar as notificações. Tente novamente.</string>
 </resources>

@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Taslamalary we sessiýalary ýükläp bolmady</string>
     <string name="server_error_load_session_family">Sessiýa toparyny ýükläp bolmady</string>
-    <string name="server_error_update_session">Sessiýany täzeläp bolmady</string>
     <string name="server_error_load_session_ancestry">Işjeň sessiýanyň gelip çykyş zynjyryny ýükläp bolmady</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

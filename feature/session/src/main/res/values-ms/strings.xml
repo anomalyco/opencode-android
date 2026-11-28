@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kos</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Fail dan pautan</string>
-    <string name="session_always_notify">Sentiasa maklumkan</string>
-    <string name="session_always_notify_message_phone">Maklumkan pada telefon ini setiap kali balasan selesai, walaupun mesej dihantar dari peranti lain.</string>
-    <string name="session_always_notify_message_tablet">Maklumkan pada tablet ini setiap kali balasan selesai, walaupun mesej dihantar dari peranti lain.</string>
     <string name="session_delete_session">Padam sesi</string>
     <string name="session_rename_placeholder">Tajuk</string>
     <string name="session_auto_rename">Tukar nama automatik</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">Tidak dapat mencabangkan sesi</string>
     <string name="session_sheet_save_export_failed">Tidak dapat menyimpan eksport</string>
     <string name="session_sheet_export_failed_title">Tidak dapat mengeksport sesi</string>
-    <string name="session_sheet_notifications_off_message">Hidupkan notifikasi dalam Tetapan dahulu.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Tidak dapat menghidupkan Sentiasa maklumkan</string>
-    <string name="session_sheet_always_notify_off_failed_title">Tidak dapat mematikan Sentiasa maklumkan</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Pelayan tidak menyokong fail</string>

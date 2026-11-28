@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ပရောဂျက်များနှင့် စက်ရှင်များကို မတင်နိုင်ပါ</string>
     <string name="server_error_load_session_family">ဆက်စပ်စက်ရှင်အစုကို မတင်နိုင်ပါ</string>
-    <string name="server_error_update_session">စက်ရှင်ကို အပ်ဒိတ်မလုပ်နိုင်ပါ</string>
     <string name="server_error_load_session_ancestry">လက်ရှိစက်ရှင်၏ မူလစက်ရှင်အဆက်ဆက်ကို မတင်နိုင်ပါ</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

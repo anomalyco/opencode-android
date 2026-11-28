@@ -19,7 +19,6 @@ import ai.opencode.feature.session.SessionTestSupport.receive
 import ai.opencode.feature.session.SessionTestSupport.sessionTest
 import ai.opencode.feature.session.SessionTestSupport.settle
 import ai.opencode.feature.session.SessionTestSupport.testSession
-import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.transcript.TranscriptEntry
 import ai.opencode.feature.transcript.TranscriptRowIdentityPlan
 import ai.opencode.feature.transcript.rows.ToolGroupLabel
@@ -33,7 +32,6 @@ import ai.opencode.server.model.OpenCodePendingRequests
 import ai.opencode.server.model.OpenCodeToolCall
 import ai.opencode.server.model.OpenCodeTranscriptItem
 import ai.opencode.server.model.OpenCodeTranscriptPage
-import ai.opencode.server.model.PromptContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.awaitCancellation
@@ -765,30 +763,6 @@ class SessionFeatureTestsInbox {
         assertEquals("The cancelled older inbox read must not trigger a message lookup", 0, lookups.value)
         assertEquals(listOf(input), store.state.queuedInputs)
         assertTrue(store.state.cancelledInputIDs.isEmpty())
-    }
-
-    @Test fun composerSendCarriesThisPhonesNotificationCallback() = sessionTest { h ->
-        val session = testSession(id = "ses_notify", title = "Notify")
-        val state = h.makeState(session = session, cachedItems = emptyList()).withDraft("Fix the bug")
-        val callback = "https://relay.example/v1/notify/sealed"
-        val seen = LockIsolated(listOf<String?>())
-        val store = h.store(state) {
-            this[UuidClient] = UuidClient.incrementing()
-            this[SessionNotificationsClient] = SessionNotificationsClient.testValue.let {
-                SessionNotificationsClient(isAvailable = it.isAvailable, callbackURL = { callback }, prepare = it.prepare, forget = it.forget)
-            }
-            this[OpenCodeClient] = this[OpenCodeClient].copy(
-                sendPrompt = { _, _, _, _, _, _, _ -> seen.append(PromptContext.notificationCallbackURL.current()) },
-                pendingInputs = { _, _ -> emptyList() },
-                waitForIdle = { _, _ -> awaitCancellation() },
-            )
-        }
-        store.exhaustive = false
-        store.send(Action.SendTapped)
-        store.receive(Action.PromptAdmitted::class)
-        h.skipInFlightEffects()
-        assertEquals(listOf<String?>(callback), seen.value)
-        assertNull("The callback must not leak beyond the send", PromptContext.notificationCallbackURL.current())
     }
 
     /**

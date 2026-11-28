@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">परियोजनाहरू र सत्रहरू लोड गर्न सकिएन</string>
     <string name="server_error_load_session_family">सम्बन्धित सत्रहरूको समूह लोड गर्न सकिएन</string>
-    <string name="server_error_update_session">सत्र अपडेट गर्न सकिएन</string>
     <string name="server_error_load_session_ancestry">सक्रिय सत्रका पूर्ववर्ती सत्रहरू लोड गर्न सकिएन</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

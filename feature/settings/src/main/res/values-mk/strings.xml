@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Известувања</string>
-    <string name="settings_notifications_device_header">Овој %1$s</string>
-    <string name="settings_notifications_device_footer">Известувањата одат преку посредник што не зачувува ништо. На овој %1$s стигнуваат известувања само за сесиите започнати на него.</string>
-    <string name="settings_notifications_allow">Дозволи известувања</string>
+    <string name="settings_notifications_notify_about">Известувај за</string>
+    <string name="settings_notifications_level_all">Сè</string>
+    <string name="settings_notifications_level_attention">Само кога бара внимание</string>
+    <string name="settings_notifications_off_footer">Добивај известување кога сесија ќе заврши, ќе постави прашање или ќе побара дозвола.</string>
+    <string name="settings_notifications_blocked_footer">Известувањата за OpenCode се исклучени во поставките на Android.</string>
+    <string name="settings_notifications_unsupported_footer">Овој сервер не поддржува известувања. Ажурирај го OpenCode на твојот компјутер.</string>
     <string name="settings_notifications_open_android_settings">Отвори ги поставките на Android</string>
-    <string name="settings_notifications_turn_on">Вклучи известувања</string>
-    <string name="settings_notifications_server_header">Сервер</string>
-    <string name="settings_notifications_set_up_footer">Отвора сесија со барање OpenCode да го инсталира приклучокот. Испрати го барањето, па провери повторно.</string>
-    <string name="settings_notifications_plugin_needed_footer">На серверот му треба приклучокот за известувања на OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Приклучок за известувања</string>
-    <string name="settings_notifications_plugin_installed">Инсталиран</string>
-    <string name="settings_notifications_plugin_not_running">Не работи</string>
-    <string name="settings_notifications_plugin_not_installed">Не е инсталиран</string>
-    <string name="settings_notifications_plugin_check_failed">Проверката на статусот не успеа</string>
-    <string name="settings_notifications_set_up">Постави со OpenCode</string>
-    <string name="settings_notifications_check_again">Провери повторно</string>
+    <string name="settings_notifications_alerts_header">Звук и банери</string>
+    <string name="settings_notifications_alerts_footer">Ги отвора поставките на Android, каде секој вид може да се појавува на екран, да има звук или да биде исклучен.</string>
+    <string name="settings_notifications_needs_you">Бара внимание</string>
+    <string name="settings_notifications_finished">Завршено</string>
+    <string name="settings_notifications_failed">Не успеа</string>
+    <string name="settings_notifications_alert_banner">Банер, звук</string>
+    <string name="settings_notifications_alert_sound">Звук</string>
+    <string name="settings_notifications_alert_silent">Без звук</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Сесии</string>

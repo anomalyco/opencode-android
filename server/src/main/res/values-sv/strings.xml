@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Kunde inte ladda projekt och sessioner</string>
     <string name="server_error_load_session_family">Kunde inte ladda sessionsfamiljen</string>
-    <string name="server_error_update_session">Kunde inte uppdatera sessionen</string>
     <string name="server_error_load_session_ancestry">Kunde inte ladda den aktiva sessionens överordnade sessioner</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

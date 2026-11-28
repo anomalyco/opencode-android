@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Надсилання</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Не вдалося запитати дозвіл. Спробуйте ще раз.</string>
-    <string name="drawer_notifications_open_settings_error">Не вдалося відкрити налаштування. Відкрийте налаштування Android і виберіть Сповіщення → OpenCode.</string>
     <string name="drawer_delete_session_error">Не вдалося видалити «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Не вдалося видалити %1$d сесію</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Допоможи покращити екран сесії. Покажи, що знайдеш, і поясни зміни.</string>
     <string name="drawer_appearance_preview_assistant_text">Проблема з компонуванням знайшлася в `SessionView.swift`. Розшифровка й редактор повідомлень ділять доступну висоту, тож клавіатура добре допомагає перевірити поведінку за браку місця.</string>
+    <string name="drawer_notifications_change_error">Не вдалося змінити налаштування сповіщень. Спробуйте ще раз.</string>
 </resources>

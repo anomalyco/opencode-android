@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Трошак</string>
     <string name="session_sheet_media">Медији</string>
     <string name="session_sheet_media_value">Датотеке и везе</string>
-    <string name="session_always_notify">Увек обавести</string>
-    <string name="session_always_notify_message_phone">Обавести овај телефон кад год је одговор спреман, чак и ако порука није послата одавде.</string>
-    <string name="session_always_notify_message_tablet">Обавести овај таблет кад год је одговор спреман, чак и ако порука није послата одавде.</string>
     <string name="session_delete_session">Избриши сесију</string>
     <string name="session_rename_placeholder">Наслов</string>
     <string name="session_auto_rename">Аутоматски преименуј</string>
@@ -266,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Прављење нове гране сесије није успело</string>
     <string name="session_sheet_save_export_failed">Чување извоза није успело</string>
     <string name="session_sheet_export_failed_title">Извоз сесије није успео</string>
-    <string name="session_sheet_notifications_off_message">Прво укључите обавештења у подешавањима.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Укључивање опције „Увек обавести“ није успело</string>
-    <string name="session_sheet_always_notify_off_failed_title">Искључивање опције „Увек обавести“ није успело</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Сервер не подржава датотеке</string>

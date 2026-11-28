@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Custo</string>
     <string name="session_sheet_media">Mídia</string>
     <string name="session_sheet_media_value">Arquivos e links</string>
-    <string name="session_always_notify">Notificar sempre</string>
-    <string name="session_always_notify_message_phone">Notificar neste celular sempre que uma resposta ficar pronta, mesmo para mensagens enviadas de outro dispositivo.</string>
-    <string name="session_always_notify_message_tablet">Notificar neste tablet sempre que uma resposta ficar pronta, mesmo para mensagens enviadas de outro dispositivo.</string>
     <string name="session_delete_session">Excluir sessão</string>
     <string name="session_rename_placeholder">Título</string>
     <string name="session_auto_rename">Renomear automaticamente</string>
@@ -266,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">Não foi possível bifurcar a sessão</string>
     <string name="session_sheet_save_export_failed">Não foi possível salvar a exportação</string>
     <string name="session_sheet_export_failed_title">Não foi possível exportar a sessão</string>
-    <string name="session_sheet_notifications_off_message">Ative as notificações nas configurações primeiro.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Não foi possível ativar Notificar sempre</string>
-    <string name="session_sheet_always_notify_off_failed_title">Não foi possível desativar Notificar sempre</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">O servidor não aceita arquivos</string>

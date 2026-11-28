@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Не вдалося завантажити проєкти та сесії</string>
     <string name="server_error_load_session_family">Не вдалося завантажити групу пов’язаних сесій</string>
-    <string name="server_error_update_session">Не вдалося оновити сесію</string>
     <string name="server_error_load_session_ancestry">Не вдалося завантажити ланцюжок батьківських сесій активної сесії</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

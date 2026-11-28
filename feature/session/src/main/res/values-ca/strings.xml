@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Cost</string>
     <string name="session_sheet_media">Multimèdia</string>
     <string name="session_sheet_media_value">Fitxers i enllaços</string>
-    <string name="session_always_notify">Notifica sempre</string>
-    <string name="session_always_notify_message_phone">Notifica en aquest mòbil quan s\'acabi una resposta, encara que no l\'hagis demanat des d\'aquí.</string>
-    <string name="session_always_notify_message_tablet">Notifica en aquesta tauleta quan s\'acabi una resposta, encara que no l\'hagis demanat des d\'aquí.</string>
     <string name="session_delete_session">Suprimeix la sessió</string>
     <string name="session_rename_placeholder">Títol</string>
     <string name="session_auto_rename">Canvia el nom automàticament</string>
@@ -266,9 +263,6 @@
     <string name="session_sheet_fork_failed_title">No s\'ha pogut bifurcar la sessió</string>
     <string name="session_sheet_save_export_failed">No s\'ha pogut desar l\'exportació</string>
     <string name="session_sheet_export_failed_title">No s\'ha pogut exportar la sessió</string>
-    <string name="session_sheet_notifications_off_message">Activa primer les notificacions a Configuració.</string>
-    <string name="session_sheet_always_notify_on_failed_title">No s\'ha pogut activar «Notifica sempre»</string>
-    <string name="session_sheet_always_notify_off_failed_title">No s\'ha pogut desactivar «Notifica sempre»</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">El servidor no admet fitxers</string>

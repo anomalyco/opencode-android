@@ -49,21 +49,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Notifikasi</string>
-    <string name="settings_notifications_device_header">%1$s ini</string>
-    <string name="settings_notifications_device_footer">Notifikasi melalui pelayan perantara yang tidak menyimpan apa-apa. Hanya sesi yang dimulakan pada %1$s ini akan menghantar notifikasi kepadanya.</string>
-    <string name="settings_notifications_allow">Benarkan notifikasi</string>
+    <string name="settings_notifications_notify_about">Beritahu tentang</string>
+    <string name="settings_notifications_level_all">Semuanya</string>
+    <string name="settings_notifications_level_attention">Hanya apabila perlukan saya</string>
+    <string name="settings_notifications_off_footer">Terima notifikasi apabila sesi selesai, bertanya soalan atau memerlukan kebenaran.</string>
+    <string name="settings_notifications_blocked_footer">Notifikasi dimatikan untuk OpenCode dalam tetapan Android.</string>
+    <string name="settings_notifications_unsupported_footer">Pelayan ini tidak menyokong notifikasi. Kemas kini OpenCode pada komputer anda.</string>
     <string name="settings_notifications_open_android_settings">Buka tetapan Android</string>
-    <string name="settings_notifications_turn_on">Hidupkan notifikasi</string>
-    <string name="settings_notifications_server_header">Pelayan</string>
-    <string name="settings_notifications_set_up_footer">Membuka sesi yang meminta OpenCode memasang plugin. Hantar permintaan itu, kemudian semak semula.</string>
-    <string name="settings_notifications_plugin_needed_footer">Pelayan memerlukan plugin notify OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Plugin Notify</string>
-    <string name="settings_notifications_plugin_installed">Dipasang</string>
-    <string name="settings_notifications_plugin_not_running">Tidak berjalan</string>
-    <string name="settings_notifications_plugin_not_installed">Belum dipasang</string>
-    <string name="settings_notifications_plugin_check_failed">Tidak dapat menyemak status</string>
-    <string name="settings_notifications_set_up">Sediakan dengan OpenCode</string>
-    <string name="settings_notifications_check_again">Semak semula</string>
+    <string name="settings_notifications_alerts_header">Bunyi dan sepanduk</string>
+    <string name="settings_notifications_alerts_footer">Membuka tetapan Android untuk menetapkan setiap jenis supaya muncul, berbunyi atau dimatikan.</string>
+    <string name="settings_notifications_needs_you">Perlukan anda</string>
+    <string name="settings_notifications_finished">Selesai</string>
+    <string name="settings_notifications_failed">Gagal</string>
+    <string name="settings_notifications_alert_banner">Sepanduk, bunyi</string>
+    <string name="settings_notifications_alert_sound">Bunyi</string>
+    <string name="settings_notifications_alert_silent">Senyap</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Sesi</string>

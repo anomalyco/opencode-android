@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ལས་གཞི་དང་ལཱ་ཡུན་ཚུ་མངོན་གསལ་འབད་མ་ཚུགས།</string>
     <string name="server_error_load_session_family">འབྲེལ་ཡོད་ལཱ་ཡུན་སྡེ་ཚན་མངོན་གསལ་འབད་མ་ཚུགས།</string>
-    <string name="server_error_update_session">ལཱ་ཡུན་དུས་མཐུན་བཟོ་མ་ཚུགས།</string>
     <string name="server_error_load_session_ancestry">ཤུགས་ལྡན་ལཱ་ཡུན་གྱི་བརྒྱུད་རིམ་མངོན་གསལ་འབད་མ་ཚུགས།</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

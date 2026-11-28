@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kosten</string>
     <string name="session_sheet_media">Media</string>
     <string name="session_sheet_media_value">Bestanden en links</string>
-    <string name="session_always_notify">Altijd melden</string>
-    <string name="session_always_notify_message_phone">Stuur een melding naar deze telefoon wanneer een antwoord klaar is, ook als je het bericht niet vanaf hier hebt verstuurd.</string>
-    <string name="session_always_notify_message_tablet">Stuur een melding naar deze tablet wanneer een antwoord klaar is, ook als je het bericht niet vanaf hier hebt verstuurd.</string>
     <string name="session_delete_session">Sessie verwijderen</string>
     <string name="session_rename_placeholder">Titel</string>
     <string name="session_auto_rename">Automatisch hernoemen</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">Sessie afsplitsen mislukt</string>
     <string name="session_sheet_save_export_failed">Export opslaan mislukt</string>
     <string name="session_sheet_export_failed_title">Sessie exporteren mislukt</string>
-    <string name="session_sheet_notifications_off_message">Zet eerst meldingen aan in Instellingen.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Altijd melden inschakelen mislukt</string>
-    <string name="session_sheet_always_notify_off_failed_title">Altijd melden uitschakelen mislukt</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Server ondersteunt geen bestanden</string>

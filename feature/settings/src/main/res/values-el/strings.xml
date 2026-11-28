@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Ειδοποιήσεις</string>
-    <string name="settings_notifications_device_header">Αυτό το %1$s</string>
-    <string name="settings_notifications_device_footer">Οι ειδοποιήσεις περνούν από έναν ενδιάμεσο διακομιστή που δεν αποθηκεύει τίποτα. Μόνο οι συνεδρίες που ξεκινούν σε αυτό το %1$s στέλνουν ειδοποιήσεις εδώ.</string>
-    <string name="settings_notifications_allow">Να επιτρέπονται οι ειδοποιήσεις</string>
+    <string name="settings_notifications_notify_about">Ειδοποίηση για</string>
+    <string name="settings_notifications_level_all">Τα πάντα</string>
+    <string name="settings_notifications_level_attention">Μόνο όταν με χρειάζεται</string>
+    <string name="settings_notifications_off_footer">Λάβετε ειδοποίηση όταν μια συνεδρία ολοκληρωθεί, κάνει μια ερώτηση ή χρειαστεί άδεια.</string>
+    <string name="settings_notifications_blocked_footer">Οι ειδοποιήσεις για το OpenCode είναι απενεργοποιημένες στις ρυθμίσεις του Android.</string>
+    <string name="settings_notifications_unsupported_footer">Αυτός ο διακομιστής δεν υποστηρίζει ειδοποιήσεις. Ενημερώστε το OpenCode στον υπολογιστή σας.</string>
     <string name="settings_notifications_open_android_settings">Άνοιγμα ρυθμίσεων Android</string>
-    <string name="settings_notifications_turn_on">Ενεργοποίηση ειδοποιήσεων</string>
-    <string name="settings_notifications_server_header">Διακομιστής</string>
-    <string name="settings_notifications_set_up_footer">Ανοίγει μια συνεδρία που ζητά από το OpenCode να εγκαταστήσει την προσθήκη. Στείλτε το μήνυμα και ελέγξτε ξανά.</string>
-    <string name="settings_notifications_plugin_needed_footer">Ο διακομιστής χρειάζεται την προσθήκη ειδοποιήσεων του OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Προσθήκη ειδοποιήσεων</string>
-    <string name="settings_notifications_plugin_installed">Εγκατεστημένη</string>
-    <string name="settings_notifications_plugin_not_running">Δεν εκτελείται</string>
-    <string name="settings_notifications_plugin_not_installed">Δεν έχει εγκατασταθεί</string>
-    <string name="settings_notifications_plugin_check_failed">Αδυναμία ελέγχου κατάστασης</string>
-    <string name="settings_notifications_set_up">Ρύθμιση με το OpenCode</string>
-    <string name="settings_notifications_check_again">Νέος έλεγχος</string>
+    <string name="settings_notifications_alerts_header">Ήχος και μπάνερ</string>
+    <string name="settings_notifications_alerts_footer">Ανοίγει τις ρυθμίσεις του Android, όπου κάθε τύπος μπορεί να εμφανίζεται ως αναδυόμενο, να κάνει ήχο ή να απενεργοποιείται.</string>
+    <string name="settings_notifications_needs_you">Σας χρειάζεται</string>
+    <string name="settings_notifications_finished">Ολοκληρώθηκε</string>
+    <string name="settings_notifications_failed">Απέτυχε</string>
+    <string name="settings_notifications_alert_banner">Μπάνερ, ήχος</string>
+    <string name="settings_notifications_alert_sound">Ήχος</string>
+    <string name="settings_notifications_alert_silent">Αθόρυβο</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Συνεδρίες</string>

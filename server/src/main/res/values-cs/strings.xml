@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nepodařilo se načíst projekty a relace</string>
     <string name="server_error_load_session_family">Nepodařilo se načíst skupinu souvisejících relací</string>
-    <string name="server_error_update_session">Nepodařilo se aktualizovat relaci</string>
     <string name="server_error_load_session_ancestry">Nepodařilo se načíst nadřazené relace aktivní relace</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

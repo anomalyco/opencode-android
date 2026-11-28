@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Slanje</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nije moguće zatražiti dopuštenje. Pokušaj ponovno.</string>
-    <string name="drawer_notifications_open_settings_error">Nije moguće otvoriti postavke. Otvorite postavke Androida i odaberite Obavijesti → OpenCode.</string>
     <string name="drawer_delete_session_error">Nije moguće izbrisati „%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nije moguće izbrisati %1$d sesiju</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomozi mi poboljšati zaslon sesije. Pokaži mi što pronađeš i objasni promjene.</string>
     <string name="drawer_appearance_preview_assistant_text">Pronašao sam problem s rasporedom u datoteci `SessionView.swift`. Transkript i unos poruke dijele dostupnu visinu, pa je tipkovnica dobar test za provjeru rasporeda.</string>
+    <string name="drawer_notifications_change_error">Nije moguće promijeniti obavijesti. Pokušaj ponovno.</string>
 </resources>

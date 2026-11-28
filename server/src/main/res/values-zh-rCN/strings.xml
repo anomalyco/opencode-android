@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">无法加载项目和会话</string>
     <string name="server_error_load_session_family">无法加载关联会话</string>
-    <string name="server_error_update_session">无法更新会话</string>
     <string name="server_error_load_session_ancestry">无法加载活跃会话的上级会话</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

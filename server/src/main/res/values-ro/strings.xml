@@ -128,7 +128,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nu s-au putut încărca proiectele și sesiunile</string>
     <string name="server_error_load_session_family">Nu s-a putut încărca familia de sesiuni</string>
-    <string name="server_error_update_session">Nu s-a putut actualiza sesiunea</string>
     <string name="server_error_load_session_ancestry">Nu s-au putut încărca sesiunile părinte ale sesiunii active</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

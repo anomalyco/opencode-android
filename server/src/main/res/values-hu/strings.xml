@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Nem sikerült betölteni a projekteket és a munkameneteket</string>
     <string name="server_error_load_session_family">Nem sikerült betölteni a munkamenetcsaládot</string>
-    <string name="server_error_update_session">Nem sikerült frissíteni a munkamenetet</string>
     <string name="server_error_load_session_ancestry">Nem sikerült betölteni az aktív munkamenet elődeit</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

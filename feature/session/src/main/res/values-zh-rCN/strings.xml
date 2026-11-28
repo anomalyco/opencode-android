@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">费用</string>
     <string name="session_sheet_media">媒体</string>
     <string name="session_sheet_media_value">文件和链接</string>
-    <string name="session_always_notify">始终通知</string>
-    <string name="session_always_notify_message_phone">每次回复完成时都通知这台手机，即使消息不是从这里发送的。</string>
-    <string name="session_always_notify_message_tablet">每次回复完成时都通知这台平板，即使消息不是从这里发送的。</string>
     <string name="session_delete_session">删除会话</string>
     <string name="session_rename_placeholder">标题</string>
     <string name="session_auto_rename">自动重命名</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">无法创建分支会话</string>
     <string name="session_sheet_save_export_failed">无法保存导出文件</string>
     <string name="session_sheet_export_failed_title">无法导出会话</string>
-    <string name="session_sheet_notifications_off_message">请先在设置中开启通知。</string>
-    <string name="session_sheet_always_notify_on_failed_title">无法开启始终通知</string>
-    <string name="session_sheet_always_notify_off_failed_title">无法关闭始终通知</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">服务器不支持文件</string>

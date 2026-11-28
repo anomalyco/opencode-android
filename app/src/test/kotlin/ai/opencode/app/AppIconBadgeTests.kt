@@ -35,11 +35,8 @@ class AppIconBadgeTests {
 
     private fun DependencyValues.Builder.forgetting(forgotten: Forgotten) {
         this[AppIconBadgeClient] = AppIconBadgeClient(publish = { _, _ -> }, forget = { id -> forgotten.badges.update { it + id } })
-        val notifications = SessionNotificationsClient.testValue
         this[SessionNotificationsClient] = SessionNotificationsClient(
-            isAvailable = notifications.isAvailable,
-            callbackURL = notifications.callbackURL,
-            prepare = notifications.prepare,
+            isAvailable = true,
             forget = { id -> forgotten.notifications.update { it + id } },
         )
         val system = SystemIntegrationClient.testValue

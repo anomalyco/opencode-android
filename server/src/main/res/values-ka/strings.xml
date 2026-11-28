@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">პროექტები და სესიები ვერ ჩაიტვირთა</string>
     <string name="server_error_load_session_family">სესიის ოჯახი ვერ ჩაიტვირთა</string>
-    <string name="server_error_update_session">სესია ვერ განახლდა</string>
     <string name="server_error_load_session_ancestry">აქტიური სესიის წინამორბედი სესიები ვერ ჩაიტვირთა</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

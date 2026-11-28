@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Изпращане</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Неуспешно искане на разрешение. Опитайте отново.</string>
-    <string name="drawer_notifications_open_settings_error">Неуспешно отваряне на настройките. Отворете настройките на Android и изберете Известия → OpenCode.</string>
     <string name="drawer_delete_session_error">Неуспешно изтриване на „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Неуспешно изтриване на %1$d сесия</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Помогни ми да подобря екрана на сесията. Покажи ми какво откриеш и обясни промените.</string>
     <string name="drawer_appearance_preview_assistant_text">Открих проблема с оформлението в `SessionView.swift`. Преписът и редакторът на съобщения си поделят наличната височина, затова клавиатурата е добър тест за ограничено пространство.</string>
+    <string name="drawer_notifications_change_error">Неуспешна промяна на известията. Опитайте отново.</string>
 </resources>

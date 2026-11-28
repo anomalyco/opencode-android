@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">खर्च</string>
     <string name="session_sheet_media">मिडिया</string>
     <string name="session_sheet_media_value">फाइलहरू र लिङ्कहरू</string>
-    <string name="session_always_notify">सधैं सूचना दिनुहोस्</string>
-    <string name="session_always_notify_message_phone">हरेक जवाफ तयार हुँदा यो फोनमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>
-    <string name="session_always_notify_message_tablet">हरेक जवाफ तयार हुँदा यो ट्याब्लेटमा सूचना दिनुहोस्, सन्देश यहाँबाट नपठाएको भए पनि।</string>
     <string name="session_delete_session">सत्र मेटाउनुहोस्</string>
     <string name="session_rename_placeholder">शीर्षक</string>
     <string name="session_auto_rename">स्वतः पुन: नामाकरण</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">सत्र फोर्क गर्न सकिएन</string>
     <string name="session_sheet_save_export_failed">निर्यात बचत गर्न सकिएन</string>
     <string name="session_sheet_export_failed_title">सत्र निर्यात गर्न सकिएन</string>
-    <string name="session_sheet_notifications_off_message">पहिले सेटिङहरूमा सूचनाहरू चालु गर्नुहोस्।</string>
-    <string name="session_sheet_always_notify_on_failed_title">“सधैं सूचना दिनुहोस्” चालु गर्न सकिएन</string>
-    <string name="session_sheet_always_notify_off_failed_title">“सधैं सूचना दिनुहोस्” बन्द गर्न सकिएन</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">सर्भरले फाइलहरू समर्थन गर्दैन</string>

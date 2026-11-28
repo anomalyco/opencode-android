@@ -4,10 +4,8 @@ import androidx.annotation.StringRes
 import ai.opencode.core.R as CoreR
 import ai.opencode.core.ui.OpenCodeTextField
 import ai.opencode.core.ui.OpenCodeSheetHandle
-import ai.opencode.core.ui.OpenCodeSwitch
 import ai.opencode.core.ui.openCodeHairline
 import ai.opencode.core.ui.OpenCodeRadius
-import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.motion.Motion
 import ai.opencode.core.motion.MotionRollDirection
 import ai.opencode.core.motion.MotionTransition
@@ -27,7 +25,6 @@ import ai.opencode.feature.session.header.BreathingTitleHold
 import ai.opencode.feature.session.header.SessionContextRing
 import ai.opencode.feature.session.header.SessionContextText
 import ai.opencode.feature.session.header.titleBreathing
-import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.server.model.ModelVariant
 import ai.opencode.server.model.isUntitled
 import ai.opencode.server.model.OpenCodeContextUsage
@@ -98,7 +95,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.onSizeChanged
@@ -110,7 +106,6 @@ import androidx.compose.animation.core.snap
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -265,7 +260,6 @@ private fun SessionSheetContent(
 ) {
     val state by sheet.collectState()
     val isListRow = context.isPinned != null
-    val notificationsAvailable = remember { dependency(SessionNotificationsClient).isAvailable }
     Column(
         Modifier
             .verticalScroll(rememberScrollState())
@@ -279,11 +273,6 @@ private fun SessionSheetContent(
         Tiles(state, isListRow, context, details.session?.title, sheet::send)
         DetailsCard(details, onModelTapped, providerIcon)
         MediaCard(onMediaTapped)
-        if (isListRow && notificationsAvailable) {
-            AlwaysNotifyCard(isOn = state.alwaysNotifyPending ?: details.session?.alwaysNotify ?: false, isPending = state.alwaysNotifyPending != null) {
-                sheet.send(SessionSheetFeature.Action.AlwaysNotifyToggled(it))
-            }
-        }
         if (isListRow) {
             DeleteRow(enabled = state.operation == null) { sheet.send(SessionSheetFeature.Action.DeleteTapped) }
         }
@@ -366,7 +355,6 @@ fun SessionSheetPrewarm(
                 3 -> DetailsCard(warm.details, onModelTapped = { }, providerIcon)
                 else -> {
                     MediaCard { }
-                    AlwaysNotifyCard(isOn = false, isPending = false) { }
                     DeleteRow(enabled = true) { }
                     rememberModalBottomSheetState(skipPartiallyExpanded = true)
                     OpenCodeSheetHandle()
@@ -853,40 +841,6 @@ private fun MediaCard(onClick: () -> Unit) {
             Text(mediaValue, style = OpenCodeTextStyles.callout, color = OpenCodeTheme.colors.secondaryText, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
             OpenCodeIcon(SFSymbol.ChevronRight, contentDescription = null, size = 16.dp, tint = OpenCodeTheme.colors.tertiaryText)
         }
-    }
-}
-
-// MARK: Always Notify
-
-@Composable
-private fun AlwaysNotifyCard(isOn: Boolean, isPending: Boolean, onToggle: (Boolean) -> Unit) {
-    val message = if (LocalConfiguration.current.smallestScreenWidthDp >= 600) {
-        stringResource(R.string.session_always_notify_message_tablet)
-    } else {
-        stringResource(R.string.session_always_notify_message_phone)
-    }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .heightIn(min = 48.dp)
-                .testTag("session-sheet-always-notify")
-                .background(cardFill(), cardShape)
-                .openCodeHairline(cardShape)
-                .clip(cardShape)
-                .toggleable(value = isOn, enabled = !isPending, role = Role.Switch, onValueChange = onToggle)
-                .padding(horizontal = 16.dp, vertical = if (isAccessibilitySize) 10.dp else 0.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(stringResource(R.string.session_always_notify), style = OpenCodeTextStyles.callout, color = OpenCodeTheme.colors.text, modifier = Modifier.weight(1f))
-            OpenCodeSwitch(checked = isOn, onCheckedChange = null, enabled = !isPending)
-        }
-        Text(
-            message,
-            style = OpenCodeTextStyles.footnote,
-            color = OpenCodeTheme.colors.secondaryText,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
     }
 }
 

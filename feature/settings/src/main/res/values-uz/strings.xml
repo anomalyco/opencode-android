@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Bildirishnomalar</string>
-    <string name="settings_notifications_device_header">Bu %1$s</string>
-    <string name="settings_notifications_device_footer">Bildirishnomalar hech narsa saqlamaydigan vositachi orqali keladi. Bu %1$s qurilmasiga faqat unda boshlangan sessiyalardan bildirishnoma keladi.</string>
-    <string name="settings_notifications_allow">Bildirishnomalarga ruxsat berish</string>
+    <string name="settings_notifications_notify_about">Nima haqida xabar berish</string>
+    <string name="settings_notifications_level_all">Hammasi</string>
+    <string name="settings_notifications_level_attention">Faqat e’tiborim kerak bo‘lganda</string>
+    <string name="settings_notifications_off_footer">Sessiya yakunlanganda, savol berganda yoki ruxsat kerak bo‘lganda bildirishnoma oling.</string>
+    <string name="settings_notifications_blocked_footer">Android sozlamalarida OpenCode uchun bildirishnomalar o‘chirilgan.</string>
+    <string name="settings_notifications_unsupported_footer">Bu server bildirishnomalarni qo‘llab-quvvatlamaydi. Kompyuteringizda OpenCode’ni yangilang.</string>
     <string name="settings_notifications_open_android_settings">Android sozlamalarini ochish</string>
-    <string name="settings_notifications_turn_on">Bildirishnomalarni yoqish</string>
-    <string name="settings_notifications_server_header">Server</string>
-    <string name="settings_notifications_set_up_footer">OpenCode’dan plaginni o‘rnatishni so‘raydigan sessiya ochiladi. Xabarni yuboring, keyin yana tekshiring.</string>
-    <string name="settings_notifications_plugin_needed_footer">Serverga OpenCode notify plagini kerak.</string>
-    <string name="settings_notifications_notify_plugin">Bildirishnoma plagini</string>
-    <string name="settings_notifications_plugin_installed">O‘rnatilgan</string>
-    <string name="settings_notifications_plugin_not_running">Ishlamayapti</string>
-    <string name="settings_notifications_plugin_not_installed">O‘rnatilmagan</string>
-    <string name="settings_notifications_plugin_check_failed">Holatni tekshirib bo‘lmadi</string>
-    <string name="settings_notifications_set_up">OpenCode bilan sozlash</string>
-    <string name="settings_notifications_check_again">Qayta tekshirish</string>
+    <string name="settings_notifications_alerts_header">Ovoz va bannerlar</string>
+    <string name="settings_notifications_alerts_footer">Android sozlamalarini ochadi; u yerda har bir tur ekranda chiqishi, ovoz chiqarishi yoki o‘chirilishini sozlash mumkin.</string>
+    <string name="settings_notifications_needs_you">E’tiboringiz kerak</string>
+    <string name="settings_notifications_finished">Yakunlandi</string>
+    <string name="settings_notifications_failed">Muvaffaqiyatsiz</string>
+    <string name="settings_notifications_alert_banner">Banner, ovoz</string>
+    <string name="settings_notifications_alert_sound">Ovoz</string>
+    <string name="settings_notifications_alert_silent">Ovozsiz</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Seanslar</string>

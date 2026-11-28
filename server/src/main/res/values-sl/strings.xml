@@ -134,7 +134,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Projektov in sej ni bilo mogoče naložiti</string>
     <string name="server_error_load_session_family">Družine sej ni bilo mogoče naložiti</string>
-    <string name="server_error_update_session">Seje ni bilo mogoče posodobiti</string>
     <string name="server_error_load_session_ancestry">Predhodnih sej aktivne seje ni bilo mogoče naložiti</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

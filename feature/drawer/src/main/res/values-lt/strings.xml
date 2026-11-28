@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Siunčiama</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nepavyko paprašyti leidimo. Bandykite dar kartą.</string>
-    <string name="drawer_notifications_open_settings_error">Nepavyko atidaryti nustatymų. Atidarykite Android nustatymus ir pasirinkite Pranešimai → OpenCode.</string>
     <string name="drawer_delete_session_error">Nepavyko ištrinti „%1$s“</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nepavyko ištrinti %1$d seanso</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Padėk patobulinti seanso ekraną. Parodyk, ką rasi, ir paaiškink pakeitimus.</string>
     <string name="drawer_appearance_preview_assistant_text">Faile `SessionView.swift` radau išdėstymo problemą. Pokalbio išrašas ir rašymo laukas dalijasi turima vieta pagal aukštį, tad klaviatūra padeda patikrinti, kaip jie telpa, kai vietos mažai.</string>
+    <string name="drawer_notifications_change_error">Nepavyko pakeisti pranešimų nustatymų. Bandykite dar kartą.</string>
 </resources>

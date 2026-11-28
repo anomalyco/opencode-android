@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Projecten en sessies laden mislukt</string>
     <string name="server_error_load_session_family">Sessiefamilie laden mislukt</string>
-    <string name="server_error_update_session">Sessie bijwerken mislukt</string>
     <string name="server_error_load_session_ancestry">Bovenliggende sessies van de actieve sessie laden mislukt</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

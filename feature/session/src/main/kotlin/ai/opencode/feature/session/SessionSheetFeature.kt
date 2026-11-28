@@ -14,9 +14,6 @@ import ai.opencode.core.store.cancellable
 import ai.opencode.feature.session.sheet.asClientError
 import ai.opencode.feature.session.sheet.clientError
 import ai.opencode.feature.session.sheet.clientResult
-import ai.opencode.feature.system.notifications.NotificationPermission
-import ai.opencode.feature.system.notifications.NotificationPermissionClient
-import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
@@ -46,8 +43,6 @@ class SessionSheetFeature : Reducer<SessionSheetFeature.State, SessionSheetFeatu
         val failure: Failure? = null,
         /** Auto Rename failed: the title stays and says so briefly, no alert. */
         val autoRenameFailed: Boolean = false,
-        /** Always Notify is being written; the switch shows the value it's moving to. */
-        val alwaysNotifyPending: Boolean? = null,
         /** The composer's pick waiting for the next send: compaction applies it first, as the TUI does. */
         val pendingModel: OpenCodeModelRef? = null,
     )
@@ -94,8 +89,6 @@ class SessionSheetFeature : Reducer<SessionSheetFeature.State, SessionSheetFeatu
         data object PinTapped : Action
         data object ReadTapped : Action
         data object MuteTapped : Action
-        data class AlwaysNotifyToggled(val isOn: Boolean) : Action
-        data class AlwaysNotifyFinished(val isOn: Boolean, val error: OpenCodeClientError?) : Action
         data object DeleteTapped : Action
         data object DeleteConfirmed : Action
         data object FailureDismissed : Action
@@ -110,7 +103,6 @@ class SessionSheetFeature : Reducer<SessionSheetFeature.State, SessionSheetFeatu
         data object TogglePin : Delegate
         data object ToggleRead : Delegate
         data object ToggleMute : Delegate
-        data class AlwaysNotifyChanged(val isOn: Boolean) : Delegate
         data object DeleteSession : Delegate
     }
 
@@ -284,45 +276,6 @@ class SessionSheetFeature : Reducer<SessionSheetFeature.State, SessionSheetFeatu
             Action.PinTapped -> Reduced(state, Effect.send(Action.Delegate(Delegate.TogglePin)))
             Action.ReadTapped -> Reduced(state, Effect.send(Action.Delegate(Delegate.ToggleRead)))
             Action.MuteTapped -> Reduced(state, Effect.send(Action.Delegate(Delegate.ToggleMute)))
-
-            is Action.AlwaysNotifyToggled -> {
-                if (state.alwaysNotifyPending != null) return Reduced(state)
-                val isOn = action.isOn
-                val client = dependency(OpenCodeClient)
-                val notifications = dependency(SessionNotificationsClient)
-                val permission = dependency(NotificationPermissionClient)
-                val (server, sessionID) = state.server to state.sessionID
-                Reduced(
-                    state.copy(alwaysNotifyPending = isOn),
-                    Effect.run { send ->
-                        val error = clientError {
-                            var callbackURL: String? = null
-                            if (isOn) {
-                                // Never asked yet: ask here rather than send people to Settings.
-                                if (permission.status() == NotificationPermission.NotDetermined) {
-                                    permission.request()
-                                }
-                                // The same callback a send attaches: null when notifications are off.
-                                callbackURL = notifications.callbackURL(server)
-                                    ?: throw OpenCodeClientError(localized(R.string.session_sheet_notifications_off_message))
-                            }
-                            client.setAlwaysNotify(server, sessionID, callbackURL)
-                        }
-                        send(Action.AlwaysNotifyFinished(isOn, error))
-                    },
-                )
-            }
-
-            is Action.AlwaysNotifyFinished -> {
-                val next = state.copy(alwaysNotifyPending = null)
-                val error = action.error
-                if (error != null) {
-                    haptics.play(Haptic.error)
-                    val title = if (action.isOn) localized(R.string.session_sheet_always_notify_on_failed_title) else localized(R.string.session_sheet_always_notify_off_failed_title)
-                    return Reduced(next.copy(failure = Failure(title, error.message)))
-                }
-                Reduced(next, Effect.send(Action.Delegate(Delegate.AlwaysNotifyChanged(action.isOn))))
-            }
 
             Action.DeleteTapped -> Reduced(state.copy(confirmsDeletion = true))
             Action.DeleteConfirmed -> Reduced(state.copy(confirmsDeletion = false), Effect.send(Action.Delegate(Delegate.DeleteSession)))

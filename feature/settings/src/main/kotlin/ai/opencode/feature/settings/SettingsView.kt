@@ -276,7 +276,7 @@ private fun SettingsRootPage(store: SettingsStore) {
     val voiceModeEnabled by remember { shared(SharedKeys.voiceModeEnabled).flow }.collectAsState()
     val developerMode by remember { shared(SharedKeys.developerMode).flow }.collectAsState()
     val hideModels by remember { shared(ExperimentalFeature.hideModels.key).flow }.collectAsState()
-    val notificationPermission by store.observe { it.notificationPermission }
+    val notificationPermission by store.observe { it.notifications.permission }
     val returnFocus = rememberSettingsReturnFocus(store, page = null)
     val push = { page: SettingsPage ->
         returnFocus.opened(page)

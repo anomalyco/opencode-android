@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">비용</string>
     <string name="session_sheet_media">미디어</string>
     <string name="session_sheet_media_value">파일 및 링크</string>
-    <string name="session_always_notify">항상 알림</string>
-    <string name="session_always_notify_message_phone">다른 기기에서 보낸 메시지도 응답이 완료되면 이 휴대폰으로 알려요.</string>
-    <string name="session_always_notify_message_tablet">다른 기기에서 보낸 메시지도 응답이 완료되면 이 태블릿으로 알려요.</string>
     <string name="session_delete_session">세션 삭제</string>
     <string name="session_rename_placeholder">제목</string>
     <string name="session_auto_rename">자동 이름 바꾸기</string>
@@ -250,9 +247,6 @@
     <string name="session_sheet_fork_failed_title">세션을 분기할 수 없어요</string>
     <string name="session_sheet_save_export_failed">내보낸 파일을 저장할 수 없어요</string>
     <string name="session_sheet_export_failed_title">세션을 내보낼 수 없어요</string>
-    <string name="session_sheet_notifications_off_message">먼저 설정에서 알림을 켜 주세요.</string>
-    <string name="session_sheet_always_notify_on_failed_title">항상 알림을 켤 수 없어요</string>
-    <string name="session_sheet_always_notify_off_failed_title">항상 알림을 끌 수 없어요</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">서버가 파일을 지원하지 않아요</string>

@@ -1,7 +1,5 @@
 package ai.opencode.feature.system.notifications
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
@@ -47,15 +45,6 @@ object NotificationCrypto {
         data object InvalidPayload : Failure("invalid payload") { private fun readResolve(): Any = InvalidPayload }
     }
 
-    @Serializable
-    data class Payload(val title: String, val body: String, val sessionID: String, val status: String) {
-        val isValid: Boolean
-            get() = title.isNotEmpty() && body.isNotEmpty() && isValid(sessionID = sessionID) &&
-                status in setOf("succeeded", "failed", "interrupted")
-    }
-
-    private val json = Json { ignoreUnknownKeys = true }
-
     fun isValid(sessionID: String): Boolean {
         val bytes = sessionID.toByteArray(Charsets.UTF_8)
         return sessionID.startsWith("ses") && bytes.size in 4..200 &&
@@ -100,13 +89,6 @@ object NotificationCrypto {
                 .toString()
         }.getOrElse { throw Failure.InvalidPayload }
         return text
-    }
-
-    fun open(box: String, ref: String, key: ByteArray): Payload {
-        val text = openText(box, ref, key)
-        val payload = runCatching { json.decodeFromString(Payload.serializer(), text) }.getOrElse { throw Failure.InvalidPayload }
-        if (!payload.isValid) throw Failure.InvalidPayload
-        return payload
     }
 
     // Key shapes.

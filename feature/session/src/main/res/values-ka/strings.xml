@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">ღირებულება</string>
     <string name="session_sheet_media">მედია</string>
     <string name="session_sheet_media_value">ფაილები და ბმულები</string>
-    <string name="session_always_notify">ყოველთვის შემატყობინე</string>
-    <string name="session_always_notify_message_phone">ამ ტელეფონზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>
-    <string name="session_always_notify_message_tablet">ამ პლანშეტზე შემატყობინე ყოველი პასუხის დასრულება, მაშინაც, თუ შეტყობინება აქედან არ გამიგზავნია.</string>
     <string name="session_delete_session">სესიის წაშლა</string>
     <string name="session_rename_placeholder">სათაური</string>
     <string name="session_auto_rename">ავტომატური გადარქმევა</string>
@@ -258,9 +255,6 @@
     <string name="session_sheet_fork_failed_title">სესიის განშტოება ვერ მოხერხდა</string>
     <string name="session_sheet_save_export_failed">ექსპორტის შენახვა ვერ მოხერხდა</string>
     <string name="session_sheet_export_failed_title">სესიის ექსპორტი ვერ მოხერხდა</string>
-    <string name="session_sheet_notifications_off_message">ჯერ პარამეტრებში ჩართეთ შეტყობინებები.</string>
-    <string name="session_sheet_always_notify_on_failed_title">„ყოველთვის შემატყობინე“ ვერ ჩაირთო</string>
-    <string name="session_sheet_always_notify_off_failed_title">„ყოველთვის შემატყობინე“ ვერ გამოირთო</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">სერვერს ფაილების მხარდაჭერა არ აქვს</string>

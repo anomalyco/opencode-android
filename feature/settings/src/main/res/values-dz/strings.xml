@@ -49,21 +49,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">བརྡ་བསྐུལ་ཚུ།</string>
-    <string name="settings_notifications_device_header">%1$s འདི།</string>
-    <string name="settings_notifications_device_footer">བརྡ་བསྐུལ་ཚུ་ག་ཅི་ཡང་གསོག་འཇོག་མ་འབད་མི་བར་བརྒྱུད་ཅིག་ལས་གཏངམ་ཨིན། %1$s འདི་ནང་འགོ་བཙུགས་པའི་ལཱ་ཡུན་ཚུ་གིས་རྐྱངམ་ཅིག་འདི་ལུ་བརྡ་བསྐུལ་གཏངམ་ཨིན།</string>
-    <string name="settings_notifications_allow">བརྡ་བསྐུལ་གནང་བ་བྱིན།</string>
+    <string name="settings_notifications_notify_about">བརྡ་བསྐུལ་འབད་ནི།</string>
+    <string name="settings_notifications_level_all">ག་ར།</string>
+    <string name="settings_notifications_level_attention">ང་དགོཔ་ད་རྐྱངམ་ཅིག</string>
+    <string name="settings_notifications_off_footer">ལཱ་ཡུན་མཇུག་བསྡུཝ་ད་ དྲི་བ་འདྲིཝ་ད་ ཡང་ན་གནང་བ་དགོཔ་ད་ བརྡ་བསྐུལ་ཐོབ་ཨིན།</string>
+    <string name="settings_notifications_blocked_footer">Android སྒྲིག་སྟངས་ནང་ OpenCode གི་བརྡ་བསྐུལ་ཚུ་ཁ་བསྡམས་ཡོདཔ་ཨིན།</string>
+    <string name="settings_notifications_unsupported_footer">སར་བར་འདི་གིས་བརྡ་བསྐུལ་ཚུ་ལུ་རྒྱབ་སྐྱོར་མི་འབད། ཁྱོད་ཀྱི་གློག་རིག་གུ་ OpenCode དུས་མཐུན་བཟོ།</string>
     <string name="settings_notifications_open_android_settings">Android སྒྲིག་སྟངས་ཁ་ཕྱེ།</string>
-    <string name="settings_notifications_turn_on">བརྡ་བསྐུལ་ཨོན་འབད།</string>
-    <string name="settings_notifications_server_header">སར་བར།</string>
-    <string name="settings_notifications_set_up_footer">OpenCode ལུ་པ་ལག་ཨིན་བཙུགས་གནང་ཟེར་ཞུ་མི་ལཱ་ཡུན་ཅིག་ཁ་ཕྱེཝ་ཨིན། དེ་བཏང་སྟེ་ ལོག་ཞིབ་དཔྱད་འབད།</string>
-    <string name="settings_notifications_plugin_needed_footer">སར་བར་ལུ་ OpenCode notify པ་ལག་ཨིན་དགོཔ་ཨིན།</string>
-    <string name="settings_notifications_notify_plugin">བརྡ་བསྐུལ་པ་ལག་ཨིན།</string>
-    <string name="settings_notifications_plugin_installed">བཙུགས་ཡོདཔ།</string>
-    <string name="settings_notifications_plugin_not_running">གཡོག་མི་བཀོལ་བས།</string>
-    <string name="settings_notifications_plugin_not_installed">མ་བཙུགས་པས།</string>
-    <string name="settings_notifications_plugin_check_failed">གནས་སྟངས་ཞིབ་དཔྱད་འབད་མ་ཚུགས།</string>
-    <string name="settings_notifications_set_up">OpenCode དང་གཅིག་ཁར་གཞི་སྒྲིག་འབད།</string>
-    <string name="settings_notifications_check_again">ལོག་ཞིབ་དཔྱད་འབད།</string>
+    <string name="settings_notifications_alerts_header">སྒྲ་དང་བརྡ་བྱང་ཚུ།</string>
+    <string name="settings_notifications_alerts_footer">Android སྒྲིག་སྟངས་ཁ་ཕྱེ་སྟེ་ དབྱེ་བ་རེ་རེ་གི་དོན་ལུ་ ཐོན་འོང་ནི་ སྒྲ་གཏང་ནི་ ཡང་ན་ཁ་བསྡམ་བཏུབ་ཨིན།</string>
+    <string name="settings_notifications_needs_you">ཁྱོད་དགོ</string>
+    <string name="settings_notifications_finished">མཇུག་བསྡུ་ཡོདཔ།</string>
+    <string name="settings_notifications_failed">མཐར་མ་འཁྱོལ་བ</string>
+    <string name="settings_notifications_alert_banner">བརྡ་བྱང་དང་སྒྲ།</string>
+    <string name="settings_notifications_alert_sound">སྒྲ།</string>
+    <string name="settings_notifications_alert_silent">སྒྲ་མེད།</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">ལཱ་ཡུན་ཚུ།</string>

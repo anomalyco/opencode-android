@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ໂຫຼດໂຄງການ ແລະເຊດຊັນບໍ່ໄດ້</string>
     <string name="server_error_load_session_family">ໂຫຼດກຸ່ມເຊດຊັນທີ່ກ່ຽວຂ້ອງບໍ່ໄດ້</string>
-    <string name="server_error_update_session">ອັບເດດເຊດຊັນບໍ່ໄດ້</string>
     <string name="server_error_load_session_ancestry">ໂຫຼດລຳດັບເຊດຊັນຕົ້ນທາງຂອງເຊດຊັນທີ່ໃຊ້ຢູ່ບໍ່ໄດ້</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

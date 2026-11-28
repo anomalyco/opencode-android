@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Бор кардани лоиҳаҳо ва сессияҳо нашуд</string>
     <string name="server_error_load_session_family">Бор кардани гурӯҳи сессияҳои вобаста нашуд</string>
-    <string name="server_error_update_session">Навсозии сессия нашуд</string>
     <string name="server_error_load_session_ancestry">Бор кардани занҷираи сессияҳои волидайни сессияи фаъол нашуд</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

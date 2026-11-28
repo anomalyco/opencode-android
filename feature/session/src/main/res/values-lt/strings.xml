@@ -71,9 +71,6 @@
     <string name="session_sheet_cost">Kaina</string>
     <string name="session_sheet_media">Medija</string>
     <string name="session_sheet_media_value">Failai ir nuorodos</string>
-    <string name="session_always_notify">Visada pranešti</string>
-    <string name="session_always_notify_message_phone">Pranešti šiame telefone, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>
-    <string name="session_always_notify_message_tablet">Pranešti šioje planšetėje, kai atsakymas paruoštas, net jei užklausa siųsta ne iš čia.</string>
     <string name="session_delete_session">Ištrinti seansą</string>
     <string name="session_rename_placeholder">Pavadinimas</string>
     <string name="session_auto_rename">Pervardyti automatiškai</string>
@@ -274,9 +271,6 @@
     <string name="session_sheet_fork_failed_title">Nepavyko atskirti į naują seansą</string>
     <string name="session_sheet_save_export_failed">Nepavyko išsaugoti eksporto</string>
     <string name="session_sheet_export_failed_title">Nepavyko eksportuoti seanso</string>
-    <string name="session_sheet_notifications_off_message">Pirmiausia nustatymuose įjunkite pranešimus.</string>
-    <string name="session_sheet_always_notify_on_failed_title">Nepavyko įjungti „Visada pranešti“</string>
-    <string name="session_sheet_always_notify_off_failed_title">Nepavyko išjungti „Visada pranešti“</string>
 
     <!-- Attachments -->
     <string name="session_attachment_files_unsupported">Serveris nepalaiko failų</string>

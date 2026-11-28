@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">प्रोजेक्ट और सेशन लोड नहीं हो सके</string>
     <string name="server_error_load_session_family">सेशन समूह लोड नहीं हो सका</string>
-    <string name="server_error_update_session">सेशन अपडेट नहीं हो सका</string>
     <string name="server_error_load_session_ancestry">सक्रिय सेशन के मूल सेशन की कड़ी लोड नहीं हो सकी</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

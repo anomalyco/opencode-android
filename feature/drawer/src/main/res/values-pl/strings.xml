@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Wysyłanie</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Nie udało się poprosić o uprawnienie. Spróbuj ponownie.</string>
-    <string name="drawer_notifications_open_settings_error">Nie udało się otworzyć ustawień. Otwórz ustawienia Androida i wybierz Powiadomienia → OpenCode.</string>
     <string name="drawer_delete_session_error">Nie udało się usunąć „%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Nie udało się usunąć %1$d sesji</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomóż mi ulepszyć ekran sesji. Pokaż, co znajdziesz, i wyjaśnij zmiany.</string>
     <string name="drawer_appearance_preview_assistant_text">Problem z układem jest w `SessionView.swift`. Transkrypcja i pole wiadomości dzielą dostępną wysokość, więc klawiatura dobrze sprawdza, jak układ radzi sobie z brakiem miejsca.</string>
+    <string name="drawer_notifications_change_error">Nie udało się zmienić powiadomień. Spróbuj ponownie.</string>
 </resources>

@@ -129,8 +129,6 @@
     <string name="drawer_row_unsent_sending_state">Skickar</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Kunde inte begära behörighet. Försök igen.</string>
-    <string name="drawer_notifications_open_settings_error">Kunde inte öppna inställningarna. Öppna Android-inställningarna och välj Aviseringar → OpenCode.</string>
     <string name="drawer_delete_session_error">Kunde inte radera ”%1$s”</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">Kunde inte radera %1$d session</item>
@@ -169,4 +167,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Hjälp mig förbättra sessionsvyn. Visa vad du hittar och förklara ändringarna.</string>
     <string name="drawer_appearance_preview_assistant_text">Jag hittade layoutproblemet i `SessionView.swift`. Transkriptionen och meddelandefältet delar på den tillgängliga höjden, så tangentbordet är ett bra stresstest.</string>
+    <string name="drawer_notifications_change_error">Kunde inte ändra aviseringar. Försök igen.</string>
 </resources>

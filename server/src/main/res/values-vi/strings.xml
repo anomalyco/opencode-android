@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Không thể tải dự án và phiên</string>
     <string name="server_error_load_session_family">Không thể tải nhóm phiên liên quan</string>
-    <string name="server_error_update_session">Không thể cập nhật phiên</string>
     <string name="server_error_load_session_ancestry">Không thể tải các phiên cha của phiên đang hoạt động</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

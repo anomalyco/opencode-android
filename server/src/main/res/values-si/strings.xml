@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">ව්‍යාපෘති සහ සැසි පූරණය කිරීමට නොහැකි විය</string>
     <string name="server_error_load_session_family">අදාළ සැසි සමූහය පූරණය කිරීමට නොහැකි විය</string>
-    <string name="server_error_update_session">සැසිය යාවත්කාලීන කිරීමට නොහැකි විය</string>
     <string name="server_error_load_session_ancestry">සක්‍රිය සැසියේ මව් සැසි පෙළ පූරණය කිරීමට නොහැකි විය</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

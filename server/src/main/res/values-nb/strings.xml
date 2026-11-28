@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Kunne ikke laste inn prosjekter og sesjoner</string>
     <string name="server_error_load_session_family">Kunne ikke laste inn sesjonsfamilien</string>
-    <string name="server_error_update_session">Kunne ikke oppdatere sesjonen</string>
     <string name="server_error_load_session_ancestry">Kunne ikke laste inn overordnede sesjoner til den aktive sesjonen</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

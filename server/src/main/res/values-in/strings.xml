@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Gagal memuat proyek dan sesi</string>
     <string name="server_error_load_session_family">Gagal memuat keluarga sesi</string>
-    <string name="server_error_update_session">Gagal memperbarui sesi</string>
     <string name="server_error_load_session_ancestry">Gagal memuat silsilah sesi aktif</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

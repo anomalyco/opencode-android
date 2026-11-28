@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Төсөл болон сессүүдийг ачаалж чадсангүй</string>
     <string name="server_error_load_session_family">Холбоотой сессүүдийг ачаалж чадсангүй</string>
-    <string name="server_error_update_session">Сессийг шинэчилж чадсангүй</string>
     <string name="server_error_load_session_ancestry">Идэвхтэй сессийн эх сессүүдийг ачаалж чадсангүй</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

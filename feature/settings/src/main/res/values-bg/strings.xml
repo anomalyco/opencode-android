@@ -50,21 +50,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">Известия</string>
-    <string name="settings_notifications_device_header">Този %1$s</string>
-    <string name="settings_notifications_device_footer">Известията минават през междинен сървър, който не съхранява нищо. Само сесиите, започнати на този %1$s, изпращат известия до него.</string>
-    <string name="settings_notifications_allow">Разрешаване на известия</string>
+    <string name="settings_notifications_notify_about">Известяване за</string>
+    <string name="settings_notifications_level_all">Всичко</string>
+    <string name="settings_notifications_level_attention">Само когато се нуждае от мен</string>
+    <string name="settings_notifications_off_footer">Получавайте известие, когато сесия завърши, зададе въпрос или изисква разрешение.</string>
+    <string name="settings_notifications_blocked_footer">Известията за OpenCode са изключени в настройките на Android.</string>
+    <string name="settings_notifications_unsupported_footer">Този сървър не поддържа известия. Актуализирайте OpenCode на компютъра си.</string>
     <string name="settings_notifications_open_android_settings">Отворете настройките на Android</string>
-    <string name="settings_notifications_turn_on">Включване на известия</string>
-    <string name="settings_notifications_server_header">Сървър</string>
-    <string name="settings_notifications_set_up_footer">Отваря сесия със заявка към OpenCode да инсталира плъгина. Изпратете я, после проверете отново.</string>
-    <string name="settings_notifications_plugin_needed_footer">Сървърът се нуждае от плъгина notify за OpenCode.</string>
-    <string name="settings_notifications_notify_plugin">Плъгин за известия</string>
-    <string name="settings_notifications_plugin_installed">Инсталиран</string>
-    <string name="settings_notifications_plugin_not_running">Не работи</string>
-    <string name="settings_notifications_plugin_not_installed">Не е инсталиран</string>
-    <string name="settings_notifications_plugin_check_failed">Неуспешна проверка на състоянието</string>
-    <string name="settings_notifications_set_up">Настройване с OpenCode</string>
-    <string name="settings_notifications_check_again">Проверете отново</string>
+    <string name="settings_notifications_alerts_header">Звук и банери</string>
+    <string name="settings_notifications_alerts_footer">Отваря настройките на Android, където всеки вид може да изскача, да издава звук или да е изключен.</string>
+    <string name="settings_notifications_needs_you">Нуждае се от вас</string>
+    <string name="settings_notifications_finished">Завършено</string>
+    <string name="settings_notifications_failed">Неуспешно</string>
+    <string name="settings_notifications_alert_banner">Банер, звук</string>
+    <string name="settings_notifications_alert_sound">Звук</string>
+    <string name="settings_notifications_alert_silent">Без звук</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">Сесии</string>

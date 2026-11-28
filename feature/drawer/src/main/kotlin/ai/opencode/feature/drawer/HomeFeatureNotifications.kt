@@ -5,7 +5,6 @@ import ai.opencode.core.store.Effect
 import ai.opencode.core.store.Reduced
 import ai.opencode.feature.drawer.HomeFeature.Action
 import ai.opencode.feature.drawer.HomeFeature.State
-import ai.opencode.feature.settings.whatsnew.WhatsNewEntry
 import ai.opencode.feature.system.notifications.AppBadgeLedger
 import ai.opencode.feature.system.notifications.AppIconBadgeClient
 import ai.opencode.feature.system.notifications.NotificationPermission
@@ -15,22 +14,17 @@ import java.time.Instant
 
 /*
  * What Home does as notifications change (before `HomeNotificationsFeature` settles the same
- * action), the notify plugin's set-up draft and the app icon's badge.
+ * action) and the app icon's badge.
  */
 
-internal fun HomeFeature.reduceNotifications(state: State, action: Action): HomeReduced = when (action) {
-    is Action.NotificationPermissionLoaded -> {
-        val changed = state.notificationPermission != action.permission
-        // Share credentials and the app badge belong to Home's cross-feature publication.
-        val credentials = if (changed && state.hasConnected) publishShareCredentials(state.server) else Effect.none()
-        Reduced(state, Effect.merge(credentials, if (changed && action.permission == NotificationPermission.Enabled) publishAppBadge(state) else Effect.none()))
+internal fun HomeFeature.reduceNotifications(state: State, action: HomeNotificationsFeature.Action): HomeReduced {
+    val permission = when (action) {
+        is HomeNotificationsFeature.Action.Loaded -> action.permission
+        is HomeNotificationsFeature.Action.Changed -> action.permission
+        else -> return Reduced(state)
     }
-
-    // Try It's path: onto the new-session draft, keeping anything already typed there.
-    Action.NotifyPluginSetUpTapped ->
-        tryWhatsNew(WhatsNewEntry.Destination.Prompt(HomeFeature.notifyPluginSetUpPrompt), "notification-plugin-setup", state)
-
-    else -> Reduced(state)
+    if (permission != NotificationPermission.Enabled || state.notificationPermission == permission) return Reduced(state)
+    return Reduced(state, Effect.merge(registerForPush(state.server), publishAppBadge(state)))
 }
 
 /** Shows Catch Up's count on the icon, once it can be trusted. */

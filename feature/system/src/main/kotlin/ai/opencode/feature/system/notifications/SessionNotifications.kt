@@ -12,6 +12,7 @@ import ai.opencode.server.OpenCodeClient
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.ServerSharedKeys
 import android.Manifest
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -21,13 +22,10 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.Serializable
@@ -46,38 +44,56 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 enum class NotificationPermission { NotDetermined, Disabled, Enabled }
 
+/** How Android shows one kind of notification, read from its channel. */
+enum class NotificationAlert { Off, Silent, Sound, Banner }
+
+data class PushAlerts(val attention: NotificationAlert, val finished: NotificationAlert, val failed: NotificationAlert)
+
+/** What a server notifies this phone about; [wire] is the server's push level. */
+@Serializable
+enum class PushLevel(val wire: String) { All("all"), Attention("attention") }
+
+/** This phone's choice for one server. */
+@Serializable
+data class PushSetting(val isOn: Boolean = true, val level: PushLevel = PushLevel.All)
+
 class NotificationPermissionClient(
     val status: suspend () -> NotificationPermission,
     val request: suspend () -> NotificationPermission,
-    val openSettings: suspend () -> Boolean,
+    /** Android's notification settings for the app, or for one channel. */
+    val openSettings: suspend (channelID: String?) -> Unit,
+    val alerts: suspend () -> PushAlerts,
 ) {
     companion object Key : DependencyKey<NotificationPermissionClient> {
         override val liveValue: NotificationPermissionClient by lazy {
             NotificationPermissionClient(
                 status = { SessionNotifications.shared.permissionStatus() },
                 request = { SessionNotifications.shared.requestPermission() },
-                openSettings = {
+                openSettings = { channelID ->
                     val context = dependency(AppContext)
+                    val intent = if (channelID == null) {
+                        Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    } else {
+                        Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_CHANNEL_ID, channelID)
+                    }
                     runCatching {
-                        context.startActivity(
-                            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                                .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                        )
-                    }.isSuccess
+                        context.startActivity(intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    }
                 },
+                alerts = { SessionNotifications.shared.alerts() },
             )
         }
         override val testValue = NotificationPermissionClient(
             status = { NotificationPermission.Enabled },
             request = { NotificationPermission.Enabled },
-            openSettings = { true },
+            openSettings = {},
+            alerts = { PushAlerts(NotificationAlert.Banner, NotificationAlert.Sound, NotificationAlert.Banner) },
         )
     }
 }
@@ -91,8 +107,6 @@ class NotificationKeysClient(
     val prepare: suspend (ref: String) -> String,
     val establish: suspend (ref: String, serverPublicKey: String) -> Unit,
     val remove: suspend (ref: String) -> Unit,
-    /** The authenticated payload, or null when the box or key doesn't hold. */
-    val verify: suspend (NotificationContent.Envelope) -> NotificationContent.Verified?,
 ) {
     companion object Key : DependencyKey<NotificationKeysClient> {
         override val liveValue: NotificationKeysClient by lazy {
@@ -100,34 +114,30 @@ class NotificationKeysClient(
                 prepare = { ref -> withContext(Dispatchers.IO) { NotificationKeyStore.live.prepare(ref) } },
                 establish = { ref, serverKey -> withContext(Dispatchers.IO) { NotificationKeyStore.live.establish(ref, serverKey) } },
                 remove = { ref -> withContext(Dispatchers.IO) { NotificationKeyStore.live.remove(ref) } },
-                verify = { envelope -> withContext(Dispatchers.IO) { NotificationContent.verify(envelope) } },
             )
         }
         override val testValue = NotificationKeysClient(
             prepare = { throw NotificationKeyStore.Failure.MissingKey },
             establish = { _, _ -> throw NotificationKeyStore.Failure.MissingKey },
             remove = {},
-            verify = { null },
         )
     }
 }
 
-/**
- * The callback URL a send attaches so the server's notify plugin can tell this phone when the run
- * ends. Null means "send without one": notifications only ever enhance a send and never delay or
- * fail it.
- *
- * Senders bind it with `PromptContext.notificationCallbackURL.withValue(url) { … }`, which
- * `:server` reads when building the prompt body.
- */
+/** This phone's notifications from a server: its choice, and its registration for the server's pushes. */
 class SessionNotificationsClient(
     /** Whether this build has a relay and a push channel to offer at all. */
     val isAvailable: Boolean,
-    val callbackURL: suspend (OpenCodeServer) -> String?,
-    /** Mints ahead of the first send so Send rarely waits on the relay. */
-    val prepare: suspend (OpenCodeServer) -> Unit,
-    /** Drops a removed server's ref and callback (by persistence ID). */
-    val forget: suspend (String) -> Unit,
+    /** This phone's choice for a server (by persistence ID). */
+    val setting: (String) -> PushSetting = { PushSetting() },
+    /** Saves the choice and tells the server. False when the server couldn't be told; the choice is then unchanged. */
+    val setSetting: suspend (OpenCodeServer, PushSetting) -> Boolean = { _, _ -> true },
+    /** Registers this phone with a server it's connected to, when notifications are on and allowed. */
+    val register: suspend (OpenCodeServer) -> Unit = {},
+    /** Whether the server sends notifications at all; null when it couldn't be asked. */
+    val isOffered: suspend (OpenCodeServer) -> Boolean? = { true },
+    /** Drops a removed server's ref, callback and choice (by persistence ID). */
+    val forget: suspend (String) -> Unit = {},
     /** The random `ref` a server's pushes carry, made and saved the first time it's asked for. */
     val ref: (String) -> String = { "" },
     /** Android grants the badge count with notifications. */
@@ -139,11 +149,12 @@ class SessionNotificationsClient(
         override val liveValue: SessionNotificationsClient by lazy {
             SessionNotificationsClient(
                 isAvailable = SessionNotifications.isAvailable,
-                callbackURL = { SessionNotifications.shared.callbackURL(it) },
-                prepare = { SessionNotifications.shared.callbackURL(it) },
+                setting = { SessionNotifications.shared.setting(it) },
+                setSetting = { server, setting -> SessionNotifications.shared.setSetting(server, setting) },
+                register = { SessionNotifications.shared.register(it) },
+                isOffered = { SessionNotifications.shared.isOffered(it) },
                 forget = { SessionNotifications.shared.forget(it) },
                 ref = { SessionNotifications.shared.ref(it) },
-                includeBadges = {},
                 setVisibleSession = { shown, sessionID ->
                     val id = if (shown) sessionID else null
                     if (shown || SessionNotifications.shared.visibleSessionID == sessionID) {
@@ -152,12 +163,7 @@ class SessionNotificationsClient(
                 },
             )
         }
-        override val testValue = SessionNotificationsClient(
-            isAvailable = true,
-            callbackURL = { null },
-            prepare = {},
-            forget = {},
-        )
+        override val testValue = SessionNotificationsClient(isAvailable = true)
     }
 }
 
@@ -165,23 +171,16 @@ class SessionNotificationsClient(
 enum class NotificationPresentation { None, Banner }
 
 /**
- * Push registration and relay callback URLs.
+ * This phone's registration for a server's pushes.
  *
- * Privacy: the relay is stateless. It seals the push token, the build's push environment and
- * a random per-server `ref` into the callback URL itself, so the OpenCode server never sees
- * the token and the relay keeps nothing. The `ref` exists only so a tap can find the saved
+ * The relay is stateless. It seals the FCM token, the build's push environment and a random
+ * per-server `ref` into a callback URL, so the OpenCode server never sees the token and the relay
+ * keeps nothing. The `ref` is this phone's device ID on that server and how a push finds its saved
  * server; it is random, never derived from the server's address or credentials.
  *
- * Previews are encrypted: for each ref this phone makes a P-256 key and swaps
- * public keys with the saved server ([OpenCodeClient.registerPushDevice], the ref being its device ID); the
- * server seals each push's text with the derived key, so the relay and FCM only carry a
- * `v2` envelope. Only `/v2/notify/` callbacks on the relay are minted or reused
- * ([isEncryptedCallback]); an unavailable key store or failed exchange can
- * yield a generic "New activity" notification, never a clear-text one.
- *
- * Android pushes ride FCM: the build's push environment is [FCM_ENVIRONMENT], and the token is the
- * FCM registration token. Until a build carries a Firebase configuration there is no environment
- * at all ([isAvailable] false) and nothing is asked of the relay.
+ * Registering ([OpenCodeClient.registerPushDevice]) gives the server the callback, this phone's
+ * level and its P-256 public key, and returns the server's. The server seals each push with the
+ * derived key, so the relay and FCM only carry a `v2` envelope.
  */
 class SessionNotifications internal constructor(private val tokens: PushTokenProvider) {
     /** The session on screen while the app is in the foreground. Its own "finished" notifications aren't shown. */
@@ -207,14 +206,12 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
     private var pendingDestination: NotificationDestination? = null
     @Volatile private var confirmedToken: String? = null
     private val lock = Any()
-    private val preparations = HashMap<String, Deferred<String?>>()
-    /** Server key → the callback last paired and when to try again (a day after a pairing, a minute after a failure). */
-    private val pairChecks = HashMap<String, Pair<String, Instant>>()
+    private val registering = Mutex()
+    /** Server key → what it was last told, held under [registering]. */
+    private val registered = HashMap<String, Registered>()
     private val keys get() = dependency(NotificationKeysClient)
-    private val tokenWaiters = mutableListOf<CompletableDeferred<String?>>()
     private val saved get() = shared(savedKey)
     private var permissionRequest: CompletableDeferred<Boolean>? = null
-    private val mintScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     @Serializable
     data class Saved(
@@ -222,6 +219,8 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         val refs: Map<String, String> = emptyMap(),
         /** Server persistence ID → its current callback. */
         val callbacks: Map<String, Callback> = emptyMap(),
+        /** Server persistence ID → this phone's choice, where it isn't the default. */
+        val settings: Map<String, PushSetting> = emptyMap(),
     )
 
     @Serializable
@@ -230,17 +229,18 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         @Serializable(with = InstantSerializer::class) val expiresAt: Instant,
         val token: String,
         val environment: String,
-        /** The device public key this callback was paired with. */
+        /** The device public key this callback was registered with. */
         val phonePublicKey: String? = null,
     ) {
-        fun isReusable(token: String, environment: String, publicKey: String?, relay: HttpUrl?, now: Instant): Boolean =
-            this.token == token && this.environment == environment &&
+        fun isReusable(token: String, environment: String, publicKey: String, relay: HttpUrl?, now: Instant): Boolean =
+            this.token == token && this.environment == environment && phonePublicKey == publicKey &&
                 expiresAt.toEpochMilli() - now.toEpochMilli() > 3.days.inWholeMilliseconds &&
-                (publicKey == null || phonePublicKey == null || phonePublicKey == publicKey) &&
                 isEncryptedCallback(url, relay)
     }
 
     data class Minted(val url: String, val expiresAt: Instant)
+
+    private data class Registered(val callbackURL: String, val level: PushLevel, val checkAt: Instant)
 
     fun permissionStatus(): NotificationPermission {
         val context = dependency(AppContext)
@@ -251,7 +251,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         return if (asked) NotificationPermission.Disabled else NotificationPermission.NotDetermined
     }
 
-    /** Asks once (Android's dialog, from a see-through activity), then registers for pushes when allowed. */
+    /** Asks once (Android's dialog, from a see-through activity). */
     suspend fun requestPermission(): NotificationPermission {
         if (permissionStatus() == NotificationPermission.NotDetermined) {
             val request = synchronized(lock) {
@@ -265,9 +265,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
             }
             request.await()
         }
-        val status = permissionStatus()
-        if (status == NotificationPermission.Enabled) registerForRemoteNotifications()
-        return status
+        return permissionStatus()
     }
 
     internal fun permissionAnswered(granted: Boolean) {
@@ -275,6 +273,24 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE).edit().putBoolean(ASKED, true).apply()
         val request = synchronized(lock) { permissionRequest.also { permissionRequest = null } }
         request?.complete(granted)
+    }
+
+    fun alerts(): PushAlerts {
+        val context = dependency(AppContext)
+        SystemNotificationChannels.ensure(context)
+        return PushAlerts(
+            attention = alert(context, SystemNotificationChannels.PUSH_ATTENTION),
+            finished = alert(context, SystemNotificationChannels.PUSH_FINISHED),
+            failed = alert(context, SystemNotificationChannels.PUSH_FAILED),
+        )
+    }
+
+    private fun alert(context: Context, channelID: String): NotificationAlert {
+        val importance = NotificationManagerCompat.from(context).getNotificationChannel(channelID)?.importance
+        if (importance == null || importance == NotificationManager.IMPORTANCE_NONE) return NotificationAlert.Off
+        if (importance >= NotificationManager.IMPORTANCE_HIGH) return NotificationAlert.Banner
+        if (importance == NotificationManager.IMPORTANCE_DEFAULT) return NotificationAlert.Sound
+        return NotificationAlert.Silent
     }
 
     /** The random `ref` a server's pushes carry, made and saved the first time it's asked for. */
@@ -294,158 +310,114 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         return made ?: saved.value.refs[key].orEmpty()
     }
 
-    /**
-     * A callback URL for [server], minting one when the saved one is missing, stale, for an
-     * older token or another device key, then pairing this phone's notification key with the
-     * server. Null whenever notifications are unavailable.
-     */
-    suspend fun callbackURL(server: OpenCodeServer): String? {
-        val environment = environment
-        if (!isAvailable || environment == null) return null
-        if (permissionStatus() != NotificationPermission.Enabled || !currentCoroutineContext().isActive) return null
-        registerForRemoteNotifications()
-        val token = waitForToken() ?: return null
-        if (!currentCoroutineContext().isActive) return null
+    fun setting(serverKey: String): PushSetting = saved.value.settings[serverKey] ?: PushSetting()
+
+    /** Saves the choice and tells [server]; off removes this phone from it. False when the server couldn't be told. */
+    suspend fun setSetting(server: OpenCodeServer, setting: PushSetting): Boolean {
         val key = server.persistenceID
-        synchronized(lock) { preparations[key] }?.let { return awaitPreparation(it) }
+        return registering.withLock {
+            val previous = setting(key)
+            saved.update { it.copy(settings = it.settings + (key to setting)) }
+            var told = false
+            try {
+                told = tell(server, key, force = true)
+            } finally {
+                if (!told) saved.update { it.copy(settings = it.settings + (key to previous)) }
+            }
+            told
+        }
+    }
+
+    /**
+     * Registers this phone with [server] at its saved level. A server already told the same thing
+     * is asked again a day later. False when notifications are off or not allowed, or a step failed.
+     */
+    suspend fun register(server: OpenCodeServer): Boolean {
+        val key = server.persistenceID
+        return registering.withLock { setting(key).isOn && tell(server, key, force = false) }
+    }
+
+    private suspend fun tell(server: OpenCodeServer, key: String, force: Boolean): Boolean = try {
+        withContext(Dispatchers.IO) {
+            val setting = setting(key)
+            if (setting.isOn) {
+                register(server, key, setting.level, force)
+            } else {
+                OpenCodeClient.removePushDevice(server, ref(key))
+                registered.remove(key)
+                true
+            }
+        }
+    } catch (cancellation: CancellationException) {
+        throw cancellation
+    } catch (error: Exception) {
+        AppLog.app.info { "Push device not updated: ${error::class.java.simpleName}" }
+        false
+    }
+
+    private suspend fun register(server: OpenCodeServer, key: String, level: PushLevel, force: Boolean): Boolean {
+        val environment = environment ?: return false
+        if (permissionStatus() != NotificationPermission.Enabled) return false
+        val token = token() ?: return false
         val ref = ref(key)
-        val task = synchronized(lock) {
-            preparations[key] ?: mintScope.async {
-                val publicKey = runCatching { keys.prepare(ref) }.getOrNull()
-                // Forgotten while the key was made: don't leave it behind.
-                if (saved.value.refs[key] != ref) {
-                    runCatching { keys.remove(ref) }
-                    return@async null
-                }
-                prepareCallback(server, key, ref, publicKey, token, environment)
-            }.also { preparations[key] = it }
+        val publicKey = keys.prepare(ref)
+        var callback = saved.value.callbacks[key]
+        if (callback == null || !callback.isReusable(token, environment, publicKey, RELAY_URL.toHttpUrlOrNull(), Instant.now())) {
+            val minted = mint(token, environment, ref) ?: return false
+            val made = Callback(minted.url, minted.expiresAt, token, environment, publicKey)
+            saved.update { it.copy(callbacks = it.callbacks + (key to made)) }
+            callback = made
         }
-        val url = awaitPreparation(task)
-        if (saved.value.refs[key] == ref) synchronized(lock) { if (preparations[key] === task) preparations.remove(key) }
-        return url
+        val last = registered[key]
+        if (!force && last != null && last.callbackURL == callback.url && last.level == level && last.checkAt.isAfter(Instant.now())) return true
+        val serverKey = OpenCodeClient.registerPushDevice(
+            server, ref, callback.url, callback.expiresAt.toEpochMilli(), publicKey, Build.MODEL ?: "Android", level.wire,
+        )
+        keys.establish(ref, serverKey)
+        registered[key] = Registered(callback.url, level, Instant.now().plusSeconds(86_400))
+        AppLog.app.info { "Push device registered" }
+        return true
     }
 
-    /** A preparation forgotten meanwhile is cancelled; the send goes on without a callback. */
-    private suspend fun awaitPreparation(task: Deferred<String?>): String? = try {
-        task.await()
-    } catch (cancelled: CancellationException) {
-        if (!currentCoroutineContext().isActive) throw cancelled
-        null
-    }
+    suspend fun isOffered(server: OpenCodeServer): Boolean? =
+        runCatching { OpenCodeClient.offersPush(server) }.onFailure { if (it is CancellationException) throw it }.getOrNull()
 
-    private suspend fun prepareCallback(
-        server: OpenCodeServer, key: String, ref: String, publicKey: String?, token: String, environment: String,
-    ): String? {
-        suspend fun current() = currentCoroutineContext().isActive && confirmedToken == token && saved.value.refs[key] == ref
-        val cached = saved.value.callbacks[key]
-        var callback = if (cached != null && cached.isReusable(token, environment, publicKey, RELAY_URL.toHttpUrlOrNull(), Instant.now())) {
-            cached
-        } else {
-            val minted = mint(token, environment, ref) ?: return null
-            if (!current()) return null
-            Callback(minted.url, minted.expiresAt, token, environment, phonePublicKey = publicKey ?: cached?.phonePublicKey)
-        }
-        if (!current()) return null
-        if (publicKey != null) callback = callback.copy(phonePublicKey = publicKey)
-        if (saved.value.callbacks[key] != callback) saved.update { it.copy(callbacks = it.callbacks + (key to callback)) }
-        synchronized(lock) { pairChecks[key] }?.let { (url, retryAt) ->
-            if (url == callback.url && retryAt.isAfter(Instant.now())) return callback.url
-        }
-
-        // Only public keys cross the direct server connection. A locked key
-        // store or failed handshake can yield a generic v2 notification, never a v1 callback.
-        var paired = false
-        if (publicKey != null) {
-            val serverKey = runCatching {
-                OpenCodeClient.registerPushDevice(server, ref, callback.url, callback.expiresAt.toEpochMilli(), publicKey, Build.MODEL ?: "Android")
-            }
-                .onFailure {
-                    if (it is CancellationException) throw it
-                    AppLog.app.info { "Push device not registered: ${it::class.java.simpleName}" }
-                }
-                .getOrNull()
-            if (serverKey != null) {
-                AppLog.app.info { "Push device registered" }
-                if (!current()) return null
-                paired = runCatching { keys.establish(ref, serverKey) }.onFailure { if (it is CancellationException) throw it }.isSuccess
-            }
-        }
-        if (!current()) return null
-        val retry = if (paired) 86_400.seconds else 60.seconds
-        synchronized(lock) { pairChecks[key] = callback.url to Instant.now().plusMillis(retry.inWholeMilliseconds) }
-        return callback.url
-    }
-
-    /** Forgets a removed server's ref, callback and notification key. */
+    /** Forgets a removed server's ref, callback, choice and notification key. */
     suspend fun forget(serverKey: String) {
-        synchronized(lock) {
-            preparations.remove(serverKey)?.cancel()
-            pairChecks.remove(serverKey)
+        registering.withLock {
+            registered.remove(serverKey)
+            val ref = saved.value.refs[serverKey]
+            saved.update { it.copy(refs = it.refs - serverKey, callbacks = it.callbacks - serverKey, settings = it.settings - serverKey) }
+            if (ref != null) runCatching { keys.remove(ref) }
         }
-        val ref = saved.value.refs[serverKey]
-        saved.update { it.copy(refs = it.refs - serverKey, callbacks = it.callbacks - serverKey) }
-        if (ref != null) runCatching { keys.remove(ref) }
     }
-
-    /** The authenticated payload of a push envelope. */
-    suspend fun verify(envelope: NotificationContent.Envelope): NotificationContent.Verified? = keys.verify(envelope)
 
     fun didRegister(token: String) {
-        if (token.isEmpty()) return
-        confirmedToken = token
-        finishTokenWaiters(token)
+        if (token.isNotEmpty()) confirmedToken = token
     }
 
-    fun registrationFailed() {
-        confirmedToken = null
-        finishTokenWaiters(null)
-        AppLog.app.debug("Remote notification registration unavailable; sending without a callback.")
-    }
-
-    /** The saved server a tapped notification's `ref` was minted for, with its session; null when unknown or invalid. */
+    /** The saved server a tapped notification's `ref` belongs to, with its session; null when unknown or invalid. */
     fun destination(ref: String, sessionID: String): NotificationDestination? {
         val serverKey = saved.value.refs.entries.firstOrNull { it.value == ref }?.key ?: return null
         return NotificationDestination(serverKey, sessionID).takeIf { it.isValid }
     }
 
-    /** The saved server a push's `ref` was minted for. */
+    /** The saved server a push's `ref` belongs to. */
     fun server(ref: String): OpenCodeServer? {
         val key = saved.value.refs.entries.firstOrNull { it.value == ref }?.key ?: return null
         val servers = shared(ServerSharedKeys.savedServers).value + listOfNotNull(shared(ServerSharedKeys.savedServer).value)
         return servers.firstOrNull { it.persistenceID == key }
     }
 
-    /** A tapped notification: its envelope is authenticated again, then routed. */
-    suspend fun open(envelope: NotificationContent.Envelope) {
-        val verified = verify(envelope) ?: return
-        open(verified.ref, verified.payload.sessionID)
-    }
-
-    /** Routes a tapped notification's `ref` to the server it was minted for. */
-    fun open(ref: String, sessionID: String) {
-        val destination = destination(ref, sessionID) ?: return
-        val onOpen = onOpen
-        if (onOpen != null) onOpen(destination) else pendingDestination = destination
-    }
-
-    private fun registerForRemoteNotifications() {
-        tokens.register(::didRegister, ::registrationFailed)
-    }
-
-    private suspend fun waitForToken(): String? {
+    private suspend fun token(): String? {
         confirmedToken?.let { return it }
-        val waiter = CompletableDeferred<String?>()
-        synchronized(lock) { tokenWaiters += waiter }
-        return try {
-            withTimeoutOrNull(1500.milliseconds) { waiter.await() }
-        } finally {
-            synchronized(lock) { tokenWaiters.remove(waiter) }
+        val token = withTimeoutOrNull(10.seconds) {
+            suspendCancellableCoroutine { continuation ->
+                tokens.register({ continuation.resume(it) }, { continuation.resume(null) })
+            }
         }
-    }
-
-    private fun finishTokenWaiters(token: String?) {
-        val waiters = synchronized(lock) { tokenWaiters.toList().also { tokenWaiters.clear() } }
-        for (waiter in waiters) waiter.complete(token)
+        if (token != null) confirmedToken = token
+        return token
     }
 
     companion object {
@@ -457,7 +429,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
 
         /**
          * The push environment the relay seals: [FCM_ENVIRONMENT] when the build carries a Firebase
-         * configuration (FCM can mint tokens), else null and the build offers no callback.
+         * configuration (FCM can mint tokens), else null and the build offers no notifications.
          */
         val environment: String? by lazy {
             FCM_ENVIRONMENT.takeIf { FcmPushTokenProvider.isConfigured(dependency(AppContext).applicationContext) }
@@ -477,8 +449,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
 
         /**
          * Only a `/v2/notify/<token>` URL on the relay's own HTTPS origin, with no user, password,
-         * query or fragment, is ever used as a callback. Old (`/v1/`) or foreign capabilities never
-         * reach a prompt.
+         * query or fragment, is ever given to a server as this phone's callback.
          */
         fun isEncryptedCallback(url: String, relay: HttpUrl? = RELAY_URL.toHttpUrlOrNull()): Boolean {
             relay ?: return false
@@ -529,7 +500,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
                 }
             } catch (_: Exception) {
                 // Never log the token, the callback URL, or the response.
-                AppLog.app.debug("Notification relay unavailable; sending without a callback.")
+                AppLog.app.debug("Notification relay unavailable")
                 null
             } finally {
                 client.dispatcher.executorService.shutdown()
@@ -546,8 +517,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
 
 /**
  * The push channel's token, behind an interface. The live provider is FCM's
- * ([FcmPushTokenProvider]); it reports failure at once until a Firebase configuration ships with
- * the build, and every send goes without a callback.
+ * ([FcmPushTokenProvider]); it reports failure at once in a build with no Firebase configuration.
  */
 fun interface PushTokenProvider {
     /** Asks for the token; exactly one of the callbacks runs, now or later. */

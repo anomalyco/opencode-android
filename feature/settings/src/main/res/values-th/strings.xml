@@ -49,21 +49,21 @@
 
     <!-- Notifications -->
     <string name="settings_notifications_title">การแจ้งเตือน</string>
-    <string name="settings_notifications_device_header">%1$s เครื่องนี้</string>
-    <string name="settings_notifications_device_footer">การแจ้งเตือนส่งผ่านตัวกลางที่ไม่เก็บข้อมูลใดๆ เฉพาะเซสชันที่เริ่มบน %1$s เครื่องนี้เท่านั้นที่จะแจ้งเตือนมายังเครื่องนี้</string>
-    <string name="settings_notifications_allow">อนุญาตการแจ้งเตือน</string>
+    <string name="settings_notifications_notify_about">แจ้งเตือนเกี่ยวกับ</string>
+    <string name="settings_notifications_level_all">ทุกอย่าง</string>
+    <string name="settings_notifications_level_attention">เฉพาะเมื่อรอคุณดำเนินการ</string>
+    <string name="settings_notifications_off_footer">รับการแจ้งเตือนเมื่อเซสชันทำงานเสร็จ มีคำถาม หรือต้องการการอนุญาต</string>
+    <string name="settings_notifications_blocked_footer">การแจ้งเตือนของ OpenCode ปิดอยู่ในการตั้งค่า Android</string>
+    <string name="settings_notifications_unsupported_footer">เซิร์ฟเวอร์นี้ไม่รองรับการแจ้งเตือน อัปเดต OpenCode บนคอมพิวเตอร์ของคุณ</string>
     <string name="settings_notifications_open_android_settings">เปิดการตั้งค่า Android</string>
-    <string name="settings_notifications_turn_on">เปิดการแจ้งเตือน</string>
-    <string name="settings_notifications_server_header">เซิร์ฟเวอร์</string>
-    <string name="settings_notifications_set_up_footer">เปิดเซสชันเพื่อขอให้ OpenCode ติดตั้งปลั๊กอิน ส่งข้อความแล้วตรวจสอบอีกครั้ง</string>
-    <string name="settings_notifications_plugin_needed_footer">เซิร์ฟเวอร์ต้องมีปลั๊กอินแจ้งเตือนของ OpenCode</string>
-    <string name="settings_notifications_notify_plugin">ปลั๊กอินแจ้งเตือน</string>
-    <string name="settings_notifications_plugin_installed">ติดตั้งแล้ว</string>
-    <string name="settings_notifications_plugin_not_running">ไม่ได้ทำงานอยู่</string>
-    <string name="settings_notifications_plugin_not_installed">ยังไม่ได้ติดตั้ง</string>
-    <string name="settings_notifications_plugin_check_failed">ตรวจสอบสถานะไม่ได้</string>
-    <string name="settings_notifications_set_up">ตั้งค่าด้วย OpenCode</string>
-    <string name="settings_notifications_check_again">ตรวจสอบอีกครั้ง</string>
+    <string name="settings_notifications_alerts_header">เสียงและแบนเนอร์</string>
+    <string name="settings_notifications_alerts_footer">เปิดการตั้งค่า Android เพื่อตั้งค่าแต่ละประเภทให้แสดงป๊อปอัป ส่งเสียง หรือปิดได้</string>
+    <string name="settings_notifications_needs_you">รอคุณดำเนินการ</string>
+    <string name="settings_notifications_finished">เสร็จสิ้นแล้ว</string>
+    <string name="settings_notifications_failed">ล้มเหลว</string>
+    <string name="settings_notifications_alert_banner">แบนเนอร์, เสียง</string>
+    <string name="settings_notifications_alert_sound">เสียง</string>
+    <string name="settings_notifications_alert_silent">เงียบ</string>
 
     <!-- Sessions -->
     <string name="settings_sessions_title">เซสชัน</string>

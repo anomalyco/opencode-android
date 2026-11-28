@@ -122,7 +122,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">Не успеа вчитувањето на проектите и сесиите</string>
     <string name="server_error_load_session_family">Не успеа вчитувањето на групата поврзани сесии</string>
-    <string name="server_error_update_session">Не успеа ажурирањето на сесијата</string>
     <string name="server_error_load_session_ancestry">Не успеа вчитувањето на матичните сесии на активната сесија</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

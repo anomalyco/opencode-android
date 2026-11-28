@@ -133,8 +133,6 @@
     <string name="drawer_row_unsent_sending_state">Enviando</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">No se pudo solicitar el permiso. Vuelve a intentarlo.</string>
-    <string name="drawer_notifications_open_settings_error">No se pudieron abrir los ajustes. Abre los ajustes de Android y elige Notificaciones → OpenCode.</string>
     <string name="drawer_delete_session_error">No se pudo eliminar «%1$s»</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">No se pudo eliminar %1$d sesión</item>
@@ -179,4 +177,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Ayúdame a mejorar la pantalla de sesión. Muéstrame lo que encuentres y explica los cambios.</string>
     <string name="drawer_appearance_preview_assistant_text">Encontré el problema de diseño en `SessionView.swift`. La transcripción y el redactor comparten la altura disponible, así que el teclado es una buena prueba de estrés.</string>
+    <string name="drawer_notifications_change_error">No se pudieron cambiar las notificaciones. Vuelve a intentarlo.</string>
 </resources>

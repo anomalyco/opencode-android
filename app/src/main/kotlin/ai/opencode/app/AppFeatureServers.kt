@@ -10,6 +10,7 @@ import ai.opencode.feature.system.SessionDirectory
 import ai.opencode.feature.composer.ComposerPersistence
 import ai.opencode.feature.system.SystemIntegrationClient
 import ai.opencode.feature.system.notifications.AppIconBadgeClient
+import ai.opencode.feature.system.notifications.PushSetting
 import ai.opencode.feature.system.notifications.SessionNotificationsClient
 import ai.opencode.feature.system.share.ShareInboxClient
 import ai.opencode.server.OpenCodeServer
@@ -119,13 +120,16 @@ internal fun serverDeleted(state: AppFeature.State, server: OpenCodeServer): Red
     discardStagedFiles(next.pendingShares.filter { it.handoff.serverID == server.persistenceID })
     next = next.copy(pendingShares = next.pendingShares.filterNot { it.handoff.serverID == server.persistenceID })
     dependency(ShareInboxClient).removeTargets(server.persistenceID)
-    val forgotten = forgetIdentity(server.persistenceID, next)
-    next = forgotten.state
+    val sessionNotifications = dependency(SessionNotificationsClient)
+    val forgotten = Effect.concatenate(
+        Effect.run<AppFeature.Action> { sessionNotifications.setSetting(server, PushSetting(isOn = false)) },
+        forgetIdentity(server.persistenceID, next).effect,
+    )
     if (wasEditingServer || next.connectingServerID == server.id) {
         val cancelled = cancelConnection(next)
-        return Reduced(cancelled.state, Effect.merge(cancelled.effect, forgotten.effect))
+        return Reduced(cancelled.state, Effect.merge(cancelled.effect, forgotten))
     }
-    return forgotten
+    return Reduced(next, forgotten)
 }
 
 /**

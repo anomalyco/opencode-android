@@ -116,7 +116,6 @@
     <!-- LiveFamily.kt, LiveSessions.kt, OpenCodeReadCache.kt -->
     <string name="server_error_load_projects_and_sessions">無法載入專案與工作階段</string>
     <string name="server_error_load_session_family">無法載入工作階段家族</string>
-    <string name="server_error_update_session">無法更新工作階段</string>
     <string name="server_error_load_session_ancestry">無法載入目前工作階段的上層關係</string>
 
     <!-- LiveRequests.kt: a question settled elsewhere -->

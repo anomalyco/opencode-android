@@ -137,8 +137,6 @@
     <string name="drawer_row_unsent_sending_state">Pošiljanje</string>
 
     <!-- Errors -->
-    <string name="drawer_notifications_request_error">Za dovoljenje ni bilo mogoče zaprositi. Poskusite znova.</string>
-    <string name="drawer_notifications_open_settings_error">Nastavitev ni bilo mogoče odpreti. Odprite nastavitve Androida in izberite Obvestila → OpenCode.</string>
     <string name="drawer_delete_session_error">Seje »%1$s« ni bilo mogoče izbrisati.</string>
     <plurals name="drawer_delete_sessions_error">
         <item quantity="one">%1$d seje ni bilo mogoče izbrisati.</item>
@@ -189,4 +187,5 @@
     <!-- Appearance settings transcript preview -->
     <string name="drawer_appearance_preview_user_text">Pomagaj mi izboljšati zaslon seje. Pokaži mi, kaj najdeš, in pojasni spremembe.</string>
     <string name="drawer_appearance_preview_assistant_text">V datoteki `SessionView.swift` sem našel težavo s postavitvijo. Prepis in urejevalnik sporočil si delita razpoložljivo višino, zato je tipkovnica dober preizkus postavitve.</string>
+    <string name="drawer_notifications_change_error">Obvestil ni bilo mogoče spremeniti. Poskusi znova.</string>
 </resources>

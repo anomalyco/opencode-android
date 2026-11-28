@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
  * [SessionPushNotifications.remove], which knows how it posts them.
  */
 class DeliveredNotificationsClient(
-    /** Every notification for these sessions (their thread identifiers). */
+    /** Every notification for these sessions. */
     val removeAll: suspend (sessionIDs: Set<String>) -> Unit,
     /** Only their needs-input notifications, once the request is answered. */
     val removeNeedsInput: suspend (sessionIDs: Set<String>) -> Unit,
