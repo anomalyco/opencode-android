@@ -236,21 +236,6 @@
     <string name="session_start_voice_call_description">Začať hlasový hovor</string>
     <string name="session_model_level_default">Predvolené</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d relácia</item>
-        <item quantity="few">%1$d relácie</item>
-        <item quantity="many">%1$d relácie</item>
-        <item quantity="other">%1$d relácií</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d vyžaduje váš vstup</item>
-        <item quantity="few">%1$d vyžadujú váš vstup</item>
-        <item quantity="many">%1$d vyžaduje váš vstup</item>
-        <item quantity="other">%1$d vyžaduje váš vstup</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Opätovné pripájanie k %1$s…</string>
     <string name="session_server_connect_failed">Nepodarilo sa pripojiť k %1$s</string>

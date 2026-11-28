@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Занги овозиро оғоз кунед</string>
     <string name="session_model_level_default">Пешфарз</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d сессия</item>
-        <item quantity="other">%1$d сессия</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d ба посухи шумо ниёз дорад</item>
-        <item quantity="other">%1$d ба посухи шумо ниёз доранд</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Ба %1$s аз нав пайваст шуда истодааст…</string>
     <string name="session_server_connect_failed">Ба %1$s пайваст нашуд</string>

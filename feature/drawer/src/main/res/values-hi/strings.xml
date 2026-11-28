@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">सेशन खोलें</string>
     <string name="drawer_button_attention_state">एक सेशन में आपका इनपुट चाहिए</string>
     <string name="drawer_button_unread_state">न पढ़े गए सेशन</string>
-    <string name="drawer_notice_open_sessions_action">सेशन खोलें</string>
-    <string name="drawer_notice_open_session_action">सेशन खोलें</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">सेशन खोजें</string>

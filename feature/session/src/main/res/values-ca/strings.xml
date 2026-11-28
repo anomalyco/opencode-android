@@ -228,19 +228,6 @@
     <string name="session_start_voice_call_description">Inicia una trucada de veu</string>
     <string name="session_model_level_default">Per defecte</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sessió</item>
-        <item quantity="many">%1$d sessions</item>
-        <item quantity="other">%1$d sessions</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d necessita la teva resposta</item>
-        <item quantity="many">%1$d necessiten la teva resposta</item>
-        <item quantity="other">%1$d necessiten la teva resposta</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">S\'està reconnectant a %1$s…</string>
     <string name="session_server_connect_failed">No s\'ha pogut connectar a %1$s</string>

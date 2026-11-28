@@ -236,21 +236,6 @@
     <string name="session_start_voice_call_description">Začni glasovni klic</string>
     <string name="session_model_level_default">Privzeto</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d seja</item>
-        <item quantity="two">%1$d seji</item>
-        <item quantity="few">%1$d seje</item>
-        <item quantity="other">%1$d sej</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d seja potrebuje tvoj vnos</item>
-        <item quantity="two">%1$d seji potrebujeta tvoj vnos</item>
-        <item quantity="few">%1$d seje potrebujejo tvoj vnos</item>
-        <item quantity="other">%1$d sej potrebuje tvoj vnos</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Ponovno povezovanje s strežnikom %1$s…</string>
     <string name="session_server_connect_failed">Povezava s strežnikom %1$s ni uspela</string>

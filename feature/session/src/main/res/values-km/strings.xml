@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">ចាប់ផ្ដើមការហៅជាសំឡេង</string>
     <string name="session_model_level_default">លំនាំដើម</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">%1$d សម័យ</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d ត្រូវការការឆ្លើយតបពីអ្នក</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">កំពុងភ្ជាប់ឡើងវិញទៅ %1$s…</string>
     <string name="session_server_connect_failed">មិនអាចភ្ជាប់ទៅ %1$s បាន</string>

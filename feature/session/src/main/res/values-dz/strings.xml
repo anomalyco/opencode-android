@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">སྐད་ཀྱི་འབོད་བརྡ་འགོ་བཙུགས།</string>
     <string name="session_model_level_default">འཐུས་ཤོར</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">ལཱ་ཡུན་ %1$d</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d ལུ་ཁྱོད་ཀྱི་ལན་དགོཔ་ཨིན།</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s ལུ་ལོག་མཐུད་དོ…</string>
     <string name="session_server_connect_failed">%1$s ལུ་མཐུད་མ་ཚུགས།</string>

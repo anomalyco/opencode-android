@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Sesli arama başlat</string>
     <string name="session_model_level_default">Varsayılan</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d oturum</item>
-        <item quantity="other">%1$d oturum</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d oturum yanıtınızı bekliyor</item>
-        <item quantity="other">%1$d oturum yanıtınızı bekliyor</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s sunucusuna yeniden bağlanılıyor…</string>
     <string name="session_server_connect_failed">%1$s sunucusuna bağlanılamadı</string>

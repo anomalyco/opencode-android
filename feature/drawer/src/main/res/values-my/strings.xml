@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">စက်ရှင်များကို ဖွင့်ပါ</string>
     <string name="drawer_button_attention_state">စက်ရှင်တစ်ခုတွင် သင့်တုံ့ပြန်မှု လိုအပ်သည်</string>
     <string name="drawer_button_unread_state">မဖတ်ရသေးသော စက်ရှင်များ</string>
-    <string name="drawer_notice_open_sessions_action">စက်ရှင်များကို ဖွင့်ပါ</string>
-    <string name="drawer_notice_open_session_action">စက်ရှင်ကို ဖွင့်ပါ</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">ရှာဖွေမှုကဏ္ဍများ</string>

@@ -228,19 +228,6 @@
     <string name="session_start_voice_call_description">Покрени гласовни позив</string>
     <string name="session_model_level_default">Подразумевано</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d сесија</item>
-        <item quantity="few">%1$d сесије</item>
-        <item quantity="other">%1$d сесија</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d чека ваш унос</item>
-        <item quantity="few">%1$d чекају ваш унос</item>
-        <item quantity="other">%1$d чека ваш унос</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Поновно повезивање са %1$s…</string>
     <string name="session_server_connect_failed">Повезивање са %1$s није успело</string>

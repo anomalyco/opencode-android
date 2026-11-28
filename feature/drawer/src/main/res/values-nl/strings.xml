@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Sessies openen</string>
     <string name="drawer_button_attention_state">Een sessie heeft je invoer nodig</string>
     <string name="drawer_button_unread_state">Ongelezen sessies</string>
-    <string name="drawer_notice_open_sessions_action">Sessies openen</string>
-    <string name="drawer_notice_open_session_action">Sessie openen</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Zoek sessies</string>

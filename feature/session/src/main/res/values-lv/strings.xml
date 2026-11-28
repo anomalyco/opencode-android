@@ -228,19 +228,6 @@
     <string name="session_start_voice_call_description">Sākt balss zvanu</string>
     <string name="session_model_level_default">Noklusējums</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="zero">%1$d sesiju</item>
-        <item quantity="one">%1$d sesija</item>
-        <item quantity="other">%1$d sesijas</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="zero">%1$d sesijām vajadzīga tava ievade</item>
-        <item quantity="one">%1$d sesijai vajadzīga tava ievade</item>
-        <item quantity="other">%1$d sesijām vajadzīga tava ievade</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Atjauno savienojumu ar %1$s…</string>
     <string name="session_server_connect_failed">Neizdevās pievienoties %1$s</string>

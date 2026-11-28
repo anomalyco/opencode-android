@@ -228,19 +228,6 @@
     <string name="session_start_voice_call_description">Avvia chiamata vocale</string>
     <string name="session_model_level_default">Predefinito</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sessione</item>
-        <item quantity="many">%1$d sessioni</item>
-        <item quantity="other">%1$d sessioni</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d richiede il tuo intervento</item>
-        <item quantity="many">%1$d richiedono il tuo intervento</item>
-        <item quantity="other">%1$d richiedono il tuo intervento</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Riconnessione a %1$s…</string>
     <string name="session_server_connect_failed">Impossibile connettersi a %1$s</string>

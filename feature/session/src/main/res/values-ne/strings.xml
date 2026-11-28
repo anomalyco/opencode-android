@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">भ्वाइस कल सुरु गर्नुहोस्</string>
     <string name="session_model_level_default">पूर्वनिर्धारित</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d सत्र</item>
-        <item quantity="other">%1$d सत्रहरू</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d वटामा तपाईंको इनपुट चाहिन्छ</item>
-        <item quantity="other">%1$d वटामा तपाईंको इनपुट चाहिन्छ</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s मा फेरि जडान गर्दै…</string>
     <string name="session_server_connect_failed">%1$s मा जडान गर्न सकिएन</string>

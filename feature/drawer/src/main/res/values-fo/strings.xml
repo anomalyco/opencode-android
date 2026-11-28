@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Opna setur</string>
     <string name="drawer_button_attention_state">Ein seta krevur tína luttøku</string>
     <string name="drawer_button_unread_state">Ólisnar setur</string>
-    <string name="drawer_notice_open_sessions_action">Opna setur</string>
-    <string name="drawer_notice_open_session_action">Opna setuna</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Leitiløtur</string>

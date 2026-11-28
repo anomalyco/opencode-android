@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">セッション一覧を開く</string>
     <string name="drawer_button_attention_state">入力が必要なセッションがあります</string>
     <string name="drawer_button_unread_state">未読のセッション</string>
-    <string name="drawer_notice_open_sessions_action">セッション一覧を開く</string>
-    <string name="drawer_notice_open_session_action">セッションを開く</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">セッションを検索</string>

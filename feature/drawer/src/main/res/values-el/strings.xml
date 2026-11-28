@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Άνοιγμα συνεδριών</string>
     <string name="drawer_button_attention_state">Μια συνεδρία χρειάζεται τη συμβολή σας</string>
     <string name="drawer_button_unread_state">Αδιάβαστες συνεδρίες</string>
-    <string name="drawer_notice_open_sessions_action">Άνοιγμα συνεδριών</string>
-    <string name="drawer_notice_open_session_action">Άνοιγμα συνεδρίας</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Συνεδρίες αναζήτησης</string>

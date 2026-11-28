@@ -236,21 +236,6 @@
     <string name="session_start_voice_call_description">Rozpocznij rozmowę głosową</string>
     <string name="session_model_level_default">Domyślny</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sesja</item>
-        <item quantity="few">%1$d sesje</item>
-        <item quantity="many">%1$d sesji</item>
-        <item quantity="other">%1$d sesji</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d wymaga twojej odpowiedzi</item>
-        <item quantity="few">%1$d wymagają twojej odpowiedzi</item>
-        <item quantity="many">%1$d wymaga twojej odpowiedzi</item>
-        <item quantity="other">%1$d wymaga twojej odpowiedzi</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Ponowne łączenie z %1$s…</string>
     <string name="session_server_connect_failed">Nie udało się połączyć z %1$s</string>

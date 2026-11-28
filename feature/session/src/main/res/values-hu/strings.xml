@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Hanghívás indítása</string>
     <string name="session_model_level_default">Alapértelmezett</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d munkamenet</item>
-        <item quantity="other">%1$d munkamenet</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d esetben beavatkozás szükséges</item>
-        <item quantity="other">%1$d esetben beavatkozás szükséges</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Újracsatlakozás: %1$s…</string>
     <string name="session_server_connect_failed">Nem sikerült csatlakozni: %1$s</string>

@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">सत्रहरू खोल्नुहोस्</string>
     <string name="drawer_button_attention_state">एउटा सत्रमा तपाईंको इनपुट चाहिन्छ</string>
     <string name="drawer_button_unread_state">नपढिएका सत्रहरू</string>
-    <string name="drawer_notice_open_sessions_action">सत्रहरू खोल्नुहोस्</string>
-    <string name="drawer_notice_open_session_action">सत्र खोल्नुहोस्</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">खोज सत्रहरू</string>

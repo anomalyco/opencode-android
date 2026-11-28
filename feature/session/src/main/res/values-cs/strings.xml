@@ -236,21 +236,6 @@
     <string name="session_start_voice_call_description">Zahájit hlasový hovor</string>
     <string name="session_model_level_default">Výchozí</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d relace</item>
-        <item quantity="few">%1$d relace</item>
-        <item quantity="many">%1$d relace</item>
-        <item quantity="other">%1$d relací</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d vyžaduje vaši reakci</item>
-        <item quantity="few">%1$d vyžadují vaši reakci</item>
-        <item quantity="many">%1$d vyžaduje vaši reakci</item>
-        <item quantity="other">%1$d vyžaduje vaši reakci</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Opětovné připojování k %1$s…</string>
     <string name="session_server_connect_failed">Nepodařilo se připojit k %1$s</string>

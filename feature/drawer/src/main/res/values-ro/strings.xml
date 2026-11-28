@@ -87,8 +87,6 @@
     <string name="drawer_button_open_sessions_description">Deschide sesiunile</string>
     <string name="drawer_button_attention_state">O sesiune are nevoie de tine</string>
     <string name="drawer_button_unread_state">Sesiuni necitite</string>
-    <string name="drawer_notice_open_sessions_action">Deschide sesiunile</string>
-    <string name="drawer_notice_open_session_action">Deschide sesiunea</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Caută sesiuni</string>

@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">打开会话列表</string>
     <string name="drawer_button_attention_state">有会话需要你输入</string>
     <string name="drawer_button_unread_state">有未读会话</string>
-    <string name="drawer_notice_open_sessions_action">打开会话列表</string>
-    <string name="drawer_notice_open_session_action">打开会话</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">搜索会话</string>

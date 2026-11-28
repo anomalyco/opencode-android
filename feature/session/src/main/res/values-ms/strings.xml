@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">Mulakan panggilan suara</string>
     <string name="session_model_level_default">Lalai</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">%1$d sesi</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d memerlukan input anda</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Menyambung semula ke %1$s…</string>
     <string name="session_server_connect_failed">Tidak dapat menyambung ke %1$s</string>

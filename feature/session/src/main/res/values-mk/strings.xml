@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Започни гласовен повик</string>
     <string name="session_model_level_default">Стандардно</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d сесија</item>
-        <item quantity="other">%1$d сесии</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d бара твој внес</item>
-        <item quantity="other">%1$d бараат твој внес</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Повторно се поврзува со %1$s…</string>
     <string name="session_server_connect_failed">Поврзувањето со %1$s не успеа</string>

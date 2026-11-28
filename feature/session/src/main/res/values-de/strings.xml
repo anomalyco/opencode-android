@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Sprachanruf starten</string>
     <string name="session_model_level_default">Standard</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d Sitzung</item>
-        <item quantity="other">%1$d Sitzungen</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d braucht deine Eingabe</item>
-        <item quantity="other">%1$d brauchen deine Eingabe</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Verbindung zu %1$s wird wiederhergestellt…</string>
     <string name="session_server_connect_failed">Verbindung zu %1$s fehlgeschlagen</string>

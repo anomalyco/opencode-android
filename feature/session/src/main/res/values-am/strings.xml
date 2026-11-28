@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">የድምፅ ጥሪ ጀምር</string>
     <string name="session_model_level_default">ነባሪ</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d ክፍለ ጊዜ</item>
-        <item quantity="other">%1$d ክፍለ ጊዜዎች</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d የእርስዎን ግቤት ይፈልጋል</item>
-        <item quantity="other">%1$d የእርስዎን ግቤት ይፈልጋሉ</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s፣ %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">ከ%1$s ጋር እንደገና በመገናኘት ላይ…</string>
     <string name="session_server_connect_failed">ከ%1$s ጋር መገናኘት አልተቻለም</string>

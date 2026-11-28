@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Opna setur</string>
     <string name="drawer_button_attention_state">Seta þarf svar frá þér</string>
     <string name="drawer_button_unread_state">Ólesnar setur</string>
-    <string name="drawer_notice_open_sessions_action">Opna setur</string>
-    <string name="drawer_notice_open_session_action">Opna setuna</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Leitarlotur</string>

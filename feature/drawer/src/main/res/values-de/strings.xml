@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Sitzungen öffnen</string>
     <string name="drawer_button_attention_state">Eine Sitzung benötigt deine Eingabe</string>
     <string name="drawer_button_unread_state">Ungelesene Sitzungen</string>
-    <string name="drawer_notice_open_sessions_action">Sitzungen öffnen</string>
-    <string name="drawer_notice_open_session_action">Sitzung öffnen</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Sitzungen durchsuchen</string>

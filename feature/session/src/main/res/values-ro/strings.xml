@@ -228,19 +228,6 @@
     <string name="session_start_voice_call_description">Pornește un apel vocal</string>
     <string name="session_model_level_default">Implicit</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sesiune</item>
-        <item quantity="few">%1$d sesiuni</item>
-        <item quantity="other">%1$d de sesiuni</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d are nevoie de tine</item>
-        <item quantity="few">%1$d au nevoie de tine</item>
-        <item quantity="other">%1$d au nevoie de tine</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Se reconectează la %1$s…</string>
     <string name="session_server_connect_failed">Conectarea la %1$s nu a reușit</string>

@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Дуут дуудлага эхлүүлэх</string>
     <string name="session_model_level_default">Өгөгдмөл</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d сесс</item>
-        <item quantity="other">%1$d сесс</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d-д таны оролцоо хэрэгтэй</item>
-        <item quantity="other">%1$d-д таны оролцоо хэрэгтэй</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s руу дахин холбож байна…</string>
     <string name="session_server_connect_failed">%1$s руу холбогдож чадсангүй</string>

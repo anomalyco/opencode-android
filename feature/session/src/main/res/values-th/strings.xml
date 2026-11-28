@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">เริ่มโทรด้วยเสียง</string>
     <string name="session_model_level_default">ค่าเริ่มต้น</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">%1$d เซสชัน</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d เซสชันต้องการคำตอบจากคุณ</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">กำลังเชื่อมต่อกับ %1$s ใหม่…</string>
     <string name="session_server_connect_failed">เชื่อมต่อกับ %1$s ไม่ได้</string>

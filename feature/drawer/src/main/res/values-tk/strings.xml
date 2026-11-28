@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Sessiýalary açyň</string>
     <string name="drawer_button_attention_state">Bir sessiýada jogabyňyz gerek</string>
     <string name="drawer_button_unread_state">Okalmadyk sessiýalar</string>
-    <string name="drawer_notice_open_sessions_action">Sessiýalary açyň</string>
-    <string name="drawer_notice_open_session_action">Sessiýany açyň</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Gözleg sessiýalary</string>

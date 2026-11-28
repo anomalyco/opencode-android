@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Сессүүдийг нээх</string>
     <string name="drawer_button_attention_state">Нэг сессэд таны оролцоо хэрэгтэй</string>
     <string name="drawer_button_unread_state">Уншаагүй сессүүд</string>
-    <string name="drawer_notice_open_sessions_action">Сессүүдийг нээх</string>
-    <string name="drawer_notice_open_session_action">Сессийг нээх</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Сесс хайх</string>

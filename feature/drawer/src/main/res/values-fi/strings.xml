@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Avaa istunnot</string>
     <string name="drawer_button_attention_state">Istunnossa tarvitaan sinua</string>
     <string name="drawer_button_unread_state">Lukemattomia istuntoja</string>
-    <string name="drawer_notice_open_sessions_action">Avaa istunnot</string>
-    <string name="drawer_notice_open_session_action">Avaa istunto</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Hae istuntoja</string>

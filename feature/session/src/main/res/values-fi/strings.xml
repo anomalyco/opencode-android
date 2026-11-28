@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Aloita äänipuhelu</string>
     <string name="session_model_level_default">Oletus</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d istunto</item>
-        <item quantity="other">%1$d istuntoa</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d tarvitsee sinua</item>
-        <item quantity="other">%1$d tarvitsee sinua</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Yhdistetään uudelleen palvelimeen %1$s…</string>
     <string name="session_server_connect_failed">Yhteys palvelimeen %1$s epäonnistui</string>

@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Səsli zəng başlat</string>
     <string name="session_model_level_default">Standart</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sessiya</item>
-        <item quantity="other">%1$d sessiya</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d sessiyada müdaxiləniz lazımdır</item>
-        <item quantity="other">%1$d sessiyada müdaxiləniz lazımdır</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s ilə yenidən bağlantı qurulur…</string>
     <string name="session_server_connect_failed">%1$s ilə bağlantı qurmaq mümkün olmadı</string>

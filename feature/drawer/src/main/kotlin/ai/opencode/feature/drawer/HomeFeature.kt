@@ -13,7 +13,6 @@ import ai.opencode.core.store.Reduced
 import ai.opencode.core.store.Reducer
 import ai.opencode.feature.drawer.catchup.CatchUpFeature
 import ai.opencode.devtools.traces.TraceUploadsFeature
-import ai.opencode.feature.session.InAppNotice
 import ai.opencode.feature.composer.ComposerPersistence
 import ai.opencode.feature.composer.PromptOutbox
 import ai.opencode.feature.composer.UnsentDraft
@@ -222,11 +221,6 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         val voiceCallActivity: VoiceCallActivityAttributes.ContentState? = null,
         /** What the recording's ongoing notification last showed. */
         val dictationActivity: DictationActivityAttributes.ContentState? = null,
-        /** In-App Notices (Experimental): the drawer button's label for another session's update, while it shows. */
-        val inAppNotice: InAppNotice? = null,
-        val inAppNoticeGeneration: Int = 0,
-        /** Events already shown or passed over, newest last, so a repeat never shows again. */
-        val noticedEvents: List<String> = emptyList(),
         /** Whether the drawer last arrived open. */
         val isDrawerOpen: Boolean = false,
         /** Whether the drawer button can show its label: not beside a wide window's sidebar. */
@@ -766,10 +760,6 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         ) : Action
         /** From the view, on appearing and whenever Voice is set up or not: publishes to the system. */
         data class SystemPublishRequested(val voiceAvailable: Boolean) : Action
-        /** The drawer button's label held its time and folds back. */
-        data class InAppNoticeExpired(val id: Int) : Action
-        /** The label: opens its session, or (for several) the view opens the drawer. */
-        data object InAppNoticeTapped : Action
         /** From the view: whether the drawer button can show the label. */
         data class DrawerLabelAvailabilityChanged(val shows: Boolean) : Action
         /** Used by playgrounds to swap fixture states in place. */
@@ -807,7 +797,6 @@ class HomeFeature : Reducer<HomeFeature.State, HomeFeature.Action> {
         data object LastKnownActivity : CancelID
         data object NetworkPath : CancelID
         data object ConnectionGrace : CancelID
-        data object InAppNotice : CancelID
         data object LiveUpdatesAfterLeaving : CancelID
         data object SessionActivityWait : CancelID
         data class CachedTranscript(val sessionID: String) : CancelID

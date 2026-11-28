@@ -79,8 +79,6 @@
     <string name="drawer_button_open_sessions_description">Mở danh sách phiên</string>
     <string name="drawer_button_attention_state">Có phiên cần bạn phản hồi</string>
     <string name="drawer_button_unread_state">Có phiên chưa đọc</string>
-    <string name="drawer_notice_open_sessions_action">Mở danh sách phiên</string>
-    <string name="drawer_notice_open_session_action">Mở phiên</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Tìm kiếm phiên</string>

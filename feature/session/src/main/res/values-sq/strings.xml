@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Nis thirrje zanore</string>
     <string name="session_model_level_default">E paracaktuar</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d sesion</item>
-        <item quantity="other">%1$d sesione</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d kërkon përgjigjen tënde</item>
-        <item quantity="other">%1$d kërkojnë përgjigjen tënde</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Po rilidhet me %1$s…</string>
     <string name="session_server_connect_failed">Nuk u lidh dot me %1$s</string>

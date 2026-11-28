@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">Bắt đầu cuộc gọi thoại</string>
     <string name="session_model_level_default">Mặc định</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">%1$d phiên</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d phiên cần bạn phản hồi</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Đang kết nối lại với %1$s…</string>
     <string name="session_server_connect_failed">Không thể kết nối với %1$s</string>

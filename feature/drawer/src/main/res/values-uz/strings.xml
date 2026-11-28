@@ -83,8 +83,6 @@
     <string name="drawer_button_open_sessions_description">Sessiyalarni ochish</string>
     <string name="drawer_button_attention_state">Sessiyada javobingiz kerak</string>
     <string name="drawer_button_unread_state">O‘qilmagan sessiyalar</string>
-    <string name="drawer_notice_open_sessions_action">Sessiyalarni ochish</string>
-    <string name="drawer_notice_open_session_action">Sessiyani ochish</string>
 
     <!-- Search pill -->
     <string name="drawer_search_description">Qidiruv seanslari</string>

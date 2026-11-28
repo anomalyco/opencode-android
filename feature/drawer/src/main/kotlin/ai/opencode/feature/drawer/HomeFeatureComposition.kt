@@ -176,21 +176,6 @@ private fun HomeFeature.homeReducers(): Reducer<State, Action> = combine(
             Reduced(state.copy(drawerOpenRequest = null))
         }
     },
-    // The label steps aside for the drawer, Settings, Catch Up, and the session it names once that's on screen.
-    Reducer { state, _ ->
-        val notice = state.inAppNotice ?: return@Reducer Reduced(state)
-        if (state.isDrawerOpen || state.isSettingsShown || state.catchUp != null) {
-            return@Reducer Reduced(state.copy(inAppNotice = null), Effect.cancel(HomeFeature.CancelID.InAppNotice))
-        }
-        val openIDs = state.openSessionIDs
-        if (notice.events.none { it.sessionID in openIDs }) return@Reducer Reduced(state)
-        val remaining = notice.events.filterNot { it.sessionID in openIDs }
-        if (remaining.isEmpty()) {
-            Reduced(state.copy(inAppNotice = null), Effect.cancel(HomeFeature.CancelID.InAppNotice))
-        } else {
-            Reduced(state.copy(inAppNotice = notice.copy(events = remaining)))
-        }
-    },
     // Absorbing shared files is a pure state change; start their uploads here.
     Reducer { state, _ ->
         if (state.sessionDetail?.unstartedUploadIDs.isNullOrEmpty()) {
@@ -353,8 +338,7 @@ private fun HomeFeature.detailSessions(): Reducer<State, Action> =
         }
 
 /**
- * Streaming traffic that skips the observer chain: it moves neither the list, Catch Up, notices nor
- * navigation.
+ * Streaming traffic that skips the observer chain: it moves neither the list, Catch Up nor navigation.
  */
 internal fun isFastStreamAction(state: State, action: Action): Boolean = when (action) {
     is Action.ServerEvent -> when (val event = action.event) {
@@ -432,15 +416,11 @@ private fun homeAction(action: HomeConnectionFeature.Action): Action = when (act
 }
 
 /**
- * In-App Notices follow Home's live state, a session on screen clears its delivered notifications,
- * an answered request clears its needs-input notifications, the icon's badge counts what Catch Up
+ * A session on screen clears its delivered notifications, an answered request clears its needs-input notifications, the icon's badge counts what Catch Up
  * holds, the share sheet offers what the drawer does, and the system publication follows the list.
  */
 private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): Reducer<State, Action> =
-    onChange({ feature.noticeInput(it) }) { old, _, state ->
-        feature.inAppNoticeSignalChanged(old, feature.noticeInput(state), state)
-    }
-        .onChange({ it.viewing }) { _, _, state ->
+    onChange({ it.viewing }) { _, _, state ->
             val threads = state.viewedNotificationThreads
             if (threads.isEmpty()) return@onChange Reduced(state)
             val delivered = dependency(DeliveredNotificationsClient)

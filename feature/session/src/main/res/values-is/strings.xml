@@ -220,17 +220,6 @@
     <string name="session_start_voice_call_description">Hefja símtal</string>
     <string name="session_model_level_default">Sjálfgefið</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d seta</item>
-        <item quantity="other">%1$d setur</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d þarf svar frá þér</item>
-        <item quantity="other">%1$d þurfa svar frá þér</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Tengist aftur við %1$s…</string>
     <string name="session_server_connect_failed">Ekki tókst að tengjast %1$s</string>

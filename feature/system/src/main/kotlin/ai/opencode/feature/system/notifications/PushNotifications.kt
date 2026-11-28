@@ -140,11 +140,9 @@ internal object PushNotifications {
 
     @SuppressLint("MissingPermission")
     private fun post(context: Context, ref: String, key: String, message: PushMessage, shown: PushShown) {
-        val presentation = SessionNotifications.shared.presentation(message.sessionID)
-        if (presentation == NotificationPresentation.None) return
+        if (SessionNotifications.shared.presentation(message.sessionID) == NotificationPresentation.None) return
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
         SystemNotificationChannels.ensure(context)
-        val silent = presentation == NotificationPresentation.ListOnly
         val target = Target(ref, key, message.sessionID, shown.title)
         val open = openIntent(context, target)
         val channel = channel(shown.kind)
@@ -161,7 +159,6 @@ internal object PushNotifications {
             .setSubText(folder)
             .setAutoCancel(true)
             .setCategory(category(shown.kind))
-            .setSilent(silent)
             .setGroup(group)
             .setContentIntent(open)
             .setDeleteIntent(broadcast(context, PushActionReceiver.ACTION_DISMISSED, target))

@@ -236,21 +236,6 @@
     <string name="session_start_voice_call_description">Начать голосовой звонок</string>
     <string name="session_model_level_default">По умолчанию</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="one">%1$d сессия</item>
-        <item quantity="few">%1$d сессии</item>
-        <item quantity="many">%1$d сессий</item>
-        <item quantity="other">%1$d сессии</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="one">%1$d сессия ждёт вашего ответа</item>
-        <item quantity="few">%1$d сессии ждут вашего ответа</item>
-        <item quantity="many">%1$d сессий ждут вашего ответа</item>
-        <item quantity="other">%1$d сессии ждут вашего ответа</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">Повторное подключение к %1$s…</string>
     <string name="session_server_connect_failed">Не удалось подключиться к %1$s</string>

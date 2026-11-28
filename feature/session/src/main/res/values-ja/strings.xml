@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">音声通話を開始</string>
     <string name="session_model_level_default">デフォルト</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">%1$d件のセッション</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d件で入力が必要です</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s、%2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$sに再接続中…</string>
     <string name="session_server_connect_failed">%1$sに接続できませんでした</string>

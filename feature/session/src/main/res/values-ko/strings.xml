@@ -212,15 +212,6 @@
     <string name="session_start_voice_call_description">음성 통화 시작</string>
     <string name="session_model_level_default">기본값</string>
 
-    <!-- In-app notice -->
-    <plurals name="session_notice_session_count">
-        <item quantity="other">세션 %1$d개</item>
-    </plurals>
-    <plurals name="session_notice_needs_input_count">
-        <item quantity="other">%1$d개 세션에 입력이 필요해요</item>
-    </plurals>
-    <string name="session_notice_announcement">%1$s, %2$s</string>
-
     <!-- Server connection pill -->
     <string name="session_server_reconnecting">%1$s에 다시 연결 중…</string>
     <string name="session_server_connect_failed">%1$s에 연결할 수 없어요</string>
