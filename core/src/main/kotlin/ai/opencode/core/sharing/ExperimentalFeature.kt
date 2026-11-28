@@ -63,6 +63,7 @@ enum class ExperimentalFeature(
     soundEffects("sound-effects", R.string.core_experiment_sound_effects_title, ExperimentalGroup.drawer, "speaker.wave.2.fill"),
     serverAddressLinks("server-address-links", R.string.core_experiment_server_address_links_title, ExperimentalGroup.drawer, "link"),
     syncPinnedSessions("sync-pinned-sessions", R.string.core_experiment_sync_pinned_sessions_title, ExperimentalGroup.drawer, "pin"),
+    miniApps("mini-apps", R.string.core_experiment_mini_apps_title, ExperimentalGroup.drawer, "square.grid.2x2"),
 
     // Transcript
     inAppBrowser("in-app-browser", R.string.core_experiment_in_app_browser_title, ExperimentalGroup.transcript, "safari"),

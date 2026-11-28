@@ -1,5 +1,7 @@
 package ai.opencode.feature.drawer
 
+import ai.opencode.feature.drawer.miniapps.isMiniAppsOn
+import ai.opencode.feature.drawer.miniapps.miniAppsSwitch
 import ai.opencode.feature.session.*
 import ai.opencode.core.dependencies.dependency
 import ai.opencode.core.store.Effect
@@ -47,7 +49,8 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
     // The scoped `TraceUploadsFeature` reduces it (`HomeFeature+Composition`).
     is Action.Traces -> Reduced(state)
     is Action.MiniApps -> Reduced(state)
-    Action.MiniAppsTapped -> Reduced(state.copy(miniApps = state.miniApps ?: MiniAppsFeature.State(server = state.server)))
+    Action.MiniAppsTapped ->
+        if (!isMiniAppsOn) Reduced(state) else Reduced(state.copy(miniApps = state.miniApps ?: MiniAppsFeature.State(server = state.server)))
     // The scoped `InboxSidebarFeature` owns Archive and Unarchive; Home stamps a confirmed archive
     // and restores an unarchived one, refetching the list.
     is Action.InboxSidebar -> when (val inbox = action.action) {
@@ -243,6 +246,9 @@ private fun HomeFeature.coreRoute(state: State, action: Action): Reduced<State, 
         if (action.action == HomeSettingsFeature.Action.WelcomeOpened) {
             // Show Welcome, over Settings and Home.
             Reduced(state.copy(welcome = WelcomeFeature.State(isPreview = true)))
+        } else if (action.action.miniAppsSwitch == false) {
+            // Experimental › Mini Apps off: nothing of it shows, the page included.
+            Reduced(reduced.state.copy(miniApps = null), reduced.effect)
         } else if (action.action.pinSyncSwitch != null) {
             val switched = pinSyncSwitched(reduced.state, action.action.pinSyncSwitch == true)
             Reduced(switched.state, Effect.merge(reduced.effect, switched.effect))

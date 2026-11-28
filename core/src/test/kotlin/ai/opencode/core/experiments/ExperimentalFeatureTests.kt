@@ -105,7 +105,7 @@ class ExperimentalFeatureTests {
         assertEquals(
             listOf(
                 ExperimentalFeature.inboxSidebar, ExperimentalFeature.sessionLiveActivity, ExperimentalFeature.soundEffects,
-                ExperimentalFeature.serverAddressLinks, ExperimentalFeature.syncPinnedSessions,
+                ExperimentalFeature.serverAddressLinks, ExperimentalFeature.syncPinnedSessions, ExperimentalFeature.miniApps,
             ),
             ExperimentalGroup.drawer.features,
         )

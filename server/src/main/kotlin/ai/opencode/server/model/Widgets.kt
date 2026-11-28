@@ -122,3 +122,6 @@ data class OpenCodeWidgetError(val phase: String, val message: String, val line:
 
 /** A widget's recorded program error: the [client] that hit it, and whether the agent was [sent] it. */
 data class OpenCodeWidgetFailure(val error: OpenCodeWidgetError, val client: String, val sent: Boolean)
+
+/** The client name this app reports widget failures under (`report`'s `client`): a failure recorded under it is one it hit. */
+const val WIDGET_CLIENT = "android"

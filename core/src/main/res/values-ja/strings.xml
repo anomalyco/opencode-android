@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">効果音</string>
     <string name="core_experiment_server_address_links_title">サーバーURLでリンクを開く</string>
     <string name="core_experiment_sync_pinned_sessions_title">ピン留めしたセッションを同期</string>
+    <string name="core_experiment_mini_apps_title">ミニアプリ</string>
     <string name="core_experiment_in_app_browser_title">アプリ内ブラウザー</string>
     <string name="core_experiment_welcome_preview_title">ようこそ画面のプレビュー</string>
     <string name="core_experiment_since_you_left_title">離席中の更新</string>

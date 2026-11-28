@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Звучни ефекти</string>
     <string name="core_experiment_server_address_links_title">Отвори везе према адреси сервера</string>
     <string name="core_experiment_sync_pinned_sessions_title">Синхронизуј закачене сесије</string>
+    <string name="core_experiment_mini_apps_title">Мини-апликације</string>
     <string name="core_experiment_in_app_browser_title">Прегледник у апликацији</string>
     <string name="core_experiment_welcome_preview_title">Преглед добродошлице</string>
     <string name="core_experiment_since_you_left_title">Док нисте били ту</string>

@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Ovoz effektlari</string>
     <string name="core_experiment_server_address_links_title">Havolalarni server manzili bo‘yicha ochish</string>
     <string name="core_experiment_sync_pinned_sessions_title">Mahkamlangan seanslarni sinxronlash</string>
+    <string name="core_experiment_mini_apps_title">Mini ilovalar</string>
     <string name="core_experiment_in_app_browser_title">Ilova ichidagi brauzer</string>
     <string name="core_experiment_welcome_preview_title">Kutib olish ekranini oldindan ko‘rish</string>
     <string name="core_experiment_since_you_left_title">Siz yo‘qligingizda</string>

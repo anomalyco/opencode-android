@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">音效</string>
     <string name="core_experiment_server_address_links_title">依伺服器 URL 開啟連結</string>
     <string name="core_experiment_sync_pinned_sessions_title">同步已釘選的工作階段</string>
+    <string name="core_experiment_mini_apps_title">迷你應用程式</string>
     <string name="core_experiment_in_app_browser_title">應用程式內瀏覽器</string>
     <string name="core_experiment_welcome_preview_title">歡迎畫面預覽</string>
     <string name="core_experiment_since_you_left_title">離開後的動態</string>

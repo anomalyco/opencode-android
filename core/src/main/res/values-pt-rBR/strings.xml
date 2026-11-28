@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Efeitos sonoros</string>
     <string name="core_experiment_server_address_links_title">Abrir links pelo endereço do servidor</string>
     <string name="core_experiment_sync_pinned_sessions_title">Sincronizar sessões fixadas</string>
+    <string name="core_experiment_mini_apps_title">Mini apps</string>
     <string name="core_experiment_in_app_browser_title">Navegador no app</string>
     <string name="core_experiment_welcome_preview_title">Prévia das boas-vindas</string>
     <string name="core_experiment_since_you_left_title">Desde que você saiu</string>

@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">የድምጽ ተጽዕኖዎች</string>
     <string name="core_experiment_server_address_links_title">በአገልጋይ አድራሻ አገናኞችን ክፈት</string>
     <string name="core_experiment_sync_pinned_sessions_title">የተሰኩ ክፍለ-ጊዜዎችን አመሳስል</string>
+    <string name="core_experiment_mini_apps_title">አነስተኛ መተግበሪያዎች</string>
     <string name="core_experiment_in_app_browser_title">የመተግበሪያ ውስጥ አሳሽ</string>
     <string name="core_experiment_welcome_preview_title">የእንኳን ደህና መጡ ቅድመ እይታ</string>
     <string name="core_experiment_since_you_left_title">ከወጡ በኋላ</string>

@@ -1,5 +1,6 @@
 package ai.opencode.server.live
 
+import ai.opencode.server.model.WIDGET_CLIENT
 import ai.opencode.server.OpenCodeClientError
 import ai.opencode.server.OpenCodeServer
 import ai.opencode.server.internal.obj
@@ -150,7 +151,7 @@ internal suspend fun requestWidgetReportRPC(
             error.line?.let { put("line", it) }
             error.column?.let { put("column", it) }
         })
-        put("client", "android")
+        put("client", WIDGET_CLIENT)
         if (ask) put("ask", true)
     }
     requestWidgetRPC(server, "report", directory, input)

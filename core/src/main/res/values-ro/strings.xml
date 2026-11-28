@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Efecte sonore</string>
     <string name="core_experiment_server_address_links_title">Deschide linkuri după adresa serverului</string>
     <string name="core_experiment_sync_pinned_sessions_title">Sincronizează sesiunile fixate</string>
+    <string name="core_experiment_mini_apps_title">Miniaplicații</string>
     <string name="core_experiment_in_app_browser_title">Browser în aplicație</string>
     <string name="core_experiment_welcome_preview_title">Previzualizare ecran de bun venit</string>
     <string name="core_experiment_since_you_left_title">De când ai plecat</string>

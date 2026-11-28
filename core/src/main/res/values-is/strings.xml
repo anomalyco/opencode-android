@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Hljóðbrellur</string>
     <string name="core_experiment_server_address_links_title">Opna tengla eftir heimilisfangi netþjóns</string>
     <string name="core_experiment_sync_pinned_sessions_title">Samstilla festar fundir</string>
+    <string name="core_experiment_mini_apps_title">Smáforrit</string>
     <string name="core_experiment_in_app_browser_title">Vafri í forritinu</string>
     <string name="core_experiment_welcome_preview_title">Forskoðun velkomuskjás</string>
     <string name="core_experiment_since_you_left_title">Síðan þú fórst</string>

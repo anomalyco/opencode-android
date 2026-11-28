@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">បែបផែនសំឡេង</string>
     <string name="core_experiment_server_address_links_title">បើកតំណតាមអាសយដ្ឋានម៉ាស៊ីនមេ</string>
     <string name="core_experiment_sync_pinned_sessions_title">ធ្វើសមកាលកម្មសម័យដែលបានខ្ទាស់</string>
+    <string name="core_experiment_mini_apps_title">កម្មវិធីខ្នាតតូច</string>
     <string name="core_experiment_in_app_browser_title">ម៉ាស៊ីនរកមើលក្នុងកម្មវិធី</string>
     <string name="core_experiment_welcome_preview_title">មើលទំព័រស្វាគមន៍ជាមុន</string>
     <string name="core_experiment_since_you_left_title">តាំងពីអ្នកចាកចេញ</string>

@@ -9,6 +9,7 @@ import ai.opencode.server.model.OpenCodeWidgetInstance
 import ai.opencode.server.model.OpenCodeWidgetRef
 import ai.opencode.server.model.OpenCodeWidgetState
 import ai.opencode.server.model.OpenCodeWidgetStatus
+import ai.opencode.server.model.WIDGET_CLIENT
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
@@ -79,15 +80,18 @@ class AgentWidgetInstancesTests {
 
     @Test
     fun onlyUsableWidgetsAreOffered() {
-        val failure = OpenCodeWidgetFailure(OpenCodeWidgetError("main", "boom"), client = "ios", sent = false)
+        val failure = OpenCodeWidgetFailure(OpenCodeWidgetError("main", "boom"), client = WIDGET_CLIENT, sent = false)
+        val elsewhere = OpenCodeWidgetFailure(OpenCodeWidgetError("main", "Unsupported: storage"), client = "ios", sent = false)
         val open = instance("open")
+        // Another client's failure (iOS without storage) says nothing about running here: still offered.
+        val failedOnIos = instance("ios").let { it.copy(state = it.state.copy(failure = elsewhere)) }
         val submitted = instance("submitted").let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Submitted)) }
         val dismissed = instance("dismissed").let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Dismissed)) }
         val failed = instance("failed").let { it.copy(state = it.state.copy(failure = failure)) }
         // A chain whose newest widget was dismissed: neither it nor what it replaced is offered.
         val chainHead = instance("m3", replaced = listOf("m1", "m2")).let { it.copy(state = it.state.copy(status = OpenCodeWidgetStatus.Dismissed)) }
-        val instances = AgentWidgetInstances().loaded(listOf(open, dismissed, submitted, failed, chainHead))
-        assertEquals(listOf("s:open:c"), instances.usable.map { it.key })
+        val instances = AgentWidgetInstances().loaded(listOf(open, dismissed, submitted, failed, chainHead, failedOnIos))
+        assertEquals(listOf("s:open:c", "s:ios:c"), instances.usable.map { it.key })
         // Still resolvable, for a tile already on the dashboard.
         assertEquals("s:m3:c", instances["s:m1:c"]?.key)
         assertEquals("s:failed:c", instances["s:failed:c"]?.key)

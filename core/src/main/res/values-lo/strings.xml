@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">ເອັບເຟັກສຽງ</string>
     <string name="core_experiment_server_address_links_title">ເປີດລິ້ງຕາມທີ່ຢູ່ເຊີບເວີ</string>
     <string name="core_experiment_sync_pinned_sessions_title">ຊິງຄ໌ເຊດຊັນທີ່ປັກໝຸດໄວ້</string>
+    <string name="core_experiment_mini_apps_title">ມິນິແອັບ</string>
     <string name="core_experiment_in_app_browser_title">ເບຣາວເຊີໃນແອັບ</string>
     <string name="core_experiment_welcome_preview_title">ຕົວຢ່າງໜ້າຕ້ອນຮັບ</string>
     <string name="core_experiment_since_you_left_title">ຕັ້ງແຕ່ເຈົ້າອອກໄປ</string>

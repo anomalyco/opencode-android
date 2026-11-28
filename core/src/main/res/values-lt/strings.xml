@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Garso efektai</string>
     <string name="core_experiment_server_address_links_title">Atidaryti nuorodas pagal serverio adresą</string>
     <string name="core_experiment_sync_pinned_sessions_title">Sinchronizuoti prisegtas sesijas</string>
+    <string name="core_experiment_mini_apps_title">Mini programėlės</string>
     <string name="core_experiment_in_app_browser_title">Naršyklė programoje</string>
     <string name="core_experiment_welcome_preview_title">Pasveikinimo peržiūra</string>
     <string name="core_experiment_since_you_left_title">Kol jūsų nebuvo</string>

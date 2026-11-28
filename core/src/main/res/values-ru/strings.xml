@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Звуковые эффекты</string>
     <string name="core_experiment_server_address_links_title">Открывать ссылки по адресу сервера</string>
     <string name="core_experiment_sync_pinned_sessions_title">Синхронизировать закреплённые сессии</string>
+    <string name="core_experiment_mini_apps_title">Мини-приложения</string>
     <string name="core_experiment_in_app_browser_title">Встроенный браузер</string>
     <string name="core_experiment_welcome_preview_title">Предпросмотр приветствия</string>
     <string name="core_experiment_since_you_left_title">Пока вас не было</string>

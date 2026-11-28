@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Таъсири садо</string>
     <string name="core_experiment_server_address_links_title">Кушодани истинодҳо аз рӯи суроғаи сервер</string>
     <string name="core_experiment_sync_pinned_sessions_title">Ҳамоҳангсозии сеансҳои собитшуда</string>
+    <string name="core_experiment_mini_apps_title">Мини-барномаҳо</string>
     <string name="core_experiment_in_app_browser_title">Браузери дохили барнома</string>
     <string name="core_experiment_welcome_preview_title">Пешнамоиши хушомадгӯӣ</string>
     <string name="core_experiment_since_you_left_title">Пас аз рафтани шумо</string>

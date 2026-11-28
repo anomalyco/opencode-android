@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Ձայնային էֆեկտներ</string>
     <string name="core_experiment_server_address_links_title">Բացել հղումները սերվերի հասցեով</string>
     <string name="core_experiment_sync_pinned_sessions_title">Համաժամեցնել ամրացված նիստերը</string>
+    <string name="core_experiment_mini_apps_title">Մինի հավելվածներ</string>
     <string name="core_experiment_in_app_browser_title">Ներհավելվածային բրաուզեր</string>
     <string name="core_experiment_welcome_preview_title">Ողջույնի նախադիտում</string>
     <string name="core_experiment_since_you_left_title">Ձեր բացակայության ընթացքում</string>

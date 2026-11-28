@@ -20,6 +20,7 @@
     <string name="core_experiment_sound_effects_title">Səs effektləri</string>
     <string name="core_experiment_server_address_links_title">Linkləri server ünvanına görə aç</string>
     <string name="core_experiment_sync_pinned_sessions_title">Bərkidilmiş sessiyaları sinxronlaşdır</string>
+    <string name="core_experiment_mini_apps_title">Mini tətbiqlər</string>
     <string name="core_experiment_in_app_browser_title">Tətbiqdaxili brauzer</string>
     <string name="core_experiment_welcome_preview_title">Qarşılama önbaxışı</string>
     <string name="core_experiment_since_you_left_title">Siz gedəndən bəri</string>
