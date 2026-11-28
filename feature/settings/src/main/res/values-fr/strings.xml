@@ -59,7 +59,6 @@
     <string name="settings_notifications_unsupported_footer">Ce serveur ne prend pas en charge les notifications. Mettez à jour OpenCode sur votre ordinateur.</string>
     <string name="settings_notifications_open_android_settings">Ouvrir les paramètres Android</string>
     <string name="settings_notifications_alerts_header">Son et bannières</string>
-    <string name="settings_notifications_alerts_footer">Ouvre les paramètres Android, où chaque type peut s’afficher en bannière, émettre un son ou être désactivé.</string>
     <string name="settings_notifications_needs_you">A besoin de vous</string>
     <string name="settings_notifications_finished">Terminé</string>
     <string name="settings_notifications_failed">Échec</string>

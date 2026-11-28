@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">Server ini tidak mendukung notifikasi. Perbarui OpenCode di komputer Anda.</string>
     <string name="settings_notifications_open_android_settings">Buka pengaturan Android</string>
     <string name="settings_notifications_alerts_header">Suara dan spanduk</string>
-    <string name="settings_notifications_alerts_footer">Membuka pengaturan Android, tempat setiap jenis dapat muncul di layar, berbunyi, atau dinonaktifkan.</string>
     <string name="settings_notifications_needs_you">Perlu tindakan Anda</string>
     <string name="settings_notifications_finished">Selesai</string>
     <string name="settings_notifications_failed">Gagal</string>

@@ -60,7 +60,6 @@
     <string name="settings_notifications_unsupported_footer">Ten serwer nie obsługuje powiadomień. Zaktualizuj OpenCode na komputerze.</string>
     <string name="settings_notifications_open_android_settings">Otwórz ustawienia Androida</string>
     <string name="settings_notifications_alerts_header">Dźwięk i banery</string>
-    <string name="settings_notifications_alerts_footer">Otwiera ustawienia Androida, gdzie dla każdego rodzaju możesz ustawić baner, dźwięk lub go wyłączyć.</string>
     <string name="settings_notifications_needs_you">Wymaga uwagi</string>
     <string name="settings_notifications_finished">Zakończono</string>
     <string name="settings_notifications_failed">Błąd</string>

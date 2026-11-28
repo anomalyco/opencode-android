@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Αυτός ο διακομιστής δεν υποστηρίζει ειδοποιήσεις. Ενημερώστε το OpenCode στον υπολογιστή σας.</string>
     <string name="settings_notifications_open_android_settings">Άνοιγμα ρυθμίσεων Android</string>
     <string name="settings_notifications_alerts_header">Ήχος και μπάνερ</string>
-    <string name="settings_notifications_alerts_footer">Ανοίγει τις ρυθμίσεις του Android, όπου κάθε τύπος μπορεί να εμφανίζεται ως αναδυόμενο, να κάνει ήχο ή να απενεργοποιείται.</string>
     <string name="settings_notifications_needs_you">Σας χρειάζεται</string>
     <string name="settings_notifications_finished">Ολοκληρώθηκε</string>
     <string name="settings_notifications_failed">Απέτυχε</string>

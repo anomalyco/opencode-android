@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Овој сервер не поддржува известувања. Ажурирај го OpenCode на твојот компјутер.</string>
     <string name="settings_notifications_open_android_settings">Отвори ги поставките на Android</string>
     <string name="settings_notifications_alerts_header">Звук и банери</string>
-    <string name="settings_notifications_alerts_footer">Ги отвора поставките на Android, каде секој вид може да се појавува на екран, да има звук или да биде исклучен.</string>
     <string name="settings_notifications_needs_you">Бара внимание</string>
     <string name="settings_notifications_finished">Завршено</string>
     <string name="settings_notifications_failed">Не успеа</string>

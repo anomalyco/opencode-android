@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">เซิร์ฟเวอร์นี้ไม่รองรับการแจ้งเตือน อัปเดต OpenCode บนคอมพิวเตอร์ของคุณ</string>
     <string name="settings_notifications_open_android_settings">เปิดการตั้งค่า Android</string>
     <string name="settings_notifications_alerts_header">เสียงและแบนเนอร์</string>
-    <string name="settings_notifications_alerts_footer">เปิดการตั้งค่า Android เพื่อตั้งค่าแต่ละประเภทให้แสดงป๊อปอัป ส่งเสียง หรือปิดได้</string>
     <string name="settings_notifications_needs_you">รอคุณดำเนินการ</string>
     <string name="settings_notifications_finished">เสร็จสิ้นแล้ว</string>
     <string name="settings_notifications_failed">ล้มเหลว</string>

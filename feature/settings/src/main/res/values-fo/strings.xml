@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Hesin ambætarin stuðlar ikki fráboðanum. Dagfør OpenCode á tíni teldu.</string>
     <string name="settings_notifications_open_android_settings">Opna Android-innstillingar</string>
     <string name="settings_notifications_alerts_header">Ljóð og bannarar</string>
-    <string name="settings_notifications_alerts_footer">Opnar Android-innstillingarnar, har hvørt slag kann koma fram, geva ljóð ella verða sløkt.</string>
     <string name="settings_notifications_needs_you">Hevur brúk fyri tær</string>
     <string name="settings_notifications_finished">Endaði</string>
     <string name="settings_notifications_failed">Mistókst</string>

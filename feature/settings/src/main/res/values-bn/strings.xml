@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">এই সার্ভার বিজ্ঞপ্তি সমর্থন করে না। আপনার কম্পিউটারে OpenCode আপডেট করুন।</string>
     <string name="settings_notifications_open_android_settings">Android সেটিংস খুলুন</string>
     <string name="settings_notifications_alerts_header">শব্দ ও ব্যানার</string>
-    <string name="settings_notifications_alerts_footer">Android সেটিংস খোলে, যেখান থেকে প্রতিটি ধরনের বিজ্ঞপ্তি পপ-আপ, শব্দসহ বা বন্ধ রাখা যাবে।</string>
     <string name="settings_notifications_needs_you">আপনাকে প্রয়োজন</string>
     <string name="settings_notifications_finished">শেষ হয়েছে</string>
     <string name="settings_notifications_failed">ব্যর্থ হয়েছে</string>

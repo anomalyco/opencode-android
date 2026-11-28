@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Þessi netþjónn styður ekki tilkynningar. Uppfærðu OpenCode á tölvunni þinni.</string>
     <string name="settings_notifications_open_android_settings">Opna Android-stillingar</string>
     <string name="settings_notifications_alerts_header">Hljóð og borðar</string>
-    <string name="settings_notifications_alerts_footer">Opnar stillingar Android, þar sem hægt er að láta hverja tegund birtast á skjánum, spila hljóð eða slökkva á henni.</string>
     <string name="settings_notifications_needs_you">Þarfnast þín</string>
     <string name="settings_notifications_finished">Lokið</string>
     <string name="settings_notifications_failed">Mistókst</string>

@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Deze server ondersteunt geen meldingen. Werk OpenCode bij op je computer.</string>
     <string name="settings_notifications_open_android_settings">Android-instellingen openen</string>
     <string name="settings_notifications_alerts_header">Geluid en banners</string>
-    <string name="settings_notifications_alerts_footer">Opent de Android-instellingen, waar elk type een pop-up kan tonen, geluid kan maken of uit kan staan.</string>
     <string name="settings_notifications_needs_you">Heeft je nodig</string>
     <string name="settings_notifications_finished">Voltooid</string>
     <string name="settings_notifications_failed">Mislukt</string>

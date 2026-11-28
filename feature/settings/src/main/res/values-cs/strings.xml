@@ -60,7 +60,6 @@
     <string name="settings_notifications_unsupported_footer">Tento server nepodporuje oznámení. Aktualizujte OpenCode na svém počítači.</string>
     <string name="settings_notifications_open_android_settings">Otevřít nastavení Androidu</string>
     <string name="settings_notifications_alerts_header">Zvuk a bannery</string>
-    <string name="settings_notifications_alerts_footer">Otevře nastavení Androidu, kde u každého typu nastavíte vyskakovací oznámení, zvuk nebo vypnutí.</string>
     <string name="settings_notifications_needs_you">Potřebuje vás</string>
     <string name="settings_notifications_finished">Dokončeno</string>
     <string name="settings_notifications_failed">Nepodařilo se</string>

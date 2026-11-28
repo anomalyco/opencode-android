@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">See server ei toeta teavitusi. Uuenda OpenCode\'i oma arvutis.</string>
     <string name="settings_notifications_open_android_settings">Ava Androidi seaded</string>
     <string name="settings_notifications_alerts_header">Heli ja bännerid</string>
-    <string name="settings_notifications_alerts_footer">Avab Androidi seaded, kus saad iga tüübi kohta määrata, kas see ilmub ekraanile, teeb heli või on välja lülitatud.</string>
     <string name="settings_notifications_needs_you">Vajab sind</string>
     <string name="settings_notifications_finished">Lõpetatud</string>
     <string name="settings_notifications_failed">Ebaõnnestunud</string>

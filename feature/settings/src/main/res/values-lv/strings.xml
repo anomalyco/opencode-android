@@ -59,7 +59,6 @@
     <string name="settings_notifications_unsupported_footer">Šis serveris neatbalsta paziņojumus. Atjaunini OpenCode savā datorā.</string>
     <string name="settings_notifications_open_android_settings">Atvērt Android iestatījumus</string>
     <string name="settings_notifications_alerts_header">Skaņa un baneri</string>
-    <string name="settings_notifications_alerts_footer">Atver Android iestatījumus, kur katrs veids var parādīties ekrānā, atskaņot skaņu vai būt izslēgts.</string>
     <string name="settings_notifications_needs_you">Nepieciešama uzmanība</string>
     <string name="settings_notifications_finished">Pabeigts</string>
     <string name="settings_notifications_failed">Neizdevās</string>

@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Bu serwer bildirişleri goldamaýar. Kompýuteriňizde OpenCode-y täzeläň.</string>
     <string name="settings_notifications_open_android_settings">Android sazlamalaryny açyň</string>
     <string name="settings_notifications_alerts_header">Ses we bannerler</string>
-    <string name="settings_notifications_alerts_footer">Android sazlamalaryny açýar; ol ýerde her görnüşiň ekranda çykmagyny, ses çykarmagyny ýa-da öçürilmegini sazlap bolýar.</string>
     <string name="settings_notifications_needs_you">Ünsüňiz gerek</string>
     <string name="settings_notifications_finished">Tamamlandy</string>
     <string name="settings_notifications_failed">Şowsuz</string>

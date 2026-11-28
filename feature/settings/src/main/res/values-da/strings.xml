@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Denne server understøtter ikke meddelelser. Opdater OpenCode på din computer.</string>
     <string name="settings_notifications_open_android_settings">Åbn Android-indstillinger</string>
     <string name="settings_notifications_alerts_header">Lyd og bannere</string>
-    <string name="settings_notifications_alerts_footer">Åbner Android-indstillingerne, hvor hver type kan poppe op, afspille en lyd eller slås fra.</string>
     <string name="settings_notifications_needs_you">Har brug for dig</string>
     <string name="settings_notifications_finished">Afsluttet</string>
     <string name="settings_notifications_failed">Mislykkedes</string>

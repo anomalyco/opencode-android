@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">སར་བར་འདི་གིས་བརྡ་བསྐུལ་ཚུ་ལུ་རྒྱབ་སྐྱོར་མི་འབད། ཁྱོད་ཀྱི་གློག་རིག་གུ་ OpenCode དུས་མཐུན་བཟོ།</string>
     <string name="settings_notifications_open_android_settings">Android སྒྲིག་སྟངས་ཁ་ཕྱེ།</string>
     <string name="settings_notifications_alerts_header">སྒྲ་དང་བརྡ་བྱང་ཚུ།</string>
-    <string name="settings_notifications_alerts_footer">Android སྒྲིག་སྟངས་ཁ་ཕྱེ་སྟེ་ དབྱེ་བ་རེ་རེ་གི་དོན་ལུ་ ཐོན་འོང་ནི་ སྒྲ་གཏང་ནི་ ཡང་ན་ཁ་བསྡམ་བཏུབ་ཨིན།</string>
     <string name="settings_notifications_needs_you">ཁྱོད་དགོ</string>
     <string name="settings_notifications_finished">མཇུག་བསྡུ་ཡོདཔ།</string>
     <string name="settings_notifications_failed">མཐར་མ་འཁྱོལ་བ</string>

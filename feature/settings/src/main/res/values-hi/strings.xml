@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">यह सर्वर सूचनाओं का समर्थन नहीं करता। अपने कंप्यूटर पर OpenCode अपडेट करें।</string>
     <string name="settings_notifications_open_android_settings">Android सेटिंग्स खोलें</string>
     <string name="settings_notifications_alerts_header">ध्वनि और बैनर</string>
-    <string name="settings_notifications_alerts_footer">इससे Android सेटिंग्स खुलेंगी, जहाँ आप हर प्रकार के लिए पॉप-अप, ध्वनि या बंद करने का विकल्प चुन सकते हैं।</string>
     <string name="settings_notifications_needs_you">आपकी ज़रूरत है</string>
     <string name="settings_notifications_finished">पूरा हुआ</string>
     <string name="settings_notifications_failed">असफल</string>

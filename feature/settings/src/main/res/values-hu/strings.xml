@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Ez a kiszolgáló nem támogatja az értesítéseket. Frissítse az OpenCode-ot a számítógépén.</string>
     <string name="settings_notifications_open_android_settings">Android-beállítások megnyitása</string>
     <string name="settings_notifications_alerts_header">Hang és felugró értesítések</string>
-    <string name="settings_notifications_alerts_footer">Megnyitja az Android beállításait, ahol minden típusnál beállítható a felugró értesítés, a hang vagy a kikapcsolás.</string>
     <string name="settings_notifications_needs_you">Önre vár</string>
     <string name="settings_notifications_finished">Befejeződött</string>
     <string name="settings_notifications_failed">Sikertelen</string>

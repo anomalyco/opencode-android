@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">Pelayan ini tidak menyokong notifikasi. Kemas kini OpenCode pada komputer anda.</string>
     <string name="settings_notifications_open_android_settings">Buka tetapan Android</string>
     <string name="settings_notifications_alerts_header">Bunyi dan sepanduk</string>
-    <string name="settings_notifications_alerts_footer">Membuka tetapan Android untuk menetapkan setiap jenis supaya muncul, berbunyi atau dimatikan.</string>
     <string name="settings_notifications_needs_you">Perlukan anda</string>
     <string name="settings_notifications_finished">Selesai</string>
     <string name="settings_notifications_failed">Gagal</string>

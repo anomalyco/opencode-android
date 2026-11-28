@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Bu sunucu bildirimleri desteklemiyor. Bilgisayarınızdaki OpenCode\'u güncelleyin.</string>
     <string name="settings_notifications_open_android_settings">Android ayarlarını aç</string>
     <string name="settings_notifications_alerts_header">Ses ve açılır bildirimler</string>
-    <string name="settings_notifications_alerts_footer">Android ayarlarını açar; burada her türün ekranda açılmasını, ses çıkarmasını veya kapatılmasını seçebilirsiniz.</string>
     <string name="settings_notifications_needs_you">Sizi bekliyor</string>
     <string name="settings_notifications_finished">Tamamlandı</string>
     <string name="settings_notifications_failed">Başarısız</string>

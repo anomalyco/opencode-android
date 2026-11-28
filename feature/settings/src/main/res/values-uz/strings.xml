@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Bu server bildirishnomalarni qo‘llab-quvvatlamaydi. Kompyuteringizda OpenCode’ni yangilang.</string>
     <string name="settings_notifications_open_android_settings">Android sozlamalarini ochish</string>
     <string name="settings_notifications_alerts_header">Ovoz va bannerlar</string>
-    <string name="settings_notifications_alerts_footer">Android sozlamalarini ochadi; u yerda har bir tur ekranda chiqishi, ovoz chiqarishi yoki o‘chirilishini sozlash mumkin.</string>
     <string name="settings_notifications_needs_you">E’tiboringiz kerak</string>
     <string name="settings_notifications_finished">Yakunlandi</string>
     <string name="settings_notifications_failed">Muvaffaqiyatsiz</string>

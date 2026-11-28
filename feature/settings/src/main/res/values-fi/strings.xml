@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Tämä palvelin ei tue ilmoituksia. Päivitä OpenCode tietokoneellasi.</string>
     <string name="settings_notifications_open_android_settings">Avaa Android-asetukset</string>
     <string name="settings_notifications_alerts_header">Ääni ja bannerit</string>
-    <string name="settings_notifications_alerts_footer">Avaa Androidin asetukset, joissa jokainen tyyppi voi näkyä ponnahdusilmoituksena, antaa äänen tai olla pois käytöstä.</string>
     <string name="settings_notifications_needs_you">Vaatii huomiota</string>
     <string name="settings_notifications_finished">Valmis</string>
     <string name="settings_notifications_failed">Epäonnistui</string>

@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Този сървър не поддържа известия. Актуализирайте OpenCode на компютъра си.</string>
     <string name="settings_notifications_open_android_settings">Отворете настройките на Android</string>
     <string name="settings_notifications_alerts_header">Звук и банери</string>
-    <string name="settings_notifications_alerts_footer">Отваря настройките на Android, където всеки вид може да изскача, да издава звук или да е изключен.</string>
     <string name="settings_notifications_needs_you">Нуждае се от вас</string>
     <string name="settings_notifications_finished">Завършено</string>
     <string name="settings_notifications_failed">Неуспешно</string>

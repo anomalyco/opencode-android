@@ -60,7 +60,6 @@
     <string name="settings_notifications_unsupported_footer">Цей сервер не підтримує сповіщення. Оновіть OpenCode на комп’ютері.</string>
     <string name="settings_notifications_open_android_settings">Відкрити налаштування Android</string>
     <string name="settings_notifications_alerts_header">Звук і банери</string>
-    <string name="settings_notifications_alerts_footer">Відкриває налаштування Android, де для кожного типу можна ввімкнути банер, звук або вимкнути сповіщення.</string>
     <string name="settings_notifications_needs_you">Потрібна ваша увага</string>
     <string name="settings_notifications_finished">Завершено</string>
     <string name="settings_notifications_failed">Помилка</string>

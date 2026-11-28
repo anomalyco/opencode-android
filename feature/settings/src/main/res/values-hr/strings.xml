@@ -59,7 +59,6 @@
     <string name="settings_notifications_unsupported_footer">Ovaj poslužitelj ne podržava obavijesti. Ažurirajte OpenCode na svom računalu.</string>
     <string name="settings_notifications_open_android_settings">Otvori postavke Androida</string>
     <string name="settings_notifications_alerts_header">Zvuk i natpisi</string>
-    <string name="settings_notifications_alerts_footer">Otvara postavke Androida, gdje za svaku vrstu možete odabrati skočni prikaz, zvuk ili isključivanje.</string>
     <string name="settings_notifications_needs_you">Treba vas</string>
     <string name="settings_notifications_finished">Završeno</string>
     <string name="settings_notifications_failed">Neuspješno</string>

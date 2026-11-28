@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Այս սերվերը չի աջակցում ծանուցումներին։ Թարմացրեք OpenCode-ը ձեր համակարգչում։</string>
     <string name="settings_notifications_open_android_settings">Բացել Android-ի կարգավորումները</string>
     <string name="settings_notifications_alerts_header">Ձայն և բաններներ</string>
-    <string name="settings_notifications_alerts_footer">Բացում է Android-ի կարգավորումները, որտեղ յուրաքանչյուր տեսակ կարող է հայտնվել էկրանին, ձայն հանել կամ անջատվել։</string>
     <string name="settings_notifications_needs_you">Սպասում է ձեզ</string>
     <string name="settings_notifications_finished">Ավարտվել է</string>
     <string name="settings_notifications_failed">Չհաջողվեց</string>

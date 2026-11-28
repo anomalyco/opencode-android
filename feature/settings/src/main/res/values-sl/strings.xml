@@ -60,7 +60,6 @@
     <string name="settings_notifications_unsupported_footer">Ta strežnik ne podpira obvestil. Posodobite OpenCode na svojem računalniku.</string>
     <string name="settings_notifications_open_android_settings">Odpri nastavitve Androida</string>
     <string name="settings_notifications_alerts_header">Zvok in pasice</string>
-    <string name="settings_notifications_alerts_footer">Odpre nastavitve sistema Android, kjer lahko za vsako vrsto nastavite pojavno obvestilo, zvok ali izklop.</string>
     <string name="settings_notifications_needs_you">Potrebuje vas</string>
     <string name="settings_notifications_finished">Končano</string>
     <string name="settings_notifications_failed">Ni uspelo</string>

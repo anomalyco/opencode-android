@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Dieser Server unterstützt keine Benachrichtigungen. Aktualisiere OpenCode auf deinem Computer.</string>
     <string name="settings_notifications_open_android_settings">Android-Einstellungen öffnen</string>
     <string name="settings_notifications_alerts_header">Ton und Banner</string>
-    <string name="settings_notifications_alerts_footer">Öffnet die Android-Einstellungen, in denen jede Art als Banner erscheinen, einen Ton abspielen oder ausgeschaltet werden kann.</string>
     <string name="settings_notifications_needs_you">Braucht dich</string>
     <string name="settings_notifications_finished">Abgeschlossen</string>
     <string name="settings_notifications_failed">Fehlgeschlagen</string>

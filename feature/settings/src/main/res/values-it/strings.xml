@@ -59,7 +59,6 @@
     <string name="settings_notifications_unsupported_footer">Questo server non supporta le notifiche. Aggiorna OpenCode sul tuo computer.</string>
     <string name="settings_notifications_open_android_settings">Apri le impostazioni Android</string>
     <string name="settings_notifications_alerts_header">Suoni e banner</string>
-    <string name="settings_notifications_alerts_footer">Apre le impostazioni di Android, dove ogni tipo può apparire a schermo, emettere un suono o essere disattivato.</string>
     <string name="settings_notifications_needs_you">Ha bisogno di te</string>
     <string name="settings_notifications_finished">Terminato</string>
     <string name="settings_notifications_failed">Operazione non riuscita</string>

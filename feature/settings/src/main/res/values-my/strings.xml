@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">ဤဆာဗာသည် အကြောင်းကြားချက်များကို မပံ့ပိုးပါ။ သင့်ကွန်ပျူတာတွင် OpenCode ကို အပ်ဒိတ်လုပ်ပါ။</string>
     <string name="settings_notifications_open_android_settings">Android ဆက်တင်များကို ဖွင့်ပါ</string>
     <string name="settings_notifications_alerts_header">အသံနှင့် ဘန်နာများ</string>
-    <string name="settings_notifications_alerts_footer">Android ဆက်တင်များကို ဖွင့်ပေးပြီး အမျိုးအစားတစ်ခုစီကို ပေါ်လာစေရန်၊ အသံမြည်စေရန် သို့မဟုတ် ပိတ်ထားရန် သတ်မှတ်နိုင်သည်။</string>
     <string name="settings_notifications_needs_you">သင့်ကို လိုအပ်သည်</string>
     <string name="settings_notifications_finished">ပြီးဆုံးခဲ့သည်</string>
     <string name="settings_notifications_failed">မအောင်မြင်ပါ။</string>

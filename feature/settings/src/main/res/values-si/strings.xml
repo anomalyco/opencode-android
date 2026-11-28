@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">මෙම සේවාදායකය දැනුම්දීම්වලට සහය නොදක්වයි. ඔබේ පරිගණකයේ OpenCode යාවත්කාලීන කරන්න.</string>
     <string name="settings_notifications_open_android_settings">Android සැකසුම් විවෘත කරන්න</string>
     <string name="settings_notifications_alerts_header">ශබ්දය සහ බැනර්</string>
-    <string name="settings_notifications_alerts_footer">Android සැකසීම් විවෘත කරයි; එහිදී එක් එක් වර්ගය තිරයේ මතුවීමට, ශබ්ද කිරීමට හෝ අක්‍රිය කිරීමට සැකසිය හැක.</string>
     <string name="settings_notifications_needs_you">ඔබේ අවධානය අවශ්‍යයි</string>
     <string name="settings_notifications_finished">අවසන් විය</string>
     <string name="settings_notifications_failed">අසාර්ථකයි</string>

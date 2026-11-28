@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Энэ сервер мэдэгдэл дэмждэггүй. Компьютер дээрээ OpenCode-ийг шинэчилнэ үү.</string>
     <string name="settings_notifications_open_android_settings">Android тохиргоог нээх</string>
     <string name="settings_notifications_alerts_header">Дуу ба баннер</string>
-    <string name="settings_notifications_alerts_footer">Android-ын тохиргоог нээнэ. Тэндээс төрөл бүрийг дэлгэцэд харуулах, дуу гаргах эсвэл унтрааж болно.</string>
     <string name="settings_notifications_needs_you">Таны оролцоо хэрэгтэй</string>
     <string name="settings_notifications_finished">Дууссан</string>
     <string name="settings_notifications_failed">Амжилтгүй</string>

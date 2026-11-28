@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Den här servern stöder inte aviseringar. Uppdatera OpenCode på din dator.</string>
     <string name="settings_notifications_open_android_settings">Öppna Android-inställningar</string>
     <string name="settings_notifications_alerts_header">Ljud och banderoller</string>
-    <string name="settings_notifications_alerts_footer">Öppnar Androids inställningar, där varje typ kan dyka upp, låta eller stängas av.</string>
     <string name="settings_notifications_needs_you">Behöver dig</string>
     <string name="settings_notifications_finished">Klar</string>
     <string name="settings_notifications_failed">Misslyckades</string>

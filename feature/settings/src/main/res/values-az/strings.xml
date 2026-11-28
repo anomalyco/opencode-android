@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">Bu server bildirişləri dəstəkləmir. Kompüterinizdə OpenCode-u yeniləyin.</string>
     <string name="settings_notifications_open_android_settings">Android tənzimləmələrini aç</string>
     <string name="settings_notifications_alerts_header">Səs və bannerlər</string>
-    <string name="settings_notifications_alerts_footer">Android tənzimləmələrini açır; orada hər növ ekranda görünə, səs çıxara və ya söndürülə bilər.</string>
     <string name="settings_notifications_needs_you">Sizi gözləyir</string>
     <string name="settings_notifications_finished">Bitdi</string>
     <string name="settings_notifications_failed">Uğursuz</string>

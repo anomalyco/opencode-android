@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">此伺服器不支援通知。請更新電腦上的 OpenCode。</string>
     <string name="settings_notifications_open_android_settings">開啟 Android 設定</string>
     <string name="settings_notifications_alerts_header">音效與橫幅</string>
-    <string name="settings_notifications_alerts_footer">開啟 Android 設定，可設定各類通知要彈出顯示、播放音效或關閉。</string>
     <string name="settings_notifications_needs_you">需要你處理</string>
     <string name="settings_notifications_finished">已完成</string>
     <string name="settings_notifications_failed">失敗</string>

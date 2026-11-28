@@ -46,7 +46,6 @@ fun NotificationSettingsView(store: SettingsStore) {
         else -> stringResource(R.string.settings_notifications_off_footer)
     }
     val alertsHeader = stringResource(R.string.settings_notifications_alerts_header)
-    val alertsFooter = stringResource(R.string.settings_notifications_alerts_footer)
 
     SettingsPageScaffold(title = stringResource(R.string.settings_notifications_title), store = store) {
         settingsSection(key = "server", header = serverName, footer = footer?.let { footerText(it) }) {
@@ -92,7 +91,7 @@ fun NotificationSettingsView(store: SettingsStore) {
         }
         val alerts = status.alerts
         if (isOn && alerts != null) {
-            settingsSection(key = "alerts", header = alertsHeader, footer = footerText(alertsFooter)) {
+            settingsSection(key = "alerts", header = alertsHeader) {
                 AlertRow(store, R.string.settings_notifications_needs_you, alerts.attention, SystemNotificationChannels.PUSH_ATTENTION)
                 SettingsDivider()
                 AlertRow(store, R.string.settings_notifications_finished, alerts.finished, SystemNotificationChannels.PUSH_FINISHED)

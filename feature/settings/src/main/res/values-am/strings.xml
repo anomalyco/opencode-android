@@ -58,7 +58,6 @@
     <string name="settings_notifications_unsupported_footer">ይህ አገልጋይ ማሳወቂያዎችን አይደግፍም። በኮምፒውተርዎ ላይ OpenCodeን ያዘምኑ።</string>
     <string name="settings_notifications_open_android_settings">የAndroid ቅንብሮችን ክፈት</string>
     <string name="settings_notifications_alerts_header">ድምጽ እና ባነሮች</string>
-    <string name="settings_notifications_alerts_footer">የAndroid ቅንብሮችን ይከፍታል፤ እዚያም እያንዳንዱ ዓይነት ብቅ እንዲል፣ ድምጽ እንዲያሰማ ወይም እንዲጠፋ ማድረግ ይችላሉ።</string>
     <string name="settings_notifications_needs_you">እርስዎን ይፈልጋል</string>
     <string name="settings_notifications_finished">ተጠናቋል</string>
     <string name="settings_notifications_failed">አልተሳካም</string>

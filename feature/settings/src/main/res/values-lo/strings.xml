@@ -57,7 +57,6 @@
     <string name="settings_notifications_unsupported_footer">ເຊີບເວີນີ້ບໍ່ຮອງຮັບການແຈ້ງເຕືອນ. ອັບເດດ OpenCode ໃນຄອມພິວເຕີຂອງເຈົ້າ.</string>
     <string name="settings_notifications_open_android_settings">ເປີດການຕັ້ງຄ່າ Android</string>
     <string name="settings_notifications_alerts_header">ສຽງ ແລະ ແບນເນີ</string>
-    <string name="settings_notifications_alerts_footer">ເປີດການຕັ້ງຄ່າ Android ເພື່ອເລືອກໃຫ້ແຕ່ລະປະເພດເດັ້ງຂຶ້ນ, ມີສຽງ ຫຼື ປິດໄວ້.</string>
     <string name="settings_notifications_needs_you">ຕ້ອງການເຈົ້າ</string>
     <string name="settings_notifications_finished">ສຳເລັດແລ້ວ</string>
     <string name="settings_notifications_failed">ລົ້ມເຫລວ</string>
