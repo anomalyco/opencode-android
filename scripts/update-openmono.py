@@ -16,8 +16,7 @@ Each font, as read and again as it will be written, must:
 - be static and upright, with the weight of the file it becomes (`OpenCodeFonts.monospace`
   declares it);
 - have a 0.6 em cell, with every character one cell wide except combining marks, format and
-  separator characters, private-use characters and the Armenian abbreviation mark, which may be
-  zero-width;
+  separator characters and private-use characters, which may be zero-width;
 - have ASCII, box drawing, the block elements and ✓ ✗ ⚠;
 - have no programming ligatures (no `calt`, `liga` or other ligature feature);
 - be the text subset: a few private-use characters at most, not the Nerd Fonts icon set.
@@ -46,8 +45,6 @@ STYLES = {
 LIGATURE_FEATURES = {"liga", "clig", "dlig", "hlig", "rlig", "calt"}
 REQUIRED = [*range(0x20, 0x7F), *range(0x2500, 0x25A0), ord("✓"), ord("✗"), ord("⚠")]
 ZERO_WIDTH_CATEGORIES = {"Mn", "Mc", "Me", "Cf", "Zl", "Zp", "Co"}
-# U+055F is punctuation by category but sits above the letter before it, as a combining mark does.
-ZERO_WIDTH_CHARACTERS = {0x055F}
 # The text subset has a few Powerline separators; the icon set has thousands of private-use characters.
 MAX_PRIVATE_USE = 16
 
@@ -79,10 +76,7 @@ def check(font: TTFont, name: str, weight: int) -> None:
         code
         for code, glyph in cmap.items()
         if metrics[glyph][0] != cell
-        and not (
-            metrics[glyph][0] == 0
-            and (unicodedata.category(chr(code)) in ZERO_WIDTH_CATEGORIES or code in ZERO_WIDTH_CHARACTERS)
-        )
+        and not (metrics[glyph][0] == 0 and unicodedata.category(chr(code)) in ZERO_WIDTH_CATEGORIES)
     ]
     if off_cell:
         fail(f"{len(off_cell)} characters are not one cell wide, first U+{min(off_cell):04X}")
