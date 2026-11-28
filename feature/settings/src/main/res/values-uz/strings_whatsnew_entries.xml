@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Yuborib bo‘lmasa, «Keyinroq yuborish» uni ilovani keyingi ochganingizda yuboradi.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Ekran tasvirini OpenCode’ga ulashing, savol yozing va «Yuborish»ni bosing</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Ilova belgisidagi hisoblagich</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ilova belgisi o‘qilmagan yoki sizni kutayotgan seanslar sonini ko‘rsatadi — bu «Yangiliklarni ko‘rish»dagi son bilan bir xil.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Bildirishnomalari o‘chirilgan seanslar hisobga olinmaydi.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Buning uchun bildirishnomalar yoqilgan bo‘lishi kerak.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Sessiyada savolni javobsiz qoldiring, so‘ng bosh ekranga o‘ting</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klaviatura yon panel bilan siljiydi</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Yozish paytida seanslar ro‘yxatini ochsangiz, xabar maydoni faol qoladi va klaviatura sessiya bilan birga chetga siljiydi.</string>

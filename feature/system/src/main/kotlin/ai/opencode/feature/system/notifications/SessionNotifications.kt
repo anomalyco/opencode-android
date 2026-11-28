@@ -125,10 +125,6 @@ class SessionNotificationsClient(
     val isOffered: suspend (OpenCodeServer) -> Boolean? = { true },
     /** Drops a removed server's ref, callback and choice (by persistence ID). */
     val forget: suspend (String) -> Unit = {},
-    /** The random `ref` a server's pushes carry, made and saved the first time it's asked for. */
-    val ref: (String) -> String = { "" },
-    /** Android grants the badge count with notifications. */
-    val includeBadges: suspend () -> Unit = {},
     /** Tells notifications which session is on screen so its own don't show. */
     val setVisibleSession: (shown: Boolean, sessionID: String?) -> Unit = { _, _ -> },
 ) {
@@ -141,7 +137,6 @@ class SessionNotificationsClient(
                 register = { SessionNotifications.shared.register(it) },
                 isOffered = { SessionNotifications.shared.isOffered(it) },
                 forget = { SessionNotifications.shared.forget(it) },
-                ref = { SessionNotifications.shared.ref(it) },
                 setVisibleSession = { shown, sessionID ->
                     val id = if (shown) sessionID else null
                     if (shown || SessionNotifications.shared.visibleSessionID == sessionID) {
@@ -153,9 +148,6 @@ class SessionNotificationsClient(
         override val testValue = SessionNotificationsClient(isAvailable = true)
     }
 }
-
-/** How a session notification arriving in the foreground shows. The session on screen shows nothing. */
-enum class NotificationPresentation { None, Banner }
 
 /**
  * This phone's registration for a server's pushes.
@@ -170,33 +162,18 @@ enum class NotificationPresentation { None, Banner }
  * derived key, so the relay and FCM only carry a `v2` envelope.
  */
 class SessionNotifications internal constructor(private val tokens: PushTokenProvider) {
-    /** The session on screen while the app is in the foreground. Its own "finished" notifications aren't shown. */
+    /** The session on screen while the app is in the foreground. Its notifications aren't shown. */
     @Volatile var visibleSessionID: String? = null
 
-    fun presentation(sessionID: String?): NotificationPresentation {
-        sessionID ?: return NotificationPresentation.Banner
-        if (sessionID == visibleSessionID) return NotificationPresentation.None
-        return NotificationPresentation.Banner
-    }
+    fun isOnScreen(sessionID: String?): Boolean = sessionID != null && sessionID == visibleSessionID
 
-    /** A tapped notification's destination, delivered once something routes it. */
-    var onOpen: ((NotificationDestination) -> Unit)? = null
-        set(value) {
-            field = value
-            val pending = pendingDestination
-            if (value != null && pending != null) {
-                pendingDestination = null
-                value(pending)
-            }
-        }
-
-    private var pendingDestination: NotificationDestination? = null
     @Volatile private var confirmedToken: String? = null
     private val lock = Any()
     private val registering = Mutex()
     /** Server key → what it was last told, held under [registering]. */
     private val registered = HashMap<String, Registered>()
     private val keys get() = dependency(NotificationKeysClient)
+    private val client get() = dependency(OpenCodeClient)
     private val saved get() = shared(savedKey)
     private var permissionRequest: CompletableDeferred<Boolean>? = null
 
@@ -262,7 +239,10 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         request?.complete(granted)
     }
 
-    /** The random `ref` a server's pushes carry, made and saved the first time it's asked for. */
+    /** The random `ref` a server's pushes carry; null until this phone registers with it. */
+    fun savedRef(key: String): String? = saved.value.refs[key]
+
+    /** [savedRef], made and saved the first time it's asked for. */
     fun ref(key: String): String {
         var made: String? = null
         saved.update { current ->
@@ -281,38 +261,35 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
 
     fun setting(serverKey: String): PushSetting = saved.value.settings[serverKey] ?: PushSetting()
 
-    /** Saves the choice and tells [server]; off removes this phone from it. False when the server couldn't be told. */
+    /** Tells [server] the choice, then saves it; off removes this phone from it. False when the server couldn't be told. */
     suspend fun setSetting(server: OpenCodeServer, setting: PushSetting): Boolean {
         val key = server.persistenceID
         return registering.withLock {
-            val previous = setting(key)
-            saved.update { it.copy(settings = it.settings + (key to setting)) }
-            var told = false
-            try {
-                told = tell(server, key, force = true)
-            } finally {
-                if (!told) saved.update { it.copy(settings = it.settings + (key to previous)) }
-            }
+            val told = tell(server, key, setting, force = true)
+            if (told) saved.update { it.copy(settings = it.settings + (key to setting)) }
             told
         }
     }
 
     /**
-     * Registers this phone with [server] at its saved level. A server already told the same thing
-     * is asked again a day later. False when notifications are off or not allowed, or a step failed.
+     * Registers this phone with [server] at its saved level, when notifications are on and allowed.
+     * A server already told the same thing is asked again a day later.
      */
-    suspend fun register(server: OpenCodeServer): Boolean {
+    suspend fun register(server: OpenCodeServer) {
         val key = server.persistenceID
-        return registering.withLock { setting(key).isOn && tell(server, key, force = false) }
+        registering.withLock {
+            val setting = setting(key)
+            if (setting.isOn) tell(server, key, setting, force = false)
+        }
     }
 
-    private suspend fun tell(server: OpenCodeServer, key: String, force: Boolean): Boolean = try {
+    private suspend fun tell(server: OpenCodeServer, key: String, setting: PushSetting, force: Boolean): Boolean = try {
         withContext(Dispatchers.IO) {
-            val setting = setting(key)
             if (setting.isOn) {
                 register(server, key, setting.level, force)
             } else {
-                OpenCodeClient.removePushDevice(server, ref(key))
+                val ref = savedRef(key)
+                if (ref != null) client.removePushDevice(server, ref)
                 registered.remove(key)
                 true
             }
@@ -339,7 +316,7 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
         }
         val last = registered[key]
         if (!force && last != null && last.callbackURL == callback.url && last.level == level && last.checkAt.isAfter(Instant.now())) return true
-        val serverKey = OpenCodeClient.registerPushDevice(
+        val serverKey = client.registerPushDevice(
             server, ref, callback.url, callback.expiresAt.toEpochMilli(), publicKey, Build.MODEL ?: "Android", level.wire,
         )
         keys.establish(ref, serverKey)
@@ -349,13 +326,13 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
     }
 
     suspend fun isOffered(server: OpenCodeServer): Boolean? =
-        runCatching { OpenCodeClient.offersPush(server) }.onFailure { if (it is CancellationException) throw it }.getOrNull()
+        runCatching { client.offersPush(server) }.onFailure { if (it is CancellationException) throw it }.getOrNull()
 
     /** Forgets a removed server's ref, callback, choice and notification key, and removes its notifications. */
     suspend fun forget(serverKey: String) {
         registering.withLock {
             registered.remove(serverKey)
-            val ref = saved.value.refs[serverKey]
+            val ref = savedRef(serverKey)
             saved.update { it.copy(refs = it.refs - serverKey, callbacks = it.callbacks - serverKey, settings = it.settings - serverKey) }
             if (ref != null) {
                 runCatching { keys.remove(ref) }
@@ -494,9 +471,4 @@ class SessionNotifications internal constructor(private val tokens: PushTokenPro
 fun interface PushTokenProvider {
     /** Asks for the token; exactly one of the callbacks runs, now or later. */
     fun register(onToken: (String) -> Unit, onFailure: () -> Unit)
-
-    companion object {
-        /** No push channel: every registration fails at once. */
-        val inert: PushTokenProvider = PushTokenProvider { _, onFailure -> onFailure() }
-    }
 }

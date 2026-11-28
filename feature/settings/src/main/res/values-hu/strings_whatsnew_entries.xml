@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ha a küldés nem sikerül, a Küldés később az alkalmazás következő megnyitásakor küldi el.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Osszon meg egy képernyőképet az OpenCode-dal, írjon hozzá kérdést, majd koppintson a Küldés gombra</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Jelvény az alkalmazásikonon</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Az alkalmazásikon az olvasatlan vagy Önre váró munkamenetek számát mutatja, ugyanannyit, mint az Áttekintés.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">A némított munkamenetek nem számítanak bele.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Ehhez engedélyezni kell az értesítéseket.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Hagyjon megválaszolatlanul egy kérdést egy munkamenetben, majd lépjen a kezdőképernyőre</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Az oldalmenüvel csúszó billentyűzet</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Ha gépelés közben megnyitja a munkamenetlistát, az üzenetmező aktív marad, a billentyűzet pedig a munkamenettel együtt oldalra csúszik.</string>

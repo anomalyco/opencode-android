@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ef sending tekst ekki sendir Senda síðar það næst þegar þú opnar forritið.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Deildu skjámynd í OpenCode, skrifaðu spurningu og pikkaðu á Senda</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tölumerki á táknmynd forritsins</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Táknmynd forritsins sýnir fjölda ólesinna seta eða seta sem bíða eftir þér, sömu tölu og Fara yfir nýtt.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Þaggaðar setur telja ekki með.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Kveikt þarf að vera á tilkynningum.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Láttu setu bíða eftir svari við spurningu og farðu svo á heimaskjáinn</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Lyklaborðið fylgir hliðarvalmyndinni</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Ef þú opnar setulistann meðan þú skrifar helst skilaboðareiturinn virkur og lyklaborðið rennur til hliðar með setunni.</string>

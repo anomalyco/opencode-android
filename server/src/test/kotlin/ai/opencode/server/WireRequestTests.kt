@@ -87,9 +87,7 @@ class WireRequestTests {
     fun pushRegistrationSendsTheCallbackAndReadsTheServerKey() = runTest {
         withFixture(WireFixture { Reply.Json(200, """{"data":{"publicKey":"server-public"}}""") }) { fixture ->
             val url = "https://relay.example/v2/notify/sealed"
-            val key = OpenCodeClient.registerPushDevice(
-                fixture.server, deviceID = "device", callbackURL = url, expiresAt = 1795644290720, publicKey = "phone-public", name = "Pixel 8", level = "attention",
-            )
+            val key = OpenCodeClient.liveValue.registerPushDevice(fixture.server, "device", url, 1795644290720, "phone-public", "Pixel 8", "attention")
             assertEquals("server-public", key)
             val request = fixture.requests.first()
             assertEquals("PUT /api/experimental/push/device/device", request.route)

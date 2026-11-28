@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">თუ გაგზავნა ვერ ხერხდება, „მოგვიანებით გაგზავნა“ მას აპის შემდეგ გახსნაზე გაგზავნის.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">გააზიარეთ ეკრანის სურათი OpenCode-ში, დაწერეთ კითხვა და შეეხეთ „გაგზავნას“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">მრიცხველი აპის ხატულაზე</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">აპის ხატულა აჩვენებს წაუკითხავი ან თქვენი პასუხის მომლოდინე სესიების რაოდენობას — ისევე, როგორც „სიახლეების გაცნობა“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">დადუმებული სესიები არ ითვლება.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ამისთვის შეტყობინებები ჩართული უნდა იყოს.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">დატოვეთ სესიაში კითხვა უპასუხოდ და გადადით მთავარ ეკრანზე</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">კლავიატურა პანელს მიჰყვება</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">წერისას სესიების სიის გახსნა შეტყობინების ველს აქტიურს ტოვებს, კლავიატურა კი სესიასთან ერთად გვერდზე იწევა.</string>

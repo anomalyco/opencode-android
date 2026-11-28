@@ -25,7 +25,7 @@ class WireRequestTests {
     }
 
     @Test
-    fun oldOrForeignNotificationCapabilitiesNeverReachAPrompt() {
+    fun oldOrForeignCallbacksAreNotReused() {
         val relay = "https://relay.example".toHttpUrl()
         assertTrue(SessionNotifications.isEncryptedCallback("https://relay.example/v2/notify/a_B-3", relay))
         for (address in listOf(

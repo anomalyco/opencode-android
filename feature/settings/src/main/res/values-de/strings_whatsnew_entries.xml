@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Falls das Senden nicht klappt, sendet „Später senden“ den Inhalt beim nächsten Öffnen der App.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Teile einen Screenshot mit OpenCode, gib eine Frage ein und tippe auf „Senden“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Zähler am App-Symbol</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Das App-Symbol zeigt, wie viele Sitzungen ungelesen sind oder auf dich warten – dieselbe Anzahl wie unter „Nachlesen“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Stummgeschaltete Sitzungen zählen nicht mit.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Dafür müssen Benachrichtigungen aktiviert sein.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lass eine Frage in einer Sitzung unbeantwortet und wechsle zum Home-Bildschirm</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastatur gleitet mit dem Seitenmenü</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Öffnest du beim Tippen die Sitzungsliste, bleibt das Nachrichtenfeld aktiv. Die Tastatur gleitet mit der Sitzung zur Seite.</string>

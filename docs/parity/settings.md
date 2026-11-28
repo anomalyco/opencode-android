@@ -76,7 +76,7 @@ Status values: `todo`, `partial: <what is missing>`, `done`, `n/a: <reason and w
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-05-run-error-line.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-05-run-error-line.kt` | done |  |
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-06-transcript-keyboard-space.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-06-transcript-keyboard-space.kt` | done |  |
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-07-share-sheet-sends.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-07-share-sheet-sends.kt` | done |  |
-| `OpenCode/Settings/WhatsNew/Entries/2026-10-12-08-app-icon-badge.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-08-app-icon-badge.kt` | done |  |
+| `OpenCode/Settings/WhatsNew/Entries/2026-10-12-08-app-icon-badge.swift` | 3 | – | n/a | Android has no app-set icon count: the launcher's badge is the notifications showing (Android differs on purpose) |
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-09-drawer-keeps-keyboard.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-09-drawer-keeps-keyboard.kt` | done |  |
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-10-whats-new-page.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-10-whats-new-page.kt` | done |  |
 | `OpenCode/Settings/WhatsNew/Entries/2026-10-12-11-catch-up-returns-to-drawer.swift` | 3 | `feature/settings/.../whatsnew/entries/2026-10-12-11-catch-up-returns-to-drawer.kt` | done |  |

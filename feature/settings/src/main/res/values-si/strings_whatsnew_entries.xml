@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">යැවීමට නොහැකි නම්, “පසුව යවන්න” මඟින් ඊළඟ වර යෙදුම විවෘත කරන විට එය යවයි.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">තිර රුවක් OpenCode වෙත බෙදාගෙන, ප්රශ්නයක් ලියා, “යවන්න” තට්ටු කරන්න</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">යෙදුම් නිරූපකයේ ලකුණ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">නොකියවූ හෝ ඔබේ ප්‍රතිචාරය බලා සිටින සැසි ගණන යෙදුම් නිරූපකයේ පෙන්වයි. එය “අලුත් දේ බලන්න” හි පෙන්වන ගණනමයි.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">නිහඬ කළ සැසි ගණන් නොගනී.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">මේ සඳහා දැනුම්දීම් සක්‍රිය කර තිබිය යුතුයි.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ප්රශ්නයකට පිළිතුරක් බලා සිටින සැසියක් තබා මුල් තිරයට යන්න</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">පැති පැනලය සමඟ යතුරුපුවරුවත් ලිස්සා යයි</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">ලියන අතර සැසි ලැයිස්තුව විවෘත කළත් පණිවිඩය ලිවීමට තෝරා තිබෙන ලෙසම පවතී. යතුරුපුවරුව සැසිය සමඟ පැත්තට ලිස්සා යයි.</string>

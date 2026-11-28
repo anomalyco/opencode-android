@@ -178,7 +178,6 @@ private fun buildEntries(): List<WhatsNewEntry> =
         WhatsNewShipped.catchUpReturnsToDrawer,
         WhatsNewShipped.whatsNewPage,
         WhatsNewShipped.drawerKeepsKeyboard,
-        WhatsNewShipped.appIconBadge,
         WhatsNewShipped.shareSheetSends,
         WhatsNewShipped.transcriptKeyboardSpace,
         WhatsNewShipped.runErrorLine,

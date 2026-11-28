@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Pokud se odeslání nezdaří, volba Odeslat později zprávu odešle při příštím otevření aplikace.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Sdílejte snímek obrazovky do OpenCode, napište otázku a klepněte na Odeslat</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Odznak na ikoně aplikace</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona aplikace ukazuje počet nepřečtených relací nebo relací čekajících na vás, stejně jako Přehled novinek.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Ztlumené relace se nepočítají.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Vyžaduje zapnutá oznámení.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Nechte v relaci nezodpovězenou otázku a přejděte na plochu</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klávesnice se posouvá s panelem</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Když při psaní otevřete seznam relací, pole zprávy zůstane aktivní a klávesnice se odsune stranou spolu s relací.</string>

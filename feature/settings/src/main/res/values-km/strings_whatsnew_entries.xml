@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">បើផ្ញើមិនបាន «ផ្ញើពេលក្រោយ» នឹងផ្ញើវាពេលអ្នកបើកកម្មវិធីលើកក្រោយ។</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">ចែករំលែករូបថតអេក្រង់ទៅ OpenCode វាយសំណួរ រួចប៉ះ «ផ្ញើ»</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">ផ្លាកលេខលើរូបតំណាងកម្មវិធី</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">រូបតំណាងកម្មវិធីបង្ហាញចំនួនសម័យមិនទាន់អាន ឬកំពុងរង់ចាំអ្នក ដូចចំនួនក្នុង «មើលព័ត៌មានថ្មីៗ»។</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">សម័យដែលបានបិទការជូនដំណឹងមិនត្រូវបានរាប់ទេ។</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ត្រូវបើកការជូនដំណឹងជាមុន។</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ទុកសម័យមួយឱ្យរង់ចាំចម្លើយសំណួរ រួចទៅអេក្រង់ដើម</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ក្ដារចុចរុញតាមផ្ទាំងចំហៀង</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">ពេលបើកបញ្ជីសម័យកំពុងវាយសារ ប្រអប់សារនៅតែសកម្ម ហើយក្ដារចុចរុញទៅចំហៀងជាមួយសម័យ។</string>

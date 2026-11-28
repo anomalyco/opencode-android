@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">ຖ້າສົ່ງບໍ່ໄດ້, ສົ່ງພາຍຫຼັງ ຈະສົ່ງໃຫ້ເມື່ອເຈົ້າເປີດແອັບຄັ້ງຕໍ່ໄປ.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">ແບ່ງປັນຮູບໜ້າຈໍໄປທີ່ OpenCode, ພິມຄຳຖາມ ແລ້ວແຕະ ສົ່ງ</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">ປ້າຍຕົວເລກເທິງໄອຄອນແອັບ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">ໄອຄອນແອັບສະແດງຈຳນວນເຊດຊັນທີ່ຍັງບໍ່ອ່ານ ຫຼືລໍຖ້າເຈົ້າ, ເທົ່າກັບຈຳນວນໃນ ຕິດຕາມອັບເດດ.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">ບໍ່ນັບເຊດຊັນທີ່ປິດສຽງໄວ້.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ຕ້ອງເປີດການແຈ້ງເຕືອນກ່ອນ.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ປ່ອຍໃຫ້ເຊດຊັນລໍຖ້າຄຳຕອບ ແລ້ວກັບໄປໜ້າຫຼັກ</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ແປ້ນພິມເລື່ອນຕາມແຖບເມນູຂ້າງ</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">ເມື່ອເປີດລາຍການເຊດຊັນຂະນະພິມ, ຊ່ອງຂໍ້ຄວາມຍັງພ້ອມໃຫ້ພິມຕໍ່ ແລະແປ້ນພິມຈະເລື່ອນໄປດ້ານຂ້າງພ້ອມເຊດຊັນ.</string>

@@ -16,7 +16,7 @@ object SystemNotificationChannels {
     const val DICTATION = "dictation"
     /** A run sent from this phone, while the app is away. */
     const val SESSION_RUN = "session-run"
-    /** A session finished or needs input. */
+    /** A push of a kind this app doesn't know. */
     const val SESSIONS = "sessions"
     /** A session waits on a permission or a question. */
     const val PUSH_ATTENTION = "push-attention"

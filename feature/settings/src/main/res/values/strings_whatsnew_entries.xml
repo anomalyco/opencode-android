@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">If it can’t send, Send Later sends it the next time you open the app.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Share a screenshot to OpenCode, type a question, and tap Send</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Badge on the App Icon</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">The app icon shows how many sessions are unread or waiting on you, the same count as Catch Up.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Muted sessions don’t count.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">It needs notifications turned on.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Leave a session waiting on a question, then go to the Home Screen</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Keyboard Slides With the Drawer</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Opening the session list while typing keeps your message focused, and the keys slide aside with the session.</string>

@@ -44,6 +44,9 @@ import ai.opencode.server.live.requestPrimaryAgents
 import ai.opencode.server.live.requestRedeemPairing
 import ai.opencode.server.live.requestRenameSession
 import ai.opencode.server.live.requestReplyForm
+import ai.opencode.server.live.requestOffersPush
+import ai.opencode.server.live.requestRegisterPushDevice
+import ai.opencode.server.live.requestRemovePushDevice
 import ai.opencode.server.live.requestReplyPermission
 import ai.opencode.server.live.requestRunMessages
 import ai.opencode.server.live.requestRunReply
@@ -251,27 +254,29 @@ data class OpenCodeClient(
     val markdownImage: suspend (server: OpenCodeServer, directory: String?, source: String, fallback: FileReadTarget?) -> ByteArray?,
     /** Long-lived SSE subscription; the flow throws on disconnect and the caller owns reconnecting. */
     val events: (server: OpenCodeServer) -> Flow<OpenCodeServerEvent>,
+    /**
+     * Registers this phone for the server's push notifications
+     * (`PUT /api/experimental/push/device/:deviceID`) and returns the server's public key for it.
+     * `expiresAt` is the callback's expiry in milliseconds since the epoch; `level` is `all` or `attention`.
+     */
+    val registerPushDevice: suspend (
+        server: OpenCodeServer,
+        deviceID: String,
+        callbackURL: String,
+        expiresAt: Long,
+        publicKey: String,
+        name: String,
+        level: String,
+    ) -> String,
+    /** Stops the server's push notifications to this phone (`DELETE /api/experimental/push/device/:deviceID`). */
+    val removePushDevice: suspend (server: OpenCodeServer, deviceID: String) -> Unit,
+    /** Whether the server sends push notifications at all (`GET /api/experimental/push`). */
+    val offersPush: suspend (server: OpenCodeServer) -> Boolean,
 ) {
     companion object Key : DependencyKey<OpenCodeClient> {
         /** The cache key [cachedMarkdownImage] takes for a Markdown image on `server`. */
         fun markdownImageKey(server: OpenCodeServer, directory: String?, source: String): String =
             markdownImageCacheKey(server, directory, source).removePrefix("markdown:")
-
-        /**
-         * Registers this phone for the server's push notifications
-         * (`PUT /api/experimental/push/device/:deviceID`) and returns the server's public key for it.
-         * [expiresAt] is the callback's expiry in milliseconds since the epoch; [level] is `all` or `attention`.
-         */
-        suspend fun registerPushDevice(
-            server: OpenCodeServer, deviceID: String, callbackURL: String, expiresAt: Long, publicKey: String, name: String, level: String,
-        ): String = ai.opencode.server.live.requestRegisterPushDevice(server, deviceID, callbackURL, expiresAt, publicKey, name, level)
-
-        /** Stops the server's push notifications to this phone (`DELETE /api/experimental/push/device/:deviceID`). */
-        suspend fun removePushDevice(server: OpenCodeServer, deviceID: String) =
-            ai.opencode.server.live.requestRemovePushDevice(server, deviceID)
-
-        /** Whether the server sends push notifications at all (`GET /api/experimental/push`). */
-        suspend fun offersPush(server: OpenCodeServer): Boolean = ai.opencode.server.live.requestOffersPush(server)
 
         /** A prompt's reply in a `/message` page. */
         fun assistantReply(messagesJSON: ByteArray, afterMessageID: String, acrossSteers: Boolean = false): String? =
@@ -351,6 +356,9 @@ data class OpenCodeClient(
             cachedMarkdownImage = { dependency(MarkdownImageCache).image("markdown:$it") },
             markdownImage = { server, directory, source, fallback -> requestMarkdownImage(server, directory, source, fallback) },
             events = ::subscribeEventsSharingWindows,
+            registerPushDevice = ::requestRegisterPushDevice,
+            removePushDevice = ::requestRemovePushDevice,
+            offersPush = ::requestOffersPush,
         )
 
         /**
@@ -430,6 +438,9 @@ data class OpenCodeClient(
                     cachedMarkdownImage = { images.image("markdown:$it") },
                     markdownImage = { server, directory, source, fallback -> requestMarkdownImage(server, directory, source, fallback, images) },
                     events = { unimplemented("events") },
+                    registerPushDevice = { _, _, _, _, _, _, _ -> unimplemented("registerPushDevice") },
+                    removePushDevice = { _, _ -> unimplemented("removePushDevice") },
+                    offersPush = { unimplemented("offersPush") },
                 )
             }
 

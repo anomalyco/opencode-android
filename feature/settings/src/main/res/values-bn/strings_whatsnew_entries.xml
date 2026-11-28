@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">পাঠানো না গেলে ‘পরে পাঠান’ বেছে নিন। পরের বার অ্যাপ খুললে তা পাঠানো হবে।</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">OpenCode-এ একটি স্ক্রিনশট শেয়ার করুন, প্রশ্ন লিখুন, তারপর ‘পাঠান’ চাপুন</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">অ্যাপ আইকনে ব্যাজ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">কতটি সেশন অপঠিত বা আপনার অপেক্ষায় আছে, অ্যাপ আইকনে সেই সংখ্যা দেখায়—‘আপডেট দেখুন’-এর মতোই।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">মিউট করা সেশন গোনা হয় না।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">এর জন্য বিজ্ঞপ্তি চালু থাকতে হবে।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">কোনো সেশনে প্রশ্নের উত্তর না দিয়ে হোম স্ক্রিনে যান</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ড্রয়ারের সঙ্গে সরে কীবোর্ড</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">লেখার সময় সেশন তালিকা খুললেও বার্তার ঘরে ফোকাস থাকে, আর কীবোর্ড সেশনের সঙ্গে পাশে সরে যায়।</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">如果无法发送，选择“稍后发送”，下次打开应用时就会发送。</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">将截图分享到 OpenCode，输入问题，然后点按“发送”</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">应用图标角标</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">应用图标会显示未读或等待你处理的会话数量，与“查看动态”中的数量一致。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">已静音的会话不计入。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">需要开启通知。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">让会话停在等待你回答问题的状态，然后返回主屏幕</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">键盘随侧边栏滑动</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">输入时打开会话列表，消息框仍保持焦点，键盘会随会话一起滑向一侧。</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Če pošiljanje ne uspe, Pošlji pozneje vsebino pošlje ob naslednjem odprtju aplikacije.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Deli posnetek zaslona v OpenCode, napiši vprašanje in tapni Pošlji</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Značka na ikoni aplikacije</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona aplikacije kaže število neprebranih sej ali sej, ki čakajo nate, enako kot Pregled novosti.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Utišane seje se ne štejejo.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Obvestila morajo biti vklopljena.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Pusti sejo čakati na odgovor na vprašanje in pojdi na začetni zaslon</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tipkovnica drsi s stranskim predalom</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Če med tipkanjem odpreš seznam sej, polje za sporočilo ostane aktivno, tipkovnica pa skupaj s sejo zdrsne na stran.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ak sa obsah nedá odoslať, možnosť Odoslať neskôr ho odošle pri ďalšom otvorení aplikácie.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Zdieľajte snímku obrazovky do OpenCode, napíšte otázku a ťuknite na Odoslať</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Odznak na ikone aplikácie</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona aplikácie zobrazuje počet neprečítaných relácií alebo relácií čakajúcich na vás, rovnako ako Prehľad noviniek.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Stlmené relácie sa nepočítajú.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Vyžaduje zapnuté upozornenia.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Nechajte v relácii nezodpovedanú otázku a prejdite na domovskú obrazovku</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klávesnica sa posúva s bočným panelom</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Keď počas písania otvoríte zoznam relácií, pole správy zostane aktívne a klávesnica sa odsunie spolu s reláciou.</string>

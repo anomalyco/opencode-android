@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ako slanje ne uspije, Pošalji kasnije šalje poruku kad sljedeći put otvorite aplikaciju.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Podijelite snimku zaslona u OpenCode, upišite pitanje i dodirnite Pošalji</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Oznaka na ikoni aplikacije</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona aplikacije pokazuje broj nepročitanih sesija ili onih koje čekaju na vas, isti kao u pregledu novosti.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Utišane sesije ne broje se.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Obavijesti moraju biti uključene.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Ostavite sesiju da čeka odgovor na pitanje pa se vratite na početni zaslon</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tipkovnica klizi s bočnim izbornikom</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Kad tijekom pisanja otvorite popis sesija, polje poruke ostaje aktivno, a tipkovnica klizi u stranu zajedno sa sesijom.</string>

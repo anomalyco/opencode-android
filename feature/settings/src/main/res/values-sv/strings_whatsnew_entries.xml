@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Om det inte går att skicka skickar Skicka senare det nästa gång du öppnar appen.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Dela en skärmbild till OpenCode, skriv en fråga och tryck på Skicka</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Siffra på appikonen</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Appikonen visar hur många sessioner som är olästa eller väntar på dig, samma antal som i Läs ikapp.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Tystade sessioner räknas inte.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Aviseringar måste vara på.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lämna en session som väntar på svar på en fråga och gå till hemskärmen</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tangentbordet följer sidomenyn</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">När du öppnar sessionslistan medan du skriver behåller meddelanderutan fokus och tangentbordet glider åt sidan med sessionen.</string>

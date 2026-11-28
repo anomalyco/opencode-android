@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">ပို့မရပါက “နောက်မှပို့ပါ” ကို နှိပ်ထားလျှင် အက်ပ်ကို နောက်တစ်ကြိမ်ဖွင့်ချိန်တွင် ပို့ပေးမည်။</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">ဖန်သားပြင်ပုံကို OpenCode သို့ မျှဝေပြီး မေးခွန်းရေးကာ “ပို့ပါ” ကို နှိပ်ပါ</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">အက်ပ်သင်္ကေတပေါ်က အရေအတွက်</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">အက်ပ်သင်္ကေတတွင် မဖတ်ရသေးသော သို့မဟုတ် သင့်ကို စောင့်နေသော စက်ရှင်အရေအတွက်ကို “အမီလိုက်ကြည့်ရန်” နှင့် တူညီစွာ ပြထားသည်။</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">အကြောင်းကြားချက် ပိတ်ထားသော စက်ရှင်များကို မထည့်တွက်ပါ။</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">အကြောင်းကြားချက်များ ဖွင့်ထားရန် လိုသည်။</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">မေးခွန်းအဖြေကို စောင့်နေသည့် စက်ရှင်တစ်ခုကို ထားခဲ့ပြီး ပင်မဖန်သားပြင်သို့ သွားပါ</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ဘေးအကန့်နှင့်အတူ ကီးဘုတ်လျှောရွေ့ခြင်း</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">စာရိုက်နေစဉ် စက်ရှင်စာရင်းကို ဖွင့်သော်လည်း မက်ဆေ့ဂျ်အကွက်တွင် ဆက်ရိုက်နိုင်ပြီး ကီးဘုတ်က စက်ရှင်နှင့်အတူ ဘေးသို့ လျှောရွေ့သည်။</string>

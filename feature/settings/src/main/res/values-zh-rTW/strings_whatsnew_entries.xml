@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">若無法傳送，選擇「稍後傳送」就會在下次開啟應用程式時傳送。</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">將螢幕截圖分享到 OpenCode，輸入問題，再點選「傳送」</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">應用程式圖示標記</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">應用程式圖示會顯示未讀或等待你回應的工作階段數量，與「補看動態」的數量相同。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">已靜音的工作階段不計入。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">需要開啟通知才能使用。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">讓工作階段停在等待你回答問題的狀態，再返回主畫面</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">鍵盤隨側邊欄滑動</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">輸入時開啟工作階段清單，訊息輸入框會保持焦點，鍵盤也會隨工作階段滑向一旁。</string>

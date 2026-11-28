@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Si no se puede enviar, Enviar más tarde lo enviará la próxima vez que abras la aplicación.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Comparte una captura de pantalla con OpenCode, escribe una pregunta y toca Enviar</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Contador en el icono de la aplicación</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">El icono muestra cuántas sesiones están sin leer o esperan tu respuesta, igual que Ponerse al día.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Las sesiones silenciadas no cuentan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Requiere tener las notificaciones activadas.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Deja una sesión con una pregunta pendiente y ve a la pantalla de inicio</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">El teclado se desliza con el panel lateral</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Al abrir la lista de sesiones mientras escribes, el mensaje mantiene el foco y el teclado se desliza a un lado junto con la sesión.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Hvis det ikke kan sendes, sender Send senere det neste gang du åpner appen.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Del et skjermbilde til OpenCode, skriv et spørsmål og trykk Send</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Merke på appikonet</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Appikonet viser hvor mange sesjoner som er uleste eller venter på deg, samme antall som i Bli oppdatert.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Dempede sesjoner telles ikke med.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Varsler må være slått på.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">La en sesjon vente på svar på et spørsmål, og gå til startskjermen</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastaturet glir med sidepanelet</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Når du åpner sesjonslisten mens du skriver, beholder meldingsfeltet fokus, og tastaturet glir til siden sammen med sesjonen.</string>

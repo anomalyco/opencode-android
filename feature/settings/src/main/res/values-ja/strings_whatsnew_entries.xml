@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">送信できない場合は「後で送信」を選ぶと、次にアプリを開いたときに送信します。</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">スクリーンショットをOpenCodeに共有し、質問を入力して「送信」をタップ</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">アプリアイコンのバッジ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">未読や回答待ちのセッション数をアプリアイコンに表示します。「未読を確認」と同じ件数です。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">ミュート中のセッションは数えません。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">通知をオンにする必要があります。</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">セッションを質問への回答待ちにして、ホーム画面に戻る</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ドロワーと一緒に動くキーボード</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">入力中にセッション一覧を開いても入力欄のフォーカスはそのまま。キーボードもセッションと一緒に横へ動きます。</string>

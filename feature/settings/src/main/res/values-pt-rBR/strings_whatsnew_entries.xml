@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Se não for possível enviar, Enviar depois envia na próxima vez que você abrir o app.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Compartilhe uma captura de tela com o OpenCode, digite uma pergunta e toque em Enviar</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Contador no ícone do app</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">O ícone do app mostra quantas sessões estão não lidas ou aguardando você, a mesma contagem de Fique em dia.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sessões silenciadas não entram na contagem.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">As notificações precisam estar ativadas.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Deixe uma sessão aguardando uma pergunta e vá para a tela inicial</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">O teclado desliza com o painel lateral</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Abrir a lista de sessões enquanto você digita mantém o foco na mensagem, e o teclado desliza para o lado junto com a sessão.</string>

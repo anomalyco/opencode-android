@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ако испраќањето не успее, „Испрати подоцна“ ќе ја испрати следниот пат кога ќе ја отвориш апликацијата.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Сподели слика од екранот во OpenCode, напиши прашање и допри „Испрати“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Ознака на иконата на апликацијата</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Иконата на апликацијата покажува колку сесии се непрочитани или чекаат на тебе — ист број како во „Биди во тек“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сесиите без известувања не се бројат.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Известувањата мора да се вклучени.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Остави сесија да чека одговор на прашање, па оди на почетниот екран</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Тастатурата се лизга со страничното мени</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Кога го отвораш списокот со сесии додека пишуваш, фокусот останува на пораката, а тастатурата се лизга настрана со сесијата.</string>

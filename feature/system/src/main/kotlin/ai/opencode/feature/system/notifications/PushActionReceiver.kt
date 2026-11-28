@@ -41,7 +41,7 @@ class PushActionReceiver : BroadcastReceiver() {
                 if (outcome == Outcome.Failed) {
                     PushNotifications.showSendFailure(application, target)
                 } else {
-                    PushNotifications.cancel(application, key, replied = RemoteInput.getResultsFromIntent(intent) != null)
+                    PushNotifications.cancel(application, setOf(key), replied = RemoteInput.getResultsFromIntent(intent) != null)
                 }
             } finally {
                 pending.finish()

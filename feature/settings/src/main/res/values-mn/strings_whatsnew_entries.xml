@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Илгээж чадахгүй бол «Дараа илгээх» нь аппыг дараагийн удаа нээхэд илгээнэ.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Дэлгэцийн зургаа OpenCode руу хуваалцаж, асуултаа бичээд «Илгээх» дээр товшино уу</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Аппын дүрс дээрх тоо</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Аппын дүрс дээр уншаагүй эсвэл таныг хүлээж буй сессийн тоо харагдана. Энэ нь «Шинэ зүйлсийг үзэх» хэсгийн тоотой ижил.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Мэдэгдлийг нь хаасан сессийг тооцохгүй.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Мэдэгдлийг асаасан байх шаардлагатай.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Сессийг асуултын хариу хүлээж байхад нь үлдээгээд үндсэн дэлгэц рүү очно уу</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Гар хажуугийн цэстэй хамт гулсана</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Бичиж байхдаа сессийн жагсаалтыг нээхэд мессеж бичих талбар идэвхтэй хэвээр үлдэж, гар сесстэй хамт хажуу тийш гулсана.</string>

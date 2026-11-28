@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jeśli wysyłanie się nie uda, opcja „Wyślij później” wyśle treść przy następnym otwarciu aplikacji.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Udostępnij zrzut ekranu w OpenCode, wpisz pytanie i dotknij „Wyślij”</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Licznik na ikonie aplikacji</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona aplikacji pokazuje liczbę sesji nieprzeczytanych lub czekających na Ciebie — taką samą jak w „Nadrób zaległości”.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Wyciszone sesje nie są liczone.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Wymaga włączonych powiadomień.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Zostaw sesję czekającą na odpowiedź na pytanie i przejdź do ekranu głównego</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klawiatura przesuwa się z panelem</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Gdy otworzysz listę sesji podczas pisania, pole wiadomości pozostaje aktywne, a klawiatura przesuwa się na bok wraz z sesją.</string>

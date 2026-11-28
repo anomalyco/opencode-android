@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Lukt verzenden niet? Met Later verzenden wordt het verstuurd zodra je de app weer opent.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Deel een schermafbeelding met OpenCode, typ een vraag en tik op Verzenden</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Badge op het app-pictogram</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Het app-pictogram toont hoeveel sessies ongelezen zijn of op je wachten, hetzelfde aantal als bij Bijlezen.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Gedempte sessies tellen niet mee.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Hiervoor moeten meldingen aanstaan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Laat een vraag in een sessie onbeantwoord en ga naar het startscherm</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Toetsenbord schuift mee met het zijmenu</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Open je tijdens het typen de sessielijst, dan blijft je berichtveld actief en schuift het toetsenbord met de sessie opzij.</string>

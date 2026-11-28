@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">अगर संदेश न भेजा जा सके, तो “बाद में भेजें” उसे अगली बार ऐप खोलने पर भेज देता है।</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">OpenCode पर स्क्रीनशॉट शेयर करें, प्रश्न लिखें और “भेजें” पर टैप करें</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">ऐप आइकन पर बैज</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">ऐप आइकन पर न पढ़े गए या आपके जवाब का इंतज़ार कर रहे सेशन की संख्या दिखती है, जो “अपडेट देखें” में भी दिखती है।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">म्यूट किए गए सेशन नहीं गिने जाते।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">इसके लिए सूचनाएँ चालू होनी चाहिए।</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">किसी सेशन में प्रश्न का जवाब दिए बिना होम स्क्रीन पर जाएँ</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ड्रॉअर के साथ खिसकता कीबोर्ड</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">टाइप करते समय सेशन सूची खोलने पर संदेश बॉक्स का फ़ोकस बना रहता है और कीबोर्ड सेशन के साथ एक ओर खिसक जाता है।</string>

@@ -55,7 +55,7 @@ internal object PushNotifications {
             for (id in message.ids) {
                 val key = "$ref:$id"
                 if (updateLedger(context) { it.clear(key, message.time, now) }) {
-                    cancel(context, key)
+                    cancel(context, setOf(key))
                     removed += 1
                 }
             }
@@ -78,36 +78,40 @@ internal object PushNotifications {
         return (width / (CODE_CHARACTER_DP * configuration.fontScale)).toInt().coerceAtLeast(CODE_FEWEST_COLUMNS)
     }
 
-    /** [replied] when a reply typed into the notification is what it is being removed for. */
-    fun cancel(context: Context, key: String, replied: Boolean = false) {
+    /** Removes the notifications posted under [keys]; [replied] when a reply typed into one is what it is being removed for. */
+    fun cancel(context: Context, keys: Set<String>, replied: Boolean = false) {
+        if (keys.isEmpty()) return
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        val shown = manager.activeNotifications.firstOrNull { it.id == SessionPushNotifications.NOTIFICATION_ID && it.tag == key }
-        if (shown != null && shown.notification.extras.getBoolean(EXTRA_LEAVING)) return
-        val kept = shown != null && (shown.notification.flags and FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY) != 0
-        if (shown != null && (replied || kept)) {
-            // Android refuses an app's cancel of a notification that was replied to inline, so it is posted again to time out.
-            runCatching {
-                val again = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
-                    .setOnlyAlertOnce(true)
-                    .setTimeoutAfter(LEAVING_MILLISECONDS)
-                again.extras.putBoolean(EXTRA_LEAVING, true)
-                manager.notify(key, SessionPushNotifications.NOTIFICATION_ID, again.build())
+        val active = manager.activeNotifications
+        for (key in keys) {
+            val shown = active.firstOrNull { it.id == SessionPushNotifications.NOTIFICATION_ID && it.tag == key }
+            if (shown != null && shown.notification.extras.getBoolean(EXTRA_LEAVING)) continue
+            val kept = shown != null && (shown.notification.flags and FLAG_LIFETIME_EXTENDED_BY_DIRECT_REPLY) != 0
+            if (shown != null && (replied || kept)) {
+                // Android refuses an app's cancel of a notification that was replied to inline, so it is posted again to time out.
+                runCatching {
+                    val again = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
+                        .setOnlyAlertOnce(true)
+                        .setTimeoutAfter(LEAVING_MILLISECONDS)
+                    again.extras.putBoolean(EXTRA_LEAVING, true)
+                    manager.notify(key, SessionPushNotifications.NOTIFICATION_ID, again.build())
+                }
+            } else {
+                manager.cancel(key, SessionPushNotifications.NOTIFICATION_ID)
             }
-        } else {
-            manager.cancel(key, SessionPushNotifications.NOTIFICATION_ID)
         }
-        removeEmptySummaries(context, leaving = key)
+        removeEmptySummaries(context, leaving = keys)
     }
 
-    /** A project's stack header goes once its last notification has; [leaving] is one being removed now. */
-    fun removeEmptySummaries(context: Context, leaving: String? = null) {
+    /** A project's stack header goes once its last notification has; [leaving] are the ones being removed now. */
+    fun removeEmptySummaries(context: Context, leaving: Set<String> = emptySet()) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         val active = manager.activeNotifications
         for (summary in active) {
             if (summary.id != SUMMARY_ID) continue
             val group = summary.notification.group
             val children = active.count {
-                it.id == SessionPushNotifications.NOTIFICATION_ID && it.notification.group == group && it.tag != leaving &&
+                it.id == SessionPushNotifications.NOTIFICATION_ID && it.notification.group == group && it.tag !in leaving &&
                     !it.notification.extras.getBoolean(EXTRA_LEAVING)
             }
             if (children == 0) manager.cancel(summary.tag, SUMMARY_ID)
@@ -140,7 +144,7 @@ internal object PushNotifications {
 
     @SuppressLint("MissingPermission")
     private fun post(context: Context, ref: String, key: String, message: PushMessage, shown: PushShown) {
-        if (SessionNotifications.shared.presentation(message.sessionID) == NotificationPresentation.None) return
+        if (SessionNotifications.shared.isOnScreen(message.sessionID)) return
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
         SystemNotificationChannels.ensure(context)
         val target = Target(ref, key, message.sessionID, shown.title)
@@ -177,15 +181,6 @@ internal object PushNotifications {
         }
         builder.extras.putString(SessionPushNotifications.EXTRA_SESSION, message.sessionID)
         builder.extras.putString(SessionPushNotifications.EXTRA_STATUS, message.type)
-        builder.extras.putBoolean(SessionPushNotifications.EXTRA_COUNTS_AS_ONE, true)
-        builder.setNumber(1)
-        if (message.sessionID != null) {
-            val defaults = AppBadgeLedger.groupDefaults(context)
-            AppBadgeLedger.load(defaults)?.badgeAfterPush(sessionID = message.sessionID, ref = ref)?.let { (ledger, badge) ->
-                ledger.save(defaults)
-                AppLog.app.info { "App badge count=$badge" }
-            }
-        }
         runCatching { NotificationManagerCompat.from(context).notify(key, SessionPushNotifications.NOTIFICATION_ID, builder.build()) }
             .onFailure { AppLog.app.error { "Push notification not posted: ${it::class.java.simpleName}" } }
         AppLog.app.info { "Push type=${message.type} shown actions=${shown.actions.size} rows=${shown.rows.size}" }

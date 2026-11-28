@@ -1,14 +1,12 @@
 package ai.opencode.feature.system.notifications
 
 import ai.opencode.core.log.AppLog
-import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
-import androidx.core.app.NotificationManagerCompat
 
 /**
  * A server's push on its way from the transport (FCM's `onMessageReceived`) to the notification
- * shade, and what the app later removes or recounts there.
+ * shade, and what the app later removes there.
  *
  * A push carries only the encrypted `v2` envelope under `opencode`. One this phone can't open
  * shows nothing.
@@ -37,14 +35,16 @@ object SessionPushNotifications {
     fun remove(context: Context, sessionIDs: Set<String>, needsInputOnly: Boolean) {
         if (sessionIDs.isEmpty()) return
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        val keys = HashSet<String>()
         for (notification in manager.activeNotifications) {
             if (notification.id != NOTIFICATION_ID) continue
+            val key = notification.tag ?: continue
             val extras = notification.notification.extras
             if (needsInputOnly && extras.getString(EXTRA_STATUS) !in needsInputStatuses) continue
             if (extras.getString(EXTRA_SESSION) !in sessionIDs) continue
-            manager.cancel(notification.tag, notification.id)
+            keys.add(key)
         }
-        PushNotifications.removeEmptySummaries(context)
+        PushNotifications.cancel(context, keys)
     }
 
     /**
@@ -53,48 +53,32 @@ object SessionPushNotifications {
      */
     fun removeStale(context: Context, serverKey: String, read: Set<String>, waiting: Set<String>) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        val ref = SessionNotifications.shared.ref(serverKey)
+        val ref = SessionNotifications.shared.savedRef(serverKey) ?: return
+        val keys = HashSet<String>()
         for (notification in manager.activeNotifications) {
-            if (notification.id != NOTIFICATION_ID || notification.tag?.startsWith("$ref:") != true) continue
+            if (notification.id != NOTIFICATION_ID) continue
+            val key = notification.tag ?: continue
+            if (!key.startsWith("$ref:")) continue
             val extras = notification.notification.extras
             val status = extras.getString(EXTRA_STATUS) ?: continue
             val sessionID = extras.getString(EXTRA_SESSION) ?: continue
             val stale = if (status in needsInputStatuses) sessionID !in waiting else sessionID in read
-            if (stale) manager.cancel(notification.tag, notification.id)
+            if (stale) keys.add(key)
         }
-        PushNotifications.removeEmptySummaries(context)
+        PushNotifications.cancel(context, keys)
     }
 
     /** Every notification of a server that is being removed from the app. */
     fun removeServer(context: Context, ref: String) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        val keys = HashSet<String>()
         for (notification in manager.activeNotifications) {
-            if (notification.tag?.startsWith("$ref:") == true) manager.cancel(notification.tag, notification.id)
+            if (notification.id != NOTIFICATION_ID) continue
+            val key = notification.tag ?: continue
+            if (key.startsWith("$ref:")) keys.add(key)
         }
+        PushNotifications.cancel(context, keys)
     }
 
-    /**
-     * The app icon's count: launchers count from the shown notifications' `number`, so the session
-     * notifications still in the shade are reposted silently with the ledger's count.
-     */
-    @SuppressLint("MissingPermission")
-    fun applyBadge(context: Context, count: Int) {
-        val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
-        for (shown in manager.activeNotifications) {
-            if (shown.id != NOTIFICATION_ID || shown.notification.number == count) continue
-            if (shown.notification.extras.getBoolean(EXTRA_COUNTS_AS_ONE)) continue
-            runCatching {
-                val updated = android.app.Notification.Builder.recoverBuilder(context, shown.notification)
-                    .setNumber(count)
-                    .setOnlyAlertOnce(true)
-                    .build()
-                manager.notify(shown.tag, shown.id, updated)
-            }.onFailure { AppLog.app.debug { "App badge not set: ${it::class.java.simpleName}" } }
-        }
-    }
-
-    /** On a notification the launcher counts as one, whatever the ledger's count is. */
-    internal const val EXTRA_COUNTS_AS_ONE = "opencode.push.countsAsOne"
     internal const val NOTIFICATION_ID = 4201
 }

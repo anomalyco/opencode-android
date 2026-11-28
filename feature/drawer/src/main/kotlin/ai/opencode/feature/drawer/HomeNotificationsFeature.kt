@@ -39,16 +39,8 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
         val status = state.status
         return when (action) {
             Action.SettingsRequested -> {
-                val sessionNotifications = dependency(SessionNotificationsClient)
-                if (!sessionNotifications.isAvailable) return Reduced(state)
-                val notificationPermission = dependency(NotificationPermissionClient)
-                val serverKey = state.server.persistenceID
-                Reduced(
-                    state,
-                    Effect.run { send ->
-                        send(Action.Loaded(notificationPermission.status(), sessionNotifications.setting(serverKey)))
-                    },
-                )
+                if (!dependency(SessionNotificationsClient).isAvailable) return Reduced(state)
+                load(state, asks = false)
             }
 
             Action.OfferRequested -> {
@@ -82,18 +74,22 @@ class HomeNotificationsFeature : Reducer<HomeNotificationsFeature.State, HomeNot
                 Reduced(state, Effect.run { notificationPermission.openSettings() })
             }
 
-            Action.PermissionWanted -> {
-                val sessionNotifications = dependency(SessionNotificationsClient)
-                val notificationPermission = dependency(NotificationPermissionClient)
-                val serverKey = state.server.persistenceID
-                Reduced(
-                    state,
-                    Effect.run { send ->
-                        send(Action.Loaded(notificationPermission.request(), sessionNotifications.setting(serverKey)))
-                    },
-                )
-            }
+            Action.PermissionWanted -> load(state, asks = true)
         }
+    }
+
+    /** Reads Android's permission, asking for it first when [asks], and this phone's choice. */
+    private fun load(state: State, asks: Boolean): Reduced<State, Action> {
+        val sessionNotifications = dependency(SessionNotificationsClient)
+        val notificationPermission = dependency(NotificationPermissionClient)
+        val serverKey = state.server.persistenceID
+        return Reduced(
+            state,
+            Effect.run { send ->
+                val permission = if (asks) notificationPermission.request() else notificationPermission.status()
+                send(Action.Loaded(permission, sessionNotifications.setting(serverKey)))
+            },
+        )
     }
 
     private fun change(state: State, wanted: PushSetting): Reduced<State, Action> {

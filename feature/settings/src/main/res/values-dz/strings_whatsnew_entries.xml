@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">གཏང་མ་ཚུགས་པ་ཅིན་ «ཤུལ་ལས་གཏང་» གིས་ ཤུལ་མ་གློག་རིམ་ཁ་ཕྱེཝ་ད་གཏངམ་ཨིན།</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">གསལ་གཞིའི་པར་ཅིག་ OpenCode ལུ་བགོ་བཤའ་རྐྱབས་ དྲི་བ་ཅིག་བྲིས་ཏེ་ «གཏང་» ཨེབ།</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">གློག་རིམ་ངོས་དཔར་གུ་གྱངས་ཁ།</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">གློག་རིམ་ངོས་དཔར་གྱིས་ མ་ལྷག་པའམ་ཁྱོད་ལུ་བསྒུག་མི་ལཱ་ཡུན་གྱི་གྱངས་ཁ་སྟོནམ་ཨིན། འདི་ «དུས་མཐུན་བལྟ» ནང་གི་གྱངས་ཁ་དང་ཅོག་འཐདཔ་ཨིན།</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">བརྡ་བསྐུལ་བཀག་ཡོད་པའི་ལཱ་ཡུན་ཚུ་མི་བརྩི།</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">བརྡ་བསྐུལ་ཚུ་ཨོན་འབད་དགོ།</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ལཱ་ཡུན་ཅིག་དྲི་བའི་ལན་ལུ་བསྒུག་སྟེ་བཞག་ དེ་ལས་ཁྱིམ་གསལ་གཞི་ལུ་འགྱོ།</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">ལྡེ་སྒྲོམ་ཟུར་ཐོ་དང་མཉམ་སྤོཝ་ཨིན།</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">ཡི་གུ་འབྲིཝ་ད་ ལཱ་ཡུན་ཐོ་ཁ་ཕྱེ་རུང་ འཕྲིན་དོན་འབྲི་ས་སེལ་འཐུ་འབད་དེ་ར་སྡོདཔ་ཨིན། ལྡེ་སྒྲོམ་ཡང་ལཱ་ཡུན་དང་མཉམ་ཟུར་ཁར་སྤོཝ་ཨིན།</string>

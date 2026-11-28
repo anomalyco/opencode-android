@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Якщо надіслати не вдасться, «Надіслати пізніше» зробить це, коли ви знову відкриєте застосунок.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Поділіться знімком екрана з OpenCode, введіть запитання й натисніть «Надіслати»</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Лічильник на іконці застосунку</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Іконка застосунку показує кількість непрочитаних сесій або тих, що чекають на вас, як і «Перегляд нового».</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сесії з вимкненими сповіщеннями не враховуються.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Для цього потрібно ввімкнути сповіщення.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Залиште запитання в сесії без відповіді й перейдіть на головний екран</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Клавіатура рухається з бічною панеллю</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Якщо відкрити список сесій під час введення, поле повідомлення лишається активним, а клавіатура відсувається разом із сесією.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jika penghantaran gagal, Hantar kemudian akan menghantarnya apabila anda membuka aplikasi semula.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Kongsi tangkapan skrin ke OpenCode, taip soalan, kemudian ketik Hantar</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Lencana pada ikon aplikasi</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikon aplikasi menunjukkan bilangan sesi yang belum dibaca atau menunggu anda, sama seperti dalam Ikuti perkembangan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesi yang disenyapkan tidak dikira.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Notifikasi perlu dihidupkan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Biarkan sesi menunggu jawapan soalan, kemudian pergi ke skrin utama</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Papan kekunci meluncur bersama panel sisi</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Membuka senarai sesi semasa menaip mengekalkan fokus pada mesej anda, dan papan kekunci meluncur ke tepi bersama sesi.</string>

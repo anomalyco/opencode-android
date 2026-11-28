@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jika belum bisa dikirim, Kirim nanti akan mengirimnya saat Anda membuka aplikasi lagi.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Bagikan tangkapan layar ke OpenCode, tulis pertanyaan, lalu ketuk Kirim</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Lencana di ikon aplikasi</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikon aplikasi menampilkan jumlah sesi yang belum dibaca atau menunggu Anda, sama seperti di Tinjau pembaruan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesi yang dibisukan tidak dihitung.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Notifikasi harus diaktifkan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Biarkan sesi menunggu jawaban Anda, lalu buka layar utama</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Keyboard bergeser bersama panel samping</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Saat daftar sesi dibuka sambil mengetik, fokus tetap di pesan Anda dan keyboard bergeser ke samping bersama sesi.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ber ikki til at senda, sendir Send seinni tað næstu ferð, tú opnar forritið.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Deil eina skíggjamynd við OpenCode, skriva ein spurning og trýst á Send</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tal á forritsikoninum</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Forritsikonið vísir, hvussu nógvar setur eru ólisnar ella bíða eftir tær, sama tal sum í Fá yvirlit.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Setur við sløktum fráboðanum telja ikki við.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Fráboðanir mugu vera tendraðar.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lat eina setu bíða eftir svari til ein spurning og far so á heimaskíggjan</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Knappaborðið fylgir síðukarminum</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Opnar tú setulistan, meðan tú skrivar, verður boðareiturin verandi virkin, og knappaborðið glíður til síðis við setuni.</string>

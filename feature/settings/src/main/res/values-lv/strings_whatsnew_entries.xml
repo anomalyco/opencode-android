@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ja neizdodas nosūtīt, “Sūtīt vēlāk” nosūtīs nākamreiz, kad atvērsi lietotni.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Kopīgo ekrānuzņēmumu ar OpenCode, ieraksti jautājumu un pieskaries “Sūtīt”</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Skaitītājs uz lietotnes ikonas</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Lietotnes ikona rāda nelasīto un tavu rīcību gaidošo sesiju skaitu — tāpat kā jaunumu pārskatā.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Apklusinātās sesijas netiek skaitītas.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Jābūt ieslēgtiem paziņojumiem.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Atstāj sesijā neatbildētu jautājumu un pārej uz sākuma ekrānu</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastatūra slīd līdzi sānu panelim</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Rakstot vari atvērt sesiju sarakstu, nezaudējot fokusu ziņas laukā, un tastatūra slīd sānis kopā ar sesiju.</string>

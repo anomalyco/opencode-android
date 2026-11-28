@@ -1,6 +1,7 @@
 package ai.opencode.feature.drawer
 
 import ai.opencode.core.dependencies.Clock
+import ai.opencode.core.dependencies.DateClient
 import ai.opencode.core.dependencies.DependencyValues
 import ai.opencode.core.dependencies.ImmediateClock
 import ai.opencode.core.dependencies.TestClock
@@ -20,6 +21,7 @@ import ai.opencode.feature.drawer.HomeFeatureTestSupport.receive
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.receiveDetail
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.session
 import ai.opencode.feature.drawer.HomeFeatureTestSupport.snapshot
+import ai.opencode.feature.drawer.notices.DeliveredNotificationsClient
 import ai.opencode.feature.session.RefreshReason
 import ai.opencode.feature.session.SessionFeature
 import ai.opencode.feature.session.SessionTimers
@@ -102,6 +104,45 @@ class HomeFeatureTests {
         store.receive(Action.Notifications(HomeNotificationsFeature.Action.Loaded(NotificationPermission.Enabled, PushSetting())))
         assertEquals(NotificationPermission.Enabled, store.state.notificationPermission)
         assertTrue(eventually { registered.value == listOf(savedServer) })
+        h.skipInFlightEffects()
+    }
+
+    @Test
+    fun freshStateClearsThisServersStaleNotifications() = homeTest { h ->
+        val sessions = listOf(
+            session("unread", updatedAt = date(10), idle = 2_000, viewed = 1_000),
+            session("read", updatedAt = date(10), idle = 1_000, viewed = 1_000),
+            session("waiting", updatedAt = date(10), idle = 1_000, viewed = 1_000),
+        )
+        // The list has loaded; its attention read hasn't.
+        val state = h.state {
+            val base = HomeFeature.State(savedServer, snapshot(sessions))
+            val listed = base.copy(
+                connection = base.connection.copy(hasConnected = true),
+                noticeReadiness = HomeFeature.State.NoticeReadiness.listed,
+            ).openingDraft()
+            listed.copy(sessionDetail = listed.sessionDetail?.copy(isVisible = true))
+        }
+        val stale = LockIsolated<List<Triple<String, Set<String>, Set<String>>>>(emptyList())
+        val store = h.store(state) {
+            this[Clock] = ImmediateClock()
+            this[DateClient] = DateClient.constant(Instant.ofEpochSecond(100))
+            this[DeliveredNotificationsClient] = DeliveredNotificationsClient(
+                removeAll = {},
+                removeNeedsInput = {},
+                removeStale = { serverKey, read, waiting -> stale.append(Triple(serverKey, read, waiting)) },
+            )
+            this[OpenCodeClient] = OpenCodeClient.testValue.copy(
+                viewSession = { _, _, _ -> },
+                transcript = { _, _, _ -> emptyList() },
+                homeAttention = { _, _, _ -> setOf("waiting") },
+                homeSnapshot = { snapshot(sessions) },
+            )
+        }
+        store.exhaustive = false
+        store.send(Action.AttentionRefreshed(setOf("waiting")))
+        val expected = Triple(savedServer.persistenceID, setOf("read", "waiting"), setOf("waiting"))
+        assertTrue(eventually { stale.value == listOf(expected) })
         h.skipInFlightEffects()
     }
 

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jei išsiųsti nepavyksta, „Siųsti vėliau“ išsiųs kitą kartą atidarius programą.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Bendrinkite ekrano kopiją su OpenCode, įrašykite klausimą ir palieskite „Siųsti“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Ženklelis ant programos piktogramos</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Programos piktograma rodo neperskaitytų arba jūsų atsako laukiančių seansų skaičių – tokį patį kaip „Peržiūrėti naujienas“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Nutildyti seansai neskaičiuojami.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Tam reikia įjungti pranešimus.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Palikite seansą laukti atsakymo į klausimą ir grįžkite į pradžios ekraną</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klaviatūra slenka kartu su šoniniu skydeliu</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Rašant atidarytas seansų sąrašas neatitraukia žymeklio nuo žinutės, o klaviatūra nuslenka į šoną kartu su seansu.</string>

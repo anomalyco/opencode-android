@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Nếu chưa gửi được, Gửi sau sẽ gửi nội dung khi bạn mở ứng dụng lần tới.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Chia sẻ ảnh chụp màn hình tới OpenCode, nhập câu hỏi rồi chạm Gửi</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Số trên biểu tượng ứng dụng</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Biểu tượng ứng dụng hiển thị số phiên chưa đọc hoặc đang chờ bạn, giống số trong Xem cập nhật.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Không tính các phiên đã tắt thông báo.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Cần bật thông báo để dùng tính năng này.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Để một phiên chờ bạn trả lời câu hỏi, rồi về màn hình chính</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Bàn phím trượt cùng ngăn điều hướng</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Mở danh sách phiên khi đang nhập vẫn giữ con trỏ trong ô tin nhắn, và bàn phím trượt sang bên cùng phiên.</string>

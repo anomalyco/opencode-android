@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">መላክ ካልተቻለ፣ «በኋላ ላክ» በሚቀጥለው ጊዜ መተግበሪያውን ሲከፍቱ ይልከዋል።</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">የማያ ገጽ ፎቶ ለOpenCode ያጋሩ፣ ጥያቄ ይጻፉና «ላክ» የሚለውን ይንኩ</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">በመተግበሪያው አዶ ላይ ቆጣሪ</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">የመተግበሪያው አዶ ስንት ክፍለ ጊዜዎች እንዳልተነበቡ ወይም እርስዎን እንደሚጠብቁ ያሳያል፤ ቁጥሩም በ«ያመለጠዎትን ይዩ» ካለው ጋር አንድ ነው።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">ድምፀ ከል የተደረጉ ክፍለ ጊዜዎች አይቆጠሩም።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">ማሳወቂያዎች መብራት አለባቸው።</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">ክፍለ ጊዜን የጥያቄ መልስ እየጠበቀ ይተዉት፣ ከዚያ ወደ መነሻ ማያ ገጽ ይሂዱ</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">የቁልፍ ሰሌዳው ከጎን ምናሌው ጋር ይንሸራተታል</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">እየጻፉ የክፍለ ጊዜ ዝርዝሩን ሲከፍቱ፣ የመልእክት መጻፊያው ንቁ ሆኖ ይቆያል፤ የቁልፍ ሰሌዳውም ከክፍለ ጊዜው ጋር ወደ ጎን ይንሸራተታል።</string>

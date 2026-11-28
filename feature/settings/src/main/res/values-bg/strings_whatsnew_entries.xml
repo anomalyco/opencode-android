@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Ако изпращането не успее, „Изпрати по-късно“ го изпраща при следващото отваряне на приложението.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Споделете екранна снимка с OpenCode, напишете въпрос и докоснете „Изпрати“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Значка върху иконата на приложението</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Иконата на приложението показва броя на непрочетените сесии и тези, които ви чакат — същия като в „Наваксване“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Заглушените сесии не се броят.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Известията трябва да са включени.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Оставете сесия да чака отговор на въпрос и отидете на началния екран</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Клавиатурата се плъзга с менюто</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Когато отворите списъка със сесии, докато пишете, фокусът остава в съобщението, а клавиатурата се плъзга настрани заедно със сесията.</string>

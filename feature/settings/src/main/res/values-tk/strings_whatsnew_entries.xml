@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Iberip bolmasa, «Soň iber» ony programmany indiki gezek açanyňyzda iberýär.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Ekran suratyny OpenCode bilen paýlaşyň, sorag ýazyň we «Iber» düwmesine basyň</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Programma nyşanyndaky san</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Programma nyşany okalmadyk ýa-da size garaşýan sessiýalaryň sanyny görkezýär. Bu san «Habarly bol» bölümindäki bilen deňdir.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Bildirişleri öçürilen sessiýalar hasaba alynmaýar.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Munuň üçin bildirişler açyk bolmaly.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Sessiýadaky soragy jogapsyz goýup, baş ekrana geçiň</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klawiatura gapdal panel bilen süýşýär</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Ýazyp otyrkaňyz sessiýa sanawyny açsaňyz, habar meýdançasy işjeň galýar, klawiatura bolsa sessiýa bilen bile gapdala süýşýär.</string>

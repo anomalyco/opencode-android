@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Αν η αποστολή αποτύχει, η «Αποστολή αργότερα» το στέλνει την επόμενη φορά που θα ανοίξετε την εφαρμογή.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Κοινοποιήστε ένα στιγμιότυπο οθόνης στο OpenCode, γράψτε μια ερώτηση και πατήστε «Αποστολή»</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Σήμα στο εικονίδιο εφαρμογής</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Το εικονίδιο της εφαρμογής δείχνει πόσες συνεδρίες είναι αδιάβαστες ή σας περιμένουν, όπως και η «Ενημέρωση».</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Οι συνεδρίες σε σίγαση δεν μετρούν.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Χρειάζεται να είναι ενεργές οι ειδοποιήσεις.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Αφήστε μια συνεδρία να περιμένει απάντηση σε ερώτηση και πηγαίνετε στην αρχική οθόνη</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Το πληκτρολόγιο ακολουθεί το πλαϊνό μενού</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Όταν ανοίγετε τη λίστα συνεδριών ενώ γράφετε, το πεδίο μηνύματος παραμένει ενεργό και το πληκτρολόγιο σύρεται στο πλάι μαζί με τη συνεδρία.</string>

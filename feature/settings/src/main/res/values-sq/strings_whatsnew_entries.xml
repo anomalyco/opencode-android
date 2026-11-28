@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Nëse dërgimi dështon, Dërgo më vonë e dërgon herën tjetër që hap aplikacionin.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Ndaj një pamje ekrani me OpenCode, shkruaj një pyetje dhe prek Dërgo</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Numëruesi në ikonën e aplikacionit</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Ikona e aplikacionit tregon sa sesione janë të palexuara ose presin përgjigjen tënde, njësoj si te Shiko të rejat.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sesionet pa zë nuk numërohen.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Njoftimet duhet të jenë të aktivizuara.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lër një sesion në pritje të përgjigjes për një pyetje, pastaj shko në ekranin kryesor</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastiera rrëshqet me panelin anësor</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Kur hap listën e sesioneve ndërsa shkruan, mesazhi mbetet aktiv dhe tastiera rrëshqet anash bashkë me sesionin.</string>

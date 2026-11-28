@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Gönderilemezse Daha sonra gönder, uygulamayı bir sonraki açışınızda gönderir.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">OpenCode\'a bir ekran görüntüsü paylaşın, bir soru yazın ve Gönder\'e dokunun</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Uygulama simgesinde rozet</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Uygulama simgesi, Gözden geçir ile aynı sayıyı gösterir: okunmamış veya sizi bekleyen oturumların sayısı.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Sessize alınan oturumlar sayılmaz.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Bildirimlerin açık olması gerekir.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Bir oturumda soruyu yanıtsız bırakın, ardından ana ekrana dönün</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klavye yan panelle birlikte kayar</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Yazarken oturum listesini açtığınızda mesaj kutusu odakta kalır, klavye de oturumla birlikte yana kayar.</string>

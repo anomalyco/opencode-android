@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Jos lähetys ei onnistu, Lähetä myöhemmin lähettää sisällön, kun seuraavan kerran avaat sovelluksen.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Jaa kuvakaappaus OpenCodeen, kirjoita kysymys ja napauta Lähetä</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Merkki sovelluskuvakkeessa</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Sovelluskuvake näyttää lukemattomien tai sinua odottavien istuntojen määrän, kuten Käy läpi -näkymä.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Mykistettyjä istuntoja ei lasketa mukaan.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Ilmoitusten on oltava käytössä.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Jätä istunto odottamaan vastausta kysymykseen ja siirry aloitusnäyttöön</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Näppäimistö liukuu sivuvalikon mukana</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Kun avaat istuntoluettelon kirjoittaessasi, viestikenttä pysyy aktiivisena ja näppäimistö liukuu sivuun istunnon mukana.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Se l\'invio non riesce, Invia più tardi lo invierà la prossima volta che apri l\'app.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Condividi uno screenshot con OpenCode, scrivi una domanda e tocca Invia</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Badge sull\'icona dell\'app</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">L\'icona dell\'app mostra quante sessioni sono da leggere o in attesa di te, come in Mettiti in pari.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Le sessioni silenziate non contano.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Le notifiche devono essere attive.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lascia una sessione in attesa di una domanda, poi vai alla schermata Home</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">La tastiera scorre con il pannello laterale</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Se apri l\'elenco delle sessioni mentre scrivi, il campo del messaggio resta attivo e la tastiera scorre di lato con la sessione.</string>

@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Göndərmək alınmasa, “Sonra göndər” tətbiqi növbəti dəfə açanda onu göndərir.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Ekran görüntüsünü OpenCode ilə paylaşın, sual yazın və “Göndər”ə toxunun</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tətbiq ikonunda say göstəricisi</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Tətbiq ikonu oxunmamış və ya sizi gözləyən sessiyaların sayını göstərir. Bu say “Yeniliklərə bax”dakı ilə eynidir.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Səssizə alınmış sessiyalar sayılmır.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Bunun üçün bildirişlər açıq olmalıdır.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Sessiyanı sualın cavabını gözləyən halda saxlayıb ana ekrana keçin</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klaviatura yan panellə sürüşür</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Yazarkən sessiya siyahısını açsanız, mesaj xanası aktiv qalır və klaviatura sessiya ilə birlikdə yana sürüşür.</string>

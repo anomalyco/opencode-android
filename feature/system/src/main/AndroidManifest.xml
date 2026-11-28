@@ -104,7 +104,7 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- Push (FCM), inert until a Firebase configuration ships: no token, no messages. -->
+        <!-- Push (FCM). -->
         <service
             android:name=".notifications.OpenCodeMessagingService"
             android:exported="false">

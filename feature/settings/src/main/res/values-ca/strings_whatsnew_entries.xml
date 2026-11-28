@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Si no es pot enviar, Envia més tard ho envia el pròxim cop que obris l\'aplicació.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Comparteix una captura de pantalla amb OpenCode, escriu una pregunta i toca Envia</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Indicador a la icona de l\'aplicació</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">La icona de l\'aplicació mostra quantes sessions tens sense llegir o pendents de tu, el mateix recompte que a Posa\'t al dia.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Les sessions silenciades no compten.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Cal tenir les notificacions activades.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Deixa una sessió amb una pregunta pendent i ves a la pantalla d\'inici</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">El teclat llisca amb el panell lateral</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Si obres la llista de sessions mentre escrius, el missatge manté el focus i el teclat es desplaça al costat amb la sessió.</string>

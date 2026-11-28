@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Kui saatmine ei õnnestu, saadab „Saada hiljem“ selle järgmisel rakenduse avamisel.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Jaga kuvatõmmist OpenCode’i, kirjuta küsimus ja puuduta „Saada“</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Märk rakenduse ikoonil</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Rakenduse ikoon näitab lugemata või sinu ootel seansside arvu, nagu vaade „Vaata üle“.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Vaigistatud seansse ei loendata.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Selleks peavad teavitused olema sisse lülitatud.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Jäta seanss küsimusele vastust ootama ja mine avakuvale</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Klaviatuur liigub koos külgpaneeliga</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Kirjutamise ajal seansiloendit avades jääb sõnumikast aktiivseks ja klaviatuur liigub koos seansiga kõrvale.</string>

@@ -395,8 +395,8 @@ private fun homeAction(action: HomeConnectionFeature.Action): Action = when (act
 }
 
 /**
- * A session on screen clears its delivered notifications, an answered request clears its needs-input notifications, fresh state clears stale ones, the icon's badge counts what Catch Up
- * holds, the share sheet offers what the drawer does, and the system publication follows the list.
+ * A session on screen clears its delivered notifications, an answered request clears its needs-input notifications, fresh state clears stale ones,
+ * the share sheet offers what the drawer does, and the system publication follows the list.
  */
 private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): Reducer<State, Action> =
     onChange({ it.viewing }) { _, _, state ->
@@ -412,12 +412,6 @@ private fun Reducer<State, Action>.homeChildrenObservers(feature: HomeFeature): 
             Reduced(state, Effect.run { delivered.removeNeedsInput(answered) })
         }
         .onChange({ it.isFresh }) { _, _, state -> Reduced(state, removeStaleNotifications(state)) }
-        // The icon's badge counts what Catch Up holds.
-        .onChange({ it.appBadgePublication }) { old, new, state ->
-            val next = new.ledger
-            if (next == old.ledger) return@onChange Reduced(state)
-            Reduced(state, feature.publishAppBadge(state, next))
-        }
         // The share sheet offers what the drawer does, kept current for a share sheet opened over the app.
         .onChange({ it.shareTargetsPublication }) { old, _, state ->
             if (!state.hasConnected) return@onChange Reduced(state)

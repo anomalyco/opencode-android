@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Hvis det ikke kan sendes, sender Send senere det, næste gang du åbner appen.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Del et skærmbillede til OpenCode, skriv et spørgsmål, og tryk på Send</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Tæller på appikonet</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Appikonet viser antallet af ulæste sessioner og sessioner, der venter på dig – samme antal som i Bliv opdateret.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Lydløse sessioner tæller ikke med.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Det kræver, at meddelelser er slået til.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Lad en session vente på svar på et spørgsmål, og gå så til hjemmeskærmen</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Tastaturet følger med sidepanelet</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Åbner du sessionslisten, mens du skriver, beholder beskedfeltet fokus, og tastaturet glider til siden sammen med sessionen.</string>

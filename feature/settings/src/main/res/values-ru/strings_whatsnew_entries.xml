@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Если отправить не удалось, «Отправить позже» отправит сообщение при следующем открытии приложения.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Поделитесь снимком экрана с OpenCode, введите вопрос и нажмите «Отправить»</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Счётчик на значке приложения</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Значок приложения показывает число непрочитанных сессий и сессий, ожидающих вас, — как в «Обзоре обновлений».</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сессии с отключёнными уведомлениями не учитываются.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Для этого нужно включить уведомления.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Оставьте вопрос в сессии без ответа и перейдите на главный экран</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Клавиатура сдвигается вместе с боковой панелью</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">При открытии списка сессий во время ввода фокус остаётся в поле сообщения, а клавиатура сдвигается в сторону вместе с сессией.</string>

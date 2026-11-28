@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Агар фиристода нашавад, «Баъдтар фиристед» онро ҳангоми боз кушодани барнома мефиристад.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Акси экранро ба OpenCode мубодила кунед, саволе нависед ва «Фиристодан»-ро ламс кунед</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Ҳисобкунак дар нишонаи барнома</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">Нишонаи барнома шумораи сессияҳои нохонда ё мунтазири шуморо нишон медиҳад — ҳамон ададе, ки дар «Бохабар шудан» аст.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Сессияҳои бе огоҳӣ ҳисоб намешаванд.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Огоҳиҳо бояд фаъол бошанд.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Сессияро мунтазири ҷавоби савол гузоред ва ба экрани асосӣ равед</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Клавиатура бо менюи паҳлуӣ мелағжад</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Ҳангоми навиштан рӯйхати сессияҳоро кушоед: майдони паём фаъол мемонад ва клавиатура ҳамроҳи сессия ба паҳлу мелағжад.</string>

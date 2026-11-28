@@ -172,13 +172,6 @@
     <string name="settings_whatsnew_entry_share_sheet_sends_detail_4">Si l’envoi échoue, « Envoyer plus tard » l’enverra à la prochaine ouverture de l’application.</string>
     <string name="settings_whatsnew_entry_share_sheet_sends_example">Partagez une capture d’écran avec OpenCode, saisissez une question et appuyez sur Envoyer</string>
 
-    <!-- 2026-10-12-08-app-icon-badge -->
-    <string name="settings_whatsnew_entry_app_icon_badge_title">Badge sur l’icône de l’application</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_summary">L’icône affiche le nombre de sessions non lues ou qui vous attendent, comme dans « Faire le point ».</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_1">Les sessions en sourdine ne comptent pas.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_detail_2">Les notifications doivent être activées.</string>
-    <string name="settings_whatsnew_entry_app_icon_badge_example">Laissez une session en attente d’une réponse, puis revenez à l’écran d’accueil</string>
-
     <!-- 2026-10-12-09-drawer-keeps-keyboard -->
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_title">Le clavier glisse avec le volet</string>
     <string name="settings_whatsnew_entry_drawer_keeps_keyboard_summary">Si vous ouvrez la liste des sessions pendant la saisie, le message reste actif et le clavier glisse sur le côté avec la session.</string>
